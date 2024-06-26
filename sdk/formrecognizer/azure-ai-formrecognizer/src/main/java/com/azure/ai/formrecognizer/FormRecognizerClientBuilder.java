@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.Constants;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
+import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
@@ -198,8 +199,13 @@ public final class FormRecognizerClientBuilder implements
                 httpClient);
         }
 
-        return new FormRecognizerAsyncClient(new FormRecognizerClientImpl(pipeline, endpoint,
-            serviceVersion.getVersion()), serviceVersion);
+        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
+            .endpoint(endpoint)
+            .apiVersion(serviceVersion.getVersion())
+            .pipeline(pipeline)
+            .buildClient();
+
+        return new FormRecognizerAsyncClient(formRecognizerAPI, serviceVersion);
     }
 
     /**

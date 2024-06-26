@@ -30,28 +30,22 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in Miscellaneous.
- */
+/** An instance of this class provides access to all the operations defined in Miscellaneous. */
 public final class MiscellaneousImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final MiscellaneousService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final FormRecognizerClientImpl client;
 
     /**
      * Initializes an instance of MiscellaneousImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     MiscellaneousImpl(FormRecognizerClientImpl client) {
-        this.service
-            = RestProxy.create(MiscellaneousService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+                RestProxy.create(MiscellaneousService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,109 +57,147 @@ public final class MiscellaneousImpl {
     @ServiceInterface(name = "FormRecognizerClient")
     public interface MiscellaneousService {
         @Get("/operations")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<GetOperationsResponse>> listOperations(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<GetOperationsResponse>> listOperations(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/operations")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<GetOperationsResponse> listOperationsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Response<GetOperationsResponse> listOperationsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/operations/{operationId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<OperationDetails>> getOperation(@HostParam("endpoint") String endpoint,
-            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<OperationDetails>> getOperation(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("operationId") String operationId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/operations/{operationId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<OperationDetails> getOperationSync(@HostParam("endpoint") String endpoint,
-            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<OperationDetails> getOperationSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("operationId") String operationId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/info")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<ResourceDetails>> getResourceInfo(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ResourceDetails>> getResourceInfo(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/info")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<ResourceDetails> getResourceInfoSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Response<ResourceDetails> getResourceInfoSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<GetOperationsResponse>> listOperationsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<GetOperationsResponse> listOperationsNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
      * Lists all operations.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Operations response object along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list Operations response object along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OperationSummary>> listOperationsSinglePageAsync() {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                        context ->
+                                service.listOperations(
+                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Lists all operations.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Operations response object along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list Operations response object along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OperationSummary>> listOperationsSinglePageAsync(Context context) {
         final String accept = "application/json";
         return service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Lists all operations.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list Operations response object as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationSummary> listOperationsAsync() {
-        return new PagedFlux<>(() -> listOperationsSinglePageAsync(),
-            nextLink -> listOperationsNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+                () -> listOperationsSinglePageAsync(), nextLink -> listOperationsNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all operations.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -174,13 +206,14 @@ public final class MiscellaneousImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationSummary> listOperationsAsync(Context context) {
-        return new PagedFlux<>(() -> listOperationsSinglePageAsync(context),
-            nextLink -> listOperationsNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(
+                () -> listOperationsSinglePageAsync(context),
+                nextLink -> listOperationsNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all operations.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list Operations response object along with {@link PagedResponse}.
@@ -188,15 +221,21 @@ public final class MiscellaneousImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<OperationSummary> listOperationsSinglePage() {
         final String accept = "application/json";
-        Response<GetOperationsResponse> res
-            = service.listOperationsSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<GetOperationsResponse> res =
+                service.listOperationsSync(
+                        this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * Lists all operations.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -206,28 +245,33 @@ public final class MiscellaneousImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<OperationSummary> listOperationsSinglePage(Context context) {
         final String accept = "application/json";
-        Response<GetOperationsResponse> res
-            = service.listOperationsSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<GetOperationsResponse> res =
+                service.listOperationsSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * Lists all operations.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list Operations response object as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationSummary> listOperations() {
-        return new PagedIterable<>(() -> listOperationsSinglePage(Context.NONE),
-            nextLink -> listOperationsNextSinglePage(nextLink));
+        return new PagedIterable<>(
+                () -> listOperationsSinglePage(Context.NONE), nextLink -> listOperationsNextSinglePage(nextLink));
     }
 
     /**
      * Lists all operations.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -236,13 +280,13 @@ public final class MiscellaneousImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationSummary> listOperations(Context context) {
-        return new PagedIterable<>(() -> listOperationsSinglePage(context),
-            nextLink -> listOperationsNextSinglePage(nextLink, context));
+        return new PagedIterable<>(
+                () -> listOperationsSinglePage(context), nextLink -> listOperationsNextSinglePage(nextLink, context));
     }
 
     /**
      * Gets operation info.
-     * 
+     *
      * @param operationId Unique operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -252,13 +296,15 @@ public final class MiscellaneousImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OperationDetails>> getOperationWithResponseAsync(String operationId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getOperation(this.client.getEndpoint(), operationId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.getOperation(
+                                this.client.getEndpoint(), operationId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Gets operation info.
-     * 
+     *
      * @param operationId Unique operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -269,13 +315,13 @@ public final class MiscellaneousImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OperationDetails>> getOperationWithResponseAsync(String operationId, Context context) {
         final String accept = "application/json";
-        return service.getOperation(this.client.getEndpoint(), operationId, this.client.getApiVersion(), accept,
-            context);
+        return service.getOperation(
+                this.client.getEndpoint(), operationId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets operation info.
-     * 
+     *
      * @param operationId Unique operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -289,7 +335,7 @@ public final class MiscellaneousImpl {
 
     /**
      * Gets operation info.
-     * 
+     *
      * @param operationId Unique operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -304,7 +350,7 @@ public final class MiscellaneousImpl {
 
     /**
      * Gets operation info.
-     * 
+     *
      * @param operationId Unique operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,13 +361,13 @@ public final class MiscellaneousImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationDetails> getOperationWithResponse(String operationId, Context context) {
         final String accept = "application/json";
-        return service.getOperationSync(this.client.getEndpoint(), operationId, this.client.getApiVersion(), accept,
-            context);
+        return service.getOperationSync(
+                this.client.getEndpoint(), operationId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets operation info.
-     * 
+     *
      * @param operationId Unique operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -335,28 +381,30 @@ public final class MiscellaneousImpl {
 
     /**
      * Return information about the current resource.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return general information regarding the current resource along with {@link Response} on successful completion
-     * of {@link Mono}.
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ResourceDetails>> getResourceInfoWithResponseAsync() {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getResourceInfo(this.client.getEndpoint(),
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.getResourceInfo(
+                                this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Return information about the current resource.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return general information regarding the current resource along with {@link Response} on successful completion
-     * of {@link Mono}.
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ResourceDetails>> getResourceInfoWithResponseAsync(Context context) {
@@ -366,7 +414,7 @@ public final class MiscellaneousImpl {
 
     /**
      * Return information about the current resource.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return general information regarding the current resource on successful completion of {@link Mono}.
@@ -378,7 +426,7 @@ public final class MiscellaneousImpl {
 
     /**
      * Return information about the current resource.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -392,7 +440,7 @@ public final class MiscellaneousImpl {
 
     /**
      * Return information about the current resource.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -407,7 +455,7 @@ public final class MiscellaneousImpl {
 
     /**
      * Return information about the current resource.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return general information regarding the current resource.
@@ -419,52 +467,63 @@ public final class MiscellaneousImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Operations response object along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list Operations response object along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OperationSummary>> listOperationsNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listOperationsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+        return FluxUtil.withContext(
+                        context -> service.listOperationsNext(nextLink, this.client.getEndpoint(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Operations response object along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list Operations response object along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OperationSummary>> listOperationsNextSinglePageAsync(String nextLink, Context context) {
         final String accept = "application/json";
         return service.listOperationsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -473,18 +532,22 @@ public final class MiscellaneousImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<OperationSummary> listOperationsNextSinglePage(String nextLink) {
         final String accept = "application/json";
-        Response<GetOperationsResponse> res
-            = service.listOperationsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<GetOperationsResponse> res =
+                service.listOperationsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -494,9 +557,14 @@ public final class MiscellaneousImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<OperationSummary> listOperationsNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        Response<GetOperationsResponse> res
-            = service.listOperationsNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<GetOperationsResponse> res =
+                service.listOperationsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 }

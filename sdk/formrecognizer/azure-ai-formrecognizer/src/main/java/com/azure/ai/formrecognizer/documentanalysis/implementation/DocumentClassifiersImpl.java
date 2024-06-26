@@ -40,7 +40,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.PollingStrategyOptions;
 import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.TypeReference;
@@ -49,28 +48,23 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in DocumentClassifiers.
- */
+/** An instance of this class provides access to all the operations defined in DocumentClassifiers. */
 public final class DocumentClassifiersImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final DocumentClassifiersService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final FormRecognizerClientImpl client;
 
     /**
      * Initializes an instance of DocumentClassifiersImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     DocumentClassifiersImpl(FormRecognizerClientImpl client) {
-        this.service = RestProxy.create(DocumentClassifiersService.class, client.getHttpPipeline(),
-            client.getSerializerAdapter());
+        this.service =
+                RestProxy.create(
+                        DocumentClassifiersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -82,161 +76,217 @@ public final class DocumentClassifiersImpl {
     @ServiceInterface(name = "FormRecognizerClient")
     public interface DocumentClassifiersService {
         @Post("/documentClassifiers:build")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<DocumentClassifiersBuildClassifierHeaders, Void>> buildClassifier(
-            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BuildDocumentClassifierRequest buildRequest,
-            @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BuildDocumentClassifierRequest buildRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentClassifiers:build")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         ResponseBase<DocumentClassifiersBuildClassifierHeaders, Void> buildClassifierSync(
-            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BuildDocumentClassifierRequest buildRequest,
-            @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BuildDocumentClassifierRequest buildRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/documentClassifiers")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<GetDocumentClassifiersResponse>> listClassifiers(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<GetDocumentClassifiersResponse>> listClassifiers(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/documentClassifiers")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<GetDocumentClassifiersResponse> listClassifiersSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Response<GetDocumentClassifiersResponse> listClassifiersSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/documentClassifiers/{classifierId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<DocumentClassifierDetails>> getClassifier(@HostParam("endpoint") String endpoint,
-            @PathParam("classifierId") String classifierId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DocumentClassifierDetails>> getClassifier(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("classifierId") String classifierId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/documentClassifiers/{classifierId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<DocumentClassifierDetails> getClassifierSync(@HostParam("endpoint") String endpoint,
-            @PathParam("classifierId") String classifierId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<DocumentClassifierDetails> getClassifierSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("classifierId") String classifierId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Delete("/documentClassifiers/{classifierId}")
-        @ExpectedResponses({ 204 })
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> deleteClassifier(@HostParam("endpoint") String endpoint,
-            @PathParam("classifierId") String classifierId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> deleteClassifier(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("classifierId") String classifierId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Delete("/documentClassifiers/{classifierId}")
-        @ExpectedResponses({ 204 })
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<Void> deleteClassifierSync(@HostParam("endpoint") String endpoint,
-            @PathParam("classifierId") String classifierId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<Void> deleteClassifierSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("classifierId") String classifierId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentClassifiers/{classifierId}:analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocument(
-            @HostParam("endpoint") String endpoint, @PathParam("classifierId") String classifierId,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ClassifyDocumentRequest classifyRequest,
-            @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("classifierId") String classifierId,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") ClassifyDocumentRequest classifyRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentClassifiers/{classifierId}:analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void> classifyDocumentSync(
-            @HostParam("endpoint") String endpoint, @PathParam("classifierId") String classifierId,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ClassifyDocumentRequest classifyRequest,
-            @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("classifierId") String classifierId,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") ClassifyDocumentRequest classifyRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentClassifiers/{classifierId}:analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocument(
-            @HostParam("endpoint") String endpoint, @PathParam("classifierId") String classifierId,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") ContentType contentType,
-            @BodyParam("application/octet-stream") Flux<ByteBuffer> classifyRequest,
-            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("classifierId") String classifierId,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> classifyRequest,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentClassifiers/{classifierId}:analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocument(
-            @HostParam("endpoint") String endpoint, @PathParam("classifierId") String classifierId,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") ContentType contentType,
-            @BodyParam("application/octet-stream") BinaryData classifyRequest,
-            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("classifierId") String classifierId,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData classifyRequest,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentClassifiers/{classifierId}:analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void> classifyDocumentSync(
-            @HostParam("endpoint") String endpoint, @PathParam("classifierId") String classifierId,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") ContentType contentType,
-            @BodyParam("application/octet-stream") BinaryData classifyRequest,
-            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("classifierId") String classifierId,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData classifyRequest,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentClassifiers/{classifierId}:analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocument(
-            @HostParam("endpoint") String endpoint, @PathParam("classifierId") String classifierId,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("api-version") String apiVersion, @BodyParam("text/html") String classifyRequest,
-            @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("classifierId") String classifierId,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("text/html") String classifyRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentClassifiers/{classifierId}:analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void> classifyDocumentSync(
-            @HostParam("endpoint") String endpoint, @PathParam("classifierId") String classifierId,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("api-version") String apiVersion, @BodyParam("text/html") String classifyRequest,
-            @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("classifierId") String classifierId,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("text/html") String classifyRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/documentClassifiers/{classifierId}/analyzeResults/{resultId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<AnalyzeResultOperation>> getClassifyResult(@HostParam("endpoint") String endpoint,
-            @PathParam("classifierId") String classifierId, @PathParam("resultId") String resultId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<AnalyzeResultOperation>> getClassifyResult(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("classifierId") String classifierId,
+                @PathParam("resultId") String resultId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/documentClassifiers/{classifierId}/analyzeResults/{resultId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<AnalyzeResultOperation> getClassifyResultSync(@HostParam("endpoint") String endpoint,
-            @PathParam("classifierId") String classifierId, @PathParam("resultId") String resultId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Response<AnalyzeResultOperation> getClassifyResultSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("classifierId") String classifierId,
+                @PathParam("resultId") String resultId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<GetDocumentClassifiersResponse>> listClassifiersNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<GetDocumentClassifiersResponse> listClassifiersNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
      * Builds a custom document classifier.
-     * 
+     *
      * @param buildRequest Building request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -244,16 +294,18 @@ public final class DocumentClassifiersImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DocumentClassifiersBuildClassifierHeaders, Void>>
-        buildClassifierWithResponseAsync(BuildDocumentClassifierRequest buildRequest) {
+    public Mono<ResponseBase<DocumentClassifiersBuildClassifierHeaders, Void>> buildClassifierWithResponseAsync(
+            BuildDocumentClassifierRequest buildRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.buildClassifier(this.client.getEndpoint(),
-            this.client.getApiVersion(), buildRequest, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.buildClassifier(
+                                this.client.getEndpoint(), this.client.getApiVersion(), buildRequest, accept, context));
     }
 
     /**
      * Builds a custom document classifier.
-     * 
+     *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,16 +314,16 @@ public final class DocumentClassifiersImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DocumentClassifiersBuildClassifierHeaders, Void>>
-        buildClassifierWithResponseAsync(BuildDocumentClassifierRequest buildRequest, Context context) {
+    public Mono<ResponseBase<DocumentClassifiersBuildClassifierHeaders, Void>> buildClassifierWithResponseAsync(
+            BuildDocumentClassifierRequest buildRequest, Context context) {
         final String accept = "application/json";
-        return service.buildClassifier(this.client.getEndpoint(), this.client.getApiVersion(), buildRequest, accept,
-            context);
+        return service.buildClassifier(
+                this.client.getEndpoint(), this.client.getApiVersion(), buildRequest, accept, context);
     }
 
     /**
      * Builds a custom document classifier.
-     * 
+     *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,16 +332,16 @@ public final class DocumentClassifiersImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<DocumentClassifiersBuildClassifierHeaders, Void>
-        buildClassifierWithResponse(BuildDocumentClassifierRequest buildRequest, Context context) {
+    public ResponseBase<DocumentClassifiersBuildClassifierHeaders, Void> buildClassifierWithResponse(
+            BuildDocumentClassifierRequest buildRequest, Context context) {
         final String accept = "application/json";
-        return service.buildClassifierSync(this.client.getEndpoint(), this.client.getApiVersion(), buildRequest, accept,
-            context);
+        return service.buildClassifierSync(
+                this.client.getEndpoint(), this.client.getApiVersion(), buildRequest, accept, context);
     }
 
     /**
      * Builds a custom document classifier.
-     * 
+     *
      * @param buildRequest Building request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -298,16 +350,21 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginBuildClassifierAsync(BuildDocumentClassifierRequest buildRequest) {
-        return PollerFlux.create(Duration.ofSeconds(1), () -> this.buildClassifierWithResponseAsync(buildRequest),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.buildClassifierWithResponseAsync(buildRequest),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Builds a custom document classifier.
-     * 
+     *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,19 +373,23 @@ public final class DocumentClassifiersImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginBuildClassifierAsync(BuildDocumentClassifierRequest buildRequest,
-        Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.buildClassifierWithResponseAsync(buildRequest, context),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginBuildClassifierAsync(
+            BuildDocumentClassifierRequest buildRequest, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.buildClassifierWithResponseAsync(buildRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Builds a custom document classifier.
-     * 
+     *
      * @param buildRequest Building request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -337,17 +398,21 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginBuildClassifier(BuildDocumentClassifierRequest buildRequest) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.buildClassifierWithResponse(buildRequest, Context.NONE),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.buildClassifierWithResponse(buildRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Builds a custom document classifier.
-     * 
+     *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -356,67 +421,87 @@ public final class DocumentClassifiersImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginBuildClassifier(BuildDocumentClassifierRequest buildRequest,
-        Context context) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.buildClassifierWithResponse(buildRequest, context),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginBuildClassifier(
+            BuildDocumentClassifierRequest buildRequest, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.buildClassifierWithResponse(buildRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * List all document classifiers.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list document classifiers response object along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DocumentClassifierDetails>> listClassifiersSinglePageAsync() {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.listClassifiers(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                        context ->
+                                service.listClassifiers(
+                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * List all document classifiers.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list document classifiers response object along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DocumentClassifierDetails>> listClassifiersSinglePageAsync(Context context) {
         final String accept = "application/json";
         return service.listClassifiers(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * List all document classifiers.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list document classifiers response object as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DocumentClassifierDetails> listClassifiersAsync() {
-        return new PagedFlux<>(() -> listClassifiersSinglePageAsync(),
-            nextLink -> listClassifiersNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+                () -> listClassifiersSinglePageAsync(), nextLink -> listClassifiersNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all document classifiers.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -425,13 +510,14 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DocumentClassifierDetails> listClassifiersAsync(Context context) {
-        return new PagedFlux<>(() -> listClassifiersSinglePageAsync(context),
-            nextLink -> listClassifiersNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(
+                () -> listClassifiersSinglePageAsync(context),
+                nextLink -> listClassifiersNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all document classifiers.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list document classifiers response object along with {@link PagedResponse}.
@@ -439,15 +525,21 @@ public final class DocumentClassifiersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DocumentClassifierDetails> listClassifiersSinglePage() {
         final String accept = "application/json";
-        Response<GetDocumentClassifiersResponse> res
-            = service.listClassifiersSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<GetDocumentClassifiersResponse> res =
+                service.listClassifiersSync(
+                        this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * List all document classifiers.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -457,28 +549,33 @@ public final class DocumentClassifiersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DocumentClassifierDetails> listClassifiersSinglePage(Context context) {
         final String accept = "application/json";
-        Response<GetDocumentClassifiersResponse> res
-            = service.listClassifiersSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<GetDocumentClassifiersResponse> res =
+                service.listClassifiersSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * List all document classifiers.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list document classifiers response object as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DocumentClassifierDetails> listClassifiers() {
-        return new PagedIterable<>(() -> listClassifiersSinglePage(Context.NONE),
-            nextLink -> listClassifiersNextSinglePage(nextLink));
+        return new PagedIterable<>(
+                () -> listClassifiersSinglePage(Context.NONE), nextLink -> listClassifiersNextSinglePage(nextLink));
     }
 
     /**
      * List all document classifiers.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -487,49 +584,51 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DocumentClassifierDetails> listClassifiers(Context context) {
-        return new PagedIterable<>(() -> listClassifiersSinglePage(context),
-            nextLink -> listClassifiersNextSinglePage(nextLink, context));
+        return new PagedIterable<>(
+                () -> listClassifiersSinglePage(context), nextLink -> listClassifiersNextSinglePage(nextLink, context));
     }
 
     /**
      * Gets detailed document classifier information.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed document classifier information along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return detailed document classifier information along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DocumentClassifierDetails>> getClassifierWithResponseAsync(String classifierId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getClassifier(this.client.getEndpoint(), classifierId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.getClassifier(
+                                this.client.getEndpoint(), classifierId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Gets detailed document classifier information.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed document classifier information along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return detailed document classifier information along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentClassifierDetails>> getClassifierWithResponseAsync(String classifierId,
-        Context context) {
+    public Mono<Response<DocumentClassifierDetails>> getClassifierWithResponseAsync(
+            String classifierId, Context context) {
         final String accept = "application/json";
-        return service.getClassifier(this.client.getEndpoint(), classifierId, this.client.getApiVersion(), accept,
-            context);
+        return service.getClassifier(
+                this.client.getEndpoint(), classifierId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets detailed document classifier information.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -543,7 +642,7 @@ public final class DocumentClassifiersImpl {
 
     /**
      * Gets detailed document classifier information.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -558,7 +657,7 @@ public final class DocumentClassifiersImpl {
 
     /**
      * Gets detailed document classifier information.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -569,13 +668,13 @@ public final class DocumentClassifiersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentClassifierDetails> getClassifierWithResponse(String classifierId, Context context) {
         final String accept = "application/json";
-        return service.getClassifierSync(this.client.getEndpoint(), classifierId, this.client.getApiVersion(), accept,
-            context);
+        return service.getClassifierSync(
+                this.client.getEndpoint(), classifierId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets detailed document classifier information.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -589,7 +688,7 @@ public final class DocumentClassifiersImpl {
 
     /**
      * Deletes document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -599,13 +698,15 @@ public final class DocumentClassifiersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassifierWithResponseAsync(String classifierId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteClassifier(this.client.getEndpoint(), classifierId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteClassifier(
+                                this.client.getEndpoint(), classifierId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Deletes document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -616,13 +717,13 @@ public final class DocumentClassifiersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassifierWithResponseAsync(String classifierId, Context context) {
         final String accept = "application/json";
-        return service.deleteClassifier(this.client.getEndpoint(), classifierId, this.client.getApiVersion(), accept,
-            context);
+        return service.deleteClassifier(
+                this.client.getEndpoint(), classifierId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -636,7 +737,7 @@ public final class DocumentClassifiersImpl {
 
     /**
      * Deletes document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -651,7 +752,7 @@ public final class DocumentClassifiersImpl {
 
     /**
      * Deletes document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -662,13 +763,13 @@ public final class DocumentClassifiersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassifierWithResponse(String classifierId, Context context) {
         final String accept = "application/json";
-        return service.deleteClassifierSync(this.client.getEndpoint(), classifierId, this.client.getApiVersion(),
-            accept, context);
+        return service.deleteClassifierSync(
+                this.client.getEndpoint(), classifierId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -681,7 +782,7 @@ public final class DocumentClassifiersImpl {
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -692,15 +793,23 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocumentWithResponseAsync(
-        String classifierId, StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest) {
+            String classifierId, StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.classifyDocument(this.client.getEndpoint(), classifierId,
-            stringIndexType, this.client.getApiVersion(), classifyRequest, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.classifyDocument(
+                                this.client.getEndpoint(),
+                                classifierId,
+                                stringIndexType,
+                                this.client.getApiVersion(),
+                                classifyRequest,
+                                accept,
+                                context));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -712,16 +821,24 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocumentWithResponseAsync(
-        String classifierId, StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest,
-        Context context) {
+            String classifierId,
+            StringIndexType stringIndexType,
+            ClassifyDocumentRequest classifyRequest,
+            Context context) {
         final String accept = "application/json";
-        return service.classifyDocument(this.client.getEndpoint(), classifierId, stringIndexType,
-            this.client.getApiVersion(), classifyRequest, accept, context);
+        return service.classifyDocument(
+                this.client.getEndpoint(),
+                classifierId,
+                stringIndexType,
+                this.client.getApiVersion(),
+                classifyRequest,
+                accept,
+                context);
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -733,16 +850,24 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void> classifyDocumentWithResponse(
-        String classifierId, StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest,
-        Context context) {
+            String classifierId,
+            StringIndexType stringIndexType,
+            ClassifyDocumentRequest classifyRequest,
+            Context context) {
         final String accept = "application/json";
-        return service.classifyDocumentSync(this.client.getEndpoint(), classifierId, stringIndexType,
-            this.client.getApiVersion(), classifyRequest, accept, context);
+        return service.classifyDocumentSync(
+                this.client.getEndpoint(),
+                classifierId,
+                stringIndexType,
+                this.client.getApiVersion(),
+                classifyRequest,
+                accept,
+                context);
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -752,19 +877,23 @@ public final class DocumentClassifiersImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(String classifierId,
-        StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponseAsync(classifierId, stringIndexType, classifyRequest),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(
+            String classifierId, StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.classifyDocumentWithResponseAsync(classifierId, stringIndexType, classifyRequest),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -775,19 +904,26 @@ public final class DocumentClassifiersImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(String classifierId,
-        StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest, Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponseAsync(classifierId, stringIndexType, classifyRequest, context),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(
+            String classifierId,
+            StringIndexType stringIndexType,
+            ClassifyDocumentRequest classifyRequest,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.classifyDocumentWithResponseAsync(classifierId, stringIndexType, classifyRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -797,19 +933,23 @@ public final class DocumentClassifiersImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(String classifierId,
-        StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponse(classifierId, stringIndexType, classifyRequest, Context.NONE),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(
+            String classifierId, StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.classifyDocumentWithResponse(classifierId, stringIndexType, classifyRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -820,19 +960,26 @@ public final class DocumentClassifiersImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(String classifierId,
-        StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest, Context context) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponse(classifierId, stringIndexType, classifyRequest, context),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(
+            String classifierId,
+            StringIndexType stringIndexType,
+            ClassifyDocumentRequest classifyRequest,
+            Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.classifyDocumentWithResponse(classifierId, stringIndexType, classifyRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
      * @param stringIndexType Method used to compute string offset and length.
@@ -845,17 +992,29 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocumentWithResponseAsync(
-        String classifierId, ContentType contentType, StringIndexType stringIndexType, Flux<ByteBuffer> classifyRequest,
-        Long contentLength) {
+            String classifierId,
+            ContentType contentType,
+            StringIndexType stringIndexType,
+            Flux<ByteBuffer> classifyRequest,
+            Long contentLength) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.classifyDocument(this.client.getEndpoint(), classifierId, stringIndexType,
-                this.client.getApiVersion(), contentType, classifyRequest, contentLength, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.classifyDocument(
+                                this.client.getEndpoint(),
+                                classifierId,
+                                stringIndexType,
+                                this.client.getApiVersion(),
+                                contentType,
+                                classifyRequest,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
      * @param stringIndexType Method used to compute string offset and length.
@@ -869,16 +1028,28 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocumentWithResponseAsync(
-        String classifierId, ContentType contentType, StringIndexType stringIndexType, Flux<ByteBuffer> classifyRequest,
-        Long contentLength, Context context) {
+            String classifierId,
+            ContentType contentType,
+            StringIndexType stringIndexType,
+            Flux<ByteBuffer> classifyRequest,
+            Long contentLength,
+            Context context) {
         final String accept = "application/json";
-        return service.classifyDocument(this.client.getEndpoint(), classifierId, stringIndexType,
-            this.client.getApiVersion(), contentType, classifyRequest, contentLength, accept, context);
+        return service.classifyDocument(
+                this.client.getEndpoint(),
+                classifierId,
+                stringIndexType,
+                this.client.getApiVersion(),
+                contentType,
+                classifyRequest,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
      * @param stringIndexType Method used to compute string offset and length.
@@ -890,20 +1061,29 @@ public final class DocumentClassifiersImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(String classifierId, ContentType contentType,
-        StringIndexType stringIndexType, Flux<ByteBuffer> classifyRequest, Long contentLength) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponseAsync(classifierId, contentType, stringIndexType, classifyRequest,
-                contentLength),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(
+            String classifierId,
+            ContentType contentType,
+            StringIndexType stringIndexType,
+            Flux<ByteBuffer> classifyRequest,
+            Long contentLength) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.classifyDocumentWithResponseAsync(
+                                classifierId, contentType, stringIndexType, classifyRequest, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
      * @param stringIndexType Method used to compute string offset and length.
@@ -916,20 +1096,30 @@ public final class DocumentClassifiersImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(String classifierId, ContentType contentType,
-        StringIndexType stringIndexType, Flux<ByteBuffer> classifyRequest, Long contentLength, Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponseAsync(classifierId, contentType, stringIndexType, classifyRequest,
-                contentLength, context),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(
+            String classifierId,
+            ContentType contentType,
+            StringIndexType stringIndexType,
+            Flux<ByteBuffer> classifyRequest,
+            Long contentLength,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.classifyDocumentWithResponseAsync(
+                                classifierId, contentType, stringIndexType, classifyRequest, contentLength, context),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
      * @param stringIndexType Method used to compute string offset and length.
@@ -942,17 +1132,29 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocumentWithResponseAsync(
-        String classifierId, ContentType contentType, StringIndexType stringIndexType, BinaryData classifyRequest,
-        Long contentLength) {
+            String classifierId,
+            ContentType contentType,
+            StringIndexType stringIndexType,
+            BinaryData classifyRequest,
+            Long contentLength) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.classifyDocument(this.client.getEndpoint(), classifierId, stringIndexType,
-                this.client.getApiVersion(), contentType, classifyRequest, contentLength, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.classifyDocument(
+                                this.client.getEndpoint(),
+                                classifierId,
+                                stringIndexType,
+                                this.client.getApiVersion(),
+                                contentType,
+                                classifyRequest,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
      * @param stringIndexType Method used to compute string offset and length.
@@ -966,16 +1168,28 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocumentWithResponseAsync(
-        String classifierId, ContentType contentType, StringIndexType stringIndexType, BinaryData classifyRequest,
-        Long contentLength, Context context) {
+            String classifierId,
+            ContentType contentType,
+            StringIndexType stringIndexType,
+            BinaryData classifyRequest,
+            Long contentLength,
+            Context context) {
         final String accept = "application/json";
-        return service.classifyDocument(this.client.getEndpoint(), classifierId, stringIndexType,
-            this.client.getApiVersion(), contentType, classifyRequest, contentLength, accept, context);
+        return service.classifyDocument(
+                this.client.getEndpoint(),
+                classifierId,
+                stringIndexType,
+                this.client.getApiVersion(),
+                contentType,
+                classifyRequest,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
      * @param stringIndexType Method used to compute string offset and length.
@@ -989,16 +1203,28 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void> classifyDocumentWithResponse(
-        String classifierId, ContentType contentType, StringIndexType stringIndexType, BinaryData classifyRequest,
-        Long contentLength, Context context) {
+            String classifierId,
+            ContentType contentType,
+            StringIndexType stringIndexType,
+            BinaryData classifyRequest,
+            Long contentLength,
+            Context context) {
         final String accept = "application/json";
-        return service.classifyDocumentSync(this.client.getEndpoint(), classifierId, stringIndexType,
-            this.client.getApiVersion(), contentType, classifyRequest, contentLength, accept, context);
+        return service.classifyDocumentSync(
+                this.client.getEndpoint(),
+                classifierId,
+                stringIndexType,
+                this.client.getApiVersion(),
+                contentType,
+                classifyRequest,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
      * @param stringIndexType Method used to compute string offset and length.
@@ -1010,20 +1236,29 @@ public final class DocumentClassifiersImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(String classifierId, ContentType contentType,
-        StringIndexType stringIndexType, BinaryData classifyRequest, Long contentLength) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponseAsync(classifierId, contentType, stringIndexType, classifyRequest,
-                contentLength),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(
+            String classifierId,
+            ContentType contentType,
+            StringIndexType stringIndexType,
+            BinaryData classifyRequest,
+            Long contentLength) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.classifyDocumentWithResponseAsync(
+                                classifierId, contentType, stringIndexType, classifyRequest, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
      * @param stringIndexType Method used to compute string offset and length.
@@ -1036,20 +1271,30 @@ public final class DocumentClassifiersImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(String classifierId, ContentType contentType,
-        StringIndexType stringIndexType, BinaryData classifyRequest, Long contentLength, Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponseAsync(classifierId, contentType, stringIndexType, classifyRequest,
-                contentLength, context),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(
+            String classifierId,
+            ContentType contentType,
+            StringIndexType stringIndexType,
+            BinaryData classifyRequest,
+            Long contentLength,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.classifyDocumentWithResponseAsync(
+                                classifierId, contentType, stringIndexType, classifyRequest, contentLength, context),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
      * @param stringIndexType Method used to compute string offset and length.
@@ -1061,20 +1306,34 @@ public final class DocumentClassifiersImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(String classifierId, ContentType contentType,
-        StringIndexType stringIndexType, BinaryData classifyRequest, Long contentLength) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponse(classifierId, contentType, stringIndexType, classifyRequest,
-                contentLength, Context.NONE),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(
+            String classifierId,
+            ContentType contentType,
+            StringIndexType stringIndexType,
+            BinaryData classifyRequest,
+            Long contentLength) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.classifyDocumentWithResponse(
+                                classifierId,
+                                contentType,
+                                stringIndexType,
+                                classifyRequest,
+                                contentLength,
+                                Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
      * @param stringIndexType Method used to compute string offset and length.
@@ -1087,20 +1346,30 @@ public final class DocumentClassifiersImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(String classifierId, ContentType contentType,
-        StringIndexType stringIndexType, BinaryData classifyRequest, Long contentLength, Context context) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponse(classifierId, contentType, stringIndexType, classifyRequest,
-                contentLength, context),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(
+            String classifierId,
+            ContentType contentType,
+            StringIndexType stringIndexType,
+            BinaryData classifyRequest,
+            Long contentLength,
+            Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.classifyDocumentWithResponse(
+                                classifierId, contentType, stringIndexType, classifyRequest, contentLength, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -1111,15 +1380,23 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocumentWithResponseAsync(
-        String classifierId, StringIndexType stringIndexType, String classifyRequest) {
+            String classifierId, StringIndexType stringIndexType, String classifyRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.classifyDocument(this.client.getEndpoint(), classifierId,
-            stringIndexType, this.client.getApiVersion(), classifyRequest, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.classifyDocument(
+                                this.client.getEndpoint(),
+                                classifierId,
+                                stringIndexType,
+                                this.client.getApiVersion(),
+                                classifyRequest,
+                                accept,
+                                context));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -1131,15 +1408,21 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocumentWithResponseAsync(
-        String classifierId, StringIndexType stringIndexType, String classifyRequest, Context context) {
+            String classifierId, StringIndexType stringIndexType, String classifyRequest, Context context) {
         final String accept = "application/json";
-        return service.classifyDocument(this.client.getEndpoint(), classifierId, stringIndexType,
-            this.client.getApiVersion(), classifyRequest, accept, context);
+        return service.classifyDocument(
+                this.client.getEndpoint(),
+                classifierId,
+                stringIndexType,
+                this.client.getApiVersion(),
+                classifyRequest,
+                accept,
+                context);
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -1151,15 +1434,21 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void> classifyDocumentWithResponse(
-        String classifierId, StringIndexType stringIndexType, String classifyRequest, Context context) {
+            String classifierId, StringIndexType stringIndexType, String classifyRequest, Context context) {
         final String accept = "application/json";
-        return service.classifyDocumentSync(this.client.getEndpoint(), classifierId, stringIndexType,
-            this.client.getApiVersion(), classifyRequest, accept, context);
+        return service.classifyDocumentSync(
+                this.client.getEndpoint(),
+                classifierId,
+                stringIndexType,
+                this.client.getApiVersion(),
+                classifyRequest,
+                accept,
+                context);
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -1169,19 +1458,23 @@ public final class DocumentClassifiersImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(String classifierId,
-        StringIndexType stringIndexType, String classifyRequest) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponseAsync(classifierId, stringIndexType, classifyRequest),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(
+            String classifierId, StringIndexType stringIndexType, String classifyRequest) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.classifyDocumentWithResponseAsync(classifierId, stringIndexType, classifyRequest),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -1192,19 +1485,23 @@ public final class DocumentClassifiersImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(String classifierId,
-        StringIndexType stringIndexType, String classifyRequest, Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponseAsync(classifierId, stringIndexType, classifyRequest, context),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(
+            String classifierId, StringIndexType stringIndexType, String classifyRequest, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.classifyDocumentWithResponseAsync(classifierId, stringIndexType, classifyRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -1214,19 +1511,23 @@ public final class DocumentClassifiersImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(String classifierId,
-        StringIndexType stringIndexType, String classifyRequest) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponse(classifierId, stringIndexType, classifyRequest, Context.NONE),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(
+            String classifierId, StringIndexType stringIndexType, String classifyRequest) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.classifyDocumentWithResponse(classifierId, stringIndexType, classifyRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -1237,19 +1538,23 @@ public final class DocumentClassifiersImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(String classifierId,
-        StringIndexType stringIndexType, String classifyRequest, Context context) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponse(classifierId, stringIndexType, classifyRequest, context),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(
+            String classifierId, StringIndexType stringIndexType, String classifyRequest, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.classifyDocumentWithResponse(classifierId, stringIndexType, classifyRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Gets the result of document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param resultId Analyze operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1258,16 +1563,23 @@ public final class DocumentClassifiersImpl {
      * @return the result of document classifier along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnalyzeResultOperation>> getClassifyResultWithResponseAsync(String classifierId,
-        String resultId) {
+    public Mono<Response<AnalyzeResultOperation>> getClassifyResultWithResponseAsync(
+            String classifierId, String resultId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getClassifyResult(this.client.getEndpoint(), classifierId,
-            resultId, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.getClassifyResult(
+                                this.client.getEndpoint(),
+                                classifierId,
+                                resultId,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
     }
 
     /**
      * Gets the result of document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param resultId Analyze operation result ID.
      * @param context The context to associate with this operation.
@@ -1277,16 +1589,16 @@ public final class DocumentClassifiersImpl {
      * @return the result of document classifier along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnalyzeResultOperation>> getClassifyResultWithResponseAsync(String classifierId,
-        String resultId, Context context) {
+    public Mono<Response<AnalyzeResultOperation>> getClassifyResultWithResponseAsync(
+            String classifierId, String resultId, Context context) {
         final String accept = "application/json";
-        return service.getClassifyResult(this.client.getEndpoint(), classifierId, resultId, this.client.getApiVersion(),
-            accept, context);
+        return service.getClassifyResult(
+                this.client.getEndpoint(), classifierId, resultId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the result of document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param resultId Analyze operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1297,12 +1609,12 @@ public final class DocumentClassifiersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeResultOperation> getClassifyResultAsync(String classifierId, String resultId) {
         return getClassifyResultWithResponseAsync(classifierId, resultId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the result of document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param resultId Analyze operation result ID.
      * @param context The context to associate with this operation.
@@ -1314,12 +1626,12 @@ public final class DocumentClassifiersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeResultOperation> getClassifyResultAsync(String classifierId, String resultId, Context context) {
         return getClassifyResultWithResponseAsync(classifierId, resultId, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the result of document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param resultId Analyze operation result ID.
      * @param context The context to associate with this operation.
@@ -1329,16 +1641,16 @@ public final class DocumentClassifiersImpl {
      * @return the result of document classifier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeResultOperation> getClassifyResultWithResponse(String classifierId, String resultId,
-        Context context) {
+    public Response<AnalyzeResultOperation> getClassifyResultWithResponse(
+            String classifierId, String resultId, Context context) {
         final String accept = "application/json";
-        return service.getClassifyResultSync(this.client.getEndpoint(), classifierId, resultId,
-            this.client.getApiVersion(), accept, context);
+        return service.getClassifyResultSync(
+                this.client.getEndpoint(), classifierId, resultId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the result of document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param resultId Analyze operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1353,53 +1665,64 @@ public final class DocumentClassifiersImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list document classifiers response object along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DocumentClassifierDetails>> listClassifiersNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listClassifiersNext(nextLink, this.client.getEndpoint(), accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+        return FluxUtil.withContext(
+                        context -> service.listClassifiersNext(nextLink, this.client.getEndpoint(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list document classifiers response object along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DocumentClassifierDetails>> listClassifiersNextSinglePageAsync(String nextLink,
-        Context context) {
+    public Mono<PagedResponse<DocumentClassifierDetails>> listClassifiersNextSinglePageAsync(
+            String nextLink, Context context) {
         final String accept = "application/json";
         return service.listClassifiersNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1408,18 +1731,22 @@ public final class DocumentClassifiersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DocumentClassifierDetails> listClassifiersNextSinglePage(String nextLink) {
         final String accept = "application/json";
-        Response<GetDocumentClassifiersResponse> res
-            = service.listClassifiersNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<GetDocumentClassifiersResponse> res =
+                service.listClassifiersNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1429,9 +1756,14 @@ public final class DocumentClassifiersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DocumentClassifierDetails> listClassifiersNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        Response<GetDocumentClassifiersResponse> res
-            = service.listClassifiersNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<GetDocumentClassifiersResponse> res =
+                service.listClassifiersNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 }

@@ -17,6 +17,7 @@ import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
+import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.core.exception.HttpResponseException;
@@ -46,7 +47,6 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
 import static com.azure.ai.formrecognizer.models.FormContentType.APPLICATION_PDF;
 import static com.azure.ai.formrecognizer.models.FormContentType.IMAGE_JPEG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase {
@@ -497,7 +497,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             syncPoller.waitForCompletion();
             List<FormPage> formPages = syncPoller.getFinalResult();
             validateContentData(formPages, true);
-            assertNotNull(formPages.get(0).getLines().get(0).getAppearance().getStyleName());
+            assertEquals(TextStyleName.OTHER,
+                formPages.get(0).getLines().get(0).getAppearance().getStyleName());
         }, CONTENT_FORM_JPG);
     }
 
