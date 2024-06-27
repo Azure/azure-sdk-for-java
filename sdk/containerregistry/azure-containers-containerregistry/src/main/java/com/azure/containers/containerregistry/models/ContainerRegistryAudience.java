@@ -53,11 +53,7 @@ public final class ContainerRegistryAudience extends ExpandableStringEnum<Contai
         return fromString(name, ContainerRegistryAudience.class);
     }
 
-    /**
-     * Gets known ContainerRegistryAudience values.
-     *
-     * @return known ContainerRegistryAudience values.
-    */
+    /** @return known ContainerRegistryAudience values. */
     public static Collection<ContainerRegistryAudience> values() {
         return values(ContainerRegistryAudience.class);
     }
