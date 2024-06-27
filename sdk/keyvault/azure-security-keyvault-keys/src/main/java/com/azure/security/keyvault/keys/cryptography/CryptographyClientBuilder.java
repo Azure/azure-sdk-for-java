@@ -49,6 +49,11 @@ import java.util.Map;
  * a {@link CryptographyAsyncClient} or a {@link CryptographyClient} are a {@link TokenCredential credential} and either
  * a {@link JsonWebKey JSON Web Key} or a {@code Azure Key Vault key identifier}.</p>
  *
+ * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
+ * {@code Verify}, it is recommended to use a {@link CryptographyAsyncClient} or {@link CryptographyClient} created
+ * for the specific key version that was used for the corresponding inverse operation: {@code Encrypt},
+ * {@code Wrap}, or {@code Sign}, respectively.</p>
+ *
  * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation -->
  * <pre>
  * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
@@ -66,19 +71,6 @@ import java.util.Map;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation -->
  *
- * <p>When a {@link CryptographyAsyncClient} or {@link CryptographyClient} gets created using a
- * {@code Azure Key Vault key identifier}, the first time a cryptographic operation is attempted, the client will
- * attempt to retrieve the key material from the service, cache it, and perform all future cryptographic operations
- * locally, deferring to the service when that's not possible. If key retrieval and caching fails because of a
- * non-retryable error, the client will not make any further attempts and will fall back to performing all cryptographic
- * operations on the service side. Conversely, when a {@link CryptographyAsyncClient} or {@link CryptographyClient} gets
- * created using a {@link JsonWebKey JSON Web Key}, all cryptographic operations will be performed locally.</p>
- *
- * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
- * {@code Verify}, it is recommended to use a {@link CryptographyAsyncClient} or {@link CryptographyClient} created
- * for the specific key version that was used for the corresponding inverse operation: {@code Encrypt},
- * {@code Wrap}, or {@code Sign}, respectively.</p>
- *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and a custom
  * {@link HttpClient http client} can be optionally configured in the {@link CryptographyClientBuilder}.</p>
  *
@@ -92,6 +84,27 @@ import java.util.Map;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation -->
+ *
+ * <p>The minimal configuration options required by {@link CryptographyClientBuilder cryptographyClientBuilder} to
+ * build {@link CryptographyClient} are {@link JsonWebKey jsonWebKey} or
+ * {@link String Azure Key Vault key identifier} and {@link TokenCredential credential}.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
+ * <pre>
+ * CryptographyClient cryptographyClient = new CryptographyClientBuilder&#40;&#41;
+ *     .keyIdentifier&#40;&quot;&lt;your-key-id&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
+ * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation -->
+ * <pre>
+ * JsonWebKey jsonWebKey = new JsonWebKey&#40;&#41;.setId&#40;&quot;SampleJsonWebKey&quot;&#41;;
+ * CryptographyClient cryptographyClient = new CryptographyClientBuilder&#40;&#41;
+ *     .jsonWebKey&#40;jsonWebKey&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation -->
  *
  * @see CryptographyAsyncClient
  * @see CryptographyClient
@@ -122,8 +135,7 @@ public final class CryptographyClientBuilder implements
     private RetryOptions retryOptions;
     private String keyId;
     private TokenCredential credential;
-    private boolean isChallengeResourceVerificationDisabled = false;
-    private boolean isKeyCachingDisabled = false;
+    private boolean disableChallengeResourceVerification = false;
 
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-key-vault-keys.properties");
@@ -173,7 +185,7 @@ public final class CryptographyClientBuilder implements
                 version != null ? version : CryptographyServiceVersion.getLatest();
 
             if (pipeline != null) {
-                return new CryptographyClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled);
+                return new CryptographyClient(keyId, pipeline, serviceVersion);
             }
 
             if (credential == null) {
@@ -184,13 +196,8 @@ public final class CryptographyClientBuilder implements
 
             HttpPipeline pipeline = setupPipeline();
 
-            return new CryptographyClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled);
+            return new CryptographyClient(keyId, pipeline, serviceVersion);
         } else {
-            if (isKeyCachingDisabled) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalStateException("Key caching cannot be disabled when using a JSON Web Key."));
-            }
-
             return new CryptographyClient(jsonWebKey);
         }
     }
@@ -228,7 +235,7 @@ public final class CryptographyClientBuilder implements
                 version != null ? version : CryptographyServiceVersion.getLatest();
 
             if (pipeline != null) {
-                return new CryptographyAsyncClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled);
+                return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
             }
 
             if (credential == null) {
@@ -239,13 +246,8 @@ public final class CryptographyClientBuilder implements
 
             HttpPipeline pipeline = setupPipeline();
 
-            return new CryptographyAsyncClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled);
+            return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
         } else {
-            if (isKeyCachingDisabled) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalStateException("Key caching cannot be disabled when using a JSON Web Key."));
-            }
-
             return new CryptographyAsyncClient(jsonWebKey);
         }
     }
@@ -276,7 +278,7 @@ public final class CryptographyClientBuilder implements
         // Add retry policy.
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        policies.add(new KeyVaultCredentialPolicy(credential, isChallengeResourceVerificationDisabled));
+        policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
@@ -575,21 +577,7 @@ public final class CryptographyClientBuilder implements
      * @return The updated {@link CryptographyClientBuilder} object.
      */
     public CryptographyClientBuilder disableChallengeResourceVerification() {
-        this.isChallengeResourceVerificationDisabled = true;
-
-        return this;
-    }
-
-    /**
-     * Disables local key caching and defers all cryptographic operations to the service.
-     *
-     * <p>This method will have no effect if used in conjunction with the
-     * {@link CryptographyClientBuilder#jsonWebKey(JsonWebKey)} method.</p>
-     *
-     * @return The updated {@link CryptographyClientBuilder} object.
-     */
-    public CryptographyClientBuilder disableKeyCaching() {
-        this.isKeyCachingDisabled = true;
+        this.disableChallengeResourceVerification = true;
 
         return this;
     }
