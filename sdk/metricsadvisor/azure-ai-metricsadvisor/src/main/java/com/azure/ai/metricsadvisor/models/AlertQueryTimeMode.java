@@ -5,35 +5,28 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for AlertQueryTimeMode.
- */
+/** Defines values for AlertQueryTimeMode. */
 public final class AlertQueryTimeMode extends ExpandableStringEnum<AlertQueryTimeMode> {
-    /**
-     * Static value AnomalyTime for AlertQueryTimeMode.
-     */
-    public static final AlertQueryTimeMode ANOMALY_TIME = fromString("AnomalyTime");
-
-    /**
-     * Static value CreatedTime for AlertQueryTimeMode.
-     */
-    public static final AlertQueryTimeMode CREATED_TIME = fromString("CreatedTime");
-
-    /**
-     * Static value ModifiedTime for AlertQueryTimeMode.
-     */
-    public static final AlertQueryTimeMode MODIFIED_TIME = fromString("ModifiedTime");
 
     /**
      * Constructs a AlertQueryTimeMode object.
-     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
     public AlertQueryTimeMode() {
     }
+
+    /** Static value AnomalyTime for AlertQueryTimeMode. */
+    public static final AlertQueryTimeMode ANOMALY_TIME = fromString("AnomalyTime");
+
+    /** Static value CreatedTime for AlertQueryTimeMode. */
+    public static final AlertQueryTimeMode CREATED_TIME = fromString("CreatedTime");
+
+    /** Static value ModifiedTime for AlertQueryTimeMode. */
+    public static final AlertQueryTimeMode MODIFIED_TIME = fromString("ModifiedTime");
 
     /**
      * Creates or finds a AlertQueryTimeMode from its string representation.
@@ -41,13 +34,13 @@ public final class AlertQueryTimeMode extends ExpandableStringEnum<AlertQueryTim
      * @param name a name to look for.
      * @return the corresponding AlertQueryTimeMode.
      */
+    @JsonCreator
     public static AlertQueryTimeMode fromString(String name) {
         return fromString(name, AlertQueryTimeMode.class);
     }
 
     /**
      * Returns the known AlertQueryTimeMode values.
-     *
      * @return known AlertQueryTimeMode values.
      */
     public static Collection<AlertQueryTimeMode> values() {
