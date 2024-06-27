@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Using the Text Analytics API, extracts personal information from an input text and gives you the option of masking
@@ -38,7 +39,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     private PiiDetectionSkillMaskingMode maskingMode;
 
     /*
-     * The character used to mask the text if the maskingMode parameter is set to replace. Default is '*'.
+     * The character used to mask the text if the maskingMode parameter is set to replace. Default is `*`.
      */
     private String mask;
 
@@ -61,7 +62,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
 
     /**
      * Creates an instance of PiiDetectionSkill class.
-     * 
+     *
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
@@ -71,7 +72,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
 
     /**
      * Get the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
-     * 
+     *
      * @return the defaultLanguageCode value.
      */
     public String getDefaultLanguageCode() {
@@ -80,7 +81,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
 
     /**
      * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
-     * 
+     *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the PiiDetectionSkill object itself.
      */
@@ -90,10 +91,10 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the minimumPrecision property: A value between 0 and 1 that be used to only include entities whose
-     * confidence score is greater than the value specified. If not set (default), or if explicitly set to null, all
-     * entities will be included.
-     * 
+     * Get the minimumPrecision property: A value between 0 and 1 that be used to only include entities whose confidence
+     * score is greater than the value specified. If not set (default), or if explicitly set to null, all entities will
+     * be included.
+     *
      * @return the minimumPrecision value.
      */
     public Double getMinimumPrecision() {
@@ -101,10 +102,10 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the minimumPrecision property: A value between 0 and 1 that be used to only include entities whose
-     * confidence score is greater than the value specified. If not set (default), or if explicitly set to null, all
-     * entities will be included.
-     * 
+     * Set the minimumPrecision property: A value between 0 and 1 that be used to only include entities whose confidence
+     * score is greater than the value specified. If not set (default), or if explicitly set to null, all entities will
+     * be included.
+     *
      * @param minimumPrecision the minimumPrecision value to set.
      * @return the PiiDetectionSkill object itself.
      */
@@ -114,9 +115,9 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the maskingMode property: A parameter that provides various ways to mask the personal information detected
-     * in the input text. Default is 'none'.
-     * 
+     * Get the maskingMode property: A parameter that provides various ways to mask the personal information detected in
+     * the input text. Default is 'none'.
+     *
      * @return the maskingMode value.
      */
     public PiiDetectionSkillMaskingMode getMaskingMode() {
@@ -124,9 +125,9 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the maskingMode property: A parameter that provides various ways to mask the personal information detected
-     * in the input text. Default is 'none'.
-     * 
+     * Set the maskingMode property: A parameter that provides various ways to mask the personal information detected in
+     * the input text. Default is 'none'.
+     *
      * @param maskingMode the maskingMode value to set.
      * @return the PiiDetectionSkill object itself.
      */
@@ -137,8 +138,8 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
 
     /**
      * Get the mask property: The character used to mask the text if the maskingMode parameter is set to replace.
-     * Default is '*'.
-     * 
+     * Default is `*`.
+     *
      * @return the mask value.
      */
     public String getMask() {
@@ -147,8 +148,8 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
 
     /**
      * Set the mask property: The character used to mask the text if the maskingMode parameter is set to replace.
-     * Default is '*'.
-     * 
+     * Default is `*`.
+     *
      * @param mask the mask value to set.
      * @return the PiiDetectionSkill object itself.
      */
@@ -161,7 +162,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * Get the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
      * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
      * necessary.
-     * 
+     *
      * @return the modelVersion value.
      */
     public String getModelVersion() {
@@ -172,7 +173,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * Set the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
      * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
      * necessary.
-     * 
+     *
      * @param modelVersion the modelVersion value to set.
      * @return the PiiDetectionSkill object itself.
      */
@@ -183,7 +184,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
 
     /**
      * Get the piiCategories property: A list of PII entity categories that should be extracted and masked.
-     * 
+     *
      * @return the piiCategories value.
      */
     public List<String> getPiiCategories() {
@@ -192,7 +193,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
 
     /**
      * Set the piiCategories property: A list of PII entity categories that should be extracted and masked.
-     * 
+     *
      * @param piiCategories the piiCategories value to set.
      * @return the PiiDetectionSkill object itself.
      */
@@ -202,9 +203,9 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the domain property: If specified, will set the PII domain to include only a subset of the entity
-     * categories. Possible values include: 'phi', 'none'. Default is 'none'.
-     * 
+     * Get the domain property: If specified, will set the PII domain to include only a subset of the entity categories.
+     * Possible values include: 'phi', 'none'. Default is 'none'.
+     *
      * @return the domain value.
      */
     public String getDomain() {
@@ -212,9 +213,9 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the domain property: If specified, will set the PII domain to include only a subset of the entity
-     * categories. Possible values include: 'phi', 'none'. Default is 'none'.
-     * 
+     * Set the domain property: If specified, will set the PII domain to include only a subset of the entity categories.
+     * Possible values include: 'phi', 'none'. Default is 'none'.
+     *
      * @param domain the domain value to set.
      * @return the PiiDetectionSkill object itself.
      */
@@ -223,27 +224,21 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PiiDetectionSkill setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PiiDetectionSkill setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PiiDetectionSkill setContext(String context) {
         super.setContext(context);
@@ -261,107 +256,109 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("context", getContext());
         jsonWriter.writeStringField("defaultLanguageCode", this.defaultLanguageCode);
         jsonWriter.writeNumberField("minimumPrecision", this.minimumPrecision);
-        jsonWriter.writeStringField("maskingMode", this.maskingMode == null ? null : this.maskingMode.toString());
+        jsonWriter.writeStringField("maskingMode", Objects.toString(this.maskingMode, null));
         jsonWriter.writeStringField("maskingCharacter", this.mask);
         jsonWriter.writeStringField("modelVersion", this.modelVersion);
-        jsonWriter.writeArrayField("piiCategories", this.piiCategories,
-            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField(
+                "piiCategories", this.piiCategories, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("domain", this.domain);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of PiiDetectionSkill from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of PiiDetectionSkill if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the PiiDetectionSkill.
      */
     public static PiiDetectionSkill fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean inputsFound = false;
-            List<InputFieldMappingEntry> inputs = null;
-            boolean outputsFound = false;
-            List<OutputFieldMappingEntry> outputs = null;
-            String name = null;
-            String description = null;
-            String context = null;
-            String defaultLanguageCode = null;
-            Double minimumPrecision = null;
-            PiiDetectionSkillMaskingMode maskingMode = null;
-            String mask = null;
-            String modelVersion = null;
-            List<String> piiCategories = null;
-            String domain = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean inputsFound = false;
+                    List<InputFieldMappingEntry> inputs = null;
+                    boolean outputsFound = false;
+                    List<OutputFieldMappingEntry> outputs = null;
+                    String name = null;
+                    String description = null;
+                    String context = null;
+                    String defaultLanguageCode = null;
+                    Double minimumPrecision = null;
+                    PiiDetectionSkillMaskingMode maskingMode = null;
+                    String mask = null;
+                    String modelVersion = null;
+                    List<String> piiCategories = null;
+                    String domain = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Skills.Text.PIIDetectionSkill".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.PIIDetectionSkill'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Skills.Text.PIIDetectionSkill".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.PIIDetectionSkill'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputsFound = true;
+                        } else if ("outputs".equals(fieldName)) {
+                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
+                            outputsFound = true;
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getString();
+                        } else if ("context".equals(fieldName)) {
+                            context = reader.getString();
+                        } else if ("defaultLanguageCode".equals(fieldName)) {
+                            defaultLanguageCode = reader.getString();
+                        } else if ("minimumPrecision".equals(fieldName)) {
+                            minimumPrecision = reader.getNullable(JsonReader::getDouble);
+                        } else if ("maskingMode".equals(fieldName)) {
+                            maskingMode = PiiDetectionSkillMaskingMode.fromString(reader.getString());
+                        } else if ("maskingCharacter".equals(fieldName)) {
+                            mask = reader.getString();
+                        } else if ("modelVersion".equals(fieldName)) {
+                            modelVersion = reader.getString();
+                        } else if ("piiCategories".equals(fieldName)) {
+                            piiCategories = reader.readArray(reader1 -> reader1.getString());
+                        } else if ("domain".equals(fieldName)) {
+                            domain = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                    inputsFound = true;
-                } else if ("outputs".equals(fieldName)) {
-                    outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
-                    outputsFound = true;
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("context".equals(fieldName)) {
-                    context = reader.getString();
-                } else if ("defaultLanguageCode".equals(fieldName)) {
-                    defaultLanguageCode = reader.getString();
-                } else if ("minimumPrecision".equals(fieldName)) {
-                    minimumPrecision = reader.getNullable(JsonReader::getDouble);
-                } else if ("maskingMode".equals(fieldName)) {
-                    maskingMode = PiiDetectionSkillMaskingMode.fromString(reader.getString());
-                } else if ("maskingCharacter".equals(fieldName)) {
-                    mask = reader.getString();
-                } else if ("modelVersion".equals(fieldName)) {
-                    modelVersion = reader.getString();
-                } else if ("piiCategories".equals(fieldName)) {
-                    piiCategories = reader.readArray(reader1 -> reader1.getString());
-                } else if ("domain".equals(fieldName)) {
-                    domain = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (inputsFound && outputsFound) {
-                PiiDetectionSkill deserializedPiiDetectionSkill = new PiiDetectionSkill(inputs, outputs);
-                deserializedPiiDetectionSkill.setName(name);
-                deserializedPiiDetectionSkill.setDescription(description);
-                deserializedPiiDetectionSkill.setContext(context);
-                deserializedPiiDetectionSkill.defaultLanguageCode = defaultLanguageCode;
-                deserializedPiiDetectionSkill.minimumPrecision = minimumPrecision;
-                deserializedPiiDetectionSkill.maskingMode = maskingMode;
-                deserializedPiiDetectionSkill.mask = mask;
-                deserializedPiiDetectionSkill.modelVersion = modelVersion;
-                deserializedPiiDetectionSkill.piiCategories = piiCategories;
-                deserializedPiiDetectionSkill.domain = domain;
+                    if (inputsFound && outputsFound) {
+                        PiiDetectionSkill deserializedPiiDetectionSkill = new PiiDetectionSkill(inputs, outputs);
+                        deserializedPiiDetectionSkill.setName(name);
+                        deserializedPiiDetectionSkill.setDescription(description);
+                        deserializedPiiDetectionSkill.setContext(context);
+                        deserializedPiiDetectionSkill.defaultLanguageCode = defaultLanguageCode;
+                        deserializedPiiDetectionSkill.minimumPrecision = minimumPrecision;
+                        deserializedPiiDetectionSkill.maskingMode = maskingMode;
+                        deserializedPiiDetectionSkill.mask = mask;
+                        deserializedPiiDetectionSkill.modelVersion = modelVersion;
+                        deserializedPiiDetectionSkill.piiCategories = piiCategories;
+                        deserializedPiiDetectionSkill.domain = domain;
 
-                return deserializedPiiDetectionSkill;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!inputsFound) {
-                missingProperties.add("inputs");
-            }
-            if (!outputsFound) {
-                missingProperties.add("outputs");
-            }
+                        return deserializedPiiDetectionSkill;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!inputsFound) {
+                        missingProperties.add("inputs");
+                    }
+                    if (!outputsFound) {
+                        missingProperties.add("outputs");
+                    }
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

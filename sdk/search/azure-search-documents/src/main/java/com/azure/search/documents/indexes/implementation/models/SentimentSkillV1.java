@@ -17,10 +17,9 @@ import com.azure.search.documents.indexes.models.SentimentSkillLanguage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * This skill is deprecated. Use the V3.SentimentSkill instead.
- */
+/** Text analytics positive-negative sentiment analysis, scored as a floating point value in a range of zero to 1. */
 @Fluent
 public final class SentimentSkillV1 extends SearchIndexerSkill {
     /*
@@ -30,7 +29,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
 
     /**
      * Creates an instance of SentimentSkillV1 class.
-     * 
+     *
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
@@ -40,7 +39,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
 
     /**
      * Get the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
-     * 
+     *
      * @return the defaultLanguageCode value.
      */
     public SentimentSkillLanguage getDefaultLanguageCode() {
@@ -49,7 +48,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
 
     /**
      * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
-     * 
+     *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the SentimentSkillV1 object itself.
      */
@@ -58,27 +57,21 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SentimentSkillV1 setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SentimentSkillV1 setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SentimentSkillV1 setContext(String context) {
         super.setContext(context);
@@ -94,79 +87,80 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
-        jsonWriter.writeStringField("defaultLanguageCode",
-            this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString());
+        jsonWriter.writeStringField("defaultLanguageCode", Objects.toString(this.defaultLanguageCode, null));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of SentimentSkillV1 from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SentimentSkillV1 if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the SentimentSkillV1.
      */
     public static SentimentSkillV1 fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean inputsFound = false;
-            List<InputFieldMappingEntry> inputs = null;
-            boolean outputsFound = false;
-            List<OutputFieldMappingEntry> outputs = null;
-            String name = null;
-            String description = null;
-            String context = null;
-            SentimentSkillLanguage defaultLanguageCode = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean inputsFound = false;
+                    List<InputFieldMappingEntry> inputs = null;
+                    boolean outputsFound = false;
+                    List<OutputFieldMappingEntry> outputs = null;
+                    String name = null;
+                    String description = null;
+                    String context = null;
+                    SentimentSkillLanguage defaultLanguageCode = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Skills.Text.SentimentSkill".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.SentimentSkill'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Skills.Text.SentimentSkill".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.SentimentSkill'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputsFound = true;
+                        } else if ("outputs".equals(fieldName)) {
+                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
+                            outputsFound = true;
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getString();
+                        } else if ("context".equals(fieldName)) {
+                            context = reader.getString();
+                        } else if ("defaultLanguageCode".equals(fieldName)) {
+                            defaultLanguageCode = SentimentSkillLanguage.fromString(reader.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                    inputsFound = true;
-                } else if ("outputs".equals(fieldName)) {
-                    outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
-                    outputsFound = true;
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("context".equals(fieldName)) {
-                    context = reader.getString();
-                } else if ("defaultLanguageCode".equals(fieldName)) {
-                    defaultLanguageCode = SentimentSkillLanguage.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (inputsFound && outputsFound) {
-                SentimentSkillV1 deserializedSentimentSkillV1 = new SentimentSkillV1(inputs, outputs);
-                deserializedSentimentSkillV1.setName(name);
-                deserializedSentimentSkillV1.setDescription(description);
-                deserializedSentimentSkillV1.setContext(context);
-                deserializedSentimentSkillV1.defaultLanguageCode = defaultLanguageCode;
+                    if (inputsFound && outputsFound) {
+                        SentimentSkillV1 deserializedSentimentSkillV1 = new SentimentSkillV1(inputs, outputs);
+                        deserializedSentimentSkillV1.setName(name);
+                        deserializedSentimentSkillV1.setDescription(description);
+                        deserializedSentimentSkillV1.setContext(context);
+                        deserializedSentimentSkillV1.defaultLanguageCode = defaultLanguageCode;
 
-                return deserializedSentimentSkillV1;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!inputsFound) {
-                missingProperties.add("inputs");
-            }
-            if (!outputsFound) {
-                missingProperties.add("outputs");
-            }
+                        return deserializedSentimentSkillV1;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!inputsFound) {
+                        missingProperties.add("inputs");
+                    }
+                    if (!outputsFound) {
+                        missingProperties.add("outputs");
+                    }
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

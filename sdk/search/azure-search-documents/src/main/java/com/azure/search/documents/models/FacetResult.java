@@ -32,15 +32,12 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
      */
     private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of FacetResult class.
-     */
-    public FacetResult() {
-    }
+    /** Creates an instance of FacetResult class. */
+    public FacetResult() {}
 
     /**
      * Get the count property: The approximate count of documents falling within the bucket described by this facet.
-     * 
+     *
      * @return the count value.
      */
     public Long getCount() {
@@ -50,7 +47,7 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
     /**
      * Get the additionalProperties property: A single bucket of a facet query result. Reports the number of documents
      * with a field value falling within a particular range or having a particular value or interval.
-     * 
+     *
      * @return the additionalProperties value.
      */
     public Map<String, Object> getAdditionalProperties() {
@@ -60,7 +57,7 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
     /**
      * Set the additionalProperties property: A single bucket of a facet query result. Reports the number of documents
      * with a field value falling within a particular range or having a particular value or interval.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the FacetResult object itself.
      */
@@ -82,33 +79,34 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
 
     /**
      * Reads an instance of FacetResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of FacetResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the FacetResult.
      */
     public static FacetResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            FacetResult deserializedFacetResult = new FacetResult();
-            Map<String, Object> additionalProperties = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    FacetResult deserializedFacetResult = new FacetResult();
+                    Map<String, Object> additionalProperties = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("count".equals(fieldName)) {
-                    deserializedFacetResult.count = reader.getNullable(JsonReader::getLong);
-                } else {
-                    if (additionalProperties == null) {
-                        additionalProperties = new LinkedHashMap<>();
+                        if ("count".equals(fieldName)) {
+                            deserializedFacetResult.count = reader.getNullable(JsonReader::getLong);
+                        } else {
+                            if (additionalProperties == null) {
+                                additionalProperties = new LinkedHashMap<>();
+                            }
+
+                            additionalProperties.put(fieldName, reader.readUntyped());
+                        }
                     }
+                    deserializedFacetResult.additionalProperties = additionalProperties;
 
-                    additionalProperties.put(fieldName, reader.readUntyped());
-                }
-            }
-            deserializedFacetResult.additionalProperties = additionalProperties;
-
-            return deserializedFacetResult;
-        });
+                    return deserializedFacetResult;
+                });
     }
 }

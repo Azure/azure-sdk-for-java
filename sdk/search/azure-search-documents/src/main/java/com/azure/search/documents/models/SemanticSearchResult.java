@@ -20,16 +20,9 @@ public final class SemanticSearchResult {
      */
     private final List<QueryCaptionResult> queryCaptions;
 
-    /*
-     * Contains debugging information that can be used to further explore your search results.
-     */
-    private final List<DocumentDebugInfo> documentDebugInfo;
-
-    SemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> queryCaptions,
-        List<DocumentDebugInfo> documentDebugInfo) {
+    SemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> queryCaptions) {
         this.rerankerScore = rerankerScore;
         this.queryCaptions = queryCaptions;
-        this.documentDebugInfo = documentDebugInfo;
     }
 
     /**
@@ -52,15 +45,5 @@ public final class SemanticSearchResult {
      */
     public List<QueryCaptionResult> getQueryCaptions() {
         return this.queryCaptions;
-    }
-
-    /**
-     * Get the documentDebugInfo property: Contains debugging information that can be used to further explore your
-     * search results.
-     *
-     * @return the documentDebugInfo value.
-     */
-    public List<DocumentDebugInfo> getDocumentDebugInfo() {
-        return this.documentDebugInfo;
     }
 }

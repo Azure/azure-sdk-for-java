@@ -6,38 +6,24 @@
 
 package com.azure.search.documents.indexes.models;
 
-/**
- * Defines the aggregation function used to combine the results of all the scoring functions in a scoring profile.
- */
+/** Defines the aggregation function used to combine the results of all the scoring functions in a scoring profile. */
 public enum ScoringFunctionAggregation {
-    /**
-     * Boost scores by the sum of all scoring function results.
-     */
+    /** Boost scores by the sum of all scoring function results. */
     SUM("sum"),
 
-    /**
-     * Boost scores by the average of all scoring function results.
-     */
+    /** Boost scores by the average of all scoring function results. */
     AVERAGE("average"),
 
-    /**
-     * Boost scores by the minimum of all scoring function results.
-     */
+    /** Boost scores by the minimum of all scoring function results. */
     MINIMUM("minimum"),
 
-    /**
-     * Boost scores by the maximum of all scoring function results.
-     */
+    /** Boost scores by the maximum of all scoring function results. */
     MAXIMUM("maximum"),
 
-    /**
-     * Boost scores using the first applicable scoring function in the scoring profile.
-     */
+    /** Boost scores using the first applicable scoring function in the scoring profile. */
     FIRST_MATCHING("firstMatching");
 
-    /**
-     * The actual serialized value for a ScoringFunctionAggregation instance.
-     */
+    /** The actual serialized value for a ScoringFunctionAggregation instance. */
     private final String value;
 
     ScoringFunctionAggregation(String value) {
@@ -46,7 +32,7 @@ public enum ScoringFunctionAggregation {
 
     /**
      * Parses a serialized value to a ScoringFunctionAggregation instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed ScoringFunctionAggregation object, or null if unable to parse.
      */
@@ -63,9 +49,7 @@ public enum ScoringFunctionAggregation {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;
