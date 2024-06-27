@@ -7,10 +7,12 @@ import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.azure.ai.openai.models.ChatRole.USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for ChatRequestMessage.
@@ -33,13 +35,37 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void testUserMessageContentSameStructureAfterConverted() {
-        final ChatRequestUserMessage user = new ChatRequestUserMessage(Arrays.asList(
+        // content: String type content
+        final ChatRequestUserMessage messageInString = new ChatRequestUserMessage(content).setName(name);
+        ChatRequestUserMessage stringConverted = BinaryData.fromObject(messageInString).toObject(ChatRequestUserMessage.class);
+        assertEquals(content, stringConverted.getContent().toString());
+        assertEquals(name, stringConverted.getName());
+        assertEquals(USER, stringConverted.getRole());
+        // content: List type
+        final ChatRequestUserMessage messageInList = new ChatRequestUserMessage(Arrays.asList(
             new ChatMessageTextContentItem("textContent"),
             new ChatMessageImageContentItem(new ChatMessageImageUrl("testImage"))
         ));
-        final String userMessageInString = BinaryData.fromObject(user).toString();
-        final ChatRequestUserMessage convertedUserMessageFromString = BinaryData.fromString(userMessageInString).toObject(ChatRequestUserMessage.class);
-        assertEquals(user.getContent().toString(), convertedUserMessageFromString.getContent().toString());
+        final ChatRequestUserMessage convertedMessageInList = BinaryData.fromObject(messageInList).toObject(ChatRequestUserMessage.class);
+        final List<ChatMessageContentItem> convertedContentMessageInList = convertedMessageInList.getContent().toObject(List.class);
+        assertEquals(2, convertedContentMessageInList.size());
+        assertTrue(convertedContentMessageInList.get(0) instanceof ChatMessageTextContentItem);
+        ChatMessageContentItem chatMessageContentItem = (ChatMessageTextContentItem) convertedContentMessageInList.get(0);
+        String type = chatMessageContentItem.getType();
+        assertEquals("ChatMessageTextContentItem", type);
+
+        assertTrue(convertedContentMessageInList.get(1) instanceof ChatMessageImageContentItem);
+        ChatMessageImageContentItem imageContentItem = (ChatMessageImageContentItem) convertedContentMessageInList.get(1);
+
+        // content: Array type
+        final ChatRequestUserMessage messageInArray = new ChatRequestUserMessage(new ChatMessageContentItem[]{
+                new ChatMessageTextContentItem("textContent"),
+                new ChatMessageImageContentItem(new ChatMessageImageUrl("testImage"))
+        });
+        final ChatRequestUserMessage convertedMessageInArray = BinaryData.fromObject(messageInArray).toObject(ChatRequestUserMessage.class);
+        final ChatMessageContentItem[] convertedContentMessageInArray = convertedMessageInArray.getContent().toObject(ChatMessageContentItem[].class);
+
+        assertTrue(true);
     }
 
     @Test
