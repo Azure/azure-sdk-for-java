@@ -14,6 +14,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A dictionary of indexer-specific configuration properties. Each name is the name of a specific property. Each value
@@ -27,13 +28,13 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     private BlobIndexerParsingMode parsingMode;
 
     /*
-     * Comma-delimited list of filename extensions to ignore when processing from Azure blob storage. For example, you
+     * Comma-delimited list of filename extensions to ignore when processing from Azure blob storage.  For example, you
      * could exclude ".png, .mp4" to skip over those files during indexing.
      */
     private String excludedFileNameExtensions;
 
     /*
-     * Comma-delimited list of filename extensions to select when processing from Azure blob storage. For example, you
+     * Comma-delimited list of filename extensions to select when processing from Azure blob storage.  For example, you
      * could focus indexing on specific application files ".docx, .pptx, .msg" to specifically include those file
      * types.
      */
@@ -82,20 +83,20 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
 
     /*
      * Specifies the data to extract from Azure blob storage and tells the indexer which data to extract from image
-     * content when "imageAction" is set to a value other than "none". This applies to embedded image content in a
+     * content when "imageAction" is set to a value other than "none".  This applies to embedded image content in a
      * .PDF or other application, or image files such as .jpg and .png, in Azure blobs.
      */
     private BlobIndexerDataToExtract dataToExtract;
 
     /*
-     * Determines how to process embedded images and image files in Azure blob storage. Setting the "imageAction"
+     * Determines how to process embedded images and image files in Azure blob storage.  Setting the "imageAction"
      * configuration to any value other than "none" requires that a skillset also be attached to that indexer.
      */
     private BlobIndexerImageAction imageAction;
 
     /*
      * If true, will create a path //document//file_data that is an object representing the original file data
-     * downloaded from your blob data source. This allows you to pass the original file data to a custom skill for
+     * downloaded from your blob data source.  This allows you to pass the original file data to a custom skill for
      * processing within the enrichment pipeline, or to the Document Extraction skill.
      */
     private Boolean allowSkillsetToReadFileData;
@@ -122,15 +123,12 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      */
     private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of IndexingParametersConfiguration class.
-     */
-    public IndexingParametersConfiguration() {
-    }
+    /** Creates an instance of IndexingParametersConfiguration class. */
+    public IndexingParametersConfiguration() {}
 
     /**
      * Get the parsingMode property: Represents the parsing mode for indexing from an Azure blob data source.
-     * 
+     *
      * @return the parsingMode value.
      */
     public BlobIndexerParsingMode getParsingMode() {
@@ -139,7 +137,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
 
     /**
      * Set the parsingMode property: Represents the parsing mode for indexing from an Azure blob data source.
-     * 
+     *
      * @param parsingMode the parsingMode value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -152,7 +150,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * Get the excludedFileNameExtensions property: Comma-delimited list of filename extensions to ignore when
      * processing from Azure blob storage. For example, you could exclude ".png, .mp4" to skip over those files during
      * indexing.
-     * 
+     *
      * @return the excludedFileNameExtensions value.
      */
     public String getExcludedFileNameExtensions() {
@@ -163,7 +161,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * Set the excludedFileNameExtensions property: Comma-delimited list of filename extensions to ignore when
      * processing from Azure blob storage. For example, you could exclude ".png, .mp4" to skip over those files during
      * indexing.
-     * 
+     *
      * @param excludedFileNameExtensions the excludedFileNameExtensions value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -173,10 +171,10 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     }
 
     /**
-     * Get the indexedFileNameExtensions property: Comma-delimited list of filename extensions to select when
-     * processing from Azure blob storage. For example, you could focus indexing on specific application files ".docx,
-     * .pptx, .msg" to specifically include those file types.
-     * 
+     * Get the indexedFileNameExtensions property: Comma-delimited list of filename extensions to select when processing
+     * from Azure blob storage. For example, you could focus indexing on specific application files ".docx, .pptx, .msg"
+     * to specifically include those file types.
+     *
      * @return the indexedFileNameExtensions value.
      */
     public String getIndexedFileNameExtensions() {
@@ -184,10 +182,10 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     }
 
     /**
-     * Set the indexedFileNameExtensions property: Comma-delimited list of filename extensions to select when
-     * processing from Azure blob storage. For example, you could focus indexing on specific application files ".docx,
-     * .pptx, .msg" to specifically include those file types.
-     * 
+     * Set the indexedFileNameExtensions property: Comma-delimited list of filename extensions to select when processing
+     * from Azure blob storage. For example, you could focus indexing on specific application files ".docx, .pptx, .msg"
+     * to specifically include those file types.
+     *
      * @param indexedFileNameExtensions the indexedFileNameExtensions value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -200,7 +198,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * Get the failOnUnsupportedContentType property: For Azure blobs, set to false if you want to continue indexing
      * when an unsupported content type is encountered, and you don't know all the content types (file extensions) in
      * advance.
-     * 
+     *
      * @return the failOnUnsupportedContentType value.
      */
     public Boolean isFailOnUnsupportedContentType() {
@@ -211,7 +209,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * Set the failOnUnsupportedContentType property: For Azure blobs, set to false if you want to continue indexing
      * when an unsupported content type is encountered, and you don't know all the content types (file extensions) in
      * advance.
-     * 
+     *
      * @param failOnUnsupportedContentType the failOnUnsupportedContentType value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -221,9 +219,9 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     }
 
     /**
-     * Get the failOnUnprocessableDocument property: For Azure blobs, set to false if you want to continue indexing if
-     * a document fails indexing.
-     * 
+     * Get the failOnUnprocessableDocument property: For Azure blobs, set to false if you want to continue indexing if a
+     * document fails indexing.
+     *
      * @return the failOnUnprocessableDocument value.
      */
     public Boolean isFailOnUnprocessableDocument() {
@@ -231,9 +229,9 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     }
 
     /**
-     * Set the failOnUnprocessableDocument property: For Azure blobs, set to false if you want to continue indexing if
-     * a document fails indexing.
-     * 
+     * Set the failOnUnprocessableDocument property: For Azure blobs, set to false if you want to continue indexing if a
+     * document fails indexing.
+     *
      * @param failOnUnprocessableDocument the failOnUnprocessableDocument value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -244,10 +242,9 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
 
     /**
      * Get the indexStorageMetadataOnlyForOversizedDocuments property: For Azure blobs, set this property to true to
-     * still index storage metadata for blob content that is too large to process. Oversized blobs are treated as
-     * errors by default. For limits on blob size, see
-     * https://docs.microsoft.com/azure/search/search-limits-quotas-capacity.
-     * 
+     * still index storage metadata for blob content that is too large to process. Oversized blobs are treated as errors
+     * by default. For limits on blob size, see https://docs.microsoft.com/azure/search/search-limits-quotas-capacity.
+     *
      * @return the indexStorageMetadataOnlyForOversizedDocuments value.
      */
     public Boolean isIndexStorageMetadataOnlyForOversizedDocuments() {
@@ -256,16 +253,15 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
 
     /**
      * Set the indexStorageMetadataOnlyForOversizedDocuments property: For Azure blobs, set this property to true to
-     * still index storage metadata for blob content that is too large to process. Oversized blobs are treated as
-     * errors by default. For limits on blob size, see
-     * https://docs.microsoft.com/azure/search/search-limits-quotas-capacity.
-     * 
+     * still index storage metadata for blob content that is too large to process. Oversized blobs are treated as errors
+     * by default. For limits on blob size, see https://docs.microsoft.com/azure/search/search-limits-quotas-capacity.
+     *
      * @param indexStorageMetadataOnlyForOversizedDocuments the indexStorageMetadataOnlyForOversizedDocuments value to
-     * set.
+     *     set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    public IndexingParametersConfiguration
-        setIndexStorageMetadataOnlyForOversizedDocuments(Boolean indexStorageMetadataOnlyForOversizedDocuments) {
+    public IndexingParametersConfiguration setIndexStorageMetadataOnlyForOversizedDocuments(
+            Boolean indexStorageMetadataOnlyForOversizedDocuments) {
         this.indexStorageMetadataOnlyForOversizedDocuments = indexStorageMetadataOnlyForOversizedDocuments;
         return this;
     }
@@ -273,7 +269,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /**
      * Get the delimitedTextHeaders property: For CSV blobs, specifies a comma-delimited list of column headers, useful
      * for mapping source fields to destination fields in an index.
-     * 
+     *
      * @return the delimitedTextHeaders value.
      */
     public String getDelimitedTextHeaders() {
@@ -283,7 +279,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /**
      * Set the delimitedTextHeaders property: For CSV blobs, specifies a comma-delimited list of column headers, useful
      * for mapping source fields to destination fields in an index.
-     * 
+     *
      * @param delimitedTextHeaders the delimitedTextHeaders value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -295,7 +291,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /**
      * Get the delimitedTextDelimiter property: For CSV blobs, specifies the end-of-line single-character delimiter for
      * CSV files where each line starts a new document (for example, "|").
-     * 
+     *
      * @return the delimitedTextDelimiter value.
      */
     public String getDelimitedTextDelimiter() {
@@ -305,7 +301,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /**
      * Set the delimitedTextDelimiter property: For CSV blobs, specifies the end-of-line single-character delimiter for
      * CSV files where each line starts a new document (for example, "|").
-     * 
+     *
      * @param delimitedTextDelimiter the delimitedTextDelimiter value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -317,7 +313,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /**
      * Get the firstLineContainsHeaders property: For CSV blobs, indicates that the first (non-blank) line of each blob
      * contains headers.
-     * 
+     *
      * @return the firstLineContainsHeaders value.
      */
     public Boolean isFirstLineContainsHeaders() {
@@ -327,7 +323,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /**
      * Set the firstLineContainsHeaders property: For CSV blobs, indicates that the first (non-blank) line of each blob
      * contains headers.
-     * 
+     *
      * @param firstLineContainsHeaders the firstLineContainsHeaders value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -337,9 +333,9 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     }
 
     /**
-     * Get the documentRoot property: For JSON arrays, given a structured or semi-structured document, you can specify
-     * a path to the array using this property.
-     * 
+     * Get the documentRoot property: For JSON arrays, given a structured or semi-structured document, you can specify a
+     * path to the array using this property.
+     *
      * @return the documentRoot value.
      */
     public String getDocumentRoot() {
@@ -347,9 +343,9 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     }
 
     /**
-     * Set the documentRoot property: For JSON arrays, given a structured or semi-structured document, you can specify
-     * a path to the array using this property.
-     * 
+     * Set the documentRoot property: For JSON arrays, given a structured or semi-structured document, you can specify a
+     * path to the array using this property.
+     *
      * @param documentRoot the documentRoot value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -359,10 +355,10 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     }
 
     /**
-     * Get the dataToExtract property: Specifies the data to extract from Azure blob storage and tells the indexer
-     * which data to extract from image content when "imageAction" is set to a value other than "none". This applies
-     * to embedded image content in a .PDF or other application, or image files such as .jpg and .png, in Azure blobs.
-     * 
+     * Get the dataToExtract property: Specifies the data to extract from Azure blob storage and tells the indexer which
+     * data to extract from image content when "imageAction" is set to a value other than "none". This applies to
+     * embedded image content in a .PDF or other application, or image files such as .jpg and .png, in Azure blobs.
+     *
      * @return the dataToExtract value.
      */
     public BlobIndexerDataToExtract getDataToExtract() {
@@ -370,10 +366,10 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     }
 
     /**
-     * Set the dataToExtract property: Specifies the data to extract from Azure blob storage and tells the indexer
-     * which data to extract from image content when "imageAction" is set to a value other than "none". This applies
-     * to embedded image content in a .PDF or other application, or image files such as .jpg and .png, in Azure blobs.
-     * 
+     * Set the dataToExtract property: Specifies the data to extract from Azure blob storage and tells the indexer which
+     * data to extract from image content when "imageAction" is set to a value other than "none". This applies to
+     * embedded image content in a .PDF or other application, or image files such as .jpg and .png, in Azure blobs.
+     *
      * @param dataToExtract the dataToExtract value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -386,7 +382,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * Get the imageAction property: Determines how to process embedded images and image files in Azure blob storage.
      * Setting the "imageAction" configuration to any value other than "none" requires that a skillset also be attached
      * to that indexer.
-     * 
+     *
      * @return the imageAction value.
      */
     public BlobIndexerImageAction getImageAction() {
@@ -397,7 +393,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * Set the imageAction property: Determines how to process embedded images and image files in Azure blob storage.
      * Setting the "imageAction" configuration to any value other than "none" requires that a skillset also be attached
      * to that indexer.
-     * 
+     *
      * @param imageAction the imageAction value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -407,11 +403,10 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     }
 
     /**
-     * Get the allowSkillsetToReadFileData property: If true, will create a path //document//file_data that is an
-     * object representing the original file data downloaded from your blob data source. This allows you to pass the
-     * original file data to a custom skill for processing within the enrichment pipeline, or to the Document
-     * Extraction skill.
-     * 
+     * Get the allowSkillsetToReadFileData property: If true, will create a path //document//file_data that is an object
+     * representing the original file data downloaded from your blob data source. This allows you to pass the original
+     * file data to a custom skill for processing within the enrichment pipeline, or to the Document Extraction skill.
+     *
      * @return the allowSkillsetToReadFileData value.
      */
     public Boolean isAllowSkillsetToReadFileData() {
@@ -419,11 +414,10 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     }
 
     /**
-     * Set the allowSkillsetToReadFileData property: If true, will create a path //document//file_data that is an
-     * object representing the original file data downloaded from your blob data source. This allows you to pass the
-     * original file data to a custom skill for processing within the enrichment pipeline, or to the Document
-     * Extraction skill.
-     * 
+     * Set the allowSkillsetToReadFileData property: If true, will create a path //document//file_data that is an object
+     * representing the original file data downloaded from your blob data source. This allows you to pass the original
+     * file data to a custom skill for processing within the enrichment pipeline, or to the Document Extraction skill.
+     *
      * @param allowSkillsetToReadFileData the allowSkillsetToReadFileData value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -435,7 +429,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /**
      * Get the pdfTextRotationAlgorithm property: Determines algorithm for text extraction from PDF files in Azure blob
      * storage.
-     * 
+     *
      * @return the pdfTextRotationAlgorithm value.
      */
     public BlobIndexerPdfTextRotationAlgorithm getPdfTextRotationAlgorithm() {
@@ -445,19 +439,19 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /**
      * Set the pdfTextRotationAlgorithm property: Determines algorithm for text extraction from PDF files in Azure blob
      * storage.
-     * 
+     *
      * @param pdfTextRotationAlgorithm the pdfTextRotationAlgorithm value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    public IndexingParametersConfiguration
-        setPdfTextRotationAlgorithm(BlobIndexerPdfTextRotationAlgorithm pdfTextRotationAlgorithm) {
+    public IndexingParametersConfiguration setPdfTextRotationAlgorithm(
+            BlobIndexerPdfTextRotationAlgorithm pdfTextRotationAlgorithm) {
         this.pdfTextRotationAlgorithm = pdfTextRotationAlgorithm;
         return this;
     }
 
     /**
      * Get the executionEnvironment property: Specifies the environment in which the indexer should execute.
-     * 
+     *
      * @return the executionEnvironment value.
      */
     public IndexerExecutionEnvironment getExecutionEnvironment() {
@@ -466,7 +460,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
 
     /**
      * Set the executionEnvironment property: Specifies the environment in which the indexer should execute.
-     * 
+     *
      * @param executionEnvironment the executionEnvironment value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -478,7 +472,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /**
      * Get the queryTimeout property: Increases the timeout beyond the 5-minute default for Azure SQL database data
      * sources, specified in the format "hh:mm:ss".
-     * 
+     *
      * @return the queryTimeout value.
      */
     public String getQueryTimeout() {
@@ -488,7 +482,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /**
      * Set the queryTimeout property: Increases the timeout beyond the 5-minute default for Azure SQL database data
      * sources, specified in the format "hh:mm:ss".
-     * 
+     *
      * @param queryTimeout the queryTimeout value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -500,7 +494,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /**
      * Get the additionalProperties property: A dictionary of indexer-specific configuration properties. Each name is
      * the name of a specific property. Each value must be of a primitive type.
-     * 
+     *
      * @return the additionalProperties value.
      */
     public Map<String, Object> getAdditionalProperties() {
@@ -510,7 +504,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /**
      * Set the additionalProperties property: A dictionary of indexer-specific configuration properties. Each name is
      * the name of a specific property. Each value must be of a primitive type.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
@@ -522,24 +516,22 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("parsingMode", this.parsingMode == null ? null : this.parsingMode.toString());
+        jsonWriter.writeStringField("parsingMode", Objects.toString(this.parsingMode, null));
         jsonWriter.writeStringField("excludedFileNameExtensions", this.excludedFileNameExtensions);
         jsonWriter.writeStringField("indexedFileNameExtensions", this.indexedFileNameExtensions);
         jsonWriter.writeBooleanField("failOnUnsupportedContentType", this.failOnUnsupportedContentType);
         jsonWriter.writeBooleanField("failOnUnprocessableDocument", this.failOnUnprocessableDocument);
-        jsonWriter.writeBooleanField("indexStorageMetadataOnlyForOversizedDocuments",
-            this.indexStorageMetadataOnlyForOversizedDocuments);
+        jsonWriter.writeBooleanField(
+                "indexStorageMetadataOnlyForOversizedDocuments", this.indexStorageMetadataOnlyForOversizedDocuments);
         jsonWriter.writeStringField("delimitedTextHeaders", this.delimitedTextHeaders);
         jsonWriter.writeStringField("delimitedTextDelimiter", this.delimitedTextDelimiter);
         jsonWriter.writeBooleanField("firstLineContainsHeaders", this.firstLineContainsHeaders);
         jsonWriter.writeStringField("documentRoot", this.documentRoot);
-        jsonWriter.writeStringField("dataToExtract", this.dataToExtract == null ? null : this.dataToExtract.toString());
-        jsonWriter.writeStringField("imageAction", this.imageAction == null ? null : this.imageAction.toString());
+        jsonWriter.writeStringField("dataToExtract", Objects.toString(this.dataToExtract, null));
+        jsonWriter.writeStringField("imageAction", Objects.toString(this.imageAction, null));
         jsonWriter.writeBooleanField("allowSkillsetToReadFileData", this.allowSkillsetToReadFileData);
-        jsonWriter.writeStringField("pdfTextRotationAlgorithm",
-            this.pdfTextRotationAlgorithm == null ? null : this.pdfTextRotationAlgorithm.toString());
-        jsonWriter.writeStringField("executionEnvironment",
-            this.executionEnvironment == null ? null : this.executionEnvironment.toString());
+        jsonWriter.writeStringField("pdfTextRotationAlgorithm", Objects.toString(this.pdfTextRotationAlgorithm, null));
+        jsonWriter.writeStringField("executionEnvironment", Objects.toString(this.executionEnvironment, null));
         jsonWriter.writeStringField("queryTimeout", this.queryTimeout);
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
@@ -551,74 +543,75 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
 
     /**
      * Reads an instance of IndexingParametersConfiguration from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of IndexingParametersConfiguration if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     *     null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the IndexingParametersConfiguration.
      */
     public static IndexingParametersConfiguration fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            IndexingParametersConfiguration deserializedIndexingParametersConfiguration
-                = new IndexingParametersConfiguration();
-            Map<String, Object> additionalProperties = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    IndexingParametersConfiguration deserializedIndexingParametersConfiguration =
+                            new IndexingParametersConfiguration();
+                    Map<String, Object> additionalProperties = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("parsingMode".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.parsingMode
-                        = BlobIndexerParsingMode.fromString(reader.getString());
-                } else if ("excludedFileNameExtensions".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.excludedFileNameExtensions = reader.getString();
-                } else if ("indexedFileNameExtensions".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.indexedFileNameExtensions = reader.getString();
-                } else if ("failOnUnsupportedContentType".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.failOnUnsupportedContentType
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("failOnUnprocessableDocument".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.failOnUnprocessableDocument
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("indexStorageMetadataOnlyForOversizedDocuments".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.indexStorageMetadataOnlyForOversizedDocuments
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("delimitedTextHeaders".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.delimitedTextHeaders = reader.getString();
-                } else if ("delimitedTextDelimiter".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.delimitedTextDelimiter = reader.getString();
-                } else if ("firstLineContainsHeaders".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.firstLineContainsHeaders
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("documentRoot".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.documentRoot = reader.getString();
-                } else if ("dataToExtract".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.dataToExtract
-                        = BlobIndexerDataToExtract.fromString(reader.getString());
-                } else if ("imageAction".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.imageAction
-                        = BlobIndexerImageAction.fromString(reader.getString());
-                } else if ("allowSkillsetToReadFileData".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.allowSkillsetToReadFileData
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("pdfTextRotationAlgorithm".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.pdfTextRotationAlgorithm
-                        = BlobIndexerPdfTextRotationAlgorithm.fromString(reader.getString());
-                } else if ("executionEnvironment".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.executionEnvironment
-                        = IndexerExecutionEnvironment.fromString(reader.getString());
-                } else if ("queryTimeout".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.queryTimeout = reader.getString();
-                } else {
-                    if (additionalProperties == null) {
-                        additionalProperties = new LinkedHashMap<>();
+                        if ("parsingMode".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.parsingMode =
+                                    BlobIndexerParsingMode.fromString(reader.getString());
+                        } else if ("excludedFileNameExtensions".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.excludedFileNameExtensions = reader.getString();
+                        } else if ("indexedFileNameExtensions".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.indexedFileNameExtensions = reader.getString();
+                        } else if ("failOnUnsupportedContentType".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.failOnUnsupportedContentType =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("failOnUnprocessableDocument".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.failOnUnprocessableDocument =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("indexStorageMetadataOnlyForOversizedDocuments".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.indexStorageMetadataOnlyForOversizedDocuments =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("delimitedTextHeaders".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.delimitedTextHeaders = reader.getString();
+                        } else if ("delimitedTextDelimiter".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.delimitedTextDelimiter = reader.getString();
+                        } else if ("firstLineContainsHeaders".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.firstLineContainsHeaders =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("documentRoot".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.documentRoot = reader.getString();
+                        } else if ("dataToExtract".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.dataToExtract =
+                                    BlobIndexerDataToExtract.fromString(reader.getString());
+                        } else if ("imageAction".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.imageAction =
+                                    BlobIndexerImageAction.fromString(reader.getString());
+                        } else if ("allowSkillsetToReadFileData".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.allowSkillsetToReadFileData =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("pdfTextRotationAlgorithm".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.pdfTextRotationAlgorithm =
+                                    BlobIndexerPdfTextRotationAlgorithm.fromString(reader.getString());
+                        } else if ("executionEnvironment".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.executionEnvironment =
+                                    IndexerExecutionEnvironment.fromString(reader.getString());
+                        } else if ("queryTimeout".equals(fieldName)) {
+                            deserializedIndexingParametersConfiguration.queryTimeout = reader.getString();
+                        } else {
+                            if (additionalProperties == null) {
+                                additionalProperties = new LinkedHashMap<>();
+                            }
+
+                            additionalProperties.put(fieldName, reader.readUntyped());
+                        }
                     }
+                    deserializedIndexingParametersConfiguration.additionalProperties = additionalProperties;
 
-                    additionalProperties.put(fieldName, reader.readUntyped());
-                }
-            }
-            deserializedIndexingParametersConfiguration.additionalProperties = additionalProperties;
-
-            return deserializedIndexingParametersConfiguration;
-        });
+                    return deserializedIndexingParametersConfiguration;
+                });
     }
 }

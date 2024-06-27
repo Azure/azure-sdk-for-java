@@ -19,8 +19,6 @@ import com.azure.search.documents.util.SuggestPagedResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
@@ -35,7 +33,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
 import static com.azure.search.documents.TestHelpers.setupSharedIndex;
-import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -43,7 +40,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Execution(ExecutionMode.CONCURRENT)
 public class SuggestTests extends SearchTestBase {
     private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
     private static final String HOTEL_INDEX_NAME = "azsearch-suggest-shared-hotel-instance";
@@ -77,7 +73,6 @@ public class SuggestTests extends SearchTestBase {
 
         searchIndexClient.getSearchClient(BOOKS_INDEX_NAME)
             .uploadDocuments(Arrays.asList(doc1, doc2));
-        waitForIndexing();
     }
 
     @AfterAll

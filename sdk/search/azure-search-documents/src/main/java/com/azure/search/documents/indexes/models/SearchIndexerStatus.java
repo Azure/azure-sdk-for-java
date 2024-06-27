@@ -15,9 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Represents the current status and execution history of an indexer.
- */
+/** Represents the current status and execution history of an indexer. */
 @Immutable
 public final class SearchIndexerStatus implements JsonSerializable<SearchIndexerStatus> {
     /*
@@ -42,13 +40,13 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
 
     /**
      * Creates an instance of SearchIndexerStatus class.
-     * 
+     *
      * @param status the status value to set.
      * @param executionHistory the executionHistory value to set.
      * @param limits the limits value to set.
      */
-    public SearchIndexerStatus(IndexerStatus status, List<IndexerExecutionResult> executionHistory,
-        SearchIndexerLimits limits) {
+    public SearchIndexerStatus(
+            IndexerStatus status, List<IndexerExecutionResult> executionHistory, SearchIndexerLimits limits) {
         this.status = status;
         this.executionHistory = executionHistory;
         this.limits = limits;
@@ -56,7 +54,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
 
     /**
      * Get the status property: Overall indexer status.
-     * 
+     *
      * @return the status value.
      */
     public IndexerStatus getStatus() {
@@ -65,7 +63,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
 
     /**
      * Get the lastResult property: The result of the most recent or an in-progress indexer execution.
-     * 
+     *
      * @return the lastResult value.
      */
     public IndexerExecutionResult getLastResult() {
@@ -75,7 +73,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     /**
      * Get the executionHistory property: History of the recent indexer executions, sorted in reverse chronological
      * order.
-     * 
+     *
      * @return the executionHistory value.
      */
     public List<IndexerExecutionResult> getExecutionHistory() {
@@ -84,7 +82,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
 
     /**
      * Get the limits property: The execution limits for the indexer.
-     * 
+     *
      * @return the limits value.
      */
     public SearchIndexerLimits getLimits() {
@@ -99,61 +97,62 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
 
     /**
      * Reads an instance of SearchIndexerStatus from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexerStatus if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerStatus.
      */
     public static SearchIndexerStatus fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean statusFound = false;
-            IndexerStatus status = null;
-            boolean executionHistoryFound = false;
-            List<IndexerExecutionResult> executionHistory = null;
-            boolean limitsFound = false;
-            SearchIndexerLimits limits = null;
-            IndexerExecutionResult lastResult = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean statusFound = false;
+                    IndexerStatus status = null;
+                    boolean executionHistoryFound = false;
+                    List<IndexerExecutionResult> executionHistory = null;
+                    boolean limitsFound = false;
+                    SearchIndexerLimits limits = null;
+                    IndexerExecutionResult lastResult = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("status".equals(fieldName)) {
-                    status = IndexerStatus.fromString(reader.getString());
-                    statusFound = true;
-                } else if ("executionHistory".equals(fieldName)) {
-                    executionHistory = reader.readArray(reader1 -> IndexerExecutionResult.fromJson(reader1));
-                    executionHistoryFound = true;
-                } else if ("limits".equals(fieldName)) {
-                    limits = SearchIndexerLimits.fromJson(reader);
-                    limitsFound = true;
-                } else if ("lastResult".equals(fieldName)) {
-                    lastResult = IndexerExecutionResult.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (statusFound && executionHistoryFound && limitsFound) {
-                SearchIndexerStatus deserializedSearchIndexerStatus
-                    = new SearchIndexerStatus(status, executionHistory, limits);
-                deserializedSearchIndexerStatus.lastResult = lastResult;
+                        if ("status".equals(fieldName)) {
+                            status = IndexerStatus.fromString(reader.getString());
+                            statusFound = true;
+                        } else if ("executionHistory".equals(fieldName)) {
+                            executionHistory = reader.readArray(reader1 -> IndexerExecutionResult.fromJson(reader1));
+                            executionHistoryFound = true;
+                        } else if ("limits".equals(fieldName)) {
+                            limits = SearchIndexerLimits.fromJson(reader);
+                            limitsFound = true;
+                        } else if ("lastResult".equals(fieldName)) {
+                            lastResult = IndexerExecutionResult.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (statusFound && executionHistoryFound && limitsFound) {
+                        SearchIndexerStatus deserializedSearchIndexerStatus =
+                                new SearchIndexerStatus(status, executionHistory, limits);
+                        deserializedSearchIndexerStatus.lastResult = lastResult;
 
-                return deserializedSearchIndexerStatus;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!statusFound) {
-                missingProperties.add("status");
-            }
-            if (!executionHistoryFound) {
-                missingProperties.add("executionHistory");
-            }
-            if (!limitsFound) {
-                missingProperties.add("limits");
-            }
+                        return deserializedSearchIndexerStatus;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!statusFound) {
+                        missingProperties.add("status");
+                    }
+                    if (!executionHistoryFound) {
+                        missingProperties.add("executionHistory");
+                    }
+                    if (!limitsFound) {
+                        missingProperties.add("limits");
+                    }
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

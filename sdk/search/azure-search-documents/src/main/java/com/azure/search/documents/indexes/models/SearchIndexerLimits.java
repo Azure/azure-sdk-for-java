@@ -14,9 +14,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.Duration;
 
-/**
- * The SearchIndexerLimits model.
- */
+/** The SearchIndexerLimits model. */
 @Immutable
 public final class SearchIndexerLimits implements JsonSerializable<SearchIndexerLimits> {
     /*
@@ -34,15 +32,12 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
      */
     private Long maxDocumentContentCharactersToExtract;
 
-    /**
-     * Creates an instance of SearchIndexerLimits class.
-     */
-    public SearchIndexerLimits() {
-    }
+    /** Creates an instance of SearchIndexerLimits class. */
+    public SearchIndexerLimits() {}
 
     /**
      * Get the maxRunTime property: The maximum duration that the indexer is permitted to run for one execution.
-     * 
+     *
      * @return the maxRunTime value.
      */
     public Duration getMaxRunTime() {
@@ -52,7 +47,7 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
     /**
      * Get the maxDocumentExtractionSize property: The maximum size of a document, in bytes, which will be considered
      * valid for indexing.
-     * 
+     *
      * @return the maxDocumentExtractionSize value.
      */
     public Long getMaxDocumentExtractionSize() {
@@ -62,7 +57,7 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
     /**
      * Get the maxDocumentContentCharactersToExtract property: The maximum number of characters that will be extracted
      * from a document picked up for indexing.
-     * 
+     *
      * @return the maxDocumentContentCharactersToExtract value.
      */
     public Long getMaxDocumentContentCharactersToExtract() {
@@ -77,33 +72,35 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
 
     /**
      * Reads an instance of SearchIndexerLimits from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexerLimits if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchIndexerLimits.
      */
     public static SearchIndexerLimits fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SearchIndexerLimits deserializedSearchIndexerLimits = new SearchIndexerLimits();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    SearchIndexerLimits deserializedSearchIndexerLimits = new SearchIndexerLimits();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("maxRunTime".equals(fieldName)) {
-                    deserializedSearchIndexerLimits.maxRunTime
-                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
-                } else if ("maxDocumentExtractionSize".equals(fieldName)) {
-                    deserializedSearchIndexerLimits.maxDocumentExtractionSize = reader.getNullable(JsonReader::getLong);
-                } else if ("maxDocumentContentCharactersToExtract".equals(fieldName)) {
-                    deserializedSearchIndexerLimits.maxDocumentContentCharactersToExtract
-                        = reader.getNullable(JsonReader::getLong);
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("maxRunTime".equals(fieldName)) {
+                            deserializedSearchIndexerLimits.maxRunTime =
+                                    reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                        } else if ("maxDocumentExtractionSize".equals(fieldName)) {
+                            deserializedSearchIndexerLimits.maxDocumentExtractionSize =
+                                    reader.getNullable(JsonReader::getLong);
+                        } else if ("maxDocumentContentCharactersToExtract".equals(fieldName)) {
+                            deserializedSearchIndexerLimits.maxDocumentContentCharactersToExtract =
+                                    reader.getNullable(JsonReader::getLong);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedSearchIndexerLimits;
-        });
+                    return deserializedSearchIndexerLimits;
+                });
     }
 }
