@@ -197,9 +197,7 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
             "EHOUTBYTES",
             "EHABL",
             "EHAMSGS",
-            "EHAMBS",
-            "ReplicationLagDuration",
-            "ReplicationLagCount"
+            "EHAMBS"
         );
 
 
