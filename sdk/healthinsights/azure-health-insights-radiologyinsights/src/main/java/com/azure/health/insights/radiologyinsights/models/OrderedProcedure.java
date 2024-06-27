@@ -15,13 +15,6 @@ import java.util.List;
 public final class OrderedProcedure {
 
     /*
-     * Additional Content defined by implementations
-     */
-    @Generated
-    @JsonProperty(value = "extension")
-    private List<FhirR4Extension> extension;
-
-    /*
      * Procedure code
      */
     @Generated
@@ -35,33 +28,18 @@ public final class OrderedProcedure {
     @JsonProperty(value = "description")
     private String description;
 
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    @JsonProperty(value = "extension")
+    private List<FhirR4Extension> extension;
+
     /**
      * Creates an instance of OrderedProcedure class.
      */
     @Generated
     public OrderedProcedure() {
-    }
-
-    /**
-     * Get the extension property: Additional Content defined by implementations.
-     *
-     * @return the extension value.
-     */
-    @Generated
-    public List<FhirR4Extension> getExtension() {
-        return this.extension;
-    }
-
-    /**
-     * Set the extension property: Additional Content defined by implementations.
-     *
-     * @param extension the extension value to set.
-     * @return the OrderedProcedure object itself.
-     */
-    @Generated
-    public OrderedProcedure setExtension(List<FhirR4Extension> extension) {
-        this.extension = extension;
-        return this;
     }
 
     /**
@@ -105,6 +83,28 @@ public final class OrderedProcedure {
     @Generated
     public OrderedProcedure setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
+    }
+
+    /**
+     * Set the extension property: Additional Content defined by implementations.
+     *
+     * @param extension the extension value to set.
+     * @return the OrderedProcedure object itself.
+     */
+    @Generated
+    public OrderedProcedure setExtension(List<FhirR4Extension> extension) {
+        this.extension = extension;
         return this;
     }
 }

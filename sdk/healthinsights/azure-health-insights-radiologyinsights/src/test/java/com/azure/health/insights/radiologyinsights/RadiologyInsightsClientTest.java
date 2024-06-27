@@ -6,14 +6,15 @@ package com.azure.health.insights.radiologyinsights;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.List;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
 
 /**
  * Unit tests for {@link RadiologyInsightsClient}.
@@ -26,11 +27,15 @@ public class RadiologyInsightsClientTest extends RadiologyInsightsClientTestBase
 
     @Test
     public void test() {
+        setDocumentContent("Findings: There is a total hip prosthesis.");
+        setInferenceType(RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY);
+        setOrderCode("MVLW");
+        setOrderDescription("IH Hip 1 View Left");
         try {
-            testRadiologyInsightsgWithResponse(request -> {
+            testRadiologyInsightsWithResponse(request -> {
 
                 RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
-                        getClient().beginInferRadiologyInsights(request)).getFinalResult();
+                        getClient().beginInferRadiologyInsights("job1715007505099", request)).getFinalResult();
 
                 List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
                 assertEquals(1, patients.size());

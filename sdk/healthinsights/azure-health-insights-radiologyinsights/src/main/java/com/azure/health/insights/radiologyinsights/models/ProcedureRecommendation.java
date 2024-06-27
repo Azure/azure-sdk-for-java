@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * The procedure recommendation can be a generic procedure or an imaging procedure.
@@ -34,6 +35,13 @@ public class ProcedureRecommendation {
     @JsonProperty(value = "kind")
     private String kind = "ProcedureRecommendation";
 
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    @JsonProperty(value = "extension")
+    private List<FhirR4Extension> extension;
+
     /**
      * Creates an instance of ProcedureRecommendation class.
      */
@@ -49,5 +57,15 @@ public class ProcedureRecommendation {
     @Generated
     public String getKind() {
         return this.kind;
+    }
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
     }
 }

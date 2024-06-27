@@ -26,15 +26,15 @@ public final class PatientRecord {
      * Patient structured information, including demographics and known structured clinical information.
      */
     @Generated
-    @JsonProperty(value = "info")
-    private PatientDetails info;
+    @JsonProperty(value = "details")
+    private PatientDetails details;
 
     /*
      * Patient encounters/visits.
      */
     @Generated
     @JsonProperty(value = "encounters")
-    private List<Encounter> encounters;
+    private List<PatientEncounter> encounters;
 
     /*
      * Patient unstructured clinical data, given as documents.
@@ -66,26 +66,26 @@ public final class PatientRecord {
     }
 
     /**
-     * Get the info property: Patient structured information, including demographics and known structured clinical
+     * Get the details property: Patient structured information, including demographics and known structured clinical
      * information.
      *
-     * @return the info value.
+     * @return the details value.
      */
     @Generated
-    public PatientDetails getInfo() {
-        return this.info;
+    public PatientDetails getDetails() {
+        return this.details;
     }
 
     /**
-     * Set the info property: Patient structured information, including demographics and known structured clinical
+     * Set the details property: Patient structured information, including demographics and known structured clinical
      * information.
      *
-     * @param info the info value to set.
+     * @param details the details value to set.
      * @return the PatientRecord object itself.
      */
     @Generated
-    public PatientRecord setInfo(PatientDetails info) {
-        this.info = info;
+    public PatientRecord setDetails(PatientDetails details) {
+        this.details = details;
         return this;
     }
 
@@ -95,7 +95,7 @@ public final class PatientRecord {
      * @return the encounters value.
      */
     @Generated
-    public List<Encounter> getEncounters() {
+    public List<PatientEncounter> getEncounters() {
         return this.encounters;
     }
 
@@ -106,7 +106,7 @@ public final class PatientRecord {
      * @return the PatientRecord object itself.
      */
     @Generated
-    public PatientRecord setEncounters(List<Encounter> encounters) {
+    public PatientRecord setEncounters(List<PatientEncounter> encounters) {
         this.encounters = encounters;
         return this;
     }
