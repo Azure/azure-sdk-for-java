@@ -52,7 +52,7 @@ class PropertiesPostProcessor implements EnvironmentPostProcessor, Ordered {
             return propertiesToOverride;
         }
 
-        if(!applicationInsightConnectionString.startsWith("InstrumentationKey=")) {
+        if (!applicationInsightConnectionString.startsWith("InstrumentationKey=")) {
             throw new WrongConnectionStringException();
         }
 
