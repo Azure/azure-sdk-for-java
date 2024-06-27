@@ -5,14 +5,10 @@ package com.azure.communication.rooms;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.communication.rooms.models.CommunicationRoom;
-import com.azure.communication.rooms.models.RoomParticipant;
+import com.azure.communication.rooms.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
@@ -20,17 +16,18 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
-import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Locale;
+import reactor.core.publisher.Mono;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Response;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RoomsTestBase extends TestProxyTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(RoomsTestBase.class);
+    protected static final TestMode TEST_MODE = initializeTestMode();
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get(
             "COMMUNICATION_CONNECTION_STRING_ROOMS",
@@ -100,11 +97,6 @@ public class RoomsTestBase extends TestProxyTestBase {
                             "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
         }
 
-        if (!interceptorManager.isLiveMode()) {
-            // Remove the sanitizer `id` from the list of common sanitizers
-            interceptorManager.removeSanitizers("AZSDK3430");
-        }
-
         return builder;
     }
 
@@ -117,6 +109,23 @@ public class RoomsTestBase extends TestProxyTestBase {
             interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
                     new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
                             "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+        }
+    }
+
+    private static TestMode initializeTestMode() {
+        ClientLogger logger = new ClientLogger(RoomsTestBase.class);
+        String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
+        if (azureTestMode != null) {
+            System.out.println("azureTestMode: " + azureTestMode);
+            try {
+                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
+            } catch (IllegalArgumentException var3) {
+                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
+                return TestMode.PLAYBACK;
+            }
+        } else {
+            logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
+            return TestMode.PLAYBACK;
         }
     }
 
@@ -144,8 +153,8 @@ public class RoomsTestBase extends TestProxyTestBase {
             final HttpResponse bufferedResponse = httpResponse.buffer();
 
             // Should sanitize printed reponse url
-            LOGGER.log(LogLevel.VERBOSE, () -> "MS-CV header for " + testName + " request "
-                + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+            System.out.println("MS-CV header for " + testName + " request " + bufferedResponse.getRequest().getUrl()
+                    + ": " + bufferedResponse.getHeaderValue("MS-CV"));
             return Mono.just(bufferedResponse);
         });
     }
