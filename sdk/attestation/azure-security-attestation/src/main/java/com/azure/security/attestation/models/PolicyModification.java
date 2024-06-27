@@ -5,46 +5,29 @@
 package com.azure.security.attestation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * The result of the operation.
- */
+/** Defines values for PolicyModification. */
 public final class PolicyModification extends ExpandableStringEnum<PolicyModification> {
-    /**
-     * The specified policy object was updated.
-     */
+    /** Static value Updated for PolicyModification. */
     public static final PolicyModification UPDATED = fromString("Updated");
 
-    /**
-     * The specified policy object was removed.
-     */
+    /** Static value Removed for PolicyModification. */
     public static final PolicyModification REMOVED = fromString("Removed");
 
     /**
-     * Creates a new instance of PolicyModification value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public PolicyModification() {
-    }
-
-    /**
      * Creates or finds a PolicyModification from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding PolicyModification.
      */
+    @JsonCreator
     public static PolicyModification fromString(String name) {
         return fromString(name, PolicyModification.class);
     }
 
-    /**
-     * Gets known PolicyModification values.
-     * 
-     * @return known PolicyModification values.
-     */
+    /** @return known PolicyModification values. */
     public static Collection<PolicyModification> values() {
         return values(PolicyModification.class);
     }
