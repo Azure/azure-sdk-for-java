@@ -5,51 +5,47 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The InfluxDBParameterPatch model.
- */
+/** The InfluxDBParameterPatch model. */
 @Fluent
-public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBParameterPatch> {
+public final class InfluxDBParameterPatch {
     /*
      * The connection string of this InfluxDB
      */
+    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
      * A database name
      */
+    @JsonProperty(value = "database")
     private String database;
 
     /*
      * The user name of the account that can access this database
      */
+    @JsonProperty(value = "userName")
     private String userName;
 
     /*
      * The password of the account that can access this database
      */
+    @JsonProperty(value = "password")
     private String password;
 
     /*
      * The script to query this database
      */
+    @JsonProperty(value = "query")
     private String query;
 
-    /**
-     * Creates an instance of InfluxDBParameterPatch class.
-     */
-    public InfluxDBParameterPatch() {
-    }
+    /** Creates an instance of InfluxDBParameterPatch class. */
+    public InfluxDBParameterPatch() {}
 
     /**
      * Get the connectionString property: The connection string of this InfluxDB.
-     * 
+     *
      * @return the connectionString value.
      */
     public String getConnectionString() {
@@ -58,7 +54,7 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
 
     /**
      * Set the connectionString property: The connection string of this InfluxDB.
-     * 
+     *
      * @param connectionString the connectionString value to set.
      * @return the InfluxDBParameterPatch object itself.
      */
@@ -69,7 +65,7 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
 
     /**
      * Get the database property: A database name.
-     * 
+     *
      * @return the database value.
      */
     public String getDatabase() {
@@ -78,7 +74,7 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
 
     /**
      * Set the database property: A database name.
-     * 
+     *
      * @param database the database value to set.
      * @return the InfluxDBParameterPatch object itself.
      */
@@ -89,7 +85,7 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
 
     /**
      * Get the userName property: The user name of the account that can access this database.
-     * 
+     *
      * @return the userName value.
      */
     public String getUserName() {
@@ -98,7 +94,7 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
 
     /**
      * Set the userName property: The user name of the account that can access this database.
-     * 
+     *
      * @param userName the userName value to set.
      * @return the InfluxDBParameterPatch object itself.
      */
@@ -109,7 +105,7 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
 
     /**
      * Get the password property: The password of the account that can access this database.
-     * 
+     *
      * @return the password value.
      */
     public String getPassword() {
@@ -118,7 +114,7 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
 
     /**
      * Set the password property: The password of the account that can access this database.
-     * 
+     *
      * @param password the password value to set.
      * @return the InfluxDBParameterPatch object itself.
      */
@@ -129,7 +125,7 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
 
     /**
      * Get the query property: The script to query this database.
-     * 
+     *
      * @return the query value.
      */
     public String getQuery() {
@@ -138,57 +134,12 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
 
     /**
      * Set the query property: The script to query this database.
-     * 
+     *
      * @param query the query value to set.
      * @return the InfluxDBParameterPatch object itself.
      */
     public InfluxDBParameterPatch setQuery(String query) {
         this.query = query;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("connectionString", this.connectionString);
-        jsonWriter.writeStringField("database", this.database);
-        jsonWriter.writeStringField("userName", this.userName);
-        jsonWriter.writeStringField("password", this.password);
-        jsonWriter.writeStringField("query", this.query);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of InfluxDBParameterPatch from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of InfluxDBParameterPatch if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the InfluxDBParameterPatch.
-     */
-    public static InfluxDBParameterPatch fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            InfluxDBParameterPatch deserializedInfluxDBParameterPatch = new InfluxDBParameterPatch();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("connectionString".equals(fieldName)) {
-                    deserializedInfluxDBParameterPatch.connectionString = reader.getString();
-                } else if ("database".equals(fieldName)) {
-                    deserializedInfluxDBParameterPatch.database = reader.getString();
-                } else if ("userName".equals(fieldName)) {
-                    deserializedInfluxDBParameterPatch.userName = reader.getString();
-                } else if ("password".equals(fieldName)) {
-                    deserializedInfluxDBParameterPatch.password = reader.getString();
-                } else if ("query".equals(fieldName)) {
-                    deserializedInfluxDBParameterPatch.query = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedInfluxDBParameterPatch;
-        });
     }
 }

@@ -5,41 +5,35 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AzureTableParameterPatch model.
- */
+/** The AzureTableParameterPatch model. */
 @Fluent
-public final class AzureTableParameterPatch implements JsonSerializable<AzureTableParameterPatch> {
+public final class AzureTableParameterPatch {
     /*
      * The connection string of this Azure Table
      */
+    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
      * A table name in this Azure Table
      */
+    @JsonProperty(value = "table")
     private String table;
 
     /*
      * The statement to query this table. Please find syntax and details from Azure Table documents.
      */
+    @JsonProperty(value = "query")
     private String query;
 
-    /**
-     * Creates an instance of AzureTableParameterPatch class.
-     */
-    public AzureTableParameterPatch() {
-    }
+    /** Creates an instance of AzureTableParameterPatch class. */
+    public AzureTableParameterPatch() {}
 
     /**
      * Get the connectionString property: The connection string of this Azure Table.
-     * 
+     *
      * @return the connectionString value.
      */
     public String getConnectionString() {
@@ -48,7 +42,7 @@ public final class AzureTableParameterPatch implements JsonSerializable<AzureTab
 
     /**
      * Set the connectionString property: The connection string of this Azure Table.
-     * 
+     *
      * @param connectionString the connectionString value to set.
      * @return the AzureTableParameterPatch object itself.
      */
@@ -59,7 +53,7 @@ public final class AzureTableParameterPatch implements JsonSerializable<AzureTab
 
     /**
      * Get the table property: A table name in this Azure Table.
-     * 
+     *
      * @return the table value.
      */
     public String getTable() {
@@ -68,7 +62,7 @@ public final class AzureTableParameterPatch implements JsonSerializable<AzureTab
 
     /**
      * Set the table property: A table name in this Azure Table.
-     * 
+     *
      * @param table the table value to set.
      * @return the AzureTableParameterPatch object itself.
      */
@@ -80,7 +74,7 @@ public final class AzureTableParameterPatch implements JsonSerializable<AzureTab
     /**
      * Get the query property: The statement to query this table. Please find syntax and details from Azure Table
      * documents.
-     * 
+     *
      * @return the query value.
      */
     public String getQuery() {
@@ -90,51 +84,12 @@ public final class AzureTableParameterPatch implements JsonSerializable<AzureTab
     /**
      * Set the query property: The statement to query this table. Please find syntax and details from Azure Table
      * documents.
-     * 
+     *
      * @param query the query value to set.
      * @return the AzureTableParameterPatch object itself.
      */
     public AzureTableParameterPatch setQuery(String query) {
         this.query = query;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("connectionString", this.connectionString);
-        jsonWriter.writeStringField("table", this.table);
-        jsonWriter.writeStringField("query", this.query);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AzureTableParameterPatch from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureTableParameterPatch if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AzureTableParameterPatch.
-     */
-    public static AzureTableParameterPatch fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AzureTableParameterPatch deserializedAzureTableParameterPatch = new AzureTableParameterPatch();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("connectionString".equals(fieldName)) {
-                    deserializedAzureTableParameterPatch.connectionString = reader.getString();
-                } else if ("table".equals(fieldName)) {
-                    deserializedAzureTableParameterPatch.table = reader.getString();
-                } else if ("query".equals(fieldName)) {
-                    deserializedAzureTableParameterPatch.query = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAzureTableParameterPatch;
-        });
     }
 }

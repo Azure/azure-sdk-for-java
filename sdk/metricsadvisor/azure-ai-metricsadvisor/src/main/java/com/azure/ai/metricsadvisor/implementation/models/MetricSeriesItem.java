@@ -5,38 +5,31 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * The MetricSeriesItem model.
- */
+/** The MetricSeriesItem model. */
 @Immutable
-public final class MetricSeriesItem implements JsonSerializable<MetricSeriesItem> {
+public final class MetricSeriesItem {
     /*
      * metric unique id
      */
+    @JsonProperty(value = "metricId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID metricId;
 
     /*
      * dimension name and value pair
      */
+    @JsonProperty(value = "dimension", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, String> dimension;
 
-    /**
-     * Creates an instance of MetricSeriesItem class.
-     */
-    public MetricSeriesItem() {
-    }
+    /** Creates an instance of MetricSeriesItem class. */
+    public MetricSeriesItem() {}
 
     /**
      * Get the metricId property: metric unique id.
-     * 
+     *
      * @return the metricId value.
      */
     public UUID getMetricId() {
@@ -45,46 +38,10 @@ public final class MetricSeriesItem implements JsonSerializable<MetricSeriesItem
 
     /**
      * Get the dimension property: dimension name and value pair.
-     * 
+     *
      * @return the dimension value.
      */
     public Map<String, String> getDimension() {
         return this.dimension;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of MetricSeriesItem from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MetricSeriesItem if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MetricSeriesItem.
-     */
-    public static MetricSeriesItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MetricSeriesItem deserializedMetricSeriesItem = new MetricSeriesItem();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("metricId".equals(fieldName)) {
-                    deserializedMetricSeriesItem.metricId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("dimension".equals(fieldName)) {
-                    Map<String, String> dimension = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMetricSeriesItem.dimension = dimension;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedMetricSeriesItem;
-        });
     }
 }
