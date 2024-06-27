@@ -34,6 +34,11 @@ steps:
   condition: eq(variables.fromTypeSpec, false)
 
 - bash: |
+    npm install -g @azure-tools/typespec-client-generator-cli
+  displayName: 'Install tsp-client'
+  condition: eq(variables.fromTypeSpec, true)
+
+- bash: |
     npx tsp-client init --tsp-config $(TSP_CONFIG) --debug
   displayName: '[Experiment] run tsp-client directly'
   condition: eq(variables.fromTypeSpec, true)
