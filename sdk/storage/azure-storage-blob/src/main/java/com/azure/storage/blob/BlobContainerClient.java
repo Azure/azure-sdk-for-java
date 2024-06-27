@@ -185,8 +185,7 @@ public final class BlobContainerClient {
      * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
     public BlobClient getBlobClient(String blobName) {
-        return new BlobClient(new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), getBlobContainerName(), blobName, null, getCustomerProvidedKey(), encryptionScope));
+        return getBlobClient(blobName, null);
     }
 
     /**
