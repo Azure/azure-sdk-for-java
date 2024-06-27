@@ -36,9 +36,7 @@ public class KeyVaultSecretIT {
 
     @Test
     public void testKeyVaultSecretByDefaultAzureCredential() {
-        TokenCredential credential = new AzurePowerShellCredentialBuilder()
-            .additionallyAllowedTenants("*")
-            .build();
+        TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         SecretClient newClient = new SecretClientBuilder()
             .credential(credential)
             .vaultUrl(System.getenv("AZURE_KEYVAULT_SECRET_ENDPOINT"))
