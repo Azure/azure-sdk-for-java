@@ -4,7 +4,6 @@
 package com.azure.messaging.webpubsub;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -30,14 +29,13 @@ import static java.time.LocalDateTime.now;
 
 /**
  * An {@link HttpPipelinePolicy} for authenticating against the Azure Web Pub Sub service. Used in the default HTTP
- * pipeline when built using the {@link WebPubSubServiceClientBuilder}, but available here in case an HTTP pipeline is
- * built outside the {@link WebPubSubServiceClientBuilder}.
+ * pipeline when built using the {@link WebPubSubServiceClientBuilder}, but available here in case an HTTP pipeline is built
+ * outside of the {@link WebPubSubServiceClientBuilder}.
  *
  * @see WebPubSubServiceClientBuilder
  */
 public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(WebPubSubAuthenticationPolicy.class);
-    private static final Duration DEFAULT_EXPIRATION = Duration.ofHours(1);
 
     private final AzureKeyCredential credential;
 
@@ -51,10 +49,14 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
      * appropriate.</p>
      *
      * @param credential The {@link AzureKeyCredential} that will be used for all outgoing HTTP requests to the
-     * Azure Web Pub Sub service.
+     *      Azure Web Pub Sub service.
      */
     public WebPubSubAuthenticationPolicy(final AzureKeyCredential credential) {
         this.credential = credential;
+    }
+
+    AzureKeyCredential getCredential() {
+        return credential;
     }
 
     /**
@@ -67,16 +69,18 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
             final String token = getAuthenticationToken(audienceUrl, null, credential);
 
             if (token != null) {
-                context.getHttpRequest().setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + token);
+                context.getHttpRequest().setHeader("Authorization", "Bearer " + token);
             }
         }).then(next.process());
     }
 
-    static String getAuthenticationToken(String audienceUrl, GetClientAccessTokenOptions options,
-        AzureKeyCredential credential) {
+    static String getAuthenticationToken(final String audienceUrl,
+                                         GetClientAccessTokenOptions options,
+                                         final AzureKeyCredential credential) {
         try {
-            Duration expiresAfter = DEFAULT_EXPIRATION;
-            final JWTClaimsSet.Builder claimsBuilder = new JWTClaimsSet.Builder().audience(audienceUrl);
+            Duration expiresAfter = Duration.ofHours(1);
+            final JWTClaimsSet.Builder claimsBuilder = new JWTClaimsSet.Builder()
+                .audience(audienceUrl);
 
             if (options != null) {
                 expiresAfter = options.getExpiresAfter() == null ? expiresAfter : options.getExpiresAfter();
@@ -92,8 +96,8 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
                 }
             }
 
-            claimsBuilder.expirationTime(
-                Date.from(now().plus(expiresAfter).atZone(ZoneId.systemDefault()).toInstant()));
+            claimsBuilder
+                .expirationTime(Date.from(now().plus(expiresAfter).atZone(ZoneId.systemDefault()).toInstant()));
 
             final JWTClaimsSet claims = claimsBuilder.build();
 
