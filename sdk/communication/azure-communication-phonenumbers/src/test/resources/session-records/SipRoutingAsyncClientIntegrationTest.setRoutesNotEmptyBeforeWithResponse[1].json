@@ -1,0 +1,94 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "f5f898e7-ca3b-43e2-accf-21ca0eb334c8",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "311ms",
+      "MS-CV" : "nYjSukZNpkeRF748usc+dg.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0bJsIZAAAAABY3dyZmD3IRpr7fIBaAkVUUFJHMDFFREdFMDkyMQBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "Content-Length" : "608",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{\"first.redacted.com\":{\"sipSignalingPort\":1234},\"third.redacted.com\":{\"sipSignalingPort\":3456},\"second.redacted.com\":{\"sipSignalingPort\":2345}},\"routes\":[{\"description\":\"des90\",\"name\":\"route10\",\"numberPattern\":\"9.*\",\"trunks\":[]},{\"description\":\"desc91\",\"name\":\"route0\",\"numberPattern\":\"8.*\",\"trunks\":[]},{\"description\":\"desc92\",\"name\":\"route21\",\"numberPattern\":\"7.*\",\"trunks\":[]},{\"description\":\"desc44\",\"name\":\"route24\",\"numberPattern\":\"4.*\",\"trunks\":[]}]}",
+      "Date" : "Wed, 08 Mar 2023 14:27:56 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "25a08e1b-3aa7-46c8-92de-c7efa32e0aad"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "172ms",
+      "MS-CV" : "1sPjcq0bJ0OaO5lGUv+ZbA.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0bZsIZAAAAAARXiI8wghzSZBnrnn1SoWcUFJHMDFFREdFMDkyMQBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "Content-Length" : "608",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{\"first.redacted.com\":{\"sipSignalingPort\":1234},\"third.redacted.com\":{\"sipSignalingPort\":3456},\"second.redacted.com\":{\"sipSignalingPort\":2345}},\"routes\":[{\"description\":\"des90\",\"name\":\"route10\",\"numberPattern\":\"9.*\",\"trunks\":[]},{\"description\":\"desc91\",\"name\":\"route0\",\"numberPattern\":\"8.*\",\"trunks\":[]},{\"description\":\"desc92\",\"name\":\"route21\",\"numberPattern\":\"7.*\",\"trunks\":[]},{\"description\":\"desc44\",\"name\":\"route24\",\"numberPattern\":\"4.*\",\"trunks\":[]}]}",
+      "Date" : "Wed, 08 Mar 2023 14:27:56 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "9bf77a9f-ec82-49c3-8a29-e9025a434ee5",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "293ms",
+      "MS-CV" : "HR3DMuPhAEWRs+dfRW8iXQ.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0bZsIZAAAAAC7DiJfA+qkQItUpwvnWweWUFJHMDFFREdFMDkyMQBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "Content-Length" : "528",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{\"first.redacted.com\":{\"sipSignalingPort\":1234},\"third.redacted.com\":{\"sipSignalingPort\":3456},\"second.redacted.com\":{\"sipSignalingPort\":2345}},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
+      "Date" : "Wed, 08 Mar 2023 14:27:57 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "3e1433c6-eed3-4508-a522-f26d3c380b54"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "172ms",
+      "MS-CV" : "vB0TGNOS7E6EqLwmyswdeg.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0bpsIZAAAAADuXHWfy/56R6NvNqQVDGohUFJHMDFFREdFMDkyMQBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "Content-Length" : "528",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{\"first.redacted.com\":{\"sipSignalingPort\":1234},\"third.redacted.com\":{\"sipSignalingPort\":3456},\"second.redacted.com\":{\"sipSignalingPort\":2345}},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
+      "Date" : "Wed, 08 Mar 2023 14:27:57 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
