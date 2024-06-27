@@ -5,36 +5,29 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AzureEventHubsParameter model.
- */
+/** The AzureEventHubsParameter model. */
 @Fluent
-public final class AzureEventHubsParameter implements JsonSerializable<AzureEventHubsParameter> {
+public final class AzureEventHubsParameter {
     /*
      * The connection string of this Azure Event Hubs
      */
+    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
      * The consumer group to be used in this data feed
      */
+    @JsonProperty(value = "consumerGroup", required = true)
     private String consumerGroup;
 
-    /**
-     * Creates an instance of AzureEventHubsParameter class.
-     */
-    public AzureEventHubsParameter() {
-    }
+    /** Creates an instance of AzureEventHubsParameter class. */
+    public AzureEventHubsParameter() {}
 
     /**
      * Get the connectionString property: The connection string of this Azure Event Hubs.
-     * 
+     *
      * @return the connectionString value.
      */
     public String getConnectionString() {
@@ -43,7 +36,7 @@ public final class AzureEventHubsParameter implements JsonSerializable<AzureEven
 
     /**
      * Set the connectionString property: The connection string of this Azure Event Hubs.
-     * 
+     *
      * @param connectionString the connectionString value to set.
      * @return the AzureEventHubsParameter object itself.
      */
@@ -54,7 +47,7 @@ public final class AzureEventHubsParameter implements JsonSerializable<AzureEven
 
     /**
      * Get the consumerGroup property: The consumer group to be used in this data feed.
-     * 
+     *
      * @return the consumerGroup value.
      */
     public String getConsumerGroup() {
@@ -63,49 +56,12 @@ public final class AzureEventHubsParameter implements JsonSerializable<AzureEven
 
     /**
      * Set the consumerGroup property: The consumer group to be used in this data feed.
-     * 
+     *
      * @param consumerGroup the consumerGroup value to set.
      * @return the AzureEventHubsParameter object itself.
      */
     public AzureEventHubsParameter setConsumerGroup(String consumerGroup) {
         this.consumerGroup = consumerGroup;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("consumerGroup", this.consumerGroup);
-        jsonWriter.writeStringField("connectionString", this.connectionString);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AzureEventHubsParameter from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureEventHubsParameter if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AzureEventHubsParameter.
-     */
-    public static AzureEventHubsParameter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AzureEventHubsParameter deserializedAzureEventHubsParameter = new AzureEventHubsParameter();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("consumerGroup".equals(fieldName)) {
-                    deserializedAzureEventHubsParameter.consumerGroup = reader.getString();
-                } else if ("connectionString".equals(fieldName)) {
-                    deserializedAzureEventHubsParameter.connectionString = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAzureEventHubsParameter;
-        });
     }
 }
