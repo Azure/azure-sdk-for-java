@@ -8,7 +8,7 @@
     {
       "name": "applicationinsights.connection.string",
       "type": "java.lang.String",
-      "description": "The Application Insights connection string"
+      "description": "The Application Insights connection string."
     }
   ]
 }
