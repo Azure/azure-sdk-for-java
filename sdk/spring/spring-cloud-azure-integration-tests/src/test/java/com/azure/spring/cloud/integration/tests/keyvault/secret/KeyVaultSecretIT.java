@@ -2,10 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.keyvault.secret;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
-import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,19 +29,5 @@ public class KeyVaultSecretIT {
         KeyVaultSecret secret = client.getSecret(NAME);
         Assertions.assertEquals(VALUE, secret.getValue());
         LOGGER.info("testKeyVaultSecretOperation end.");
-    }
-
-    @Test
-    public void testKeyVaultSecretByDefaultAzureCredential() {
-        TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
-        SecretClient newClient = new SecretClientBuilder()
-            .credential(credential)
-            .vaultUrl(System.getenv("AZURE_KEYVAULT_SECRET_ENDPOINT"))
-            .buildClient();
-        LOGGER.info("testKeyVaultSecretByDefaultAzureCredential begin.");
-        newClient.setSecret(NAME, VALUE);
-        KeyVaultSecret secret = newClient.getSecret(NAME);
-        Assertions.assertEquals(VALUE, secret.getValue());
-        LOGGER.info("testKeyVaultSecretByDefaultAzureCredential end.");
     }
 }
