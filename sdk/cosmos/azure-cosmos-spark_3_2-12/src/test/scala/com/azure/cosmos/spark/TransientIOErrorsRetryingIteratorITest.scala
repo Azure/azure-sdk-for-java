@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosItemSerializer, CosmosItemSerializerNoExceptionWrapping}
+import com.azure.cosmos.{CosmosItemSerializerNoExceptionWrapping}
 import com.azure.cosmos.implementation.{HttpConstants, ObjectNodeMap, ServiceUnavailableException, SparkRowItem, Strings, Utils}
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.TransientIOErrorsRetryingIteratorITest.maxRetryCountPerIOOperation

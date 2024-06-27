@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosItemSerializer, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
+import com.azure.cosmos.{CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ObjectNodeMap, SparkBridgeImplementationInternal, SparkRowItem, Strings, Utils}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition}
