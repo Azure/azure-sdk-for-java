@@ -252,19 +252,21 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         tsp_project, sdk_root, spec_root, head_sha, repo_url, remove_before_regen=True, group_id=GROUP_ID
     )
 
-    stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module)
-
     if succeeded:
         # TODO (weidxu): move to typespec-java
         if require_sdk_integration:
-            set_or_default_version(sdk_root, GROUP_ID, module)
             update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
+
+        stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module)
+        update_parameters(None)
+        output_folder = OUTPUT_FOLDER_FORMAT.format(service)
+        update_version(sdk_root, output_folder)
 
         # compile
         succeeded = compile_arm_package(sdk_root, module)
         if succeeded:
-            breaking, changelog = compare_with_maven_package(sdk_root, service, get_latest_ga_version(stable_version), current_version, module)
+            breaking, changelog = compare_with_maven_package(sdk_root, service, get_latest_ga_version(GROUP_ID, module, stable_version), current_version, module)
 
     # output
     if sdk_folder and module and service:
