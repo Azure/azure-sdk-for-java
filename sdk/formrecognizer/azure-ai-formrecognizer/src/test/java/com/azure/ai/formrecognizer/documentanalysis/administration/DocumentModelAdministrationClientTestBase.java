@@ -21,6 +21,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -83,7 +84,7 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
                 builder.credential(getCredentialByAuthority(endpoint));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             } else if (interceptorManager.isLiveMode()) {
-                builder.credential(getCredentialByAuthority(endpoint));
+                builder.credential(new AzurePowerShellCredentialBuilder().build());
             }
         }
         if (!interceptorManager.isLiveMode()) {
