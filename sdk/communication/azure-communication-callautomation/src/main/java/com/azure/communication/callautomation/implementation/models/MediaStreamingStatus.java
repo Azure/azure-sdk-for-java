@@ -5,35 +5,56 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MediaStreamingStatus. */
+/**
+ * Defines values for MediaStreamingStatus.
+ */
 public final class MediaStreamingStatus extends ExpandableStringEnum<MediaStreamingStatus> {
-    /** Static value mediaStreamingStarted for MediaStreamingStatus. */
+    /**
+     * Static value mediaStreamingStarted for MediaStreamingStatus.
+     */
     public static final MediaStreamingStatus MEDIA_STREAMING_STARTED = fromString("mediaStreamingStarted");
 
-    /** Static value mediaStreamingFailed for MediaStreamingStatus. */
+    /**
+     * Static value mediaStreamingFailed for MediaStreamingStatus.
+     */
     public static final MediaStreamingStatus MEDIA_STREAMING_FAILED = fromString("mediaStreamingFailed");
 
-    /** Static value mediaStreamingStopped for MediaStreamingStatus. */
+    /**
+     * Static value mediaStreamingStopped for MediaStreamingStatus.
+     */
     public static final MediaStreamingStatus MEDIA_STREAMING_STOPPED = fromString("mediaStreamingStopped");
 
-    /** Static value unspecifiedError for MediaStreamingStatus. */
+    /**
+     * Static value unspecifiedError for MediaStreamingStatus.
+     */
     public static final MediaStreamingStatus UNSPECIFIED_ERROR = fromString("unspecifiedError");
 
     /**
+     * Creates a new instance of MediaStreamingStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MediaStreamingStatus() {
+    }
+
+    /**
      * Creates or finds a MediaStreamingStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MediaStreamingStatus.
      */
-    @JsonCreator
     public static MediaStreamingStatus fromString(String name) {
         return fromString(name, MediaStreamingStatus.class);
     }
 
-    /** @return known MediaStreamingStatus values. */
+    /**
+     * Gets known MediaStreamingStatus values.
+     * 
+     * @return known MediaStreamingStatus values.
+     */
     public static Collection<MediaStreamingStatus> values() {
         return values(MediaStreamingStatus.class);
     }
