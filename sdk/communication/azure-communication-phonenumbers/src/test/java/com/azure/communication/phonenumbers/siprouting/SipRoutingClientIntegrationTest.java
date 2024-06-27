@@ -9,8 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,7 +28,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     // get trunk
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void getTrunkNotExisting(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "getTrunkNotExistingSync");
         SipTrunk trunk = client.getTrunk(NOT_EXISTING_FQDN);
@@ -40,7 +37,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void getTrunkNotExistingWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "getTrunkNotExistingWithResponseSync");
 
@@ -53,7 +49,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void getTrunkExisting(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "getTrunkExistingSync");
         client.setTrunk(SET_TRUNK);
@@ -66,7 +61,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void getTrunkExistingWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "getTrunkExistingWithResponseSync");
         client.setTrunk(SET_TRUNK);
@@ -82,7 +76,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void getTrunkExistingWithAAD(HttpClient httpClient) {
         SipRoutingClient client = getClientWithManagedIdentity(httpClient, "getTrunkExistingWithAADSync");
         client.setTrunk(SET_TRUNK);
@@ -96,7 +89,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     // list trunks
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void listTrunksEmpty(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "listTrunksEmptySync");
         client.setTrunks(new ArrayList<>());
@@ -109,7 +101,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void listTrunksNotEmpty(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "listTrunksNotEmptySync");
         client.setTrunks(EXPECTED_TRUNKS);
@@ -119,7 +110,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void listTrunksNotEmptyWithAAD(HttpClient httpClient) {
         SipRoutingClient client = getClientWithManagedIdentity(httpClient, "listTrunksNotEmptyWithAADSync");
         client.setTrunks(EXPECTED_TRUNKS);
@@ -130,7 +120,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     // list routes
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void listRoutesEmpty(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "listRoutesEmptySync");
         client.setRoutes(new ArrayList<>());
@@ -143,7 +132,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void listRoutesNotEmpty(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "listRoutesNotEmptySync");
         client.setRoutes(EXPECTED_ROUTES);
@@ -153,7 +141,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void listRoutesNotEmptyWithAAD(HttpClient httpClient) {
         SipRoutingClient client = getClientWithManagedIdentity(httpClient, "listRoutesNotEmptyWithAADSync");
         client.setRoutes(EXPECTED_ROUTES);
@@ -164,7 +151,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     // set trunk
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunkNotExistingEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunkNotExistingEmptyBeforeSync");
         client.setTrunks(new ArrayList<>());
@@ -182,7 +168,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunkNotExistingNotEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunkNotExistingNotEmptyBeforeSync");
         List<SipTrunk> initialTrunks = EXPECTED_TRUNKS;
@@ -202,7 +187,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunkExisting(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunkExistingSync");
         List<SipTrunk> expectedTrunks = new ArrayList<>(EXPECTED_TRUNKS);
@@ -222,7 +206,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunkExistingWithAAD(HttpClient httpClient) {
         SipRoutingClient client = getClientWithManagedIdentity(httpClient, "setTrunkExistingWithAADSync");
         List<SipTrunk> expectedTrunks = new ArrayList<>(EXPECTED_TRUNKS);
@@ -243,7 +226,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     // set trunks
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunksEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksEmptyBeforeSync");
         client.setTrunks(new ArrayList<>());
@@ -256,7 +238,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunksEmptyBeforeWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksEmptyBeforeWithResponseSync");
         client.setTrunks(new ArrayList<>());
@@ -271,7 +252,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunksEmptyBeforeWithAAD(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksEmptyBeforeWithAADSync");
         client.setTrunks(new ArrayList<>());
@@ -284,7 +264,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunksNotEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksNotEmptyBeforeSync");
         client.setTrunks(UPDATED_TRUNKS);
@@ -298,7 +277,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunksNotEmptyBeforeWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksNotEmptyBeforeWithResponseSync");
         client.setTrunks(UPDATED_TRUNKS);
@@ -314,7 +292,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunksWithoutAffectingRoutes(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksWithoutAffectingRoutesSync");
         client.setRoutes(EXPECTED_ROUTES);
@@ -327,7 +304,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunksWithoutAffectingRoutesWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksWithoutAffectingRoutesWithResponseSync");
         client.setRoutes(EXPECTED_ROUTES);
@@ -342,7 +318,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setEmptyTrunksNotEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyTrunksNotEmptyBeforeSync");
         client.setTrunks(EXPECTED_TRUNKS);
@@ -355,7 +330,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setEmptyTrunksNotEmptyBeforeWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyTrunksNotEmptyBeforeWithResponseSync");
         client.setTrunks(EXPECTED_TRUNKS);
@@ -370,7 +344,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setEmptyTrunksEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyTrunksEmptyBeforeSync");
         client.setTrunks(new ArrayList<>());
@@ -383,7 +356,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setEmptyTrunksEmptyBeforeWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyTrunksEmptyBeforeWithResponseSync");
         client.setTrunks(new ArrayList<>());
@@ -398,7 +370,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunksInvalidFqdn(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksInvalidFqdnSync");
 
@@ -412,7 +383,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunksInvalidPort(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksInvalidPortSync");
         client.setTrunk(SET_TRUNK);
@@ -431,7 +401,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunksRemoveRequiredTrunk(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksRemoveRequiredTrunkSync");
         client.setTrunk(SET_TRUNK);
@@ -445,7 +414,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunksRemoveRequiredTrunkWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksRemoveRequiredTrunkWithResponseSync");
         client.setTrunk(SET_TRUNK);
@@ -462,7 +430,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     // set routes
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesEmptyBeforeSync");
         client.setRoutes(new ArrayList<>());
@@ -475,7 +442,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesEmptyBeforeWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesEmptyBeforeWithResponseSync");
         client.setRoutes(new ArrayList<>());
@@ -490,7 +456,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesEmptyBeforeWithAAD(HttpClient httpClient) {
         SipRoutingClient client = getClientWithManagedIdentity(httpClient, "setRoutesEmptyBeforeWithAADSync");
         client.setRoutes(new ArrayList<>());
@@ -503,7 +468,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesNotEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesNotEmptyBeforeSync");
         client.setRoutes(UPDATED_ROUTES);
@@ -517,7 +481,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesNotEmptyBeforeWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesNotEmptyBeforeWithResponseSync");
         client.setRoutes(UPDATED_ROUTES);
@@ -534,7 +497,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesWithoutAffectingTrunks(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesWithoutAffectingTrunksSync");
         client.setTrunks(EXPECTED_TRUNKS);
@@ -547,7 +509,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesWithoutAffectingTrunksWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesWithoutAffectingTrunksWithResponseSync");
         client.setTrunks(EXPECTED_TRUNKS);
@@ -562,7 +523,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setEmptyRoutesNotEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyRoutesNotEmptyBeforeSync");
         client.setRoutes(EXPECTED_ROUTES);
@@ -575,11 +535,10 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setEmptyRoutesNotEmptyBeforeWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyRoutesNotEmptyBeforeWithResponseSync");
         client.setRoutes(EXPECTED_ROUTES);
-
+        
         PagedIterable<SipTrunkRoute> iter = client.listRoutes();
         validateExpectedRoutes(iter);
 
@@ -592,7 +551,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setEmptyRoutesEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyRoutesEmptyBeforeSync");
         client.setRoutes(new ArrayList<>());
@@ -605,7 +563,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setEmptyRoutesEmptyBeforeWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyRoutesEmptyBeforeWithResponseSync");
         client.setRoutes(new ArrayList<>());
@@ -620,7 +577,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesInvalidName(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesInvalidNameSync");
         SipTrunkRoute invalidRoute = new SipTrunkRoute(null, SET_TRUNK_ROUTE_NUMBER_PATTERN);
@@ -631,7 +587,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesInvalidNameWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesInvalidNameWithResponseSync");
         SipTrunkRoute invalidRoute = new SipTrunkRoute(null, SET_TRUNK_ROUTE_NUMBER_PATTERN);
@@ -642,7 +597,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesInvalidNumberPattern(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesInvalidNumberPatternSync");
         SipTrunkRoute invalidRoute = new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, null);
@@ -653,7 +607,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesInvalidNumberPatternWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesInvalidNumberPatternWithResponseSync");
         SipTrunkRoute invalidRoute = new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, null);
@@ -664,7 +617,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesDuplicatedRoutes(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesDuplicatedRoutesSync");
         List<SipTrunkRoute> invalidRoutes = asList(SET_TRUNK_ROUTE, SET_TRUNK_ROUTE);
@@ -675,7 +627,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesDuplicatedRoutesWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesDuplicatedRoutesWithResponseSync");
         List<SipTrunkRoute> invalidRoutes = asList(SET_TRUNK_ROUTE, SET_TRUNK_ROUTE);
@@ -686,7 +637,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesDuplicatedRoutingTrunks(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesDuplicatedRoutingTrunksSync");
         client.setTrunk(SET_TRUNK);
@@ -699,7 +649,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesDuplicatedRoutingTrunksWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesDuplicatedRoutingTrunksWithResponseSync");
         client.setTrunk(SET_TRUNK);
@@ -713,7 +662,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesMissingTrunk(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesMissingTrunkSync");
         client.setTrunks(new ArrayList<>());
@@ -725,7 +673,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesMissingTrunkWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesMissingTrunkWithResponseSync");
         client.setTrunks(new ArrayList<>());
@@ -738,7 +685,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     // delete trunk
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void deleteTrunkExisting(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "deleteTrunkExistingSync");
         client.setTrunk(DELETE_TRUNK);
@@ -751,7 +697,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void deleteTrunkExistingWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "deleteTrunkExistingWithResponseSync");
         client.setTrunk(DELETE_TRUNK);
@@ -767,7 +712,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void deleteTrunkExistingWithAAD(HttpClient httpClient) {
         SipRoutingClient client = getClientWithManagedIdentity(httpClient, "deleteTrunkExistingWithAADSync");
         client.setTrunk(DELETE_TRUNK);
@@ -780,7 +724,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void deleteTrunkNotExisting(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "deleteTrunkNotExistingSync");
         client.setTrunks(new ArrayList<>());
@@ -794,7 +737,6 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void deleteTrunkNotExistingWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "deleteTrunkNotExistingWithResponseSync");
         client.setTrunks(new ArrayList<>());
@@ -814,13 +756,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         List<SipTrunk> trunksList = getAsList(actual);
         assertEquals(expected.size(), trunksList.size());
         for (SipTrunk expectedTrunk : expected) {
-            Optional<SipTrunk> actualTrunk = Optional.empty();
-            for (SipTrunk value : trunksList) {
-                if (Objects.equals(expectedTrunk.getFqdn(), value.getFqdn())) {
-                    actualTrunk = Optional.of(value);
-                    break;
-                }
-            }
+            Optional<SipTrunk> actualTrunk = trunksList.stream()
+                .filter(value -> Objects.equals(expectedTrunk.getFqdn(), value.getFqdn())).findAny();
             assertTrue(actualTrunk.isPresent());
             assertEquals(expectedTrunk.getSipSignalingPort(), actualTrunk.get().getSipSignalingPort());
         }
