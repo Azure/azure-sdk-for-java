@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.keyvault.secret;
 
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
@@ -36,7 +36,7 @@ public class KeyVaultSecretIT {
 
     @Test
     public void testKeyVaultSecretByDefaultAzureCredential() {
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
+        TokenCredential credential = new AzurePowerShellCredentialBuilder()
             .additionallyAllowedTenants("*")
             .build();
         SecretClient newClient = new SecretClientBuilder()
