@@ -7,14 +7,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The message template's image value information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = MessageTemplateImage.class, visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("image")
 @Fluent
 public final class MessageTemplateImage extends MessageTemplateValue {
@@ -24,7 +23,7 @@ public final class MessageTemplateImage extends MessageTemplateValue {
      */
     @Generated
     @JsonProperty(value = "url")
-    private final String url;
+    private String url;
 
     /*
      * The [optional] caption of the media object.
@@ -106,24 +105,5 @@ public final class MessageTemplateImage extends MessageTemplateValue {
     public MessageTemplateImage setFileName(String fileName) {
         this.fileName = fileName;
         return this;
-    }
-
-    /*
-     * The type discriminator describing a template parameter type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private MessageTemplateValueKind kind = MessageTemplateValueKind.IMAGE;
-
-    /**
-     * Get the kind property: The type discriminator describing a template parameter type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public MessageTemplateValueKind getKind() {
-        return this.kind;
     }
 }
