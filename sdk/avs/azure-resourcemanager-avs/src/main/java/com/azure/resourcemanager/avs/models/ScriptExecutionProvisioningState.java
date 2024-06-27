@@ -5,38 +5,55 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of the script execution resource. */
+/**
+ * Script Execution provisioning state.
+ */
 public final class ScriptExecutionProvisioningState extends ExpandableStringEnum<ScriptExecutionProvisioningState> {
-    /** Static value Pending for ScriptExecutionProvisioningState. */
-    public static final ScriptExecutionProvisioningState PENDING = fromString("Pending");
-
-    /** Static value Running for ScriptExecutionProvisioningState. */
-    public static final ScriptExecutionProvisioningState RUNNING = fromString("Running");
-
-    /** Static value Succeeded for ScriptExecutionProvisioningState. */
+    /**
+     * Static value Succeeded for ScriptExecutionProvisioningState.
+     */
     public static final ScriptExecutionProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ScriptExecutionProvisioningState. */
+    /**
+     * Static value Failed for ScriptExecutionProvisioningState.
+     */
     public static final ScriptExecutionProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Cancelling for ScriptExecutionProvisioningState. */
-    public static final ScriptExecutionProvisioningState CANCELLING = fromString("Cancelling");
-
-    /** Static value Cancelled for ScriptExecutionProvisioningState. */
-    public static final ScriptExecutionProvisioningState CANCELLED = fromString("Cancelled");
-
-    /** Static value Deleting for ScriptExecutionProvisioningState. */
-    public static final ScriptExecutionProvisioningState DELETING = fromString("Deleting");
-
-    /** Static value Canceled for ScriptExecutionProvisioningState. */
+    /**
+     * Static value Canceled for ScriptExecutionProvisioningState.
+     */
     public static final ScriptExecutionProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Static value Pending for ScriptExecutionProvisioningState.
+     */
+    public static final ScriptExecutionProvisioningState PENDING = fromString("Pending");
+
+    /**
+     * Static value Running for ScriptExecutionProvisioningState.
+     */
+    public static final ScriptExecutionProvisioningState RUNNING = fromString("Running");
+
+    /**
+     * Static value Cancelling for ScriptExecutionProvisioningState.
+     */
+    public static final ScriptExecutionProvisioningState CANCELLING = fromString("Cancelling");
+
+    /**
+     * Static value Cancelled for ScriptExecutionProvisioningState.
+     */
+    public static final ScriptExecutionProvisioningState CANCELLED = fromString("Cancelled");
+
+    /**
+     * Static value Deleting for ScriptExecutionProvisioningState.
+     */
+    public static final ScriptExecutionProvisioningState DELETING = fromString("Deleting");
+
+    /**
      * Creates a new instance of ScriptExecutionProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +62,17 @@ public final class ScriptExecutionProvisioningState extends ExpandableStringEnum
 
     /**
      * Creates or finds a ScriptExecutionProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScriptExecutionProvisioningState.
      */
-    @JsonCreator
     public static ScriptExecutionProvisioningState fromString(String name) {
         return fromString(name, ScriptExecutionProvisioningState.class);
     }
 
     /**
      * Gets known ScriptExecutionProvisioningState values.
-     *
+     * 
      * @return known ScriptExecutionProvisioningState values.
      */
     public static Collection<ScriptExecutionProvisioningState> values() {

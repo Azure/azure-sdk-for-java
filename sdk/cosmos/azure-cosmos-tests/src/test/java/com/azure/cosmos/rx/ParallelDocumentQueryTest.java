@@ -765,7 +765,13 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                                 return (T)jsonNodeMap.get("id");
                             }
 
-                            return CosmosItemSerializer.DEFAULT_SERIALIZER.deserialize(jsonNodeMap, classType);
+                            return ImplementationBridgeHelpers
+                                .CosmosItemSerializerHelper
+                                .getCosmosItemSerializerAccessor()
+                                .deserializeSafe(
+                                    CosmosItemSerializer.DEFAULT_SERIALIZER,
+                                    jsonNodeMap,
+                                    classType);
                         }
                     });
 

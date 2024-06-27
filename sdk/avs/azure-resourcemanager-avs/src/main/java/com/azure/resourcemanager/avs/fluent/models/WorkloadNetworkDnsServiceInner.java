@@ -6,28 +6,55 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.models.DnsServiceLogLevelEnum;
 import com.azure.resourcemanager.avs.models.DnsServiceStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServiceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** NSX DNS Service. */
+/**
+ * NSX DNS Service.
+ */
 @Fluent
 public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
     /*
-     * DNS Service properties
+     * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties")
     private WorkloadNetworkDnsServiceProperties innerProperties;
 
-    /** Creates an instance of WorkloadNetworkDnsServiceInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of WorkloadNetworkDnsServiceInner class.
+     */
     public WorkloadNetworkDnsServiceInner() {
     }
 
     /**
-     * Get the innerProperties property: DNS Service properties.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private WorkloadNetworkDnsServiceProperties innerProperties() {
@@ -35,8 +62,47 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the displayName property: Display name of the DNS Service.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -45,7 +111,7 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
 
     /**
      * Set the displayName property: Display name of the DNS Service.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WorkloadNetworkDnsServiceInner object itself.
      */
@@ -59,7 +125,7 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
 
     /**
      * Get the dnsServiceIp property: DNS service IP of the DNS Service.
-     *
+     * 
      * @return the dnsServiceIp value.
      */
     public String dnsServiceIp() {
@@ -68,7 +134,7 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
 
     /**
      * Set the dnsServiceIp property: DNS service IP of the DNS Service.
-     *
+     * 
      * @param dnsServiceIp the dnsServiceIp value to set.
      * @return the WorkloadNetworkDnsServiceInner object itself.
      */
@@ -82,7 +148,7 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
 
     /**
      * Get the defaultDnsZone property: Default DNS zone of the DNS Service.
-     *
+     * 
      * @return the defaultDnsZone value.
      */
     public String defaultDnsZone() {
@@ -91,7 +157,7 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
 
     /**
      * Set the defaultDnsZone property: Default DNS zone of the DNS Service.
-     *
+     * 
      * @param defaultDnsZone the defaultDnsZone value to set.
      * @return the WorkloadNetworkDnsServiceInner object itself.
      */
@@ -105,7 +171,7 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
 
     /**
      * Get the fqdnZones property: FQDN zones of the DNS Service.
-     *
+     * 
      * @return the fqdnZones value.
      */
     public List<String> fqdnZones() {
@@ -114,7 +180,7 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
 
     /**
      * Set the fqdnZones property: FQDN zones of the DNS Service.
-     *
+     * 
      * @param fqdnZones the fqdnZones value to set.
      * @return the WorkloadNetworkDnsServiceInner object itself.
      */
@@ -128,7 +194,7 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
 
     /**
      * Get the logLevel property: DNS Service log level.
-     *
+     * 
      * @return the logLevel value.
      */
     public DnsServiceLogLevelEnum logLevel() {
@@ -137,7 +203,7 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
 
     /**
      * Set the logLevel property: DNS Service log level.
-     *
+     * 
      * @param logLevel the logLevel value to set.
      * @return the WorkloadNetworkDnsServiceInner object itself.
      */
@@ -151,7 +217,7 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
 
     /**
      * Get the status property: DNS Service status.
-     *
+     * 
      * @return the status value.
      */
     public DnsServiceStatusEnum status() {
@@ -160,7 +226,7 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkloadNetworkDnsServiceProvisioningState provisioningState() {
@@ -169,7 +235,7 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
 
     /**
      * Get the revision property: NSX revision number.
-     *
+     * 
      * @return the revision value.
      */
     public Long revision() {
@@ -178,7 +244,7 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
 
     /**
      * Set the revision property: NSX revision number.
-     *
+     * 
      * @param revision the revision value to set.
      * @return the WorkloadNetworkDnsServiceInner object itself.
      */
@@ -192,12 +258,59 @@ public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadNetworkDnsServiceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadNetworkDnsServiceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkloadNetworkDnsServiceInner.
+     */
+    public static WorkloadNetworkDnsServiceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadNetworkDnsServiceInner deserializedWorkloadNetworkDnsServiceInner
+                = new WorkloadNetworkDnsServiceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsServiceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsServiceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsServiceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsServiceInner.innerProperties
+                        = WorkloadNetworkDnsServiceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsServiceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadNetworkDnsServiceInner;
+        });
     }
 }
