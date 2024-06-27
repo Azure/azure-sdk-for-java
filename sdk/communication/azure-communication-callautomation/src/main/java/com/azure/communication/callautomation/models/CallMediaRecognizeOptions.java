@@ -3,14 +3,10 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
 import com.azure.json.JsonToken;
 
 import java.io.IOException;
@@ -278,24 +274,6 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
         return this;
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        this.toJsonImpl(jsonWriter);
-        jsonWriter.writeStringField("recognizeInputType", this.recognizeInputType == null ? null : this.recognizeInputType.toString());
-        jsonWriter.writeJsonField("playPrompt", this.playPrompt);
-        jsonWriter.writeBooleanField("interruptCallMediaOperation", this.interruptCallMediaOperation);
-        jsonWriter.writeBooleanField("stopCurrentOperations", this.stopCurrentOperations);
-        jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeBooleanField("interruptPrompt", this.interruptPrompt);
-        jsonWriter.writeStringField("initialSilenceTimeout", CoreUtils.durationToStringWithDays(this.initialSilenceTimeout));
-        jsonWriter.writeStringField("speechModelEndpointId", this.speechModelEndpointId);
-        final CommunicationIdentifierModel participant = CommunicationIdentifierConverter.convert(this.targetParticipant);
-        jsonWriter.writeJsonField("targetParticipant", participant);
-        jsonWriter.writeStringField("operationCallbackUrl", this.operationCallbackUrl);
-        return jsonWriter.writeEndObject();
-    }
-
     /**
      * Reads an instance of CallMediaRecognizeOptions from the JsonReader.
      *
@@ -306,14 +284,6 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
      */
     public static CallMediaRecognizeOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Boolean interruptCallMediaOperation = null;
-            Boolean stopCurrentOperations = null;
-            String operationContext = null;
-            Boolean interruptPrompt = null;
-            Duration initialSilenceTimeout = null;
-            String speechModelEndpointId = null;
-            String operationCallbackUrl = null;
-            CommunicationIdentifier targetParticipant = null;
             // The discriminator value to identity the actual type.
             String recognizeInputType = null;
             final JsonReader reader1 = reader.bufferObject();
@@ -323,53 +293,21 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
                 reader1.nextToken();
                 if ("recognizeInputType".equals(fieldName)) {
                     recognizeInputType = reader1.getString();
-                } else if ("interruptCallMediaOperation".equals(fieldName)) {
-                    interruptCallMediaOperation = reader1.getNullable(JsonReader::getBoolean);
-                } else if ("stopCurrentOperations".equals(fieldName)) {
-                    stopCurrentOperations = reader1.getNullable(JsonReader::getBoolean);
-                } else if ("operationContext".equals(fieldName)) {
-                    operationContext = reader1.getString();
-                } else if ("interruptPrompt".equals(fieldName)) {
-                    interruptPrompt = reader1.getNullable(JsonReader::getBoolean);
-                } else if ("initialSilenceTimeout".equals(fieldName)) {
-                    final String value = reader1.getString();
-                    initialSilenceTimeout = value != null ? Duration.parse(value) : null;
-                } else if ("speechModelEndpointId".equals(fieldName)) {
-                    speechModelEndpointId = reader1.getString();
-                } else if ("operationCallbackUrl".equals(fieldName)) {
-                    operationCallbackUrl = reader1.getString();
-                } else if ("targetParticipant".equals(fieldName)) {
-                    final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader1);
-                    targetParticipant = CommunicationIdentifierConverter.convert(inner);
-                }  else {
+                } else {
                     reader1.skipChildren();
                 }
             }
-            final CallMediaRecognizeOptions options;
+            CallMediaRecognizeOptions options = null;
             if ("dtmf".equals(recognizeInputType)) {
-                options = CallMediaRecognizeDtmfOptions.fromJsonImpl(targetParticipant, reader1.reset());
+                options = CallMediaRecognizeDtmfOptions.fromJson(reader1.reset());
             } else if ("choices".equals(recognizeInputType)) {
-                options = CallMediaRecognizeChoiceOptions.fromJsonImpl(targetParticipant, reader1.reset());
+                options = CallMediaRecognizeChoiceOptions.fromJson(reader1.reset());
             } else if ("speech".equals(recognizeInputType)) {
-                options = CallMediaRecognizeSpeechOptions.fromJsonImpl(targetParticipant, reader1.reset());
+                options = CallMediaRecognizeSpeechOptions.fromJson(reader1.reset());
             } else if ("speechordtmf".equals(recognizeInputType)) {
-                options = CallMediaRecognizeSpeechOrDtmfOptions.fromJsonImpl(targetParticipant, reader1.reset());
-            } else {
-                options = null;
-            }
-            if (options != null) {
-                options.interruptCallMediaOperation = interruptCallMediaOperation;
-                options.stopCurrentOperations = stopCurrentOperations;
-                options.operationContext = operationContext;
-                options.interruptPrompt = interruptPrompt;
-                options.initialSilenceTimeout = initialSilenceTimeout;
-                options.speechModelEndpointId = speechModelEndpointId;
-                options.operationCallbackUrl = operationCallbackUrl;
-                options.targetParticipant = targetParticipant;
+                options = CallMediaRecognizeSpeechOrDtmfOptions.fromJson(reader1.reset());
             }
             return options;
         });
     }
-
-    abstract void toJsonImpl(JsonWriter jsonWriter) throws IOException;
 }

@@ -3,6 +3,8 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
@@ -162,7 +164,21 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
     }
 
     @Override
-    void toJsonImpl(JsonWriter jsonWriter) throws IOException {
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        // write properties of base class.
+        jsonWriter.writeStringField("recognizeInputType", "speechordtmf");
+        jsonWriter.writeJsonField("playPrompt", getPlayPrompt());
+        jsonWriter.writeBooleanField("interruptCallMediaOperation", isInterruptCallMediaOperation());
+        jsonWriter.writeBooleanField("stopCurrentOperations", isStopCurrentOperations());
+        jsonWriter.writeStringField("operationContext", getOperationContext());
+        jsonWriter.writeBooleanField("interruptPrompt", isInterruptPrompt());
+        jsonWriter.writeStringField("initialSilenceTimeout", CoreUtils.durationToStringWithDays(getInitialSilenceTimeout()));
+        jsonWriter.writeStringField("speechModelEndpointId", getSpeechModelEndpointId());
+        final CommunicationIdentifierModel participant = CommunicationIdentifierConverter.convert(getTargetParticipant());
+        jsonWriter.writeJsonField("targetParticipant", participant);
+        jsonWriter.writeStringField("operationCallbackUrl", getOperationCallbackUrl());
+        // write properties specific to this class.
         jsonWriter.writeStringField("endSilenceTimeout", CoreUtils.durationToStringWithDays(endSilenceTimeout));
         jsonWriter.writeStringField("speechLanguage", speechLanguage);
         jsonWriter.writeStringField("speechRecognitionModelEndpointId", speechRecognitionModelEndpointId);
@@ -171,31 +187,74 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
             jsonWriter.writeNumberField("maxTonesToCollect", maxTonesToCollect);
         }
         jsonWriter.writeArrayField("stopTones", this.stopDtmfTones, (writer, element) -> writer.writeString(element.toString()));
+        return jsonWriter.writeEndObject();
     }
 
-    static CallMediaRecognizeSpeechOrDtmfOptions fromJsonImpl(CommunicationIdentifier targetParticipant, JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of CallMediaRecognizeSpeechOrDtmfOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CallMediaRecognizeSpeechOrDtmfOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CallMediaRecognizeSpeechOrDtmfOptions.
+     */
+    public static CallMediaRecognizeSpeechOrDtmfOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            final CallMediaRecognizeSpeechOrDtmfOptions options = new CallMediaRecognizeSpeechOrDtmfOptions(targetParticipant, 0, null);
+            // variables to hold values of properties specific to this class.
+            Duration endSilenceTimeout = null;
+            String speechLanguage = null;
+            String speechRecognitionModelEndpointId = null;
+            Duration interToneTimeout = null;
+            int maxTonesToCollect = 0;
+            List<DtmfTone> stopDtmfTones = null;
+            // variables to hold values of properties of base class.
+            String recognizeInputType = null;
+            Boolean interruptCallMediaOperation = null;
+            Boolean stopCurrentOperations = null;
+            String operationContext = null;
+            Boolean interruptPrompt = null;
+            Duration initialSilenceTimeout = null;
+            String speechModelEndpointId = null;
+            String operationCallbackUrl = null;
+            CommunicationIdentifier targetParticipant = null;
+
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("endSilenceTimeout".equals(fieldName)) {
-                    options.endSilenceTimeout = Duration.parse(reader.getString());
+                    endSilenceTimeout = Duration.parse(reader.getString());
                 } else if ("speechLanguage".equals(fieldName)) {
-                    options.speechLanguage = reader.getString();
+                    speechLanguage = reader.getString();
                 } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
-                    options.speechRecognitionModelEndpointId = reader.getString();
+                    speechRecognitionModelEndpointId = reader.getString();
                 } else if ("interToneTimeout".equals(fieldName)) {
                     final String value = reader.getString();
-                    options.interToneTimeout = value != null ? Duration.parse(value) : null;
+                    interToneTimeout = value != null ? Duration.parse(value) : null;
                 } else if ("maxTonesToCollect".equals(fieldName)) {
-                    options.maxTonesToCollect = reader.getNullable(JsonReader::getInt);
+                    final Integer value = reader.getNullable(JsonReader::getInt);
+                    maxTonesToCollect = value != null ? value : 0;
                 } else if ("stopTones".equals(fieldName)) {
-                    options.stopDtmfTones = reader.readArray(r -> DtmfTone.fromString(r.getString()));
+                    stopDtmfTones = reader.readArray(r -> DtmfTone.fromString(r.getString()));
                 } else {
                     reader.skipChildren();
                 }
             }
+            final CallMediaRecognizeSpeechOrDtmfOptions options = new CallMediaRecognizeSpeechOrDtmfOptions(targetParticipant, maxTonesToCollect, endSilenceTimeout);
+            //
+            options.speechLanguage = speechLanguage;
+            options.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+            options.interToneTimeout = interToneTimeout;
+            options.stopDtmfTones = stopDtmfTones;
+            // set properties of base class.
+            options.setRecognizeInputType(RecognizeInputType.fromString(recognizeInputType));
+            options.setInterruptCallMediaOperation(interruptCallMediaOperation);
+            options.setStopCurrentOperations(stopCurrentOperations);
+            options.setOperationContext(operationContext);
+            options.setInterruptPrompt(interruptPrompt);
+            options.setInitialSilenceTimeout(initialSilenceTimeout);
+            options.setSpeechModelEndpointId(speechModelEndpointId);
+            options.setOperationCallbackUrl(operationCallbackUrl);
+
             return options;
         });
     }
