@@ -38,8 +38,8 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
      * Communication date and time.
      */
     @Generated
-    @JsonProperty(value = "dateTime")
-    private List<OffsetDateTime> dateTime;
+    @JsonProperty(value = "communicatedAt")
+    private List<OffsetDateTime> communicatedAt;
 
     /*
      * Recipient of the communication.
@@ -53,17 +53,17 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
      */
     @Generated
     @JsonProperty(value = "wasAcknowledged")
-    private final boolean wasAcknowledged;
+    private final boolean acknowledged;
 
     /**
      * Creates an instance of FollowupCommunicationInference class.
      *
-     * @param wasAcknowledged the wasAcknowledged value to set.
+     * @param acknowledged the acknowledged value to set.
      */
     @Generated
     @JsonCreator
-    private FollowupCommunicationInference(@JsonProperty(value = "wasAcknowledged") boolean wasAcknowledged) {
-        this.wasAcknowledged = wasAcknowledged;
+    private FollowupCommunicationInference(@JsonProperty(value = "wasAcknowledged") boolean acknowledged) {
+        this.acknowledged = acknowledged;
     }
 
     /**
@@ -78,13 +78,13 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
     }
 
     /**
-     * Get the dateTime property: Communication date and time.
+     * Get the communicatedAt property: Communication date and time.
      *
-     * @return the dateTime value.
+     * @return the communicatedAt value.
      */
     @Generated
-    public List<OffsetDateTime> getDateTime() {
-        return this.dateTime;
+    public List<OffsetDateTime> getCommunicatedAt() {
+        return this.communicatedAt;
     }
 
     /**
@@ -98,12 +98,12 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
     }
 
     /**
-     * Get the wasAcknowledged property: Communication was acknowledged.
+     * Get the acknowledged property: Communication was acknowledged.
      *
-     * @return the wasAcknowledged value.
+     * @return the acknowledged value.
      */
     @Generated
-    public boolean isWasAcknowledged() {
-        return this.wasAcknowledged;
+    public boolean isAcknowledged() {
+        return this.acknowledged;
     }
 }
