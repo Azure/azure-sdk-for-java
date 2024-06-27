@@ -20,7 +20,11 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
-import com.azure.messaging.webpubsub.models.*;
+import com.azure.messaging.webpubsub.models.ClientEndpointType;
+import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
+import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
+import com.azure.messaging.webpubsub.models.WebPubSubContentType;
+import com.azure.messaging.webpubsub.models.WebPubSubPermission;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous AzureWebPubSubServiceRestAPI type. */
@@ -553,7 +557,7 @@ public final class WebPubSubServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> grantPermissionWithResponse(WebPubSubPermission permission, String connectionId,
-        RequestOptions requestOptions) {
+                                                            RequestOptions requestOptions) {
         return this.serviceClient.grantPermissionWithResponseAsync(hub, permission.toString(), connectionId,
             requestOptions);
     }
