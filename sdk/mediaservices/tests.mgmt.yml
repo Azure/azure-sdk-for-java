@@ -11,3 +11,4 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagermediaservices
     Clouds: 'Public'
+    UseFederatedAuth: true
