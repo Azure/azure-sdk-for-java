@@ -7,8 +7,8 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModelKind;
 import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
-import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsUserIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.common.CommunicationCloudEnvironment;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -68,12 +68,13 @@ public class CommunicationIdentifierConverter {
 
         if (kind == CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP
             && identifier.getMicrosoftTeamsApp() != null) {
-            MicrosoftTeamsAppIdentifierModel teamsUserIdentifierModel = identifier.getMicrosoftTeamsApp();
-            Objects.requireNonNull(teamsUserIdentifierModel.getAppId(), "'AppId' of the CommunicationIdentifierModel cannot be null.");
-            Objects.requireNonNull(teamsUserIdentifierModel.getCloud(), "'Cloud' of the CommunicationIdentifierModel cannot be null.");
+            MicrosoftTeamsAppIdentifierModel teamsAppIdentifierModel = identifier.getMicrosoftTeamsApp();
+            Objects.requireNonNull(teamsAppIdentifierModel.getAppId(), "'AppID' of the CommunicationIdentifierModel cannot be null.");
+            Objects.requireNonNull(teamsAppIdentifierModel.getClass(), "'ClassID' of the CommunicationIdentifierModel cannot be null.");
+            Objects.requireNonNull(teamsAppIdentifierModel.getCloud(), "'Cloud' of the CommunicationIdentifierModel cannot be null.");
             Objects.requireNonNull(rawId, "'RawID' of the CommunicationIdentifierModel cannot be null.");
-            return new MicrosoftTeamsAppIdentifier(teamsUserIdentifierModel.getAppId(),
-                CommunicationCloudEnvironment.fromString(teamsUserIdentifierModel.getCloud().toString()));
+            return new MicrosoftTeamsAppIdentifier(teamsAppIdentifierModel.getAppId().toString(), 
+                CommunicationCloudEnvironment.fromString(teamsAppIdentifierModel.getCloud().toString()));
         }
 
         Objects.requireNonNull(rawId, "'RawID' of the CommunicationIdentifierModel cannot be null.");
