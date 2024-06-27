@@ -1,0 +1,72 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "2e7624b0-f6ef-4e8b-8f0d-8365f5ec060d"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "170ms",
+      "MS-CV" : "AHB5bSPev0Ci1npdHqB7Kg.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0KpEIZAAAAAAV2khZYdHEQZRd9JNtRqwNUFJHMDFFREdFMDkwNgBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "Content-Length" : "528",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{\"first.redacted.com\":{\"sipSignalingPort\":1234},\"second.redacted.com\":{\"sipSignalingPort\":2345},\"third.redacted.com\":{\"sipSignalingPort\":3456}},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
+      "Date" : "Wed, 08 Mar 2023 13:44:10 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "4f77621f-3b35-4999-aa15-194247993681",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "405ms",
+      "MS-CV" : "WRV4lMQq7kqJAOYCrkE4Ew.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0KpEIZAAAAADMTRpd+OUXQpaSdsrkkNilUFJHMDFFREdFMDkwNgBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "Content-Length" : "246",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
+      "Date" : "Wed, 08 Mar 2023 13:44:10 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "6a1f62c1-6c68-41d5-af70-7413ace4f9f0",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "245ms",
+      "MS-CV" : "jOlaWFC7806rACNPwtyLEw.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0K5EIZAAAAACR65CWM3+/Tp9KEDNjIVxtUFJHMDFFREdFMDkwNgBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "StatusCode" : "422",
+      "Body" : "{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"MissingTrunk\",\"message\":\"Route targeting a missing trunk.\"}}}",
+      "Date" : "Wed, 08 Mar 2023 13:44:11 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
