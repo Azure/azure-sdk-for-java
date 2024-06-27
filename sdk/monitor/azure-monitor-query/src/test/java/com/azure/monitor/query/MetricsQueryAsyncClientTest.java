@@ -199,9 +199,7 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
             "EHOUTBYTES",
             "EHABL",
             "EHAMSGS",
-            "EHAMBS",
-            "ReplicationLagDuration",
-            "ReplicationLagCount"
+            "EHAMBS"
         );
 
         StepVerifier.create(client
