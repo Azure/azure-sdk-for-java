@@ -5,32 +5,21 @@
 package com.azure.communication.sms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response for a successful or multi status send Sms request.
- */
+/** The SmsSendResponse model. */
 @Fluent
-public final class SmsSendResponse implements JsonSerializable<SmsSendResponse> {
+public final class SmsSendResponse {
     /*
      * The value property.
      */
+    @JsonProperty(value = "value", required = true)
     private List<SmsSendResponseItem> value;
 
     /**
-     * Creates an instance of SmsSendResponse class.
-     */
-    public SmsSendResponse() {
-    }
-
-    /**
      * Get the value property: The value property.
-     * 
+     *
      * @return the value value.
      */
     public List<SmsSendResponseItem> getValue() {
@@ -39,51 +28,12 @@ public final class SmsSendResponse implements JsonSerializable<SmsSendResponse> 
 
     /**
      * Set the value property: The value property.
-     * 
+     *
      * @param value the value value to set.
      * @return the SmsSendResponse object itself.
      */
     public SmsSendResponse setValue(List<SmsSendResponseItem> value) {
         this.value = value;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SmsSendResponse from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SmsSendResponse if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SmsSendResponse.
-     */
-    public static SmsSendResponse fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SmsSendResponse deserializedSmsSendResponse = new SmsSendResponse();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("value".equals(fieldName)) {
-                    List<SmsSendResponseItem> value
-                        = reader.readArray(reader1 -> SmsSendResponseItem.fromJson(reader1));
-                    deserializedSmsSendResponse.value = value;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSmsSendResponse;
-        });
     }
 }
