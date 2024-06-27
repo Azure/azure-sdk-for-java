@@ -3,9 +3,9 @@
 
 package com.azure.monitor.applicationinsights.spring;
 
-public class WrongConnectionStringException extends RuntimeException {
+class WrongConnectionStringException extends RuntimeException {
 
-    public WrongConnectionStringException() {
+    WrongConnectionStringException() {
         super("Your Application Insights connection string seems to have the wrong format. Please check the connection string and try again.");
     }
 }
