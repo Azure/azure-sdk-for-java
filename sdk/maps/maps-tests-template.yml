@@ -33,6 +33,9 @@ extends:
             Public:
               SubscriptionConfigurations:
                 - $(sub-config-azure-cloud-test-resources)
+              ServiceConnection: azure-sdk-tests
+              SubscriptionConfigurationFiles:
+                - sdk/storage/sub-config-azure-public.json
           Clouds: ${{ parameters.Clouds }}
           TestMode: ${{ parameters.TestMode }}
           Artifacts:
