@@ -16,10 +16,7 @@ public final class ContinuousDtmfRecognitionToneFailed extends CallAutomationEve
     @JsonProperty(value = "resultInformation")
     private final ResultInformation resultInformation;
 
-    /**
-     * Constructor for ContinuousDtmfRecognitionToneReceived
-     */
-    public ContinuousDtmfRecognitionToneFailed() {
+    private ContinuousDtmfRecognitionToneFailed() {
         resultInformation = null;
     }
 

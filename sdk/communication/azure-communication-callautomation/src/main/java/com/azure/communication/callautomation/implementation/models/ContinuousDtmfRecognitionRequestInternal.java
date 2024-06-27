@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContinuousDtmfRecognitionRequestInternal model. */
+/**
+ * The ContinuousDtmfRecognitionRequestInternal model.
+ */
 @Fluent
 public final class ContinuousDtmfRecognitionRequestInternal {
     /*
@@ -23,17 +25,22 @@ public final class ContinuousDtmfRecognitionRequestInternal {
     private String operationContext;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
     /**
+     * Creates an instance of ContinuousDtmfRecognitionRequestInternal class.
+     */
+    public ContinuousDtmfRecognitionRequestInternal() {
+    }
+
+    /**
      * Get the targetParticipant property: Defines options for recognition.
-     *
+     * 
      * @return the targetParticipant value.
      */
     public CommunicationIdentifierModel getTargetParticipant() {
@@ -42,19 +49,19 @@ public final class ContinuousDtmfRecognitionRequestInternal {
 
     /**
      * Set the targetParticipant property: Defines options for recognition.
-     *
+     * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the ContinuousDtmfRecognitionRequestInternal object itself.
      */
-    public ContinuousDtmfRecognitionRequestInternal setTargetParticipant(
-            CommunicationIdentifierModel targetParticipant) {
+    public ContinuousDtmfRecognitionRequestInternal
+        setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
         return this;
     }
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -63,7 +70,7 @@ public final class ContinuousDtmfRecognitionRequestInternal {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the ContinuousDtmfRecognitionRequestInternal object itself.
      */
@@ -74,9 +81,10 @@ public final class ContinuousDtmfRecognitionRequestInternal {
 
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
-     *
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
      * @return the operationCallbackUri value.
      */
     public String getOperationCallbackUri() {
@@ -85,9 +93,10 @@ public final class ContinuousDtmfRecognitionRequestInternal {
 
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
-     *
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the ContinuousDtmfRecognitionRequestInternal object itself.
      */

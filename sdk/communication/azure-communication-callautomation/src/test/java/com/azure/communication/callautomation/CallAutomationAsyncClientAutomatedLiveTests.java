@@ -11,13 +11,11 @@ import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.CallDisconnected;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
-import com.azure.communication.callautomation.models.events.CreateCallFailed;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.annotation.DoNotRecord;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -33,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
-    @DoNotRecord(skipInPlayback = true)
+    //@DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -134,7 +132,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
         }
     }
 
-    @DoNotRecord(skipInPlayback = true)
+    //@DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -186,13 +184,13 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
             assertNotNull(incomingCallContext);
 
-            // rejet the call
+            // answer the call
             RejectCallOptions rejectCallOptions = new RejectCallOptions(incomingCallContext);
             receiverAsyncClient.rejectCallWithResponse(rejectCallOptions).block();
 
             // check events
-            CreateCallFailed createCallFailed = waitForEvent(CreateCallFailed.class, callerConnectionId, Duration.ofSeconds(10));
-            assertNotNull(createCallFailed);
+            CallDisconnected callDisconnected = waitForEvent(CallDisconnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callDisconnected);
             assertThrows(RuntimeException.class, () -> createCallResult.getCallConnection().getCallProperties());
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
