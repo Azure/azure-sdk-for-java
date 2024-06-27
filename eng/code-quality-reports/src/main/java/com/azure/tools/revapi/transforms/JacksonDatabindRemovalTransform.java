@@ -134,6 +134,9 @@ public final class JacksonDatabindRemovalTransform<E extends Element<E>> extends
             } else if (packageName.regionMatches(18, "queue.models", 0, 12)) {
                 // Queue
                 return true;
+            } else if (packageName.regionMatches(18, "blob.models", 0, 11)) {
+                // Blob
+                return true;
             }
         } else if (packageName.regionMatches(10, "communication.", 0, 14)) {
             if (packageName.regionMatches(24, "jobrouter.models", 0, 16)) {
