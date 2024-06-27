@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/thisIsNotAValidModelId?includeModelDefinition=true&api-version=2022-05-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.3.0 (12.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "60ce3900-a63c-446c-832e-f6552baf0227"
+    },
+    "Response" : {
+      "content-length" : "199",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "traceresponse" : "00-9ae2415c1fcc5394ab850c4195e37300-0039875dbbec7712-01",
+      "mise-correlation-id" : "589782f6-d5a5-402f-8614-91b0155b72df",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidArgument\",\"message\":\"The format of the Model ID thisIsNotAValidModelId provided is not supported. See model documentation(https://aka.ms/ADTv2Models) for supported format.\"}}",
+      "Date" : "Wed, 29 Jun 2022 13:43:44 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
