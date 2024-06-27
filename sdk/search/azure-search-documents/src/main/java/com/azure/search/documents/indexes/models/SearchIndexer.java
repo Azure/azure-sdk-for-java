@@ -11,11 +11,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Represents an indexer.
- */
+/** Represents an indexer. */
 @Fluent
 public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
 
@@ -84,12 +83,6 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * services, and is only available for paid services created on or after January 1, 2019.
      */
     private SearchResourceEncryptionKey encryptionKey;
-
-    /*
-     * Adds caching to an enrichment pipeline to allow for incremental modification steps without having to rebuild the
-     * index every time.
-     */
-    private SearchIndexerCache cache;
 
     /**
      * Creates an instance of SearchIndexer class.
@@ -318,10 +311,10 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * is used to provide an additional level of encryption-at-rest for your indexer definition (as well as indexer
      * execution status) when you want full assurance that no one, not even Microsoft, can decrypt them. Once you have
      * encrypted your indexer definition, it will always remain encrypted. The search service will ignore attempts to
-     * set this property to null. You can change this property as needed if you want to rotate your encryption key;
-     * Your indexer definition (and indexer execution status) will be unaffected. Encryption with customer-managed keys
-     * is not available for free search services, and is only available for paid services created on or after January
-     * 1, 2019.
+     * set this property to null. You can change this property as needed if you want to rotate your encryption key; Your
+     * indexer definition (and indexer execution status) will be unaffected. Encryption with customer-managed keys is
+     * not available for free search services, and is only available for paid services created on or after January 1,
+     * 2019.
      *
      * @return the encryptionKey value.
      */
@@ -334,38 +327,16 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * is used to provide an additional level of encryption-at-rest for your indexer definition (as well as indexer
      * execution status) when you want full assurance that no one, not even Microsoft, can decrypt them. Once you have
      * encrypted your indexer definition, it will always remain encrypted. The search service will ignore attempts to
-     * set this property to null. You can change this property as needed if you want to rotate your encryption key;
-     * Your indexer definition (and indexer execution status) will be unaffected. Encryption with customer-managed keys
-     * is not available for free search services, and is only available for paid services created on or after January
-     * 1, 2019.
+     * set this property to null. You can change this property as needed if you want to rotate your encryption key; Your
+     * indexer definition (and indexer execution status) will be unaffected. Encryption with customer-managed keys is
+     * not available for free search services, and is only available for paid services created on or after January 1,
+     * 2019.
      *
      * @param encryptionKey the encryptionKey value to set.
      * @return the SearchIndexer object itself.
      */
     public SearchIndexer setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
-        return this;
-    }
-
-    /**
-     * Get the cache property: Adds caching to an enrichment pipeline to allow for incremental modification steps
-     * without having to rebuild the index every time.
-     *
-     * @return the cache value.
-     */
-    public SearchIndexerCache getCache() {
-        return this.cache;
-    }
-
-    /**
-     * Set the cache property: Adds caching to an enrichment pipeline to allow for incremental modification steps
-     * without having to rebuild the index every time.
-     *
-     * @param cache the cache value to set.
-     * @return the SearchIndexer object itself.
-     */
-    public SearchIndexer setCache(SearchIndexerCache cache) {
-        this.cache = cache;
         return this;
     }
 
@@ -380,12 +351,11 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
         jsonWriter.writeJsonField("schedule", this.schedule);
         jsonWriter.writeJsonField("parameters", this.parameters);
         jsonWriter.writeArrayField("fieldMappings", this.fieldMappings, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("outputFieldMappings", this.outputFieldMappings,
-            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField(
+                "outputFieldMappings", this.outputFieldMappings, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("disabled", this.isDisabled);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
-        jsonWriter.writeJsonField("cache", this.cache);
         return jsonWriter.writeEndObject();
     }
 
@@ -394,78 +364,80 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexer if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexer.
      */
     public static SearchIndexer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            String description = null;
-            String dataSourceName = null;
-            String skillsetName = null;
-            String targetIndexName = null;
-            IndexingSchedule schedule = null;
-            IndexingParameters parameters = null;
-            List<FieldMapping> fieldMappings = null;
-            List<FieldMapping> outputFieldMappings = null;
-            Boolean isDisabled = null;
-            String eTag = null;
-            SearchResourceEncryptionKey encryptionKey = null;
-            SearchIndexerCache cache = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("dataSourceName".equals(fieldName)) {
-                    dataSourceName = reader.getString();
-                } else if ("skillsetName".equals(fieldName)) {
-                    skillsetName = reader.getString();
-                } else if ("targetIndexName".equals(fieldName)) {
-                    targetIndexName = reader.getString();
-                } else if ("schedule".equals(fieldName)) {
-                    schedule = IndexingSchedule.fromJson(reader);
-                } else if ("parameters".equals(fieldName)) {
-                    parameters = IndexingParameters.fromJson(reader);
-                } else if ("fieldMappings".equals(fieldName)) {
-                    fieldMappings = reader.readArray(reader1 -> FieldMapping.fromJson(reader1));
-                } else if ("outputFieldMappings".equals(fieldName)) {
-                    outputFieldMappings = reader.readArray(reader1 -> FieldMapping.fromJson(reader1));
-                } else if ("disabled".equals(fieldName)) {
-                    isDisabled = reader.getNullable(JsonReader::getBoolean);
-                } else if ("@odata.etag".equals(fieldName)) {
-                    eTag = reader.getString();
-                } else if ("encryptionKey".equals(fieldName)) {
-                    encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
-                } else if ("cache".equals(fieldName)) {
-                    cache = SearchIndexerCache.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                SearchIndexer deserializedSearchIndexer = new SearchIndexer(name);
-                deserializedSearchIndexer.description = description;
-                deserializedSearchIndexer.dataSourceName = dataSourceName;
-                deserializedSearchIndexer.skillsetName = skillsetName;
-                deserializedSearchIndexer.targetIndexName = targetIndexName;
-                deserializedSearchIndexer.schedule = schedule;
-                deserializedSearchIndexer.parameters = parameters;
-                deserializedSearchIndexer.fieldMappings = fieldMappings;
-                deserializedSearchIndexer.outputFieldMappings = outputFieldMappings;
-                deserializedSearchIndexer.isDisabled = isDisabled;
-                deserializedSearchIndexer.eTag = eTag;
-                deserializedSearchIndexer.encryptionKey = encryptionKey;
-                deserializedSearchIndexer.cache = cache;
-                return deserializedSearchIndexer;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    String description = null;
+                    String dataSourceName = null;
+                    String skillsetName = null;
+                    String targetIndexName = null;
+                    IndexingSchedule schedule = null;
+                    IndexingParameters parameters = null;
+                    List<FieldMapping> fieldMappings = null;
+                    List<FieldMapping> outputFieldMappings = null;
+                    Boolean isDisabled = null;
+                    String eTag = null;
+                    SearchResourceEncryptionKey encryptionKey = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getString();
+                        } else if ("dataSourceName".equals(fieldName)) {
+                            dataSourceName = reader.getString();
+                        } else if ("skillsetName".equals(fieldName)) {
+                            skillsetName = reader.getString();
+                        } else if ("targetIndexName".equals(fieldName)) {
+                            targetIndexName = reader.getString();
+                        } else if ("schedule".equals(fieldName)) {
+                            schedule = IndexingSchedule.fromJson(reader);
+                        } else if ("parameters".equals(fieldName)) {
+                            parameters = IndexingParameters.fromJson(reader);
+                        } else if ("fieldMappings".equals(fieldName)) {
+                            fieldMappings = reader.readArray(reader1 -> FieldMapping.fromJson(reader1));
+                        } else if ("outputFieldMappings".equals(fieldName)) {
+                            outputFieldMappings = reader.readArray(reader1 -> FieldMapping.fromJson(reader1));
+                        } else if ("disabled".equals(fieldName)) {
+                            isDisabled = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("@odata.etag".equals(fieldName)) {
+                            eTag = reader.getString();
+                        } else if ("encryptionKey".equals(fieldName)) {
+                            encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        SearchIndexer deserializedSearchIndexer = new SearchIndexer(name);
+                        deserializedSearchIndexer.description = description;
+                        deserializedSearchIndexer.dataSourceName = dataSourceName;
+                        deserializedSearchIndexer.skillsetName = skillsetName;
+                        deserializedSearchIndexer.targetIndexName = targetIndexName;
+                        deserializedSearchIndexer.schedule = schedule;
+                        deserializedSearchIndexer.parameters = parameters;
+                        deserializedSearchIndexer.fieldMappings = fieldMappings;
+                        deserializedSearchIndexer.outputFieldMappings = outputFieldMappings;
+                        deserializedSearchIndexer.isDisabled = isDisabled;
+                        deserializedSearchIndexer.eTag = eTag;
+                        deserializedSearchIndexer.encryptionKey = encryptionKey;
+                        return deserializedSearchIndexer;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**
