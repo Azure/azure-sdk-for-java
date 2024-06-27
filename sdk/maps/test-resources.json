@@ -19,7 +19,7 @@
   "variables": {
     "contributorRoleId": "b24988ac-6180-42a0-ab88-20f7382dd24c",
     "mapsContributorRoleId": "dba33070-676a-4fb0-87fa-064dc56ff7fb",
-    "mapsDataContributorRoleId": "dba33070-676a-4fb0-87fa-064dc56ff7fb",
+    "mapsDataContributorRoleId": "8f5e0ce6-4f7b-4dcf-bddf-e6f48634a204",
     "mapsAccountName": "[guid(resourceGroup().id, deployment().name, parameters('baseName'))]"
   },
   "resources": [
