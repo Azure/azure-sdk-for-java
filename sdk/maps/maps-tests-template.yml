@@ -31,11 +31,9 @@ extends:
           UseFederatedAuth: true
           CloudConfig:
             Public:
-              SubscriptionConfigurations:
-                - $(sub-config-azure-cloud-test-resources)
+              SubscriptionConfigurations: $(sub-config-azure-cloud-test-resources)
               ServiceConnection: azure-sdk-tests
-              SubscriptionConfigurationFiles:
-                - sdk/storage/sub-config-azure-public.json
+              SubscriptionConfigurationFilePath: eng/common/TestResources/sub-config/AzurePublicMsft.json
           Clouds: ${{ parameters.Clouds }}
           TestMode: ${{ parameters.TestMode }}
           Artifacts:
