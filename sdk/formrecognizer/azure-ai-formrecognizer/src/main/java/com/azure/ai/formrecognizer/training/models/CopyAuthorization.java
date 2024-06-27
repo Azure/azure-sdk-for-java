@@ -3,14 +3,14 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -19,36 +19,44 @@ import java.time.ZoneOffset;
 /**
  * The CopyAuthorization model.
  */
-@Immutable
+@Fluent
 public final class CopyAuthorization {
     private static final ClientLogger LOGGER = new ClientLogger(CopyAuthorization.class);
+
+    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
+
+    CopyAuthorization() {
+        super();
+    }
 
     /*
      * Model identifier.
      */
-    private final String modelId;
+    private String modelId;
 
     /*
      * Token claim used to authorize the request.
      */
-    private final String accessToken;
+    private String accessToken;
 
     /*
      * Resource Identifier.
      */
-    private final String resourceId;
+    private String resourceId;
 
     /*
      * Region of the resource.
      */
-    private final String resourceRegion;
+    private String resourceRegion;
 
     /*
      * The date-time when the access token expires.
      */
-    private final long expirationDateTimeTicks;
+    @JsonProperty("expirationDateTimeTicks")
+    private long expirationDateTimeTicks;
 
-    private final OffsetDateTime expiresOn;
+    @JsonIgnore
+    private OffsetDateTime expiresOn;
 
     /**
      * Create a CopyAuthorization object
@@ -97,7 +105,8 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Get the Azure Resource Id of the target Form Recognizer resource where the model will be copied to.
+     * Get the Azure Resource Id of the target Form Recognizer resource
+     * where the model will be copied to.
      *
      * @return the {@code resourceId} value.
      */
@@ -121,19 +130,8 @@ public final class CopyAuthorization {
      * @throws IllegalStateException exception if the serialization failed
      */
     public String toJson() {
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
-
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("modelId", modelId);
-            jsonWriter.writeStringField("accessToken", accessToken);
-            jsonWriter.writeStringField("resourceId", resourceId);
-            jsonWriter.writeStringField("resourceRegion", resourceRegion);
-            jsonWriter.writeLongField("expirationDateTimeTicks", expirationDateTimeTicks);
-            jsonWriter.writeEndObject();
-            jsonWriter.flush();
-
-            return outputStream.toString();
+        try {
+            return SERIALIZER.serialize(this, SerializerEncoding.JSON);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("Serialization Failed.", e));
         }
@@ -143,41 +141,26 @@ public final class CopyAuthorization {
      * Converts the json string representation to its equivalent CopyAuthorization object.
      *
      * @param copyAuthorization the json string representation of the object.
+     *
      * @return the CopyAuthorization object equivalent of the json string.
      * @throws IllegalStateException exception if the deserialization failed
      */
     public static CopyAuthorization fromJson(String copyAuthorization) {
-        try (JsonReader jsonReader = JsonProviders.createReader(copyAuthorization)) {
-            return jsonReader.readObject(reader -> {
-                String modelId = null;
-                String accessToken = null;
-                String resourceId = null;
-                String resourceRegion = null;
-                long expirationDateTimeTicks = 0;
-
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-
-                    if ("modelId".equals(fieldName)) {
-                        modelId = reader.getString();
-                    } else if ("accessToken".equals(fieldName)) {
-                        accessToken = reader.getString();
-                    } else if ("resourceId".equals(fieldName)) {
-                        resourceId = reader.getString();
-                    } else if ("resourceRegion".equals(fieldName)) {
-                        resourceRegion = reader.getString();
-                    } else if ("expirationDateTimeTicks".equals(fieldName)) {
-                        expirationDateTimeTicks = reader.getLong();
-                    } else {
-                        reader.skipChildren();
-                    }
-                }
-
-                return new CopyAuthorization(modelId, accessToken, resourceId, resourceRegion, expirationDateTimeTicks);
-            });
+        CopyAuthorization copyAuthorizationObj;
+        try {
+            copyAuthorizationObj = SERIALIZER.deserialize(copyAuthorization, CopyAuthorization.class,
+                SerializerEncoding.JSON);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("Deserialization Failed.", e));
         }
+        return new CopyAuthorization(
+            copyAuthorizationObj.getModelId(), copyAuthorizationObj.getAccessToken(),
+            copyAuthorizationObj.getResourceId(), copyAuthorizationObj.getResourceRegion(),
+            copyAuthorizationObj.getExpirationDateTimeTicks()
+        );
+    }
+
+    long getExpirationDateTimeTicks() {
+        return expirationDateTimeTicks;
     }
 }
