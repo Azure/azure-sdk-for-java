@@ -18,6 +18,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -276,7 +277,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             testProfile = PLAYBACK_PROFILE;
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             httpPipeline = buildHttpPipeline(
-                request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new MockTokenCredential(),
                 testProfile,
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel),
                 policies,
