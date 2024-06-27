@@ -897,6 +897,8 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         private final boolean passThroughOnSerialize;
 
         public EnvelopWrappingItemSerializer(boolean enabledTrackingIdValidation, boolean passThroughOnSerialize) {
+            super(false);
+
             this.shouldValidateTrackingId = enabledTrackingIdValidation;
             this.passThroughOnSerialize = passThroughOnSerialize;
         }

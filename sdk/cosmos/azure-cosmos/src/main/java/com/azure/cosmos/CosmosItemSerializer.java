@@ -34,10 +34,17 @@ public abstract class CosmosItemSerializer {
      */
     public final static CosmosItemSerializer DEFAULT_SERIALIZER = new DefaultCosmosItemSerializer();
 
+    private final boolean shouldWrapSerializationExceptions;
+
     /**
      * Used to instantiate subclasses
      */
     protected CosmosItemSerializer() {
+        this(true);
+    }
+
+    CosmosItemSerializer(boolean shouldWrapSerializationExceptions) {
+        this.shouldWrapSerializationExceptions = shouldWrapSerializationExceptions;
     }
 
     /**
@@ -52,19 +59,17 @@ public abstract class CosmosItemSerializer {
         try {
             return serialize(item);
         } catch (Throwable throwable) {
-            Exception inner;
-
-            if (throwable instanceof  IllegalStateException) {
-                throw (IllegalStateException)throwable;
+            if (!this.shouldWrapSerializationExceptions) {
+                throw throwable;
             }
+
+            Exception inner;
 
             if (throwable instanceof  Exception) {
                 inner = (Exception)throwable;
             } else {
                 inner = new RuntimeException(throwable);
             }
-
-
 
             BadRequestException exception = new BadRequestException(
                 "Custom serializer '" + this.getClass().getSimpleName() + "' failed to serialize item.",
@@ -89,11 +94,12 @@ public abstract class CosmosItemSerializer {
         try {
             return this.deserialize(jsonNodeMap, classType);
         } catch (Throwable throwable) {
-            Exception inner;
 
-            if (throwable instanceof  IllegalStateException) {
-                throw (IllegalStateException)throwable;
+            if (!this.shouldWrapSerializationExceptions) {
+                throw throwable;
             }
+
+            Exception inner;
 
             if (throwable instanceof  Exception) {
                 inner = (Exception)throwable;
@@ -113,7 +119,7 @@ public abstract class CosmosItemSerializer {
 
     private static class DefaultCosmosItemSerializer extends CosmosItemSerializer {
         DefaultCosmosItemSerializer() {
-            super();
+            super(false);
         }
 
         /**
@@ -183,16 +189,6 @@ public abstract class CosmosItemSerializer {
             } catch (IOException e) {
                 throw new IllegalStateException(String.format("Unable to parse JSON %s as %s", jsonNode, classType.getName()), e);
             }
-        }
-
-        @Override
-        <T> Map<String, Object> serializeSafe(T item) {
-            return this.serialize(item);
-        }
-
-        @Override
-        <T> T deserializeSafe(Map<String, Object> jsonNodeMap, Class<T> classType) {
-            return this.deserialize(jsonNodeMap, classType);
         }
     }
 
