@@ -1210,7 +1210,7 @@ public final class BlobContainerClient {
             }
             return listBlobsHierarchySegment(marker, delimiter, finalOptions, timeout);
         };
-        return new PagedIterable<>(() -> func.apply(null, null), marker -> func.apply(marker, null));
+        return new PagedIterable<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private PagedResponse<BlobItem> listBlobsHierarchySegment(String marker, String delimiter, ListBlobsOptions options,
@@ -1287,19 +1287,17 @@ public final class BlobContainerClient {
         StorageImplUtils.assertNotNull("options", options);
         BiFunction<String, Integer, PagedResponse<TaggedBlobItem>> func = (marker, pageSize) -> {
             // Use pageSize if provided, otherwise use maxResultsPerPage from options
-            int finalPageSize = (pageSize != null) ? pageSize : (options.getMaxResultsPerPage() != null ? options.getMaxResultsPerPage() : Integer.MAX_VALUE);
-            FindBlobsOptions finalOptions = new FindBlobsOptions(options.getQuery()).setMaxResultsPerPage(finalPageSize);
+            FindBlobsOptions finalOptions = (pageSize != null)
+                ? new FindBlobsOptions(options.getQuery()).setMaxResultsPerPage(pageSize) : options;
 
             return findBlobsByTagsHelper(finalOptions, marker, timeout, context);
         };
-        return new PagedIterable<>(() -> func.apply(null, null), marker -> func.apply(marker, null));
+        return new PagedIterable<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private PagedResponse<TaggedBlobItem> findBlobsByTagsHelper(
         FindBlobsOptions options, String marker,
         Duration timeout, Context context) {
-
-        StorageImplUtils.assertNotNull("options", options);
         Callable<ResponseBase<ContainersFilterBlobsHeaders, FilterBlobSegment>> operation = () ->
             this.azureBlobStorage.getContainers().filterBlobsWithResponse(
                 containerName, null, null, options.getQuery(), marker,

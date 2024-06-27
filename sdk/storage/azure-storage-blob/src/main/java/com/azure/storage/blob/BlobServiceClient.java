@@ -506,12 +506,11 @@ public final class BlobServiceClient {
         throwOnAnonymousAccess();
         StorageImplUtils.assertNotNull("options", options);
         BiFunction<String, Integer, PagedResponse<TaggedBlobItem>> func = (marker, pageSize) -> {
-//            int finalPageSize = (pageSize != null) ? pageSize : options.getMaxResultsPerPage();
             FindBlobsOptions finalOptions = (pageSize != null)
                 ? new FindBlobsOptions(options.getQuery()).setMaxResultsPerPage(pageSize) : options;
             return findBlobsByTagsHelper(finalOptions, marker, timeout, context);
         };
-        return new PagedIterable<>(() -> func.apply(null, null), marker -> func.apply(marker, null));
+        return new PagedIterable<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private PagedResponse<TaggedBlobItem> findBlobsByTagsHelper(FindBlobsOptions options, String marker,

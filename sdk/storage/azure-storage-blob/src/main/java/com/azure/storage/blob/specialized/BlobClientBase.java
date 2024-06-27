@@ -2472,7 +2472,7 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InputStream> openQueryInputStreamWithResponse(BlobQueryOptions queryOptions) {
         StorageImplUtils.assertNotNull("options", queryOptions);
-        StorageImplUtils.assertNotNull("outputStream", queryOptions.getOutputStream());
+        //StorageImplUtils.assertNotNull("outputStream", queryOptions.getOutputStream());
         BlobRequestConditions requestConditions = queryOptions.getRequestConditions() == null
             ? new BlobRequestConditions() : queryOptions.getRequestConditions();
         QuerySerialization in = BlobQueryReader.transformInputSerialization(queryOptions.getInputSerialization(),
@@ -2485,26 +2485,14 @@ public class BlobClientBase {
             .setInputSerialization(in)
             .setOutputSerialization(out);
 
-        try {
-            ResponseBase<BlobsQueryHeaders, InputStream> response = this.azureBlobStorage.getBlobs().queryWithResponse(
-                containerName, blobName, getSnapshotId(), null, requestConditions.getLeaseId(),
-                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                requestConditions.getTagsConditions(), null, qr, getCustomerProvidedKey(), Context.NONE);
+        ResponseBase<BlobsQueryHeaders, InputStream> response = this.azureBlobStorage.getBlobs().queryWithResponse(
+            containerName, blobName, getSnapshotId(), null, requestConditions.getLeaseId(),
+            requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(),
+            null, qr, getCustomerProvidedKey(), Context.NONE);
+        InputStream inputStream = response.getValue();
 
-            InputStream inputStream = response.getValue();
-            OutputStream outputStream = queryOptions.getOutputStream();
-
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
-
-            return new SimpleResponse<>(response, inputStream);
-        } catch (IOException e) {
-            throw new UncheckedIOException("Failed to read query results or write to the output stream", e);
-        }
+        return new SimpleResponse<>(response, inputStream);
     }
 
     /**
