@@ -99,7 +99,7 @@ class QueryPlanRetriever {
 
         CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig = qryOptAccessor
             .getImpl(nonNullRequestOptions)
-            .getEndToEndOperationLatencyConfig();
+            .getCosmosEndToEndLatencyPolicyConfig();
         if (end2EndConfig != null) {
             queryPlanRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(end2EndConfig);
         }

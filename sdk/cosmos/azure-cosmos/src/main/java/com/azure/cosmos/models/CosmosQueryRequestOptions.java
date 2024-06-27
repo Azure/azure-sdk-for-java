@@ -429,7 +429,7 @@ public class CosmosQueryRequestOptions {
      * @return the diagnostic thresholds used as an override for a specific operation.
      */
     public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
-        return this.actualRequestOptions.getThresholds();
+        return this.actualRequestOptions.getDiagnosticsThresholds();
     }
 
     /**
