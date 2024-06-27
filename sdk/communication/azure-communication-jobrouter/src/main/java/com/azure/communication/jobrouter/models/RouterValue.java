@@ -3,46 +3,47 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-
-import java.io.IOException;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterValueConstructorProxy;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Wrapper class for labels. Supports String, int, double and boolean types.
- * <p>
+ *
  * If multiple values are set only one value will be used with following precedence.
- * <p>
+ *
  * 1. stringValue.
  * 2. intValue.
  * 3. doubleValue.
  * 4. boolValue.
  */
-@Immutable
-public final class RouterValue implements JsonSerializable<RouterValue> {
+public final class RouterValue {
+    private static final ClientLogger LOGGER = new ClientLogger(RouterValue.class);
 
     /**
      * String Value to pass to server.
      */
-    private final String stringValue;
+    @JsonProperty(value = "stringValue", access = JsonProperty.Access.READ_WRITE)
+    private String stringValue;
 
     /**
      * Integer Value to pass to server.
      */
-    private final Integer intValue;
+    @JsonProperty(value = "intValue", access = JsonProperty.Access.READ_WRITE)
+    private Integer intValue;
 
     /**
      * Double Value to pass to server.
      */
-    private final Double doubleValue;
+    @JsonProperty(value = "doubleValue", access = JsonProperty.Access.READ_WRITE)
+    private Double doubleValue;
 
     /**
      * Boolean Value to pass to server.
      */
-    private final Boolean boolValue;
+    @JsonProperty(value = "boolValue", access = JsonProperty.Access.READ_WRITE)
+    private Boolean boolValue;
 
     /**
      * Constructor
@@ -51,11 +52,19 @@ public final class RouterValue implements JsonSerializable<RouterValue> {
      * @param doubleValue doubleValue.
      * @param boolValue boolValue.
      */
-    RouterValue(String stringValue, Integer intValue, Double doubleValue, Boolean boolValue) {
+    @JsonCreator
+    RouterValue(@JsonProperty(value = "stringValue") String stringValue,
+                       @JsonProperty(value = "intValue") Integer intValue,
+                       @JsonProperty(value = "doubleValue") Double doubleValue,
+                       @JsonProperty(value = "boolValue") Boolean boolValue) {
         this.stringValue = stringValue;
         this.intValue = intValue;
         this.doubleValue = doubleValue;
         this.boolValue = boolValue;
+    }
+
+    static {
+        RouterValueConstructorProxy.setAccessor(internal -> new RouterValue(internal));
     }
 
     /**
@@ -91,6 +100,25 @@ public final class RouterValue implements JsonSerializable<RouterValue> {
     }
 
     /**
+     * Package-protected constructor.
+     * @param objectValue objectValue.
+     */
+    RouterValue(Object objectValue) {
+        if (objectValue.getClass() == String.class) {
+            this.stringValue = (String) objectValue;
+        }
+        if (objectValue.getClass() == Integer.class) {
+            this.intValue = (int) objectValue;
+        }
+        if (objectValue.getClass() == Double.class) {
+            this.doubleValue = (double) objectValue;
+        }
+        if (objectValue.getClass() == Boolean.class) {
+            this.boolValue = (Boolean) objectValue;
+        }
+    }
+
+    /**
      * Returns stringValue
      * @return stringValue.
      */
@@ -120,52 +148,5 @@ public final class RouterValue implements JsonSerializable<RouterValue> {
      */
     public Boolean getBooleanValue() {
         return boolValue;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        if (stringValue != null) {
-            return jsonWriter.writeString(stringValue);
-        } else if (intValue != null) {
-            return jsonWriter.writeInt(intValue);
-        } else if (doubleValue != null) {
-            return jsonWriter.writeDouble(doubleValue);
-        } else if (boolValue != null) {
-            return jsonWriter.writeBoolean((boolean) boolValue);
-        } else {
-            return jsonWriter.writeNull();
-        }
-    }
-
-    /**
-     * Deserializes an instance of RouterValue from the JSON content.
-     * <p>
-     * RouterValue deserializes from a JSON value, which can be a JSON string, number, boolean, or null.
-     *
-     * @param jsonReader The JSON reader to deserialize from.
-     * @return An instance of RouterValue.
-     * @throws IOException If there is an error while reading JSON content.
-     */
-    public static RouterValue fromJson(JsonReader jsonReader) throws IOException {
-        JsonToken currentToken = jsonReader.currentToken();
-        if (currentToken == null) {
-            currentToken = jsonReader.nextToken();
-        }
-
-        if (currentToken == JsonToken.STRING) {
-            return new RouterValue(jsonReader.getString());
-        } else if (currentToken == JsonToken.NUMBER) {
-            String rawNumber = jsonReader.getRawText();
-            try {
-                return new RouterValue(Integer.parseInt(rawNumber));
-            } catch (NumberFormatException ignored) {
-                return new RouterValue(Double.parseDouble(rawNumber));
-            }
-        } else if (currentToken == JsonToken.BOOLEAN) {
-            return new RouterValue(jsonReader.getBoolean());
-        } else {
-            // null or new RouterValue(null, null, null, null)?
-            return null;
-        }
     }
 }
