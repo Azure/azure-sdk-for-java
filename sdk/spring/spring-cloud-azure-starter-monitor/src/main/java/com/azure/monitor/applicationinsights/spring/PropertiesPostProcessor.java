@@ -44,7 +44,7 @@ class PropertiesPostProcessor implements EnvironmentPostProcessor, Ordered {
 
         String applicationInsightConnectionString = environment.getProperty("applicationinsights.connection.string", String.class);
 
-        if(applicationInsightConnectionString == null || applicationInsightConnectionString.isEmpty()) {
+        if (applicationInsightConnectionString == null || applicationInsightConnectionString.isEmpty()) {
             Map<String, Object> propertiesToOverride = new HashMap<>(3);
             propertiesToOverride.put("otel.traces.exporter", "none");
             propertiesToOverride.put("otel.metrics.exporter", "none");
