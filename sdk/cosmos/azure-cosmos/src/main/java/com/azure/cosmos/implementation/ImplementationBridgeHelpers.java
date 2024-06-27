@@ -79,6 +79,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.util.Collection;
@@ -496,6 +497,9 @@ public class ImplementationBridgeHelpers {
             int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
             void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker);
             BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
+            CosmosBulkExecutionOptions setSchedulerOverride(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, Scheduler customScheduler);
+            Scheduler getSchedulerOverride(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
 
             CosmosBulkExecutionOptions clone(CosmosBulkExecutionOptions toBeCloned);
         }
