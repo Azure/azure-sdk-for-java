@@ -43,6 +43,18 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     @Generated
     private Map<String, String> tags;
 
+    /*
+     * Custom classifier to split and classify the input file.
+     */
+    @Generated
+    private String classifierId;
+
+    /*
+     * File splitting behavior.
+     */
+    @Generated
+    private SplitMode split;
+
     /**
      * Creates an instance of ComposeDocumentModelRequest class.
      * 
@@ -120,6 +132,50 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     }
 
     /**
+     * Get the classifierId property: Custom classifier to split and classify the input file.
+     * 
+     * @return the classifierId value.
+     */
+    @Generated
+    public String getClassifierId() {
+        return this.classifierId;
+    }
+
+    /**
+     * Set the classifierId property: Custom classifier to split and classify the input file.
+     * 
+     * @param classifierId the classifierId value to set.
+     * @return the ComposeDocumentModelRequest object itself.
+     */
+    @Generated
+    public ComposeDocumentModelRequest setClassifierId(String classifierId) {
+        this.classifierId = classifierId;
+        return this;
+    }
+
+    /**
+     * Get the split property: File splitting behavior.
+     * 
+     * @return the split value.
+     */
+    @Generated
+    public SplitMode getSplit() {
+        return this.split;
+    }
+
+    /**
+     * Set the split property: File splitting behavior.
+     * 
+     * @param split the split value to set.
+     * @return the ComposeDocumentModelRequest object itself.
+     */
+    @Generated
+    public ComposeDocumentModelRequest setSplit(SplitMode split) {
+        this.split = split;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -131,6 +187,8 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("classifierId", this.classifierId);
+        jsonWriter.writeStringField("split", this.split == null ? null : this.split.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -150,6 +208,8 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
             List<ComponentDocumentModelDetails> componentModels = null;
             String description = null;
             Map<String, String> tags = null;
+            String classifierId = null;
+            SplitMode split = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -162,6 +222,10 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
                     description = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     tags = reader.readMap(reader1 -> reader1.getString());
+                } else if ("classifierId".equals(fieldName)) {
+                    classifierId = reader.getString();
+                } else if ("split".equals(fieldName)) {
+                    split = SplitMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -170,6 +234,8 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
                 = new ComposeDocumentModelRequest(modelId, componentModels);
             deserializedComposeDocumentModelRequest.description = description;
             deserializedComposeDocumentModelRequest.tags = tags;
+            deserializedComposeDocumentModelRequest.classifierId = classifierId;
+            deserializedComposeDocumentModelRequest.split = split;
 
             return deserializedComposeDocumentModelRequest;
         });

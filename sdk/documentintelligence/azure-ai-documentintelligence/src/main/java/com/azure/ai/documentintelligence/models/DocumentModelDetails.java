@@ -13,7 +13,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +37,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * Date and time (UTC) when the document model was created.
      */
     @Generated
-    private final OffsetDateTime createdDateTime;
+    private OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the document model will expire.
@@ -90,14 +89,17 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     @Generated
     private List<Warning> warnings;
 
-    /**
-     * Creates an instance of DocumentModelDetails class.
-     * 
-     * @param createdDateTime the createdDateTime value to set.
+    /*
+     * Number of V100-equivalent GPU hours consumed for model training.
      */
     @Generated
-    private DocumentModelDetails(OffsetDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
+    private Double trainingHours;
+
+    /**
+     * Creates an instance of DocumentModelDetails class.
+     */
+    @Generated
+    private DocumentModelDetails() {
     }
 
     /**
@@ -213,26 +215,24 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     }
 
     /**
+     * Get the trainingHours property: Number of V100-equivalent GPU hours consumed for model training.
+     * 
+     * @return the trainingHours value.
+     */
+    @Generated
+    public Double getTrainingHours() {
+        return this.trainingHours;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("createdDateTime",
-            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("expirationDateTime",
-            this.expirationDateTime == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
-        jsonWriter.writeStringField("apiVersion", this.apiVersion);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("buildMode", this.buildMode == null ? null : this.buildMode.toString());
-        jsonWriter.writeJsonField("azureBlobSource", this.azureBlobSource);
-        jsonWriter.writeJsonField("azureBlobFileListSource", this.azureBlobFileListSource);
-        jsonWriter.writeMapField("docTypes", this.docTypes, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -248,60 +248,46 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     @Generated
     public static DocumentModelDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String modelId = null;
-            OffsetDateTime createdDateTime = null;
-            String description = null;
-            OffsetDateTime expirationDateTime = null;
-            String apiVersion = null;
-            Map<String, String> tags = null;
-            DocumentBuildMode buildMode = null;
-            AzureBlobContentSource azureBlobSource = null;
-            AzureBlobFileListContentSource azureBlobFileListSource = null;
-            Map<String, DocumentTypeDetails> docTypes = null;
-            List<Warning> warnings = null;
+            DocumentModelDetails deserializedDocumentModelDetails = new DocumentModelDetails();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("modelId".equals(fieldName)) {
-                    modelId = reader.getString();
+                    deserializedDocumentModelDetails.modelId = reader.getString();
                 } else if ("createdDateTime".equals(fieldName)) {
-                    createdDateTime = reader
+                    deserializedDocumentModelDetails.createdDateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
+                    deserializedDocumentModelDetails.description = reader.getString();
                 } else if ("expirationDateTime".equals(fieldName)) {
-                    expirationDateTime = reader
+                    deserializedDocumentModelDetails.expirationDateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("apiVersion".equals(fieldName)) {
-                    apiVersion = reader.getString();
+                    deserializedDocumentModelDetails.apiVersion = reader.getString();
                 } else if ("tags".equals(fieldName)) {
-                    tags = reader.readMap(reader1 -> reader1.getString());
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDocumentModelDetails.tags = tags;
                 } else if ("buildMode".equals(fieldName)) {
-                    buildMode = DocumentBuildMode.fromString(reader.getString());
+                    deserializedDocumentModelDetails.buildMode = DocumentBuildMode.fromString(reader.getString());
                 } else if ("azureBlobSource".equals(fieldName)) {
-                    azureBlobSource = AzureBlobContentSource.fromJson(reader);
+                    deserializedDocumentModelDetails.azureBlobSource = AzureBlobContentSource.fromJson(reader);
                 } else if ("azureBlobFileListSource".equals(fieldName)) {
-                    azureBlobFileListSource = AzureBlobFileListContentSource.fromJson(reader);
+                    deserializedDocumentModelDetails.azureBlobFileListSource
+                        = AzureBlobFileListContentSource.fromJson(reader);
                 } else if ("docTypes".equals(fieldName)) {
-                    docTypes = reader.readMap(reader1 -> DocumentTypeDetails.fromJson(reader1));
+                    Map<String, DocumentTypeDetails> docTypes
+                        = reader.readMap(reader1 -> DocumentTypeDetails.fromJson(reader1));
+                    deserializedDocumentModelDetails.docTypes = docTypes;
                 } else if ("warnings".equals(fieldName)) {
-                    warnings = reader.readArray(reader1 -> Warning.fromJson(reader1));
+                    List<Warning> warnings = reader.readArray(reader1 -> Warning.fromJson(reader1));
+                    deserializedDocumentModelDetails.warnings = warnings;
+                } else if ("trainingHours".equals(fieldName)) {
+                    deserializedDocumentModelDetails.trainingHours = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }
             }
-            DocumentModelDetails deserializedDocumentModelDetails = new DocumentModelDetails(createdDateTime);
-            deserializedDocumentModelDetails.modelId = modelId;
-            deserializedDocumentModelDetails.description = description;
-            deserializedDocumentModelDetails.expirationDateTime = expirationDateTime;
-            deserializedDocumentModelDetails.apiVersion = apiVersion;
-            deserializedDocumentModelDetails.tags = tags;
-            deserializedDocumentModelDetails.buildMode = buildMode;
-            deserializedDocumentModelDetails.azureBlobSource = azureBlobSource;
-            deserializedDocumentModelDetails.azureBlobFileListSource = azureBlobFileListSource;
-            deserializedDocumentModelDetails.docTypes = docTypes;
-            deserializedDocumentModelDetails.warnings = warnings;
 
             return deserializedDocumentModelDetails;
         });

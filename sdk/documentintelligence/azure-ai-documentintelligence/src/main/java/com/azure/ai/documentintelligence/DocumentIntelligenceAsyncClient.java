@@ -6,6 +6,7 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.implementation.DocumentIntelligenceClientImpl;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeOutputOption;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentRequest;
@@ -65,6 +66,8 @@ public final class DocumentIntelligenceAsyncClient {
      * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
      * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
      * Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
+     * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -100,6 +103,8 @@ public final class DocumentIntelligenceAsyncClient {
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
      * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -138,6 +143,7 @@ public final class DocumentIntelligenceAsyncClient {
      * @param features List of optional analysis features.
      * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param outputContentFormat Format of the analyze result top-level content.
+     * @param output Additional outputs to generate during analysis.
      * @param analyzeRequest Analyze request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -151,7 +157,8 @@ public final class DocumentIntelligenceAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocument(String modelId, String pages,
         String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
-        List<String> queryFields, ContentFormat outputContentFormat, AnalyzeDocumentRequest analyzeRequest) {
+        List<String> queryFields, ContentFormat outputContentFormat, List<AnalyzeOutputOption> output,
+        AnalyzeDocumentRequest analyzeRequest) {
         // Generated convenience method for beginAnalyzeDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
         if (pages != null) {
@@ -179,6 +186,13 @@ public final class DocumentIntelligenceAsyncClient {
         }
         if (outputContentFormat != null) {
             requestOptions.addQueryParam("outputContentFormat", outputContentFormat.toString(), false);
+        }
+        if (output != null) {
+            requestOptions.addQueryParam("output",
+                output.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (analyzeRequest != null) {
             requestOptions.setBody(BinaryData.fromObject(analyzeRequest));
@@ -213,6 +227,7 @@ public final class DocumentIntelligenceAsyncClient {
      * @param classifyRequest Classify request parameters.
      * @param stringIndexType Method used to compute string offset and length.
      * @param split Document splitting mode.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -224,7 +239,7 @@ public final class DocumentIntelligenceAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
-        ClassifyDocumentRequest classifyRequest, StringIndexType stringIndexType, SplitMode split) {
+        ClassifyDocumentRequest classifyRequest, StringIndexType stringIndexType, SplitMode split, String pages) {
         // Generated convenience method for beginClassifyDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
         if (stringIndexType != null) {
@@ -232,6 +247,9 @@ public final class DocumentIntelligenceAsyncClient {
         }
         if (split != null) {
             requestOptions.addQueryParam("split", split.toString(), false);
+        }
+        if (pages != null) {
+            requestOptions.addQueryParam("pages", pages, false);
         }
         return serviceClient.beginClassifyDocumentWithModelAsync(classifierId, BinaryData.fromObject(classifyRequest),
             requestOptions);

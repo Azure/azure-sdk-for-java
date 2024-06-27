@@ -522,7 +522,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     buildMode: String(template/neural) (Required)
+     *     buildMode: String(template/neural/generative) (Required)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -534,6 +534,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     maxTrainingHours: Double (Optional)
+     *     allowOverwrite: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -561,7 +563,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     buildMode: String(template/neural) (Required)
+     *     buildMode: String(template/neural/generative) (Required)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -573,6 +575,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     maxTrainingHours: Double (Optional)
+     *     allowOverwrite: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -599,7 +603,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     buildMode: String(template/neural) (Required)
+     *     buildMode: String(template/neural/generative) (Required)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -611,6 +615,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     maxTrainingHours: Double (Optional)
+     *     allowOverwrite: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -646,7 +652,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     buildMode: String(template/neural) (Required)
+     *     buildMode: String(template/neural/generative) (Required)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -658,6 +664,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     maxTrainingHours: Double (Optional)
+     *     allowOverwrite: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -693,7 +701,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     buildMode: String(template/neural) (Required)
+     *     buildMode: String(template/neural/generative) (Required)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -705,6 +713,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     maxTrainingHours: Double (Optional)
+     *     allowOverwrite: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -741,7 +751,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     buildMode: String(template/neural) (Required)
+     *     buildMode: String(template/neural/generative) (Required)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -753,6 +763,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     maxTrainingHours: Double (Optional)
+     *     allowOverwrite: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -791,12 +803,16 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     description: String (Optional)
      *     componentModels (Required): [
      *          (Required){
+     *             docType: String (Optional)
      *             modelId: String (Required)
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     ]
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      * }
      * }</pre>
      * 
@@ -826,12 +842,16 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     description: String (Optional)
      *     componentModels (Required): [
      *          (Required){
+     *             docType: String (Optional)
      *             modelId: String (Required)
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     ]
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      * }
      * }</pre>
      * 
@@ -860,12 +880,16 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     description: String (Optional)
      *     componentModels (Required): [
      *          (Required){
+     *             docType: String (Optional)
      *             modelId: String (Required)
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     ]
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      * }
      * }</pre>
      * 
@@ -903,12 +927,16 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     description: String (Optional)
      *     componentModels (Required): [
      *          (Required){
+     *             docType: String (Optional)
      *             modelId: String (Required)
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     ]
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      * }
      * }</pre>
      * 
@@ -946,12 +974,16 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     description: String (Optional)
      *     componentModels (Required): [
      *          (Required){
+     *             docType: String (Optional)
      *             modelId: String (Required)
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     ]
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      * }
      * }</pre>
      * 
@@ -990,12 +1022,16 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     description: String (Optional)
      *     componentModels (Required): [
      *          (Required){
+     *             docType: String (Optional)
      *             modelId: String (Required)
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     ]
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      * }
      * }</pre>
      * 
@@ -1354,7 +1390,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     buildMode: String(template/neural) (Optional)
+     *     buildMode: String(template/neural/generative) (Optional)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -1366,7 +1402,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
-     *             buildMode: String(template/neural) (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
@@ -1390,6 +1426,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             target: String (Optional)
      *         }
      *     ]
+     *     trainingHours: Double (Optional)
      * }
      * }</pre>
      * 
@@ -1422,7 +1459,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     buildMode: String(template/neural) (Optional)
+     *     buildMode: String(template/neural/generative) (Optional)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -1434,7 +1471,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
-     *             buildMode: String(template/neural) (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
@@ -1458,6 +1495,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             target: String (Optional)
      *         }
      *     ]
+     *     trainingHours: Double (Optional)
      * }
      * }</pre>
      * 
@@ -1490,7 +1528,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     buildMode: String(template/neural) (Optional)
+     *     buildMode: String(template/neural/generative) (Optional)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -1502,7 +1540,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
-     *             buildMode: String(template/neural) (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
@@ -1526,6 +1564,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             target: String (Optional)
      *         }
      *     ]
+     *     trainingHours: Double (Optional)
      * }
      * }</pre>
      * 
@@ -1561,7 +1600,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     buildMode: String(template/neural) (Optional)
+     *     buildMode: String(template/neural/generative) (Optional)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -1573,7 +1612,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
-     *             buildMode: String(template/neural) (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
@@ -1597,6 +1636,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             target: String (Optional)
      *         }
      *     ]
+     *     trainingHours: Double (Optional)
      * }
      * }</pre>
      * 
@@ -1630,7 +1670,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     buildMode: String(template/neural) (Optional)
+     *     buildMode: String(template/neural/generative) (Optional)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -1642,7 +1682,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
-     *             buildMode: String(template/neural) (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
@@ -1666,6 +1706,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             target: String (Optional)
      *         }
      *     ]
+     *     trainingHours: Double (Optional)
      * }
      * }</pre>
      * 
@@ -1699,7 +1740,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     buildMode: String(template/neural) (Optional)
+     *     buildMode: String(template/neural/generative) (Optional)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -1711,7 +1752,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
-     *             buildMode: String(template/neural) (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
@@ -1735,6 +1776,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             target: String (Optional)
      *         }
      *     ]
+     *     trainingHours: Double (Optional)
      * }
      * }</pre>
      * 
@@ -1800,11 +1842,6 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         count: int (Required)
      *         limit: int (Required)
      *     }
-     *     customNeuralDocumentModelBuilds (Required): {
-     *         used: int (Required)
-     *         quota: int (Required)
-     *         quotaResetDateTime: OffsetDateTime (Required)
-     *     }
      * }
      * }</pre>
      * 
@@ -1833,11 +1870,6 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         count: int (Required)
      *         limit: int (Required)
      *     }
-     *     customNeuralDocumentModelBuilds (Required): {
-     *         used: int (Required)
-     *         quota: int (Required)
-     *         quotaResetDateTime: OffsetDateTime (Required)
-     *     }
      * }
      * }</pre>
      * 
@@ -1861,7 +1893,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * 
      * <pre>{@code
      * {
-     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -1909,7 +1941,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * 
      * <pre>{@code
      * {
-     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -1957,7 +1989,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * 
      * <pre>{@code
      * {
-     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -2008,7 +2040,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * 
      * <pre>{@code
      * {
-     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -2057,7 +2089,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * 
      * <pre>{@code
      * {
-     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -2106,7 +2138,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * 
      * <pre>{@code
      * {
-     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -2171,6 +2203,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     allowOverwrite: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -2212,6 +2245,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     allowOverwrite: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -2252,6 +2286,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     allowOverwrite: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -2301,6 +2336,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     allowOverwrite: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -2350,6 +2386,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     allowOverwrite: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -2400,6 +2437,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     allowOverwrite: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -2786,7 +2824,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     buildMode: String(template/neural) (Optional)
+     *     buildMode: String(template/neural/generative) (Optional)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -2798,7 +2836,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
-     *             buildMode: String(template/neural) (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
@@ -2822,6 +2860,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             target: String (Optional)
      *         }
      *     ]
+     *     trainingHours: Double (Optional)
      * }
      * }</pre>
      * 
@@ -2859,7 +2898,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     buildMode: String(template/neural) (Optional)
+     *     buildMode: String(template/neural/generative) (Optional)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -2871,7 +2910,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
-     *             buildMode: String(template/neural) (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
@@ -2895,6 +2934,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             target: String (Optional)
      *         }
      *     ]
+     *     trainingHours: Double (Optional)
      * }
      * }</pre>
      * 
@@ -2921,7 +2961,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * 
      * <pre>{@code
      * {
-     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -2974,7 +3014,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * 
      * <pre>{@code
      * {
-     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)

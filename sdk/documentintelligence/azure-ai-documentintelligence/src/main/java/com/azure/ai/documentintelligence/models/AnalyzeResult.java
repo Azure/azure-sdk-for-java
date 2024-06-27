@@ -109,6 +109,12 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     @Generated
     private List<Document> documents;
 
+    /*
+     * List of warnings encountered.
+     */
+    @Generated
+    private List<Warning> warnings;
+
     /**
      * Creates an instance of AnalyzeResult class.
      * 
@@ -280,6 +286,16 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     }
 
     /**
+     * Get the warnings property: List of warnings encountered.
+     * 
+     * @return the warnings value.
+     */
+    @Generated
+    public List<Warning> getWarnings() {
+        return this.warnings;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -302,6 +318,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
         jsonWriter.writeArrayField("styles", this.styles, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("languages", this.languages, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("documents", this.documents, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -332,6 +349,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
             List<DocumentStyle> styles = null;
             List<DocumentLanguage> languages = null;
             List<Document> documents = null;
+            List<Warning> warnings = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -366,6 +384,8 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
                     languages = reader.readArray(reader1 -> DocumentLanguage.fromJson(reader1));
                 } else if ("documents".equals(fieldName)) {
                     documents = reader.readArray(reader1 -> Document.fromJson(reader1));
+                } else if ("warnings".equals(fieldName)) {
+                    warnings = reader.readArray(reader1 -> Warning.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -382,6 +402,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
             deserializedAnalyzeResult.styles = styles;
             deserializedAnalyzeResult.languages = languages;
             deserializedAnalyzeResult.documents = documents;
+            deserializedAnalyzeResult.warnings = warnings;
 
             return deserializedAnalyzeResult;
         });
