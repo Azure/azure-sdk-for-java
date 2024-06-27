@@ -20,14 +20,19 @@ public class TestBase extends com.azure.core.test.TestBase {
     }
 
     protected static WebPubSubClientBuilder getClientBuilder(String userId) {
-        WebPubSubServiceClient client = new WebPubSubServiceClientBuilder().connectionString(
-            Configuration.getGlobalConfiguration().get("CONNECTION_STRING")).hub("hub1").buildClient();
+        WebPubSubServiceClient client = new WebPubSubServiceClientBuilder()
+            .connectionString(Configuration.getGlobalConfiguration().get("CONNECTION_STRING"))
+            .hub("hub1")
+            .buildClient();
 
         // client builder
-        return new WebPubSubClientBuilder().credential(new WebPubSubClientCredential(() -> client.getClientAccessToken(
-            new GetClientAccessTokenOptions().setUserId(userId)
-                .addRole("webpubsub.joinLeaveGroup")
-                .addRole("webpubsub.sendToGroup")).getUrl()));
+        return new WebPubSubClientBuilder()
+            .credential(new WebPubSubClientCredential(
+                () -> client.getClientAccessToken(new GetClientAccessTokenOptions()
+                        .setUserId(userId)
+                        .addRole("webpubsub.joinLeaveGroup")
+                        .addRole("webpubsub.sendToGroup"))
+                    .getUrl()));
     }
 
     protected static WebPubSubClient getClient() {
