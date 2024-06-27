@@ -16,13 +16,6 @@ import java.util.List;
 public final class RecommendationFinding {
 
     /*
-     * Additional Content defined by implementations
-     */
-    @Generated
-    @JsonProperty(value = "extension")
-    private List<FhirR4Extension> extension;
-
-    /*
      * Finding linked to a recommendation.
      */
     @Generated
@@ -43,6 +36,13 @@ public final class RecommendationFinding {
     @JsonProperty(value = "recommendationFindingStatus")
     private final RecommendationFindingStatusType recommendationFindingStatus;
 
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    @JsonProperty(value = "extension")
+    private List<FhirR4Extension> extension;
+
     /**
      * Creates an instance of RecommendationFinding class.
      *
@@ -53,16 +53,6 @@ public final class RecommendationFinding {
     private RecommendationFinding(@JsonProperty(
         value = "recommendationFindingStatus") RecommendationFindingStatusType recommendationFindingStatus) {
         this.recommendationFindingStatus = recommendationFindingStatus;
-    }
-
-    /**
-     * Get the extension property: Additional Content defined by implementations.
-     *
-     * @return the extension value.
-     */
-    @Generated
-    public List<FhirR4Extension> getExtension() {
-        return this.extension;
     }
 
     /**
@@ -93,5 +83,15 @@ public final class RecommendationFinding {
     @Generated
     public RecommendationFindingStatusType getRecommendationFindingStatus() {
         return this.recommendationFindingStatus;
+    }
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
     }
 }
