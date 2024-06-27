@@ -22,12 +22,6 @@ public final class AttestationPolicySetOptions {
     private String policy;
     private AttestationSigningKey signer;
 
-
-    /**
-     * Creates an instance of {@link AttestationPolicySetOptions}
-     */
-    public AttestationPolicySetOptions() { }
-
     /**
      * Sets the options used to validate attestation tokens returned from the service.
      * @param validationOptions Token Validation options to be used to enhance the validations

@@ -21,9 +21,8 @@ Run `generate.ps1` in this directory to generate the code.
 ``` yaml
 tag: package-2020-10-01
 require:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/attestation/data-plane/readme.md
+  - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/attestation/data-plane/readme.md
 java: true
-use: '@autorest/java@4.1.27'
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.security.attestation
@@ -32,18 +31,30 @@ generate-client-interfaces: false
 service-interface-as-public: true
 custom-types: AttestationType,PolicyModification,CertificateModification
 custom-types-subpackage: models
+#implementation-subpackage: implementation
 models-subpackage: implementation.models
+#add-context-parameter: true
 sync-methods: none
 client-side-validations: true
 context-client-method-parameter: true
 required-fields-as-ctor-args: true
+v3: true
 disable-client-builder: true
-stream-style-serialization: true
 
 #add-credentials: false
 #credential-types: tokencredential
 #credential-scopes: 'https://attest.azure.net/.default'
 
 #required-parameter-client-methods: true
+
+```
+
+## This directive removes the specified enum values from the swagger so the code generator will expose IfNonMatch header as an option instead of always attaching it to requests with its only default value.
+``` yaml
+
+#directive:
+#- from: swagger-document
+#  where: $..[?(@.name=='If-None-Match')]
+#  transform: delete $.enum;
 
 ```
