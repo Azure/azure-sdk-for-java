@@ -122,10 +122,10 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
         Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
     static final String AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT =
         Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT");
-    static final String AZURE_TEXT_ANALYTICS_API_KEY =
-        Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY");
-    static final String AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY =
-        Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY");
+//    static final String AZURE_TEXT_ANALYTICS_API_KEY =
+//        Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY");
+//    static final String AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY =
+//        Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY");
     static final String AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME =
         Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME");
     static final String AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME =
@@ -1319,16 +1319,11 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
             : isStaticResource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT : AZURE_TEXT_ANALYTICS_ENDPOINT;
     }
 
-    String getApiKey(boolean isStaticSource) {
-        return interceptorManager.isPlaybackMode() ? FAKE_API_KEY
-            : isStaticSource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY : AZURE_TEXT_ANALYTICS_API_KEY;
-    }
-
     TextAnalyticsClientBuilder getTextAnalyticsClientBuilder(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
         TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint(isStaticResource))
-            .credential(new AzureKeyCredential(getApiKey(isStaticResource)))
+            .credential(TestUtil.getTestTokenCredential(interceptorManager))
             .httpClient(httpClient)
             .serviceVersion(serviceVersion);
         if (interceptorManager.isRecordMode()) {
