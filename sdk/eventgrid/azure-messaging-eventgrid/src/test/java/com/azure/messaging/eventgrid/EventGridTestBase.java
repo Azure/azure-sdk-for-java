@@ -4,18 +4,15 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.models.CloudEventDataFormat;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +20,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class EventGridTestBase extends TestProxyTestBase {
-    static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     // Event Grid endpoint for a topic accepting EventGrid schema events
     static final String EVENTGRID_ENDPOINT = "AZURE_EVENTGRID_EVENT_ENDPOINT";
@@ -54,35 +50,11 @@ public class EventGridTestBase extends TestProxyTestBase {
 
     static final String DUMMY_CHANNEL_NAME = "dummy-channel";
 
-    EventGridPublisherClientBuilder builder;
-    EventGridPublisherClientBuilder syncBuilder;
-
     @Override
     protected void afterTest() {
         StepVerifier.resetDefaultTimeout();
     }
 
-    @Override
-    protected void beforeTest() {
-        builder = new EventGridPublisherClientBuilder();
-        syncBuilder = new EventGridPublisherClientBuilder();
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(buildAssertingClient(interceptorManager.getPlaybackClient(), false));
-            syncBuilder.httpClient(buildAssertingClient(interceptorManager.getPlaybackClient(), true));
-        } else { // both record and live will use these clients
-            builder.httpClient(buildAssertingClient(HttpClient.createDefault(), false));
-            syncBuilder.httpClient(buildAssertingClient(HttpClient.createDefault(), true));
-        }
-
-        if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-                .retryPolicy(new RetryPolicy());
-            syncBuilder.addPolicy(interceptorManager.getRecordPolicy())
-                .retryPolicy(new RetryPolicy());
-        }
-        setupSanitizers();
-    }
     void setupSanitizers() {
         if (!interceptorManager.isLiveMode()) {
             List<TestProxySanitizer> sanitizers = new ArrayList<>();
@@ -120,6 +92,18 @@ public class EventGridTestBase extends TestProxyTestBase {
         });
     }
 
+    BinaryData getCustomEventWithSerializer() {
+        return BinaryData.fromObject(new HashMap<String, String>() {
+            {
+                put("id", testResourceNamer.randomUuid());
+                put("time", testResourceNamer.now().toString());
+                put("subject", "Test");
+                put("foo", "bar");
+                put("type", "Microsoft.MockPublisher.TestEvent");
+            }
+        }, new JacksonJsonSerializerBuilder().build());
+    }
+
     CloudEvent getCloudEvent() {
         return new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
             BinaryData.fromObject(new HashMap<String, String>() {
@@ -133,6 +117,15 @@ public class EventGridTestBase extends TestProxyTestBase {
             .setTime(testResourceNamer.now())
             .setId(testResourceNamer.randomUuid());
     }
+
+    CloudEvent getCloudEvent(int i) {
+        return new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
+            BinaryData.fromObject(new EventGridPublisherClientTests.TestData().setName("Hello " + i)), CloudEventDataFormat.JSON, null)
+            .setSubject("Test " + i)
+            .setTime(testResourceNamer.now())
+            .setId(testResourceNamer.randomUuid());
+    }
+
 
     String getEndpoint(String liveEnvName) {
         if (interceptorManager.isPlaybackMode()) {
@@ -152,38 +145,4 @@ public class EventGridTestBase extends TestProxyTestBase {
         return key;
     }
 
-
-    private HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
-        AssertingHttpClientBuilder builder = new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false);
-        if (sync) {
-            builder.assertSync();
-        } else {
-            builder.assertAsync();
-        }
-        return builder.build();
-    }
-
-    String getChannelName(String liveEnvName) {
-        if (interceptorManager.isPlaybackMode()) {
-            return DUMMY_CHANNEL_NAME;
-        }
-        String channelName = System.getenv(liveEnvName);
-        assertNotNull(channelName, "System environment variable " + liveEnvName + " is null");
-        return channelName;
-    }
-
-    public static class TestData {
-
-        private String name;
-
-        public TestData setName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-    }
 }
