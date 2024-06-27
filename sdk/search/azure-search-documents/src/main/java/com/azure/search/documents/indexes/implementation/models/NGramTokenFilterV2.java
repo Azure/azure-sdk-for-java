@@ -12,10 +12,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.TokenFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Generates n-grams of the given size(s). This token filter is implemented using Apache Lucene.
- */
+/** Generates n-grams of the given size(s). This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class NGramTokenFilterV2 extends TokenFilter {
     /*
@@ -30,7 +30,7 @@ public final class NGramTokenFilterV2 extends TokenFilter {
 
     /**
      * Creates an instance of NGramTokenFilterV2 class.
-     * 
+     *
      * @param name the name value to set.
      */
     public NGramTokenFilterV2(String name) {
@@ -38,9 +38,9 @@ public final class NGramTokenFilterV2 extends TokenFilter {
     }
 
     /**
-     * Get the minGram property: The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value
-     * of maxGram.
-     * 
+     * Get the minGram property: The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of
+     * maxGram.
+     *
      * @return the minGram value.
      */
     public Integer getMinGram() {
@@ -48,9 +48,9 @@ public final class NGramTokenFilterV2 extends TokenFilter {
     }
 
     /**
-     * Set the minGram property: The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value
-     * of maxGram.
-     * 
+     * Set the minGram property: The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of
+     * maxGram.
+     *
      * @param minGram the minGram value to set.
      * @return the NGramTokenFilterV2 object itself.
      */
@@ -61,7 +61,7 @@ public final class NGramTokenFilterV2 extends TokenFilter {
 
     /**
      * Get the maxGram property: The maximum n-gram length. Default is 2. Maximum is 300.
-     * 
+     *
      * @return the maxGram value.
      */
     public Integer getMaxGram() {
@@ -70,7 +70,7 @@ public final class NGramTokenFilterV2 extends TokenFilter {
 
     /**
      * Set the maxGram property: The maximum n-gram length. Default is 2. Maximum is 300.
-     * 
+     *
      * @param maxGram the maxGram value to set.
      * @return the NGramTokenFilterV2 object itself.
      */
@@ -91,50 +91,58 @@ public final class NGramTokenFilterV2 extends TokenFilter {
 
     /**
      * Reads an instance of NGramTokenFilterV2 from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of NGramTokenFilterV2 if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the NGramTokenFilterV2.
      */
     public static NGramTokenFilterV2 fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            Integer minGram = null;
-            Integer maxGram = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    Integer minGram = null;
+                    Integer maxGram = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.NGramTokenFilterV2".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.NGramTokenFilterV2'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.NGramTokenFilterV2".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.NGramTokenFilterV2'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("minGram".equals(fieldName)) {
+                            minGram = reader.getNullable(JsonReader::getInt);
+                        } else if ("maxGram".equals(fieldName)) {
+                            maxGram = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("minGram".equals(fieldName)) {
-                    minGram = reader.getNullable(JsonReader::getInt);
-                } else if ("maxGram".equals(fieldName)) {
-                    maxGram = reader.getNullable(JsonReader::getInt);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                NGramTokenFilterV2 deserializedNGramTokenFilterV2 = new NGramTokenFilterV2(name);
-                deserializedNGramTokenFilterV2.minGram = minGram;
-                deserializedNGramTokenFilterV2.maxGram = maxGram;
+                    if (nameFound) {
+                        NGramTokenFilterV2 deserializedNGramTokenFilterV2 = new NGramTokenFilterV2(name);
+                        deserializedNGramTokenFilterV2.minGram = minGram;
+                        deserializedNGramTokenFilterV2.maxGram = maxGram;
 
-                return deserializedNGramTokenFilterV2;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+                        return deserializedNGramTokenFilterV2;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

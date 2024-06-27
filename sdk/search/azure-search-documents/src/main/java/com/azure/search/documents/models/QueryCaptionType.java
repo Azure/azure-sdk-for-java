@@ -16,28 +16,23 @@ import java.util.Collection;
  * as `extractive|highlight-true`. Defaults to `None`.
  */
 public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionType> {
-    /**
-     * Do not return captions for the query.
-     */
+    /** Do not return captions for the query. */
     public static final QueryCaptionType NONE = fromString("none");
 
-    /**
-     * Extracts captions from the matching documents that contain passages relevant to the search query.
-     */
+    /** Extracts captions from the matching documents that contain passages relevant to the search query. */
     public static final QueryCaptionType EXTRACTIVE = fromString("extractive");
 
     /**
      * Creates a new instance of QueryCaptionType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public QueryCaptionType() {
-    }
+    public QueryCaptionType() {}
 
     /**
      * Creates or finds a QueryCaptionType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding QueryCaptionType.
      */
@@ -47,7 +42,7 @@ public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionTyp
 
     /**
      * Gets known QueryCaptionType values.
-     * 
+     *
      * @return known QueryCaptionType values.
      */
     public static Collection<QueryCaptionType> values() {

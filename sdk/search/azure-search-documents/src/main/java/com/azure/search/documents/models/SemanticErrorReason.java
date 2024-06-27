@@ -9,38 +9,31 @@ package com.azure.search.documents.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * Reason that a partial response was returned for a semantic ranking request.
- */
+/** Reason that a partial response was returned for a semantic ranking request. */
 public final class SemanticErrorReason extends ExpandableStringEnum<SemanticErrorReason> {
     /**
-     * If 'semanticMaxWaitInMilliseconds' was set and the semantic processing duration exceeded that value. Only the
+     * If `semanticMaxWaitInMilliseconds` was set and the semantic processing duration exceeded that value. Only the
      * base results were returned.
      */
     public static final SemanticErrorReason MAX_WAIT_EXCEEDED = fromString("maxWaitExceeded");
 
-    /**
-     * The request was throttled. Only the base results were returned.
-     */
+    /** The request was throttled. Only the base results were returned. */
     public static final SemanticErrorReason CAPACITY_OVERLOADED = fromString("capacityOverloaded");
 
-    /**
-     * At least one step of the semantic process failed.
-     */
+    /** At least one step of the semantic process failed. */
     public static final SemanticErrorReason TRANSIENT = fromString("transient");
 
     /**
      * Creates a new instance of SemanticErrorReason value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SemanticErrorReason() {
-    }
+    public SemanticErrorReason() {}
 
     /**
      * Creates or finds a SemanticErrorReason from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SemanticErrorReason.
      */
@@ -50,7 +43,7 @@ public final class SemanticErrorReason extends ExpandableStringEnum<SemanticErro
 
     /**
      * Gets known SemanticErrorReason values.
-     * 
+     *
      * @return known SemanticErrorReason values.
      */
     public static Collection<SemanticErrorReason> values() {

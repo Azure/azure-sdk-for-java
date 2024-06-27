@@ -6,168 +6,102 @@
 
 package com.azure.search.documents.indexes.models;
 
-/**
- * Identifies a predefined list of language-specific stopwords.
- */
+/** Identifies a predefined list of language-specific stopwords. */
 public enum StopwordsList {
-    /**
-     * Selects the stopword list for Arabic.
-     */
+    /** Selects the stopword list for Arabic. */
     ARABIC("arabic"),
 
-    /**
-     * Selects the stopword list for Armenian.
-     */
+    /** Selects the stopword list for Armenian. */
     ARMENIAN("armenian"),
 
-    /**
-     * Selects the stopword list for Basque.
-     */
+    /** Selects the stopword list for Basque. */
     BASQUE("basque"),
 
-    /**
-     * Selects the stopword list for Portuguese (Brazil).
-     */
+    /** Selects the stopword list for Portuguese (Brazil). */
     BRAZILIAN("brazilian"),
 
-    /**
-     * Selects the stopword list for Bulgarian.
-     */
+    /** Selects the stopword list for Bulgarian. */
     BULGARIAN("bulgarian"),
 
-    /**
-     * Selects the stopword list for Catalan.
-     */
+    /** Selects the stopword list for Catalan. */
     CATALAN("catalan"),
 
-    /**
-     * Selects the stopword list for Czech.
-     */
+    /** Selects the stopword list for Czech. */
     CZECH("czech"),
 
-    /**
-     * Selects the stopword list for Danish.
-     */
+    /** Selects the stopword list for Danish. */
     DANISH("danish"),
 
-    /**
-     * Selects the stopword list for Dutch.
-     */
+    /** Selects the stopword list for Dutch. */
     DUTCH("dutch"),
 
-    /**
-     * Selects the stopword list for English.
-     */
+    /** Selects the stopword list for English. */
     ENGLISH("english"),
 
-    /**
-     * Selects the stopword list for Finnish.
-     */
+    /** Selects the stopword list for Finnish. */
     FINNISH("finnish"),
 
-    /**
-     * Selects the stopword list for French.
-     */
+    /** Selects the stopword list for French. */
     FRENCH("french"),
 
-    /**
-     * Selects the stopword list for Galician.
-     */
+    /** Selects the stopword list for Galician. */
     GALICIAN("galician"),
 
-    /**
-     * Selects the stopword list for German.
-     */
+    /** Selects the stopword list for German. */
     GERMAN("german"),
 
-    /**
-     * Selects the stopword list for Greek.
-     */
+    /** Selects the stopword list for Greek. */
     GREEK("greek"),
 
-    /**
-     * Selects the stopword list for Hindi.
-     */
+    /** Selects the stopword list for Hindi. */
     HINDI("hindi"),
 
-    /**
-     * Selects the stopword list for Hungarian.
-     */
+    /** Selects the stopword list for Hungarian. */
     HUNGARIAN("hungarian"),
 
-    /**
-     * Selects the stopword list for Indonesian.
-     */
+    /** Selects the stopword list for Indonesian. */
     INDONESIAN("indonesian"),
 
-    /**
-     * Selects the stopword list for Irish.
-     */
+    /** Selects the stopword list for Irish. */
     IRISH("irish"),
 
-    /**
-     * Selects the stopword list for Italian.
-     */
+    /** Selects the stopword list for Italian. */
     ITALIAN("italian"),
 
-    /**
-     * Selects the stopword list for Latvian.
-     */
+    /** Selects the stopword list for Latvian. */
     LATVIAN("latvian"),
 
-    /**
-     * Selects the stopword list for Norwegian.
-     */
+    /** Selects the stopword list for Norwegian. */
     NORWEGIAN("norwegian"),
 
-    /**
-     * Selects the stopword list for Persian.
-     */
+    /** Selects the stopword list for Persian. */
     PERSIAN("persian"),
 
-    /**
-     * Selects the stopword list for Portuguese.
-     */
+    /** Selects the stopword list for Portuguese. */
     PORTUGUESE("portuguese"),
 
-    /**
-     * Selects the stopword list for Romanian.
-     */
+    /** Selects the stopword list for Romanian. */
     ROMANIAN("romanian"),
 
-    /**
-     * Selects the stopword list for Russian.
-     */
+    /** Selects the stopword list for Russian. */
     RUSSIAN("russian"),
 
-    /**
-     * Selects the stopword list for Sorani.
-     */
+    /** Selects the stopword list for Sorani. */
     SORANI("sorani"),
 
-    /**
-     * Selects the stopword list for Spanish.
-     */
+    /** Selects the stopword list for Spanish. */
     SPANISH("spanish"),
 
-    /**
-     * Selects the stopword list for Swedish.
-     */
+    /** Selects the stopword list for Swedish. */
     SWEDISH("swedish"),
 
-    /**
-     * Selects the stopword list for Thai.
-     */
+    /** Selects the stopword list for Thai. */
     THAI("thai"),
 
-    /**
-     * Selects the stopword list for Turkish.
-     */
+    /** Selects the stopword list for Turkish. */
     TURKISH("turkish");
 
-    /**
-     * The actual serialized value for a StopwordsList instance.
-     */
+    /** The actual serialized value for a StopwordsList instance. */
     private final String value;
 
     StopwordsList(String value) {
@@ -176,7 +110,7 @@ public enum StopwordsList {
 
     /**
      * Parses a serialized value to a StopwordsList instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed StopwordsList object, or null if unable to parse.
      */
@@ -193,9 +127,7 @@ public enum StopwordsList {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

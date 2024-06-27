@@ -19,11 +19,8 @@ import java.io.IOException;
  */
 @Immutable
 public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
-    /**
-     * Creates an instance of ClassicSimilarityAlgorithm class.
-     */
-    public ClassicSimilarityAlgorithm() {
-    }
+    /** Creates an instance of ClassicSimilarityAlgorithm class. */
+    public ClassicSimilarityAlgorithm() {}
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -34,33 +31,36 @@ public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
 
     /**
      * Reads an instance of ClassicSimilarityAlgorithm from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ClassicSimilarityAlgorithm if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the ClassicSimilarityAlgorithm.
      */
     public static ClassicSimilarityAlgorithm fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ClassicSimilarityAlgorithm deserializedClassicSimilarityAlgorithm = new ClassicSimilarityAlgorithm();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    ClassicSimilarityAlgorithm deserializedClassicSimilarityAlgorithm =
+                            new ClassicSimilarityAlgorithm();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.ClassicSimilarity".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.ClassicSimilarity'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.ClassicSimilarity".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.ClassicSimilarity'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else {
-                    reader.skipChildren();
-                }
-            }
 
-            return deserializedClassicSimilarityAlgorithm;
-        });
+                    return deserializedClassicSimilarityAlgorithm;
+                });
     }
 }

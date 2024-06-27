@@ -16,8 +16,6 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 import com.azure.search.documents.indexes.SearchIndexClientBuilderTests;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -32,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Execution(ExecutionMode.CONCURRENT)
 public class SearchClientBuilderTests {
     private static final AzureKeyCredential SEARCH_API_KEY_CREDENTIAL = new AzureKeyCredential("0123");
     private static final String SEARCH_ENDPOINT = "https://test.search.windows.net";

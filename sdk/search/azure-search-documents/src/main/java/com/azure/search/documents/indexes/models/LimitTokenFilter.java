@@ -10,10 +10,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Limits the number of tokens while indexing. This token filter is implemented using Apache Lucene.
- */
+/** Limits the number of tokens while indexing. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class LimitTokenFilter extends TokenFilter {
 
@@ -58,8 +58,8 @@ public final class LimitTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the allTokensConsumed property: A value indicating whether all tokens from the input must be consumed even
-     * if maxTokenCount is reached. Default is false.
+     * Get the allTokensConsumed property: A value indicating whether all tokens from the input must be consumed even if
+     * maxTokenCount is reached. Default is false.
      *
      * @return the allTokensConsumed value.
      */
@@ -68,8 +68,8 @@ public final class LimitTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the allTokensConsumed property: A value indicating whether all tokens from the input must be consumed even
-     * if maxTokenCount is reached. Default is false.
+     * Set the allTokensConsumed property: A value indicating whether all tokens from the input must be consumed even if
+     * maxTokenCount is reached. Default is false.
      *
      * @param allTokensConsumed the allTokensConsumed value to set.
      * @return the LimitTokenFilter object itself.
@@ -94,45 +94,52 @@ public final class LimitTokenFilter extends TokenFilter {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of LimitTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the LimitTokenFilter.
      */
     public static LimitTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            Integer maxTokenCount = null;
-            Boolean allTokensConsumed = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.LimitTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.LimitTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    Integer maxTokenCount = null;
+                    Boolean allTokensConsumed = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.LimitTokenFilter".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.LimitTokenFilter'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("maxTokenCount".equals(fieldName)) {
+                            maxTokenCount = reader.getNullable(JsonReader::getInt);
+                        } else if ("consumeAllTokens".equals(fieldName)) {
+                            allTokensConsumed = reader.getNullable(JsonReader::getBoolean);
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("maxTokenCount".equals(fieldName)) {
-                    maxTokenCount = reader.getNullable(JsonReader::getInt);
-                } else if ("consumeAllTokens".equals(fieldName)) {
-                    allTokensConsumed = reader.getNullable(JsonReader::getBoolean);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                LimitTokenFilter deserializedLimitTokenFilter = new LimitTokenFilter(name);
-                deserializedLimitTokenFilter.maxTokenCount = maxTokenCount;
-                deserializedLimitTokenFilter.allTokensConsumed = allTokensConsumed;
-                return deserializedLimitTokenFilter;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+                    if (nameFound) {
+                        LimitTokenFilter deserializedLimitTokenFilter = new LimitTokenFilter(name);
+                        deserializedLimitTokenFilter.maxTokenCount = maxTokenCount;
+                        deserializedLimitTokenFilter.allTokensConsumed = allTokensConsumed;
+                        return deserializedLimitTokenFilter;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }
