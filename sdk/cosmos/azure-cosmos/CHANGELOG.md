@@ -13,6 +13,7 @@
 
 #### Other Changes
 * Added diagnostic fields for `quorumAckedLSN` and `currentReplicaSetSize`. Changed `replicaStatusList` to include all replicas and more information. - See [PR 39844](https://github.com/Azure/azure-sdk-for-java/pull/39844)
+* Ensured that exceptions thrown in custom serializers are being wraped as a CosmosException with StatusCode 400. - See [PR 40797](https://github.com/Azure/azure-sdk-for-java/pull/40797)
 
 ### 4.61.1 (2024-05-31)
 

@@ -20,7 +20,6 @@ import java.util.Map;
  * It can be passed while processing bulk operations.
  */
 public final class CosmosBulkExecutionOptions {
-
     private final CosmosBulkExecutionOptionsImpl actualRequestOptions;
 
     CosmosBulkExecutionOptions(CosmosBulkExecutionOptions toBeCloned) {
