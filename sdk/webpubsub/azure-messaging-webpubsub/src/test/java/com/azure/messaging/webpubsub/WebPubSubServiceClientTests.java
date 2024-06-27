@@ -14,10 +14,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
-import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
-import com.azure.messaging.webpubsub.models.WebPubSubContentType;
-import com.azure.messaging.webpubsub.models.WebPubSubPermission;
+import com.azure.messaging.webpubsub.models.*;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
@@ -222,6 +219,30 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
 
         String aud = claimsSet.getAudience().iterator().next();
         Assertions.assertTrue(aud.contains(".webpubsub.azure.com/client/hubs/"));
+    }
+
+    @Test
+    public void testGetMqttAuthenticationToken() throws ParseException {
+        GetClientAccessTokenOptions options = new GetClientAccessTokenOptions()
+            .setClientEndpointType(ClientEndpointType.MQTT);
+        WebPubSubClientAccessToken token = client.getClientAccessToken(options);
+
+        Assertions.assertNotNull(token);
+        Assertions.assertNotNull(token.getToken());
+        Assertions.assertNotNull(token.getUrl());
+
+        Assertions.assertTrue(token.getUrl().startsWith("wss://"));
+        Assertions.assertTrue(token.getUrl().contains(".webpubsub.azure.com/clients/mqtt/hubs/"));
+
+        String authToken = token.getToken();
+        JWT jwt = JWTParser.parse(authToken);
+        JWTClaimsSet claimsSet = jwt.getJWTClaimsSet();
+        Assertions.assertNotNull(claimsSet);
+        Assertions.assertNotNull(claimsSet.getAudience());
+        Assertions.assertFalse(claimsSet.getAudience().isEmpty());
+
+        String aud = claimsSet.getAudience().iterator().next();
+        Assertions.assertTrue(aud.contains(".webpubsub.azure.com/clients/mqtt/hubs/"));
     }
 
     @Test

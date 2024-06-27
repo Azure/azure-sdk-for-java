@@ -71,16 +71,37 @@ public final class WebPubSubsImpl {
      * The interface defining all the services for AzureWebPubSubServiceRestApiWebPubSubs to be used by the proxy
      * service to perform REST calls.
      */
-    @Host("{Endpoint}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "AzureWebPubSubServic")
     public interface WebPubSubsService {
+        @Post("/api/hubs/{hub}/:addToGroups")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> addConnectionsToGroups(@HostParam("endpoint") String endpoint,
+            @PathParam("hub") String hub, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData groupsToAdd, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/api/hubs/{hub}/:addToGroups")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> addConnectionsToGroupsSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData groupsToAdd,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
         @Post("/api/hubs/{hub}/:closeConnections")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> closeAllConnections(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Void>> closeAllConnections(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -90,7 +111,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> closeAllConnectionsSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Void> closeAllConnectionsSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -100,7 +121,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> generateClientToken(@HostParam("Endpoint") String endpoint,
+        Mono<Response<BinaryData>> generateClientToken(@HostParam("endpoint") String endpoint,
             @PathParam("hub") String hub, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -110,9 +131,31 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> generateClientTokenSync(@HostParam("Endpoint") String endpoint,
+        Response<BinaryData> generateClientTokenSync(@HostParam("endpoint") String endpoint,
             @PathParam("hub") String hub, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/api/hubs/{hub}/:removeFromGroups")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> removeConnectionsFromGroups(@HostParam("endpoint") String endpoint,
+            @PathParam("hub") String hub, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData groupsToRemove, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/api/hubs/{hub}/:removeFromGroups")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> removeConnectionsFromGroupsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("hub") String hub, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData groupsToRemove, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/api/hubs/{hub}/:send")
         @ExpectedResponses({ 202 })
@@ -120,7 +163,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> sendToAll(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Void>> sendToAll(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/octet-stream") BinaryData message, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -131,7 +174,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> sendToAllSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Void> sendToAllSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/octet-stream") BinaryData message, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -142,7 +185,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> closeConnection(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Void>> closeConnection(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("connectionId") String connectionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -152,7 +195,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> closeConnectionSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Void> closeConnectionSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("connectionId") String connectionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -161,7 +204,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Boolean>> connectionExists(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Boolean>> connectionExists(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("connectionId") String connectionId, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
 
@@ -170,7 +213,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Boolean> connectionExistsSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Boolean> connectionExistsSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("connectionId") String connectionId, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
 
@@ -180,7 +223,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> sendToConnection(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Void>> sendToConnection(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("connectionId") String connectionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/octet-stream") BinaryData message,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -191,7 +234,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> sendToConnectionSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Void> sendToConnectionSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("connectionId") String connectionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/octet-stream") BinaryData message,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -202,7 +245,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> removeConnectionFromAllGroups(@HostParam("Endpoint") String endpoint,
+        Mono<Response<Void>> removeConnectionFromAllGroups(@HostParam("endpoint") String endpoint,
             @PathParam("hub") String hub, @PathParam("connectionId") String connectionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -213,7 +256,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> removeConnectionFromAllGroupsSync(@HostParam("Endpoint") String endpoint,
+        Response<Void> removeConnectionFromAllGroupsSync(@HostParam("endpoint") String endpoint,
             @PathParam("hub") String hub, @PathParam("connectionId") String connectionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -223,7 +266,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Boolean>> groupExists(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Boolean>> groupExists(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("group") String group, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
 
@@ -232,7 +275,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Boolean> groupExistsSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Boolean> groupExistsSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("group") String group, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
 
@@ -242,7 +285,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> closeGroupConnections(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Void>> closeGroupConnections(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("group") String group, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -252,7 +295,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> closeGroupConnectionsSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Void> closeGroupConnectionsSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("group") String group, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -262,7 +305,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> sendToGroup(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Void>> sendToGroup(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("group") String group, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/octet-stream") BinaryData message,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -273,7 +316,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> sendToGroupSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Void> sendToGroupSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("group") String group, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/octet-stream") BinaryData message,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -284,7 +327,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> removeConnectionFromGroup(@HostParam("Endpoint") String endpoint,
+        Mono<Response<Void>> removeConnectionFromGroup(@HostParam("endpoint") String endpoint,
             @PathParam("hub") String hub, @PathParam("group") String group,
             @PathParam("connectionId") String connectionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -295,7 +338,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> removeConnectionFromGroupSync(@HostParam("Endpoint") String endpoint,
+        Response<Void> removeConnectionFromGroupSync(@HostParam("endpoint") String endpoint,
             @PathParam("hub") String hub, @PathParam("group") String group,
             @PathParam("connectionId") String connectionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -306,7 +349,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> addConnectionToGroup(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Void>> addConnectionToGroup(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("group") String group, @PathParam("connectionId") String connectionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -317,7 +360,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> addConnectionToGroupSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Void> addConnectionToGroupSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("group") String group, @PathParam("connectionId") String connectionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -328,7 +371,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> revokePermission(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Void>> revokePermission(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("permission") String permission, @PathParam("connectionId") String connectionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -339,7 +382,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> revokePermissionSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Void> revokePermissionSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("permission") String permission, @PathParam("connectionId") String connectionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -349,7 +392,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Boolean>> checkPermission(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Boolean>> checkPermission(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("permission") String permission, @PathParam("connectionId") String connectionId,
             @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
@@ -358,7 +401,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Boolean> checkPermissionSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Boolean> checkPermissionSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("permission") String permission, @PathParam("connectionId") String connectionId,
             @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
@@ -368,7 +411,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> grantPermission(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Void>> grantPermission(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("permission") String permission, @PathParam("connectionId") String connectionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -379,7 +422,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> grantPermissionSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Void> grantPermissionSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("permission") String permission, @PathParam("connectionId") String connectionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -389,7 +432,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Boolean>> userExists(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Boolean>> userExists(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("userId") String userId, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
 
@@ -398,7 +441,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Boolean> userExistsSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Boolean> userExistsSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("userId") String userId, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
 
@@ -408,7 +451,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> closeUserConnections(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Void>> closeUserConnections(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("userId") String userId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -418,7 +461,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> closeUserConnectionsSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Void> closeUserConnectionsSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("userId") String userId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -428,7 +471,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> sendToUser(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Void>> sendToUser(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("userId") String userId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/octet-stream") BinaryData message,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -439,7 +482,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> sendToUserSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Void> sendToUserSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("userId") String userId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/octet-stream") BinaryData message,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -450,7 +493,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> removeUserFromAllGroups(@HostParam("Endpoint") String endpoint,
+        Mono<Response<Void>> removeUserFromAllGroups(@HostParam("endpoint") String endpoint,
             @PathParam("hub") String hub, @PathParam("userId") String userId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -461,7 +504,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> removeUserFromAllGroupsSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Void> removeUserFromAllGroupsSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("userId") String userId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -471,7 +514,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> removeUserFromGroup(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Void>> removeUserFromGroup(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("group") String group, @PathParam("userId") String userId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -482,7 +525,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> removeUserFromGroupSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Void> removeUserFromGroupSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("group") String group, @PathParam("userId") String userId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -493,7 +536,7 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> addUserToGroup(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Mono<Response<Void>> addUserToGroup(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("group") String group, @PathParam("userId") String userId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -504,10 +547,82 @@ public final class WebPubSubsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> addUserToGroupSync(@HostParam("Endpoint") String endpoint, @PathParam("hub") String hub,
+        Response<Void> addUserToGroupSync(@HostParam("endpoint") String endpoint, @PathParam("hub") String hub,
             @PathParam("group") String group, @PathParam("userId") String userId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
+    }
+
+    /**
+     * Add filtered connections to multiple groups.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     groups: Iterable<String> (Optional)
+     *     filter: String (Optional)
+     * }
+     * }</pre>
+     * 
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     * characters or underscore.
+     * @param groupsToAdd Target groups and connection filter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addConnectionsToGroupsWithResponseAsync(String hub, BinaryData groupsToAdd,
+        RequestOptions requestOptions) {
+        if (hub == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        if (groupsToAdd == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter groupsToAdd is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.addConnectionsToGroups(this.client.getEndpoint(), hub,
+            this.client.getServiceVersion().getVersion(), groupsToAdd, accept, requestOptions, context));
+    }
+
+    /**
+     * Add filtered connections to multiple groups.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     groups: Iterable<String> (Optional)
+     *     filter: String (Optional)
+     * }
+     * }</pre>
+     * 
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     * characters or underscore.
+     * @param groupsToAdd Target groups and connection filter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> addConnectionsToGroupsWithResponse(String hub, BinaryData groupsToAdd,
+        RequestOptions requestOptions) {
+        if (hub == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        if (groupsToAdd == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter groupsToAdd is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.addConnectionsToGroupsSync(this.client.getEndpoint(), hub,
+            this.client.getServiceVersion().getVersion(), groupsToAdd, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -584,6 +699,9 @@ public final class WebPubSubsImpl {
      * <tr><td>minutesToExpire</td><td>Integer</td><td>No</td><td>The expire time of the generated token.</td></tr>
      * <tr><td>group</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Groups that the connection will join when it
      * connects. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     * <tr><td>clientType</td><td>String</td><td>No</td><td>The type of client. Case-insensitive. If not set, it's
+     * "Default". For Web PubSub for Socket.IO, only the default value is supported. For Web PubSub, the valid values
+     * are 'Default' and 'MQTT'. Allowed values: "Default", "MQTT".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -626,6 +744,9 @@ public final class WebPubSubsImpl {
      * <tr><td>minutesToExpire</td><td>Integer</td><td>No</td><td>The expire time of the generated token.</td></tr>
      * <tr><td>group</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Groups that the connection will join when it
      * connects. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     * <tr><td>clientType</td><td>String</td><td>No</td><td>The type of client. Case-insensitive. If not set, it's
+     * "Default". For Web PubSub for Socket.IO, only the default value is supported. For Web PubSub, the valid values
+     * are 'Default' and 'MQTT'. Allowed values: "Default", "MQTT".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -656,6 +777,78 @@ public final class WebPubSubsImpl {
     }
 
     /**
+     * Remove filtered connections from multiple groups.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     groups: Iterable<String> (Optional)
+     *     filter: String (Optional)
+     * }
+     * }</pre>
+     * 
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     * characters or underscore.
+     * @param groupsToRemove Target groups and connection filter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> removeConnectionsFromGroupsWithResponseAsync(String hub, BinaryData groupsToRemove,
+        RequestOptions requestOptions) {
+        if (hub == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        if (groupsToRemove == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter groupsToRemove is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.removeConnectionsFromGroups(this.client.getEndpoint(), hub,
+            this.client.getServiceVersion().getVersion(), groupsToRemove, accept, requestOptions, context));
+    }
+
+    /**
+     * Remove filtered connections from multiple groups.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     groups: Iterable<String> (Optional)
+     *     filter: String (Optional)
+     * }
+     * }</pre>
+     * 
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     * characters or underscore.
+     * @param groupsToRemove Target groups and connection filter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> removeConnectionsFromGroupsWithResponse(String hub, BinaryData groupsToRemove,
+        RequestOptions requestOptions) {
+        if (hub == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        if (groupsToRemove == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter groupsToRemove is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.removeConnectionsFromGroupsSync(this.client.getEndpoint(), hub,
+            this.client.getServiceVersion().getVersion(), groupsToRemove, accept, requestOptions, Context.NONE);
+    }
+
+    /**
      * Broadcast content inside request body to all the connected client connections.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -665,6 +858,10 @@ public final class WebPubSubsImpl {
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers
      * receiving the messages.</td></tr>
+     * <tr><td>messageTtlSeconds</td><td>Integer</td><td>No</td><td>The time-to-live (TTL) value in seconds for messages
+     * sent to the service. 0 is the default value, which means the message never expires. 300 is the maximum value. If
+     * this parameter is non-zero, messages that are not consumed by the client within the specified TTL will be dropped
+     * by the service. This parameter can help when the client's bandwidth is limited.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -714,6 +911,10 @@ public final class WebPubSubsImpl {
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers
      * receiving the messages.</td></tr>
+     * <tr><td>messageTtlSeconds</td><td>Integer</td><td>No</td><td>The time-to-live (TTL) value in seconds for messages
+     * sent to the service. 0 is the default value, which means the message never expires. 300 is the maximum value. If
+     * this parameter is non-zero, messages that are not consumed by the client within the specified TTL will be dropped
+     * by the service. This parameter can help when the client's bandwidth is limited.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -886,6 +1087,16 @@ public final class WebPubSubsImpl {
 
     /**
      * Send content inside request body to the specific connection.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>messageTtlSeconds</td><td>Integer</td><td>No</td><td>The time-to-live (TTL) value in seconds for messages
+     * sent to the service. 0 is the default value, which means the message never expires. 300 is the maximum value. If
+     * this parameter is non-zero, messages that are not consumed by the client within the specified TTL will be dropped
+     * by the service. This parameter can help when the client's bandwidth is limited.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -930,6 +1141,16 @@ public final class WebPubSubsImpl {
 
     /**
      * Send content inside request body to the specific connection.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>messageTtlSeconds</td><td>Integer</td><td>No</td><td>The time-to-live (TTL) value in seconds for messages
+     * sent to the service. 0 is the default value, which means the message never expires. 300 is the maximum value. If
+     * this parameter is non-zero, messages that are not consumed by the client within the specified TTL will be dropped
+     * by the service. This parameter can help when the client's bandwidth is limited.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1168,6 +1389,10 @@ public final class WebPubSubsImpl {
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers
      * receiving the messages.</td></tr>
+     * <tr><td>messageTtlSeconds</td><td>Integer</td><td>No</td><td>The time-to-live (TTL) value in seconds for messages
+     * sent to the service. 0 is the default value, which means the message never expires. 300 is the maximum value. If
+     * this parameter is non-zero, messages that are not consumed by the client within the specified TTL will be dropped
+     * by the service. This parameter can help when the client's bandwidth is limited.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1221,6 +1446,10 @@ public final class WebPubSubsImpl {
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers
      * receiving the messages.</td></tr>
+     * <tr><td>messageTtlSeconds</td><td>Integer</td><td>No</td><td>The time-to-live (TTL) value in seconds for messages
+     * sent to the service. 0 is the default value, which means the message never expires. 300 is the maximum value. If
+     * this parameter is non-zero, messages that are not consumed by the client within the specified TTL will be dropped
+     * by the service. This parameter can help when the client's bandwidth is limited.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1798,6 +2027,10 @@ public final class WebPubSubsImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers
      * receiving the messages.</td></tr>
+     * <tr><td>messageTtlSeconds</td><td>Integer</td><td>No</td><td>The time-to-live (TTL) value in seconds for messages
+     * sent to the service. 0 is the default value, which means the message never expires. 300 is the maximum value. If
+     * this parameter is non-zero, messages that are not consumed by the client within the specified TTL will be dropped
+     * by the service. This parameter can help when the client's bandwidth is limited.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1850,6 +2083,10 @@ public final class WebPubSubsImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers
      * receiving the messages.</td></tr>
+     * <tr><td>messageTtlSeconds</td><td>Integer</td><td>No</td><td>The time-to-live (TTL) value in seconds for messages
+     * sent to the service. 0 is the default value, which means the message never expires. 300 is the maximum value. If
+     * this parameter is non-zero, messages that are not consumed by the client within the specified TTL will be dropped
+     * by the service. This parameter can help when the client's bandwidth is limited.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
