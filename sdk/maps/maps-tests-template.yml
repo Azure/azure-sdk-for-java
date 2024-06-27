@@ -29,11 +29,6 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           UseFederatedAuth: true
-          CloudConfig:
-            Public:
-              SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-              ServiceConnection: azure-sdk-tests
-              SubscriptionConfigurationFilePath: eng/common/TestResources/sub-config/AzurePublicMsft.json
           Clouds: ${{ parameters.Clouds }}
           TestMode: ${{ parameters.TestMode }}
           Artifacts:
