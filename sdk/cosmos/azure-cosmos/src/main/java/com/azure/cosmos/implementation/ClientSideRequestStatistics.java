@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
@@ -171,6 +172,7 @@ public class ClientSideRequestStatistics {
             if (excludedRegions != null && !excludedRegions.isEmpty()) {
                 storeResponseStatistics.excludedRegions = String.join(", ", excludedRegions);
             }
+            storeResponseStatistics.keywordIdentifiers = request.requestContext.getKeywordIdentifiers();
         }
 
         synchronized (this) {
@@ -608,6 +610,8 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private OperationType requestOperationType;
         @JsonSerialize
+        private Set<String> keywordIdentifiers;
+        @JsonSerialize
         private String requestSessionToken;
 
         @JsonSerialize
@@ -665,6 +669,10 @@ public class ClientSideRequestStatistics {
             }
 
             return Duration.between(requestStartTimeUTC, requestResponseTimeUTC);
+        }
+
+        public Set<String> getKeywordIdentifiers() {
+            return keywordIdentifiers;
         }
     }
 

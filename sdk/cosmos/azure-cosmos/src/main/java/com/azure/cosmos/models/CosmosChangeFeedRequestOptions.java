@@ -530,6 +530,10 @@ public final class CosmosChangeFeedRequestOptions {
         return this;
     }
 
+    public Set<String> getKeywordIdentifiers() {
+        return this.actualRequestOptions.getKeywordIdentifiers();
+    }
+
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
         this.actualRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
     }

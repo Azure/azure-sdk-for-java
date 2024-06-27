@@ -45,6 +45,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -86,6 +87,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -990,6 +992,20 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             int quorumAcked = storeResult.get("quorumAckedLSN").asInt(-1);
             assertThat(quorumAcked).isEqualTo(-1);
         }
+    }
+
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void directDiagnosticsKeywordIdentifiers() {
+        InternalObjectNode internalObjectNode = getInternalObjectNode();
+        HashSet<String> keywordIdentifiers = new HashSet<>();
+        keywordIdentifiers.add("orderId");
+        keywordIdentifiers.add("customerId");
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions().setKeywordIdentifiers(keywordIdentifiers);
+        CosmosItemResponse<InternalObjectNode> createResponse = containerDirect.createItem(internalObjectNode, cosmosItemRequestOptions);
+        String diagnostics = createResponse.getDiagnostics().toString();
+        isValidJSON(diagnostics);
+        assertThat(diagnostics).contains("\"keywordIdentifiers\":[\"orderId\",\"customerId\"]");
+
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
