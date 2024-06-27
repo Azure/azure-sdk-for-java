@@ -49,11 +49,6 @@ public final class CreateWorkerOptions {
      */
     private Boolean availableForOffers;
 
-    /*
-     * If this is set, the worker will only receive up to this many new offers at a time.
-     */
-    private Integer maxConcurrentOffers;
-
     /**
      * Constructor for CreateWorkerOptions.
      * @param workerId The id property.
@@ -122,18 +117,6 @@ public final class CreateWorkerOptions {
     }
 
     /**
-     * Set the maxConcurrentOffers property: If this is set, the worker will only receive up to this many new offers at
-     * a time.
-     *
-     * @param maxConcurrentOffers the maxConcurrentOffers value to set.
-     * @return this
-     */
-    public CreateWorkerOptions setMaxConcurrentOffers(Integer maxConcurrentOffers) {
-        this.maxConcurrentOffers = maxConcurrentOffers;
-        return this;
-    }
-
-    /**
      * Returns id.
      * @return id
      */
@@ -187,15 +170,5 @@ public final class CreateWorkerOptions {
      */
     public Boolean isAvailableForOffers() {
         return this.availableForOffers;
-    }
-
-    /**
-     * Get the maxConcurrentOffers property: If this is set, the worker will only receive up to this many new offers at
-     * a time.
-     *
-     * @return the maxConcurrentOffers value.
-     */
-    public Integer getMaxConcurrentOffers() {
-        return this.maxConcurrentOffers;
     }
 }
