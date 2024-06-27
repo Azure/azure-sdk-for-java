@@ -66,7 +66,7 @@ public class AzureSpringMonitorAutoConfig {
             }
             return Optional.of(azureMonitorExporterBuilder);
         } else {
-            LOG.warn("Unable to find the Application Insights connection string. The telemetry data won't be sent so Azure.");
+            LOG.warn("Unable to find the Application Insights connection string. The telemetry data won't be sent to Azure.");
         }
         return Optional.empty();
     }
