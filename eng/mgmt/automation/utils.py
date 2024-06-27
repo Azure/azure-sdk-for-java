@@ -384,8 +384,10 @@ def get_latest_ga_version(group_id: str, module: str, previous_version: str) -> 
     if previous_version.startswith("1.0.0-beta."):
         return previous_version
 
+    group_path = group_id.replace(".", "/")
+
     response = requests.get(
-        f"{MAVEN_HOST}/{group_id.replace("\.", "\/")}/{module}"
+        f"{MAVEN_HOST}/{group_path}/{module}"
     )
 
     response.raise_for_status()
