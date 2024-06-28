@@ -1,8 +1,10 @@
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
@@ -110,6 +112,10 @@ public class BlobStorageCustomization extends Customization {
         ClassCustomization blobFlatListSegment = implementationModels.getClass("BlobFlatListSegment");
         customizeBlobFlatListSegment(blobFlatListSegment);
 
+        //BlobSignedIdentifierWrapper
+        ClassCustomization blobSignedIdentifierWrapper = implementationModels.getClass("BlobSignedIdentifierWrapper");
+        customizeBlobSignedIdentifierWrapper(blobSignedIdentifierWrapper);
+
     }
     private static void customizeQueryFormat(ClassCustomization classCustomization) {
         String fileContent = classCustomization.getEditor().getFileContent(classCustomization.getFileName());
@@ -118,7 +124,6 @@ public class BlobStorageCustomization extends Customization {
         fileContent = fileContent.replace("deserializedQueryFormat.parquetTextConfiguration = reader.null;",
             "deserializedQueryFormat.parquetTextConfiguration = new Object();\nxmlReader.skipElement();");
         classCustomization.getEditor().replaceFile(classCustomization.getFileName(), fileContent);
-
     }
 
     private static void customizeBlobHierarchyListSegment(ClassCustomization classCustomization){
@@ -132,7 +137,7 @@ public class BlobStorageCustomization extends Customization {
                     "xmlWriter.writeStartElement(rootElementName);",
                     "if (this.blobPrefixes != null) {",
                     "    for (BlobPrefixInternal element : this.blobPrefixes) {",
-                    "        xmlWriter.writeXml(element, \"BlobPrefixInternal\");",
+                    "        xmlWriter.writeXml(element, \"BlobPrefix\");",
                     "    }",
                     "}",
                     "if (this.blobItems != null) {",
@@ -154,12 +159,12 @@ public class BlobStorageCustomization extends Customization {
                     "    while (reader.nextElement() != XmlToken.END_ELEMENT) {",
                     "        QName elementName = reader.getElementName();",
                     "",
-                    "        if (\"BlobPrefixInternal\".equals(elementName.getLocalPart())) {",
+                    "        if (\"BlobPrefix\".equals(elementName.getLocalPart())) {",
                     "            if (deserializedBlobHierarchyListSegment.blobPrefixes == null) {",
                     "                deserializedBlobHierarchyListSegment.blobPrefixes = new ArrayList<>();",
                     "            }",
                     "            deserializedBlobHierarchyListSegment.blobPrefixes",
-                    "                .add(BlobPrefixInternal.fromXml(reader, \"BlobPrefixInternal\"));",
+                    "                .add(BlobPrefixInternal.fromXml(reader, \"BlobPrefix\"));",
                     "        } else if (\"Blob\".equals(elementName.getLocalPart())) {",
                     "            if (deserializedBlobHierarchyListSegment.blobItems == null) {",
                     "                deserializedBlobHierarchyListSegment.blobItems = new ArrayList<>();",
@@ -177,7 +182,7 @@ public class BlobStorageCustomization extends Customization {
         });
     }
 
-    private static void customizeBlobFlatListSegment(ClassCustomization classCustomization) {
+    private static void customizeBlobFlatListSegment(ClassCustomization classCustomization){
         classCustomization.customizeAst(ast -> {
             ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
 
@@ -218,5 +223,23 @@ public class BlobStorageCustomization extends Customization {
                         "}"
                 ));
         });
+    }
+
+    private static void customizeBlobSignedIdentifierWrapper(ClassCustomization classCustomization) {
+        JavadocCustomization javadocfromXml = classCustomization.getMethod("fromXml(XmlReader xmlReader)").getJavadoc();
+        javadocfromXml.setDescription("Reads an instance of BlobSignedIdentifierWrapper from the XmlReader.");
+        javadocfromXml.setParam("xmlReader", "The XmlReader being read.");
+        javadocfromXml.setReturn("An instance of BlobSignedIdentifierWrapper if the XmlReader was pointing to an " +
+            "instance of it, or null if it was pointing to XML null.");
+        javadocfromXml.addThrows("XMLStreamException", "If an error occurs while reading the BlobSignedIdentifierWrapper.");
+
+        JavadocCustomization javadocfromXmlWithRoot = classCustomization.getMethod("fromXml(XmlReader xmlReader, String rootElementName)").getJavadoc();
+        javadocfromXmlWithRoot.setDescription("Reads an instance of BlobSignedIdentifierWrapper from the XmlReader.");
+        javadocfromXmlWithRoot.setParam("xmlReader", "The XmlReader being read.");
+        javadocfromXmlWithRoot.setParam("rootElementName", "Optional root element name to override the default defined " +
+            "by the model. Used to support cases where the model can deserialize from different root element names.");
+        javadocfromXmlWithRoot.setReturn("An instance of BlobSignedIdentifierWrapper if the XmlReader was pointing to an " +
+            "instance of it, or null if it was pointing to XML null.");
+        javadocfromXmlWithRoot.addThrows("XMLStreamException", "If an error occurs while reading the BlobSignedIdentifierWrapper.");
     }
 }

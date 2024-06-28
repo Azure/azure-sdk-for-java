@@ -57,10 +57,28 @@ public final class BlobSignedIdentifierWrapper implements XmlSerializable<BlobSi
         return xmlWriter.writeEndElement();
     }
 
+    /**
+     * Reads an instance of BlobSignedIdentifierWrapper from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of BlobSignedIdentifierWrapper if the XmlReader was pointing to an instance of it, or null if
+     * it was pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the BlobSignedIdentifierWrapper.
+     */
     public static BlobSignedIdentifierWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
 
+    /**
+     * Reads an instance of BlobSignedIdentifierWrapper from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of BlobSignedIdentifierWrapper if the XmlReader was pointing to an instance of it, or null if
+     * it was pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the BlobSignedIdentifierWrapper.
+     */
     public static BlobSignedIdentifierWrapper fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
         rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifiers" : rootElementName;

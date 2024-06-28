@@ -404,6 +404,12 @@ directive:
 - rename-model:
     from: BlobPrefix
     to: BlobPrefixInternal
+
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.BlobServiceStatistics.xml = { "name": "StorageServiceStats" };
+    $.BlobPrefixInternal.xml = { "name": "BlobPrefix" };
 ```
 
 ### BlobAccessPolicy and BlobSignedIdentifier
