@@ -16,33 +16,27 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.security.attestation.implementation.models.CloudErrorException;
 import com.azure.security.attestation.implementation.models.JsonWebKeySet;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in SigningCertificates.
- */
+/** An instance of this class provides access to all the operations defined in SigningCertificates. */
 public final class SigningCertificatesImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final SigningCertificatesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final AttestationClientImpl client;
 
     /**
      * Initializes an instance of SigningCertificatesImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     SigningCertificatesImpl(AttestationClientImpl client) {
-        this.service = RestProxy.create(SigningCertificatesService.class, client.getHttpPipeline(),
-            client.getSerializerAdapter());
+        this.service =
+                RestProxy.create(
+                        SigningCertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,79 +48,29 @@ public final class SigningCertificatesImpl {
     @ServiceInterface(name = "AttestationClientSig")
     public interface SigningCertificatesService {
         @Get("/certs")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<JsonWebKeySet>> get(@HostParam("instanceUrl") String instanceUrl,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<JsonWebKeySet>> get(
+                @HostParam("instanceUrl") String instanceUrl, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Retrieves the attestation signing keys in use by the attestation service
-     * 
      * Retrieves metadata signing certificates in use by the attestation service.
-     * 
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JsonWebKeySet>> getWithResponseAsync() {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        final String accept = "application/jwk+json, application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getInstanceUrl(), accept, context));
-    }
-
-    /**
-     * Retrieves the attestation signing keys in use by the attestation service
-     * 
-     * Retrieves metadata signing certificates in use by the attestation service.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JsonWebKeySet>> getWithResponseAsync(Context context) {
         if (this.client.getInstanceUrl() == null) {
             return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
+                    new IllegalArgumentException(
+                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
         final String accept = "application/jwk+json, application/json";
         return service.get(this.client.getInstanceUrl(), accept, context);
-    }
-
-    /**
-     * Retrieves the attestation signing keys in use by the attestation service
-     * 
-     * Retrieves metadata signing certificates in use by the attestation service.
-     * 
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JsonWebKeySet> getAsync() {
-        return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves the attestation signing keys in use by the attestation service
-     * 
-     * Retrieves metadata signing certificates in use by the attestation service.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JsonWebKeySet> getAsync(Context context) {
-        return getWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 }

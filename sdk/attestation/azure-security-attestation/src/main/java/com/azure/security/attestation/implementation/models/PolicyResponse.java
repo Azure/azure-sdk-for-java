@@ -5,31 +5,21 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The response to an attestation policy operation.
- */
+/** The response to an attestation policy operation. */
 @Fluent
-public final class PolicyResponse implements JsonSerializable<PolicyResponse> {
+public final class PolicyResponse {
     /*
-     * An RFC7519 JSON Web Token structure whose body is an PolicyResult object.
+     * An RFC7519 JSON Web Token structure whose body is an PolicyResult
+     * object.
      */
+    @JsonProperty(value = "token")
     private String token;
 
     /**
-     * Creates an instance of PolicyResponse class.
-     */
-    public PolicyResponse() {
-    }
-
-    /**
      * Get the token property: An RFC7519 JSON Web Token structure whose body is an PolicyResult object.
-     * 
+     *
      * @return the token value.
      */
     public String getToken() {
@@ -38,7 +28,7 @@ public final class PolicyResponse implements JsonSerializable<PolicyResponse> {
 
     /**
      * Set the token property: An RFC7519 JSON Web Token structure whose body is an PolicyResult object.
-     * 
+     *
      * @param token the token value to set.
      * @return the PolicyResponse object itself.
      */
@@ -49,42 +39,8 @@ public final class PolicyResponse implements JsonSerializable<PolicyResponse> {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("token", this.token);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PolicyResponse from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PolicyResponse if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PolicyResponse.
-     */
-    public static PolicyResponse fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PolicyResponse deserializedPolicyResponse = new PolicyResponse();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("token".equals(fieldName)) {
-                    deserializedPolicyResponse.token = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedPolicyResponse;
-        });
-    }
+    public void validate() {}
 }
