@@ -299,7 +299,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
             To do this, refer to https://learn.microsoft.com/en-us/azure/azure-web-pubsub/quickstarts-pubsub-among-clients
             and define the connected event callback to get the connectionID.
          */
-        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "31jRN7LvokqoSbGxaUUjcw-DPgpgK02",
+        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "sZ9IS4UZLYZGVtVL8sULUA-DPgpgK02",
             requestOptions).getValue();
         Assertions.assertTrue(permission);
     }

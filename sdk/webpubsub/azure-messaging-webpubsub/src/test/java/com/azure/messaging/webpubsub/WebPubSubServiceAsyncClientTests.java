@@ -343,7 +343,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
 
-        StepVerifier.create(client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "31jRN7LvokqoSbGxaUUjcw-DPgpgK02",
+        StepVerifier.create(client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "sZ9IS4UZLYZGVtVL8sULUA-DPgpgK02",
             requestOptions))
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());
