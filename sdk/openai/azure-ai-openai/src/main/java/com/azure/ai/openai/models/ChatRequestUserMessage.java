@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * A request chat message representing user input to the assistant.
@@ -23,6 +24,10 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      */
     @Generated
     private final BinaryData content;
+
+    private final String stringContent;
+
+    private final List<ChatMessageContentItem> chatMessageContentItems;
 
     /*
      * An optional name for the participant.
@@ -37,6 +42,8 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      */
     private ChatRequestUserMessage(BinaryData content) {
         this.content = content;
+        this.stringContent = null;
+        this.chatMessageContentItems = null;
     }
 
     /**
@@ -45,7 +52,9 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @param content The plain text content associated with the message.
      */
     public ChatRequestUserMessage(String content) {
-        this(BinaryData.fromString(content));
+        this.content = BinaryData.fromString(content);
+        this.stringContent = content;
+        this.chatMessageContentItems = null;
     }
 
     /**
@@ -54,7 +63,9 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @param content The collection of structured content associated with the message.
      */
     public ChatRequestUserMessage(ChatMessageContentItem[] content) {
-        this(BinaryData.fromObject(content));
+        this.content = BinaryData.fromObject(content);
+        this.chatMessageContentItems = Arrays.asList(content);
+        this.stringContent = null;
     }
 
     /**
@@ -63,7 +74,9 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @param content The collection of structured content associated with the message.
      */
     public ChatRequestUserMessage(List<ChatMessageContentItem> content) {
-        this(BinaryData.fromObject(content));
+        this.content = BinaryData.fromObject(content);
+        this.stringContent = null;
+        this.chatMessageContentItems = content;
     }
 
     /**
@@ -121,7 +134,11 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("content", this.content);
+        if (stringContent != null) {
+            jsonWriter.writeStringField("content", stringContent);
+        } else if (chatMessageContentItems != null) {
+            jsonWriter.writeArrayField("content", chatMessageContentItems, JsonWriter::writeJson);
+        }
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
@@ -147,10 +164,9 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
                 if ("content".equals(fieldName)) {
                     if (reader.currentToken() == JsonToken.STRING) {
                         content = BinaryData.fromString(reader.getString());
-                    } else if (reader.currentToken() == JsonToken.START_OBJECT) {
-                        content = BinaryData.fromObject(reader.readMap(JsonReader::readUntyped));
                     } else if (reader.currentToken() == JsonToken.START_ARRAY) {
-                        content = BinaryData.fromObject(reader.readArray(JsonReader::readUntyped));
+                        content = BinaryData.fromObject(
+                            reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson)));
                     } else if (reader.currentToken() == JsonToken.NULL) {
                         content = null;
                     } else {
