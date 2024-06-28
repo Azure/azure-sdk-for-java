@@ -45,6 +45,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -226,6 +227,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             { OperationType.Replace },
             { OperationType.Create },
             { OperationType.Query },
+        };
+    }
+
+    @DataProvider(name = "gatewayAndDirect")
+    private Object[][] gatewayAndDirect() {
+        return new Object[][]{
+            { containerDirect },
+            { containerGateway }
         };
     }
 
@@ -994,28 +1003,58 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
-    public void directDiagnosticsKeywordIdentifiers() {
+    @Test(groups = {"fast"}, dataProvider = "gatewayAndDirect", timeOut = TIMEOUT)
+    public void diagnosticsKeywordIdentifiers(CosmosContainer container) {
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         HashSet<String> keywordIdentifiers = new HashSet<>();
         keywordIdentifiers.add("orderId");
         keywordIdentifiers.add("customerId");
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions().setKeywordIdentifiers(keywordIdentifiers);
-        CosmosItemResponse<InternalObjectNode> createResponse = containerDirect.createItem(internalObjectNode, cosmosItemRequestOptions);
+        CosmosItemResponse<InternalObjectNode> createResponse = container.createItem(internalObjectNode, cosmosItemRequestOptions);
         ArrayList<String> diagnosticsList = new ArrayList<>();
         String diagnostics = createResponse.getDiagnostics().toString();
         diagnosticsList.add(diagnostics);
-        diagnostics = containerDirect.readItem(internalObjectNode.getId(), new PartitionKey(internalObjectNode.getId()), cosmosItemRequestOptions
-            ,InternalObjectNode.class).getDiagnostics().toString();
+        diagnostics = container.readItem(internalObjectNode.getId(), new PartitionKey(internalObjectNode.get("mypk")), cosmosItemRequestOptions,
+            InternalObjectNode.class).getDiagnostics().toString();
         diagnosticsList.add(diagnostics);
-        diagnostics = containerDirect.upsertItem(internalObjectNode, cosmosItemRequestOptions).getDiagnostics().toString();
+        diagnostics = container.upsertItem(internalObjectNode, cosmosItemRequestOptions).getDiagnostics().toString();
         diagnosticsList.add(diagnostics);
-        diagnostics = containerDirect.replaceItem(internalObjectNode, internalObjectNode.getId(), new PartitionKey(internalObjectNode.getId()), cosmosItemRequestOptions).getDiagnostics().toString();
 
+        InternalObjectNode updatedInternalObjectNode = getInternalObjectNode(internalObjectNode.get("mypk").toString());
+        updatedInternalObjectNode.setId(internalObjectNode.getId());;
+        diagnostics = container.replaceItem(updatedInternalObjectNode, updatedInternalObjectNode.get("mypk").toString(), new PartitionKey(internalObjectNode.getId()), cosmosItemRequestOptions).getDiagnostics().toString();
+        diagnosticsList.add(diagnostics);
 
-        isValidJSON(diagnostics);
-        assertThat(diagnostics).contains("\"keywordIdentifiers\":[\"orderId\",\"customerId\"]");
+        CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions().setKeywordIdentifiers(keywordIdentifiers);
 
+        for (FeedResponse<InternalObjectNode> feedResponse : container.queryItems("SELECT * from c", queryRequestOptions, InternalObjectNode.class).iterableByPage()) {
+            diagnostics = feedResponse.getCosmosDiagnostics().toString();
+            diagnosticsList.add(diagnostics);
+        }
+
+        for (String diagnostic : diagnosticsList) {
+            isValidJSON(diagnostic);
+            assertThat(diagnostic).contains("\"keywordIdentifiers\":[\"orderId\",\"customerId\"]");
+        }
+    }
+
+    @Test(groups = {"fast"}, dataProvider = "gatewayAndDirect", timeOut = TIMEOUT)
+    public void diagnosticsKeywordIdentifiersOnException(CosmosContainer container) {
+        InternalObjectNode internalObjectNode = getInternalObjectNode();
+        HashSet<String> keywordIdentifiers = new HashSet<>();
+        keywordIdentifiers.add("orderId");
+        keywordIdentifiers.add("customerId");
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions().setKeywordIdentifiers(keywordIdentifiers);
+        CosmosItemResponse<InternalObjectNode> createResponse = container.createItem(internalObjectNode, cosmosItemRequestOptions);
+        try {
+            container.readItem(internalObjectNode.getId(), new PartitionKey("Wrong Partition Key"), cosmosItemRequestOptions,
+                InternalObjectNode.class);
+            fail("request should fail as partition key is wrong");
+        } catch (CosmosException e) {
+            String diagnostics = e.getDiagnostics().toString();
+            isValidJSON(diagnostics);
+            assertThat(diagnostics).contains("\"keywordIdentifiers\":[\"orderId\",\"customerId\"]");
+        }
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)

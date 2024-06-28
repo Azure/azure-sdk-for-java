@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -618,6 +619,10 @@ public final class CosmosDiagnosticsContext {
         ctxNode.put("maxRequestSizeInBytes", this.maxRequestSize);
         ctxNode.put("maxResponseSizeInBytes", this.maxResponseSize);
 
+        if (this.requestOptions.getKeywordIdentifiers() != null) {
+            ctxNode.put("keywordIdentifiers", String.join(",", this.requestOptions.getKeywordIdentifiers()));
+        }
+
         if (this.maxItemCount != null) {
             ctxNode.put("maxItems", this.maxItemCount);
         }
@@ -916,7 +921,7 @@ public final class CosmosDiagnosticsContext {
     }
 
     public Set<String> getKeywordIdentifiers() {
-        return this.requestOptions.getKeywordIdentifiers();
+        return ImmutableSet.copyOf(this.requestOptions.getKeywordIdentifiers());
     }
 
     OverridableRequestOptions getRequestOptions() {

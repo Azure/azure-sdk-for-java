@@ -61,6 +61,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.thresholds = topBeCloned.thresholds;
         this.excludeRegions = topBeCloned.excludeRegions;
         this.customSerializer = topBeCloned.customSerializer;
+        this.keywordIdentifiers = topBeCloned.keywordIdentifiers;
     }
 
     public CosmosChangeFeedRequestOptionsImpl(

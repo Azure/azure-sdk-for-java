@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.net.URI;
@@ -169,7 +170,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     }
 
     public Set<String> getKeywordIdentifiers() {
-        return keywordIdentifiers;
+        return ImmutableSet.copyOf(keywordIdentifiers);
     }
 
     public long getApproximateBloomFilterInsertionCount() {

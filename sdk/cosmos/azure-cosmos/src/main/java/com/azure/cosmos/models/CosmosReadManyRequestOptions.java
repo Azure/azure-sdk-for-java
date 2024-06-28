@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosReadManyRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 
 import java.time.Duration;
 import java.util.List;
@@ -329,7 +330,7 @@ public final class CosmosReadManyRequestOptions {
      * @return the custom ids.
      */
     public Set<String> getKeywordIdentifiers() {
-        return this.actualRequestOptions.getKeywordIdentifiers();
+        return ImmutableSet.copyOf(this.actualRequestOptions.getKeywordIdentifiers());
     }
 
     CosmosQueryRequestOptionsBase<?> getImpl() {

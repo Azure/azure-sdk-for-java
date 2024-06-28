@@ -19,6 +19,7 @@ import com.azure.cosmos.models.ReadOnlyRequestOptions;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,6 +71,9 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
 
         if (toBeCloned.excludeRegions != null) {
             this.excludeRegions = new ArrayList<>(toBeCloned.excludeRegions);
+        }
+        if (toBeCloned.keywordIdentifiers != null) {
+            this.keywordIdentifiers = new HashSet<>(toBeCloned.keywordIdentifiers);
         }
     }
 

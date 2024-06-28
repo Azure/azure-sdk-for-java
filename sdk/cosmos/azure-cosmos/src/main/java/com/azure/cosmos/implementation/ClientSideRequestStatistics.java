@@ -712,7 +712,9 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("gatewayStatisticsList", statistics.gatewayStatisticsList);
             generator.writeObjectField("samplingRateSnapshot", statistics.samplingRateSnapshot);
             generator.writeNumberField("bloomFilterInsertionCountSnapshot", statistics.approximateInsertionCountInBloomFilter);
-            generator.writeObjectField("keywordIdentifiers", statistics.keywordIdentifiers);
+            if (statistics.keywordIdentifiers != null && !statistics.keywordIdentifiers.isEmpty()) {
+                generator.writeObjectField("keywordIdentifiers", statistics.keywordIdentifiers);
+            }
 
             try {
                 CosmosDiagnosticsSystemUsageSnapshot systemInformation = fetchSystemInformation();
