@@ -10,4 +10,9 @@ extends:
         groupId: com.azure
         safeName: azuredataappconfiguration
     TimeoutInMinutes: 90
-    SupportedClouds: "Public,UsGov,China"
+    SupportedClouds: "Public"
+    Public:
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      ServiceConnection: azure-sdk-tests
+      SubscriptionConfigurationFilePaths:
+        - eng/common/TestResources/sub-config/AzurePublicMsft.json
