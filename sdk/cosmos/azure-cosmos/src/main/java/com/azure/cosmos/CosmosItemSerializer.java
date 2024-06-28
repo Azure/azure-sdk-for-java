@@ -34,7 +34,7 @@ public abstract class CosmosItemSerializer {
      */
     public final static CosmosItemSerializer DEFAULT_SERIALIZER = new DefaultCosmosItemSerializer();
 
-    private final boolean shouldWrapSerializationExceptions;
+    private boolean shouldWrapSerializationExceptions;
 
     /**
      * Used to instantiate subclasses
@@ -115,6 +115,10 @@ public abstract class CosmosItemSerializer {
 
             throw exception;
         }
+    }
+
+    void setShouldWrapSerializationExceptions(boolean enabled) {
+        this.shouldWrapSerializationExceptions = enabled;
     }
 
     private static class DefaultCosmosItemSerializer extends CosmosItemSerializer {
@@ -206,6 +210,11 @@ public abstract class CosmosItemSerializer {
                 @Override
                 public <T> T deserializeSafe(CosmosItemSerializer serializer, Map<String, Object> jsonNodeMap, Class<T> classType) {
                     return serializer.deserializeSafe(jsonNodeMap, classType);
+                }
+
+                @Override
+                public void setShouldWrapSerializationExceptions(CosmosItemSerializer serializer, boolean shouldWrapSerializationExceptions) {
+                    serializer.setShouldWrapSerializationExceptions(shouldWrapSerializationExceptions);
                 }
             });
     }
