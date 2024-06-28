@@ -1,5 +1,15 @@
 # Release History
 
+## 1.3.0 (2024-06-28)
+
+- Added a `clientEndpointType` option to `GenerateClientTokenOptions` to specify the type of client endpoint
+  when generating token. This option can be used to generate token and client connection URL for a specific client endpoint type, such as `Default` or `MQTT`.
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-11-01`.
+
+
 ## 1.3.0-beta.1 (Unreleased)
 
 - Migrated serialization to `azure-json` which offers implementation agnostic serialization, providing support for
