@@ -10,7 +10,7 @@ package com.azure.resourcemanager.imagebuilder.generated;
 public final class VirtualMachineImageTemplatesGetRunOutputSamples {
     /*
      * x-ms-original-file:
-     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
      * GetRunOutput.json
      */
     /**
@@ -19,7 +19,8 @@ public final class VirtualMachineImageTemplatesGetRunOutputSamples {
      * @param manager Entry point to ImageBuilderManager.
      */
     public static void retrieveSingleRunOutput(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.virtualMachineImageTemplates().getRunOutputWithResponse("myResourceGroup", "myImageTemplate",
-            "myManagedImageOutput", com.azure.core.util.Context.NONE);
+        manager.virtualMachineImageTemplates()
+            .getRunOutputWithResponse("myResourceGroup", "myImageTemplate", "myManagedImageOutput",
+                com.azure.core.util.Context.NONE);
     }
 }

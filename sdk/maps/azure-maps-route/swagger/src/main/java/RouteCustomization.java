@@ -1,14 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import java.util.Arrays;
-
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.azure.autorest.customization.ClassCustomization;
-import com.azure.autorest.customization.MethodCustomization;
-import com.azure.autorest.customization.JavadocCustomization;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
 /**
@@ -42,7 +44,7 @@ public class RouteCustomization extends Customization {
         customizeDirectionsBatchItem(models);
 
         // customize route directions batch item response
-        customizeRouteDirectionsBatchItemResponse(implModels);
+        customizeRouteDirectionsBatchItemResponse(models);
 
         // customize response section type
         customizeResponseSectionType(models);
@@ -65,296 +67,227 @@ public class RouteCustomization extends Customization {
 
     // Customizes the RouteMatrix class by flattening the Response property.
     private void customizeRouteMatrix(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("RouteMatrix");
-        classCustomization.removeMethod("getResponse");
-        final String getSummaryMethod =
-            "public RouteLegSummary getSummary() {" +
-            "    return this.response.getSummary();" +
-            "}";
-        classCustomization.addMethod(getSummaryMethod);
-
-        // javadoc
-        final String getSummaryJavadocDescription = "Returns a {@link RouteLegSummary} summarizing this route section.";
-        JavadocCustomization summaryDoc = classCustomization.getMethod("getSummary").getJavadoc();
-        summaryDoc.setDescription(getSummaryJavadocDescription);
-        summaryDoc.setReturn("a {@code RouteLegSummary} with the summary of this route leg.");
+        models.getClass("RouteMatrix").customizeAst(ast -> ast.getClassByName("RouteMatrix").ifPresent(clazz -> {
+            clazz.getMethodsByName("getResponse").get(0).remove();
+            clazz.addMethod("getSummary", Modifier.Keyword.PUBLIC)
+                .setType("RouteLegSummary")
+                .setBody(StaticJavaParser.parseBlock("{ return this.response.getSummary(); }"))
+                .setJavadocComment(new Javadoc(JavadocDescription.parseText("Returns a {@link RouteLegSummary} summarizing this route section."))
+                    .addBlockTag("return", "a {@code RouteLegSummary} with the summary of this route leg."));
+        }));
     }
 
     // Customizes the RouteLeg class
     private void customizeRouteLeg(PackageCustomization models) {
-        final String getPointsMethod =
-            "public List<GeoPosition> getPoints() {" +
-            "    return this.points" +
-            "        .stream()" +
-            "        .map(item -> new GeoPosition(item.getLongitude(), item.getLatitude()))" +
-            "        .collect(Collectors.toList());" +
-            "}";
+        models.getClass("RouteLeg").customizeAst(ast -> {
+            ast.addImport("java.util.List");
+            ast.addImport("java.util.stream.Collectors");
+            ast.addImport("com.azure.core.models.GeoPosition");
 
-        ClassCustomization classCustomization = models.getClass("RouteLeg");
-        classCustomization.removeMethod("getPoints");
-        classCustomization.addMethod(getPointsMethod, Arrays.asList("java.util.List",
-            "java.util.stream.Collectors", "java.util.Arrays", "com.azure.core.models.GeoPosition"));
-
-        // javadoc
-        final String getPointsJavadocDescription = "Returns a list of {@link GeoPosition} coordinates.";
-        JavadocCustomization pointsDoc = classCustomization.getMethod("getPoints").getJavadoc();
-        pointsDoc.setDescription(getPointsJavadocDescription);
-        pointsDoc.setReturn("a list of {@code GeoPosition} coordinates.");
+            ast.getClassByName("RouteLeg").ifPresent(clazz -> clazz.getMethodsByName("getPoints").get(0)
+                .setType("List<GeoPosition>")
+                .setBody(StaticJavaParser.parseBlock("{ return this.points.stream().map(item -> new GeoPosition(item.getLongitude(), item.getLatitude())).collect(Collectors.toList()); }"))
+                .setJavadocComment(new Javadoc(JavadocDescription.parseText("Returns a list of {@link GeoPosition} coordinates."))
+                    .addBlockTag("return", "a list of {@code GeoPosition} coordinates.")));
+        });
     }
 
     // Customizes the RouteInstruction class
     private void customizeRouteInstruction(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("RouteInstruction");
-        MethodCustomization methodCustomization = classCustomization.getMethod("getPoint");
-        methodCustomization.setReturnType("GeoPosition", "new GeoPosition(returnValue.getLongitude(), " +
-            "returnValue.getLatitude())");
-        classCustomization.removeMethod("setPoint");
+        models.getClass("RouteInstruction").customizeAst(ast -> {
+            ast.addImport("com.azure.core.models.GeoPosition");
+
+            ast.getClassByName("RouteInstruction").ifPresent(clazz -> {
+                clazz.getMethodsByName("setPoint").get(0).remove();
+                clazz.getMethodsByName("getPoint").get(0).setType("GeoPosition")
+                    .setBody(StaticJavaParser.parseBlock("{ return new GeoPosition(this.point.getLongitude(), this.point.getLatitude()); }"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText("Returns the {@link GeoPosition} coordinates of this instruction."))
+                        .addBlockTag("return", "a {@code GeoPosition} with the coordinates of this instruction."));
+            });
+        });
     }
 
     // Customizes the RouteRange class
     private void customizeRouteRange(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("RouteRange");
+        models.getClass("RouteRange").customizeAst(ast -> {
+            ast.addImport("java.util.List");
+            ast.addImport("java.util.stream.Collectors");
+            ast.addImport("com.azure.core.models.GeoPosition");
 
-        // replaces getBoundary()
-        final String getBoundaryMethod =
-            "public List<GeoPosition> getBoundary() {" +
-            "    return this.boundary" +
-            "        .stream()" +
-            "        .map(item -> new GeoPosition(item.getLongitude(), item.getLatitude()))" +
-            "        .collect(Collectors.toList());" +
-            "}";
+            ast.getClassByName("RouteRange").ifPresent(clazz -> {
+                clazz.getMethodsByName("setCenter").forEach(Node::remove);
 
-        classCustomization.removeMethod("getBoundary");
-        classCustomization.addMethod(getBoundaryMethod, Arrays.asList("java.util.List",
-            "java.util.stream.Collectors", "java.util.Arrays"));
-
-        // get boundary javadoc
-        final String getBoundaryJavadocDescription = "Returns a list of {@link GeoPosition} coordinates.";
-        JavadocCustomization boundsDoc = classCustomization.getMethod("getBoundary").getJavadoc();
-        boundsDoc.setDescription(getBoundaryJavadocDescription);
-        boundsDoc.setReturn("a list of {@code GeoPosition} representing the boundary.");
-
-        // changes the Center property to be GeoPosition
-        MethodCustomization methodCustomization = classCustomization.getMethod("getCenter");
-        methodCustomization.setReturnType("GeoPosition", "new GeoPosition(returnValue.getLongitude(), " +
-            "returnValue.getLatitude())");
-        classCustomization.removeMethod("setCenter");
+                clazz.getMethodsByName("getBoundary").get(0)
+                    .setType("List<GeoPosition>")
+                    .setBody(StaticJavaParser.parseBlock("{ return this.boundary.stream().map(item -> new GeoPosition(item.getLongitude(), item.getLatitude())).collect(Collectors.toList()); }"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText("Returns a list of {@link GeoPosition} coordinates."))
+                        .addBlockTag("return", "a list of {@code GeoPosition} representing the boundary."));
+                clazz.getMethodsByName("getCenter").get(0)
+                    .setType("GeoPosition")
+                    .setBody(StaticJavaParser.parseBlock("{ return new GeoPosition(this.center.getLongitude(), this.center.getLatitude()); }"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText("Returns the {@link GeoPosition} coordinates of the center of the range."))
+                        .addBlockTag("return", "a {@code GeoPosition} with the coordinates of the center."));
+            });
+        });
     }
 
     // Customizes the RouteDirectionsBatchItem class
     private void customizeDirectionsBatchItem(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("RouteDirectionsBatchItem");
+        models.getClass("RouteDirectionsBatchItem").customizeAst(ast -> {
+            ast.addImport("com.azure.core.models.ResponseError");
 
-        // replaces getResponse() with getError
-        final String getErrorMethod =
-            "public ResponseError getError() {" +
-            "    return this.response.getError();" +
-            "}";
+            ast.getClassByName("RouteDirectionsBatchItem").ifPresent(clazz -> {
+                clazz.getMethodsByName("getResponse").get(0).remove();
 
-        classCustomization.addMethod(getErrorMethod);
+                clazz.addMethod("getError", Modifier.Keyword.PUBLIC)
+                    .setType("ResponseError")
+                    .setBody(StaticJavaParser.parseBlock("{ return this.response.getError(); }"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText("Returns the {@link ResponseError} in case of an error response."))
+                        .addBlockTag("return", "the error detail as a {@code ResponseError}"));
 
-        // javadoc
-        final String getErrorJavadocDescription = "Returns the {@link ResponseError} in case of an error response.";
-        JavadocCustomization errorDoc = classCustomization.getMethod("getError").getJavadoc();
-        errorDoc.setDescription(getErrorJavadocDescription);
-        errorDoc.setReturn("the error detail as a {@code ResponseError}");
-
-        // Adds getRouteDirections()
-        final String getRouteDirectionsMethod =
-            "public RouteDirections getRouteDirections() {" +
-            "    return (RouteDirections)this.response;" +
-            "}";
-        classCustomization.addMethod(getRouteDirectionsMethod, Arrays.asList("com.azure.core.models.ResponseError"));
-
-        // javadoc
-        final String getRouteDirectionsJavadocDescription = "Returns the {@link RouteDirections} associated with the response.";
-        JavadocCustomization directionsDoc = classCustomization.getMethod("getRouteDirections").getJavadoc();
-        directionsDoc.setDescription(getRouteDirectionsJavadocDescription);
-        directionsDoc.setReturn("the route directions as a {@code RouteDirections}");
-
-        // remove getResponse
-        classCustomization.removeMethod("getResponse");
+                clazz.addMethod("getRouteDirections", Modifier.Keyword.PUBLIC)
+                    .setType("RouteDirections")
+                    .setBody(StaticJavaParser.parseBlock("{ return (RouteDirections) this.response; }"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText("Returns the {@link RouteDirections} associated with the response."))
+                        .addBlockTag("return", "the route directions as a {@code RouteDirections}"));
+            });
+        });
     }
 
     // Customizes the ErrorDetail class
     private void customizeErrorDetail(PackageCustomization implModels) {
-        ClassCustomization classCustomization = implModels.getClass("ErrorDetail");
+        implModels.getClass("ErrorDetail").customizeAst(ast -> ast.getClassByName("ErrorDetail").ifPresent(clazz -> {
+            clazz.addMethod("setCode", Modifier.Keyword.PUBLIC)
+                .setType("ErrorDetail")
+                .addParameter("String", "code")
+                .setBody(StaticJavaParser.parseBlock("{ this.code = code; return this; }"))
+                .setJavadocComment(new Javadoc(JavadocDescription.parseText("Set the code property: The error code."))
+                    .addBlockTag("param", "code the code value")
+                    .addBlockTag("return", "the ErrorDetail object itself."));
 
-        final String setCodeMethod =
-            "public ErrorDetail setCode(String code) {" +
-            "    this.code = code;" +
-            "    return this;" +
-            "}";
-        
-        classCustomization.addMethod(setCodeMethod);
-
-        // javadoc
-        final String setCodeJavadocDescription = "Set the code property: The error code.";
-        JavadocCustomization setCodeJavadoc = classCustomization.getMethod("setCode").getJavadoc();
-        setCodeJavadoc.setDescription(setCodeJavadocDescription);
-        setCodeJavadoc.setParam("code", "The code value");
-
-        final String setMessageMethod =
-            "public ErrorDetail setMessage(String message) {" +
-            "    this.message = message;" +
-            "    return this;" +
-            "}";
-        
-        classCustomization.addMethod(setMessageMethod);
-
-        // javadoc
-        final String setMessageJavadocDescription = "Set the message property: The error message.";
-        JavadocCustomization setMessageJavadoc = classCustomization.getMethod("setMessage").getJavadoc();
-        setMessageJavadoc.setDescription(setMessageJavadocDescription);
-        setMessageJavadoc.setParam("message", "The message value");
+            clazz.addMethod("setMessage", Modifier.Keyword.PUBLIC)
+                .setType("ErrorDetail")
+                .addParameter("String", "message")
+                .setBody(StaticJavaParser.parseBlock("{ this.message = message; return this; }"))
+                .setJavadocComment(new Javadoc(JavadocDescription.parseText("Set the message property: The error message."))
+                    .addBlockTag("param", "message the message value")
+                    .addBlockTag("return", "the ErrorDetail object itself."));
+        }));
     }
 
     // Customizes the RouteDirectionsBatchItemResponse class
-    private void customizeRouteDirectionsBatchItemResponse(PackageCustomization implModels) {
-        ClassCustomization classCustomization = implModels.getClass("RouteDirectionsBatchItemResponse");
+    private void customizeRouteDirectionsBatchItemResponse(PackageCustomization models) {
+        models.getClass("RouteDirectionsBatchItemResponse").customizeAst(ast -> {
+            ast.addImport("com.azure.core.models.ResponseError");
 
-        classCustomization.addConstructor(
-            "public RouteDirectionsBatchItemResponse(ErrorDetail error) {\n" +
-            "   this.error = error;\n" +
-            "}")
-            .getJavadoc()
-            .setDescription("Constructor with error")
-            .setParam("error", "The error object");
-        
-        classCustomization.addConstructor(
-            "public RouteDirectionsBatchItemResponse() {" +
-            "}")
-            .getJavadoc()
-            .setDescription("Empty constructor");
-        
-        // Change return type to ResponseError for getError
-        final String getErrorMethod = 
-            "public ResponseError getError() {" +
-            "   return new ResponseError(this.error.getCode(), this.error.getMessage());" +
-            "}";
-        classCustomization.removeMethod("getError");
-        classCustomization.addMethod(getErrorMethod, Arrays.asList("com.azure.core.models.ResponseError"));
+            ast.getClassByName("RouteDirectionsBatchItemResponse").ifPresent(clazz -> {
+                clazz.setModifiers(Modifier.Keyword.FINAL);
 
-        // javadoc customization to pass Checkstyle
-        final String getErrorJavadocDescription = "Get the error property: The error object.";
-        JavadocCustomization getErrorJavadoc = classCustomization.getMethod("getError").getJavadoc();
-        getErrorJavadoc.setDescription(getErrorJavadocDescription);
-        getErrorJavadoc.setReturn("the error value.");
+                clazz.getConstructors().get(0).setModifiers();
+                clazz.addConstructor()
+                    .addParameter("ErrorDetail", "error")
+                    .setBody(StaticJavaParser.parseBlock("{ this.error = error; }"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText("Constructor with error."))
+                        .addBlockTag("param", "error the error object"));
 
-        // setError with ResponseError
-        final String setErrorMethod = 
-            "public RouteDirectionsBatchItemResponse setError(ResponseError error) {" +
-            "    this.error = new ErrorDetail().setCode(error.getCode()).setMessage(error.getMessage());" +
-            "    return this;" +
-            "}";
-        classCustomization.removeMethod("setError");
-        classCustomization.addMethod(setErrorMethod);
+                clazz.getMethodsByName("getError").get(0)
+                    .setType("ResponseError")
+                    .setBody(StaticJavaParser.parseBlock("{ return new ResponseError(this.error.getCode(), this.error.getMessage()); }"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText("Get the error property: The error object."))
+                        .addBlockTag("return", "the error value."));
 
-        // javadoc customization to pass Checkstyle
-        final String setErrorJavadocDescription = "Set the error property: The error object.";
-        JavadocCustomization setErrorJavadoc = classCustomization.getMethod("getError").getJavadoc();
-        setErrorJavadoc.setDescription(setErrorJavadocDescription);
-        setErrorJavadoc.setParam("error", "error the error value to set.");
-        setErrorJavadoc.setReturn("the RouteDirectionsBatchItemResponse object itself.");
+                clazz.getMethodsByName("setError").get(0)
+                    .setType("RouteDirectionsBatchItemResponse")
+                    .setParameters(new NodeList<>(new Parameter().setType("ResponseError").setName("error")))
+                    .setBody(StaticJavaParser.parseBlock("{ this.error = new ErrorDetail().setCode(error.getCode()).setMessage(error.getMessage()); return this; }"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText("Set the error property: The error object."))
+                        .addBlockTag("param", "error the error value to set.")
+                        .addBlockTag("return", "the RouteDirectionsBatchItemResponse object itself."));
+            });
+        });
     }
 
     // Customizes the ResponseSectionType class by changing the class name
     private void customizeResponseSectionType(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("ResponseSectionType");
-        classCustomization.rename("RouteSectionType");
+        models.getClass("ResponseSectionType").rename("RouteSectionType");
     }
 
     // Customizes the ResponseTravelMode class by changing the class name
     private void customizeResponseTravelMode(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("ResponseTravelMode");
-        classCustomization.rename("RouteTravelMode");
+        models.getClass("ResponseTravelMode").rename("RouteTravelMode");
     }
 
     // Customizes the Route class by changing the class name
     private void customizeRoute(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("Route");
-        classCustomization.rename("MapsSearchRoute");
+        models.getClass("Route").rename("MapsSearchRoute");
     }
 
     // Customizes the SimpleCategory class by changing the class name
     private void customizeSimpleCategory(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("SimpleCategory");
-        classCustomization.rename("RouteDelayReason");
+        models.getClass("SimpleCategory").rename("RouteDelayReason");
     }
 
     // Customizes the RouteReport class
     private void customizeRouteReport(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("RouteReport");
+        models.getClass("RouteReport").customizeAst(ast -> {
+            ast.addImport("java.util.Map");
+            ast.addImport("java.util.HashMap");
 
-        classCustomization.addImports("java.util.Map;", "java.util.HashMap;");
-
-        // Change return type to Map<String, String> for getEffectiveSettings
-        final String getEffectiveSettingsMethod = 
-            "public Map<String, String> getEffectiveSettings() {" +
-            "   Map<String, String> map = new HashMap<>();" +
-            "   for (EffectiveSetting effectiveSetting : this.effectiveSettings) {" +
-            "       map.put(effectiveSetting.getKey(), effectiveSetting.getValue());" +
-            "   }" +
-            "   return map;" +
-            "}";
-        classCustomization.addMethod(getEffectiveSettingsMethod);
-
-        classCustomization.removeMethod("getEffectiveSettings");
-
-        // javadoc customization to pass Checkstyle
-        final String getEffectiveSettingsMethodJavadocDescription = "Get the effectiveSettings property: Effective parameters or data used when calling this Route API.";
-        JavadocCustomization getEffectiveSettingsJavadoc = classCustomization.getMethod("getEffectiveSettings").getJavadoc();
-        getEffectiveSettingsJavadoc.setDescription(getEffectiveSettingsMethodJavadocDescription);
-        getEffectiveSettingsJavadoc.setReturn("the effectiveSettings value.");
+            ast.getClassByName("RouteReport").ifPresent(clazz -> {
+                clazz.getMethodsByName("getEffectiveSettings").get(0)
+                    .setType("Map<String, String>")
+                    .setBody(StaticJavaParser.parseBlock(String.join("\n",
+                        "{",
+                        "    Map<String, String> map = new HashMap<>();",
+                        "    for (EffectiveSetting effectiveSetting : this.effectiveSettings) {",
+                        "        map.put(effectiveSetting.getKey(), effectiveSetting.getValue());",
+                        "    }",
+                        "    return map;",
+                        "}")));
+            });
+        });
     }
 
     // Customizes the RouteSummary class
     private void customizeRouteSummary(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("RouteSummary");
+        models.getClass("RouteSummary").customizeAst(ast -> {
+            ast.addImport("java.time.Duration");
 
-        // Change return type to Duration for getTravelTimeInSeconds
-        final String getTravelTimeInSecondsMethod = 
-            "public Duration getTravelTimeInSeconds() {\n" +
-            "   return Duration.ofSeconds(this.travelTimeInSeconds);\n" +
-            "}\n";
-        classCustomization.removeMethod("getTravelTimeInSeconds");
-        classCustomization.addMethod(getTravelTimeInSecondsMethod, Arrays.asList("java.time.Duration"));
-        // javadoc customization to pass Checkstyle
-        final String getTravelTimeInSecondsMethodJavadocDescription = "Get the travelTimeInSeconds property: Estimated travel time in seconds property that includes the delay due to\n" + 
-            "real-time traffic. Note that even when traffic=false travelTimeInSeconds still includes the delay due to traffic.\n" +
-            "If DepartAt is in the future, travel time is calculated using time-dependent historic traffic data.\n";
-        JavadocCustomization getTravelTimeInSecondsMethodJavadoc = classCustomization.getMethod("getTravelTimeInSeconds").getJavadoc();
-        getTravelTimeInSecondsMethodJavadoc.setDescription(getTravelTimeInSecondsMethodJavadocDescription);
-        getTravelTimeInSecondsMethodJavadoc.setReturn("the travelTimeInSeconds value.");
+            ast.getClassByName("RouteSummary").ifPresent(clazz -> {
+                clazz.getMethodsByName("getTravelTimeInSeconds").get(0)
+                    .setType("Duration")
+                    .setBody(StaticJavaParser.parseBlock("{ return Duration.ofSeconds(this.travelTimeInSeconds); }"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Get the travelTimeInSeconds property: Estimated travel time in seconds property that includes the delay due to\n"
+                            + "real-time traffic. Note that even when traffic=false travelTimeInSeconds still includes the delay due to traffic.\n"
+                            + "If DepartAt is in the future, travel time is calculated using time-dependent historic traffic data."))
+                        .addBlockTag("return", "the travelTimeInSeconds value."));
 
-        // Change return type to Duration for getTrafficDelayInSeconds
-        final String getTrafficDelayInSecondsMethod = 
-            "public Duration getTrafficDelayInSeconds() {\n" +
-            "   return Duration.ofSeconds(this.trafficDelayInSeconds);\n" +
-            "}\n";
-        classCustomization.removeMethod("getTrafficDelayInSeconds");
-        classCustomization.addMethod(getTrafficDelayInSecondsMethod);
-        // javadoc customization to pass Checkstyle
-        final String getTrafficDelayInSecondsMethodJavadocDescription = "Get the trafficDelayInSeconds property: Estimated delay in seconds caused by the real-time incident(s) according\n" + 
-            "to traffic information. For routes planned with departure time in the future, delays is always 0. To return\n" +
-            "additional travel times using different types of traffic information, parameter computeTravelTimeFor=all needs to\n" +
-            "be added.\n";
-        JavadocCustomization getTrafficDelayInSecondsMethodJavadoc = classCustomization.getMethod("getTrafficDelayInSeconds").getJavadoc();
-        getTrafficDelayInSecondsMethodJavadoc.setDescription(getTrafficDelayInSecondsMethodJavadocDescription);
-        getTrafficDelayInSecondsMethodJavadoc.setReturn("the trafficDelayInSeconds value.");
+                clazz.getMethodsByName("getTrafficDelayInSeconds").get(0)
+                    .setType("Duration")
+                    .setBody(StaticJavaParser.parseBlock("{ return Duration.ofSeconds(this.trafficDelayInSeconds); }"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Get the trafficDelayInSeconds property: Estimated delay in seconds caused by the real-time incident(s) according\n"
+                            + "to traffic information. For routes planned with departure time in the future, delays is always 0. To return\n"
+                            + "additional travel times using different types of traffic information, parameter computeTravelTimeFor=all needs to\n"
+                            + "be added."))
+                        .addBlockTag("return", "the trafficDelayInSeconds value."));
+            });
+        });
     }
 
     // Customizes the VehicleLoadType class
     private void customizeVehicleLoadType(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("VehicleLoadType");
-        classCustomization.getConstant("USHAZMAT_CLASS1").rename("US_HAZMAT_CLASS1");
-        classCustomization.getConstant("USHAZMAT_CLASS2").rename("US_HAZMAT_CLASS2");
-        classCustomization.getConstant("USHAZMAT_CLASS3").rename("US_HAZMAT_CLASS3");
-        classCustomization.getConstant("USHAZMAT_CLASS4").rename("US_HAZMAT_CLASS4");
-        classCustomization.getConstant("USHAZMAT_CLASS5").rename("US_HAZMAT_CLASS5");
-        classCustomization.getConstant("USHAZMAT_CLASS6").rename("US_HAZMAT_CLASS6");
-        classCustomization.getConstant("USHAZMAT_CLASS7").rename("US_HAZMAT_CLASS7");
-        classCustomization.getConstant("USHAZMAT_CLASS8").rename("US_HAZMAT_CLASS8");
-        classCustomization.getConstant("USHAZMAT_CLASS9").rename("US_HAZMAT_CLASS9");
+        models.getClass("VehicleLoadType").customizeAst(ast -> ast.getClassByName("VehicleLoadType").ifPresent(clazz -> {
+            clazz.getFieldByName("USHAZMAT_CLASS1").ifPresent(field -> field.getVariable(0).setName("US_HAZMAT_CLASS1"));
+            clazz.getFieldByName("USHAZMAT_CLASS2").ifPresent(field -> field.getVariable(0).setName("US_HAZMAT_CLASS2"));
+            clazz.getFieldByName("USHAZMAT_CLASS3").ifPresent(field -> field.getVariable(0).setName("US_HAZMAT_CLASS3"));
+            clazz.getFieldByName("USHAZMAT_CLASS4").ifPresent(field -> field.getVariable(0).setName("US_HAZMAT_CLASS4"));
+            clazz.getFieldByName("USHAZMAT_CLASS5").ifPresent(field -> field.getVariable(0).setName("US_HAZMAT_CLASS5"));
+            clazz.getFieldByName("USHAZMAT_CLASS6").ifPresent(field -> field.getVariable(0).setName("US_HAZMAT_CLASS6"));
+            clazz.getFieldByName("USHAZMAT_CLASS7").ifPresent(field -> field.getVariable(0).setName("US_HAZMAT_CLASS7"));
+            clazz.getFieldByName("USHAZMAT_CLASS8").ifPresent(field -> field.getVariable(0).setName("US_HAZMAT_CLASS8"));
+            clazz.getFieldByName("USHAZMAT_CLASS9").ifPresent(field -> field.getVariable(0).setName("US_HAZMAT_CLASS9"));
+        }));
     }
 }

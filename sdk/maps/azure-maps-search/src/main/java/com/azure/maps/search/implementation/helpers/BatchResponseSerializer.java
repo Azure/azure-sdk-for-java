@@ -3,11 +3,6 @@
 
 package com.azure.maps.search.implementation.helpers;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UncheckedIOException;
-
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
@@ -18,22 +13,28 @@ import com.azure.maps.search.implementation.models.ReverseSearchAddressBatchResu
 import com.azure.maps.search.implementation.models.SearchAddressBatchResult;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
-
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
 
 /**
  * Jackson based implementation of the {@link JsonSerializer}.
- *
- * This implementation first deserializes the response into a private {@link SearchAddressResult}
+ * <p>
+ * This implementation first deserializes the response into a private {@link SearchAddressBatchResult}
  * then converts it to a public {@link BatchSearchResult} with the right properties and methods.
- *
  */
 public final class BatchResponseSerializer implements JsonSerializer {
     private final SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final ClientLogger logger = new ClientLogger(BatchResponseSerializer.class);
 
-    static class SearchTypeReference extends TypeReference<SearchAddressBatchResult> { };
-    static class ReverseSearchTypeReference extends TypeReference<ReverseSearchAddressBatchResult> { };
+    static class SearchTypeReference extends TypeReference<SearchAddressBatchResult> {
+    }
+
+    static class ReverseSearchTypeReference extends TypeReference<ReverseSearchAddressBatchResult> {
+    }
 
     /**
      * Performs deserialization from {@link SearchAddressBatchResult} or {@link ReverseSearchAddressBatchResult}
@@ -45,16 +46,15 @@ public final class BatchResponseSerializer implements JsonSerializer {
         try {
             if (typeReference.getJavaType().getTypeName().contains("BatchSearchResult")) {
                 TypeReference<SearchAddressBatchResult> interimType = new SearchTypeReference();
-                SearchAddressBatchResult interimResult = jacksonAdapter
-                    .<SearchAddressBatchResult>deserialize(data, interimType.getJavaType(),
-                        SerializerEncoding.JSON);
+                SearchAddressBatchResult interimResult = jacksonAdapter.<SearchAddressBatchResult>deserialize(data,
+                    interimType.getJavaType(), SerializerEncoding.JSON);
                 BatchSearchResult result = Utility.toBatchSearchResult(interimResult);
                 return (T) result;
             } else if (typeReference.getJavaType().getTypeName().contains("BatchReverseSearchResult")) {
                 TypeReference<ReverseSearchAddressBatchResult> interimType = new ReverseSearchTypeReference();
-                ReverseSearchAddressBatchResult interimResult = jacksonAdapter
-                    .<ReverseSearchAddressBatchResult>deserialize(data, interimType.getJavaType(),
-                        SerializerEncoding.JSON);
+                ReverseSearchAddressBatchResult interimResult
+                    = jacksonAdapter.<ReverseSearchAddressBatchResult>deserialize(data, interimType.getJavaType(),
+                    SerializerEncoding.JSON);
                 BatchReverseSearchResult result = Utility.toBatchReverseSearchResult(interimResult);
                 return (T) result;
             } else {
@@ -76,12 +76,12 @@ public final class BatchResponseSerializer implements JsonSerializer {
 
     @Override
     public <T> Mono<T> deserializeFromBytesAsync(byte[] data, TypeReference<T> typeReference) {
-        return Mono.defer(() -> Mono.fromCallable(() -> deserializeFromBytes(data, typeReference)));
+        return Mono.fromCallable(() -> deserializeFromBytes(data, typeReference));
     }
 
     @Override
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
-        return Mono.defer(() -> Mono.fromCallable(() -> deserialize(stream, typeReference)));
+        return Mono.fromCallable(() -> deserialize(stream, typeReference));
     }
 
     @Override
@@ -104,7 +104,7 @@ public final class BatchResponseSerializer implements JsonSerializer {
 
     @Override
     public Mono<byte[]> serializeToBytesAsync(Object value) {
-        return Mono.defer(() -> Mono.fromCallable(() -> serializeToBytes(value)));
+        return Mono.fromCallable(() -> serializeToBytes(value));
     }
 
     @Override

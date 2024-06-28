@@ -5,27 +5,73 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An item returned from Search Address Batch service call. */
+/**
+ * An item returned from Search Address Batch service call.
+ */
 @Immutable
 public final class SearchAddressBatchItemPrivate extends BatchResultItem {
     /*
-     * The result of the query. SearchAddressResponse if the query completed successfully, ErrorResponse otherwise.
+     * The result of the query. SearchAddressResult if the query completed successfully, ErrorResponse otherwise.
      */
-    @JsonProperty(value = "response", access = JsonProperty.Access.WRITE_ONLY)
     private SearchAddressBatchItemPrivateResponse response;
 
-    /** Creates an instance of SearchAddressBatchItemPrivate class. */
-    public SearchAddressBatchItemPrivate() {}
+    /**
+     * Creates an instance of SearchAddressBatchItemPrivate class.
+     */
+    public SearchAddressBatchItemPrivate() {
+    }
 
     /**
-     * Get the response property: The result of the query. SearchAddressResponse if the query completed successfully,
+     * Get the response property: The result of the query. SearchAddressResult if the query completed successfully,
      * ErrorResponse otherwise.
-     *
+     * 
      * @return the response value.
      */
     public SearchAddressBatchItemPrivateResponse getResponse() {
         return this.response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchAddressBatchItemPrivate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchAddressBatchItemPrivate if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchAddressBatchItemPrivate.
+     */
+    public static SearchAddressBatchItemPrivate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchAddressBatchItemPrivate deserializedSearchAddressBatchItemPrivate
+                = new SearchAddressBatchItemPrivate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("statusCode".equals(fieldName)) {
+                    deserializedSearchAddressBatchItemPrivate.setStatusCode(reader.getNullable(JsonReader::getInt));
+                } else if ("response".equals(fieldName)) {
+                    deserializedSearchAddressBatchItemPrivate.response
+                        = SearchAddressBatchItemPrivateResponse.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchAddressBatchItemPrivate;
+        });
     }
 }

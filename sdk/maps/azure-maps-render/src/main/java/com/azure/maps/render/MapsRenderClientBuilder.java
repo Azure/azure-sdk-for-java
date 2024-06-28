@@ -4,12 +4,6 @@
 
 package com.azure.maps.render;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -19,6 +13,7 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -41,7 +36,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.maps.render.implementation.RenderClientImpl;
 import com.azure.maps.render.implementation.RenderClientImplBuilder;
 
-/** A builder for creating a new instance of the RenderClient type.
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+/**
+ * A builder for creating a new instance of the RenderClient type.
  * Builder class used to instantiate both synchronous and asynchronous {@link MapsRenderClient} clients.
  * Creating a sync client using a {@link com.azure.core.credential.AzureKeyCredential}:
  * <!-- src_embed com.azure.maps.render.sync.builder.key.instantiation -->
@@ -76,26 +77,27 @@ import com.azure.maps.render.implementation.RenderClientImplBuilder;
  * </pre>
  * <!-- end com.azure.maps.render.sync.builder.ad.instantiation -->
  */
-@ServiceClientBuilder(serviceClients = {MapsRenderClient.class, MapsRenderAsyncClient.class})
-public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<MapsRenderClientBuilder>,
-    TokenCredentialTrait<MapsRenderClientBuilder>, HttpTrait<MapsRenderClientBuilder>,
-    ConfigurationTrait<MapsRenderClientBuilder>, EndpointTrait<MapsRenderClientBuilder>  {
+@ServiceClientBuilder(serviceClients = { MapsRenderClient.class, MapsRenderAsyncClient.class })
+public final class MapsRenderClientBuilder
+    implements AzureKeyCredentialTrait<MapsRenderClientBuilder>, TokenCredentialTrait<MapsRenderClientBuilder>,
+    HttpTrait<MapsRenderClientBuilder>, ConfigurationTrait<MapsRenderClientBuilder>,
+    EndpointTrait<MapsRenderClientBuilder> {
 
     // auth scope
-    static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
+    static final String[] DEFAULT_SCOPES = new String[] { "https://atlas.microsoft.com/.default" };
 
     //constants
     private static final ClientLogger LOGGER = new ClientLogger(MapsRenderClientBuilder.class);
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private static final String X_MS_CLIENT_ID = "x-ms-client-id";
+    private static final HttpHeaderName X_MS_CLIENT_ID = HttpHeaderName.fromString("x-ms-client-id");
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy();
 
     // subscription key
     static final String RENDER_SUBSCRIPTION_KEY = "subscription-key";
 
     // instance fields
-    private final Map<String, String> properties = new HashMap<>();
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-maps-render.properties");
     private String endpoint;
     private MapsRenderServiceVersion serviceVersion;
     private String mapsClientId;
@@ -170,6 +172,7 @@ public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<Ma
 
     /**
      * Render service version
+     *
      * @param version the service version
      * @return a reference to this {@code RenderClientBuilder}
      */
@@ -290,7 +293,7 @@ public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<Ma
      * @throws NullPointerException If {@code keyCredential} is null.
      */
     @Override
-    public MapsRenderClientBuilder credential(AzureKeyCredential keyCredential)  {
+    public MapsRenderClientBuilder credential(AzureKeyCredential keyCredential) {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
@@ -318,13 +321,13 @@ public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<Ma
         builder.httpClient(this.httpClient);
         builder.httpLogOptions(this.httpLogOptions);
 
-        RenderClientImpl client = builder.buildClient();
-        return client;
+        return builder.buildClient();
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
@@ -334,23 +337,22 @@ public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<Ma
 
         // Configure pipelines and user agent
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "JavaRenderSDK");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, serviceVersion.getVersion());
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "JavaRenderSDK");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, serviceVersion.getVersion());
         String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
 
         // configure headers
-        HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
 
         // Authentications
         if (tokenCredential != null) {
             if (this.mapsClientId == null) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Missing 'mapsClientId' parameter required for Azure AD Authentication"));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    "Missing 'mapsClientId' parameter required for Azure AD Authentication"));
             }
             // we need the x-ms-client header
             HttpHeaders clientHeader = new HttpHeaders();
@@ -378,12 +380,9 @@ public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<Ma
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         // build the http pipeline
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .build();
-        return httpPipeline;
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
     }
 
     /**
@@ -406,6 +405,7 @@ public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<Ma
 
     /**
      * Sets retry options
+     *
      * @param retryOptions the retry options for the client
      * @return a reference to this {@code RenderClientBuilder}
      */

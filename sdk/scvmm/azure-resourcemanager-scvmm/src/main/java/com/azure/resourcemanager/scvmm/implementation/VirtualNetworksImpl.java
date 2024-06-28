@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.scvmm.fluent.VirtualNetworksClient;
 import com.azure.resourcemanager.scvmm.fluent.models.VirtualNetworkInner;
+import com.azure.resourcemanager.scvmm.models.ForceDelete;
 import com.azure.resourcemanager.scvmm.models.VirtualNetwork;
 import com.azure.resourcemanager.scvmm.models.VirtualNetworks;
 
@@ -21,10 +22,42 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
 
     private final com.azure.resourcemanager.scvmm.ScvmmManager serviceManager;
 
-    public VirtualNetworksImpl(
-        VirtualNetworksClient innerClient, com.azure.resourcemanager.scvmm.ScvmmManager serviceManager) {
+    public VirtualNetworksImpl(VirtualNetworksClient innerClient,
+        com.azure.resourcemanager.scvmm.ScvmmManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public PagedIterable<VirtualNetwork> list() {
+        PagedIterable<VirtualNetworkInner> inner = this.serviceClient().list();
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<VirtualNetwork> list(Context context) {
+        PagedIterable<VirtualNetworkInner> inner = this.serviceClient().list(context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<VirtualNetwork> listByResourceGroup(String resourceGroupName) {
+        PagedIterable<VirtualNetworkInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<VirtualNetwork> listByResourceGroup(String resourceGroupName, Context context) {
+        PagedIterable<VirtualNetworkInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
+    }
+
+    public Response<VirtualNetwork> getByResourceGroupWithResponse(String resourceGroupName, String virtualNetworkName,
+        Context context) {
+        Response<VirtualNetworkInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VirtualNetworkImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public VirtualNetwork getByResourceGroup(String resourceGroupName, String virtualNetworkName) {
@@ -36,130 +69,67 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
         }
     }
 
-    public Response<VirtualNetwork> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualNetworkName, Context context) {
-        Response<VirtualNetworkInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new VirtualNetworkImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public void delete(String resourceGroupName, String virtualNetworkName, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, virtualNetworkName, force);
-    }
-
     public void delete(String resourceGroupName, String virtualNetworkName) {
         this.serviceClient().delete(resourceGroupName, virtualNetworkName);
     }
 
-    public void delete(String resourceGroupName, String virtualNetworkName, Boolean force, Context context) {
+    public void delete(String resourceGroupName, String virtualNetworkName, ForceDelete force, Context context) {
         this.serviceClient().delete(resourceGroupName, virtualNetworkName, force, context);
     }
 
-    public PagedIterable<VirtualNetwork> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<VirtualNetworkInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<VirtualNetwork> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<VirtualNetworkInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<VirtualNetwork> list() {
-        PagedIterable<VirtualNetworkInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<VirtualNetwork> list(Context context) {
-        PagedIterable<VirtualNetworkInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
-    }
-
     public VirtualNetwork getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualNetworkName = Utils.getValueFromIdByName(id, "virtualNetworks");
+        String virtualNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworks");
         if (virtualNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, Context.NONE).getValue();
     }
 
     public Response<VirtualNetwork> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualNetworkName = Utils.getValueFromIdByName(id, "virtualNetworks");
+        String virtualNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworks");
         if (virtualNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualNetworkName = Utils.getValueFromIdByName(id, "virtualNetworks");
+        String virtualNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworks");
         if (virtualNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
         }
-        Boolean localForce = null;
+        ForceDelete localForce = null;
         this.delete(resourceGroupName, virtualNetworkName, localForce, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Boolean force, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public void deleteByIdWithResponse(String id, ForceDelete force, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualNetworkName = Utils.getValueFromIdByName(id, "virtualNetworks");
+        String virtualNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworks");
         if (virtualNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
         }
         this.delete(resourceGroupName, virtualNetworkName, force, context);
     }

@@ -10,6 +10,8 @@ import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
+import reactor.core.scheduler.Scheduler;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,9 +44,11 @@ public final class CosmosBulkExecutionOptions {
     private List<String> excludeRegions;
     private BulkExecutorDiagnosticsTracker diagnosticsTracker = null;
     private CosmosItemSerializer customSerializer;
+    private Scheduler schedulerOverride = null;
 
 
     CosmosBulkExecutionOptions(CosmosBulkExecutionOptions toBeCloned) {
+        this.schedulerOverride = toBeCloned.schedulerOverride;
         this.initialMicroBatchSize = toBeCloned.initialMicroBatchSize;
         this.maxMicroBatchConcurrency = toBeCloned.maxMicroBatchConcurrency;
         this.maxMicroBatchSize = toBeCloned.maxMicroBatchSize;
@@ -393,6 +397,13 @@ public final class CosmosBulkExecutionOptions {
         return this.diagnosticsTracker;
     }
 
+    CosmosBulkExecutionOptions setSchedulerOverride(Scheduler customScheduler) {
+        this.schedulerOverride = customScheduler;
+        return this;
+    }
+
+    Scheduler getSchedulerOverride() { return this.schedulerOverride; }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -508,6 +519,16 @@ public final class CosmosBulkExecutionOptions {
                 @Override
                 public BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
                     return cosmosBulkExecutionOptions.getDiagnosticsTracker();
+                }
+
+                @Override
+                public Scheduler getSchedulerOverride(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
+                    return cosmosBulkExecutionOptions.getSchedulerOverride();
+                }
+
+                @Override
+                public CosmosBulkExecutionOptions setSchedulerOverride(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, Scheduler customScheduler) {
+                    return cosmosBulkExecutionOptions.setSchedulerOverride(customScheduler);
                 }
 
                 @Override
