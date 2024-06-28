@@ -9,18 +9,13 @@ import com.azure.communication.identity.implementation.models.CommunicationError
 import com.azure.communication.identity.models.IdentityError;
 import com.azure.communication.identity.models.IdentityErrorResponseException;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.http.MockHttpResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class IdentityErrorConverterUnitTests {
 
@@ -29,7 +24,7 @@ public class IdentityErrorConverterUnitTests {
 
     @BeforeEach
     public void setUp() {
-        httpResponse = new MockHttpResponse(null, 0);
+        httpResponse = Mockito.mock(HttpResponse.class);
     }
 
     @AfterEach
