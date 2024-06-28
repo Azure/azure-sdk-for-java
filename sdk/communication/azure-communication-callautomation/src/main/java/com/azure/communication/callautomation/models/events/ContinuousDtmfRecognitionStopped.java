@@ -16,10 +16,7 @@ public final class ContinuousDtmfRecognitionStopped extends CallAutomationEventB
     @JsonProperty(value = "resultInformation")
     private final ResultInformation resultInformation;
 
-    /**
-     * Constructor for ContinuousDtmfRecognitionToneReceived
-     */
-    public ContinuousDtmfRecognitionStopped() {
+    private ContinuousDtmfRecognitionStopped() {
         resultInformation = null;
     }
 

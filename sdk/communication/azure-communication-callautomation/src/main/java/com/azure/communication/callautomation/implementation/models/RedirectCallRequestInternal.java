@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for redirecting the call. */
+/**
+ * The request payload for redirecting the call.
+ */
 @Fluent
 public final class RedirectCallRequestInternal {
     /*
@@ -22,15 +24,15 @@ public final class RedirectCallRequestInternal {
     @JsonProperty(value = "target", required = true)
     private CommunicationIdentifierModel target;
 
-    /*
-     * Used by customer to send custom calling context to targets
+    /**
+     * Creates an instance of RedirectCallRequestInternal class.
      */
-    @JsonProperty(value = "customCallingContext")
-    private CustomCallingContext customCallingContext;
+    public RedirectCallRequestInternal() {
+    }
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
-     *
+     * 
      * @return the incomingCallContext value.
      */
     public String getIncomingCallContext() {
@@ -39,7 +41,7 @@ public final class RedirectCallRequestInternal {
 
     /**
      * Set the incomingCallContext property: The context associated with the call.
-     *
+     * 
      * @param incomingCallContext the incomingCallContext value to set.
      * @return the RedirectCallRequestInternal object itself.
      */
@@ -50,7 +52,7 @@ public final class RedirectCallRequestInternal {
 
     /**
      * Get the target property: The target identity to redirect the call to.
-     *
+     * 
      * @return the target value.
      */
     public CommunicationIdentifierModel getTarget() {
@@ -59,32 +61,12 @@ public final class RedirectCallRequestInternal {
 
     /**
      * Set the target property: The target identity to redirect the call to.
-     *
+     * 
      * @param target the target value to set.
      * @return the RedirectCallRequestInternal object itself.
      */
     public RedirectCallRequestInternal setTarget(CommunicationIdentifierModel target) {
         this.target = target;
-        return this;
-    }
-
-    /**
-     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
-     *
-     * @return the customCallingContext value.
-     */
-    public CustomCallingContext getCustomCallingContext() {
-        return this.customCallingContext;
-    }
-
-    /**
-     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
-     *
-     * @param customCallingContext the customCallingContext value to set.
-     * @return the RedirectCallRequestInternal object itself.
-     */
-    public RedirectCallRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
-        this.customCallingContext = customCallingContext;
         return this;
     }
 }

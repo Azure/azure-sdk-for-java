@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response payload for getting participants of the call. */
+/**
+ * The response payload for getting participants of the call.
+ */
 @Fluent
 public final class GetParticipantsResponseInternal {
     /*
@@ -24,8 +26,14 @@ public final class GetParticipantsResponseInternal {
     private String nextLink;
 
     /**
+     * Creates an instance of GetParticipantsResponseInternal class.
+     */
+    public GetParticipantsResponseInternal() {
+    }
+
+    /**
      * Get the value property: List of the current participants in the call.
-     *
+     * 
      * @return the value value.
      */
     public List<CallParticipantInternal> getValue() {
@@ -34,7 +42,7 @@ public final class GetParticipantsResponseInternal {
 
     /**
      * Set the value property: List of the current participants in the call.
-     *
+     * 
      * @param value the value value to set.
      * @return the GetParticipantsResponseInternal object itself.
      */
@@ -45,7 +53,7 @@ public final class GetParticipantsResponseInternal {
 
     /**
      * Get the nextLink property: Continue of the list of participants.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -54,7 +62,7 @@ public final class GetParticipantsResponseInternal {
 
     /**
      * Set the nextLink property: Continue of the list of participants.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the GetParticipantsResponseInternal object itself.
      */
