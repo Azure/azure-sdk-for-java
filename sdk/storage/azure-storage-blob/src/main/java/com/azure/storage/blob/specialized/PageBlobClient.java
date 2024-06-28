@@ -71,6 +71,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -1123,24 +1124,24 @@ public final class PageBlobClient extends BlobClientBase {
         Objects.requireNonNull(options, "options must not be null");
         Context finalContext = context == null ? Context.NONE : context;
 
-        // Helper function to retrieve a page of items
-        Function<String, PagedResponse<PageRangeItem>> pageRetriever = continuationToken -> {
+        BiFunction<String, Integer, PagedResponse<PageRangeItem>> pageRetriever = (continuationToken, pageSize) -> {
             BlobRequestConditions requestConditions = options.getRequestConditions() == null
                 ? new BlobRequestConditions() : options.getRequestConditions();
-            Integer pageSize = options.getMaxResultsPerPage();
 
-            // Call the synchronous service method
+            // Dynamically use pageSize provided during the iteration if available
+            Integer finalPageSize = pageSize != null ? pageSize : options.getMaxResultsPerPage();
+
             Callable<ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList>> operation = () ->
-                this.azureBlobStorage.getPageBlobs()
-                .getPageRangesDiffWithResponse(containerName, blobName, getSnapshotId(), null,
-                    options.getPreviousSnapshot(), null, options.getRange().toHeaderValue(), requestConditions.getLeaseId(),
+                this.azureBlobStorage.getPageBlobs().getPageRangesDiffWithResponse(
+                    containerName, blobName, getSnapshotId(), null,
+                    options.getPreviousSnapshot(), null, options.getRange().toHeaderValue(),
+                    requestConditions.getLeaseId(),
                     requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                    requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(),
-                    null, continuationToken, pageSize, finalContext);
+                    requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                    requestConditions.getTagsConditions(), null, continuationToken, finalPageSize, finalContext);
 
             ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList> response = sendRequest(operation, timeout,
                 BlobStorageException.class);
-
             List<PageRangeItem> value = parsePageRangeItems(response.getValue());
 
             return new PagedResponseBase<>(
@@ -1151,8 +1152,7 @@ public final class PageBlobClient extends BlobClientBase {
                 PageListHelper.getNextMarker(response.getValue()),
                 response.getDeserializedHeaders());
         };
-
-        return new PagedIterable<>(() -> pageRetriever.apply(null), pageRetriever);
+        return new PagedIterable<>(pageSize -> pageRetriever.apply(null, pageSize), pageRetriever);
     }
 
     /**
