@@ -10,9 +10,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.implementation.util.MappingUtils;
 import java.io.IOException;
 import java.util.Map;
+import com.azure.search.documents.implementation.util.MappingUtils;
 
 /**
  * Represents parameters for indexer execution.
@@ -95,8 +95,8 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
     }
 
     /**
-     * Get the maxFailedItemsPerBatch property: The maximum number of items in a single batch that can fail indexing
-     * for the batch to still be considered successful. -1 means no limit. Default is 0.
+     * Get the maxFailedItemsPerBatch property: The maximum number of items in a single batch that can fail indexing for
+     * the batch to still be considered successful. -1 means no limit. Default is 0.
      *
      * @return the maxFailedItemsPerBatch value.
      */
@@ -105,8 +105,8 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
     }
 
     /**
-     * Set the maxFailedItemsPerBatch property: The maximum number of items in a single batch that can fail indexing
-     * for the batch to still be considered successful. -1 means no limit. Default is 0.
+     * Set the maxFailedItemsPerBatch property: The maximum number of items in a single batch that can fail indexing for
+     * the batch to still be considered successful. -1 means no limit. Default is 0.
      *
      * @param maxFailedItemsPerBatch the maxFailedItemsPerBatch value to set.
      * @return the IndexingParameters object itself.
@@ -139,6 +139,9 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
