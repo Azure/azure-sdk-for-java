@@ -38,7 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
@@ -344,7 +343,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
 
-        StepVerifier.create(client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "sZ9IS4UZLYZGVtVL8sULUA-DPgpgK02",
+        StepVerifier.create(client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "31jRN7LvokqoSbGxaUUjcw-DPgpgK02",
             requestOptions))
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());
