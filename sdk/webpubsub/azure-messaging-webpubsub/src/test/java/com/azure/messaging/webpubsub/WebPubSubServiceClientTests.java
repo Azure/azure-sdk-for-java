@@ -12,6 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.models.ClientEndpointType;
@@ -204,7 +205,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testGetAuthenticationToken() throws ParseException {
         WebPubSubClientAccessToken token = client.getClientAccessToken(new GetClientAccessTokenOptions());
         Assertions.assertNotNull(token);
@@ -226,6 +227,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
+    @LiveOnly
     public void testGetMqttAuthenticationToken() throws ParseException {
         GetClientAccessTokenOptions options = new GetClientAccessTokenOptions()
             .setClientEndpointType(ClientEndpointType.MQTT);
@@ -288,14 +290,17 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
+    @DoNotRecord
     public void testCheckPermission() {
-        assumeTrue(getTestMode() == TestMode.PLAYBACK, "This requires real "
-            + "connection id that is created when a client connects to Web PubSub service. So, run this in PLAYBACK "
-            + "mode only.");
 
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
-        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "71xtjgThROOJ6DsVY3xbBw2ef45fd11",
+        /*
+            To run this test in LIVE mode, please obtain a connectionID of a client with SEND_TO_GROUP Permission.
+            To do this, refer to https://learn.microsoft.com/en-us/azure/azure-web-pubsub/quickstarts-pubsub-among-clients
+            and define the connected event callback to get the connectionID.
+         */
+        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "sZ9IS4UZLYZGVtVL8sULUA-DPgpgK02",
             requestOptions).getValue();
         Assertions.assertTrue(permission);
     }
