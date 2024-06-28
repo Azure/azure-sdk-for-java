@@ -14,4 +14,10 @@ public final class CloudAccountDetailsInnerTests {
             = BinaryData.fromString("{\"cloudAccountName\":\"wfluszdt\",\"cloudAccountHomeRegion\":\"rkwofyyvoqa\"}")
                 .toObject(CloudAccountDetailsInner.class);
     }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CloudAccountDetailsInner model = new CloudAccountDetailsInner();
+        model = BinaryData.fromObject(model).toObject(CloudAccountDetailsInner.class);
+    }
 }

@@ -9,9 +9,8 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.scvmm.fluent.models.VirtualNetworkInner;
 import com.azure.resourcemanager.scvmm.models.ExtendedLocation;
+import com.azure.resourcemanager.scvmm.models.ResourcePatch;
 import com.azure.resourcemanager.scvmm.models.VirtualNetwork;
-import com.azure.resourcemanager.scvmm.models.VirtualNetworkProperties;
-import com.azure.resourcemanager.scvmm.models.VirtualNetworkTagsUpdate;
 import java.util.Collections;
 import java.util.Map;
 
@@ -45,16 +44,32 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
         }
     }
 
-    public VirtualNetworkProperties properties() {
-        return this.innerModel().properties();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public String inventoryItemId() {
+        return this.innerModel().inventoryItemId();
+    }
+
+    public String uuid() {
+        return this.innerModel().uuid();
+    }
+
+    public String vmmServerId() {
+        return this.innerModel().vmmServerId();
+    }
+
+    public String networkName() {
+        return this.innerModel().networkName();
+    }
+
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
     }
 
     public Region region() {
@@ -63,10 +78,6 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
 
     public String regionName() {
         return this.location();
-    }
-
-    public String resourceGroupName() {
-        return resourceGroupName;
     }
 
     public VirtualNetworkInner innerModel() {
@@ -81,7 +92,7 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
 
     private String virtualNetworkName;
 
-    private VirtualNetworkTagsUpdate updateProperties;
+    private ResourcePatch updateBody;
 
     public VirtualNetworkImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -89,16 +100,20 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
     }
 
     public VirtualNetwork create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworks()
-            .createOrUpdate(resourceGroupName, virtualNetworkName, this.innerModel(), Context.NONE);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getVirtualNetworks()
+                .createOrUpdate(resourceGroupName, virtualNetworkName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VirtualNetwork create(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworks()
-            .createOrUpdate(resourceGroupName, virtualNetworkName, this.innerModel(), context);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getVirtualNetworks()
+                .createOrUpdate(resourceGroupName, virtualNetworkName, this.innerModel(), context);
         return this;
     }
 
@@ -109,44 +124,52 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
     }
 
     public VirtualNetworkImpl update() {
-        this.updateProperties = new VirtualNetworkTagsUpdate();
+        this.updateBody = new ResourcePatch();
         return this;
     }
 
     public VirtualNetwork apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworks()
-            .update(resourceGroupName, virtualNetworkName, updateProperties, Context.NONE);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getVirtualNetworks()
+                .update(resourceGroupName, virtualNetworkName, updateBody, Context.NONE);
         return this;
     }
 
     public VirtualNetwork apply(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworks()
-            .update(resourceGroupName, virtualNetworkName, updateProperties, context);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getVirtualNetworks()
+                .update(resourceGroupName, virtualNetworkName, updateBody, context);
         return this;
     }
 
     VirtualNetworkImpl(VirtualNetworkInner innerObject, com.azure.resourcemanager.scvmm.ScvmmManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.virtualNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualNetworks");
+        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.virtualNetworkName = Utils.getValueFromIdByName(innerObject.id(), "virtualNetworks");
     }
 
     public VirtualNetwork refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworks()
-            .getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, Context.NONE)
-            .getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getVirtualNetworks()
+                .getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, Context.NONE)
+                .getValue();
         return this;
     }
 
     public VirtualNetwork refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworks()
-            .getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, context)
-            .getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getVirtualNetworks()
+                .getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, context)
+                .getValue();
         return this;
     }
 
@@ -170,13 +193,23 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
             this.innerModel().withTags(tags);
             return this;
         } else {
-            this.updateProperties.withTags(tags);
+            this.updateBody.withTags(tags);
             return this;
         }
     }
 
-    public VirtualNetworkImpl withProperties(VirtualNetworkProperties properties) {
-        this.innerModel().withProperties(properties);
+    public VirtualNetworkImpl withInventoryItemId(String inventoryItemId) {
+        this.innerModel().withInventoryItemId(inventoryItemId);
+        return this;
+    }
+
+    public VirtualNetworkImpl withUuid(String uuid) {
+        this.innerModel().withUuid(uuid);
+        return this;
+    }
+
+    public VirtualNetworkImpl withVmmServerId(String vmmServerId) {
+        this.innerModel().withVmmServerId(vmmServerId);
         return this;
     }
 

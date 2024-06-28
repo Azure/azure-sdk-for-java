@@ -7,9 +7,7 @@ package com.azure.resourcemanager.storagemover.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Endpoint resource.
- */
+/** The Endpoint resource. */
 @Fluent
 public final class EndpointBaseUpdateParameters {
     /*
@@ -18,15 +16,13 @@ public final class EndpointBaseUpdateParameters {
     @JsonProperty(value = "properties")
     private EndpointBaseUpdateProperties properties;
 
-    /**
-     * Creates an instance of EndpointBaseUpdateParameters class.
-     */
+    /** Creates an instance of EndpointBaseUpdateParameters class. */
     public EndpointBaseUpdateParameters() {
     }
 
     /**
      * Get the properties property: The Endpoint resource, which contains information about file sources and targets.
-     * 
+     *
      * @return the properties value.
      */
     public EndpointBaseUpdateProperties properties() {
@@ -35,7 +31,7 @@ public final class EndpointBaseUpdateParameters {
 
     /**
      * Set the properties property: The Endpoint resource, which contains information about file sources and targets.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the EndpointBaseUpdateParameters object itself.
      */
@@ -46,7 +42,7 @@ public final class EndpointBaseUpdateParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

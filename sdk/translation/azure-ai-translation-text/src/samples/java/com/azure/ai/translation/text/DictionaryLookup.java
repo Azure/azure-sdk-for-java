@@ -3,8 +3,11 @@
 
 package com.azure.ai.translation.text;
 
-import com.azure.ai.translation.text.models.DictionaryLookupItem;
+import java.util.List;
+import java.util.ArrayList;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.ai.translation.text.models.DictionaryLookupItem;
+import com.azure.ai.translation.text.models.InputTextItem;
 
 /**
  * Returns equivalent words for the source term in the target language.

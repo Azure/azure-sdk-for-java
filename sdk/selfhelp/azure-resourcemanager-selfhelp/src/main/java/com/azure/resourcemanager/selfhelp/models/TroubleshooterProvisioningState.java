@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -51,6 +52,7 @@ public final class TroubleshooterProvisioningState extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding TroubleshooterProvisioningState.
      */
+    @JsonCreator
     public static TroubleshooterProvisioningState fromString(String name) {
         return fromString(name, TroubleshooterProvisioningState.class);
     }

@@ -56,8 +56,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class JsonSerializable {
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonSerializable.class);
-    private final static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
-        ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
     transient ObjectNode propertyBag = null;
     private ObjectMapper om;
 
@@ -284,7 +282,7 @@ public class JsonSerializable {
         } else {
             // Arrays, POJO, ObjectNode, number (includes int, float, double etc), boolean,
             // and string
-            Map<String, Object> jsonTreeMap = itemSerializerAccessor.serializeSafe(itemSerializer, value);
+            Map<String, Object> jsonTreeMap = itemSerializer.serialize(value);
             if (jsonTreeMap instanceof ObjectNodeMap) {
                 this.propertyBag.set(propertyName, ((ObjectNodeMap) jsonTreeMap).getObjectNode());
             } else if (jsonTreeMap instanceof PrimitiveJsonNodeMap) {

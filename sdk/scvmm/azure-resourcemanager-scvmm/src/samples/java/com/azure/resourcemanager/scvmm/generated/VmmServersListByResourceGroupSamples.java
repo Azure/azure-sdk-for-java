@@ -4,33 +4,19 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-/**
- * Samples for VmmServers ListByResourceGroup.
- */
+import com.azure.core.util.Context;
+
+/** Samples for VmmServers ListByResourceGroup. */
 public final class VmmServersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
-     * VmmServers_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListVMMServersByResourceGroup.json
      */
     /**
-     * Sample code: VmmServers_ListByResourceGroup_MinimumSet.
-     * 
+     * Sample code: ListVmmServersByResourceGroup.
+     *
      * @param manager Entry point to ScvmmManager.
      */
-    public static void vmmServersListByResourceGroupMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.vmmServers().listByResourceGroup("rgscvmm", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
-     * VmmServers_ListByResourceGroup_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: VmmServers_ListByResourceGroup_MaximumSet.
-     * 
-     * @param manager Entry point to ScvmmManager.
-     */
-    public static void vmmServersListByResourceGroupMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.vmmServers().listByResourceGroup("rgscvmm", com.azure.core.util.Context.NONE);
+    public static void listVmmServersByResourceGroup(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.vmmServers().listByResourceGroup("testrg", Context.NONE);
     }
 }

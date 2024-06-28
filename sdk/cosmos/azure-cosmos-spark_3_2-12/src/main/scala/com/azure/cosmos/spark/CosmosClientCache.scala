@@ -21,7 +21,7 @@ import reactor.core.scheduler.{Scheduler, Schedulers}
 
 import java.io.ByteArrayInputStream
 import java.time.{Duration, Instant}
-import java.util.{Base64, ConcurrentModificationException, ServiceLoader}
+import java.util.{Base64, ConcurrentModificationException}
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
 import scala.collection.concurrent.TrieMap
@@ -393,32 +393,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case None =>
       }
 
-      if (cosmosClientConfiguration.clientBuilderInterceptors.isDefined) {
-        logInfo(s"CosmosClientBuilder interceptors specified: ${cosmosClientConfiguration.clientBuilderInterceptors.get}")
-        val interceptorsBuilder = scala.collection.immutable.HashMap.newBuilder[String, CosmosClientBuilderInterceptor]
-        val serviceLoader = ServiceLoader.load(classOf[CosmosClientBuilderInterceptor])
-        val services = serviceLoader.iterator()
-        while (services.hasNext) {
-          val interceptor = services.next()
-          interceptorsBuilder += (interceptor.getClass.getName.toLowerCase() -> interceptor)
-        }
-        val interceptorsFromClassPath = interceptorsBuilder.result()
-
-        val requestedInterceptors = cosmosClientConfiguration.clientBuilderInterceptors.get.split(',')
-        for (requestedInterceptorName <- requestedInterceptors) {
-          val interceptorFromClassPathOpt = interceptorsFromClassPath.get(requestedInterceptorName.toLowerCase())
-          if (interceptorFromClassPathOpt.isDefined) {
-            logInfo(s"Applying CosmosClientBuilderInterceptor `${requestedInterceptorName}`.")
-            builder = interceptorFromClassPathOpt.get.process(builder)
-          } else {
-            throw new IllegalStateException(
-              s"The requested `CosmosClientBuilderInterceptor` `$requestedInterceptorName` is not available on the classpath."
-                + s"Interceptors available on the class path are: ${interceptorsFromClassPath.keySet.mkString(",")}"
-            )
-          }
-        }
-      }
-
       builder.buildAsyncClient()
   }
   // scalastyle:on method.length
@@ -602,8 +576,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                                         // difference
                                                         httpConnectionPoolSize: Int,
                                                         useEventualConsistency: Boolean,
-                                                        preferredRegionsList: String,
-                                                        clientBuilderInterceptor: Option[String])
+                                                        preferredRegionsList: String)
 
   private[this] object ClientConfigurationWrapper {
     def apply(clientConfig: CosmosClientConfiguration): ClientConfigurationWrapper = {
@@ -617,8 +590,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         clientConfig.preferredRegionsList match {
           case Some(regionListArray) => s"[${regionListArray.mkString(", ")}]"
           case None => ""
-        },
-        clientConfig.clientBuilderInterceptors
+        }
       )
     }
   }

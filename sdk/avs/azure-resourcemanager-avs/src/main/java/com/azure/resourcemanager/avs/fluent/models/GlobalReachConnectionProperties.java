@@ -5,62 +5,56 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.models.GlobalReachConnectionProvisioningState;
 import com.azure.resourcemanager.avs.models.GlobalReachConnectionStatus;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The properties of a global reach connection.
- */
+/** The properties of a global reach connection. */
 @Fluent
-public final class GlobalReachConnectionProperties implements JsonSerializable<GlobalReachConnectionProperties> {
+public final class GlobalReachConnectionProperties {
     /*
-     * The state of the ExpressRoute Circuit Authorization provisioning
+     * The state of the  ExpressRoute Circuit Authorization provisioning
      */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GlobalReachConnectionProvisioningState provisioningState;
 
     /*
-     * The network used for global reach carved out from the original network block
-     * provided for the private cloud
+     * The network used for global reach carved out from the original network block provided for the private cloud
      */
+    @JsonProperty(value = "addressPrefix", access = JsonProperty.Access.WRITE_ONLY)
     private String addressPrefix;
 
     /*
-     * Authorization key from the peer express route used for the global reach
-     * connection
+     * Authorization key from the peer express route used for the global reach connection
      */
+    @JsonProperty(value = "authorizationKey")
     private String authorizationKey;
 
     /*
      * The connection status of the global reach connection
      */
+    @JsonProperty(value = "circuitConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private GlobalReachConnectionStatus circuitConnectionStatus;
 
     /*
-     * Identifier of the ExpressRoute Circuit to peer with in the global reach
-     * connection
+     * Identifier of the ExpressRoute Circuit to peer with in the global reach connection
      */
+    @JsonProperty(value = "peerExpressRouteCircuit")
     private String peerExpressRouteCircuit;
 
     /*
-     * The ID of the Private Cloud's ExpressRoute Circuit that is participating in the
-     * global reach connection
+     * The ID of the Private Cloud's ExpressRoute Circuit that is participating in the global reach connection
      */
+    @JsonProperty(value = "expressRouteId")
     private String expressRouteId;
 
-    /**
-     * Creates an instance of GlobalReachConnectionProperties class.
-     */
+    /** Creates an instance of GlobalReachConnectionProperties class. */
     public GlobalReachConnectionProperties() {
     }
 
     /**
      * Get the provisioningState property: The state of the ExpressRoute Circuit Authorization provisioning.
-     * 
+     *
      * @return the provisioningState value.
      */
     public GlobalReachConnectionProvisioningState provisioningState() {
@@ -70,7 +64,7 @@ public final class GlobalReachConnectionProperties implements JsonSerializable<G
     /**
      * Get the addressPrefix property: The network used for global reach carved out from the original network block
      * provided for the private cloud.
-     * 
+     *
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -80,7 +74,7 @@ public final class GlobalReachConnectionProperties implements JsonSerializable<G
     /**
      * Get the authorizationKey property: Authorization key from the peer express route used for the global reach
      * connection.
-     * 
+     *
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -90,7 +84,7 @@ public final class GlobalReachConnectionProperties implements JsonSerializable<G
     /**
      * Set the authorizationKey property: Authorization key from the peer express route used for the global reach
      * connection.
-     * 
+     *
      * @param authorizationKey the authorizationKey value to set.
      * @return the GlobalReachConnectionProperties object itself.
      */
@@ -101,7 +95,7 @@ public final class GlobalReachConnectionProperties implements JsonSerializable<G
 
     /**
      * Get the circuitConnectionStatus property: The connection status of the global reach connection.
-     * 
+     *
      * @return the circuitConnectionStatus value.
      */
     public GlobalReachConnectionStatus circuitConnectionStatus() {
@@ -111,7 +105,7 @@ public final class GlobalReachConnectionProperties implements JsonSerializable<G
     /**
      * Get the peerExpressRouteCircuit property: Identifier of the ExpressRoute Circuit to peer with in the global reach
      * connection.
-     * 
+     *
      * @return the peerExpressRouteCircuit value.
      */
     public String peerExpressRouteCircuit() {
@@ -121,7 +115,7 @@ public final class GlobalReachConnectionProperties implements JsonSerializable<G
     /**
      * Set the peerExpressRouteCircuit property: Identifier of the ExpressRoute Circuit to peer with in the global reach
      * connection.
-     * 
+     *
      * @param peerExpressRouteCircuit the peerExpressRouteCircuit value to set.
      * @return the GlobalReachConnectionProperties object itself.
      */
@@ -133,7 +127,7 @@ public final class GlobalReachConnectionProperties implements JsonSerializable<G
     /**
      * Get the expressRouteId property: The ID of the Private Cloud's ExpressRoute Circuit that is participating in the
      * global reach connection.
-     * 
+     *
      * @return the expressRouteId value.
      */
     public String expressRouteId() {
@@ -143,7 +137,7 @@ public final class GlobalReachConnectionProperties implements JsonSerializable<G
     /**
      * Set the expressRouteId property: The ID of the Private Cloud's ExpressRoute Circuit that is participating in the
      * global reach connection.
-     * 
+     *
      * @param expressRouteId the expressRouteId value to set.
      * @return the GlobalReachConnectionProperties object itself.
      */
@@ -154,60 +148,9 @@ public final class GlobalReachConnectionProperties implements JsonSerializable<G
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("authorizationKey", this.authorizationKey);
-        jsonWriter.writeStringField("peerExpressRouteCircuit", this.peerExpressRouteCircuit);
-        jsonWriter.writeStringField("expressRouteId", this.expressRouteId);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of GlobalReachConnectionProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of GlobalReachConnectionProperties if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the GlobalReachConnectionProperties.
-     */
-    public static GlobalReachConnectionProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            GlobalReachConnectionProperties deserializedGlobalReachConnectionProperties
-                = new GlobalReachConnectionProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("provisioningState".equals(fieldName)) {
-                    deserializedGlobalReachConnectionProperties.provisioningState
-                        = GlobalReachConnectionProvisioningState.fromString(reader.getString());
-                } else if ("addressPrefix".equals(fieldName)) {
-                    deserializedGlobalReachConnectionProperties.addressPrefix = reader.getString();
-                } else if ("authorizationKey".equals(fieldName)) {
-                    deserializedGlobalReachConnectionProperties.authorizationKey = reader.getString();
-                } else if ("circuitConnectionStatus".equals(fieldName)) {
-                    deserializedGlobalReachConnectionProperties.circuitConnectionStatus
-                        = GlobalReachConnectionStatus.fromString(reader.getString());
-                } else if ("peerExpressRouteCircuit".equals(fieldName)) {
-                    deserializedGlobalReachConnectionProperties.peerExpressRouteCircuit = reader.getString();
-                } else if ("expressRouteId".equals(fieldName)) {
-                    deserializedGlobalReachConnectionProperties.expressRouteId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedGlobalReachConnectionProperties;
-        });
     }
 }

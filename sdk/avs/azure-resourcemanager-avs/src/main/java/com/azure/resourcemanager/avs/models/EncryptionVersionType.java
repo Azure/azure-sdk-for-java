@@ -5,25 +5,20 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Whether the encryption version is fixed or auto-detected.
- */
+/** Property of the key if user provided or auto detected. */
 public final class EncryptionVersionType extends ExpandableStringEnum<EncryptionVersionType> {
-    /**
-     * Static value Fixed for EncryptionVersionType.
-     */
+    /** Static value Fixed for EncryptionVersionType. */
     public static final EncryptionVersionType FIXED = fromString("Fixed");
 
-    /**
-     * Static value AutoDetected for EncryptionVersionType.
-     */
+    /** Static value AutoDetected for EncryptionVersionType. */
     public static final EncryptionVersionType AUTO_DETECTED = fromString("AutoDetected");
 
     /**
      * Creates a new instance of EncryptionVersionType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,17 +27,18 @@ public final class EncryptionVersionType extends ExpandableStringEnum<Encryption
 
     /**
      * Creates or finds a EncryptionVersionType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding EncryptionVersionType.
      */
+    @JsonCreator
     public static EncryptionVersionType fromString(String name) {
         return fromString(name, EncryptionVersionType.class);
     }
 
     /**
      * Gets known EncryptionVersionType values.
-     * 
+     *
      * @return known EncryptionVersionType values.
      */
     public static Collection<EncryptionVersionType> values() {

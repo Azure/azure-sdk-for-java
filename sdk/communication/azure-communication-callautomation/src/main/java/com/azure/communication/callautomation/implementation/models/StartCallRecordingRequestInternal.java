@@ -69,10 +69,10 @@ public final class StartCallRecordingRequestInternal {
      * Optional property to specify location where recording will be stored
      */
     @JsonProperty(value = "externalStorage")
-    private RecordingStorageInternal externalStorage;
+    private ExternalStorageInternal externalStorage;
 
     /*
-     * When set to true will start recording in Pause mode, which can be
+     * When set to true will start recording in Pause mode, which could be
      * resumed.
      */
     @JsonProperty(value = "pauseOnStart")
@@ -236,7 +236,7 @@ public final class StartCallRecordingRequestInternal {
      *
      * @return the externalStorage value.
      */
-    public RecordingStorageInternal getExternalStorage() {
+    public ExternalStorageInternal getExternalStorage() {
         return this.externalStorage;
     }
 
@@ -246,22 +246,22 @@ public final class StartCallRecordingRequestInternal {
      * @param externalStorage the externalStorage value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
-    public StartCallRecordingRequestInternal setExternalStorage(RecordingStorageInternal externalStorage) {
+    public StartCallRecordingRequestInternal setExternalStorage(ExternalStorageInternal externalStorage) {
         this.externalStorage = externalStorage;
         return this;
     }
 
     /**
-     * Get the pauseOnStart property: When set to true will start recording in Pause mode, which can be resumed.
+     * Get the pauseOnStart property: When set to true will start recording in Pause mode, which could be resumed.
      *
      * @return the pauseOnStart value.
      */
-    public Boolean getPauseOnStart() {
+    public Boolean isPauseOnStart() {
         return this.pauseOnStart;
     }
 
     /**
-     * Set the pauseOnStart property: When set to true will start recording in Pause mode, which can be resumed.
+     * Set the pauseOnStart property: When set to true will start recording in Pause mode, which could be resumed.
      *
      * @param pauseOnStart the pauseOnStart value to set.
      * @return the StartCallRecordingRequestInternal object itself.

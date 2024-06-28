@@ -5,35 +5,35 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The value of the translation property is a dictionary of (key, value) pairs. Each key is a BCP 47 language tag.
  * A key identifies a language for which text can be translated to or translated from.
  */
 @Immutable
-public final class TranslationLanguage implements JsonSerializable<TranslationLanguage> {
+public final class TranslationLanguage {
 
     /*
      * Display name of the language in the locale requested via Accept-Language header.
      */
     @Generated
+    @JsonProperty(value = "name")
     private final String name;
 
     /*
      * Display name of the language in the locale native for this language.
      */
     @Generated
+    @JsonProperty(value = "nativeName")
     private final String nativeName;
 
     /*
      * Directionality, which is rtl for right-to-left languages or ltr for left-to-right languages.
      */
     @Generated
+    @JsonProperty(value = "dir")
     private final LanguageDirectionality directionality;
 
     /**
@@ -44,7 +44,10 @@ public final class TranslationLanguage implements JsonSerializable<TranslationLa
      * @param directionality the directionality value to set.
      */
     @Generated
-    private TranslationLanguage(String name, String nativeName, LanguageDirectionality directionality) {
+    @JsonCreator
+    private TranslationLanguage(@JsonProperty(value = "name") String name,
+        @JsonProperty(value = "nativeName") String nativeName,
+        @JsonProperty(value = "dir") LanguageDirectionality directionality) {
         this.name = name;
         this.nativeName = nativeName;
         this.directionality = directionality;
@@ -79,50 +82,5 @@ public final class TranslationLanguage implements JsonSerializable<TranslationLa
     @Generated
     public LanguageDirectionality getDirectionality() {
         return this.directionality;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("nativeName", this.nativeName);
-        jsonWriter.writeStringField("dir", this.directionality == null ? null : this.directionality.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TranslationLanguage from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TranslationLanguage if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TranslationLanguage.
-     */
-    @Generated
-    public static TranslationLanguage fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String name = null;
-            String nativeName = null;
-            LanguageDirectionality directionality = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("nativeName".equals(fieldName)) {
-                    nativeName = reader.getString();
-                } else if ("dir".equals(fieldName)) {
-                    directionality = LanguageDirectionality.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new TranslationLanguage(name, nativeName, directionality);
-        });
     }
 }

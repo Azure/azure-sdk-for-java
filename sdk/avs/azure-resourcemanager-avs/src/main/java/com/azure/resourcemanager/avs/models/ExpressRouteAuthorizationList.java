@@ -4,40 +4,33 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.avs.fluent.models.ExpressRouteAuthorizationInner;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The response of a ExpressRouteAuthorization list operation.
- */
-@Fluent
-public final class ExpressRouteAuthorizationList implements JsonSerializable<ExpressRouteAuthorizationList> {
+/** A paged list of ExpressRoute Circuit Authorizations. */
+@Immutable
+public final class ExpressRouteAuthorizationList {
     /*
-     * The ExpressRouteAuthorization items on this page
+     * The items on a page
      */
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ExpressRouteAuthorizationInner> value;
 
     /*
-     * The link to the next page of items
+     * URL to get the next page if any
      */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /**
-     * Creates an instance of ExpressRouteAuthorizationList class.
-     */
+    /** Creates an instance of ExpressRouteAuthorizationList class. */
     public ExpressRouteAuthorizationList() {
     }
 
     /**
-     * Get the value property: The ExpressRouteAuthorization items on this page.
-     * 
+     * Get the value property: The items on a page.
+     *
      * @return the value value.
      */
     public List<ExpressRouteAuthorizationInner> value() {
@@ -45,19 +38,8 @@ public final class ExpressRouteAuthorizationList implements JsonSerializable<Exp
     }
 
     /**
-     * Set the value property: The ExpressRouteAuthorization items on this page.
-     * 
-     * @param value the value value to set.
-     * @return the ExpressRouteAuthorizationList object itself.
-     */
-    public ExpressRouteAuthorizationList withValue(List<ExpressRouteAuthorizationInner> value) {
-        this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: The link to the next page of items.
-     * 
+     * Get the nextLink property: URL to get the next page if any.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,73 +47,13 @@ public final class ExpressRouteAuthorizationList implements JsonSerializable<Exp
     }
 
     /**
-     * Set the nextLink property: The link to the next page of items.
-     * 
-     * @param nextLink the nextLink value to set.
-     * @return the ExpressRouteAuthorizationList object itself.
-     */
-    public ExpressRouteAuthorizationList withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property value in model ExpressRouteAuthorizationList"));
-        } else {
+        if (value() != null) {
             value().forEach(e -> e.validate());
         }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteAuthorizationList.class);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("nextLink", this.nextLink);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ExpressRouteAuthorizationList from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ExpressRouteAuthorizationList if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ExpressRouteAuthorizationList.
-     */
-    public static ExpressRouteAuthorizationList fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ExpressRouteAuthorizationList deserializedExpressRouteAuthorizationList
-                = new ExpressRouteAuthorizationList();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("value".equals(fieldName)) {
-                    List<ExpressRouteAuthorizationInner> value
-                        = reader.readArray(reader1 -> ExpressRouteAuthorizationInner.fromJson(reader1));
-                    deserializedExpressRouteAuthorizationList.value = value;
-                } else if ("nextLink".equals(fieldName)) {
-                    deserializedExpressRouteAuthorizationList.nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedExpressRouteAuthorizationList;
-        });
     }
 }

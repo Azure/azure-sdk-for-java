@@ -10,9 +10,11 @@ import com.azure.resourcemanager.storagemover.models.EndpointList;
 public final class EndpointListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"igjyjg\",\"provisioningState\":\"Deleting\"},\"id\":\"yfhrtxilnerkujy\",\"name\":\"vlejuvfqa\",\"type\":\"rlyxwjkcprbnw\"}],\"nextLink\":\"gjvtbv\"}")
-            .toObject(EndpointList.class);
+        EndpointList model =
+            BinaryData
+                .fromString(
+                    "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"tyxolniwpwc\",\"provisioningState\":\"Succeeded\"},\"id\":\"kgiawxklryplwck\",\"name\":\"asy\",\"type\":\"pnddhsgcbacphejk\"}],\"nextLink\":\"ynqgoulzndlikwyq\"}")
+                .toObject(EndpointList.class);
     }
 
     @org.junit.jupiter.api.Test

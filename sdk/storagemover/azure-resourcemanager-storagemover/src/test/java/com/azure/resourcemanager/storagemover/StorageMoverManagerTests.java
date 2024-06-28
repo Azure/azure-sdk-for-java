@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class StorageMoverManagerTests extends TestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.create("eastus2euap", "East US 2 EUAP");
+    private static final Region REGION = Region.US_EAST2;
     private String resourceGroupName = "rg" + randomPadding();
     private StorageMoverManager storageMoverManager;
     private ResourceManager resourceManager;

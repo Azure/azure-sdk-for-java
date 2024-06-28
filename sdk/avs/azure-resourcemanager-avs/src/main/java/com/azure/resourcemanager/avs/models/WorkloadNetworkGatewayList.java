@@ -4,40 +4,33 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkGatewayInner;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The response of a WorkloadNetworkGateway list operation.
- */
-@Fluent
-public final class WorkloadNetworkGatewayList implements JsonSerializable<WorkloadNetworkGatewayList> {
+/** A list of NSX Gateways. */
+@Immutable
+public final class WorkloadNetworkGatewayList {
     /*
-     * The WorkloadNetworkGateway items on this page
+     * The items on the page
      */
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<WorkloadNetworkGatewayInner> value;
 
     /*
-     * The link to the next page of items
+     * URL to get the next page if any
      */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /**
-     * Creates an instance of WorkloadNetworkGatewayList class.
-     */
+    /** Creates an instance of WorkloadNetworkGatewayList class. */
     public WorkloadNetworkGatewayList() {
     }
 
     /**
-     * Get the value property: The WorkloadNetworkGateway items on this page.
-     * 
+     * Get the value property: The items on the page.
+     *
      * @return the value value.
      */
     public List<WorkloadNetworkGatewayInner> value() {
@@ -45,19 +38,8 @@ public final class WorkloadNetworkGatewayList implements JsonSerializable<Worklo
     }
 
     /**
-     * Set the value property: The WorkloadNetworkGateway items on this page.
-     * 
-     * @param value the value value to set.
-     * @return the WorkloadNetworkGatewayList object itself.
-     */
-    public WorkloadNetworkGatewayList withValue(List<WorkloadNetworkGatewayInner> value) {
-        this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: The link to the next page of items.
-     * 
+     * Get the nextLink property: URL to get the next page if any.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,72 +47,13 @@ public final class WorkloadNetworkGatewayList implements JsonSerializable<Worklo
     }
 
     /**
-     * Set the nextLink property: The link to the next page of items.
-     * 
-     * @param nextLink the nextLink value to set.
-     * @return the WorkloadNetworkGatewayList object itself.
-     */
-    public WorkloadNetworkGatewayList withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property value in model WorkloadNetworkGatewayList"));
-        } else {
+        if (value() != null) {
             value().forEach(e -> e.validate());
         }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(WorkloadNetworkGatewayList.class);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("nextLink", this.nextLink);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of WorkloadNetworkGatewayList from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of WorkloadNetworkGatewayList if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the WorkloadNetworkGatewayList.
-     */
-    public static WorkloadNetworkGatewayList fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            WorkloadNetworkGatewayList deserializedWorkloadNetworkGatewayList = new WorkloadNetworkGatewayList();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("value".equals(fieldName)) {
-                    List<WorkloadNetworkGatewayInner> value
-                        = reader.readArray(reader1 -> WorkloadNetworkGatewayInner.fromJson(reader1));
-                    deserializedWorkloadNetworkGatewayList.value = value;
-                } else if ("nextLink".equals(fieldName)) {
-                    deserializedWorkloadNetworkGatewayList.nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedWorkloadNetworkGatewayList;
-        });
     }
 }

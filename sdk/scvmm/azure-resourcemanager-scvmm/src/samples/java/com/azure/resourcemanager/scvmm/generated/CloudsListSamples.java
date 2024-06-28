@@ -4,33 +4,19 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-/**
- * Samples for Clouds List.
- */
+import com.azure.core.util.Context;
+
+/** Samples for Clouds List. */
 public final class CloudsListSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
-     * Clouds_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListCloudsBySubscription.json
      */
     /**
-     * Sample code: Clouds_ListBySubscription_MinimumSet.
-     * 
+     * Sample code: ListCloudsBySubscription.
+     *
      * @param manager Entry point to ScvmmManager.
      */
-    public static void cloudsListBySubscriptionMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.clouds().list(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
-     * Clouds_ListBySubscription_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Clouds_ListBySubscription_MaximumSet.
-     * 
-     * @param manager Entry point to ScvmmManager.
-     */
-    public static void cloudsListBySubscriptionMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.clouds().list(com.azure.core.util.Context.NONE);
+    public static void listCloudsBySubscription(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.clouds().list(Context.NONE);
     }
 }

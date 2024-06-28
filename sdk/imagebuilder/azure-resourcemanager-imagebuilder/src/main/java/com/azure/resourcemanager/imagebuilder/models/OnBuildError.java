@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -36,6 +37,7 @@ public final class OnBuildError extends ExpandableStringEnum<OnBuildError> {
      * @param name a name to look for.
      * @return the corresponding OnBuildError.
      */
+    @JsonCreator
     public static OnBuildError fromString(String name) {
         return fromString(name, OnBuildError.class);
     }

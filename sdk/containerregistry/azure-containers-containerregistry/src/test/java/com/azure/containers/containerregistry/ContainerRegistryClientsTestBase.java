@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.azure.containers.containerregistry.TestUtils.ALPINE_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_1;
@@ -36,8 +35,7 @@ import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT_PLAYBACK;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
-import static com.azure.containers.containerregistry.TestUtils.getAuthority;
-import static com.azure.containers.containerregistry.TestUtils.getCredentialByAuthority;
+import static com.azure.containers.containerregistry.TestUtils.getCredentialsByEndpoint;
 import static com.azure.containers.containerregistry.TestUtils.isSorted;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -100,7 +98,7 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
     }
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient) {
-        TokenCredential credential = getCredentialByAuthority(getTestMode(), getAuthority(REGISTRY_ENDPOINT));
+        TokenCredential credential = getCredentialsByEndpoint(getTestMode(), REGISTRY_ENDPOINT);
         return getContainerRegistryBuilder(httpClient, credential);
     }
 
@@ -123,7 +121,7 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
     }
 
     ContainerRegistryContentClientBuilder getContentClientBuilder(String repositoryName, HttpClient httpClient) {
-        TokenCredential credential = getCredentialByAuthority(getTestMode(), getAuthority(REGISTRY_ENDPOINT));
+        TokenCredential credential = getCredentialsByEndpoint(getTestMode(), REGISTRY_ENDPOINT);
         return getContentClientBuilder(repositoryName, httpClient, credential);
     }
 
@@ -232,7 +230,7 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
 
     boolean validateRepositories(Collection<String> repositories) {
         assertNotNull(repositories);
-        return repositories.containsAll(Arrays.asList(HELLO_WORLD_REPOSITORY_NAME, ALPINE_REPOSITORY_NAME));
+        return repositories.containsAll(Arrays.asList(TestUtils.HELLO_WORLD_REPOSITORY_NAME, TestUtils.ALPINE_REPOSITORY_NAME));
     }
 
     boolean validateRepositoriesByPage(Collection<PagedResponse<String>> pagedResList) {

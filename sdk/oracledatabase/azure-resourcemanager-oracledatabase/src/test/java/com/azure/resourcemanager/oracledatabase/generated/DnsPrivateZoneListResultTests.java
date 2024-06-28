@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.oracledatabase.fluent.models.DnsPrivateZoneInner;
 import com.azure.resourcemanager.oracledatabase.models.DnsPrivateZoneListResult;
+import com.azure.resourcemanager.oracledatabase.models.DnsPrivateZoneProperties;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class DnsPrivateZoneListResultTests {
@@ -14,6 +17,15 @@ public final class DnsPrivateZoneListResultTests {
         DnsPrivateZoneListResult model = BinaryData.fromString(
             "{\"value\":[{\"properties\":{\"ocid\":\"u\",\"isProtected\":false,\"lifecycleState\":\"Active\",\"self\":\"r\",\"serial\":1501018415,\"version\":\"wbxqzvszjfau\",\"viewId\":\"fdxxivetvtcqaqtd\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-10-02T10:53:20Z\",\"provisioningState\":\"Failed\"},\"id\":\"vwvxyslqbhsfx\",\"name\":\"blytk\",\"type\":\"lmpewwwfbkr\"}],\"nextLink\":\"nsvs\"}")
             .toObject(DnsPrivateZoneListResult.class);
+        Assertions.assertEquals("nsvs", model.nextLink());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DnsPrivateZoneListResult model = new DnsPrivateZoneListResult()
+            .withValue(Arrays.asList(new DnsPrivateZoneInner().withProperties(new DnsPrivateZoneProperties())))
+            .withNextLink("nsvs");
+        model = BinaryData.fromObject(model).toObject(DnsPrivateZoneListResult.class);
         Assertions.assertEquals("nsvs", model.nextLink());
     }
 }

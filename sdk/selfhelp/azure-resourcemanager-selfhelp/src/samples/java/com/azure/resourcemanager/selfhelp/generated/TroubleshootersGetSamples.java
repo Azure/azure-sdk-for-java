@@ -9,8 +9,7 @@ package com.azure.resourcemanager.selfhelp.generated;
  */
 public final class TroubleshootersGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Get.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Get.json
      */
     /**
      * Sample code: Troubleshooters_Get.

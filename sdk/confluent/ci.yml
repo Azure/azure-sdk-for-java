@@ -31,6 +31,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: confluent
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-confluent
         groupId: com.azure.resourcemanager

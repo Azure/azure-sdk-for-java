@@ -3,7 +3,6 @@
 ## 4.9.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added a new configuration flag to cryptography clients to defer all cryptographic operations to the Key Vault service. ([#40384](https://github.com/Azure/azure-sdk-for-java/pull/40384))
 
 ### Breaking Changes
 

@@ -3,19 +3,21 @@
 
 package com.azure.messaging.webpubsub.client.implementation;
 
+
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
+@SuppressWarnings({"rawtypes", "unchecked"})
 public final class EventHandlerCollection {
 
     private final ConcurrentMap<String, List> collection = new ConcurrentHashMap<>();
 
     public <T> void addEventHandler(String type, Consumer<T> eventHandler) {
-        List<Consumer<T>> listeners = collection.computeIfAbsent(type, k -> new CopyOnWriteArrayList<Consumer<T>>());
+        List<Consumer<T>> listeners =
+            collection.computeIfAbsent(type, k -> new CopyOnWriteArrayList<Consumer<T>>());
         listeners.add(eventHandler);
     }
 

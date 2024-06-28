@@ -3,8 +3,11 @@
 
 package com.azure.ai.translation.text;
 
-import com.azure.ai.translation.text.models.BreakSentenceItem;
+import java.util.List;
+import java.util.ArrayList;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.ai.translation.text.models.BreakSentenceItem;
+import com.azure.ai.translation.text.models.InputTextItem;
 
 /**
  * Break Sentence API call.

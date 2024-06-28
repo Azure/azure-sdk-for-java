@@ -5,54 +5,37 @@
 package com.azure.maps.traffic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for IncidentDetailStyle.
- */
+/** Defines values for IncidentDetailStyle. */
 public final class IncidentDetailStyle extends ExpandableStringEnum<IncidentDetailStyle> {
-    /**
-     * Creates traffic lines with colored chevrons indicating severity.
-     */
+    /** Static value s1 for IncidentDetailStyle. */
     public static final IncidentDetailStyle S1 = fromString("s1");
 
-    /**
-     * Creates plain lines with certain degree of glow.
-     */
+    /** Static value s2 for IncidentDetailStyle. */
     public static final IncidentDetailStyle S2 = fromString("s2");
 
-    /**
-     * Creates plain lines with certain degree of glow, different than the s2 style.
-     */
+    /** Static value s3 for IncidentDetailStyle. */
     public static final IncidentDetailStyle S3 = fromString("s3");
 
-    /**
-     * Night style.
-     */
+    /** Static value night for IncidentDetailStyle. */
     public static final IncidentDetailStyle NIGHT = fromString("night");
 
     /**
-     * Creates a new instance of IncidentDetailStyle value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public IncidentDetailStyle() {
-    }
-
-    /**
      * Creates or finds a IncidentDetailStyle from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding IncidentDetailStyle.
      */
+    @JsonCreator
     public static IncidentDetailStyle fromString(String name) {
         return fromString(name, IncidentDetailStyle.class);
     }
 
     /**
      * Gets known IncidentDetailStyle values.
-     * 
+     *
      * @return known IncidentDetailStyle values.
      */
     public static Collection<IncidentDetailStyle> values() {

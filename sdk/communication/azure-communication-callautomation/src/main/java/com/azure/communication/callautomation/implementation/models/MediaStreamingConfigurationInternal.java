@@ -23,7 +23,7 @@ public final class MediaStreamingConfigurationInternal {
     private MediaStreamingTransportTypeInternal transportType;
 
     /*
-     * Content type to stream, eg. audio
+     * Content type to stream, eg. audio, audio/video
      */
     @JsonProperty(value = "contentType", required = true)
     private MediaStreamingContentTypeInternal contentType;
@@ -33,13 +33,6 @@ public final class MediaStreamingConfigurationInternal {
      */
     @JsonProperty(value = "audioChannelType", required = true)
     private MediaStreamingAudioChannelTypeInternal audioChannelType;
-
-    /*
-     * Determines if the media streaming should be started immediately after
-     * call is answered or not.
-     */
-    @JsonProperty(value = "startMediaStreaming")
-    private Boolean startMediaStreaming;
 
     /**
      * Get the transportUrl property: Transport URL for media streaming.
@@ -82,7 +75,7 @@ public final class MediaStreamingConfigurationInternal {
     }
 
     /**
-     * Get the contentType property: Content type to stream, eg. audio.
+     * Get the contentType property: Content type to stream, eg. audio, audio/video.
      *
      * @return the contentType value.
      */
@@ -91,7 +84,7 @@ public final class MediaStreamingConfigurationInternal {
     }
 
     /**
-     * Set the contentType property: Content type to stream, eg. audio.
+     * Set the contentType property: Content type to stream, eg. audio, audio/video.
      *
      * @param contentType the contentType value to set.
      * @return the MediaStreamingConfigurationInternal object itself.
@@ -119,28 +112,6 @@ public final class MediaStreamingConfigurationInternal {
     public MediaStreamingConfigurationInternal setAudioChannelType(
             MediaStreamingAudioChannelTypeInternal audioChannelType) {
         this.audioChannelType = audioChannelType;
-        return this;
-    }
-
-    /**
-     * Get the startMediaStreaming property: Determines if the media streaming should be started immediately after call
-     * is answered or not.
-     *
-     * @return the startMediaStreaming value.
-     */
-    public Boolean isStartMediaStreaming() {
-        return this.startMediaStreaming;
-    }
-
-    /**
-     * Set the startMediaStreaming property: Determines if the media streaming should be started immediately after call
-     * is answered or not.
-     *
-     * @param startMediaStreaming the startMediaStreaming value to set.
-     * @return the MediaStreamingConfigurationInternal object itself.
-     */
-    public MediaStreamingConfigurationInternal setStartMediaStreaming(Boolean startMediaStreaming) {
-        this.startMediaStreaming = startMediaStreaming;
         return this;
     }
 }

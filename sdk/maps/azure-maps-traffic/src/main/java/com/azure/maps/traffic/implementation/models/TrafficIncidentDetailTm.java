@@ -5,38 +5,28 @@
 package com.azure.maps.traffic.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 import com.azure.maps.traffic.models.TrafficIncidentPointOfInterest;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Main response element.
- */
+/** Main response element. */
 @Immutable
-public final class TrafficIncidentDetailTm implements JsonSerializable<TrafficIncidentDetailTm> {
+public final class TrafficIncidentDetailTm {
     /*
      * ID of the traffic model for this incident
      */
+    @JsonProperty(value = "@id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * A single traffic incident, or a cluster of traffic incidents
      */
+    @JsonProperty(value = "poi", access = JsonProperty.Access.WRITE_ONLY)
     private List<TrafficIncidentPointOfInterest> pointsOfInterest;
 
     /**
-     * Creates an instance of TrafficIncidentDetailTm class.
-     */
-    public TrafficIncidentDetailTm() {
-    }
-
-    /**
      * Get the id property: ID of the traffic model for this incident.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -45,49 +35,10 @@ public final class TrafficIncidentDetailTm implements JsonSerializable<TrafficIn
 
     /**
      * Get the pointsOfInterest property: A single traffic incident, or a cluster of traffic incidents.
-     * 
+     *
      * @return the pointsOfInterest value.
      */
     public List<TrafficIncidentPointOfInterest> getPointsOfInterest() {
         return this.pointsOfInterest;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TrafficIncidentDetailTm from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TrafficIncidentDetailTm if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the TrafficIncidentDetailTm.
-     */
-    public static TrafficIncidentDetailTm fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            TrafficIncidentDetailTm deserializedTrafficIncidentDetailTm = new TrafficIncidentDetailTm();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("@id".equals(fieldName)) {
-                    deserializedTrafficIncidentDetailTm.id = reader.getString();
-                } else if ("poi".equals(fieldName)) {
-                    List<TrafficIncidentPointOfInterest> pointsOfInterest
-                        = reader.readArray(reader1 -> TrafficIncidentPointOfInterest.fromJson(reader1));
-                    deserializedTrafficIncidentDetailTm.pointsOfInterest = pointsOfInterest;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedTrafficIncidentDetailTm;
-        });
     }
 }

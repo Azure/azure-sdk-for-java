@@ -4,35 +4,19 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-/**
- * Samples for VirtualMachineTemplates List.
- */
+import com.azure.core.util.Context;
+
+/** Samples for VirtualMachineTemplates List. */
 public final class VirtualMachineTemplatesListSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
-     * VirtualMachineTemplates_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListVirtualMachineTemplatesBySubscription.json
      */
     /**
-     * Sample code: VirtualMachineTemplates_ListBySubscription_MaximumSet.
-     * 
+     * Sample code: ListVirtualMachineTemplatesBySubscription.
+     *
      * @param manager Entry point to ScvmmManager.
      */
-    public static void
-        virtualMachineTemplatesListBySubscriptionMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.virtualMachineTemplates().list(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
-     * VirtualMachineTemplates_ListBySubscription_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: VirtualMachineTemplates_ListBySubscription_MinimumSet.
-     * 
-     * @param manager Entry point to ScvmmManager.
-     */
-    public static void
-        virtualMachineTemplatesListBySubscriptionMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.virtualMachineTemplates().list(com.azure.core.util.Context.NONE);
+    public static void listVirtualMachineTemplatesBySubscription(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.virtualMachineTemplates().list(Context.NONE);
     }
 }

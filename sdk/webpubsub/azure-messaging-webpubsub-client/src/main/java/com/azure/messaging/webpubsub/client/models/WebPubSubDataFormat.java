@@ -4,6 +4,7 @@
 package com.azure.messaging.webpubsub.client.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -46,6 +47,7 @@ public final class WebPubSubDataFormat extends ExpandableStringEnum<WebPubSubDat
      * @param name a name to look for.
      * @return the corresponding WebPubSubDataFormat.
      */
+    @JsonCreator
     public static WebPubSubDataFormat fromString(String name) {
         return fromString(name, WebPubSubDataFormat.class);
     }

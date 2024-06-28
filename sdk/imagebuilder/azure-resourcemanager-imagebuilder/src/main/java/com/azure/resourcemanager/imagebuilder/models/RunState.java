@@ -4,6 +4,9 @@
 
 package com.azure.resourcemanager.imagebuilder.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * State of the last run.
  */
@@ -53,6 +56,7 @@ public enum RunState {
      * @param value the serialized value to parse.
      * @return the parsed RunState object, or null if unable to parse.
      */
+    @JsonCreator
     public static RunState fromString(String value) {
         if (value == null) {
             return null;
@@ -69,6 +73,7 @@ public enum RunState {
     /**
      * {@inheritDoc}
      */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -11,17 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateSharedImageVersionSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateSharedImageVersionSource model = BinaryData.fromString(
-            "{\"type\":\"SharedImageVersion\",\"imageVersionId\":\"cattpngjcrcczsq\",\"exactVersion\":\"hvmdajvnysounq\"}")
+        ImageTemplateSharedImageVersionSource model = BinaryData
+            .fromString(
+                "{\"type\":\"SharedImageVersion\",\"imageVersionId\":\"ynnaam\",\"exactVersion\":\"ctehfiqscjey\"}")
             .toObject(ImageTemplateSharedImageVersionSource.class);
-        Assertions.assertEquals("cattpngjcrcczsq", model.imageVersionId());
+        Assertions.assertEquals("ynnaam", model.imageVersionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ImageTemplateSharedImageVersionSource model
-            = new ImageTemplateSharedImageVersionSource().withImageVersionId("cattpngjcrcczsq");
+            = new ImageTemplateSharedImageVersionSource().withImageVersionId("ynnaam");
         model = BinaryData.fromObject(model).toObject(ImageTemplateSharedImageVersionSource.class);
-        Assertions.assertEquals("cattpngjcrcczsq", model.imageVersionId());
+        Assertions.assertEquals("ynnaam", model.imageVersionId());
     }
 }

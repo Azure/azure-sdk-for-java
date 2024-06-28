@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /**
  * Solution WarmUpRequest body.
  */
 @Fluent
-public final class SolutionWarmUpRequestBody implements JsonSerializable<SolutionWarmUpRequestBody> {
+public final class SolutionWarmUpRequestBody {
     /*
      * Dictionary of <string>
      */
+    @JsonProperty(value = "parameters")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /**
@@ -54,42 +53,5 @@ public final class SolutionWarmUpRequestBody implements JsonSerializable<Solutio
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SolutionWarmUpRequestBody from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SolutionWarmUpRequestBody if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SolutionWarmUpRequestBody.
-     */
-    public static SolutionWarmUpRequestBody fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SolutionWarmUpRequestBody deserializedSolutionWarmUpRequestBody = new SolutionWarmUpRequestBody();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("parameters".equals(fieldName)) {
-                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
-                    deserializedSolutionWarmUpRequestBody.parameters = parameters;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSolutionWarmUpRequestBody;
-        });
     }
 }

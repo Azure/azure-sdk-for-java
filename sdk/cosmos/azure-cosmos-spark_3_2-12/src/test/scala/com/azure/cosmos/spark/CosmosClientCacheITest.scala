@@ -62,8 +62,7 @@ class CosmosClientCacheITest
           tenantId = None,
           resourceGroupName = None,
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-          sparkEnvironmentInfo = "",
-          clientBuilderInterceptors = None)
+          sparkEnvironmentInfo = "")
       ),
       (
         "StandardCtorWithEmptyPreferredRegions",
@@ -87,8 +86,7 @@ class CosmosClientCacheITest
           tenantId = None,
           resourceGroupName = None,
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-          sparkEnvironmentInfo = "",
-          clientBuilderInterceptors = None)
+          sparkEnvironmentInfo = "")
       ),
       (
         "StandardCtorWithOnePreferredRegion",
@@ -112,8 +110,7 @@ class CosmosClientCacheITest
           tenantId = None,
           resourceGroupName = None,
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-          sparkEnvironmentInfo = "",
-          clientBuilderInterceptors = None)
+          sparkEnvironmentInfo = "")
       ),
       (
         "StandardCtorWithTwoPreferredRegions",
@@ -137,8 +134,7 @@ class CosmosClientCacheITest
           tenantId = None,
           resourceGroupName = None,
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-          sparkEnvironmentInfo = "",
-          clientBuilderInterceptors = None)
+          sparkEnvironmentInfo = "")
       )
     )
 
@@ -169,8 +165,7 @@ class CosmosClientCacheITest
         userConfig.tenantId,
         userConfig.resourceGroupName,
         userConfig.azureEnvironmentEndpoints,
-        sparkEnvironmentInfo = "",
-        clientBuilderInterceptors = None
+        sparkEnvironmentInfo = ""
       )
 
       logInfo(s"TestCase: {$testCaseName}")

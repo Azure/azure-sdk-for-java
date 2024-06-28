@@ -11,17 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureStorageSmbFileShareEndpointUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureStorageSmbFileShareEndpointUpdateProperties model
-            = BinaryData.fromString("{\"endpointType\":\"AzureStorageSmbFileShare\",\"description\":\"kk\"}")
+        AzureStorageSmbFileShareEndpointUpdateProperties model =
+            BinaryData
+                .fromString("{\"endpointType\":\"AzureStorageSmbFileShare\",\"description\":\"xdeoejzic\"}")
                 .toObject(AzureStorageSmbFileShareEndpointUpdateProperties.class);
-        Assertions.assertEquals("kk", model.description());
+        Assertions.assertEquals("xdeoejzic", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureStorageSmbFileShareEndpointUpdateProperties model
-            = new AzureStorageSmbFileShareEndpointUpdateProperties().withDescription("kk");
+        AzureStorageSmbFileShareEndpointUpdateProperties model =
+            new AzureStorageSmbFileShareEndpointUpdateProperties().withDescription("xdeoejzic");
         model = BinaryData.fromObject(model).toObject(AzureStorageSmbFileShareEndpointUpdateProperties.class);
-        Assertions.assertEquals("kk", model.description());
+        Assertions.assertEquals("xdeoejzic", model.description());
     }
 }

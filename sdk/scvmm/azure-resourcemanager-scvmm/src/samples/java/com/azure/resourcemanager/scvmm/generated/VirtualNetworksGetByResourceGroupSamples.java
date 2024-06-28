@@ -4,33 +4,19 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-/**
- * Samples for VirtualNetworks GetByResourceGroup.
- */
+import com.azure.core.util.Context;
+
+/** Samples for VirtualNetworks GetByResourceGroup. */
 public final class VirtualNetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
-     * VirtualNetworks_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/GetVirtualNetwork.json
      */
     /**
-     * Sample code: VirtualNetworks_Get_MaximumSet.
-     * 
+     * Sample code: GetVirtualNetwork.
+     *
      * @param manager Entry point to ScvmmManager.
      */
-    public static void virtualNetworksGetMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.virtualNetworks().getByResourceGroupWithResponse("rgscvmm", "2", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
-     * VirtualNetworks_Get_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: VirtualNetworks_Get_MinimumSet.
-     * 
-     * @param manager Entry point to ScvmmManager.
-     */
-    public static void virtualNetworksGetMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.virtualNetworks().getByResourceGroupWithResponse("rgscvmm", "-", com.azure.core.util.Context.NONE);
+    public static void getVirtualNetwork(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.virtualNetworks().getByResourceGroupWithResponse("testrg", "HRVirtualNetwork", Context.NONE);
     }
 }

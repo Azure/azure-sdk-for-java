@@ -34,13 +34,11 @@ import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_1;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT_PLAYBACK;
-import static com.azure.containers.containerregistry.TestUtils.REGISTRY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V2_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V3_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V4_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.getAuthority;
-import static com.azure.containers.containerregistry.TestUtils.importImage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -71,24 +69,17 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     }
 
     @BeforeEach
-    void beforeEach() throws InterruptedException {
-        importImage(getTestMode(),
-            REGISTRY_NAME,
-            HELLO_WORLD_REPOSITORY_NAME,
-            Arrays.asList("latest", "v1", "v2", "v3", "v4"),
-            REGISTRY_ENDPOINT);
-
-        importImage(
+    void beforeEach() {
+        TestUtils.importImage(getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"));
+        TestUtils.importImage(
             getTestMode(),
-            REGISTRY_NAME,
             ALPINE_REPOSITORY_NAME,
             Arrays.asList(
                 LATEST_TAG_NAME,
                 V1_TAG_NAME,
                 V2_TAG_NAME,
                 V3_TAG_NAME,
-                V4_TAG_NAME),
-            REGISTRY_ENDPOINT);
+                V4_TAG_NAME));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

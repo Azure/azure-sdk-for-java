@@ -252,7 +252,6 @@ jobs:
             Paths:
               - '**/*.xml'
               - '**/*.md'
-              - '**/*.yml'
               - '.vscode/cspell.json'
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
@@ -261,8 +260,8 @@ jobs:
         displayName: 'Verify versions in POM files'
         inputs:
           pwsh: true
-          workingDirectory: $(Build.SourcesDirectory)
-          filePath: $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/versioning/pom_file_version_scanner.ps1
           arguments: -Debug:$$(IsDebug)
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml

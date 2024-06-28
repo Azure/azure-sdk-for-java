@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -31,6 +32,7 @@ public final class ActionType extends ExpandableStringEnum<ActionType> {
      * @param name a name to look for.
      * @return the corresponding ActionType.
      */
+    @JsonCreator
     public static ActionType fromString(String name) {
         return fromString(name, ActionType.class);
     }

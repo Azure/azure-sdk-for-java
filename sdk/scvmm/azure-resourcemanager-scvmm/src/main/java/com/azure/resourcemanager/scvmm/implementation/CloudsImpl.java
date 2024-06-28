@@ -13,7 +13,6 @@ import com.azure.resourcemanager.scvmm.fluent.CloudsClient;
 import com.azure.resourcemanager.scvmm.fluent.models.CloudInner;
 import com.azure.resourcemanager.scvmm.models.Cloud;
 import com.azure.resourcemanager.scvmm.models.Clouds;
-import com.azure.resourcemanager.scvmm.models.ForceDelete;
 
 public final class CloudsImpl implements Clouds {
     private static final ClientLogger LOGGER = new ClientLogger(CloudsImpl.class);
@@ -27,40 +26,8 @@ public final class CloudsImpl implements Clouds {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Cloud> list() {
-        PagedIterable<CloudInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Cloud> list(Context context) {
-        PagedIterable<CloudInner> inner = this.serviceClient().list(context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Cloud> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<CloudInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Cloud> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<CloudInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudImpl(inner1, this.manager()));
-    }
-
-    public Response<Cloud> getByResourceGroupWithResponse(String resourceGroupName, String cloudResourceName,
-        Context context) {
-        Response<CloudInner> inner
-            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, cloudResourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CloudImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public Cloud getByResourceGroup(String resourceGroupName, String cloudResourceName) {
-        CloudInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, cloudResourceName);
+    public Cloud getByResourceGroup(String resourceGroupName, String cloudName) {
+        CloudInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, cloudName);
         if (inner != null) {
             return new CloudImpl(inner, this.manager());
         } else {
@@ -68,69 +35,127 @@ public final class CloudsImpl implements Clouds {
         }
     }
 
-    public void delete(String resourceGroupName, String cloudResourceName) {
-        this.serviceClient().delete(resourceGroupName, cloudResourceName);
+    public Response<Cloud> getByResourceGroupWithResponse(String resourceGroupName, String cloudName, Context context) {
+        Response<CloudInner> inner =
+            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, cloudName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new CloudImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public void delete(String resourceGroupName, String cloudResourceName, ForceDelete force, Context context) {
-        this.serviceClient().delete(resourceGroupName, cloudResourceName, force, context);
+    public void delete(String resourceGroupName, String cloudName, Boolean force) {
+        this.serviceClient().delete(resourceGroupName, cloudName, force);
+    }
+
+    public void delete(String resourceGroupName, String cloudName) {
+        this.serviceClient().delete(resourceGroupName, cloudName);
+    }
+
+    public void delete(String resourceGroupName, String cloudName, Boolean force, Context context) {
+        this.serviceClient().delete(resourceGroupName, cloudName, force, context);
+    }
+
+    public PagedIterable<Cloud> listByResourceGroup(String resourceGroupName) {
+        PagedIterable<CloudInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return Utils.mapPage(inner, inner1 -> new CloudImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Cloud> listByResourceGroup(String resourceGroupName, Context context) {
+        PagedIterable<CloudInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return Utils.mapPage(inner, inner1 -> new CloudImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Cloud> list() {
+        PagedIterable<CloudInner> inner = this.serviceClient().list();
+        return Utils.mapPage(inner, inner1 -> new CloudImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Cloud> list(Context context) {
+        PagedIterable<CloudInner> inner = this.serviceClient().list(context);
+        return Utils.mapPage(inner, inner1 -> new CloudImpl(inner1, this.manager()));
     }
 
     public Cloud getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String cloudResourceName = ResourceManagerUtils.getValueFromIdByName(id, "clouds");
-        if (cloudResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clouds'.", id)));
+        String cloudName = Utils.getValueFromIdByName(id, "clouds");
+        if (cloudName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'clouds'.", id)));
         }
-        return this.getByResourceGroupWithResponse(resourceGroupName, cloudResourceName, Context.NONE).getValue();
+        return this.getByResourceGroupWithResponse(resourceGroupName, cloudName, Context.NONE).getValue();
     }
 
     public Response<Cloud> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String cloudResourceName = ResourceManagerUtils.getValueFromIdByName(id, "clouds");
-        if (cloudResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clouds'.", id)));
+        String cloudName = Utils.getValueFromIdByName(id, "clouds");
+        if (cloudName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'clouds'.", id)));
         }
-        return this.getByResourceGroupWithResponse(resourceGroupName, cloudResourceName, context);
+        return this.getByResourceGroupWithResponse(resourceGroupName, cloudName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String cloudResourceName = ResourceManagerUtils.getValueFromIdByName(id, "clouds");
-        if (cloudResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clouds'.", id)));
+        String cloudName = Utils.getValueFromIdByName(id, "clouds");
+        if (cloudName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'clouds'.", id)));
         }
-        ForceDelete localForce = null;
-        this.delete(resourceGroupName, cloudResourceName, localForce, Context.NONE);
+        Boolean localForce = null;
+        this.delete(resourceGroupName, cloudName, localForce, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, ForceDelete force, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+    public void deleteByIdWithResponse(String id, Boolean force, Context context) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String cloudResourceName = ResourceManagerUtils.getValueFromIdByName(id, "clouds");
-        if (cloudResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clouds'.", id)));
+        String cloudName = Utils.getValueFromIdByName(id, "clouds");
+        if (cloudName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'clouds'.", id)));
         }
-        this.delete(resourceGroupName, cloudResourceName, force, context);
+        this.delete(resourceGroupName, cloudName, force, context);
     }
 
     private CloudsClient serviceClient() {

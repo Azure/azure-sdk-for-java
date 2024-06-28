@@ -4,33 +4,19 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-/**
- * Samples for Clouds GetByResourceGroup.
- */
+import com.azure.core.util.Context;
+
+/** Samples for Clouds GetByResourceGroup. */
 public final class CloudsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/Clouds_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/GetCloud.json
      */
     /**
-     * Sample code: Clouds_Get_MaximumSet.
-     * 
+     * Sample code: GetCloud.
+     *
      * @param manager Entry point to ScvmmManager.
      */
-    public static void cloudsGetMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.clouds().getByResourceGroupWithResponse("rgscvmm", "_", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/Clouds_Get_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: Clouds_Get_MinimumSet.
-     * 
-     * @param manager Entry point to ScvmmManager.
-     */
-    public static void cloudsGetMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.clouds().getByResourceGroupWithResponse("rgscvmm", "i", com.azure.core.util.Context.NONE);
+    public static void getCloud(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.clouds().getByResourceGroupWithResponse("testrg", "HRCloud", Context.NONE);
     }
 }

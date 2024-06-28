@@ -5,94 +5,61 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Section types of the reported route response.
- */
+/** Defines values for ResponseSectionType. */
 public final class RouteSectionType extends ExpandableStringEnum<RouteSectionType> {
-    /**
-     * Sections of the route that are cars or trains.
-     */
+    /** Static value CAR_TRAIN for ResponseSectionType. */
     public static final RouteSectionType CAR_OR_TRAIN = fromString("CAR_TRAIN");
 
-    /**
-     * Sections indicating which countries/regions the route is in.
-     */
+    /** Static value COUNTRY for ResponseSectionType. */
     public static final RouteSectionType COUNTRY = fromString("COUNTRY");
 
-    /**
-     * Sections of the route that are ferries.
-     */
+    /** Static value FERRY for ResponseSectionType. */
     public static final RouteSectionType FERRY = fromString("FERRY");
 
-    /**
-     * Sections of the route that are motorways.
-     */
+    /** Static value MOTORWAY for ResponseSectionType. */
     public static final RouteSectionType MOTORWAY = fromString("MOTORWAY");
 
-    /**
-     * Sections of the route that are only suited for pedestrians.
-     */
+    /** Static value PEDESTRIAN for ResponseSectionType. */
     public static final RouteSectionType PEDESTRIAN = fromString("PEDESTRIAN");
 
-    /**
-     * Sections of the route that require a toll to be payed.
-     */
+    /** Static value TOLL_ROAD for ResponseSectionType. */
     public static final RouteSectionType TOLL_ROAD = fromString("TOLL_ROAD");
 
-    /**
-     * Sections of the route that require a toll vignette to be present.
-     */
+    /** Static value TOLL_VIGNETTE for ResponseSectionType. */
     public static final RouteSectionType TOLL_VIGNETTE = fromString("TOLL_VIGNETTE");
 
-    /**
-     * Sections of the route that contain traffic information.
-     */
+    /** Static value TRAFFIC for ResponseSectionType. */
     public static final RouteSectionType TRAFFIC = fromString("TRAFFIC");
 
-    /**
-     * Sections in relation to the request parameter `travelMode`.
-     */
+    /** Static value TRAVEL_MODE for ResponseSectionType. */
     public static final RouteSectionType TRAVEL_MODE = fromString("TRAVEL_MODE");
 
-    /**
-     * Sections of the route that are tunnels.
-     */
+    /** Static value TUNNEL for ResponseSectionType. */
     public static final RouteSectionType TUNNEL = fromString("TUNNEL");
 
-    /**
-     * Sections of the route that require use of carpool (HOV/High Occupancy Vehicle) lanes.
-     */
+    /** Static value CARPOOL for ResponseSectionType. */
     public static final RouteSectionType CARPOOL = fromString("CARPOOL");
 
-    /**
-     * Sections of the route that are located within urban areas.
-     */
+    /** Static value URBAN for ResponseSectionType. */
     public static final RouteSectionType URBAN = fromString("URBAN");
 
     /**
-     * Creates a new instance of ResponseSectionType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public RouteSectionType() {
-    }
-
-    /**
      * Creates or finds a ResponseSectionType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ResponseSectionType.
      */
+    @JsonCreator
     public static RouteSectionType fromString(String name) {
         return fromString(name, RouteSectionType.class);
     }
 
     /**
      * Gets known ResponseSectionType values.
-     * 
+     *
      * @return known ResponseSectionType values.
      */
     public static Collection<RouteSectionType> values() {

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The TroubleshootersRestartHeaders model.
@@ -16,6 +17,7 @@ public final class TroubleshootersRestartHeaders {
     /*
      * The Location property.
      */
+    @JsonProperty(value = "Location")
     private String location;
 
     // HttpHeaders containing the raw property values.

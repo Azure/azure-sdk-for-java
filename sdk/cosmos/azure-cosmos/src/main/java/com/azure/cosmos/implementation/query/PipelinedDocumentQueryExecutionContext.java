@@ -26,9 +26,6 @@ public class PipelinedDocumentQueryExecutionContext<T>
     private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
 
-    private final static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
-        ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
-
     private final IDocumentQueryExecutionComponent<Document> component;
 
     private PipelinedDocumentQueryExecutionContext(
@@ -202,10 +199,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
                 .FeedResponseHelper
                 .getFeedResponseAccessor().convertGenericType(
                     documentFeedResponse,
-                    (document) -> itemSerializerAccessor.deserializeSafe(
-                        this.itemSerializer,
-                        new ObjectNodeMap(document.getPropertyBag()),
-                        this.classOfT)
+                    (document) -> this.itemSerializer.deserialize(new ObjectNodeMap(document.getPropertyBag()), this.classOfT)
                 )
             );
     }

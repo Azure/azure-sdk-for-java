@@ -5,36 +5,26 @@
 package com.azure.resourcemanager.scvmm.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Availability Set model.
- */
+/** Availability Set model. */
 @Fluent
-public final class AvailabilitySetListItem implements JsonSerializable<AvailabilitySetListItem> {
+public final class AvailabilitySetListItem {
     /*
      * Gets the ARM Id of the microsoft.scvmm/availabilitySets resource.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Gets or sets the name of the availability set.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
-     * Creates an instance of AvailabilitySetListItem class.
-     */
-    public AvailabilitySetListItem() {
-    }
-
-    /**
      * Get the id property: Gets the ARM Id of the microsoft.scvmm/availabilitySets resource.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -43,7 +33,7 @@ public final class AvailabilitySetListItem implements JsonSerializable<Availabil
 
     /**
      * Set the id property: Gets the ARM Id of the microsoft.scvmm/availabilitySets resource.
-     * 
+     *
      * @param id the id value to set.
      * @return the AvailabilitySetListItem object itself.
      */
@@ -54,7 +44,7 @@ public final class AvailabilitySetListItem implements JsonSerializable<Availabil
 
     /**
      * Get the name property: Gets or sets the name of the availability set.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -63,7 +53,7 @@ public final class AvailabilitySetListItem implements JsonSerializable<Availabil
 
     /**
      * Set the name property: Gets or sets the name of the availability set.
-     * 
+     *
      * @param name the name value to set.
      * @return the AvailabilitySetListItem object itself.
      */
@@ -74,48 +64,9 @@ public final class AvailabilitySetListItem implements JsonSerializable<Availabil
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("name", this.name);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AvailabilitySetListItem from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AvailabilitySetListItem if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AvailabilitySetListItem.
-     */
-    public static AvailabilitySetListItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AvailabilitySetListItem deserializedAvailabilitySetListItem = new AvailabilitySetListItem();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("id".equals(fieldName)) {
-                    deserializedAvailabilitySetListItem.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedAvailabilitySetListItem.name = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAvailabilitySetListItem;
-        });
     }
 }

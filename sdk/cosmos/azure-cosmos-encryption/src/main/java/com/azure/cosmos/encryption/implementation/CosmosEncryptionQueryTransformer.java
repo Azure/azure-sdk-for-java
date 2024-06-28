@@ -5,7 +5,6 @@ package com.azure.cosmos.encryption.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ObjectNodeMap;
 import com.azure.cosmos.implementation.PrimitiveJsonNodeMap;
 import com.azure.cosmos.implementation.Utils;
@@ -26,8 +25,6 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class CosmosEncryptionQueryTransformer<T> implements Transformer<T> {
-    private final static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
-        ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
     private final Scheduler encryptionScheduler;
     private final EncryptionProcessor encryptionProcessor;
     private final Class<T> classType;
@@ -84,8 +81,7 @@ public class CosmosEncryptionQueryTransformer<T> implements Transformer<T> {
                                                                  classType);
                                 }
 
-                                return itemSerializerAccessor.deserializeSafe(
-                                    effectiveSerializer,
+                                return effectiveSerializer.deserialize(
                                     decryptedJsonTree,
                                     classType);
                             }

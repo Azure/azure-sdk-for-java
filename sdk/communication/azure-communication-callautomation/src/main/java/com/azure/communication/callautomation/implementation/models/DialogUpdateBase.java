@@ -18,7 +18,7 @@ import java.util.Map;
         property = "kind",
         defaultImpl = DialogUpdateBase.class)
 @JsonTypeName("DialogUpdateBase")
-@JsonSubTypes({@JsonSubTypes.Type(name = "azureOpenAI", value = AzureOpenAIDialogUpdate.class)})
+@JsonSubTypes({@JsonSubTypes.Type(name = "AzureOpenAI", value = AzureOpenAIDialogUpdate.class)})
 @Fluent
 public class DialogUpdateBase {
     /*

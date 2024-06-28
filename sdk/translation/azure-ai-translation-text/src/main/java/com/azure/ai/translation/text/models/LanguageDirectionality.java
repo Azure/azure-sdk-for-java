@@ -4,6 +4,9 @@
 
 package com.azure.ai.translation.text.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Language Directionality.
  */
@@ -33,6 +36,7 @@ public enum LanguageDirectionality {
      * @param value the serialized value to parse.
      * @return the parsed LanguageDirectionality object, or null if unable to parse.
      */
+    @JsonCreator
     public static LanguageDirectionality fromString(String value) {
         if (value == null) {
             return null;
@@ -49,6 +53,7 @@ public enum LanguageDirectionality {
     /**
      * {@inheritDoc}
      */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

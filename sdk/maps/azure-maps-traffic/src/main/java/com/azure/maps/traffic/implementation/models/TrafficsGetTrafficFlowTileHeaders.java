@@ -5,32 +5,20 @@
 package com.azure.maps.traffic.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TrafficsGetTrafficFlowTileHeaders model.
- */
+/** The TrafficsGetTrafficFlowTileHeaders model. */
 @Fluent
 public final class TrafficsGetTrafficFlowTileHeaders {
     /*
      * The Content-Type property.
      */
+    @JsonProperty(value = "Content-Type")
     private String contentType;
-
-    // HttpHeaders containing the raw property values.
-    /**
-     * Creates an instance of TrafficsGetTrafficFlowTileHeaders class.
-     * 
-     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
-     */
-    public TrafficsGetTrafficFlowTileHeaders(HttpHeaders rawHeaders) {
-        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
-    }
 
     /**
      * Get the contentType property: The Content-Type property.
-     * 
+     *
      * @return the contentType value.
      */
     public String getContentType() {
@@ -39,7 +27,7 @@ public final class TrafficsGetTrafficFlowTileHeaders {
 
     /**
      * Set the contentType property: The Content-Type property.
-     * 
+     *
      * @param contentType the contentType value to set.
      * @return the TrafficsGetTrafficFlowTileHeaders object itself.
      */

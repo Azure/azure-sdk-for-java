@@ -5,46 +5,33 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Workload Network Segment provisioning state.
- */
+/** The provisioning state. */
 public final class WorkloadNetworkSegmentProvisioningState
     extends ExpandableStringEnum<WorkloadNetworkSegmentProvisioningState> {
-    /**
-     * Static value Succeeded for WorkloadNetworkSegmentProvisioningState.
-     */
+    /** Static value Succeeded for WorkloadNetworkSegmentProvisioningState. */
     public static final WorkloadNetworkSegmentProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /**
-     * Static value Failed for WorkloadNetworkSegmentProvisioningState.
-     */
+    /** Static value Failed for WorkloadNetworkSegmentProvisioningState. */
     public static final WorkloadNetworkSegmentProvisioningState FAILED = fromString("Failed");
 
-    /**
-     * Static value Canceled for WorkloadNetworkSegmentProvisioningState.
-     */
+    /** Static value Building for WorkloadNetworkSegmentProvisioningState. */
+    public static final WorkloadNetworkSegmentProvisioningState BUILDING = fromString("Building");
+
+    /** Static value Deleting for WorkloadNetworkSegmentProvisioningState. */
+    public static final WorkloadNetworkSegmentProvisioningState DELETING = fromString("Deleting");
+
+    /** Static value Updating for WorkloadNetworkSegmentProvisioningState. */
+    public static final WorkloadNetworkSegmentProvisioningState UPDATING = fromString("Updating");
+
+    /** Static value Canceled for WorkloadNetworkSegmentProvisioningState. */
     public static final WorkloadNetworkSegmentProvisioningState CANCELED = fromString("Canceled");
 
     /**
-     * Static value Building for WorkloadNetworkSegmentProvisioningState.
-     */
-    public static final WorkloadNetworkSegmentProvisioningState BUILDING = fromString("Building");
-
-    /**
-     * Static value Deleting for WorkloadNetworkSegmentProvisioningState.
-     */
-    public static final WorkloadNetworkSegmentProvisioningState DELETING = fromString("Deleting");
-
-    /**
-     * Static value Updating for WorkloadNetworkSegmentProvisioningState.
-     */
-    public static final WorkloadNetworkSegmentProvisioningState UPDATING = fromString("Updating");
-
-    /**
      * Creates a new instance of WorkloadNetworkSegmentProvisioningState value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -53,17 +40,18 @@ public final class WorkloadNetworkSegmentProvisioningState
 
     /**
      * Creates or finds a WorkloadNetworkSegmentProvisioningState from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding WorkloadNetworkSegmentProvisioningState.
      */
+    @JsonCreator
     public static WorkloadNetworkSegmentProvisioningState fromString(String name) {
         return fromString(name, WorkloadNetworkSegmentProvisioningState.class);
     }
 
     /**
      * Gets known WorkloadNetworkSegmentProvisioningState values.
-     * 
+     *
      * @return known WorkloadNetworkSegmentProvisioningState values.
      */
     public static Collection<WorkloadNetworkSegmentProvisioningState> values() {

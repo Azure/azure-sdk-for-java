@@ -36,6 +36,7 @@ extends:
   parameters:
     ServiceDirectory: eventgrid
     JavadocSafeJavaBuildVersion: '1.21'
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-eventgrid
         groupId: com.azure.resourcemanager

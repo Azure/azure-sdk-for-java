@@ -23,10 +23,10 @@ public final class RecordingStateResponseInternal {
     private RecordingStateInternal recordingState;
 
     /*
-     * The recordingKind property.
+     * The recordingType property.
      */
-    @JsonProperty(value = "recordingKind")
-    private RecordingKind recordingKind;
+    @JsonProperty(value = "recordingType")
+    private RecordingType recordingType;
 
     /**
      * Get the recordingId property: The recordingId property.
@@ -69,22 +69,22 @@ public final class RecordingStateResponseInternal {
     }
 
     /**
-     * Get the recordingKind property: The recordingKind property.
+     * Get the recordingType property: The recordingType property.
      *
-     * @return the recordingKind value.
+     * @return the recordingType value.
      */
-    public RecordingKind getRecordingKind() {
-        return this.recordingKind;
+    public RecordingType getRecordingType() {
+        return this.recordingType;
     }
 
     /**
-     * Set the recordingKind property: The recordingKind property.
+     * Set the recordingType property: The recordingType property.
      *
-     * @param recordingKind the recordingKind value to set.
+     * @param recordingType the recordingType value to set.
      * @return the RecordingStateResponseInternal object itself.
      */
-    public RecordingStateResponseInternal setRecordingKind(RecordingKind recordingKind) {
-        this.recordingKind = recordingKind;
+    public RecordingStateResponseInternal setRecordingType(RecordingType recordingType) {
+        this.recordingType = recordingType;
         return this;
     }
 }

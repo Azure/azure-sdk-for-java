@@ -9,69 +9,67 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.List;
 
-/**
- * Resource collection API of ScriptExecutions.
- */
+/** Resource collection API of ScriptExecutions. */
 public interface ScriptExecutions {
     /**
-     * List ScriptExecution resources by PrivateCloud.
-     * 
+     * List script executions in a private cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScriptExecution list operation as paginated response with {@link PagedIterable}.
+     * @return pageable list of script executions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ScriptExecution> list(String resourceGroupName, String privateCloudName);
 
     /**
-     * List ScriptExecution resources by PrivateCloud.
-     * 
+     * List script executions in a private cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScriptExecution list operation as paginated response with {@link PagedIterable}.
+     * @return pageable list of script executions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ScriptExecution> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
-     * Get a ScriptExecution.
-     * 
+     * Get an script execution by name in a private cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
+     * @param scriptExecutionName Name of the user-invoked script execution resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScriptExecution along with {@link Response}.
+     * @return an script execution by name in a private cloud along with {@link Response}.
      */
-    Response<ScriptExecution> getWithResponse(String resourceGroupName, String privateCloudName,
-        String scriptExecutionName, Context context);
+    Response<ScriptExecution> getWithResponse(
+        String resourceGroupName, String privateCloudName, String scriptExecutionName, Context context);
 
     /**
-     * Get a ScriptExecution.
-     * 
+     * Get an script execution by name in a private cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
+     * @param scriptExecutionName Name of the user-invoked script execution resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScriptExecution.
+     * @return an script execution by name in a private cloud.
      */
     ScriptExecution get(String resourceGroupName, String privateCloudName, String scriptExecutionName);
 
     /**
-     * Delete a ScriptExecution.
-     * 
+     * Cancel a ScriptExecution in a private cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
+     * @param scriptExecutionName Name of the user-invoked script execution resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -79,11 +77,11 @@ public interface ScriptExecutions {
     void delete(String resourceGroupName, String privateCloudName, String scriptExecutionName);
 
     /**
-     * Delete a ScriptExecution.
-     * 
+     * Cancel a ScriptExecution in a private cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
+     * @param scriptExecutionName Name of the user-invoked script execution resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -93,27 +91,31 @@ public interface ScriptExecutions {
 
     /**
      * Return the logs for a script execution resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
+     * @param scriptExecutionName Name of the user-invoked script execution resource.
      * @param scriptOutputStreamType Name of the desired output stream to return. If not provided, will return all. An
-     * empty array will return nothing.
+     *     empty array will return nothing.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an instance of a script executed by a user - custom or AVS along with {@link Response}.
      */
-    Response<ScriptExecution> getExecutionLogsWithResponse(String resourceGroupName, String privateCloudName,
-        String scriptExecutionName, List<ScriptOutputStreamType> scriptOutputStreamType, Context context);
+    Response<ScriptExecution> getExecutionLogsWithResponse(
+        String resourceGroupName,
+        String privateCloudName,
+        String scriptExecutionName,
+        List<ScriptOutputStreamType> scriptOutputStreamType,
+        Context context);
 
     /**
      * Return the logs for a script execution resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the script cmdlet.
+     * @param scriptExecutionName Name of the user-invoked script execution resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -122,31 +124,31 @@ public interface ScriptExecutions {
     ScriptExecution getExecutionLogs(String resourceGroupName, String privateCloudName, String scriptExecutionName);
 
     /**
-     * Get a ScriptExecution.
-     * 
+     * Get an script execution by name in a private cloud.
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScriptExecution along with {@link Response}.
+     * @return an script execution by name in a private cloud along with {@link Response}.
      */
     ScriptExecution getById(String id);
 
     /**
-     * Get a ScriptExecution.
-     * 
+     * Get an script execution by name in a private cloud.
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScriptExecution along with {@link Response}.
+     * @return an script execution by name in a private cloud along with {@link Response}.
      */
     Response<ScriptExecution> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a ScriptExecution.
-     * 
+     * Cancel a ScriptExecution in a private cloud.
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -155,8 +157,8 @@ public interface ScriptExecutions {
     void deleteById(String id);
 
     /**
-     * Delete a ScriptExecution.
-     * 
+     * Cancel a ScriptExecution in a private cloud.
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,7 +169,7 @@ public interface ScriptExecutions {
 
     /**
      * Begins definition for a new ScriptExecution resource.
-     * 
+     *
      * @param name resource name.
      * @return the first stage of the new ScriptExecution definition.
      */

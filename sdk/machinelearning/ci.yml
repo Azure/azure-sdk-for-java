@@ -33,6 +33,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: machinelearning
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-machinelearning
         groupId: com.azure.resourcemanager

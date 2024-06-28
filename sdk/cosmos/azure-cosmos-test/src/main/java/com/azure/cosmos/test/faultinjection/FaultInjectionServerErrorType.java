@@ -49,8 +49,5 @@ public enum FaultInjectionServerErrorType {
     /**
      * Simulate 410/1000, container recreate scenario
      */
-    NAME_CACHE_IS_STALE,
-
-    /** 410-1002 from server */
-    PARTITION_IS_GONE
+    NAME_CACHE_IS_STALE
 }

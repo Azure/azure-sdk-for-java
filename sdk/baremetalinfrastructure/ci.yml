@@ -33,6 +33,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: baremetalinfrastructure
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-baremetalinfrastructure
         groupId: com.azure.resourcemanager

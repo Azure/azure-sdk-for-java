@@ -12,17 +12,17 @@ public final class RunOutputInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RunOutputInner model = BinaryData.fromString(
-            "{\"properties\":{\"artifactId\":\"a\",\"artifactUri\":\"uhrzayvvt\",\"provisioningState\":\"Succeeded\"},\"id\":\"f\",\"name\":\"iotkftutqxl\",\"type\":\"gxlefgugnxkrxd\"}")
+            "{\"properties\":{\"artifactId\":\"l\",\"artifactUri\":\"majtjaod\",\"provisioningState\":\"Creating\"},\"id\":\"bdxkqpxokaj\",\"name\":\"onpimexgstxg\",\"type\":\"po\"}")
             .toObject(RunOutputInner.class);
-        Assertions.assertEquals("a", model.artifactId());
-        Assertions.assertEquals("uhrzayvvt", model.artifactUri());
+        Assertions.assertEquals("l", model.artifactId());
+        Assertions.assertEquals("majtjaod", model.artifactUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RunOutputInner model = new RunOutputInner().withArtifactId("a").withArtifactUri("uhrzayvvt");
+        RunOutputInner model = new RunOutputInner().withArtifactId("l").withArtifactUri("majtjaod");
         model = BinaryData.fromObject(model).toObject(RunOutputInner.class);
-        Assertions.assertEquals("a", model.artifactId());
-        Assertions.assertEquals("uhrzayvvt", model.artifactUri());
+        Assertions.assertEquals("l", model.artifactId());
+        Assertions.assertEquals("majtjaod", model.artifactUri());
     }
 }

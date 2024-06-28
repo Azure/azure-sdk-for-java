@@ -47,6 +47,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: attestation
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-security-attestation
         groupId: com.azure

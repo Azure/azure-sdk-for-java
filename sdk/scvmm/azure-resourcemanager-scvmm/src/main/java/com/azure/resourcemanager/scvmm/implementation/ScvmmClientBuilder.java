@@ -14,19 +14,18 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/**
- * A builder for creating a new instance of the ScvmmClientImpl type.
- */
-@ServiceClientBuilder(serviceClients = { ScvmmClientImpl.class })
+/** A builder for creating a new instance of the ScvmmClientImpl type. */
+@ServiceClientBuilder(serviceClients = {ScvmmClientImpl.class})
 public final class ScvmmClientBuilder {
     /*
-     * The ID of the target subscription. The value must be an UUID.
+     * The Azure subscription ID. This is a GUID-formatted string (e.g.
+     * 00000000-0000-0000-0000-000000000000).
      */
     private String subscriptionId;
 
     /**
-     * Sets The ID of the target subscription. The value must be an UUID.
-     * 
+     * Sets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the ScvmmClientBuilder.
      */
@@ -42,7 +41,7 @@ public final class ScvmmClientBuilder {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param endpoint the endpoint value.
      * @return the ScvmmClientBuilder.
      */
@@ -58,7 +57,7 @@ public final class ScvmmClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     * 
+     *
      * @param environment the environment value.
      * @return the ScvmmClientBuilder.
      */
@@ -74,7 +73,7 @@ public final class ScvmmClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the ScvmmClientBuilder.
      */
@@ -90,7 +89,7 @@ public final class ScvmmClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     * 
+     *
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the ScvmmClientBuilder.
      */
@@ -106,7 +105,7 @@ public final class ScvmmClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the ScvmmClientBuilder.
      */
@@ -117,22 +116,28 @@ public final class ScvmmClientBuilder {
 
     /**
      * Builds an instance of ScvmmClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of ScvmmClientImpl.
      */
     public ScvmmClientImpl buildClient() {
-        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
-        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline = (pipeline != null)
-            ? pipeline
-            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval
-            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
-            ? serializerAdapter
-            : SerializerFactory.createDefaultManagementSerializerAdapter();
-        ScvmmClientImpl client = new ScvmmClientImpl(localPipeline, localSerializerAdapter, localDefaultPollInterval,
-            localEnvironment, this.subscriptionId, localEndpoint);
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
+        }
+        if (environment == null) {
+            this.environment = AzureEnvironment.AZURE;
+        }
+        if (pipeline == null) {
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        }
+        if (defaultPollInterval == null) {
+            this.defaultPollInterval = Duration.ofSeconds(30);
+        }
+        if (serializerAdapter == null) {
+            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
+        }
+        ScvmmClientImpl client =
+            new ScvmmClientImpl(
+                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

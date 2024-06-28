@@ -39,6 +39,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: springappdiscovery
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-springappdiscovery
         groupId: com.azure.resourcemanager

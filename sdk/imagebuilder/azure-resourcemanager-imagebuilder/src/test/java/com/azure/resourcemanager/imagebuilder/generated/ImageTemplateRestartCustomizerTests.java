@@ -12,24 +12,22 @@ public final class ImageTemplateRestartCustomizerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageTemplateRestartCustomizer model = BinaryData.fromString(
-            "{\"type\":\"WindowsRestart\",\"restartCommand\":\"juqk\",\"restartCheckCommand\":\"sa\",\"restartTimeout\":\"wkuofoskghsauu\",\"name\":\"jmvxie\"}")
+            "{\"type\":\"WindowsRestart\",\"restartCommand\":\"s\",\"restartCheckCommand\":\"ddystkiiuxhqy\",\"restartTimeout\":\"xorrqnb\",\"name\":\"czvyifq\"}")
             .toObject(ImageTemplateRestartCustomizer.class);
-        Assertions.assertEquals("jmvxie", model.name());
-        Assertions.assertEquals("juqk", model.restartCommand());
-        Assertions.assertEquals("sa", model.restartCheckCommand());
-        Assertions.assertEquals("wkuofoskghsauu", model.restartTimeout());
+        Assertions.assertEquals("czvyifq", model.name());
+        Assertions.assertEquals("s", model.restartCommand());
+        Assertions.assertEquals("ddystkiiuxhqy", model.restartCheckCommand());
+        Assertions.assertEquals("xorrqnb", model.restartTimeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateRestartCustomizer model = new ImageTemplateRestartCustomizer().withName("jmvxie")
-            .withRestartCommand("juqk")
-            .withRestartCheckCommand("sa")
-            .withRestartTimeout("wkuofoskghsauu");
+        ImageTemplateRestartCustomizer model = new ImageTemplateRestartCustomizer().withName("czvyifq")
+            .withRestartCommand("s").withRestartCheckCommand("ddystkiiuxhqy").withRestartTimeout("xorrqnb");
         model = BinaryData.fromObject(model).toObject(ImageTemplateRestartCustomizer.class);
-        Assertions.assertEquals("jmvxie", model.name());
-        Assertions.assertEquals("juqk", model.restartCommand());
-        Assertions.assertEquals("sa", model.restartCheckCommand());
-        Assertions.assertEquals("wkuofoskghsauu", model.restartTimeout());
+        Assertions.assertEquals("czvyifq", model.name());
+        Assertions.assertEquals("s", model.restartCommand());
+        Assertions.assertEquals("ddystkiiuxhqy", model.restartCheckCommand());
+        Assertions.assertEquals("xorrqnb", model.restartTimeout());
     }
 }

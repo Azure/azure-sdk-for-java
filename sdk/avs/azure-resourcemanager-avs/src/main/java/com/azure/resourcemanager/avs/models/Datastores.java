@@ -8,75 +8,73 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/**
- * Resource collection API of Datastores.
- */
+/** Resource collection API of Datastores. */
 public interface Datastores {
     /**
-     * List Datastore resources by Cluster.
-     * 
+     * List datastores in a private cloud cluster.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
+     * @param clusterName Name of the cluster in the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Datastore list operation as paginated response with {@link PagedIterable}.
+     * @return a paged list of datastores as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Datastore> list(String resourceGroupName, String privateCloudName, String clusterName);
 
     /**
-     * List Datastore resources by Cluster.
-     * 
+     * List datastores in a private cloud cluster.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
+     * @param clusterName Name of the cluster in the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Datastore list operation as paginated response with {@link PagedIterable}.
+     * @return a paged list of datastores as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Datastore> list(String resourceGroupName, String privateCloudName, String clusterName,
-        Context context);
+    PagedIterable<Datastore> list(
+        String resourceGroupName, String privateCloudName, String clusterName, Context context);
 
     /**
-     * Get a Datastore.
-     * 
+     * Get a datastore in a private cloud cluster.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param datastoreName Name of the datastore.
+     * @param clusterName Name of the cluster in the private cloud.
+     * @param datastoreName Name of the datastore in the private cloud cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Datastore along with {@link Response}.
+     * @return a datastore in a private cloud cluster along with {@link Response}.
      */
-    Response<Datastore> getWithResponse(String resourceGroupName, String privateCloudName, String clusterName,
-        String datastoreName, Context context);
+    Response<Datastore> getWithResponse(
+        String resourceGroupName, String privateCloudName, String clusterName, String datastoreName, Context context);
 
     /**
-     * Get a Datastore.
-     * 
+     * Get a datastore in a private cloud cluster.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param datastoreName Name of the datastore.
+     * @param clusterName Name of the cluster in the private cloud.
+     * @param datastoreName Name of the datastore in the private cloud cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Datastore.
+     * @return a datastore in a private cloud cluster.
      */
     Datastore get(String resourceGroupName, String privateCloudName, String clusterName, String datastoreName);
 
     /**
-     * Delete a Datastore.
-     * 
+     * Delete a datastore in a private cloud cluster.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param datastoreName Name of the datastore.
+     * @param clusterName Name of the cluster in the private cloud.
+     * @param datastoreName Name of the datastore in the private cloud cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -84,46 +82,46 @@ public interface Datastores {
     void delete(String resourceGroupName, String privateCloudName, String clusterName, String datastoreName);
 
     /**
-     * Delete a Datastore.
-     * 
+     * Delete a datastore in a private cloud cluster.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param datastoreName Name of the datastore.
+     * @param clusterName Name of the cluster in the private cloud.
+     * @param datastoreName Name of the datastore in the private cloud cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String privateCloudName, String clusterName, String datastoreName,
-        Context context);
+    void delete(
+        String resourceGroupName, String privateCloudName, String clusterName, String datastoreName, Context context);
 
     /**
-     * Get a Datastore.
-     * 
+     * Get a datastore in a private cloud cluster.
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Datastore along with {@link Response}.
+     * @return a datastore in a private cloud cluster along with {@link Response}.
      */
     Datastore getById(String id);
 
     /**
-     * Get a Datastore.
-     * 
+     * Get a datastore in a private cloud cluster.
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Datastore along with {@link Response}.
+     * @return a datastore in a private cloud cluster along with {@link Response}.
      */
     Response<Datastore> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a Datastore.
-     * 
+     * Delete a datastore in a private cloud cluster.
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -132,8 +130,8 @@ public interface Datastores {
     void deleteById(String id);
 
     /**
-     * Delete a Datastore.
-     * 
+     * Delete a datastore in a private cloud cluster.
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -144,7 +142,7 @@ public interface Datastores {
 
     /**
      * Begins definition for a new Datastore resource.
-     * 
+     *
      * @param name resource name.
      * @return the first stage of the new Datastore definition.
      */

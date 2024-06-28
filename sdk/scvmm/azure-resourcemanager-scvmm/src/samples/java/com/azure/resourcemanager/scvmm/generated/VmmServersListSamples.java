@@ -4,33 +4,19 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-/**
- * Samples for VmmServers List.
- */
+import com.azure.core.util.Context;
+
+/** Samples for VmmServers List. */
 public final class VmmServersListSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
-     * VmmServers_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListVMMServersBySubscription.json
      */
     /**
-     * Sample code: VmmServers_ListBySubscription_MaximumSet.
-     * 
+     * Sample code: ListVmmServersBySubscription.
+     *
      * @param manager Entry point to ScvmmManager.
      */
-    public static void vmmServersListBySubscriptionMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.vmmServers().list(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
-     * VmmServers_ListBySubscription_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: VmmServers_ListBySubscription_MinimumSet.
-     * 
-     * @param manager Entry point to ScvmmManager.
-     */
-    public static void vmmServersListBySubscriptionMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.vmmServers().list(com.azure.core.util.Context.NONE);
+    public static void listVmmServersBySubscription(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.vmmServers().list(Context.NONE);
     }
 }

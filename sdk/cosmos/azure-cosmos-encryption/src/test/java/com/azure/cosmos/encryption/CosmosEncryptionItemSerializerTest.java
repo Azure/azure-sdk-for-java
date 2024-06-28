@@ -774,9 +774,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
             }
 
             if (passThroughOnSerialize) {
-                return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor().serializeSafe(
-                    CosmosItemSerializer.DEFAULT_SERIALIZER,
-                    item);
+                return CosmosItemSerializer.DEFAULT_SERIALIZER.serialize(item);
             }
 
             Map<String, Object> unwrappedJsonTree = CosmosItemSerializer.DEFAULT_SERIALIZER.serialize(item);
@@ -804,13 +802,8 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
                 assertThat(jsonNodeMap.get("_trackingId")).isNotNull();
             }
 
-            TestDocumentWrappedInEnvelope envelope = ImplementationBridgeHelpers
-                .CosmosItemSerializerHelper
-                .getCosmosItemSerializerAccessor()
-                .deserializeSafe(
-                    CosmosItemSerializer.DEFAULT_SERIALIZER,
-                    jsonNodeMap,
-                    TestDocumentWrappedInEnvelope.class);
+            TestDocumentWrappedInEnvelope envelope =
+                CosmosItemSerializer.DEFAULT_SERIALIZER.deserialize(jsonNodeMap, TestDocumentWrappedInEnvelope.class);
 
             if (envelope == null || envelope.wrappedContent == null) {
                 return null;
@@ -823,13 +816,9 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
                 throw new IllegalStateException("Double wrapped");
             }
 
-            return ImplementationBridgeHelpers
-                .CosmosItemSerializerHelper
-                .getCosmosItemSerializerAccessor()
-                .deserializeSafe(
-                    CosmosItemSerializer.DEFAULT_SERIALIZER,
-                    unwrappedContent,
-                    classType);
+            return CosmosItemSerializer.DEFAULT_SERIALIZER.deserialize(
+                unwrappedContent,
+                classType);
         }
     }
 }

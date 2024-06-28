@@ -9,8 +9,7 @@ package com.azure.resourcemanager.selfhelp.generated;
  */
 public final class DiscoverySolutionListSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/
-     * ListDiscoverySolutionsAtTenantScope.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/ListDiscoverySolutionsAtTenantScope.json
      */
     /**
      * Sample code: List DiscoverySolutions at resource scope.

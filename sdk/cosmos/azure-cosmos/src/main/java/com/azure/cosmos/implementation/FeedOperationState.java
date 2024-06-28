@@ -91,7 +91,7 @@ public abstract class FeedOperationState {
             clientAccessor.getConnectionMode(cosmosAsyncClient),
             clientAccessor.getUserAgent(cosmosAsyncClient),
             this.sequenceNumberGenerator.incrementAndGet(),
-            fluxOptions != null ? fluxOptions.getQueryText(): null);
+            fluxOptions.getQueryText());
         this.ctxHolder = new AtomicReference<>(cosmosCtx);
     }
 

@@ -5,45 +5,32 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Cluster provisioning state.
- */
+/** The state of the cluster provisioning. */
 public final class ClusterProvisioningState extends ExpandableStringEnum<ClusterProvisioningState> {
-    /**
-     * Static value Succeeded for ClusterProvisioningState.
-     */
+    /** Static value Succeeded for ClusterProvisioningState. */
     public static final ClusterProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /**
-     * Static value Failed for ClusterProvisioningState.
-     */
+    /** Static value Failed for ClusterProvisioningState. */
     public static final ClusterProvisioningState FAILED = fromString("Failed");
 
-    /**
-     * Static value Canceled for ClusterProvisioningState.
-     */
+    /** Static value Cancelled for ClusterProvisioningState. */
+    public static final ClusterProvisioningState CANCELLED = fromString("Cancelled");
+
+    /** Static value Deleting for ClusterProvisioningState. */
+    public static final ClusterProvisioningState DELETING = fromString("Deleting");
+
+    /** Static value Updating for ClusterProvisioningState. */
+    public static final ClusterProvisioningState UPDATING = fromString("Updating");
+
+    /** Static value Canceled for ClusterProvisioningState. */
     public static final ClusterProvisioningState CANCELED = fromString("Canceled");
 
     /**
-     * Static value Cancelled for ClusterProvisioningState.
-     */
-    public static final ClusterProvisioningState CANCELLED = fromString("Cancelled");
-
-    /**
-     * Static value Deleting for ClusterProvisioningState.
-     */
-    public static final ClusterProvisioningState DELETING = fromString("Deleting");
-
-    /**
-     * Static value Updating for ClusterProvisioningState.
-     */
-    public static final ClusterProvisioningState UPDATING = fromString("Updating");
-
-    /**
      * Creates a new instance of ClusterProvisioningState value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -52,17 +39,18 @@ public final class ClusterProvisioningState extends ExpandableStringEnum<Cluster
 
     /**
      * Creates or finds a ClusterProvisioningState from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ClusterProvisioningState.
      */
+    @JsonCreator
     public static ClusterProvisioningState fromString(String name) {
         return fromString(name, ClusterProvisioningState.class);
     }
 
     /**
      * Gets known ClusterProvisioningState values.
-     * 
+     *
      * @return known ClusterProvisioningState values.
      */
     public static Collection<ClusterProvisioningState> values() {

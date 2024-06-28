@@ -5,46 +5,42 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * An ExpressRoute Circuit.
- */
+/** An ExpressRoute Circuit. */
 @Immutable
-public final class Circuit implements JsonSerializable<Circuit> {
+public final class Circuit {
     /*
      * CIDR of primary subnet
      */
+    @JsonProperty(value = "primarySubnet", access = JsonProperty.Access.WRITE_ONLY)
     private String primarySubnet;
 
     /*
      * CIDR of secondary subnet
      */
+    @JsonProperty(value = "secondarySubnet", access = JsonProperty.Access.WRITE_ONLY)
     private String secondarySubnet;
 
     /*
      * Identifier of the ExpressRoute Circuit (Microsoft Colo only)
      */
+    @JsonProperty(value = "expressRouteID", access = JsonProperty.Access.WRITE_ONLY)
     private String expressRouteId;
 
     /*
      * ExpressRoute Circuit private peering identifier
      */
+    @JsonProperty(value = "expressRoutePrivatePeeringID", access = JsonProperty.Access.WRITE_ONLY)
     private String expressRoutePrivatePeeringId;
 
-    /**
-     * Creates an instance of Circuit class.
-     */
+    /** Creates an instance of Circuit class. */
     public Circuit() {
     }
 
     /**
      * Get the primarySubnet property: CIDR of primary subnet.
-     * 
+     *
      * @return the primarySubnet value.
      */
     public String primarySubnet() {
@@ -53,7 +49,7 @@ public final class Circuit implements JsonSerializable<Circuit> {
 
     /**
      * Get the secondarySubnet property: CIDR of secondary subnet.
-     * 
+     *
      * @return the secondarySubnet value.
      */
     public String secondarySubnet() {
@@ -62,7 +58,7 @@ public final class Circuit implements JsonSerializable<Circuit> {
 
     /**
      * Get the expressRouteId property: Identifier of the ExpressRoute Circuit (Microsoft Colo only).
-     * 
+     *
      * @return the expressRouteId value.
      */
     public String expressRouteId() {
@@ -71,7 +67,7 @@ public final class Circuit implements JsonSerializable<Circuit> {
 
     /**
      * Get the expressRoutePrivatePeeringId property: ExpressRoute Circuit private peering identifier.
-     * 
+     *
      * @return the expressRoutePrivatePeeringId value.
      */
     public String expressRoutePrivatePeeringId() {
@@ -80,50 +76,9 @@ public final class Circuit implements JsonSerializable<Circuit> {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of Circuit from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of Circuit if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
-     * @throws IOException If an error occurs while reading the Circuit.
-     */
-    public static Circuit fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            Circuit deserializedCircuit = new Circuit();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("primarySubnet".equals(fieldName)) {
-                    deserializedCircuit.primarySubnet = reader.getString();
-                } else if ("secondarySubnet".equals(fieldName)) {
-                    deserializedCircuit.secondarySubnet = reader.getString();
-                } else if ("expressRouteID".equals(fieldName)) {
-                    deserializedCircuit.expressRouteId = reader.getString();
-                } else if ("expressRoutePrivatePeeringID".equals(fieldName)) {
-                    deserializedCircuit.expressRoutePrivatePeeringId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCircuit;
-        });
     }
 }

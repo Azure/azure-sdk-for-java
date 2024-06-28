@@ -4,10 +4,8 @@
 
 package com.azure.resourcemanager.avs.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkInner;
 import com.azure.resourcemanager.avs.models.WorkloadNetwork;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkProvisioningState;
 
 public final class WorkloadNetworkImpl implements WorkloadNetwork {
     private WorkloadNetworkInner innerObject;
@@ -29,14 +27,6 @@ public final class WorkloadNetworkImpl implements WorkloadNetwork {
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
-    public WorkloadNetworkProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
     }
 
     public WorkloadNetworkInner innerModel() {
