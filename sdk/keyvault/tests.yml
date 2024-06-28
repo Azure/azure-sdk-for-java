@@ -14,7 +14,8 @@ extends:
     CloudConfig:
       Public:
         ServiceConnection: azure-sdk-tests
-        SubscriptionConfigurationFilePath: eng/common/TestResources/sub-config/AzurePublicMsft.json
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzurePublicMsft.json
         SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
         ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
           MatrixFilters:
