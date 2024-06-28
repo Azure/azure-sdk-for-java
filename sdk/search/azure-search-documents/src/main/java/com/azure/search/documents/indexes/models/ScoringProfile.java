@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Defines parameters for a search index that influence scoring in search queries.
@@ -184,7 +185,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
      * @return the ScoringProfile object itself.
      */
     public ScoringProfile setFunctions(ScoringFunction... functions) {
-        this.functions = (functions == null) ? null : java.util.Arrays.asList(functions);
+        this.functions = (functions == null) ? null : Arrays.asList(functions);
         return this;
     }
 }

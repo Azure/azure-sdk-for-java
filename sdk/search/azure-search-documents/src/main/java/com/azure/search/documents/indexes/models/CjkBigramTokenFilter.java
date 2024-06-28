@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Forms bigrams of CJK terms that are generated from the standard tokenizer. This token filter is implemented using
@@ -161,7 +162,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
      * @return the CjkBigramTokenFilter object itself.
      */
     public CjkBigramTokenFilter setIgnoreScripts(CjkBigramTokenFilterScripts... ignoreScripts) {
-        this.ignoreScripts = (ignoreScripts == null) ? null : java.util.Arrays.asList(ignoreScripts);
+        this.ignoreScripts = (ignoreScripts == null) ? null : Arrays.asList(ignoreScripts);
         return this;
     }
 }

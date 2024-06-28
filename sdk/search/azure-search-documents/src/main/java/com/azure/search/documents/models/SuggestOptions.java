@@ -7,16 +7,18 @@ package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Parameter group.
  */
 @Fluent
-public final class SuggestOptions {
+public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
 
     /*
      * An OData expression that filters the documents considered for suggestions.
@@ -300,7 +302,7 @@ public final class SuggestOptions {
      * @return the SuggestOptions object itself.
      */
     public SuggestOptions setOrderBy(String... orderBy) {
-        this.orderBy = (orderBy == null) ? null : java.util.Arrays.asList(orderBy);
+        this.orderBy = (orderBy == null) ? null : Arrays.asList(orderBy);
         return this;
     }
 
@@ -312,7 +314,7 @@ public final class SuggestOptions {
      * @return the SuggestOptions object itself.
      */
     public SuggestOptions setSearchFields(String... searchFields) {
-        this.searchFields = (searchFields == null) ? null : java.util.Arrays.asList(searchFields);
+        this.searchFields = (searchFields == null) ? null : Arrays.asList(searchFields);
         return this;
     }
 
@@ -324,7 +326,7 @@ public final class SuggestOptions {
      * @return the SuggestOptions object itself.
      */
     public SuggestOptions setSelect(String... select) {
-        this.select = (select == null) ? null : java.util.Arrays.asList(select);
+        this.select = (select == null) ? null : Arrays.asList(select);
         return this;
     }
 

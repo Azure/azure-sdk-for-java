@@ -23,8 +23,6 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnecti
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 
-import java.util.Objects;
-
 /**
  * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting data
  * source connections, indexers, or skillsets and running or resetting indexers in an Azure AI Search service.

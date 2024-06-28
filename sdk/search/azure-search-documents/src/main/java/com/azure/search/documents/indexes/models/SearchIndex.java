@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Represents a search index definition, which describes the fields and search behavior of an index.
@@ -550,7 +551,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setFields(SearchField... fields) {
-        this.fields = (fields == null) ? null : java.util.Arrays.asList(fields);
+        this.fields = (fields == null) ? null : Arrays.asList(fields);
         return this;
     }
 
@@ -561,7 +562,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setScoringProfiles(ScoringProfile... scoringProfiles) {
-        this.scoringProfiles = (scoringProfiles == null) ? null : java.util.Arrays.asList(scoringProfiles);
+        this.scoringProfiles = (scoringProfiles == null) ? null : Arrays.asList(scoringProfiles);
         return this;
     }
 
@@ -572,7 +573,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setSuggesters(SearchSuggester... suggesters) {
-        this.suggesters = (suggesters == null) ? null : java.util.Arrays.asList(suggesters);
+        this.suggesters = (suggesters == null) ? null : Arrays.asList(suggesters);
         return this;
     }
 
@@ -583,7 +584,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setAnalyzers(LexicalAnalyzer... analyzers) {
-        this.analyzers = (analyzers == null) ? null : java.util.Arrays.asList(analyzers);
+        this.analyzers = (analyzers == null) ? null : Arrays.asList(analyzers);
         return this;
     }
 
@@ -594,7 +595,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setTokenizers(LexicalTokenizer... tokenizers) {
-        this.tokenizers = (tokenizers == null) ? null : java.util.Arrays.asList(tokenizers);
+        this.tokenizers = (tokenizers == null) ? null : Arrays.asList(tokenizers);
         return this;
     }
 
@@ -605,7 +606,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setTokenFilters(TokenFilter... tokenFilters) {
-        this.tokenFilters = (tokenFilters == null) ? null : java.util.Arrays.asList(tokenFilters);
+        this.tokenFilters = (tokenFilters == null) ? null : Arrays.asList(tokenFilters);
         return this;
     }
 
@@ -616,7 +617,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setCharFilters(CharFilter... charFilters) {
-        this.charFilters = (charFilters == null) ? null : java.util.Arrays.asList(charFilters);
+        this.charFilters = (charFilters == null) ? null : Arrays.asList(charFilters);
         return this;
     }
 }

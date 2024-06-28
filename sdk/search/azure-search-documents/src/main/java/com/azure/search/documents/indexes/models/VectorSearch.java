@@ -188,7 +188,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      * @return the VectorSearch object itself.
      */
     public VectorSearch setProfiles(VectorSearchProfile... profiles) {
-        this.profiles = (profiles == null) ? null : java.util.Arrays.asList(profiles);
+        this.profiles = (profiles == null) ? null : Arrays.asList(profiles);
         return this;
     }
 
@@ -200,7 +200,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      * @return the VectorSearch object itself.
      */
     public VectorSearch setAlgorithms(VectorSearchAlgorithmConfiguration... algorithms) {
-        this.algorithms = (algorithms == null) ? null : java.util.Arrays.asList(algorithms);
+        this.algorithms = (algorithms == null) ? null : Arrays.asList(algorithms);
         return this;
     }
 
@@ -212,7 +212,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      * @return the VectorSearch object itself.
      */
     public VectorSearch setCompressions(VectorSearchCompression... compressions) {
-        this.compressions = (compressions == null) ? null : java.util.Arrays.asList(compressions);
+        this.compressions = (compressions == null) ? null : Arrays.asList(compressions);
         return this;
     }
 }

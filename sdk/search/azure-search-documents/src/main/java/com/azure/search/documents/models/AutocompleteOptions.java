@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Parameter group.
@@ -264,7 +265,7 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
      * @return the AutocompleteOptions object itself.
      */
     public AutocompleteOptions setSearchFields(String... searchFields) {
-        this.searchFields = (searchFields == null) ? null : java.util.Arrays.asList(searchFields);
+        this.searchFields = (searchFields == null) ? null : Arrays.asList(searchFields);
         return this;
     }
 

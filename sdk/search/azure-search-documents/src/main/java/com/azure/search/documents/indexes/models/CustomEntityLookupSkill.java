@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * A skill looks for text from a custom, user-defined list of words and phrases.
@@ -352,7 +353,7 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      */
     public CustomEntityLookupSkill setInlineEntitiesDefinition(CustomEntity... inlineEntitiesDefinition) {
         this.inlineEntitiesDefinition
-            = (inlineEntitiesDefinition == null) ? null : java.util.Arrays.asList(inlineEntitiesDefinition);
+            = (inlineEntitiesDefinition == null) ? null : Arrays.asList(inlineEntitiesDefinition);
         return this;
     }
 }

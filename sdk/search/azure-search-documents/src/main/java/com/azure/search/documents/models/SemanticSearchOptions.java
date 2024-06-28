@@ -3,8 +3,6 @@
 package com.azure.search.documents.models;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Parameters for performing vector searches.

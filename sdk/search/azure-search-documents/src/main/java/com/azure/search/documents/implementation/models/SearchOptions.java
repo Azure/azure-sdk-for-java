@@ -11,6 +11,7 @@ import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
 import com.azure.search.documents.models.SemanticErrorMode;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Parameter group.
@@ -751,7 +752,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setFacets(String... facets) {
-        this.facets = (facets == null) ? null : java.util.Arrays.asList(facets);
+        this.facets = (facets == null) ? null : Arrays.asList(facets);
         return this;
     }
 
@@ -766,7 +767,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setOrderBy(String... orderBy) {
-        this.orderBy = (orderBy == null) ? null : java.util.Arrays.asList(orderBy);
+        this.orderBy = (orderBy == null) ? null : Arrays.asList(orderBy);
         return this;
     }
 
@@ -779,7 +780,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setSearchFields(String... searchFields) {
-        this.searchFields = (searchFields == null) ? null : java.util.Arrays.asList(searchFields);
+        this.searchFields = (searchFields == null) ? null : Arrays.asList(searchFields);
         return this;
     }
 
@@ -791,7 +792,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setSelect(String... select) {
-        this.select = (select == null) ? null : java.util.Arrays.asList(select);
+        this.select = (select == null) ? null : Arrays.asList(select);
         return this;
     }
 
@@ -803,7 +804,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setHighlightFields(String... highlightFields) {
-        this.highlightFields = (highlightFields == null) ? null : java.util.Arrays.asList(highlightFields);
+        this.highlightFields = (highlightFields == null) ? null : Arrays.asList(highlightFields);
         return this;
     }
 }

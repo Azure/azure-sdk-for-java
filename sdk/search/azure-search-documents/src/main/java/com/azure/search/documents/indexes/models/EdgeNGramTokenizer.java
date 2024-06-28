@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Tokenizes the input from an edge into n-grams of the given size(s). This tokenizer is implemented using Apache
@@ -189,7 +190,7 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
      * @return the EdgeNGramTokenizer object itself.
      */
     public EdgeNGramTokenizer setTokenChars(TokenCharacterKind... tokenChars) {
-        this.tokenChars = (tokenChars == null) ? null : java.util.Arrays.asList(tokenChars);
+        this.tokenChars = (tokenChars == null) ? null : Arrays.asList(tokenChars);
         return this;
     }
 }

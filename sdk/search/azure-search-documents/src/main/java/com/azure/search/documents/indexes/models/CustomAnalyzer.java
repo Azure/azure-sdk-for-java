@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Allows you to take control over the process of converting text into indexable/searchable tokens. It's a user-defined
@@ -205,7 +206,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * @return the CustomAnalyzer object itself.
      */
     public CustomAnalyzer setTokenFilters(TokenFilterName... tokenFilters) {
-        this.tokenFilters = (tokenFilters == null) ? null : java.util.Arrays.asList(tokenFilters);
+        this.tokenFilters = (tokenFilters == null) ? null : Arrays.asList(tokenFilters);
         return this;
     }
 
@@ -218,7 +219,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * @return the CustomAnalyzer object itself.
      */
     public CustomAnalyzer setCharFilters(CharFilterName... charFilters) {
-        this.charFilters = (charFilters == null) ? null : java.util.Arrays.asList(charFilters);
+        this.charFilters = (charFilters == null) ? null : Arrays.asList(charFilters);
         return this;
     }
 }

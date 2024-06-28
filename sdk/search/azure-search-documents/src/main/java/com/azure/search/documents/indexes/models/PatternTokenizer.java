@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Arrays;
 
 /**
  * Tokenizer that uses regex pattern matching to construct distinct tokens. This tokenizer is implemented using Apache
@@ -94,7 +95,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
             return null;
         } else {
             String[] flagStrings = this.flags.toString().split("\\|");
-            return java.util.Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList());
+            return Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList());
         }
     }
 
@@ -210,7 +211,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
             this.flags = null;
             return this;
         } else {
-            return setFlags(java.util.Arrays.asList(flags));
+            return setFlags(Arrays.asList(flags));
         }
     }
 }

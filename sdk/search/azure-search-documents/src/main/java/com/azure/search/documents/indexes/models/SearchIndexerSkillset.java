@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * A list of skills.
@@ -333,7 +334,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      * @return the SearchIndexerSkillset object itself.
      */
     public SearchIndexerSkillset setSkills(SearchIndexerSkill... skills) {
-        this.skills = (skills == null) ? null : java.util.Arrays.asList(skills);
+        this.skills = (skills == null) ? null : Arrays.asList(skills);
         return this;
     }
 }

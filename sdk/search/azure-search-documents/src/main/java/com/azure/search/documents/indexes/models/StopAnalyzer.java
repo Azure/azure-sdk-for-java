@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Divides text at non-letters; Applies the lowercase and stopword token filters. This analyzer is implemented using
@@ -126,7 +127,7 @@ public final class StopAnalyzer extends LexicalAnalyzer {
      * @return the StopAnalyzer object itself.
      */
     public StopAnalyzer setStopwords(String... stopwords) {
-        this.stopwords = (stopwords == null) ? null : java.util.Arrays.asList(stopwords);
+        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
         return this;
     }
 }

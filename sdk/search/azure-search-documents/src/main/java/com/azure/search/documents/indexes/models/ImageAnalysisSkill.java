@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * A skill that analyzes image files. It extracts a rich set of visual features based on the image content.
@@ -246,7 +247,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      * @return the ImageAnalysisSkill object itself.
      */
     public ImageAnalysisSkill setVisualFeatures(VisualFeature... visualFeatures) {
-        this.visualFeatures = (visualFeatures == null) ? null : java.util.Arrays.asList(visualFeatures);
+        this.visualFeatures = (visualFeatures == null) ? null : Arrays.asList(visualFeatures);
         return this;
     }
 
@@ -257,7 +258,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      * @return the ImageAnalysisSkill object itself.
      */
     public ImageAnalysisSkill setDetails(ImageDetail... details) {
-        this.details = (details == null) ? null : java.util.Arrays.asList(details);
+        this.details = (details == null) ? null : Arrays.asList(details);
         return this;
     }
 }

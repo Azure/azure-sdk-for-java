@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Arrays;
 
 /**
  * Flexibly separates text into terms via a regular expression pattern. This analyzer is implemented using Apache
@@ -230,7 +231,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @return the PatternAnalyzer object itself.
      */
     public PatternAnalyzer setStopwords(String... stopwords) {
-        this.stopwords = (stopwords == null) ? null : java.util.Arrays.asList(stopwords);
+        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
         return this;
     }
 

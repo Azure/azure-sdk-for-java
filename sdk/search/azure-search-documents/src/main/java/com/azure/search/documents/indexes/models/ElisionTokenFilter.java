@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Removes elisions. For example, "l'avion" (the plane) will be converted to "avion" (plane). This token filter is
@@ -126,7 +127,7 @@ public final class ElisionTokenFilter extends TokenFilter {
      * @return the ElisionTokenFilter object itself.
      */
     public ElisionTokenFilter setArticles(String... articles) {
-        this.articles = (articles == null) ? null : java.util.Arrays.asList(articles);
+        this.articles = (articles == null) ? null : Arrays.asList(articles);
         return this;
     }
 }

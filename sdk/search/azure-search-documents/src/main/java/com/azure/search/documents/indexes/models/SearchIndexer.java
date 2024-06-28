@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Represents an indexer.
@@ -459,7 +460,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @return the SearchIndexer object itself.
      */
     public SearchIndexer setFieldMappings(FieldMapping... fieldMappings) {
-        this.fieldMappings = (fieldMappings == null) ? null : java.util.Arrays.asList(fieldMappings);
+        this.fieldMappings = (fieldMappings == null) ? null : Arrays.asList(fieldMappings);
         return this;
     }
 
@@ -471,7 +472,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @return the SearchIndexer object itself.
      */
     public SearchIndexer setOutputFieldMappings(FieldMapping... outputFieldMappings) {
-        this.outputFieldMappings = (outputFieldMappings == null) ? null : java.util.Arrays.asList(outputFieldMappings);
+        this.outputFieldMappings = (outputFieldMappings == null) ? null : Arrays.asList(outputFieldMappings);
         return this;
     }
 }

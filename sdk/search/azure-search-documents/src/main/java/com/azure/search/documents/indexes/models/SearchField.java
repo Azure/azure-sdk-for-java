@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Represents a field in an index definition, which describes the name, data type, and search behavior of a field.
@@ -727,7 +728,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @return the SearchField object itself.
      */
     public SearchField setFields(SearchField... fields) {
-        this.fields = (fields == null) ? null : java.util.Arrays.asList(fields);
+        this.fields = (fields == null) ? null : Arrays.asList(fields);
         return this;
     }
 
@@ -742,7 +743,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @return the SearchField object itself.
      */
     public SearchField setSynonymMapNames(String... synonymMapNames) {
-        this.synonymMapNames = (synonymMapNames == null) ? null : java.util.Arrays.asList(synonymMapNames);
+        this.synonymMapNames = (synonymMapNames == null) ? null : Arrays.asList(synonymMapNames);
         return this;
     }
 }

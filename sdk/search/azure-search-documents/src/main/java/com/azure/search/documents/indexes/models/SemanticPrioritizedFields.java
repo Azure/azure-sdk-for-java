@@ -174,7 +174,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * @return the SemanticPrioritizedFields object itself.
      */
     public SemanticPrioritizedFields setContentFields(SemanticField... contentFields) {
-        this.contentFields = (contentFields == null) ? null : java.util.Arrays.asList(contentFields);
+        this.contentFields = (contentFields == null) ? null : Arrays.asList(contentFields);
         return this;
     }
 
@@ -188,7 +188,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * @return the SemanticPrioritizedFields object itself.
      */
     public SemanticPrioritizedFields setKeywordsFields(SemanticField... keywordsFields) {
-        this.keywordsFields = (keywordsFields == null) ? null : java.util.Arrays.asList(keywordsFields);
+        this.keywordsFields = (keywordsFields == null) ? null : Arrays.asList(keywordsFields);
         return this;
     }
 }

@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Standard Apache Lucene analyzer; Composed of the standard tokenizer, lowercase filter and stop filter.
@@ -158,7 +159,7 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      * @return the LuceneStandardAnalyzer object itself.
      */
     public LuceneStandardAnalyzer setStopwords(String... stopwords) {
-        this.stopwords = (stopwords == null) ? null : java.util.Arrays.asList(stopwords);
+        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
         return this;
     }
 }

@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Splits words into subwords and performs optional transformations on subword groups. This token filter is implemented
@@ -419,7 +420,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @return the WordDelimiterTokenFilter object itself.
      */
     public WordDelimiterTokenFilter setProtectedWords(String... protectedWords) {
-        this.protectedWords = (protectedWords == null) ? null : java.util.Arrays.asList(protectedWords);
+        this.protectedWords = (protectedWords == null) ? null : Arrays.asList(protectedWords);
         return this;
     }
 }

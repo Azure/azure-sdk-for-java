@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Removes stop words from a token stream. This token filter is implemented using Apache Lucene.
@@ -226,7 +227,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @return the StopwordsTokenFilter object itself.
      */
     public StopwordsTokenFilter setStopwords(String... stopwords) {
-        this.stopwords = (stopwords == null) ? null : java.util.Arrays.asList(stopwords);
+        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
         return this;
     }
 }
