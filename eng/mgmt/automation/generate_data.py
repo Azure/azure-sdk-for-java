@@ -58,7 +58,14 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         # compile
         succeeded = compile_package(sdk_root, GROUP_ID, module)
         if succeeded:
-            breaking, changelog = compare_with_maven_package(sdk_root, GROUP_ID, service, get_latest_ga_version(GROUP_ID, module, stable_version), current_version, module)
+            breaking, changelog = compare_with_maven_package(
+                sdk_root,
+                GROUP_ID,
+                service,
+                get_latest_ga_version(GROUP_ID, module, stable_version),
+                current_version,
+                module,
+            )
         else:
             # check whether this is migration from Swagger
             clean_sdk_folder_succeeded = clean_sdk_folder_if_swagger(sdk_root, sdk_folder)
@@ -74,7 +81,14 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 # compile
                 succeeded = compile_package(sdk_root, GROUP_ID, module)
                 if succeeded:
-                    breaking, changelog = compare_with_maven_package(sdk_root, GROUP_ID, service, get_latest_ga_version(GROUP_ID, module, stable_version), current_version, module)
+                    breaking, changelog = compare_with_maven_package(
+                        sdk_root,
+                        GROUP_ID,
+                        service,
+                        get_latest_ga_version(GROUP_ID, module, stable_version),
+                        current_version,
+                        module,
+                    )
 
     # output
     if sdk_folder and module and service:
@@ -97,10 +111,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(sdk_folder))), None),
             "language": "Java",
             "result": result,
-            "changelog": {
-                "content": changelog,
-                "hasBreakingChange": breaking
-            }
+            "changelog": {"content": changelog, "hasBreakingChange": breaking},
         }
     else:
         # no info about package, abort with result=failed
@@ -242,7 +253,14 @@ def sdk_automation_readme(readme_file_abspath: str, packages: List[dict], sdk_ro
             stable_version, current_version = set_or_default_version(sdk_root, GROUP_ID, module)
             succeeded = compile_package(sdk_root, GROUP_ID, module)
             if succeeded:
-                breaking, changelog = compare_with_maven_package(sdk_root, GROUP_ID, service, get_latest_ga_version(GROUP_ID, module, stable_version), current_version, module)
+                breaking, changelog = compare_with_maven_package(
+                    sdk_root,
+                    GROUP_ID,
+                    service,
+                    get_latest_ga_version(GROUP_ID, module, stable_version),
+                    current_version,
+                    module,
+                )
 
         artifacts = ["{0}/pom.xml".format(generated_folder)]
         artifacts += [jar for jar in glob.glob("{0}/target/*.jar".format(generated_folder))]
@@ -262,10 +280,7 @@ def sdk_automation_readme(readme_file_abspath: str, packages: List[dict], sdk_ro
                 "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(generated_folder))), None),
                 "language": "Java",
                 "result": result,
-                "changelog": {
-                    "content": changelog,
-                    "hasBreakingChange": breaking
-                }
+                "changelog": {"content": changelog, "hasBreakingChange": breaking},
             }
         )
 

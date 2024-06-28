@@ -386,9 +386,7 @@ def get_latest_ga_version(group_id: str, module: str, previous_version: str) -> 
 
     group_path = group_id.replace(".", "/")
 
-    response = requests.get(
-        f"{MAVEN_HOST}/{group_path}/{module}"
-    )
+    response = requests.get(f"{MAVEN_HOST}/{group_path}/{module}")
 
     response.raise_for_status()
 
@@ -397,7 +395,8 @@ def get_latest_ga_version(group_id: str, module: str, previous_version: str) -> 
     previous_ga_versions = sorted(
         [v for v in ga_versions if compare_version(v, previous_version) < 0],
         key=cmp_to_key(compare_version),
-        reverse=True)
+        reverse=True,
+    )
 
     if len(previous_ga_versions) > 0:
         return previous_ga_versions[0]
