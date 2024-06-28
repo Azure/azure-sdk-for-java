@@ -62,7 +62,6 @@ extends:
             MatrixReplace:
               - AZURE_TEST.*=.*/
               - .*Version=1.21/1.17
-            BuildParallelization: 1
             TestOptions: '-Punit'
 
       - stage: TestEmulator
@@ -86,7 +85,6 @@ extends:
               - ${{ parameters.LanguageFilter }}
               - ${{ parameters.MatrixFilters }}
             AdditionalParameters:
-              BuildParallelization: 1
               DisableAzureResourceCreation: true
               ServiceDirectory: cosmos
               ACCOUNT_HOST: 'https://localhost:8081/'
