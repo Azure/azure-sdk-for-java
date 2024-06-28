@@ -6,36 +6,36 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.callautomation.implementation.accesshelpers.DialogStateResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.models.DialogStateResponse;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.Objects;
 
 /** The DialogStateResult model. */
 @Immutable
-public class DialogStateResult {
+public class DialogStateResult implements JsonSerializable<DialogStateResult> {
 
     /*
      * The dialog ID.
      */
-    @JsonProperty(value = "dialogId")
     private String dialogId;
 
     /*
      * Defines options for dialog.
      */
-    @JsonProperty(value = "dialogOptions")
     private StartDialogOptions dialogOptions;
 
     /*
      * Determines the type of the dialog.
      */
-    @JsonProperty(value = "dialogInputType")
     private DialogInputType dialogInputType;
 
     /*
      * The value to identify context of the operation.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     static {
@@ -86,5 +86,39 @@ public class DialogStateResult {
      */
     public String getOperationContext() {
         return operationContext;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dialogId", this.dialogId);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DialogStateResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DialogStateResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DialogStateResult.
+     */
+    public static DialogStateResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final DialogStateResult result = new DialogStateResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("dialogId".equals(fieldName)) {
+                    result.dialogId = reader.getString();
+                } else if ("operationContext".equals(fieldName)) {
+                    result.operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return result;
+        });
     }
 }
