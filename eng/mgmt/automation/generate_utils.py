@@ -189,7 +189,7 @@ def update_changelog(changelog_file, changelog):
     logging.info("[Changelog][Success] Write to changelog")
 
 
-def compare_with_maven_package(sdk_root: str, service: str, previous_version: str, current_version: str, module: str):
+def compare_with_maven_package(sdk_root: str, group_id: str, service: str, previous_version: str, current_version: str, module: str):
     if previous_version == current_version:
         logging.info("[Changelog][Skip] no previous version")
         return False, ""
@@ -200,7 +200,7 @@ def compare_with_maven_package(sdk_root: str, service: str, previous_version: st
 
     r = requests.get(
         MAVEN_URL.format(
-            group_id=GROUP_ID.replace(".", "/"),
+            group_id=group_id.replace(".", "/"),
             artifact_id=module,
             version=previous_version,
         )
@@ -229,10 +229,11 @@ def compare_with_maven_package(sdk_root: str, service: str, previous_version: st
 
 def get_version(
     sdk_root: str,
+    group_id: str,
     module: str,
 ) -> Union[str, None]:
     version_file = os.path.join(sdk_root, "eng/versioning/version_client.txt")
-    project = "{0}:{1}".format(GROUP_ID, module)
+    project = "{0}:{1}".format(group_id, module)
 
     with open(version_file, "r") as fin:
         for line in fin.readlines():
