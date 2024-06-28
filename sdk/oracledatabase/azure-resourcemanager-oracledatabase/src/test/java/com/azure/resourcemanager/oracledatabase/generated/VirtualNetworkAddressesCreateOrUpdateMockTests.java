@@ -22,7 +22,7 @@ public final class VirtualNetworkAddressesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ipAddress\":\"ghtuqfecjxey\",\"vmOcid\":\"uhxu\",\"ocid\":\"buew\",\"domain\":\"s\",\"lifecycleDetails\":\"jlxuz\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Terminating\",\"timeAssigned\":\"2021-07-24T18:32:54Z\"},\"id\":\"baqehgpdoh\",\"name\":\"jqatucoigebxn\",\"type\":\"nwfepbnwg\"}";
+            = "{\"properties\":{\"ipAddress\":\"beolh\",\"vmOcid\":\"lvbmxuqibsxtkcu\",\"ocid\":\"b\",\"domain\":\"arfsi\",\"lifecycleDetails\":\"lkjxnqpvwgf\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Failed\",\"timeAssigned\":\"2021-06-25T15:03:20Z\"},\"id\":\"zmdk\",\"name\":\"aoaf\",\"type\":\"luqvoxmycjimryv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,12 @@ public final class VirtualNetworkAddressesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VirtualNetworkAddress response = manager.virtualNetworkAddresses()
-            .define("nszonwpngaj")
-            .withExistingCloudVmCluster("rmlmuowo", "bauiropi")
-            .withProperties(
-                new VirtualNetworkAddressProperties().withIpAddress("ixjawrtm").withVmOcid("jmyccxlzhcoxov"))
+            .define("fsv")
+            .withExistingCloudVmCluster("phaimmoi", "oqboshbragapyyr")
+            .withProperties(new VirtualNetworkAddressProperties().withIpAddress("vbopfppdbwnu").withVmOcid("ahxku"))
             .create();
 
-        Assertions.assertEquals("ghtuqfecjxey", response.properties().ipAddress());
-        Assertions.assertEquals("uhxu", response.properties().vmOcid());
+        Assertions.assertEquals("beolh", response.properties().ipAddress());
+        Assertions.assertEquals("lvbmxuqibsxtkcu", response.properties().vmOcid());
     }
 }

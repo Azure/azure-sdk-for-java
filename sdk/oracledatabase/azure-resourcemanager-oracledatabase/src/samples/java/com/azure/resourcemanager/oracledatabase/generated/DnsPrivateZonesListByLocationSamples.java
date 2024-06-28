@@ -9,8 +9,9 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class DnsPrivateZonesListByLocationSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/
-     * dnsPrivateZones_listByLocation.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/dnsPrivateZones_listByLocation.
+     * json
      */
     /**
      * Sample code: List DnsPrivateZones by location.

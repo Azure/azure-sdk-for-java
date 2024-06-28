@@ -21,7 +21,7 @@ public final class SystemVersionsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"systemVersion\":\"rbbpneqvcwwyy\"},\"id\":\"mochpprprsnmok\",\"name\":\"yzejnhlbk\",\"type\":\"bzpcpiljhahzvec\"}]}";
+            = "{\"value\":[{\"properties\":{\"systemVersion\":\"ucrwnami\"},\"id\":\"ebrqbsmswziqgfuh\",\"name\":\"kzruswh\",\"type\":\"hczznvf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class SystemVersionsListByLocationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SystemVersion> response
-            = manager.systemVersions().listByLocation("tmzlbiojlv", com.azure.core.util.Context.NONE);
+            = manager.systemVersions().listByLocation("uxlxqzvners", com.azure.core.util.Context.NONE);
 
     }
 }

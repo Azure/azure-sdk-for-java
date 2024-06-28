@@ -31,7 +31,7 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
     /*
      * A Boolean flag indicating whether or not parts of the resource are unable to be explicitly managed.
      */
-    private boolean isProtected;
+    private Boolean isProtected;
 
     /*
      * Views lifecycleState
@@ -88,7 +88,7 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
      * 
      * @return the isProtected value.
      */
-    public boolean isProtected() {
+    public Boolean isProtected() {
         return this.isProtected;
     }
 
@@ -160,7 +160,6 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
      * @param jsonReader The JsonReader being read.
      * @return An instance of DnsPrivateViewProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DnsPrivateViewProperties.
      */
     public static DnsPrivateViewProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -172,8 +171,13 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
 
                 if ("ocid".equals(fieldName)) {
                     deserializedDnsPrivateViewProperties.ocid = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedDnsPrivateViewProperties.displayName = reader.getString();
                 } else if ("isProtected".equals(fieldName)) {
-                    deserializedDnsPrivateViewProperties.isProtected = reader.getBoolean();
+                    deserializedDnsPrivateViewProperties.isProtected = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lifecycleState".equals(fieldName)) {
+                    deserializedDnsPrivateViewProperties.lifecycleState
+                        = DnsPrivateViewsLifecycleState.fromString(reader.getString());
                 } else if ("self".equals(fieldName)) {
                     deserializedDnsPrivateViewProperties.self = reader.getString();
                 } else if ("timeCreated".equals(fieldName)) {
@@ -182,11 +186,6 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
                 } else if ("timeUpdated".equals(fieldName)) {
                     deserializedDnsPrivateViewProperties.timeUpdated = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("displayName".equals(fieldName)) {
-                    deserializedDnsPrivateViewProperties.displayName = reader.getString();
-                } else if ("lifecycleState".equals(fieldName)) {
-                    deserializedDnsPrivateViewProperties.lifecycleState
-                        = DnsPrivateViewsLifecycleState.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDnsPrivateViewProperties.provisioningState
                         = ResourceProvisioningState.fromString(reader.getString());
