@@ -8,8 +8,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,7 +27,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 /**
  * A {@link BinaryDataContent} implementation which is backed by a serializable object.
  */
-public final class SerializableContent extends BinaryDataContent implements JsonSerializable<SerializableContent> {
+public final class SerializableContent extends BinaryDataContent {
     private static final ClientLogger LOGGER = new ClientLogger(SerializableContent.class);
 
     private final Object content;
@@ -130,11 +128,5 @@ public final class SerializableContent extends BinaryDataContent implements Json
 
     private byte[] getBytes() {
         return serializer.serializeToBytes(content);
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeRawValue(new String(this.serializer.serializeToBytes(this.content)));
-        return jsonWriter;
     }
 }

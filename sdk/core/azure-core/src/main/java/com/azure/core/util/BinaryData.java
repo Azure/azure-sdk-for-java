@@ -1609,7 +1609,4 @@ public final class BinaryData {
         }
     }
 
-    public BinaryDataContent getContent() {
-        return this.content;
-    }
 }
