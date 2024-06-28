@@ -23,23 +23,12 @@ import java.util.Objects;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 
 /**
- * <p>This class provides a client that works with repositories in Azure Container Registry.
- * It allows to list and delete repositories within the registry or obtain an instance of {@link ContainerRepository}
- * or {@link RegistryArtifact} that can be used to perform operations on the repository or artifact.</p>
+ * This class provides a client that exposes operations to managing container images and artifacts.
+ * synchronously. It exposes methods directly performed on the registry like listing the catalog.
+ * as well as helper types like {@link #getArtifact(String, String) getArtifact} and {@link #getRepository(String) getRepository}
+ * that can be used to perform operations on repository and artifacts.
  *
- * <h2>Getting Started</h2>
- *
- * <p>In order to interact with the Container Registry service you'll need to create an instance of
- * {@link com.azure.containers.containerregistry.ContainerRegistryClient}.</p>
- *
- * <p>To create one of the client and communicate with the service, you'll need to use AAD authentication via
- * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable"> Azure Identity</a></p>.
- *
- * <p><strong>Sample: Construct Container Registry Client</strong></p>
- *
- * <p>The following code sample demonstrates the creation of a
- * {@link com.azure.containers.containerregistry.ContainerRegistryClient}.</p>
- *
+ * <p><strong>Instantiating a synchronous Container Registry client</strong></p>
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.instantiation -->
  * <pre>
  * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
@@ -49,15 +38,23 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ma
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryClient.instantiation -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to
- * {@link com.azure.containers.containerregistry.ContainerRegistryAsyncClient}.</p>
+ * <p><strong>Instantiating a synchronous Container Registry client with custom pipeline</strong></p>
+ * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
  *
- * <p>View {@link ContainerRegistryClientBuilder} for additional ways to construct the client.</p>
+ * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;credential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.containers.containerregistry.ContainerRegistryClient.pipeline.instantiation -->
  *
- * <p>The Container Registry Client allows to list and delete repositories and obtain instances of repository and
- * artifact client. See methods below to explore all capabilities this client provides.</p>
+ * <p>View {@link ContainerRegistryClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see com.azure.containers.containerregistry
  * @see ContainerRegistryClientBuilder
  */
 @ServiceClient(builder = ContainerRegistryClientBuilder.class)
@@ -77,9 +74,8 @@ public final class ContainerRegistryClient {
     }
 
     /**
-     *  Gets the service endpoint.
-     *
-     * @return The service endpoint for the Azure Container Registry instance.
+     * This method returns the complete registry endpoint.
+     * @return The registry endpoint including the authority.
      */
     public String getEndpoint() {
         return this.endpoint;
@@ -88,7 +84,7 @@ public final class ContainerRegistryClient {
     /**
      * List all the repository names in this registry.
      *
-     * <p><strong>List the repository names in the registry</strong></p>
+     * <p><strong>List the repository names in the registry.</strong></p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.listRepositoryNames -->
      * <pre>
@@ -109,7 +105,7 @@ public final class ContainerRegistryClient {
     /**
      * List all the repository names in this registry.
      *
-     * <p><strong>List the repository names in the registry</strong></p>
+     * <p><strong>List the repository names in the registry.</strong></p>
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.listRepositoryNames#Context -->
      * <pre>
      * client.listRepositoryNames&#40;Context.NONE&#41;.stream&#40;&#41;.forEach&#40;name -&gt; &#123;
@@ -149,10 +145,11 @@ public final class ContainerRegistryClient {
         }
     }
 
+
     /**
-     * Delete the repository with provided {@code repositoryName}.
+     * Delete the repository identified by {@code repositoryName}.
      *
-     * <p><strong>Delete a repository in the registry</strong></p>
+     * <p><strong>Delete a repository in the registry.</strong></p>
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.deleteRepository#String -->
      * <pre>
      * client.deleteRepository&#40;repositoryName&#41;;
@@ -160,7 +157,7 @@ public final class ContainerRegistryClient {
      * <!-- end com.azure.containers.containerregistry.ContainerRegistryClient.deleteRepository#String -->
      *
      * @param repositoryName Name of the repository (including the namespace).
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to delete the repository.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code repositoryName} is null.
      * @throws IllegalArgumentException thrown if the {@code repositoryName} is empty.
      */
@@ -170,9 +167,9 @@ public final class ContainerRegistryClient {
     }
 
     /**
-     * Delete the repository with provided {@code repositoryName}.
+     * Delete the repository identified by {@code repositoryName}.
      *
-     *  <p><strong>Delete a repository in the registry</strong></p>
+     *  <p><strong>Delete a repository in the registry.</strong></p>
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.deleteRepositoryWithResponse#String-Context -->
      * <pre>
      * client.deleteRepositoryWithResponse&#40;repositoryName, Context.NONE&#41;;
@@ -182,7 +179,7 @@ public final class ContainerRegistryClient {
      * @param repositoryName Name of the repository (including the namespace).
      * @param context The context to associate with this operation.
      * @return Completion response.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to delete the repository.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code repositoryName} is null.
      * @throws IllegalArgumentException thrown if the {@code repositoryName} is empty.
      */
@@ -205,7 +202,7 @@ public final class ContainerRegistryClient {
     /**
      * Creates a new instance of {@link ContainerRepository} object for the specified repository.
      *
-     *  <p><strong>Get an instance of {@link ContainerRepository}</strong></p>
+     *  <p><strong>Create a ContainerRegistry helper instance.</strong></p>
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.getRepository -->
      * <pre>
      * ContainerRepository repository = client.getRepository&#40;repositoryName&#41;;
@@ -215,7 +212,7 @@ public final class ContainerRegistryClient {
      * <!-- end com.azure.containers.containerregistry.ContainerRegistryClient.getRepository -->
      *
      * @param repositoryName Name of the repository to reference.
-     * @return A new {@link ContainerRepository} for the requested repository.
+     * @return A new {@link ContainerRepository} for the desired repository.
      * @throws NullPointerException if {@code repositoryName} is null.
      * @throws IllegalArgumentException if {@code repositoryName} is empty.
      */
@@ -226,7 +223,7 @@ public final class ContainerRegistryClient {
     /**
      * Creates a new instance of {@link RegistryArtifact} object for the specified artifact.
      *
-     *  <p><strong>Get an instance of {@link RegistryArtifact}</strong></p>
+     *  <p><strong>Create a RegistryArtifact helper instance.</strong></p>
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.getArtifact -->
      * <pre>
      * RegistryArtifact registryArtifact = client.getArtifact&#40;repositoryName, tagOrDigest&#41;;
@@ -235,9 +232,9 @@ public final class ContainerRegistryClient {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.ContainerRegistryClient.getArtifact -->
      *
-     * @param repositoryName Name of the repository.
+     * @param repositoryName Name of the repository to reference.
      * @param tagOrDigest Either a tag or digest that uniquely identifies the artifact.
-     * @return A new {@link RegistryArtifact} object for the requested artifact.
+     * @return A new {@link RegistryArtifact} object for the desired repository.
      * @throws NullPointerException if {@code repositoryName} or {@code tagOrDigest} is null.
      * @throws IllegalArgumentException if {@code repositoryName} or {@code tagOrDigest} is empty.
      */
