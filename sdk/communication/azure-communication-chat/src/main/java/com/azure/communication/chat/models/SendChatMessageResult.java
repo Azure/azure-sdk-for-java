@@ -9,8 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.IOException;
 
 /**
@@ -21,7 +19,6 @@ public final class SendChatMessageResult implements JsonSerializable<SendChatMes
     /*
      * A server-generated message id.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
@@ -32,7 +29,7 @@ public final class SendChatMessageResult implements JsonSerializable<SendChatMes
 
     /**
      * Get the id property: A server-generated message id.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -41,7 +38,7 @@ public final class SendChatMessageResult implements JsonSerializable<SendChatMes
 
     /**
      * Set the id property: A server-generated message id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SendChatMessageResult object itself.
      */
@@ -56,31 +53,34 @@ public final class SendChatMessageResult implements JsonSerializable<SendChatMes
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", id);
+        jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of SendChatMessageResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SendChatMessageResult if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of SendChatMessageResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SendChatMessageResult.
      */
     public static SendChatMessageResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SendChatMessageResult result = new SendChatMessageResult();
-            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+            SendChatMessageResult deserializedSendChatMessageResult = new SendChatMessageResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
+
                 if ("id".equals(fieldName)) {
-                    result.setId(reader.getString());
+                    deserializedSendChatMessageResult.id = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return result;
+
+            return deserializedSendChatMessageResult;
         });
     }
 }
