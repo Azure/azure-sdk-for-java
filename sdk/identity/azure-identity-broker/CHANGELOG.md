@@ -1,5 +1,14 @@
 # Release History
 
+## 1.1.3 (2024-06-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.12.2` to version `1.14.0-beta.1`.
+
+
 ## 1.1.2 (2024-06-10)
 
 ### Other Changes
