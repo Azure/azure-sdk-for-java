@@ -131,7 +131,7 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
         try {
             iotDpsManager
                 .iotDpsResources()
-                .define("some invalid service name *&^-#2?")
+                .define("some invalid service name *%26%5E-%232%3F")
                 .withRegion(DEFAULT_REGION)
                 .withExistingResourceGroup(resourceGroup.name())
                 .withProperties(new IotDpsPropertiesDescription())
