@@ -134,7 +134,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
         jsonWriter.writeStartObject();
         if (stringContent != null) {
             jsonWriter.writeStringField("content", stringContent);
-        } else if(chatMessageContentItems != null){
+        } else if (chatMessageContentItems != null) {
             jsonWriter.writeArrayField("content", chatMessageContentItems, JsonWriter::writeJson);
         }
 
