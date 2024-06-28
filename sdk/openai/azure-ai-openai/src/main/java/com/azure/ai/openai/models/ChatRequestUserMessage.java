@@ -121,7 +121,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("content", this.content);
+        jsonWriter.writeUntypedField("content", this.content.getContent());
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
@@ -147,10 +147,9 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
                 if ("content".equals(fieldName)) {
                     if (reader.currentToken() == JsonToken.STRING) {
                         content = BinaryData.fromString(reader.getString());
-                    } else if (reader.currentToken() == JsonToken.START_OBJECT) {
-                        content = BinaryData.fromObject(reader.readMap(JsonReader::readUntyped));
                     } else if (reader.currentToken() == JsonToken.START_ARRAY) {
-                        content = BinaryData.fromObject(reader.readArray(JsonReader::readUntyped));
+                        content = BinaryData.fromObject(reader.readArray(arrayReader -> arrayReader
+                            .readObject(ChatMessageContentItem::fromJson)));
                     } else if (reader.currentToken() == JsonToken.NULL) {
                         content = null;
                     } else {

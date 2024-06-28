@@ -52,8 +52,6 @@ import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addMod
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
 
-    private static final ClientLogger LOGGER = new ClientLogger(OpenAIClient.class);
-
     @Generated
     private final OpenAIClientImpl serviceClient;
 
@@ -1056,7 +1054,7 @@ public final class OpenAIClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -1113,7 +1111,7 @@ public final class OpenAIClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * String
      * }</pre>
@@ -1141,7 +1139,7 @@ public final class OpenAIClient {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -1191,7 +1189,7 @@ public final class OpenAIClient {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * String
      * }</pre>
