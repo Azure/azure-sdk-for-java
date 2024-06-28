@@ -4,54 +4,57 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * An object describing the location and semantic content of a document.
- */
-@Fluent
-public final class Document implements JsonSerializable<Document> {
+/** An object describing the location and semantic content of a document. */
+@Immutable
+public final class Document {
     /*
      * Document type.
      */
-    private final String docType;
+    @JsonProperty(value = "docType", required = true)
+    private String docType;
 
     /*
      * Bounding regions covering the document.
      */
+    @JsonProperty(value = "boundingRegions")
     private List<BoundingRegion> boundingRegions;
 
     /*
      * Location of the document in the reading order concatenated content.
      */
-    private final List<DocumentSpan> spans;
+    @JsonProperty(value = "spans", required = true)
+    private List<DocumentSpan> spans;
 
     /*
      * Dictionary of named field values.
      */
+    @JsonProperty(value = "fields")
     private Map<String, DocumentField> fields;
 
     /*
      * Confidence of correctly extracting the document.
      */
-    private final float confidence;
+    @JsonProperty(value = "confidence", required = true)
+    private float confidence;
 
     /**
      * Creates an instance of Document class.
-     * 
+     *
      * @param docType the docType value to set.
      * @param spans the spans value to set.
      * @param confidence the confidence value to set.
      */
-    public Document(String docType, List<DocumentSpan> spans, float confidence) {
+    @JsonCreator
+    private Document(
+            @JsonProperty(value = "docType", required = true) String docType,
+            @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans,
+            @JsonProperty(value = "confidence", required = true) float confidence) {
         this.docType = docType;
         this.spans = spans;
         this.confidence = confidence;
@@ -59,7 +62,7 @@ public final class Document implements JsonSerializable<Document> {
 
     /**
      * Get the docType property: Document type.
-     * 
+     *
      * @return the docType value.
      */
     public String getDocType() {
@@ -68,7 +71,7 @@ public final class Document implements JsonSerializable<Document> {
 
     /**
      * Get the boundingRegions property: Bounding regions covering the document.
-     * 
+     *
      * @return the boundingRegions value.
      */
     public List<BoundingRegion> getBoundingRegions() {
@@ -76,19 +79,8 @@ public final class Document implements JsonSerializable<Document> {
     }
 
     /**
-     * Set the boundingRegions property: Bounding regions covering the document.
-     * 
-     * @param boundingRegions the boundingRegions value to set.
-     * @return the Document object itself.
-     */
-    public Document setBoundingRegions(List<BoundingRegion> boundingRegions) {
-        this.boundingRegions = boundingRegions;
-        return this;
-    }
-
-    /**
      * Get the spans property: Location of the document in the reading order concatenated content.
-     * 
+     *
      * @return the spans value.
      */
     public List<DocumentSpan> getSpans() {
@@ -97,7 +89,7 @@ public final class Document implements JsonSerializable<Document> {
 
     /**
      * Get the fields property: Dictionary of named field values.
-     * 
+     *
      * @return the fields value.
      */
     public Map<String, DocumentField> getFields() {
@@ -105,97 +97,11 @@ public final class Document implements JsonSerializable<Document> {
     }
 
     /**
-     * Set the fields property: Dictionary of named field values.
-     * 
-     * @param fields the fields value to set.
-     * @return the Document object itself.
-     */
-    public Document setFields(Map<String, DocumentField> fields) {
-        this.fields = fields;
-        return this;
-    }
-
-    /**
      * Get the confidence property: Confidence of correctly extracting the document.
-     * 
+     *
      * @return the confidence value.
      */
     public float getConfidence() {
         return this.confidence;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("docType", this.docType);
-        jsonWriter.writeArrayField("spans", this.spans, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeFloatField("confidence", this.confidence);
-        jsonWriter.writeArrayField("boundingRegions", this.boundingRegions,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeMapField("fields", this.fields, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of Document from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of Document if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Document.
-     */
-    public static Document fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean docTypeFound = false;
-            String docType = null;
-            boolean spansFound = false;
-            List<DocumentSpan> spans = null;
-            boolean confidenceFound = false;
-            float confidence = 0.0f;
-            List<BoundingRegion> boundingRegions = null;
-            Map<String, DocumentField> fields = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("docType".equals(fieldName)) {
-                    docType = reader.getString();
-                    docTypeFound = true;
-                } else if ("spans".equals(fieldName)) {
-                    spans = reader.readArray(reader1 -> DocumentSpan.fromJson(reader1));
-                    spansFound = true;
-                } else if ("confidence".equals(fieldName)) {
-                    confidence = reader.getFloat();
-                    confidenceFound = true;
-                } else if ("boundingRegions".equals(fieldName)) {
-                    boundingRegions = reader.readArray(reader1 -> BoundingRegion.fromJson(reader1));
-                } else if ("fields".equals(fieldName)) {
-                    fields = reader.readMap(reader1 -> DocumentField.fromJson(reader1));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (docTypeFound && spansFound && confidenceFound) {
-                Document deserializedDocument = new Document(docType, spans, confidence);
-                deserializedDocument.boundingRegions = boundingRegions;
-                deserializedDocument.fields = fields;
-
-                return deserializedDocument;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!docTypeFound) {
-                missingProperties.add("docType");
-            }
-            if (!spansFound) {
-                missingProperties.add("spans");
-            }
-            if (!confidenceFound) {
-                missingProperties.add("confidence");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
     }
 }
