@@ -1307,7 +1307,13 @@ public final class QueueAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt,
         String messageText, Duration visibilityTimeout) {
-        QueueMessage message = messageText == null ? null : new QueueMessage().setMessageText(messageText);
+        QueueMessage message;
+        if (messageText != null) {
+            String finalMessage = ModelHelper.encodeMessage(BinaryData.fromString(messageText), messageEncoding);
+            message = new QueueMessage().setMessageText(finalMessage);
+        } else {
+            message = null;
+        }
         Duration visTimeout = visibilityTimeout == null ? Duration.ZERO : visibilityTimeout;
         try {
             return withContext(context -> client.getMessageIds().updateWithResponseAsync(queueName, messageId,
