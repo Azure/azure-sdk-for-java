@@ -415,7 +415,7 @@ public class SearchIndexerAsyncClient {
      *
      * @return the pipeline.
      */
-    public HttpPipeline getHttpPipeline() {
+    HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 

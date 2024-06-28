@@ -334,7 +334,7 @@ public final class SearchClient {
      *
      * @return the pipeline.
      */
-    public HttpPipeline getHttpPipeline() {
+    HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 

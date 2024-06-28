@@ -343,7 +343,7 @@ public final class SearchAsyncClient {
      *
      * @return the pipeline.
      */
-    public HttpPipeline getHttpPipeline() {
+    HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 

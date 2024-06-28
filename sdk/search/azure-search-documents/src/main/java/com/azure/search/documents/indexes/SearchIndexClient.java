@@ -378,7 +378,7 @@ public final class SearchIndexClient {
     private final HttpPipeline httpPipeline;
 
     SearchIndexClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline,
-                           JsonSerializer serializer) {
+        JsonSerializer serializer) {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
@@ -390,7 +390,7 @@ public final class SearchIndexClient {
      *
      * @return the pipeline.
      */
-    public HttpPipeline getHttpPipeline() {
+    HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 

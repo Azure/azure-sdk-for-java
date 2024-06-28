@@ -127,7 +127,7 @@ public class VectorSearchReducedEmbeddings {
                             Configuration.getGlobalConfiguration().get("OPENAI_ENDPOINT"))
                         .setApiKey(Configuration.getGlobalConfiguration().get("OPENAI_KEY"))
                         .setDeploymentName(deploymentId)
-                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE)))));
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING_3_LARGE)))));
     }
 
     public static void createVectorIndex(SearchIndex vectorIndex) {

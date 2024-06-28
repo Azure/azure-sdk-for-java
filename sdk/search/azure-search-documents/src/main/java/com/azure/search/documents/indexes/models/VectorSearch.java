@@ -215,4 +215,15 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
         this.compressions = (compressions == null) ? null : Arrays.asList(compressions);
         return this;
     }
+
+    /**
+     * Set the vectorizers property: Contains configuration options on how to vectorize text vector queries.
+     *
+     * @param vectorizers the vectorizers value to set.
+     * @return the VectorSearch object itself.
+     */
+    public VectorSearch setVectorizers(VectorSearchVectorizer... vectorizers) {
+        this.vectorizers = (vectorizers == null) ? null : Arrays.asList(vectorizers);
+        return this;
+    }
 }

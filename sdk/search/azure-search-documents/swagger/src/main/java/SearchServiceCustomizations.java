@@ -91,6 +91,7 @@ public class SearchServiceCustomizations extends Customization {
         customizeSearchIndexerDataSourceConnection(publicCustomization.getClass("SearchIndexerDataSourceConnection"));
         customizeSemanticPrioritizedFields(publicCustomization.getClass("SemanticPrioritizedFields"));
         customizeVectorSearch(publicCustomization.getClass("VectorSearch"));
+        customizeAzureOpenAIModelName(publicCustomization.getClass("AzureOpenAIModelName"));
         // customizeSearchError(implCustomization.getClass("SearchError"));
 
         bulkRemoveFromJsonMethods(publicCustomization.getClass("SearchIndexerKnowledgeStoreProjectionSelector"),
@@ -644,6 +645,15 @@ public class SearchServiceCustomizations extends Customization {
             addVarArgsOverload(clazz, "profiles", "VectorSearchProfile");
             addVarArgsOverload(clazz, "algorithms", "VectorSearchAlgorithmConfiguration");
             addVarArgsOverload(clazz, "compressions", "VectorSearchCompression");
+            addVarArgsOverload(clazz, "vectorizers", "VectorSearchVectorizer");
+        });
+    }
+
+    private static void customizeAzureOpenAIModelName(ClassCustomization classCustomization) {
+        customizeAst(classCustomization, clazz -> {
+            clazz.getFieldByName("TEXT_EMBEDDING_ADA002").get().getVariable(0).setName("TEXT_EMBEDDING_ADA_002");
+            clazz.getFieldByName("TEXT_EMBEDDING3LARGE").get().getVariable(0).setName("TEXT_EMBEDDING_3_LARGE");
+            clazz.getFieldByName("TEXT_EMBEDDING3SMALL").get().getVariable(0).setName("TEXT_EMBEDDING_3_SMALL");
         });
     }
 
