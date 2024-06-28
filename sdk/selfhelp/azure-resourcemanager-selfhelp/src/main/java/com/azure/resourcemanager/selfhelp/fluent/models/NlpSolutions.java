@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.selfhelp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.selfhelp.models.ClassificationService;
 import com.azure.resourcemanager.selfhelp.models.SolutionMetadataProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Nlp metadata.
  */
 @Fluent
-public final class NlpSolutions {
+public final class NlpSolutions implements JsonSerializable<NlpSolutions> {
     /*
      * Title of the problem classification.
      */
-    @JsonProperty(value = "problemTitle")
     private String problemTitle;
 
     /*
      * Description of the problem classification.
      */
-    @JsonProperty(value = "problemDescription")
     private String problemDescription;
 
     /*
-     * Id of the service (https://learn.microsoft.com/en-us/rest/api/support/services?view=rest-support-2020-04-01) that may be used to create a support ticket.
+     * Id of the service (https://learn.microsoft.com/en-us/rest/api/support/services?view=rest-support-2020-04-01) that
+     * may be used to create a support ticket.
      */
-    @JsonProperty(value = "serviceId")
     private String serviceId;
 
     /*
-     * Id of the ProblemClassification (https://learn.microsoft.com/en-us/rest/api/support/problem-classifications?view=rest-support-2020-04-01) that may be used to create a support ticket.
+     * Id of the ProblemClassification
+     * (https://learn.microsoft.com/en-us/rest/api/support/problem-classifications?view=rest-support-2020-04-01) that
+     * may be used to create a support ticket.
      */
-    @JsonProperty(value = "problemClassificationId")
     private String problemClassificationId;
 
     /*
      * The list of solution metadata.
      */
-    @JsonProperty(value = "solutions")
     private List<SolutionMetadataProperties> solutions;
 
     /*
-     * The set of services that are most likely related to the request. If relatedServices is included in the response then solutions may not be discovered until the client calls a second time specifying one of the service Ids in the relatedServices object.
+     * The set of services that are most likely related to the request. If relatedServices is included in the response
+     * then solutions may not be discovered until the client calls a second time specifying one of the service Ids in
+     * the relatedServices object.
      */
-    @JsonProperty(value = "relatedServices")
     private List<ClassificationService> relatedServices;
 
     /**
@@ -201,5 +204,61 @@ public final class NlpSolutions {
         if (relatedServices() != null) {
             relatedServices().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("problemTitle", this.problemTitle);
+        jsonWriter.writeStringField("problemDescription", this.problemDescription);
+        jsonWriter.writeStringField("serviceId", this.serviceId);
+        jsonWriter.writeStringField("problemClassificationId", this.problemClassificationId);
+        jsonWriter.writeArrayField("solutions", this.solutions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("relatedServices", this.relatedServices,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NlpSolutions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NlpSolutions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NlpSolutions.
+     */
+    public static NlpSolutions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NlpSolutions deserializedNlpSolutions = new NlpSolutions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("problemTitle".equals(fieldName)) {
+                    deserializedNlpSolutions.problemTitle = reader.getString();
+                } else if ("problemDescription".equals(fieldName)) {
+                    deserializedNlpSolutions.problemDescription = reader.getString();
+                } else if ("serviceId".equals(fieldName)) {
+                    deserializedNlpSolutions.serviceId = reader.getString();
+                } else if ("problemClassificationId".equals(fieldName)) {
+                    deserializedNlpSolutions.problemClassificationId = reader.getString();
+                } else if ("solutions".equals(fieldName)) {
+                    List<SolutionMetadataProperties> solutions
+                        = reader.readArray(reader1 -> SolutionMetadataProperties.fromJson(reader1));
+                    deserializedNlpSolutions.solutions = solutions;
+                } else if ("relatedServices".equals(fieldName)) {
+                    List<ClassificationService> relatedServices
+                        = reader.readArray(reader1 -> ClassificationService.fromJson(reader1));
+                    deserializedNlpSolutions.relatedServices = relatedServices;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNlpSolutions;
+        });
     }
 }

@@ -32,7 +32,6 @@ import com.azure.maps.weather.models.WeatherAlongRouteResult;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -51,9 +50,10 @@ public class WeatherClientTest extends WeatherTestBase {
     // Test get hourly forecast
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetHourlyForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetHourlyForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        HourlyForecastResult actualResult = client.getHourlyForecast(new GeoPosition(-122.138874, 47.632346), null, 12, null);
+        HourlyForecastResult actualResult = client.getHourlyForecast(new GeoPosition(-122.138874, 47.632346), null, 12,
+            null);
         HourlyForecastResult expectedResult = TestUtils.getExpectedHourlyForecast();
         validateGetHourlyForecast(expectedResult, actualResult);
     }
@@ -62,15 +62,16 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetHourlyForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetHourlyForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetHourlyForecastWithResponse(TestUtils.getExpectedHourlyForecast(), 200, client.getHourlyForecastWithResponse(new GeoPosition(-122.138874, 47.632346), null, 12, null, null));
+        validateGetHourlyForecastWithResponse(TestUtils.getExpectedHourlyForecast(),
+            client.getHourlyForecastWithResponse(new GeoPosition(-122.138874, 47.632346), null, 12, null, null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetHourlyForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetHourlyForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getHourlyForecastWithResponse(new GeoPosition(-10000, 47.632346), null, 12, null, null));
@@ -80,7 +81,7 @@ public class WeatherClientTest extends WeatherTestBase {
     // Test get minute forecast
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetMinuteForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetMinuteForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         MinuteForecastResult actualResult = client.getMinuteForecast(new GeoPosition(-122.138874, 47.632346), 15, null);
         MinuteForecastResult expectedResult = TestUtils.getExpectedMinuteForecast();
@@ -91,15 +92,16 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetMinuteForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetMinuteForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetMinuteForecastWithResponse(TestUtils.getExpectedMinuteForecast(), 200, client.getMinuteForecastWithResponse(new GeoPosition(-122.138874, 47.632346), 15, null, null));
+        validateGetMinuteForecastWithResponse(TestUtils.getExpectedMinuteForecast(),
+            client.getMinuteForecastWithResponse(new GeoPosition(-122.138874, 47.632346), 15, null, null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetMinuteForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetMinuteForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getMinuteForecastWithResponse(new GeoPosition(-10000, 47.632346), 15, null, null));
@@ -109,9 +111,10 @@ public class WeatherClientTest extends WeatherTestBase {
     // Test get quarter day forecast
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetQuarterDayForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetQuarterDayForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        QuarterDayForecastResult actualResult = client.getQuarterDayForecast(new GeoPosition(-122.138874, 47.632346), null, 1, null);
+        QuarterDayForecastResult actualResult = client.getQuarterDayForecast(new GeoPosition(-122.138874, 47.632346),
+            null, 1, null);
         QuarterDayForecastResult expectedResult = TestUtils.getExpectedQuarterDayForecast();
         validateGetQuarterDayForecast(expectedResult, actualResult);
     }
@@ -120,15 +123,17 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetQuarterDayForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetQuarterDayForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetQuarterDayForecastWithResponse(TestUtils.getExpectedQuarterDayForecast(), 200, client.getQuarterDayForecastWithResponse(new GeoPosition(-122.138874, 47.632346), null, 1, null, null));
+        validateGetQuarterDayForecastWithResponse(TestUtils.getExpectedQuarterDayForecast(),
+            client.getQuarterDayForecastWithResponse(new GeoPosition(-122.138874, 47.632346), null, 1, null, null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetQuarterDayForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetQuarterDayForecastWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getQuarterDayForecastWithResponse(new GeoPosition(-10000, 47.632346), null, 1, null, null));
@@ -138,7 +143,7 @@ public class WeatherClientTest extends WeatherTestBase {
     // Test get current conditions
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetCurrentConditions(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetCurrentConditions(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         CurrentConditionsResult actualResult = client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268),
             null, null, null, null);
@@ -150,28 +155,32 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetCurrentConditionsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetCurrentConditionsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetCurrentConditionsWithResponse(TestUtils.getExpectedCurrentConditions(), 200, client.getCurrentConditionsWithResponse(new GeoPosition(-122.125679, 47.641268),
-            null, null, null, null, null));
+        validateGetCurrentConditionsWithResponse(TestUtils.getExpectedCurrentConditions(),
+            client.getCurrentConditionsWithResponse(new GeoPosition(-122.125679, 47.641268), null, null, null, null,
+                null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetCurrentConditionsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetCurrentConditionsWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getCurrentConditionsWithResponse(new GeoPosition(-100000, 47.641268), null, null, null, null, null));
+            () -> client.getCurrentConditionsWithResponse(new GeoPosition(-100000, 47.641268), null, null, null, null,
+                null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
     // Test get daily forecast
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetDailyForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetDailyForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        DailyForecastResult actualResult = client.getDailyForecast(new GeoPosition(30.0734812, 62.6490341), null, 5, null);
+        DailyForecastResult actualResult = client.getDailyForecast(new GeoPosition(30.0734812, 62.6490341), null, 5,
+            null);
         DailyForecastResult expectedResult = TestUtils.getExpectedDailyForecast();
         validateGetDailyForecast(expectedResult, actualResult);
     }
@@ -180,15 +189,16 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetDailyForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetDailyForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetDailyForecastWithResponse(TestUtils.getExpectedDailyForecast(), 200, client.getDailyForecastWithResponse(new GeoPosition(30.0734812, 62.6490341), null, 5, null, null));
+        validateGetDailyForecastWithResponse(TestUtils.getExpectedDailyForecast(),
+            client.getDailyForecastWithResponse(new GeoPosition(30.0734812, 62.6490341), null, 5, null, null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void tesInvalidtGetDailyForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void tesInvalidGetDailyForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getDailyForecastWithResponse(new GeoPosition(-100000, 62.6490341), null, 5, null, null));
@@ -198,17 +208,12 @@ public class WeatherClientTest extends WeatherTestBase {
     // Test get weather along route
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetWeatherAlongRoute(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetWeatherAlongRoute(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        List<Waypoint> waypoints = Arrays.asList(
-            new Waypoint(new GeoPosition(-77.037, 38.907), 0.0),
-            new Waypoint(new GeoPosition(-77.009, 38.907), 10.0),
-            new Waypoint(new GeoPosition(-76.928, 38.926), 20.0),
-            new Waypoint(new GeoPosition(-76.852, 39.033), 30.0),
-            new Waypoint(new GeoPosition(-76.732, 39.168), 40.0),
-            new Waypoint(new GeoPosition(-76.634, 39.269), 50.0),
-            new Waypoint(new GeoPosition(-76.612, 39.287), 60.0)
-        );
+        List<Waypoint> waypoints = Arrays.asList(new Waypoint(new GeoPosition(-77.037, 38.907), 0.0),
+            new Waypoint(new GeoPosition(-77.009, 38.907), 10.0), new Waypoint(new GeoPosition(-76.928, 38.926), 20.0),
+            new Waypoint(new GeoPosition(-76.852, 39.033), 30.0), new Waypoint(new GeoPosition(-76.732, 39.168), 40.0),
+            new Waypoint(new GeoPosition(-76.634, 39.269), 50.0), new Waypoint(new GeoPosition(-76.612, 39.287), 60.0));
         WeatherAlongRouteResult actualResult = client.getWeatherAlongRoute(waypoints, "en");
         WeatherAlongRouteResult expectedResult = TestUtils.getExpectedWeatherAlongRoute();
         validateGetExpectedWeatherAlongRoute(expectedResult, actualResult);
@@ -218,34 +223,26 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetWeatherAlongRouteWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetWeatherAlongRouteWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        List<Waypoint> waypoints = Arrays.asList(
-            new Waypoint(new GeoPosition(-77.037, 38.907), 0.0),
-            new Waypoint(new GeoPosition(-77.009, 38.907), 10.0),
-            new Waypoint(new GeoPosition(-76.928, 38.926), 20.0),
-            new Waypoint(new GeoPosition(-76.852, 39.033), 30.0),
-            new Waypoint(new GeoPosition(-76.732, 39.168), 40.0),
-            new Waypoint(new GeoPosition(-76.634, 39.269), 50.0),
-            new Waypoint(new GeoPosition(-76.612, 39.287), 60.0)
-        );
-        validateGetExpectedWeatherAlongRouteWithResponse(TestUtils.getExpectedWeatherAlongRoute(), 200, client.getWeatherAlongRouteWithResponse(waypoints, "en", null));
+        List<Waypoint> waypoints = Arrays.asList(new Waypoint(new GeoPosition(-77.037, 38.907), 0.0),
+            new Waypoint(new GeoPosition(-77.009, 38.907), 10.0), new Waypoint(new GeoPosition(-76.928, 38.926), 20.0),
+            new Waypoint(new GeoPosition(-76.852, 39.033), 30.0), new Waypoint(new GeoPosition(-76.732, 39.168), 40.0),
+            new Waypoint(new GeoPosition(-76.634, 39.269), 50.0), new Waypoint(new GeoPosition(-76.612, 39.287), 60.0));
+        validateGetExpectedWeatherAlongRouteWithResponse(TestUtils.getExpectedWeatherAlongRoute(),
+            client.getWeatherAlongRouteWithResponse(waypoints, "en", null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetWeatherAlongRouteWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetWeatherAlongRouteWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        List<Waypoint> waypoints = Arrays.asList(
-            new Waypoint(new GeoPosition(-77.037, 38.907), 0.0),
-            new Waypoint(new GeoPosition(-100000, 38.907), 10.0),
-            new Waypoint(new GeoPosition(-76.928, 38.926), 20.0),
-            new Waypoint(new GeoPosition(-76.852, 39.033), 30.0),
-            new Waypoint(new GeoPosition(-76.732, 39.168), 40.0),
-            new Waypoint(new GeoPosition(-76.634, 39.269), 50.0),
-            new Waypoint(new GeoPosition(-76.612, 39.287), 60.0)
-        );
+        List<Waypoint> waypoints = Arrays.asList(new Waypoint(new GeoPosition(-77.037, 38.907), 0.0),
+            new Waypoint(new GeoPosition(-100000, 38.907), 10.0), new Waypoint(new GeoPosition(-76.928, 38.926), 20.0),
+            new Waypoint(new GeoPosition(-76.852, 39.033), 30.0), new Waypoint(new GeoPosition(-76.732, 39.168), 40.0),
+            new Waypoint(new GeoPosition(-76.634, 39.269), 50.0), new Waypoint(new GeoPosition(-76.612, 39.287), 60.0));
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getWeatherAlongRouteWithResponse(waypoints, "en", null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -254,9 +251,10 @@ public class WeatherClientTest extends WeatherTestBase {
     // Test get severe weather alerts
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetSevereWeatherAlerts(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetSevereWeatherAlerts(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        SevereWeatherAlertsResult actualResult = client.getSevereWeatherAlerts(new GeoPosition(-85.06431274043842, 30.324604968788467), null, true);
+        SevereWeatherAlertsResult actualResult = client.getSevereWeatherAlerts(
+            new GeoPosition(-85.06431274043842, 30.324604968788467), null, true);
         SevereWeatherAlertsResult expectedResult = TestUtils.getExpectedSevereWeatherAlerts();
         validateGetSevereWeatherAlerts(expectedResult, actualResult);
     }
@@ -265,27 +263,32 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetSevereWeatherAlertsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetSevereWeatherAlertsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetSevereWeatherAlertsWithResponse(TestUtils.getExpectedSevereWeatherAlerts(), 200, client.getSevereWeatherAlertsWithResponse(new GeoPosition(-85.06431274043842, 30.324604968788467), null, true, null));
+        validateGetSevereWeatherAlertsWithResponse(TestUtils.getExpectedSevereWeatherAlerts(),
+            client.getSevereWeatherAlertsWithResponse(new GeoPosition(-85.06431274043842, 30.324604968788467), null,
+                true, null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetSevereWeatherAlertsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetSevereWeatherAlertsWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getSevereWeatherAlertsWithResponse(new GeoPosition(-100000, 30.324604968788467), null, true, null));
+            () -> client.getSevereWeatherAlertsWithResponse(new GeoPosition(-100000, 30.324604968788467), null, true,
+                null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
     // Test get daily indices
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetDailyIndices(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetDailyIndices(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        DailyIndicesResult actualResult = client.getDailyIndices(new GeoPosition(-79.37849, 43.84745), null, null, null, 11);
+        DailyIndicesResult actualResult = client.getDailyIndices(new GeoPosition(-79.37849, 43.84745), null, null, null,
+            11);
         DailyIndicesResult expectedResult = TestUtils.getExpectedDailyIndices();
         validateGetDailyIndices(expectedResult, actualResult);
     }
@@ -294,15 +297,16 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetDailyIndicesWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetDailyIndicesWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetDailyIndicesWithResponse(TestUtils.getExpectedDailyIndices(), 200, client.getDailyIndicesWithResponse(new GeoPosition(-79.37849, 43.84745), null, null, null, 11, null));
+        validateGetDailyIndicesWithResponse(TestUtils.getExpectedDailyIndices(),
+            client.getDailyIndicesWithResponse(new GeoPosition(-79.37849, 43.84745), null, null, null, 11, null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetDailyIndicesWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetDailyIndicesWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getDailyIndicesWithResponse(new GeoPosition(-100000, 43.84745), null, null, null, 11, null));
@@ -312,7 +316,7 @@ public class WeatherClientTest extends WeatherTestBase {
     // Test get tropical storm active
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetTropicalStormActive(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetTropicalStormActive(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         ActiveStormResult actualResult = client.getTropicalStormActive();
         ActiveStormResult expectedResult = TestUtils.getExpectedTropicalStormActive();
@@ -323,20 +327,22 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetTropicalStormActiveWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetTropicalStormActiveWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetExpectedTropicalStormActiveWithResponse(TestUtils.getExpectedTropicalStormActive(), 200, client.getTropicalStormActiveWithResponse(null));
+        validateGetExpectedTropicalStormActiveWithResponse(TestUtils.getExpectedTropicalStormActive(),
+            client.getTropicalStormActiveWithResponse(null));
     }
 
     // Test search tropical storm
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testSearchTropicalStorm(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testSearchTropicalStorm(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         ActiveStormResult result = client.getTropicalStormActive();
-        if (result.getActiveStorms().size() > 0) {
+        if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
-            StormSearchResult actualResult = client.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovId());
+            StormSearchResult actualResult = client.searchTropicalStorm(storm.getYear(), storm.getBasinId(),
+                storm.getGovId());
             StormSearchResult expectedResult = TestUtils.getExpectedSearchTropicalStorm();
             validateGetSearchTropicalStorm(expectedResult, actualResult);
         }
@@ -346,22 +352,24 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testSearchTropicalStormWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testSearchTropicalStormWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         ActiveStormResult result = client.getTropicalStormActive();
-        if (result.getActiveStorms().size() > 0) {
+        if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
-            validateGetSearchTropicalStormWithResponse(TestUtils.getExpectedSearchTropicalStorm(), 200, client.searchTropicalStormWithResponse(storm.getYear(), storm.getBasinId(), storm.getGovId(), null));
+            validateGetSearchTropicalStormWithResponse(TestUtils.getExpectedSearchTropicalStorm(),
+                client.searchTropicalStormWithResponse(storm.getYear(), storm.getBasinId(), storm.getGovId(), null));
         }
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidSearchTropicalStormWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidSearchTropicalStormWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         ActiveStormResult result = client.getTropicalStormActive();
-        if (result.getActiveStorms().size() > 0) {
+        if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.searchTropicalStormWithResponse(-100, storm.getBasinId(), storm.getGovId(), null));
@@ -372,14 +380,13 @@ public class WeatherClientTest extends WeatherTestBase {
     // Test get tropical storm forecast
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetTropicalStormForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetTropicalStormForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         ActiveStormResult result = client.getTropicalStormActive();
-        if (result.getActiveStorms().size() > 0) {
+        if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormForecastOptions forecastOptions = new TropicalStormForecastOptions(storm.getYear(),
-                storm.getBasinId(), storm.getGovId())
-                .setIncludeWindowGeometry(true);
+                storm.getBasinId(), storm.getGovId()).setIncludeWindowGeometry(true);
             StormForecastResult actualResult = client.getTropicalStormForecast(forecastOptions);
             StormForecastResult expectedResult = TestUtils.getExpectedTropicalStormForecast();
             validateGetTropicalStormForecast(expectedResult, actualResult);
@@ -390,27 +397,29 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetTropicalStormForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetTropicalStormForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         ActiveStormResult result = client.getTropicalStormActive();
-        if (result.getActiveStorms().size() > 0) {
+        if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormForecastOptions forecastOptions = new TropicalStormForecastOptions(storm.getYear(),
                 storm.getBasinId(), storm.getGovId()).setIncludeWindowGeometry(true);
-            validateGetTropicalStormForecastWithResponse(TestUtils.getExpectedTropicalStormForecast(), 200, client.getTropicalStormForecastWithResponse(forecastOptions, null));
+            validateGetTropicalStormForecastWithResponse(TestUtils.getExpectedTropicalStormForecast(),
+                client.getTropicalStormForecastWithResponse(forecastOptions, null));
         }
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetTropicalStormForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetTropicalStormForecastWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         ActiveStormResult result = client.getTropicalStormActive();
-        if (result.getActiveStorms().size() > 0) {
+        if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
-            TropicalStormForecastOptions forecastOptions = new TropicalStormForecastOptions(-100,
-                storm.getBasinId(), storm.getGovId()).setIncludeWindowGeometry(true);
+            TropicalStormForecastOptions forecastOptions = new TropicalStormForecastOptions(-100, storm.getBasinId(),
+                storm.getGovId()).setIncludeWindowGeometry(true);
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.getTropicalStormForecastWithResponse(forecastOptions, null));
             assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -420,10 +429,10 @@ public class WeatherClientTest extends WeatherTestBase {
     // Test get tropical storm locations
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetTropicalStormLocations(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetTropicalStormLocations(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         ActiveStormResult result = client.getTropicalStormActive();
-        if (result.getActiveStorms().size() > 0) {
+        if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormLocationOptions locationOptions = new TropicalStormLocationOptions(storm.getYear(),
                 storm.getBasinId(), storm.getGovId());
@@ -437,27 +446,29 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetTropicalStormLocationsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetTropicalStormLocationsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         ActiveStormResult result = client.getTropicalStormActive();
-        if (result.getActiveStorms().size() > 0) {
+        if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormLocationOptions locationOptions = new TropicalStormLocationOptions(storm.getYear(),
                 storm.getBasinId(), storm.getGovId());
-            validateGetTropicalStormLocationsWithResponse(TestUtils.getExpectedTropicalStormLocations(), 200, client.getTropicalStormLocationsWithResponse(locationOptions, null));
+            validateGetTropicalStormLocationsWithResponse(TestUtils.getExpectedTropicalStormLocations(),
+                client.getTropicalStormLocationsWithResponse(locationOptions, null));
         }
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetTropicalStormLocationsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetTropicalStormLocationsWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         ActiveStormResult result = client.getTropicalStormActive();
-        if (result.getActiveStorms().size() > 0) {
+        if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
-            TropicalStormLocationOptions locationOptions = new TropicalStormLocationOptions(-100,
-                storm.getBasinId(), storm.getGovId());
+            TropicalStormLocationOptions locationOptions = new TropicalStormLocationOptions(-100, storm.getBasinId(),
+                storm.getGovId());
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.getTropicalStormLocationsWithResponse(locationOptions, null));
             assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -467,10 +478,10 @@ public class WeatherClientTest extends WeatherTestBase {
     // Test get current air quality
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetCurrentAirQuality(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetCurrentAirQuality(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        AirQualityResult actualResult = client.getCurrentAirQuality(
-            new GeoPosition(-122.138874, 47.632346), "es", false);
+        AirQualityResult actualResult = client.getCurrentAirQuality(new GeoPosition(-122.138874, 47.632346), "es",
+            false);
         AirQualityResult expectedResult = TestUtils.getExpectedCurrentAirQuality();
         validateGetCurrentAirQuality(expectedResult, actualResult);
     }
@@ -479,25 +490,27 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetCurrentAirQualityWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetCurrentAirQualityWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetCurrentAirQualityWithResponse(TestUtils.getExpectedCurrentAirQuality(), 200, client.getCurrentAirQualityWithResponse(new GeoPosition(-122.138874, 47.632346), "es", false,  null));
+        validateGetCurrentAirQualityWithResponse(TestUtils.getExpectedCurrentAirQuality(),
+            client.getCurrentAirQualityWithResponse(new GeoPosition(-122.138874, 47.632346), "es", false, null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetCurrentAirQualityWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetCurrentAirQualityWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getCurrentAirQualityWithResponse(new GeoPosition(-100000, 47.632346), "es", false,  null));
+            () -> client.getCurrentAirQualityWithResponse(new GeoPosition(-100000, 47.632346), "es", false, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
     // Test get air quality daily forecasts
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetAirQualityDailyForecasts(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetAirQualityDailyForecasts(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         DailyAirQualityForecastResult actualResult = client.getAirQualityDailyForecasts(
             new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
@@ -509,29 +522,33 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetAirQualityDailyForecastsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetAirQualityDailyForecastsWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetAirQualityDailyForecastsWithResponse(TestUtils.getExpectedAirQualityDailyForecasts(), 200, client.getAirQualityDailyForecastsWithResponse(
-            new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS, null));
+        validateGetAirQualityDailyForecastsWithResponse(TestUtils.getExpectedAirQualityDailyForecasts(),
+            client.getAirQualityDailyForecastsWithResponse(new GeoPosition(-122.138874, 47.632346), "en",
+                DailyDuration.TWO_DAYS, null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetAirQualityDailyForecastsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetAirQualityDailyForecastsWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getAirQualityDailyForecastsWithResponse(new GeoPosition(-100000, 47.632346), "en", DailyDuration.TWO_DAYS, null));
+            () -> client.getAirQualityDailyForecastsWithResponse(new GeoPosition(-100000, 47.632346), "en",
+                DailyDuration.TWO_DAYS, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
     // Test get air quality hourly forecasts
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetAirQualityHourlyForecasts(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetAirQualityHourlyForecasts(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        AirQualityResult actualResult = client.getAirQualityHourlyForecasts(
-            new GeoPosition(-122.138874, 47.632346), "fr", HourlyDuration.ONE_HOUR, false);
+        AirQualityResult actualResult = client.getAirQualityHourlyForecasts(new GeoPosition(-122.138874, 47.632346),
+            "fr", HourlyDuration.ONE_HOUR, false);
         AirQualityResult expectedResult = TestUtils.getExpectedAirQualityHourlyForecasts();
         validateGetAirQualityHourlyForecasts(expectedResult, actualResult);
     }
@@ -540,29 +557,35 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetAirQualityHourlyForecastsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetAirQualityHourlyForecastsWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetAirQualityHourlyForecastsWithResponse(TestUtils.getExpectedAirQualityHourlyForecasts(), 200, client.getAirQualityHourlyForecastsWithResponse(
-            new GeoPosition(-122.138874, 47.632346), "fr", HourlyDuration.ONE_HOUR, false, null));
+        validateGetAirQualityHourlyForecastsWithResponse(TestUtils.getExpectedAirQualityHourlyForecasts(),
+            client.getAirQualityHourlyForecastsWithResponse(new GeoPosition(-122.138874, 47.632346), "fr",
+                HourlyDuration.ONE_HOUR, false, null));
     }
-    // Case 2: Respone 400, incorrect input
+
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetAirQualityHourlyForecastsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetAirQualityHourlyForecastsWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getAirQualityHourlyForecastsWithResponse(new GeoPosition(-100000, 47.632346), "fr", HourlyDuration.ONE_HOUR, false, null));
+            () -> client.getAirQualityHourlyForecastsWithResponse(new GeoPosition(-100000, 47.632346), "fr",
+                HourlyDuration.ONE_HOUR, false, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
     // Test get daily historical actuals
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetDailyHistoricalActuals(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetDailyHistoricalActuals(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
         LocalDate today = testResourceNamer.now().toLocalDate();
-        DailyHistoricalActualsResult actualResult = client.getDailyHistoricalActuals(new GeoPosition(30.0734812, 62.6490341), before, today, null);
+        DailyHistoricalActualsResult actualResult = client.getDailyHistoricalActuals(
+            new GeoPosition(30.0734812, 62.6490341), before, today, null);
         DailyHistoricalActualsResult expectedResult = TestUtils.getExpectedDailyHistoricalActuals();
         validateGetDailyHistoricalActuals(expectedResult, actualResult);
     }
@@ -571,33 +594,38 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetDailyHistoricalActualsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetDailyHistoricalActualsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
         LocalDate today = testResourceNamer.now().toLocalDate();
-        validateGetDailyHistoricalActualsWithResponse(TestUtils.getExpectedDailyHistoricalActuals(), 200, client.getDailyHistoricalActualsWithResponse(new GeoPosition(30.0734812, 62.6490341), before, today, null, null));
+        validateGetDailyHistoricalActualsWithResponse(TestUtils.getExpectedDailyHistoricalActuals(),
+            client.getDailyHistoricalActualsWithResponse(new GeoPosition(30.0734812, 62.6490341), before, today, null,
+                null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetDailyHistoricalActualsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetDailyHistoricalActualsWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
         LocalDate today = testResourceNamer.now().toLocalDate();
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getDailyHistoricalActualsWithResponse(new GeoPosition(-10000, 62.6490341), before, today, null, null));
+            () -> client.getDailyHistoricalActualsWithResponse(new GeoPosition(-10000, 62.6490341), before, today, null,
+                null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
     // Test get daily historical records
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetDailyHistoricalRecords(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetDailyHistoricalRecords(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         LocalDate beforeYears = testResourceNamer.now().toLocalDate().minusYears(10);
         LocalDate afterYears = beforeYears.plusDays(30);
-        DailyHistoricalRecordsResult actualResult = client.getDailyHistoricalRecords(new GeoPosition(-75.165222, 39.952583), beforeYears, afterYears, null);
+        DailyHistoricalRecordsResult actualResult = client.getDailyHistoricalRecords(
+            new GeoPosition(-75.165222, 39.952583), beforeYears, afterYears, null);
         DailyHistoricalRecordsResult expectedResult = TestUtils.getExpectedDailyHistoricalRecords();
         validateGetDailyHistoricalRecords(expectedResult, actualResult);
     }
@@ -606,33 +634,38 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetDailyHistoricalRecordsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetDailyHistoricalRecordsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         LocalDate beforeYears = testResourceNamer.now().toLocalDate().minusYears(10);
         LocalDate afterYears = beforeYears.plusDays(30);
-        validateGetDailyHistoricalRecordsWithResponse(TestUtils.getExpectedDailyHistoricalRecords(), 200, client.getDailyHistoricalRecordsWithResponse(new GeoPosition(-75.165222, 39.952583), beforeYears, afterYears, null, null));
+        validateGetDailyHistoricalRecordsWithResponse(TestUtils.getExpectedDailyHistoricalRecords(),
+            client.getDailyHistoricalRecordsWithResponse(new GeoPosition(-75.165222, 39.952583), beforeYears,
+                afterYears, null, null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetDailyHistoricalRecordsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetDailyHistoricalRecordsWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         LocalDate beforeYears = testResourceNamer.now().toLocalDate().minusYears(10);
         LocalDate afterYears = beforeYears.plusDays(30);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getDailyHistoricalRecordsWithResponse(new GeoPosition(-1000000, 39.952583), beforeYears, afterYears, null, null));
+            () -> client.getDailyHistoricalRecordsWithResponse(new GeoPosition(-1000000, 39.952583), beforeYears,
+                afterYears, null, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
     // Test get daily historical normals
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetDailyHistoricalNormals(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetDailyHistoricalNormals(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
         LocalDate today = testResourceNamer.now().toLocalDate();
-        DailyHistoricalNormalsResult actualResult = client.getDailyHistoricalNormals(new GeoPosition(30.0734812, 62.6490341), before, today, null);
+        DailyHistoricalNormalsResult actualResult = client.getDailyHistoricalNormals(
+            new GeoPosition(30.0734812, 62.6490341), before, today, null);
         DailyHistoricalNormalsResult expectedResult = TestUtils.getExpectedDailyHistoricalNormalsResult();
         validateGetDailyHistoricalNormalsResult(expectedResult, actualResult);
     }
@@ -641,22 +674,26 @@ public class WeatherClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetDailyHistoricalNormalsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testGetDailyHistoricalNormalsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
         LocalDate today = testResourceNamer.now().toLocalDate();
-        validateGetDailyHistoricalNormalsResultWithResponse(TestUtils.getExpectedDailyHistoricalNormalsResult(), 200, client.getDailyHistoricalNormalsWithResponse(new GeoPosition(30.0734812, 62.6490341), before, today, null, null));
+        validateGetDailyHistoricalNormalsResultWithResponse(TestUtils.getExpectedDailyHistoricalNormalsResult(),
+            client.getDailyHistoricalNormalsWithResponse(new GeoPosition(30.0734812, 62.6490341), before, today, null,
+                null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetDailyHistoricalNormalsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetDailyHistoricalNormalsWithResponse(HttpClient httpClient,
+        WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
         LocalDate today = testResourceNamer.now().toLocalDate();
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getDailyHistoricalNormalsWithResponse(new GeoPosition(-100000, 62.6490341), before, today, null, null));
+            () -> client.getDailyHistoricalNormalsWithResponse(new GeoPosition(-100000, 62.6490341), before, today,
+                null, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 }

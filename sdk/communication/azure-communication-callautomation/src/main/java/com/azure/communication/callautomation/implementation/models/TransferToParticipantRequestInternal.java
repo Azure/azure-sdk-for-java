@@ -45,8 +45,8 @@ public final class TransferToParticipantRequestInternal {
     private String operationCallbackUri;
 
     /*
-     * The source caller Id, a phone number, that's will be used as the
-     * transferor's(Contoso) caller id when transfering a call a pstn target.
+     * The source caller Id, a phone number, that will be used as the
+     * transferor's caller Id when transferring a call to a Pstn target.
      */
     @JsonProperty(value = "sourceCallerIdNumber")
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
@@ -158,8 +158,8 @@ public final class TransferToParticipantRequestInternal {
     }
 
     /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's will be used as the
-     * transferor's(Contoso) caller id when transfering a call a pstn target.
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that will be used as the
+     * transferor's caller Id when transferring a call to a Pstn target.
      *
      * @return the sourceCallerIdNumber value.
      */
@@ -168,8 +168,8 @@ public final class TransferToParticipantRequestInternal {
     }
 
     /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's will be used as the
-     * transferor's(Contoso) caller id when transfering a call a pstn target.
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that will be used as the
+     * transferor's caller Id when transferring a call to a Pstn target.
      *
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
      * @return the TransferToParticipantRequestInternal object itself.
