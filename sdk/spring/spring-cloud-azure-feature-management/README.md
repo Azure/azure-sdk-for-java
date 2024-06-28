@@ -41,7 +41,7 @@ feature-management:
     feature-v:
       enabled-for:
         -
-          name: TimeWindowFilter
+          name: Microsoft.TimeWindow
           parameters:
             start: "Wed, 01 May 2019 13:59:59 GMT"
             end: "Mon, 01 July 2019 00:00:00 GMT"
@@ -190,7 +190,7 @@ feature-management:
     feature-v:
       enabled-for:
         -
-          name: TimeWindowFilter
+          name: Microsoft.TimeWindow
           parameters:
             start: "Wed, 01 May 2019 13:59:59 GMT"
             end: "Mon, 01 July 2019 00:00:00 GMT"
@@ -205,7 +205,7 @@ feature-management:
     feature-v:
       enabled-for:
         -
-          name: TimeWindowFilter
+          name: Microsoft.TimeWindow
           parameters:
             start: "Fri, 22 Mar 2024 20:00:00 GMT"
             end: "Sat, 23 Mar 2024 02:00:00 GMT"
