@@ -34,10 +34,17 @@ public abstract class CosmosItemSerializer {
      */
     public final static CosmosItemSerializer DEFAULT_SERIALIZER = new DefaultCosmosItemSerializer();
 
+    private boolean shouldWrapSerializationExceptions;
+
     /**
      * Used to instantiate subclasses
      */
     protected CosmosItemSerializer() {
+        this(true);
+    }
+
+    CosmosItemSerializer(boolean shouldWrapSerializationExceptions) {
+        this.shouldWrapSerializationExceptions = shouldWrapSerializationExceptions;
     }
 
     /**
@@ -52,7 +59,12 @@ public abstract class CosmosItemSerializer {
         try {
             return serialize(item);
         } catch (Throwable throwable) {
+            if (!this.shouldWrapSerializationExceptions) {
+                throw throwable;
+            }
+
             Exception inner;
+
             if (throwable instanceof  Exception) {
                 inner = (Exception)throwable;
             } else {
@@ -82,7 +94,13 @@ public abstract class CosmosItemSerializer {
         try {
             return this.deserialize(jsonNodeMap, classType);
         } catch (Throwable throwable) {
+
+            if (!this.shouldWrapSerializationExceptions) {
+                throw throwable;
+            }
+
             Exception inner;
+
             if (throwable instanceof  Exception) {
                 inner = (Exception)throwable;
             } else {
@@ -99,9 +117,13 @@ public abstract class CosmosItemSerializer {
         }
     }
 
+    void setShouldWrapSerializationExceptions(boolean enabled) {
+        this.shouldWrapSerializationExceptions = enabled;
+    }
+
     private static class DefaultCosmosItemSerializer extends CosmosItemSerializer {
         DefaultCosmosItemSerializer() {
-            super();
+            super(false);
         }
 
         /**
@@ -188,6 +210,11 @@ public abstract class CosmosItemSerializer {
                 @Override
                 public <T> T deserializeSafe(CosmosItemSerializer serializer, Map<String, Object> jsonNodeMap, Class<T> classType) {
                     return serializer.deserializeSafe(jsonNodeMap, classType);
+                }
+
+                @Override
+                public void setShouldWrapSerializationExceptions(CosmosItemSerializer serializer, boolean shouldWrapSerializationExceptions) {
+                    serializer.setShouldWrapSerializationExceptions(shouldWrapSerializationExceptions);
                 }
             });
     }

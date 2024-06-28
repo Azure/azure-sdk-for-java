@@ -4,10 +4,11 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonSerializable;
 
 /** The RecordingStorage model. */
 @Fluent
-public abstract class RecordingStorage {
+public abstract class RecordingStorage implements JsonSerializable<RecordingStorage> {
 
     /** Creates an instance of ExternalStorageInternal class. */
     public RecordingStorage() {}
@@ -18,5 +19,4 @@ public abstract class RecordingStorage {
      * @return the recordingStorageType value.
      */
     public abstract RecordingStorageType getRecordingStorageType();
-
 }
