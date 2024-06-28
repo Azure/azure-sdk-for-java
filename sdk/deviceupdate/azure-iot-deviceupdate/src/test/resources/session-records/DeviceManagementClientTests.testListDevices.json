@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/management/devices?api-version=2022-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.4 (1.8.0_342; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "440eb0e4-72b0-459c-bd4c-d4a74162a040"
+    },
+    "Response" : {
+      "content-length" : "1163",
+      "traceparent" : "00-7aa3a705d9fcc045a33b15b4d5ef1242-9dffb6996c26c14e-00",
+      "mise-correlation-id" : "046537b1-172e-48e2-8640-16dd9b115a7e",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"deviceId\":\"adu-sdk-test-device-1\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"groupId\":\"testgroup\",\"onLatestUpdate\":false,\"deploymentStatus\":\"Succeeded\",\"lastInstallResult\":{\"resultCode\":700,\"extendedResultCode\":0,\"resultDetails\":\"\"}},{\"deviceId\":\"joseph-edgevm2\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"groupId\":\"joegroup\",\"installedUpdate\":{\"updateId\":{\"provider\":\"fabrikam\",\"name\":\"vacuum\",\"version\":\"2022.128.1751.30\"}},\"onLatestUpdate\":false,\"lastAttemptedUpdate\":{\"updateId\":{\"provider\":\"fabrikam\",\"name\":\"vacuum\",\"version\":\"2022.128.1751.30\"}},\"deploymentStatus\":\"Succeeded\",\"lastDeploymentId\":\"joegroup-2022-128-1751-30-0129015341\",\"lastInstallResult\":{\"resultCode\":700,\"extendedResultCode\":0,\"resultDetails\":\"\"}},{\"deviceId\":\"dpokluda-test\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"groupId\":\"dpokluda-test\",\"onLatestUpdate\":false,\"lastAttemptedUpdate\":{\"updateId\":{\"provider\":\"fabrikam\",\"name\":\"vacuum\",\"version\":\"2022.809.1238.32\"}},\"deploymentStatus\":\"Failed\",\"lastDeploymentId\":\"test0809074302\",\"lastInstallResult\":{\"resultCode\":0,\"extendedResultCode\":805306472,\"resultDetails\":\"\"}}]}",
+      "Date" : "Wed, 31 Aug 2022 20:16:24 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
