@@ -7,7 +7,7 @@
 
 #### Dependency Updates
 
-- Updated `api-version` to `2022-11-01`.
+- Updated `api-version` to `2024-01-01`.
 
 
 ## 1.3.0-beta.1 (Unreleased)
