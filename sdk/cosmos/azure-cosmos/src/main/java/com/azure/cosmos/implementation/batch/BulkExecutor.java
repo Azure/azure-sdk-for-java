@@ -39,6 +39,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.UnicastProcessor;
+import reactor.core.scheduler.Scheduler;
 import reactor.util.function.Tuple2;
 
 import java.time.Duration;
@@ -115,6 +116,7 @@ public final class BulkExecutor<TContext> implements Disposable {
     private final String identifier = "BulkExecutor-" + instanceCount.incrementAndGet();
     private final BulkExecutorDiagnosticsTracker diagnosticsTracker;
     private final CosmosItemSerializer effectiveItemSerializer;
+    private final Scheduler executionScheduler;
 
     @SuppressWarnings({"unchecked"})
     public BulkExecutor(CosmosAsyncContainer container,
@@ -169,6 +171,9 @@ public final class BulkExecutor<TContext> implements Disposable {
                 this.maxMicroBatchIntervalInMs,
                 this.maxMicroBatchIntervalInMs,
                 TimeUnit.MILLISECONDS));
+
+        Scheduler schedulerSnapshotFromOptions = cosmosBulkOptions.getSchedulerOverride();
+        this.executionScheduler = schedulerSnapshotFromOptions != null ? schedulerSnapshotFromOptions : CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC;
 
         logger.debug("Instantiated BulkExecutor, Context: {}",
             this.operationContextText);
@@ -300,7 +305,7 @@ public final class BulkExecutor<TContext> implements Disposable {
 
         return
             maxConcurrentCosmosPartitionsMono
-            .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
+            .subscribeOn(this.executionScheduler)
             .flatMapMany(maxConcurrentCosmosPartitions -> {
 
                 logDebugOrWarning("BulkExecutor.execute with MaxConcurrentPartitions: {}, Context: {}",
@@ -308,7 +313,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                     this.operationContextText);
 
                 return this.inputOperations
-                    .publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
+                    .publishOn(this.executionScheduler)
                     .onErrorMap(throwable -> {
                         logger.error("{}: Skipping an error operation while processing. Cause: {}, Context: {}",
                             getThreadInfo(),
@@ -359,7 +364,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                         }
                     })
                     .mergeWith(mainSink.asFlux())
-                    .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
+                    .subscribeOn(this.executionScheduler)
                     .flatMap(
                         operation -> {
                             logger.trace("Before Resolve PkRangeId, {}, Context: {} {}",
@@ -388,7 +393,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                     .flatMap(
                         this::executePartitionedGroup,
                         maxConcurrentCosmosPartitions)
-                    .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
+                    .subscribeOn(this.executionScheduler)
                     .doOnNext(requestAndResponse -> {
 
                         int totalCountAfterDecrement = totalCount.decrementAndGet();
@@ -456,7 +461,7 @@ public final class BulkExecutor<TContext> implements Disposable {
             .mergeWith(groupFluxProcessor)
             .onBackpressureBuffer()
             .timestamp()
-            .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
+            .subscribeOn(this.executionScheduler)
             .bufferUntil(timeStampItemOperationTuple -> {
                 long timestamp = timeStampItemOperationTuple.getT1();
                 CosmosItemOperation itemOperation = timeStampItemOperationTuple.getT2();
@@ -569,7 +574,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         }
 
         return Flux.just(serverOperationBatchRequest.getBatchRequest())
-            .publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
+            .publishOn(this.executionScheduler)
             .flatMap((PartitionKeyRangeServerBatchRequest serverRequest) ->
                 this.executePartitionKeyRangeServerBatchRequest(serverRequest, groupSink, thresholds));
     }
@@ -580,7 +585,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         PartitionScopeThresholds thresholds) {
 
         return this.executeBatchRequest(serverRequest)
-            .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
+            .subscribeOn(this.executionScheduler)
             .flatMapMany(response -> {
 
                 if (diagnosticsTracker != null && response.getDiagnostics() != null) {
@@ -589,7 +594,7 @@ public final class BulkExecutor<TContext> implements Disposable {
 
                 return Flux
                     .fromIterable(response.getResults())
-                    .publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
+                    .publishOn(this.executionScheduler)
                     .flatMap((CosmosBatchOperationResult result) ->
                     handleTransactionalBatchOperationResult(response, result, groupSink, thresholds));
             })
@@ -603,7 +608,7 @@ public final class BulkExecutor<TContext> implements Disposable {
 
                 return Flux
                     .fromIterable(serverRequest.getOperations())
-                    .publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
+                    .publishOn(this.executionScheduler)
                     .flatMap((CosmosItemOperation itemOperation) ->
                         handleTransactionalBatchExecutionException(itemOperation, exception, groupSink, thresholds));
             });

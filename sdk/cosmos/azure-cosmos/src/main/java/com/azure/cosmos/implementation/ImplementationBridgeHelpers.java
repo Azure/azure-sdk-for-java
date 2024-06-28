@@ -82,6 +82,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.util.Collection;
@@ -99,9 +100,9 @@ public class ImplementationBridgeHelpers {
     private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
 
     private static void  initializeAllAccessors() {
-        BridgeInternal.initializeAllAccessors();
         ModelBridgeInternal.initializeAllAccessors();
         UtilBridgeInternal.initializeAllAccessors();
+        BridgeInternal.initializeAllAccessors();
     }
 
     public static final class CosmosClientBuilderHelper {
@@ -495,6 +496,8 @@ public class ImplementationBridgeHelpers {
             void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker);
 
             BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
+            CosmosBulkExecutionOptions setSchedulerOverride(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, Scheduler customScheduler);
 
             CosmosBulkExecutionOptions clone(CosmosBulkExecutionOptions toBeCloned);
             CosmosBulkExecutionOptionsImpl getImpl(CosmosBulkExecutionOptions options);
@@ -1712,6 +1715,46 @@ public class ImplementationBridgeHelpers {
             Duration getMinInRegionRetryTime(SessionRetryOptions sessionRetryOptions);
 
             int getMaxInRegionRetryCount(SessionRetryOptions sessionRetryOptions);
+        }
+    }
+
+    public static final class CosmosItemSerializerHelper {
+        private static final AtomicReference<CosmosItemSerializerAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean cosmosItemSerializerClassLoaded = new AtomicBoolean(false);
+
+        private CosmosItemSerializerHelper() {}
+
+        public static void setCosmosItemSerializerAccessor(final CosmosItemSerializerAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosItemSerializerAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosItemSerializerAccessor...");
+                cosmosItemSerializerClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosItemSerializerAccessor getCosmosItemSerializerAccessor() {
+            if (!cosmosItemSerializerClassLoaded.get()) {
+                logger.debug("Initializing CosmosItemSerializerAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosItemSerializerAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosItemSerializerAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosItemSerializerAccessor {
+            <T> Map<String, Object> serializeSafe(CosmosItemSerializer serializer, T item);
+
+            <T> T deserializeSafe(CosmosItemSerializer serializer, Map<String, Object> jsonNodeMap, Class<T> classType);
+
+            void setShouldWrapSerializationExceptions(
+                CosmosItemSerializer serializer,
+                boolean shouldWrapSerializationExceptions);
         }
     }
 }

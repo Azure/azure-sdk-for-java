@@ -4,6 +4,7 @@
 
 #### Features Added
 * Added support for specifying a set of custom ids in the request options. - See [PR 40835](https://github.com/Azure/azure-sdk-for-java/pull/40835)
+* Added support for changing some request options dynamically without the need of restarting the application. -See [PR 40061](https://github.com/Azure/azure-sdk-for-java/pull/40061)
 
 #### Breaking Changes
 
@@ -13,6 +14,7 @@
 
 #### Other Changes
 * Added diagnostic fields for `quorumAckedLSN` and `currentReplicaSetSize`. Changed `replicaStatusList` to include all replicas and more information. - See [PR 39844](https://github.com/Azure/azure-sdk-for-java/pull/39844)
+* Ensured that exceptions thrown in custom serializers are being wrapped as a CosmosException with StatusCode 400. - See [PR 40797](https://github.com/Azure/azure-sdk-for-java/pull/40797) and [PR 40913](https://github.com/Azure/azure-sdk-for-java/pull/40913)
 
 ### 4.61.1 (2024-05-31)
 

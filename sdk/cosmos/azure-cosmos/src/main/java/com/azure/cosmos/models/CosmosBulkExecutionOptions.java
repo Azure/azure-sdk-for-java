@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.set.Unmodifiabl
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.util.List;
@@ -23,7 +24,6 @@ import java.util.Set;
  * It can be passed while processing bulk operations.
  */
 public final class CosmosBulkExecutionOptions {
-
     private final CosmosBulkExecutionOptionsImpl actualRequestOptions;
 
     CosmosBulkExecutionOptions(CosmosBulkExecutionOptions toBeCloned) {
@@ -349,6 +349,11 @@ public final class CosmosBulkExecutionOptions {
         return this.actualRequestOptions;
     }
 
+    CosmosBulkExecutionOptions setSchedulerOverride(Scheduler customScheduler) {
+        this.actualRequestOptions.setSchedulerOverride(customScheduler);
+        return this;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -459,6 +464,11 @@ public final class CosmosBulkExecutionOptions {
                 @Override
                 public BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
                     return cosmosBulkExecutionOptions.getDiagnosticsTracker();
+                }
+
+                @Override
+                public CosmosBulkExecutionOptions setSchedulerOverride(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, Scheduler customScheduler) {
+                    return cosmosBulkExecutionOptions.setSchedulerOverride(customScheduler);
                 }
 
                 @Override

@@ -15,6 +15,7 @@ import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ReadOnlyRequestOptions;
+import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -51,9 +52,10 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
     private BulkExecutorDiagnosticsTracker diagnosticsTracker = null;
     private CosmosItemSerializer customSerializer;
     private Set<String> keywordIdentifiers;
-
+    private Scheduler schedulerOverride = null;
 
     public CosmosBulkExecutionOptionsImpl(CosmosBulkExecutionOptionsImpl toBeCloned) {
+        this.schedulerOverride = toBeCloned.schedulerOverride;
         this.initialMicroBatchSize = toBeCloned.initialMicroBatchSize;
         this.maxMicroBatchConcurrency = toBeCloned.maxMicroBatchConcurrency;
         this.maxMicroBatchSize = toBeCloned.maxMicroBatchSize;
@@ -204,6 +206,12 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
     public Map<String, String> getHeaders() {
         return this.customOptions;
     }
+
+    public void setSchedulerOverride(Scheduler customScheduler) {
+        this.schedulerOverride = customScheduler;
+    }
+
+    public Scheduler getSchedulerOverride() { return this.schedulerOverride; }
 
     @Override
     public String getThroughputControlGroupName() {

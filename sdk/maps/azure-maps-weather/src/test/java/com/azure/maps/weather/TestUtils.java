@@ -28,10 +28,9 @@ import com.azure.maps.weather.models.WeatherAlongRouteResult;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class TestUtils {
@@ -44,90 +43,88 @@ public class TestUtils {
      * @return A stream of HttpClient and service version combinations to test.
      */
     public static Stream<Arguments> getTestParameters() {
-        // when this issues is closed, the newer version of junit will have better support for
-        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<Arguments> argumentsList = new ArrayList<>();
-        TestBase.getHttpClients().forEach(httpClient -> Arrays.stream(WeatherServiceVersion.values())
-            .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
-        return argumentsList.stream();
+        return TestBase.getHttpClients()
+            .flatMap(httpClient -> Arrays.stream(WeatherServiceVersion.values())
+                .map(serviceVersion -> Arguments.of(httpClient, serviceVersion)));
     }
 
-    static HourlyForecastResult getExpectedHourlyForecast() throws IOException {
+    static HourlyForecastResult getExpectedHourlyForecast() {
         return deserialize("gethourlyforecast.json", HourlyForecastResult::fromJson);
     }
 
-    static MinuteForecastResult getExpectedMinuteForecast() throws IOException {
+    static MinuteForecastResult getExpectedMinuteForecast() {
         return deserialize("getminuteforecast.json", MinuteForecastResult::fromJson);
     }
 
-    static QuarterDayForecastResult getExpectedQuarterDayForecast() throws IOException {
+    static QuarterDayForecastResult getExpectedQuarterDayForecast() {
         return deserialize("getquarterdayforecast.json", QuarterDayForecastResult::fromJson);
     }
 
-    static CurrentConditionsResult getExpectedCurrentConditions() throws IOException {
+    static CurrentConditionsResult getExpectedCurrentConditions() {
         return deserialize("getcurrentconditions.json", CurrentConditionsResult::fromJson);
     }
 
-    static DailyForecastResult getExpectedDailyForecast() throws IOException {
+    static DailyForecastResult getExpectedDailyForecast() {
         return deserialize("getdailyforecast.json", DailyForecastResult::fromJson);
     }
 
-    static WeatherAlongRouteResult getExpectedWeatherAlongRoute() throws IOException {
+    static WeatherAlongRouteResult getExpectedWeatherAlongRoute() {
         return deserialize("getweatheralongroute.json", WeatherAlongRouteResult::fromJson);
     }
 
-    static SevereWeatherAlertsResult getExpectedSevereWeatherAlerts() throws IOException {
+    static SevereWeatherAlertsResult getExpectedSevereWeatherAlerts() {
         return deserialize("getsevereweatheralerts.json", SevereWeatherAlertsResult::fromJson);
     }
 
-    static DailyIndicesResult getExpectedDailyIndices() throws IOException {
+    static DailyIndicesResult getExpectedDailyIndices() {
         return deserialize("getdailyindices.json", DailyIndicesResult::fromJson);
     }
 
-    static ActiveStormResult getExpectedTropicalStormActive() throws IOException {
+    static ActiveStormResult getExpectedTropicalStormActive() {
         return deserialize("gettropicalstormactive.json", ActiveStormResult::fromJson);
     }
 
-    static StormSearchResult getExpectedSearchTropicalStorm() throws IOException {
+    static StormSearchResult getExpectedSearchTropicalStorm() {
         return deserialize("gettropicalstormactive.json", StormSearchResult::fromJson);
     }
 
-    static StormForecastResult getExpectedTropicalStormForecast() throws IOException {
+    static StormForecastResult getExpectedTropicalStormForecast() {
         return deserialize("gettropicalstormforecast.json", StormForecastResult::fromJson);
     }
 
-    static StormLocationsResult getExpectedTropicalStormLocations() throws IOException {
+    static StormLocationsResult getExpectedTropicalStormLocations() {
         return deserialize("gettropicalstormlocations.json", StormLocationsResult::fromJson);
     }
 
-    static AirQualityResult getExpectedCurrentAirQuality() throws IOException {
+    static AirQualityResult getExpectedCurrentAirQuality() {
         return deserialize("getcurrentairquality.json", AirQualityResult::fromJson);
     }
 
-    static DailyAirQualityForecastResult getExpectedAirQualityDailyForecasts() throws IOException {
+    static DailyAirQualityForecastResult getExpectedAirQualityDailyForecasts() {
         return deserialize("getairqualitydailyforecasts.json", DailyAirQualityForecastResult::fromJson);
     }
 
-    static AirQualityResult getExpectedAirQualityHourlyForecasts() throws IOException {
+    static AirQualityResult getExpectedAirQualityHourlyForecasts() {
         return deserialize("getairqualityhourlyforecasts.json", AirQualityResult::fromJson);
     }
 
-    static DailyHistoricalRecordsResult getExpectedDailyHistoricalRecords() throws IOException {
+    static DailyHistoricalRecordsResult getExpectedDailyHistoricalRecords() {
         return deserialize("getdailyhistoricalrecords.json", DailyHistoricalRecordsResult::fromJson);
     }
 
-    static DailyHistoricalActualsResult getExpectedDailyHistoricalActuals() throws IOException {
+    static DailyHistoricalActualsResult getExpectedDailyHistoricalActuals() {
         return deserialize("getdailyhistoricalactuals.json", DailyHistoricalActualsResult::fromJson);
     }
 
-    static DailyHistoricalNormalsResult getExpectedDailyHistoricalNormalsResult() throws IOException {
+    static DailyHistoricalNormalsResult getExpectedDailyHistoricalNormalsResult() {
         return deserialize("getdailyhistoricalnormals.json", DailyHistoricalNormalsResult::fromJson);
     }
 
-    private static <T> T deserialize(String resourceName, ReadValueCallback<JsonReader, T> deserialization)
-        throws IOException {
+    private static <T> T deserialize(String resourceName, ReadValueCallback<JsonReader, T> deserialization) {
         try (JsonReader jsonReader = JsonProviders.createReader(ClassLoader.getSystemResourceAsStream(resourceName))) {
             return deserialization.read(jsonReader);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 }
