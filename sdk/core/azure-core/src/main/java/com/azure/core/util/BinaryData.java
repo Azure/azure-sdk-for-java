@@ -1608,4 +1608,5 @@ public final class BinaryData {
             return content.toReplayableContentAsync().map(BinaryData::new);
         }
     }
+
 }
