@@ -5,36 +5,29 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ErrorInformation model.
- */
+/** The ErrorInformation model. */
 @Fluent
-public final class ErrorInformation implements JsonSerializable<ErrorInformation> {
+public final class ErrorInformation {
     /*
      * The code property.
      */
+    @JsonProperty(value = "code", required = true)
     private String code;
 
     /*
      * The message property.
      */
+    @JsonProperty(value = "message", required = true)
     private String message;
 
-    /**
-     * Creates an instance of ErrorInformation class.
-     */
-    public ErrorInformation() {
-    }
+    /** Creates an instance of ErrorInformation class. */
+    public ErrorInformation() {}
 
     /**
      * Get the code property: The code property.
-     * 
+     *
      * @return the code value.
      */
     public String getCode() {
@@ -43,7 +36,7 @@ public final class ErrorInformation implements JsonSerializable<ErrorInformation
 
     /**
      * Set the code property: The code property.
-     * 
+     *
      * @param code the code value to set.
      * @return the ErrorInformation object itself.
      */
@@ -54,7 +47,7 @@ public final class ErrorInformation implements JsonSerializable<ErrorInformation
 
     /**
      * Get the message property: The message property.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -63,49 +56,12 @@ public final class ErrorInformation implements JsonSerializable<ErrorInformation
 
     /**
      * Set the message property: The message property.
-     * 
+     *
      * @param message the message value to set.
      * @return the ErrorInformation object itself.
      */
     public ErrorInformation setMessage(String message) {
         this.message = message;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("code", this.code);
-        jsonWriter.writeStringField("message", this.message);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ErrorInformation from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ErrorInformation if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ErrorInformation.
-     */
-    public static ErrorInformation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ErrorInformation deserializedErrorInformation = new ErrorInformation();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("code".equals(fieldName)) {
-                    deserializedErrorInformation.code = reader.getString();
-                } else if ("message".equals(fieldName)) {
-                    deserializedErrorInformation.message = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedErrorInformation;
-        });
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -12,38 +13,34 @@ import java.util.Collection;
  * "inch".
  */
 public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
-    /**
-     * Length unit for image files.
-     */
+    /** Static value pixel for LengthUnit. */
     public static final LengthUnit PIXEL = fromString("pixel");
 
-    /**
-     * Length unit for PDF files.
-     */
+    /** Static value inch for LengthUnit. */
     public static final LengthUnit INCH = fromString("inch");
 
     /**
      * Creates a new instance of LengthUnit value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public LengthUnit() {
-    }
+    public LengthUnit() {}
 
     /**
      * Creates or finds a LengthUnit from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding LengthUnit.
      */
+    @JsonCreator
     public static LengthUnit fromString(String name) {
         return fromString(name, LengthUnit.class);
     }
 
     /**
      * Gets known LengthUnit values.
-     * 
+     *
      * @return known LengthUnit values.
      */
     public static Collection<LengthUnit> values() {

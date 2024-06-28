@@ -5,52 +5,48 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Analyze operation result.
- */
+/** Analyze operation result. */
 @Fluent
-public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
+public final class AnalyzeResult {
     /*
      * Version of schema used for this result.
      */
+    @JsonProperty(value = "version", required = true)
     private String version;
 
     /*
      * Text extracted from the input.
      */
+    @JsonProperty(value = "readResults", required = true)
     private List<ReadResult> readResults;
 
     /*
      * Page-level information extracted from the input.
      */
+    @JsonProperty(value = "pageResults")
     private List<PageResult> pageResults;
 
     /*
      * Document-level information extracted from the input.
      */
+    @JsonProperty(value = "documentResults")
     private List<DocumentResult> documentResults;
 
     /*
      * List of errors reported during the analyze operation.
      */
+    @JsonProperty(value = "errors")
     private List<ErrorInformation> errors;
 
-    /**
-     * Creates an instance of AnalyzeResult class.
-     */
-    public AnalyzeResult() {
-    }
+    /** Creates an instance of AnalyzeResult class. */
+    public AnalyzeResult() {}
 
     /**
      * Get the version property: Version of schema used for this result.
-     * 
+     *
      * @return the version value.
      */
     public String getVersion() {
@@ -59,7 +55,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Set the version property: Version of schema used for this result.
-     * 
+     *
      * @param version the version value to set.
      * @return the AnalyzeResult object itself.
      */
@@ -70,7 +66,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the readResults property: Text extracted from the input.
-     * 
+     *
      * @return the readResults value.
      */
     public List<ReadResult> getReadResults() {
@@ -79,7 +75,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Set the readResults property: Text extracted from the input.
-     * 
+     *
      * @param readResults the readResults value to set.
      * @return the AnalyzeResult object itself.
      */
@@ -90,7 +86,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the pageResults property: Page-level information extracted from the input.
-     * 
+     *
      * @return the pageResults value.
      */
     public List<PageResult> getPageResults() {
@@ -99,7 +95,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Set the pageResults property: Page-level information extracted from the input.
-     * 
+     *
      * @param pageResults the pageResults value to set.
      * @return the AnalyzeResult object itself.
      */
@@ -110,7 +106,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the documentResults property: Document-level information extracted from the input.
-     * 
+     *
      * @return the documentResults value.
      */
     public List<DocumentResult> getDocumentResults() {
@@ -119,7 +115,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Set the documentResults property: Document-level information extracted from the input.
-     * 
+     *
      * @param documentResults the documentResults value to set.
      * @return the AnalyzeResult object itself.
      */
@@ -130,7 +126,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the errors property: List of errors reported during the analyze operation.
-     * 
+     *
      * @return the errors value.
      */
     public List<ErrorInformation> getErrors() {
@@ -139,64 +135,12 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Set the errors property: List of errors reported during the analyze operation.
-     * 
+     *
      * @param errors the errors value to set.
      * @return the AnalyzeResult object itself.
      */
     public AnalyzeResult setErrors(List<ErrorInformation> errors) {
         this.errors = errors;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("version", this.version);
-        jsonWriter.writeArrayField("readResults", this.readResults, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("pageResults", this.pageResults, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("documentResults", this.documentResults,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AnalyzeResult from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AnalyzeResult.
-     */
-    public static AnalyzeResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AnalyzeResult deserializedAnalyzeResult = new AnalyzeResult();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("version".equals(fieldName)) {
-                    deserializedAnalyzeResult.version = reader.getString();
-                } else if ("readResults".equals(fieldName)) {
-                    List<ReadResult> readResults = reader.readArray(reader1 -> ReadResult.fromJson(reader1));
-                    deserializedAnalyzeResult.readResults = readResults;
-                } else if ("pageResults".equals(fieldName)) {
-                    List<PageResult> pageResults = reader.readArray(reader1 -> PageResult.fromJson(reader1));
-                    deserializedAnalyzeResult.pageResults = pageResults;
-                } else if ("documentResults".equals(fieldName)) {
-                    List<DocumentResult> documentResults
-                        = reader.readArray(reader1 -> DocumentResult.fromJson(reader1));
-                    deserializedAnalyzeResult.documentResults = documentResults;
-                } else if ("errors".equals(fieldName)) {
-                    List<ErrorInformation> errors = reader.readArray(reader1 -> ErrorInformation.fromJson(reader1));
-                    deserializedAnalyzeResult.errors = errors;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAnalyzeResult;
-        });
     }
 }
