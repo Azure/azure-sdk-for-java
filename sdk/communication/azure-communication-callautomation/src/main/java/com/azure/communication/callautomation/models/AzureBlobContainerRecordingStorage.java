@@ -37,7 +37,7 @@ public class AzureBlobContainerRecordingStorage extends RecordingStorage {
     public String getRecordingDestinationContainerUrl() {
         return this.recordingDestinationContainerUrl;
     }
-
+    
     /**
      * Get the recordingStorageType property: Defines the kind of external storage.
      *
