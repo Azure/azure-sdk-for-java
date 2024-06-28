@@ -12,6 +12,8 @@ import java.util.function.Consumer;
 public interface WebSocketClient {
 
     WebSocketSession connectToServer(ClientEndpointConfiguration cec, String path,
-        AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
-        Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler);
+                                     AtomicReference<ClientLogger> loggerReference,
+                                     Consumer<Object> messageHandler,
+                                     Consumer<WebSocketSession> openHandler,
+                                     Consumer<CloseReason> closeHandler);
 }
