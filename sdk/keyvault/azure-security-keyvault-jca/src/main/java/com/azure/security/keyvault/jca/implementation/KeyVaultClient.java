@@ -60,7 +60,7 @@ public class KeyVaultClient {
     private final String keyVaultBaseUri;
 
     /**
-     * Stores the Azure Key Vault URL.
+     * Stores the Azure Key Vault URI.
      */
     private final String keyVaultUri;
 
@@ -90,7 +90,7 @@ public class KeyVaultClient {
     private AccessToken accessToken;
 
     /**
-     * Indicates if the challenge resource verification should be disabled.
+     * Stores a flag indicating if challenge resource verification shall be disabled.
      */
     private final boolean disableChallengeResourceVerification;
 
@@ -147,7 +147,7 @@ public class KeyVaultClient {
     }
 
     public static KeyVaultClient createKeyVaultClientBySystemProperty() {
-        String keyVaultUri = validateUri(System.getProperty("azure.keyvault.uri"), "Azure Key Vault URI");
+        String keyVaultUri = System.getProperty("azure.keyvault.uri");
         String tenantId = System.getProperty("azure.keyvault.tenant-id");
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
@@ -259,8 +259,8 @@ public class KeyVaultClient {
 
         headers.put("Authorization", "Bearer " + getAccessToken());
 
-        String url = keyVaultUri + "certificates/" + alias + API_VERSION_POSTFIX;
-        String response = HttpUtil.get(url, headers);
+        String uri = keyVaultUri + "certificates/" + alias + API_VERSION_POSTFIX;
+        String response = HttpUtil.get(uri, headers);
 
         if (response != null) {
             result = (CertificateBundle) JsonConverterUtil.fromJson(response, CertificateBundle.class);
@@ -411,8 +411,8 @@ public class KeyVaultClient {
 
         headers.put("Authorization", "Bearer " + getAccessToken());
 
-        String url = keyId + "/sign" + API_VERSION_POSTFIX;
-        String response = HttpUtil.post(url, headers, bodyString, "application/json");
+        String uri = keyId + "/sign" + API_VERSION_POSTFIX;
+        String response = HttpUtil.post(uri, headers, bodyString, "application/json");
 
         if (response != null) {
             result = (SignResult) JsonConverterUtil.fromJson(response, SignResult.class);

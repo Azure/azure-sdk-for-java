@@ -57,11 +57,11 @@ public final class HttpUtil {
 
     private static final Logger LOGGER = Logger.getLogger(HttpUtil.class.getName());
 
-    public static String get(String url, Map<String, String> headers) {
+    public static String get(String uri, Map<String, String> headers) {
         String result = null;
 
         try (CloseableHttpClient client = buildClient()) {
-            HttpGet httpGet = new HttpGet(url);
+            HttpGet httpGet = new HttpGet(uri);
 
             if (headers != null) {
                 headers.forEach(httpGet::addHeader);
@@ -77,8 +77,8 @@ public final class HttpUtil {
         return result;
     }
 
-    public static String post(String url, String body, String contentType) {
-        return post(url, null, body, contentType);
+    public static String post(String uri, String body, String contentType) {
+        return post(uri, null, body, contentType);
     }
 
     public static String getUserAgentPrefix() {
@@ -93,11 +93,11 @@ public final class HttpUtil {
             .orElse(DEFAULT_USER_AGENT_VALUE_PREFIX);
     }
 
-    public static String post(String url, Map<String, String> headers, String body, String contentType) {
+    public static String post(String uri, Map<String, String> headers, String body, String contentType) {
         String result = null;
 
         try (CloseableHttpClient client = buildClient()) {
-            HttpPost httpPost = new HttpPost(url);
+            HttpPost httpPost = new HttpPost(uri);
 
             httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
 
@@ -116,11 +116,11 @@ public final class HttpUtil {
         return result;
     }
 
-    public static HttpResponse getWithResponse(String url, Map<String, String> headers) {
+    public static HttpResponse getWithResponse(String uri, Map<String, String> headers) {
         HttpResponse result = null;
 
         try (CloseableHttpClient client = buildClient()) {
-            HttpGet httpGet = new HttpGet(url);
+            HttpGet httpGet = new HttpGet(uri);
 
             if (headers != null) {
                 headers.forEach(httpGet::addHeader);

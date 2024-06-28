@@ -237,6 +237,11 @@ public final class AccessTokenUtil {
         LOGGER.log(INFO, "Getting login URI using: {0}", resourceUri);
 
         HttpResponse response = HttpUtil.getWithResponse(resourceUri, null);
+
+        if (response == null) {
+            throw new IllegalStateException("Could not obtain login URI to retrieve access token from.");
+        }
+
         Map<String, String> challengeAttributes =
             extractChallengeAttributes(response.getFirstHeader(WWW_AUTHENTICATE).getValue());
         String scope = challengeAttributes.get("resource");
