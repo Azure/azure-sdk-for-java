@@ -9,9 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * Defines the names of all tokenizers supported by the search engine.
- */
+/** Defines the names of all tokenizers supported by the search engine. */
 public final class LexicalTokenizerName extends ExpandableStringEnum<LexicalTokenizerName> {
     /**
      * Grammar-based tokenizer that is suitable for processing most European-language documents. See
@@ -43,16 +41,12 @@ public final class LexicalTokenizerName extends ExpandableStringEnum<LexicalToke
      */
     public static final LexicalTokenizerName LOWERCASE = fromString("lowercase");
 
-    /**
-     * Divides text using language-specific rules.
-     */
+    /** Divides text using language-specific rules. */
     public static final LexicalTokenizerName MICROSOFT_LANGUAGE_TOKENIZER = fromString("microsoft_language_tokenizer");
 
-    /**
-     * Divides text using language-specific rules and reduces words to their base forms.
-     */
-    public static final LexicalTokenizerName MICROSOFT_LANGUAGE_STEMMING_TOKENIZER
-        = fromString("microsoft_language_stemming_tokenizer");
+    /** Divides text using language-specific rules and reduces words to their base forms. */
+    public static final LexicalTokenizerName MICROSOFT_LANGUAGE_STEMMING_TOKENIZER =
+            fromString("microsoft_language_stemming_tokenizer");
 
     /**
      * Tokenizes the input into n-grams of the given size(s). See
@@ -92,16 +86,15 @@ public final class LexicalTokenizerName extends ExpandableStringEnum<LexicalToke
 
     /**
      * Creates a new instance of LexicalTokenizerName value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public LexicalTokenizerName() {
-    }
+    public LexicalTokenizerName() {}
 
     /**
      * Creates or finds a LexicalTokenizerName from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding LexicalTokenizerName.
      */
@@ -111,7 +104,7 @@ public final class LexicalTokenizerName extends ExpandableStringEnum<LexicalToke
 
     /**
      * Gets known LexicalTokenizerName values.
-     * 
+     *
      * @return known LexicalTokenizerName values.
      */
     public static Collection<LexicalTokenizerName> values() {

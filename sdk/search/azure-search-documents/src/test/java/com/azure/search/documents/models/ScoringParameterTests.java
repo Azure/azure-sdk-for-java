@@ -5,8 +5,6 @@ package com.azure.search.documents.models;
 
 import com.azure.core.models.GeoPoint;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SuppressWarnings("unchecked")
-@Execution(ExecutionMode.CONCURRENT)
 public class ScoringParameterTests {
     private static final Map<String, Object> FOOL_SPOTBUGS = new HashMap<>();
 

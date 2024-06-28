@@ -12,10 +12,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * A field that is used as part of the semantic configuration.
- */
+/** A field that is used as part of the semantic configuration. */
 @Immutable
 public final class SemanticField implements JsonSerializable<SemanticField> {
     /*
@@ -25,7 +25,7 @@ public final class SemanticField implements JsonSerializable<SemanticField> {
 
     /**
      * Creates an instance of SemanticField class.
-     * 
+     *
      * @param fieldName the fieldName value to set.
      */
     public SemanticField(String fieldName) {
@@ -34,7 +34,7 @@ public final class SemanticField implements JsonSerializable<SemanticField> {
 
     /**
      * Get the fieldName property: The fieldName property.
-     * 
+     *
      * @return the fieldName value.
      */
     public String getFieldName() {
@@ -50,32 +50,41 @@ public final class SemanticField implements JsonSerializable<SemanticField> {
 
     /**
      * Reads an instance of SemanticField from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SemanticField if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SemanticField.
      */
     public static SemanticField fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean fieldNameFound = false;
-            String fieldName = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String jsonFieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean fieldNameFound = false;
+                    String fieldName = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String jsonFieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("fieldName".equals(jsonFieldName)) {
-                    fieldName = reader.getString();
-                    fieldNameFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (fieldNameFound) {
-                return new SemanticField(fieldName);
-            }
-            throw new IllegalStateException("Missing required property: fieldName");
-        });
+                        if ("fieldName".equals(jsonFieldName)) {
+                            fieldName = reader.getString();
+                            fieldNameFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (fieldNameFound) {
+                        SemanticField deserializedSemanticField = new SemanticField(fieldName);
+
+                        return deserializedSemanticField;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!fieldNameFound) {
+                        missingProperties.add("fieldName");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

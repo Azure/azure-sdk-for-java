@@ -6,238 +6,144 @@
 
 package com.azure.search.documents.indexes.models;
 
-/**
- * Lists the languages supported by the Microsoft language stemming tokenizer.
- */
+/** Lists the languages supported by the Microsoft language stemming tokenizer. */
 public enum MicrosoftStemmingTokenizerLanguage {
-    /**
-     * Selects the Microsoft stemming tokenizer for Arabic.
-     */
+    /** Selects the Microsoft stemming tokenizer for Arabic. */
     ARABIC("arabic"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Bangla.
-     */
+    /** Selects the Microsoft stemming tokenizer for Bangla. */
     BANGLA("bangla"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Bulgarian.
-     */
+    /** Selects the Microsoft stemming tokenizer for Bulgarian. */
     BULGARIAN("bulgarian"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Catalan.
-     */
+    /** Selects the Microsoft stemming tokenizer for Catalan. */
     CATALAN("catalan"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Croatian.
-     */
+    /** Selects the Microsoft stemming tokenizer for Croatian. */
     CROATIAN("croatian"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Czech.
-     */
+    /** Selects the Microsoft stemming tokenizer for Czech. */
     CZECH("czech"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Danish.
-     */
+    /** Selects the Microsoft stemming tokenizer for Danish. */
     DANISH("danish"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Dutch.
-     */
+    /** Selects the Microsoft stemming tokenizer for Dutch. */
     DUTCH("dutch"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for English.
-     */
+    /** Selects the Microsoft stemming tokenizer for English. */
     ENGLISH("english"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Estonian.
-     */
+    /** Selects the Microsoft stemming tokenizer for Estonian. */
     ESTONIAN("estonian"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Finnish.
-     */
+    /** Selects the Microsoft stemming tokenizer for Finnish. */
     FINNISH("finnish"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for French.
-     */
+    /** Selects the Microsoft stemming tokenizer for French. */
     FRENCH("french"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for German.
-     */
+    /** Selects the Microsoft stemming tokenizer for German. */
     GERMAN("german"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Greek.
-     */
+    /** Selects the Microsoft stemming tokenizer for Greek. */
     GREEK("greek"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Gujarati.
-     */
+    /** Selects the Microsoft stemming tokenizer for Gujarati. */
     GUJARATI("gujarati"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Hebrew.
-     */
+    /** Selects the Microsoft stemming tokenizer for Hebrew. */
     HEBREW("hebrew"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Hindi.
-     */
+    /** Selects the Microsoft stemming tokenizer for Hindi. */
     HINDI("hindi"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Hungarian.
-     */
+    /** Selects the Microsoft stemming tokenizer for Hungarian. */
     HUNGARIAN("hungarian"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Icelandic.
-     */
+    /** Selects the Microsoft stemming tokenizer for Icelandic. */
     ICELANDIC("icelandic"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Indonesian.
-     */
+    /** Selects the Microsoft stemming tokenizer for Indonesian. */
     INDONESIAN("indonesian"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Italian.
-     */
+    /** Selects the Microsoft stemming tokenizer for Italian. */
     ITALIAN("italian"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Kannada.
-     */
+    /** Selects the Microsoft stemming tokenizer for Kannada. */
     KANNADA("kannada"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Latvian.
-     */
+    /** Selects the Microsoft stemming tokenizer for Latvian. */
     LATVIAN("latvian"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Lithuanian.
-     */
+    /** Selects the Microsoft stemming tokenizer for Lithuanian. */
     LITHUANIAN("lithuanian"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Malay.
-     */
+    /** Selects the Microsoft stemming tokenizer for Malay. */
     MALAY("malay"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Malayalam.
-     */
+    /** Selects the Microsoft stemming tokenizer for Malayalam. */
     MALAYALAM("malayalam"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Marathi.
-     */
+    /** Selects the Microsoft stemming tokenizer for Marathi. */
     MARATHI("marathi"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Norwegian (Bokmål).
-     */
+    /** Selects the Microsoft stemming tokenizer for Norwegian (Bokmål). */
     NORWEGIAN_BOKMAAL("norwegianBokmaal"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Polish.
-     */
+    /** Selects the Microsoft stemming tokenizer for Polish. */
     POLISH("polish"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Portuguese.
-     */
+    /** Selects the Microsoft stemming tokenizer for Portuguese. */
     PORTUGUESE("portuguese"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Portuguese (Brazil).
-     */
+    /** Selects the Microsoft stemming tokenizer for Portuguese (Brazil). */
     PORTUGUESE_BRAZILIAN("portugueseBrazilian"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Punjabi.
-     */
+    /** Selects the Microsoft stemming tokenizer for Punjabi. */
     PUNJABI("punjabi"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Romanian.
-     */
+    /** Selects the Microsoft stemming tokenizer for Romanian. */
     ROMANIAN("romanian"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Russian.
-     */
+    /** Selects the Microsoft stemming tokenizer for Russian. */
     RUSSIAN("russian"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Serbian (Cyrillic).
-     */
+    /** Selects the Microsoft stemming tokenizer for Serbian (Cyrillic). */
     SERBIAN_CYRILLIC("serbianCyrillic"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Serbian (Latin).
-     */
+    /** Selects the Microsoft stemming tokenizer for Serbian (Latin). */
     SERBIAN_LATIN("serbianLatin"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Slovak.
-     */
+    /** Selects the Microsoft stemming tokenizer for Slovak. */
     SLOVAK("slovak"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Slovenian.
-     */
+    /** Selects the Microsoft stemming tokenizer for Slovenian. */
     SLOVENIAN("slovenian"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Spanish.
-     */
+    /** Selects the Microsoft stemming tokenizer for Spanish. */
     SPANISH("spanish"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Swedish.
-     */
+    /** Selects the Microsoft stemming tokenizer for Swedish. */
     SWEDISH("swedish"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Tamil.
-     */
+    /** Selects the Microsoft stemming tokenizer for Tamil. */
     TAMIL("tamil"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Telugu.
-     */
+    /** Selects the Microsoft stemming tokenizer for Telugu. */
     TELUGU("telugu"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Turkish.
-     */
+    /** Selects the Microsoft stemming tokenizer for Turkish. */
     TURKISH("turkish"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Ukrainian.
-     */
+    /** Selects the Microsoft stemming tokenizer for Ukrainian. */
     UKRAINIAN("ukrainian"),
 
-    /**
-     * Selects the Microsoft stemming tokenizer for Urdu.
-     */
+    /** Selects the Microsoft stemming tokenizer for Urdu. */
     URDU("urdu");
 
-    /**
-     * The actual serialized value for a MicrosoftStemmingTokenizerLanguage instance.
-     */
+    /** The actual serialized value for a MicrosoftStemmingTokenizerLanguage instance. */
     private final String value;
 
     MicrosoftStemmingTokenizerLanguage(String value) {
@@ -246,7 +152,7 @@ public enum MicrosoftStemmingTokenizerLanguage {
 
     /**
      * Parses a serialized value to a MicrosoftStemmingTokenizerLanguage instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed MicrosoftStemmingTokenizerLanguage object, or null if unable to parse.
      */
@@ -263,9 +169,7 @@ public enum MicrosoftStemmingTokenizerLanguage {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

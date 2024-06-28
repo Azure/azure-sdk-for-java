@@ -37,7 +37,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
 
     /**
      * Creates an instance of SearchIndexStatistics class.
-     * 
+     *
      * @param documentCount the documentCount value to set.
      * @param storageSize the storageSize value to set.
      */
@@ -48,7 +48,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
 
     /**
      * Get the documentCount property: The number of documents in the index.
-     * 
+     *
      * @return the documentCount value.
      */
     public long getDocumentCount() {
@@ -57,7 +57,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
 
     /**
      * Get the storageSize property: The amount of storage in bytes consumed by the index.
-     * 
+     *
      * @return the storageSize value.
      */
     public long getStorageSize() {
@@ -66,7 +66,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
 
     /**
      * Get the vectorIndexSize property: The amount of memory in bytes consumed by vectors in the index.
-     * 
+     *
      * @return the vectorIndexSize value.
      */
     public Long getVectorIndexSize() {
@@ -81,53 +81,54 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
 
     /**
      * Reads an instance of SearchIndexStatistics from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexStatistics if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexStatistics.
      */
     public static SearchIndexStatistics fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean documentCountFound = false;
-            long documentCount = 0L;
-            boolean storageSizeFound = false;
-            long storageSize = 0L;
-            Long vectorIndexSize = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean documentCountFound = false;
+                    long documentCount = 0L;
+                    boolean storageSizeFound = false;
+                    long storageSize = 0L;
+                    Long vectorIndexSize = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("documentCount".equals(fieldName)) {
-                    documentCount = reader.getLong();
-                    documentCountFound = true;
-                } else if ("storageSize".equals(fieldName)) {
-                    storageSize = reader.getLong();
-                    storageSizeFound = true;
-                } else if ("vectorIndexSize".equals(fieldName)) {
-                    vectorIndexSize = reader.getNullable(JsonReader::getLong);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (documentCountFound && storageSizeFound) {
-                SearchIndexStatistics deserializedSearchIndexStatistics
-                    = new SearchIndexStatistics(documentCount, storageSize);
-                deserializedSearchIndexStatistics.vectorIndexSize = vectorIndexSize;
+                        if ("documentCount".equals(fieldName)) {
+                            documentCount = reader.getLong();
+                            documentCountFound = true;
+                        } else if ("storageSize".equals(fieldName)) {
+                            storageSize = reader.getLong();
+                            storageSizeFound = true;
+                        } else if ("vectorIndexSize".equals(fieldName)) {
+                            vectorIndexSize = reader.getNullable(JsonReader::getLong);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (documentCountFound && storageSizeFound) {
+                        SearchIndexStatistics deserializedSearchIndexStatistics =
+                                new SearchIndexStatistics(documentCount, storageSize);
+                        deserializedSearchIndexStatistics.vectorIndexSize = vectorIndexSize;
 
-                return deserializedSearchIndexStatistics;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!documentCountFound) {
-                missingProperties.add("documentCount");
-            }
-            if (!storageSizeFound) {
-                missingProperties.add("storageSize");
-            }
+                        return deserializedSearchIndexStatistics;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!documentCountFound) {
+                        missingProperties.add("documentCount");
+                    }
+                    if (!storageSizeFound) {
+                        missingProperties.add("storageSize");
+                    }
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }
