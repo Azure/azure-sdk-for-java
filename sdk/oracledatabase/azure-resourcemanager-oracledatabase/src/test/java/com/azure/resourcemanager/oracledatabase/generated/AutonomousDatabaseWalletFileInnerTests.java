@@ -15,4 +15,11 @@ public final class AutonomousDatabaseWalletFileInnerTests {
             = BinaryData.fromString("{\"walletFiles\":\"uqlcvydy\"}").toObject(AutonomousDatabaseWalletFileInner.class);
         Assertions.assertEquals("uqlcvydy", model.walletFiles());
     }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AutonomousDatabaseWalletFileInner model = new AutonomousDatabaseWalletFileInner().withWalletFiles("lyls");
+        model = BinaryData.fromObject(model).toObject(AutonomousDatabaseWalletFileInner.class);
+        Assertions.assertEquals("lyls", model.walletFiles());
+    }
 }

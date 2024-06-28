@@ -11,16 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ProjectInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProjectInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"shurzafbljjgpbto\",\"provisioningState\":\"Deleting\"},\"id\":\"klj\",\"name\":\"vbqid\",\"type\":\"qajzyulpkudjkr\"}")
-            .toObject(ProjectInner.class);
-        Assertions.assertEquals("shurzafbljjgpbto", model.description());
+        ProjectInner model =
+            BinaryData
+                .fromString(
+                    "{\"properties\":{\"description\":\"kfthwxmntei\",\"provisioningState\":\"Succeeded\"},\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"}")
+                .toObject(ProjectInner.class);
+        Assertions.assertEquals("kfthwxmntei", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectInner model = new ProjectInner().withDescription("shurzafbljjgpbto");
+        ProjectInner model = new ProjectInner().withDescription("kfthwxmntei");
         model = BinaryData.fromObject(model).toObject(ProjectInner.class);
-        Assertions.assertEquals("shurzafbljjgpbto", model.description());
+        Assertions.assertEquals("kfthwxmntei", model.description());
     }
 }

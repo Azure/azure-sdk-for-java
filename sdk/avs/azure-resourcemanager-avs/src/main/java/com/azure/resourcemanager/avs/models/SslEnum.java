@@ -5,25 +5,20 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Whether SSL is enabled or disabled.
- */
+/** Protect LDAP communication using SSL certificate (LDAPS). */
 public final class SslEnum extends ExpandableStringEnum<SslEnum> {
-    /**
-     * Static value Enabled for SslEnum.
-     */
+    /** Static value Enabled for SslEnum. */
     public static final SslEnum ENABLED = fromString("Enabled");
 
-    /**
-     * Static value Disabled for SslEnum.
-     */
+    /** Static value Disabled for SslEnum. */
     public static final SslEnum DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of SslEnum value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,17 +27,18 @@ public final class SslEnum extends ExpandableStringEnum<SslEnum> {
 
     /**
      * Creates or finds a SslEnum from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SslEnum.
      */
+    @JsonCreator
     public static SslEnum fromString(String name) {
         return fromString(name, SslEnum.class);
     }
 
     /**
      * Gets known SslEnum values.
-     * 
+     *
      * @return known SslEnum values.
      */
     public static Collection<SslEnum> values() {

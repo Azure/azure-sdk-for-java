@@ -8,66 +8,70 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/**
- * Resource collection API of ScriptCmdlets.
- */
+/** Resource collection API of ScriptCmdlets. */
 public interface ScriptCmdlets {
     /**
-     * List ScriptCmdlet resources by ScriptPackage.
-     * 
+     * List script cmdlet resources available for a private cloud to create a script execution resource on a private
+     * cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package.
+     * @param scriptPackageName Name of the script package in the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScriptCmdlet list operation as paginated response with {@link PagedIterable}.
+     * @return pageable list of scripts/cmdlets as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ScriptCmdlet> list(String resourceGroupName, String privateCloudName, String scriptPackageName);
 
     /**
-     * List ScriptCmdlet resources by ScriptPackage.
-     * 
+     * List script cmdlet resources available for a private cloud to create a script execution resource on a private
+     * cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package.
+     * @param scriptPackageName Name of the script package in the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ScriptCmdlet list operation as paginated response with {@link PagedIterable}.
+     * @return pageable list of scripts/cmdlets as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ScriptCmdlet> list(String resourceGroupName, String privateCloudName, String scriptPackageName,
+    PagedIterable<ScriptCmdlet> list(
+        String resourceGroupName, String privateCloudName, String scriptPackageName, Context context);
+
+    /**
+     * Return information about a script cmdlet resource in a specific package on a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param scriptPackageName Name of the script package in the private cloud.
+     * @param scriptCmdletName Name of the script cmdlet resource in the script package in the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a cmdlet available for script execution along with {@link Response}.
+     */
+    Response<ScriptCmdlet> getWithResponse(
+        String resourceGroupName,
+        String privateCloudName,
+        String scriptPackageName,
+        String scriptCmdletName,
         Context context);
 
     /**
-     * Get a ScriptCmdlet.
-     * 
+     * Return information about a script cmdlet resource in a specific package on a private cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package.
-     * @param scriptCmdletName Name of the script cmdlet.
-     * @param context The context to associate with this operation.
+     * @param scriptPackageName Name of the script package in the private cloud.
+     * @param scriptCmdletName Name of the script cmdlet resource in the script package in the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScriptCmdlet along with {@link Response}.
+     * @return a cmdlet available for script execution.
      */
-    Response<ScriptCmdlet> getWithResponse(String resourceGroupName, String privateCloudName, String scriptPackageName,
-        String scriptCmdletName, Context context);
-
-    /**
-     * Get a ScriptCmdlet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package.
-     * @param scriptCmdletName Name of the script cmdlet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScriptCmdlet.
-     */
-    ScriptCmdlet get(String resourceGroupName, String privateCloudName, String scriptPackageName,
-        String scriptCmdletName);
+    ScriptCmdlet get(
+        String resourceGroupName, String privateCloudName, String scriptPackageName, String scriptCmdletName);
 }

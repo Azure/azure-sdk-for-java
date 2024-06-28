@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.oracledatabase.fluent.models.VirtualNetworkAddressInner;
 import com.azure.resourcemanager.oracledatabase.models.VirtualNetworkAddressListResult;
+import com.azure.resourcemanager.oracledatabase.models.VirtualNetworkAddressProperties;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class VirtualNetworkAddressListResultTests {
@@ -17,5 +20,20 @@ public final class VirtualNetworkAddressListResultTests {
         Assertions.assertEquals("acoebj", model.value().get(0).properties().ipAddress());
         Assertions.assertEquals("wzcjznmwcpmgua", model.value().get(0).properties().vmOcid());
         Assertions.assertEquals("joxoism", model.nextLink());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VirtualNetworkAddressListResult model = new VirtualNetworkAddressListResult()
+            .withValue(Arrays.asList(
+                new VirtualNetworkAddressInner().withProperties(
+                    new VirtualNetworkAddressProperties().withIpAddress("kgthrrghxjbd").withVmOcid("xvcxgfrpdsofbshr")),
+                new VirtualNetworkAddressInner().withProperties(
+                    new VirtualNetworkAddressProperties().withIpAddress("ox").withVmOcid("ggufhyaomtb"))))
+            .withNextLink("rbgyefry");
+        model = BinaryData.fromObject(model).toObject(VirtualNetworkAddressListResult.class);
+        Assertions.assertEquals("kgthrrghxjbd", model.value().get(0).properties().ipAddress());
+        Assertions.assertEquals("xvcxgfrpdsofbshr", model.value().get(0).properties().vmOcid());
+        Assertions.assertEquals("rbgyefry", model.nextLink());
     }
 }

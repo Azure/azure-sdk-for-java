@@ -40,23 +40,17 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in ProjectsClient.
- */
+/** An instance of this class provides access to all the operations defined in ProjectsClient. */
 public final class ProjectsClientImpl implements ProjectsClient {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final ProjectsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final StorageMoverClientImpl client;
 
     /**
      * Initializes an instance of ProjectsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ProjectsClientImpl(StorageMoverClientImpl client) {
@@ -71,70 +65,96 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @Host("{$host}")
     @ServiceInterface(name = "StorageMoverClientPr")
     public interface ProjectsService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects")
-        @ExpectedResponses({ 200 })
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects")
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProjectList>> list(@HostParam("$host") String endpoint,
+        Mono<Response<ProjectList>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProjectInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName, @PathParam("projectName") String projectName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProjectInner>> createOrUpdate(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName, @PathParam("projectName") String projectName,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ProjectInner project,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProjectInner>> update(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName, @PathParam("projectName") String projectName,
+            @PathParam("storageMoverName") String storageMoverName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ProjectUpdateParameters project, @HeaderParam("Accept") String accept,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}")
-        @ExpectedResponses({ 200, 202, 204 })
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}")
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+        Mono<Response<ProjectInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName, @PathParam("projectName") String projectName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("storageMoverName") String storageMoverName,
+            @PathParam("projectName") String projectName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}")
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProjectList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ProjectInner>> createOrUpdate(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageMoverName") String storageMoverName,
+            @PathParam("projectName") String projectName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ProjectInner project,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ProjectInner>> update(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageMoverName") String storageMoverName,
+            @PathParam("projectName") String projectName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ProjectUpdateParameters project,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}")
+        @ExpectedResponses({200, 202, 204})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageMoverName") String storageMoverName,
+            @PathParam("projectName") String projectName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ProjectList>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Lists all Projects in a Storage Mover.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,12 +165,16 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProjectInner>> listSinglePageAsync(String resourceGroupName, String storageMoverName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -162,16 +186,32 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, storageMoverName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<ProjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            storageMoverName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<ProjectInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all Projects in a Storage Mover.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param context The context to associate with this operation.
@@ -181,15 +221,19 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return list of Project resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProjectInner>> listSinglePageAsync(String resourceGroupName, String storageMoverName,
-        Context context) {
+    private Mono<PagedResponse<ProjectInner>> listSinglePageAsync(
+        String resourceGroupName, String storageMoverName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -202,15 +246,28 @@ public final class ProjectsClientImpl implements ProjectsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, storageMoverName,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+            .list(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                storageMoverName,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Lists all Projects in a Storage Mover.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -220,13 +277,14 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProjectInner> listAsync(String resourceGroupName, String storageMoverName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, storageMoverName),
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, storageMoverName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all Projects in a Storage Mover.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param context The context to associate with this operation.
@@ -237,13 +295,14 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProjectInner> listAsync(String resourceGroupName, String storageMoverName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, storageMoverName, context),
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, storageMoverName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all Projects in a Storage Mover.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -258,7 +317,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
     /**
      * Lists all Projects in a Storage Mover.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param context The context to associate with this operation.
@@ -274,7 +333,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
     /**
      * Gets a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -284,15 +343,19 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a Project resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> getWithResponseAsync(String resourceGroupName, String storageMoverName,
-        String projectName) {
+    private Mono<Response<ProjectInner>> getWithResponseAsync(
+        String resourceGroupName, String storageMoverName, String projectName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -307,14 +370,24 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, storageMoverName, projectName, this.client.getApiVersion(), accept, context))
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            storageMoverName,
+                            projectName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -325,15 +398,19 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a Project resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> getWithResponseAsync(String resourceGroupName, String storageMoverName,
-        String projectName, Context context) {
+    private Mono<Response<ProjectInner>> getWithResponseAsync(
+        String resourceGroupName, String storageMoverName, String projectName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -348,13 +425,21 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            storageMoverName, projectName, this.client.getApiVersion(), accept, context);
+        return service
+            .get(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                storageMoverName,
+                projectName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
      * Gets a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -371,7 +456,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
     /**
      * Gets a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -382,14 +467,14 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a Project resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProjectInner> getWithResponse(String resourceGroupName, String storageMoverName, String projectName,
-        Context context) {
+    public Response<ProjectInner> getWithResponse(
+        String resourceGroupName, String storageMoverName, String projectName, Context context) {
         return getWithResponseAsync(resourceGroupName, storageMoverName, projectName, context).block();
     }
 
     /**
      * Gets a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -405,177 +490,30 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
     /**
      * Creates or updates a Project resource, which is a logical grouping of related jobs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
-     * @param project The project parameter.
+     * @param project The Project resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Project resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String storageMoverName, String projectName, ProjectInner project) {
+    private Mono<Response<ProjectInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String storageMoverName, String projectName, ProjectInner project) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (project == null) {
-            return Mono.error(new IllegalArgumentException("Parameter project is required and cannot be null."));
-        } else {
-            project.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, storageMoverName, projectName, this.client.getApiVersion(), project, accept,
-                context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Creates or updates a Project resource, which is a logical grouping of related jobs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param project The project parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Project resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String storageMoverName, String projectName, ProjectInner project, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (project == null) {
-            return Mono.error(new IllegalArgumentException("Parameter project is required and cannot be null."));
-        } else {
-            project.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            storageMoverName, projectName, this.client.getApiVersion(), project, accept, context);
-    }
-
-    /**
-     * Creates or updates a Project resource, which is a logical grouping of related jobs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param project The project parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Project resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProjectInner> createOrUpdateAsync(String resourceGroupName, String storageMoverName,
-        String projectName, ProjectInner project) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, storageMoverName, projectName, project)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a Project resource, which is a logical grouping of related jobs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param project The project parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Project resource along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProjectInner> createOrUpdateWithResponse(String resourceGroupName, String storageMoverName,
-        String projectName, ProjectInner project, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, storageMoverName, projectName, project, context)
-            .block();
-    }
-
-    /**
-     * Creates or updates a Project resource, which is a logical grouping of related jobs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param project The project parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Project resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProjectInner createOrUpdate(String resourceGroupName, String storageMoverName, String projectName,
-        ProjectInner project) {
-        return createOrUpdateWithResponse(resourceGroupName, storageMoverName, projectName, project, Context.NONE)
-            .getValue();
-    }
-
-    /**
-     * Updates properties for a Project resource. Properties not specified in the request body will be unchanged.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param project The project parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Project resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> updateWithResponseAsync(String resourceGroupName, String storageMoverName,
-        String projectName, ProjectUpdateParameters project) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -596,18 +534,28 @@ public final class ProjectsClientImpl implements ProjectsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    storageMoverName, projectName, this.client.getApiVersion(), project, accept, context))
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            storageMoverName,
+                            projectName,
+                            this.client.getApiVersion(),
+                            project,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Updates properties for a Project resource. Properties not specified in the request body will be unchanged.
-     * 
+     * Creates or updates a Project resource, which is a logical grouping of related jobs.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
-     * @param project The project parameter.
+     * @param project The Project resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -615,15 +563,19 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return the Project resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> updateWithResponseAsync(String resourceGroupName, String storageMoverName,
-        String projectName, ProjectUpdateParameters project, Context context) {
+    private Mono<Response<ProjectInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String storageMoverName, String projectName, ProjectInner project, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -643,36 +595,45 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            storageMoverName, projectName, this.client.getApiVersion(), project, accept, context);
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                storageMoverName,
+                projectName,
+                this.client.getApiVersion(),
+                project,
+                accept,
+                context);
     }
 
     /**
-     * Updates properties for a Project resource. Properties not specified in the request body will be unchanged.
-     * 
+     * Creates or updates a Project resource, which is a logical grouping of related jobs.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
-     * @param project The project parameter.
+     * @param project The Project resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Project resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProjectInner> updateAsync(String resourceGroupName, String storageMoverName, String projectName,
-        ProjectUpdateParameters project) {
-        return updateWithResponseAsync(resourceGroupName, storageMoverName, projectName, project)
+    private Mono<ProjectInner> createOrUpdateAsync(
+        String resourceGroupName, String storageMoverName, String projectName, ProjectInner project) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, storageMoverName, projectName, project)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Updates properties for a Project resource. Properties not specified in the request body will be unchanged.
-     * 
+     * Creates or updates a Project resource, which is a logical grouping of related jobs.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
-     * @param project The project parameter.
+     * @param project The Project resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -680,32 +641,218 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return the Project resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProjectInner> updateWithResponse(String resourceGroupName, String storageMoverName,
-        String projectName, ProjectUpdateParameters project, Context context) {
-        return updateWithResponseAsync(resourceGroupName, storageMoverName, projectName, project, context).block();
+    public Response<ProjectInner> createOrUpdateWithResponse(
+        String resourceGroupName, String storageMoverName, String projectName, ProjectInner project, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, storageMoverName, projectName, project, context)
+            .block();
     }
 
     /**
-     * Updates properties for a Project resource. Properties not specified in the request body will be unchanged.
-     * 
+     * Creates or updates a Project resource, which is a logical grouping of related jobs.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
-     * @param project The project parameter.
+     * @param project The Project resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Project resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProjectInner update(String resourceGroupName, String storageMoverName, String projectName,
-        ProjectUpdateParameters project) {
+    public ProjectInner createOrUpdate(
+        String resourceGroupName, String storageMoverName, String projectName, ProjectInner project) {
+        return createOrUpdateWithResponse(resourceGroupName, storageMoverName, projectName, project, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Updates properties for a Project resource. Properties not specified in the request body will be unchanged.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageMoverName The name of the Storage Mover resource.
+     * @param projectName The name of the Project resource.
+     * @param project The Project resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Project resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ProjectInner>> updateWithResponseAsync(
+        String resourceGroupName, String storageMoverName, String projectName, ProjectUpdateParameters project) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageMoverName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (project == null) {
+            return Mono.error(new IllegalArgumentException("Parameter project is required and cannot be null."));
+        } else {
+            project.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            storageMoverName,
+                            projectName,
+                            this.client.getApiVersion(),
+                            project,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Updates properties for a Project resource. Properties not specified in the request body will be unchanged.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageMoverName The name of the Storage Mover resource.
+     * @param projectName The name of the Project resource.
+     * @param project The Project resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Project resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ProjectInner>> updateWithResponseAsync(
+        String resourceGroupName,
+        String storageMoverName,
+        String projectName,
+        ProjectUpdateParameters project,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageMoverName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (project == null) {
+            return Mono.error(new IllegalArgumentException("Parameter project is required and cannot be null."));
+        } else {
+            project.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .update(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                storageMoverName,
+                projectName,
+                this.client.getApiVersion(),
+                project,
+                accept,
+                context);
+    }
+
+    /**
+     * Updates properties for a Project resource. Properties not specified in the request body will be unchanged.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageMoverName The name of the Storage Mover resource.
+     * @param projectName The name of the Project resource.
+     * @param project The Project resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Project resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ProjectInner> updateAsync(
+        String resourceGroupName, String storageMoverName, String projectName, ProjectUpdateParameters project) {
+        return updateWithResponseAsync(resourceGroupName, storageMoverName, projectName, project)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates properties for a Project resource. Properties not specified in the request body will be unchanged.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageMoverName The name of the Storage Mover resource.
+     * @param projectName The name of the Project resource.
+     * @param project The Project resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Project resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProjectInner> updateWithResponse(
+        String resourceGroupName,
+        String storageMoverName,
+        String projectName,
+        ProjectUpdateParameters project,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, storageMoverName, projectName, project, context).block();
+    }
+
+    /**
+     * Updates properties for a Project resource. Properties not specified in the request body will be unchanged.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageMoverName The name of the Storage Mover resource.
+     * @param projectName The name of the Project resource.
+     * @param project The Project resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Project resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProjectInner update(
+        String resourceGroupName, String storageMoverName, String projectName, ProjectUpdateParameters project) {
         return updateWithResponse(resourceGroupName, storageMoverName, projectName, project, Context.NONE).getValue();
     }
 
     /**
      * Deletes a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -715,15 +862,19 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String storageMoverName,
-        String projectName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String storageMoverName, String projectName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -738,14 +889,24 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, storageMoverName, projectName, this.client.getApiVersion(), accept, context))
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            storageMoverName,
+                            projectName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -756,15 +917,19 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String storageMoverName,
-        String projectName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String storageMoverName, String projectName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -779,13 +944,21 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            storageMoverName, projectName, this.client.getApiVersion(), accept, context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                storageMoverName,
+                projectName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
      * Deletes a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -795,17 +968,19 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String storageMoverName,
-        String projectName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, storageMoverName, projectName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String storageMoverName, String projectName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, storageMoverName, projectName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
      * Deletes a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -816,18 +991,19 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String storageMoverName,
-        String projectName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String storageMoverName, String projectName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, storageMoverName, projectName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, storageMoverName, projectName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Deletes a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -837,14 +1013,14 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
-        String projectName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String storageMoverName, String projectName) {
         return this.beginDeleteAsync(resourceGroupName, storageMoverName, projectName).getSyncPoller();
     }
 
     /**
      * Deletes a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -855,14 +1031,14 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
-        String projectName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String storageMoverName, String projectName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, storageMoverName, projectName, context).getSyncPoller();
     }
 
     /**
      * Deletes a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -873,13 +1049,14 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String storageMoverName, String projectName) {
-        return beginDeleteAsync(resourceGroupName, storageMoverName, projectName).last()
+        return beginDeleteAsync(resourceGroupName, storageMoverName, projectName)
+            .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -890,15 +1067,16 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String storageMoverName, String projectName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, storageMoverName, projectName, context).last()
+    private Mono<Void> deleteAsync(
+        String resourceGroupName, String storageMoverName, String projectName, Context context) {
+        return beginDeleteAsync(resourceGroupName, storageMoverName, projectName, context)
+            .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -913,7 +1091,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
     /**
      * Deletes a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -929,8 +1107,9 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -942,20 +1121,31 @@ public final class ProjectsClientImpl implements ProjectsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ProjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ProjectInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -968,13 +1158,23 @@ public final class ProjectsClientImpl implements ProjectsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        return service
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

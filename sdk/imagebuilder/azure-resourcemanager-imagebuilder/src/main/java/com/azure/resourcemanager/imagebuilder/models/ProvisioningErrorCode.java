@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -102,6 +103,7 @@ public final class ProvisioningErrorCode extends ExpandableStringEnum<Provisioni
      * @param name a name to look for.
      * @return the corresponding ProvisioningErrorCode.
      */
+    @JsonCreator
     public static ProvisioningErrorCode fromString(String name) {
         return fromString(name, ProvisioningErrorCode.class);
     }

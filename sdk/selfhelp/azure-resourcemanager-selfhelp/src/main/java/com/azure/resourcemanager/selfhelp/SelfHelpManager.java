@@ -26,7 +26,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.selfhelp.fluent.HelpRP;
 import com.azure.resourcemanager.selfhelp.implementation.CheckNameAvailabilitiesImpl;
 import com.azure.resourcemanager.selfhelp.implementation.DiagnosticsImpl;
-import com.azure.resourcemanager.selfhelp.implementation.DiscoverySolutionNlpsImpl;
+import com.azure.resourcemanager.selfhelp.implementation.DiscoverySolutionNlpSubscriptionScopesImpl;
+import com.azure.resourcemanager.selfhelp.implementation.DiscoverySolutionNlpTenantScopesImpl;
 import com.azure.resourcemanager.selfhelp.implementation.DiscoverySolutionsImpl;
 import com.azure.resourcemanager.selfhelp.implementation.HelpRPBuilder;
 import com.azure.resourcemanager.selfhelp.implementation.OperationsImpl;
@@ -36,7 +37,8 @@ import com.azure.resourcemanager.selfhelp.implementation.SolutionSelfHelpsImpl;
 import com.azure.resourcemanager.selfhelp.implementation.TroubleshootersImpl;
 import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilities;
 import com.azure.resourcemanager.selfhelp.models.Diagnostics;
-import com.azure.resourcemanager.selfhelp.models.DiscoverySolutionNlps;
+import com.azure.resourcemanager.selfhelp.models.DiscoverySolutionNlpSubscriptionScopes;
+import com.azure.resourcemanager.selfhelp.models.DiscoverySolutionNlpTenantScopes;
 import com.azure.resourcemanager.selfhelp.models.DiscoverySolutions;
 import com.azure.resourcemanager.selfhelp.models.Operations;
 import com.azure.resourcemanager.selfhelp.models.SimplifiedSolutions;
@@ -71,7 +73,9 @@ public final class SelfHelpManager {
 
     private SolutionSelfHelps solutionSelfHelps;
 
-    private DiscoverySolutionNlps discoverySolutionNlps;
+    private DiscoverySolutionNlpTenantScopes discoverySolutionNlpTenantScopes;
+
+    private DiscoverySolutionNlpSubscriptionScopes discoverySolutionNlpSubscriptionScopes;
 
     private final HelpRP clientObject;
 
@@ -236,7 +240,7 @@ public final class SelfHelpManager {
                 .append("-")
                 .append("com.azure.resourcemanager.selfhelp")
                 .append("/")
-                .append("1.1.0-beta.5");
+                .append("1.1.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -380,15 +384,29 @@ public final class SelfHelpManager {
     }
 
     /**
-     * Gets the resource collection API of DiscoverySolutionNlps.
+     * Gets the resource collection API of DiscoverySolutionNlpTenantScopes.
      * 
-     * @return Resource collection API of DiscoverySolutionNlps.
+     * @return Resource collection API of DiscoverySolutionNlpTenantScopes.
      */
-    public DiscoverySolutionNlps discoverySolutionNlps() {
-        if (this.discoverySolutionNlps == null) {
-            this.discoverySolutionNlps = new DiscoverySolutionNlpsImpl(clientObject.getDiscoverySolutionNlps(), this);
+    public DiscoverySolutionNlpTenantScopes discoverySolutionNlpTenantScopes() {
+        if (this.discoverySolutionNlpTenantScopes == null) {
+            this.discoverySolutionNlpTenantScopes
+                = new DiscoverySolutionNlpTenantScopesImpl(clientObject.getDiscoverySolutionNlpTenantScopes(), this);
         }
-        return discoverySolutionNlps;
+        return discoverySolutionNlpTenantScopes;
+    }
+
+    /**
+     * Gets the resource collection API of DiscoverySolutionNlpSubscriptionScopes.
+     * 
+     * @return Resource collection API of DiscoverySolutionNlpSubscriptionScopes.
+     */
+    public DiscoverySolutionNlpSubscriptionScopes discoverySolutionNlpSubscriptionScopes() {
+        if (this.discoverySolutionNlpSubscriptionScopes == null) {
+            this.discoverySolutionNlpSubscriptionScopes = new DiscoverySolutionNlpSubscriptionScopesImpl(
+                clientObject.getDiscoverySolutionNlpSubscriptionScopes(), this);
+        }
+        return discoverySolutionNlpSubscriptionScopes;
     }
 
     /**

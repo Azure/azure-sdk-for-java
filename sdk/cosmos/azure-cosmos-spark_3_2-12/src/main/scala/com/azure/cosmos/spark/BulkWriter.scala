@@ -956,11 +956,6 @@ private class BulkWriter(container: CosmosAsyncContainer,
     throwIfCapturedExceptionExists()
   }
 
-  def getFlushAndCloseIntervalInSeconds(): Int = {
-    val key = "COSMOS.FLUSH_CLOSE_INTERVAL_SEC"
-      sys.props.get(key).getOrElse(sys.env.get(key).getOrElse("60")).toInt
-  }
-
   // the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
   // scalastyle:off method.length
   // scalastyle:off cyclomatic.complexity
@@ -989,7 +984,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
                   s"$pendingRetriesSnapshot,  Context: ${operationContext.toString} $getThreadInfo")
               val activeOperationsSnapshot = activeBulkWriteOperations.clone()
               val activeReadManyOperationsSnapshot = activeReadManyOperations.clone()
-              val awaitCompleted = pendingTasksCompleted.await(getFlushAndCloseIntervalInSeconds, TimeUnit.SECONDS)
+              val awaitCompleted = pendingTasksCompleted.await(1, TimeUnit.MINUTES)
               if (!awaitCompleted) {
                 throwIfProgressStaled(
                   "FlushAndClose",
@@ -998,25 +993,14 @@ private class BulkWriter(container: CosmosAsyncContainer,
                   numberOfIntervalsWithIdenticalActiveOperationSnapshots
                 )
 
-                if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get > 0L) {
-
-
-                  val buffered = Scannable.from(bulkInputEmitter).scan(Scannable.Attr.BUFFERED)
+                if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get == 1L &&
+                    // pending retries only tracks the time to enqueue
+                    // the retry - so this should never take longer than 1 minute
+                    pendingRetriesSnapshot == 0L &&
+                    Scannable.from(bulkInputEmitter).scan(Scannable.Attr.BUFFERED) >0) {
 
                   if (verboseLoggingAfterReEnqueueingRetriesEnabled.compareAndSet(false, true)) {
                     log.logWarning(s"Starting to re-enqueue retries. Enabling verbose logs. "
-                      + s"Number of intervals with identical pending operations: "
-                      + s"$numberOfIntervalsWithIdenticalActiveOperationSnapshots Active Bulk Operations: "
-                      + s"$activeOperationsSnapshot, Active Read-Many Operations: $activeReadManyOperationsSnapshot,  "
-                      + s"PendingRetries: $pendingRetriesSnapshot, Buffered tasks: $buffered "
-                      + s"Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
-                      + s"Context: ${operationContext.toString} $getThreadInfo")
-                  } else if ((numberOfIntervalsWithIdenticalActiveOperationSnapshots.get % 3) == 0) {
-                    log.logWarning(s"Reattempting to re-enqueue retries. Enabling verbose logs. "
-                      + s"Number of intervals with identical pending operations: "
-                      + s"$numberOfIntervalsWithIdenticalActiveOperationSnapshots Active Bulk Operations: "
-                      + s"$activeOperationsSnapshot, Active Read-Many Operations: $activeReadManyOperationsSnapshot,  "
-                      + s"PendingRetries: $pendingRetriesSnapshot, Buffered tasks: $buffered "
                       + s"Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
                       + s"Context: ${operationContext.toString} $getThreadInfo")
                   }

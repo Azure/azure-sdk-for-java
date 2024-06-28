@@ -6,14 +6,9 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.models.AvailabilityProperties;
 import com.azure.resourcemanager.avs.models.Circuit;
-import com.azure.resourcemanager.avs.models.DnsZoneType;
 import com.azure.resourcemanager.avs.models.Encryption;
 import com.azure.resourcemanager.avs.models.Endpoints;
 import com.azure.resourcemanager.avs.models.IdentitySource;
@@ -23,68 +18,38 @@ import com.azure.resourcemanager.avs.models.NsxPublicIpQuotaRaisedEnum;
 import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
 import com.azure.resourcemanager.avs.models.PrivateCloudProvisioningState;
 import com.azure.resourcemanager.avs.models.Sku;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A private cloud resource.
- */
+/** A private cloud resource. */
 @Fluent
 public final class PrivateCloudInner extends Resource {
     /*
-     * The resource-specific properties for this resource.
+     * The private cloud SKU
      */
-    private PrivateCloudProperties innerProperties;
-
-    /*
-     * The SKU (Stock Keeping Unit) assigned to this resource.
-     */
+    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
-     * The managed service identities assigned to this resource.
+     * The properties of a private cloud resource
      */
+    @JsonProperty(value = "properties")
+    private PrivateCloudProperties innerProperties;
+
+    /*
+     * The identity of the private cloud, if configured.
+     */
+    @JsonProperty(value = "identity")
     private PrivateCloudIdentity identity;
 
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    private SystemData systemData;
-
-    /*
-     * Fully qualified resource Id for the resource.
-     */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
-     * The type of the resource.
-     */
-    private String type;
-
-    /**
-     * Creates an instance of PrivateCloudInner class.
-     */
+    /** Creates an instance of PrivateCloudInner class. */
     public PrivateCloudInner() {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
-     * 
-     * @return the innerProperties value.
-     */
-    private PrivateCloudProperties innerProperties() {
-        return this.innerProperties;
-    }
-
-    /**
-     * Get the sku property: The SKU (Stock Keeping Unit) assigned to this resource.
-     * 
+     * Get the sku property: The private cloud SKU.
+     *
      * @return the sku value.
      */
     public Sku sku() {
@@ -92,8 +57,8 @@ public final class PrivateCloudInner extends Resource {
     }
 
     /**
-     * Set the sku property: The SKU (Stock Keeping Unit) assigned to this resource.
-     * 
+     * Set the sku property: The private cloud SKU.
+     *
      * @param sku the sku value to set.
      * @return the PrivateCloudInner object itself.
      */
@@ -103,8 +68,17 @@ public final class PrivateCloudInner extends Resource {
     }
 
     /**
-     * Get the identity property: The managed service identities assigned to this resource.
-     * 
+     * Get the innerProperties property: The properties of a private cloud resource.
+     *
+     * @return the innerProperties value.
+     */
+    private PrivateCloudProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: The identity of the private cloud, if configured.
+     *
      * @return the identity value.
      */
     public PrivateCloudIdentity identity() {
@@ -112,8 +86,8 @@ public final class PrivateCloudInner extends Resource {
     }
 
     /**
-     * Set the identity property: The managed service identities assigned to this resource.
-     * 
+     * Set the identity property: The identity of the private cloud, if configured.
+     *
      * @param identity the identity value to set.
      * @return the PrivateCloudInner object itself.
      */
@@ -122,57 +96,14 @@ public final class PrivateCloudInner extends Resource {
         return this;
     }
 
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PrivateCloudInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PrivateCloudInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -180,154 +111,8 @@ public final class PrivateCloudInner extends Resource {
     }
 
     /**
-     * Get the managementCluster property: The default cluster used for management.
-     * 
-     * @return the managementCluster value.
-     */
-    public ManagementCluster managementCluster() {
-        return this.innerProperties() == null ? null : this.innerProperties().managementCluster();
-    }
-
-    /**
-     * Set the managementCluster property: The default cluster used for management.
-     * 
-     * @param managementCluster the managementCluster value to set.
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withManagementCluster(ManagementCluster managementCluster) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
-        }
-        this.innerProperties().withManagementCluster(managementCluster);
-        return this;
-    }
-
-    /**
-     * Get the internet property: Connectivity to internet is enabled or disabled.
-     * 
-     * @return the internet value.
-     */
-    public InternetEnum internet() {
-        return this.innerProperties() == null ? null : this.innerProperties().internet();
-    }
-
-    /**
-     * Set the internet property: Connectivity to internet is enabled or disabled.
-     * 
-     * @param internet the internet value to set.
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withInternet(InternetEnum internet) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
-        }
-        this.innerProperties().withInternet(internet);
-        return this;
-    }
-
-    /**
-     * Get the identitySources property: vCenter Single Sign On Identity Sources.
-     * 
-     * @return the identitySources value.
-     */
-    public List<IdentitySource> identitySources() {
-        return this.innerProperties() == null ? null : this.innerProperties().identitySources();
-    }
-
-    /**
-     * Set the identitySources property: vCenter Single Sign On Identity Sources.
-     * 
-     * @param identitySources the identitySources value to set.
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withIdentitySources(List<IdentitySource> identitySources) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
-        }
-        this.innerProperties().withIdentitySources(identitySources);
-        return this;
-    }
-
-    /**
-     * Get the availability property: Properties describing how the cloud is distributed across availability zones.
-     * 
-     * @return the availability value.
-     */
-    public AvailabilityProperties availability() {
-        return this.innerProperties() == null ? null : this.innerProperties().availability();
-    }
-
-    /**
-     * Set the availability property: Properties describing how the cloud is distributed across availability zones.
-     * 
-     * @param availability the availability value to set.
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withAvailability(AvailabilityProperties availability) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
-        }
-        this.innerProperties().withAvailability(availability);
-        return this;
-    }
-
-    /**
-     * Get the encryption property: Customer managed key encryption, can be enabled or disabled.
-     * 
-     * @return the encryption value.
-     */
-    public Encryption encryption() {
-        return this.innerProperties() == null ? null : this.innerProperties().encryption();
-    }
-
-    /**
-     * Set the encryption property: Customer managed key encryption, can be enabled or disabled.
-     * 
-     * @param encryption the encryption value to set.
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withEncryption(Encryption encryption) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
-        }
-        this.innerProperties().withEncryption(encryption);
-        return this;
-    }
-
-    /**
-     * Get the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
-     * must be
-     * unique and non-overlapping across VNet in your subscription, on-premise, and
-     * this privateCloud networkBlock attribute. Make sure the CIDR format conforms to
-     * (A.B.C.D/X).
-     * 
-     * @return the extendedNetworkBlocks value.
-     */
-    public List<String> extendedNetworkBlocks() {
-        return this.innerProperties() == null ? null : this.innerProperties().extendedNetworkBlocks();
-    }
-
-    /**
-     * Set the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
-     * must be
-     * unique and non-overlapping across VNet in your subscription, on-premise, and
-     * this privateCloud networkBlock attribute. Make sure the CIDR format conforms to
-     * (A.B.C.D/X).
-     * 
-     * @param extendedNetworkBlocks the extendedNetworkBlocks value to set.
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withExtendedNetworkBlocks(List<String> extendedNetworkBlocks) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
-        }
-        this.innerProperties().withExtendedNetworkBlocks(extendedNetworkBlocks);
-        return this;
-    }
-
-    /**
      * Get the provisioningState property: The provisioning state.
-     * 
+     *
      * @return the provisioningState value.
      */
     public PrivateCloudProvisioningState provisioningState() {
@@ -336,7 +121,7 @@ public final class PrivateCloudInner extends Resource {
 
     /**
      * Get the circuit property: An ExpressRoute Circuit.
-     * 
+     *
      * @return the circuit value.
      */
     public Circuit circuit() {
@@ -345,7 +130,7 @@ public final class PrivateCloudInner extends Resource {
 
     /**
      * Set the circuit property: An ExpressRoute Circuit.
-     * 
+     *
      * @param circuit the circuit value to set.
      * @return the PrivateCloudInner object itself.
      */
@@ -359,7 +144,7 @@ public final class PrivateCloudInner extends Resource {
 
     /**
      * Get the endpoints property: The endpoints.
-     * 
+     *
      * @return the endpoints value.
      */
     public Endpoints endpoints() {
@@ -367,10 +152,10 @@ public final class PrivateCloudInner extends Resource {
     }
 
     /**
-     * Get the networkBlock property: The block of addresses should be unique across VNet in your subscription as
-     * well as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where
-     * A,B,C,D are between 0 and 255, and X is between 0 and 22.
-     * 
+     * Get the networkBlock property: The block of addresses should be unique across VNet in your subscription as well
+     * as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X
+     * is between 0 and 22.
+     *
      * @return the networkBlock value.
      */
     public String networkBlock() {
@@ -378,10 +163,10 @@ public final class PrivateCloudInner extends Resource {
     }
 
     /**
-     * Set the networkBlock property: The block of addresses should be unique across VNet in your subscription as
-     * well as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where
-     * A,B,C,D are between 0 and 255, and X is between 0 and 22.
-     * 
+     * Set the networkBlock property: The block of addresses should be unique across VNet in your subscription as well
+     * as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X
+     * is between 0 and 22.
+     *
      * @param networkBlock the networkBlock value to set.
      * @return the PrivateCloudInner object itself.
      */
@@ -395,7 +180,7 @@ public final class PrivateCloudInner extends Resource {
 
     /**
      * Get the managementNetwork property: Network used to access vCenter Server and NSX-T Manager.
-     * 
+     *
      * @return the managementNetwork value.
      */
     public String managementNetwork() {
@@ -404,7 +189,7 @@ public final class PrivateCloudInner extends Resource {
 
     /**
      * Get the provisioningNetwork property: Used for virtual machine cold migration, cloning, and snapshot migration.
-     * 
+     *
      * @return the provisioningNetwork value.
      */
     public String provisioningNetwork() {
@@ -413,7 +198,7 @@ public final class PrivateCloudInner extends Resource {
 
     /**
      * Get the vmotionNetwork property: Used for live migration of virtual machines.
-     * 
+     *
      * @return the vmotionNetwork value.
      */
     public String vmotionNetwork() {
@@ -422,7 +207,7 @@ public final class PrivateCloudInner extends Resource {
 
     /**
      * Get the vcenterPassword property: Optionally, set the vCenter admin password when the private cloud is created.
-     * 
+     *
      * @return the vcenterPassword value.
      */
     public String vcenterPassword() {
@@ -431,7 +216,7 @@ public final class PrivateCloudInner extends Resource {
 
     /**
      * Set the vcenterPassword property: Optionally, set the vCenter admin password when the private cloud is created.
-     * 
+     *
      * @param vcenterPassword the vcenterPassword value to set.
      * @return the PrivateCloudInner object itself.
      */
@@ -445,7 +230,7 @@ public final class PrivateCloudInner extends Resource {
 
     /**
      * Get the nsxtPassword property: Optionally, set the NSX-T Manager password when the private cloud is created.
-     * 
+     *
      * @return the nsxtPassword value.
      */
     public String nsxtPassword() {
@@ -454,7 +239,7 @@ public final class PrivateCloudInner extends Resource {
 
     /**
      * Set the nsxtPassword property: Optionally, set the NSX-T Manager password when the private cloud is created.
-     * 
+     *
      * @param nsxtPassword the nsxtPassword value to set.
      * @return the PrivateCloudInner object itself.
      */
@@ -468,7 +253,7 @@ public final class PrivateCloudInner extends Resource {
 
     /**
      * Get the vcenterCertificateThumbprint property: Thumbprint of the vCenter Server SSL certificate.
-     * 
+     *
      * @return the vcenterCertificateThumbprint value.
      */
     public String vcenterCertificateThumbprint() {
@@ -477,7 +262,7 @@ public final class PrivateCloudInner extends Resource {
 
     /**
      * Get the nsxtCertificateThumbprint property: Thumbprint of the NSX-T Manager SSL certificate.
-     * 
+     *
      * @return the nsxtCertificateThumbprint value.
      */
     public String nsxtCertificateThumbprint() {
@@ -486,7 +271,7 @@ public final class PrivateCloudInner extends Resource {
 
     /**
      * Get the externalCloudLinks property: Array of cloud link IDs from other clouds that connect to this one.
-     * 
+     *
      * @return the externalCloudLinks value.
      */
     public List<String> externalCloudLinks() {
@@ -496,7 +281,7 @@ public final class PrivateCloudInner extends Resource {
     /**
      * Get the secondaryCircuit property: A secondary expressRoute circuit from a separate AZ. Only present in a
      * stretched private cloud.
-     * 
+     *
      * @return the secondaryCircuit value.
      */
     public Circuit secondaryCircuit() {
@@ -506,7 +291,7 @@ public final class PrivateCloudInner extends Resource {
     /**
      * Set the secondaryCircuit property: A secondary expressRoute circuit from a separate AZ. Only present in a
      * stretched private cloud.
-     * 
+     *
      * @param secondaryCircuit the secondaryCircuit value to set.
      * @return the PrivateCloudInner object itself.
      */
@@ -520,9 +305,8 @@ public final class PrivateCloudInner extends Resource {
 
     /**
      * Get the nsxPublicIpQuotaRaised property: Flag to indicate whether the private cloud has the quota for provisioned
-     * NSX
-     * Public IP count raised from 64 to 1024.
-     * 
+     * NSX Public IP count raised from 64 to 1024.
+     *
      * @return the nsxPublicIpQuotaRaised value.
      */
     public NsxPublicIpQuotaRaisedEnum nsxPublicIpQuotaRaised() {
@@ -530,65 +314,162 @@ public final class PrivateCloudInner extends Resource {
     }
 
     /**
-     * Get the virtualNetworkId property: Azure resource ID of the virtual network.
-     * 
-     * @return the virtualNetworkId value.
+     * Get the managementCluster property: The default cluster used for management.
+     *
+     * @return the managementCluster value.
      */
-    public String virtualNetworkId() {
-        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkId();
+    public ManagementCluster managementCluster() {
+        return this.innerProperties() == null ? null : this.innerProperties().managementCluster();
     }
 
     /**
-     * Set the virtualNetworkId property: Azure resource ID of the virtual network.
-     * 
-     * @param virtualNetworkId the virtualNetworkId value to set.
+     * Set the managementCluster property: The default cluster used for management.
+     *
+     * @param managementCluster the managementCluster value to set.
      * @return the PrivateCloudInner object itself.
      */
-    public PrivateCloudInner withVirtualNetworkId(String virtualNetworkId) {
+    public PrivateCloudInner withManagementCluster(ManagementCluster managementCluster) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateCloudProperties();
         }
-        this.innerProperties().withVirtualNetworkId(virtualNetworkId);
+        this.innerProperties().withManagementCluster(managementCluster);
         return this;
     }
 
     /**
-     * Get the dnsZoneType property: The type of DNS zone to use.
-     * 
-     * @return the dnsZoneType value.
+     * Get the internet property: Connectivity to internet is enabled or disabled.
+     *
+     * @return the internet value.
      */
-    public DnsZoneType dnsZoneType() {
-        return this.innerProperties() == null ? null : this.innerProperties().dnsZoneType();
+    public InternetEnum internet() {
+        return this.innerProperties() == null ? null : this.innerProperties().internet();
     }
 
     /**
-     * Set the dnsZoneType property: The type of DNS zone to use.
-     * 
-     * @param dnsZoneType the dnsZoneType value to set.
+     * Set the internet property: Connectivity to internet is enabled or disabled.
+     *
+     * @param internet the internet value to set.
      * @return the PrivateCloudInner object itself.
      */
-    public PrivateCloudInner withDnsZoneType(DnsZoneType dnsZoneType) {
+    public PrivateCloudInner withInternet(InternetEnum internet) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateCloudProperties();
         }
-        this.innerProperties().withDnsZoneType(dnsZoneType);
+        this.innerProperties().withInternet(internet);
+        return this;
+    }
+
+    /**
+     * Get the identitySources property: vCenter Single Sign On Identity Sources.
+     *
+     * @return the identitySources value.
+     */
+    public List<IdentitySource> identitySources() {
+        return this.innerProperties() == null ? null : this.innerProperties().identitySources();
+    }
+
+    /**
+     * Set the identitySources property: vCenter Single Sign On Identity Sources.
+     *
+     * @param identitySources the identitySources value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withIdentitySources(List<IdentitySource> identitySources) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withIdentitySources(identitySources);
+        return this;
+    }
+
+    /**
+     * Get the availability property: Properties describing how the cloud is distributed across availability zones.
+     *
+     * @return the availability value.
+     */
+    public AvailabilityProperties availability() {
+        return this.innerProperties() == null ? null : this.innerProperties().availability();
+    }
+
+    /**
+     * Set the availability property: Properties describing how the cloud is distributed across availability zones.
+     *
+     * @param availability the availability value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withAvailability(AvailabilityProperties availability) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withAvailability(availability);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: Customer managed key encryption, can be enabled or disabled.
+     *
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: Customer managed key encryption, can be enabled or disabled.
+     *
+     * @param encryption the encryption value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withEncryption(Encryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
+     * must be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
+     * networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
+     *
+     * @return the extendedNetworkBlocks value.
+     */
+    public List<String> extendedNetworkBlocks() {
+        return this.innerProperties() == null ? null : this.innerProperties().extendedNetworkBlocks();
+    }
+
+    /**
+     * Set the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
+     * must be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
+     * networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
+     *
+     * @param extendedNetworkBlocks the extendedNetworkBlocks value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withExtendedNetworkBlocks(List<String> extendedNetworkBlocks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withExtendedNetworkBlocks(extendedNetworkBlocks);
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
         if (sku() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property sku in model PrivateCloudInner"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property sku in model PrivateCloudInner"));
         } else {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();
@@ -596,62 +477,4 @@ public final class PrivateCloudInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PrivateCloudInner.class);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("location", location());
-        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("sku", this.sku);
-        jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeJsonField("identity", this.identity);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PrivateCloudInner from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PrivateCloudInner if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PrivateCloudInner.
-     */
-    public static PrivateCloudInner fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PrivateCloudInner deserializedPrivateCloudInner = new PrivateCloudInner();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("id".equals(fieldName)) {
-                    deserializedPrivateCloudInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedPrivateCloudInner.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedPrivateCloudInner.type = reader.getString();
-                } else if ("location".equals(fieldName)) {
-                    deserializedPrivateCloudInner.withLocation(reader.getString());
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedPrivateCloudInner.withTags(tags);
-                } else if ("sku".equals(fieldName)) {
-                    deserializedPrivateCloudInner.sku = Sku.fromJson(reader);
-                } else if ("properties".equals(fieldName)) {
-                    deserializedPrivateCloudInner.innerProperties = PrivateCloudProperties.fromJson(reader);
-                } else if ("identity".equals(fieldName)) {
-                    deserializedPrivateCloudInner.identity = PrivateCloudIdentity.fromJson(reader);
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedPrivateCloudInner.systemData = SystemData.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedPrivateCloudInner;
-        });
-    }
 }

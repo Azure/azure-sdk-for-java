@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseNationalCharacterSetInner;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseNationalCharacterSetListResult;
+import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseNationalCharacterSetProperties;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class AutonomousDatabaseNationalCharacterSetListResultTests {
@@ -15,5 +18,15 @@ public final class AutonomousDatabaseNationalCharacterSetListResultTests {
             "{\"value\":[{\"properties\":{\"characterSet\":\"yvpycanuzbpzk\"},\"id\":\"kuwbcrnwb\",\"name\":\"ehhseyvjusrts\",\"type\":\"hspkdeemao\"},{\"properties\":{\"characterSet\":\"ag\"},\"id\":\"t\",\"name\":\"elmqk\",\"type\":\"hahvljuahaq\"},{\"properties\":{\"characterSet\":\"dhmdua\"},\"id\":\"exq\",\"name\":\"vfadmws\",\"type\":\"crgvxpvgom\"},{\"properties\":{\"characterSet\":\"misgwbnb\"},\"id\":\"ldawkzbaliourqha\",\"name\":\"auhashsfwx\",\"type\":\"sowzxcugi\"}],\"nextLink\":\"ooxdjebwpuc\"}")
             .toObject(AutonomousDatabaseNationalCharacterSetListResult.class);
         Assertions.assertEquals("ooxdjebwpuc", model.nextLink());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AutonomousDatabaseNationalCharacterSetListResult model = new AutonomousDatabaseNationalCharacterSetListResult()
+            .withValue(Arrays.asList(new AutonomousDatabaseNationalCharacterSetInner()
+                .withProperties(new AutonomousDatabaseNationalCharacterSetProperties())))
+            .withNextLink("kyv");
+        model = BinaryData.fromObject(model).toObject(AutonomousDatabaseNationalCharacterSetListResult.class);
+        Assertions.assertEquals("kyv", model.nextLink());
     }
 }

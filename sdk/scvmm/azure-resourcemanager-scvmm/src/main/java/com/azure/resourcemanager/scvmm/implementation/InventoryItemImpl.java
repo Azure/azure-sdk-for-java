@@ -8,7 +8,6 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.scvmm.fluent.models.InventoryItemInner;
 import com.azure.resourcemanager.scvmm.models.InventoryItem;
-import com.azure.resourcemanager.scvmm.models.InventoryItemProperties;
 
 public final class InventoryItemImpl implements InventoryItem, InventoryItem.Definition {
     private InventoryItemInner innerObject;
@@ -32,16 +31,28 @@ public final class InventoryItemImpl implements InventoryItem, InventoryItem.Def
         return this.innerModel().type();
     }
 
-    public InventoryItemProperties properties() {
-        return this.innerModel().properties();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String kind() {
         return this.innerModel().kind();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public String managedResourceId() {
+        return this.innerModel().managedResourceId();
+    }
+
+    public String uuid() {
+        return this.innerModel().uuid();
+    }
+
+    public String inventoryItemName() {
+        return this.innerModel().inventoryItemName();
+    }
+
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
     }
 
     public InventoryItemInner innerModel() {
@@ -56,7 +67,7 @@ public final class InventoryItemImpl implements InventoryItem, InventoryItem.Def
 
     private String vmmServerName;
 
-    private String inventoryItemResourceName;
+    private String inventoryItemName;
 
     public InventoryItemImpl withExistingVmmServer(String resourceGroupName, String vmmServerName) {
         this.resourceGroupName = resourceGroupName;
@@ -65,46 +76,49 @@ public final class InventoryItemImpl implements InventoryItem, InventoryItem.Def
     }
 
     public InventoryItem create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInventoryItems()
-            .createWithResponse(resourceGroupName, vmmServerName, inventoryItemResourceName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getInventoryItems()
+                .createWithResponse(
+                    resourceGroupName, vmmServerName, inventoryItemName, this.innerModel(), Context.NONE)
+                .getValue();
         return this;
     }
 
     public InventoryItem create(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getInventoryItems()
-            .createWithResponse(resourceGroupName, vmmServerName, inventoryItemResourceName, this.innerModel(), context)
-            .getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getInventoryItems()
+                .createWithResponse(resourceGroupName, vmmServerName, inventoryItemName, this.innerModel(), context)
+                .getValue();
         return this;
     }
 
     InventoryItemImpl(String name, com.azure.resourcemanager.scvmm.ScvmmManager serviceManager) {
         this.innerObject = new InventoryItemInner();
         this.serviceManager = serviceManager;
-        this.inventoryItemResourceName = name;
+        this.inventoryItemName = name;
     }
 
     public InventoryItem refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInventoryItems()
-            .getWithResponse(resourceGroupName, vmmServerName, inventoryItemResourceName, Context.NONE)
-            .getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getInventoryItems()
+                .getWithResponse(resourceGroupName, vmmServerName, inventoryItemName, Context.NONE)
+                .getValue();
         return this;
     }
 
     public InventoryItem refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getInventoryItems()
-            .getWithResponse(resourceGroupName, vmmServerName, inventoryItemResourceName, context)
-            .getValue();
-        return this;
-    }
-
-    public InventoryItemImpl withProperties(InventoryItemProperties properties) {
-        this.innerModel().withProperties(properties);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getInventoryItems()
+                .getWithResponse(resourceGroupName, vmmServerName, inventoryItemName, context)
+                .getValue();
         return this;
     }
 

@@ -33,6 +33,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: scvmm
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-scvmm
         groupId: com.azure.resourcemanager

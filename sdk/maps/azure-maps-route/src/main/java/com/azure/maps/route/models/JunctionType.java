@@ -5,50 +5,34 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * The type of the junction where the maneuver takes place. For larger roundabouts, two separate instructions are
- * generated for entering and leaving the roundabout.
- */
+/** Defines values for JunctionType. */
 public final class JunctionType extends ExpandableStringEnum<JunctionType> {
-    /**
-     * regular.
-     */
+    /** Static value REGULAR for JunctionType. */
     public static final JunctionType REGULAR = fromString("REGULAR");
 
-    /**
-     * roundabout.
-     */
+    /** Static value ROUNDABOUT for JunctionType. */
     public static final JunctionType ROUNDABOUT = fromString("ROUNDABOUT");
 
-    /**
-     * bifurcation.
-     */
+    /** Static value BIFURCATION for JunctionType. */
     public static final JunctionType BIFURCATION = fromString("BIFURCATION");
 
     /**
-     * Creates a new instance of JunctionType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public JunctionType() {
-    }
-
-    /**
      * Creates or finds a JunctionType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding JunctionType.
      */
+    @JsonCreator
     public static JunctionType fromString(String name) {
         return fromString(name, JunctionType.class);
     }
 
     /**
      * Gets known JunctionType values.
-     * 
+     *
      * @return known JunctionType values.
      */
     public static Collection<JunctionType> values() {

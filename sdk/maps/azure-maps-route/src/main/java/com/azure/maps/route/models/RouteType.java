@@ -5,56 +5,37 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for RouteType.
- */
+/** Defines values for RouteType. */
 public final class RouteType extends ExpandableStringEnum<RouteType> {
-    /**
-     * The fastest route.
-     */
+    /** Static value fastest for RouteType. */
     public static final RouteType FASTEST = fromString("fastest");
 
-    /**
-     * The shortest route by distance.
-     */
+    /** Static value shortest for RouteType. */
     public static final RouteType SHORTEST = fromString("shortest");
 
-    /**
-     * A route balanced by economy and speed.
-     */
+    /** Static value eco for RouteType. */
     public static final RouteType ECONOMY = fromString("eco");
 
-    /**
-     * Includes interesting or challenging roads and uses as few motorways as possible. You can choose the level of
-     * turns included and also the degree of hilliness. See the hilliness and windingness parameters for how to set
-     * this. There is a limit of 900 km on routes planned with `routeType`=thrilling.
-     */
+    /** Static value thrilling for RouteType. */
     public static final RouteType THRILLING = fromString("thrilling");
 
     /**
-     * Creates a new instance of RouteType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public RouteType() {
-    }
-
-    /**
      * Creates or finds a RouteType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding RouteType.
      */
+    @JsonCreator
     public static RouteType fromString(String name) {
         return fromString(name, RouteType.class);
     }
 
     /**
      * Gets known RouteType values.
-     * 
+     *
      * @return known RouteType values.
      */
     public static Collection<RouteType> values() {

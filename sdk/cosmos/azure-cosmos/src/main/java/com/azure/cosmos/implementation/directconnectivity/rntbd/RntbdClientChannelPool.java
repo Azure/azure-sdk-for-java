@@ -1691,11 +1691,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 }
 
             } else {
-                if (future.cause() instanceof ConnectException) {
-                    logger.info("channel acquisition failed due to ", future.cause());
-                } else {
-                    logger.warn("channel acquisition failed due to ", future.cause());
-                }
+                logger.warn("channel acquisition failed due to ", future.cause());
                 this.fail(future.cause());
             }
         }

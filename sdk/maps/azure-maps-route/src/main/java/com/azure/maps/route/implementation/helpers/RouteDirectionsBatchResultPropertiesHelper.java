@@ -12,21 +12,19 @@ import com.azure.maps.route.models.RouteDirectionsBatchResult;
 public final class RouteDirectionsBatchResultPropertiesHelper {
     private static RouteDirectionsBatchResultAccessor accessor;
 
-    private RouteDirectionsBatchResultPropertiesHelper() {
-    }
+    private RouteDirectionsBatchResultPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link RouteDirectionsBatchResult} instance.
      */
     public interface RouteDirectionsBatchResultAccessor {
-        void setFromRouteDirectionsBatchResultPrivate(RouteDirectionsBatchResult result,
-            RouteDirectionsBatchResultPrivate privateResult);
+        void setFromRouteDirectionsBatchResultPrivate(RouteDirectionsBatchResult result, RouteDirectionsBatchResultPrivate privateResult);
     }
 
     /**
      * The method called from {@link RouteDirectionsBatchResult} to set it's accessor.
      *
-     * @param routeMatrixAccessor The accessor.
+     * @param accessor The accessor.
      */
     public static void setAccessor(final RouteDirectionsBatchResultAccessor routeMatrixAccessor) {
         accessor = routeMatrixAccessor;
@@ -35,11 +33,11 @@ public final class RouteDirectionsBatchResultPropertiesHelper {
     /**
      * Sets properties of an {@link RouteDirectionsBatchResult} using a private model.
      *
-     * @param result The {@link RouteDirectionsBatchResult} instance.
-     * @param privateResult The private model object with the properties.
+     * @param result
+     * @param privateResult
      */
     public static void setFromRouteDirectionsBatchResultPrivate(RouteDirectionsBatchResult result,
-        RouteDirectionsBatchResultPrivate privateResult) {
+            RouteDirectionsBatchResultPrivate privateResult) {
         accessor.setFromRouteDirectionsBatchResultPrivate(result, privateResult);
     }
 }

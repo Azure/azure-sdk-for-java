@@ -33,6 +33,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: security
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-security
         groupId: com.azure.resourcemanager

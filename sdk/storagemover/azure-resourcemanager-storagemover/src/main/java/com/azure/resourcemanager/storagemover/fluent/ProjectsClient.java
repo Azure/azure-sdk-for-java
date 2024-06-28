@@ -14,13 +14,11 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storagemover.fluent.models.ProjectInner;
 import com.azure.resourcemanager.storagemover.models.ProjectUpdateParameters;
 
-/**
- * An instance of this class provides access to all the operations defined in ProjectsClient.
- */
+/** An instance of this class provides access to all the operations defined in ProjectsClient. */
 public interface ProjectsClient {
     /**
      * Lists all Projects in a Storage Mover.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,7 +31,7 @@ public interface ProjectsClient {
 
     /**
      * Lists all Projects in a Storage Mover.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param context The context to associate with this operation.
@@ -47,7 +45,7 @@ public interface ProjectsClient {
 
     /**
      * Gets a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -58,12 +56,12 @@ public interface ProjectsClient {
      * @return a Project resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProjectInner> getWithResponse(String resourceGroupName, String storageMoverName, String projectName,
-        Context context);
+    Response<ProjectInner> getWithResponse(
+        String resourceGroupName, String storageMoverName, String projectName, Context context);
 
     /**
      * Gets a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -77,11 +75,11 @@ public interface ProjectsClient {
 
     /**
      * Creates or updates a Project resource, which is a logical grouping of related jobs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
-     * @param project The project parameter.
+     * @param project The Project resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -89,32 +87,32 @@ public interface ProjectsClient {
      * @return the Project resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProjectInner> createOrUpdateWithResponse(String resourceGroupName, String storageMoverName,
-        String projectName, ProjectInner project, Context context);
+    Response<ProjectInner> createOrUpdateWithResponse(
+        String resourceGroupName, String storageMoverName, String projectName, ProjectInner project, Context context);
 
     /**
      * Creates or updates a Project resource, which is a logical grouping of related jobs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
-     * @param project The project parameter.
+     * @param project The Project resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Project resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProjectInner createOrUpdate(String resourceGroupName, String storageMoverName, String projectName,
-        ProjectInner project);
+    ProjectInner createOrUpdate(
+        String resourceGroupName, String storageMoverName, String projectName, ProjectInner project);
 
     /**
      * Updates properties for a Project resource. Properties not specified in the request body will be unchanged.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
-     * @param project The project parameter.
+     * @param project The Project resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,28 +120,32 @@ public interface ProjectsClient {
      * @return the Project resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProjectInner> updateWithResponse(String resourceGroupName, String storageMoverName, String projectName,
-        ProjectUpdateParameters project, Context context);
+    Response<ProjectInner> updateWithResponse(
+        String resourceGroupName,
+        String storageMoverName,
+        String projectName,
+        ProjectUpdateParameters project,
+        Context context);
 
     /**
      * Updates properties for a Project resource. Properties not specified in the request body will be unchanged.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
-     * @param project The project parameter.
+     * @param project The Project resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Project resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProjectInner update(String resourceGroupName, String storageMoverName, String projectName,
-        ProjectUpdateParameters project);
+    ProjectInner update(
+        String resourceGroupName, String storageMoverName, String projectName, ProjectUpdateParameters project);
 
     /**
      * Deletes a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -153,12 +155,12 @@ public interface ProjectsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
-        String projectName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String storageMoverName, String projectName);
 
     /**
      * Deletes a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -169,12 +171,12 @@ public interface ProjectsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
-        String projectName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String storageMoverName, String projectName, Context context);
 
     /**
      * Deletes a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -187,7 +189,7 @@ public interface ProjectsClient {
 
     /**
      * Deletes a Project resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.

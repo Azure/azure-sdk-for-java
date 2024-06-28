@@ -14,4 +14,10 @@ public final class SaasSubscriptionDetailsInnerTests {
             "{\"id\":\"abikns\",\"subscriptionName\":\"gj\",\"timeCreated\":\"2021-10-23T19:23:01Z\",\"offerId\":\"dtlwwrlkd\",\"planId\":\"ncvokotllxdyhg\",\"saasSubscriptionStatus\":\"ocogj\",\"publisherId\":\"dtbnnha\",\"purchaserEmailId\":\"ocrkvcikh\",\"purchaserTenantId\":\"p\",\"termUnit\":\"qgxqquezikyw\",\"isAutoRenew\":false,\"isFreeTrial\":true}")
             .toObject(SaasSubscriptionDetailsInner.class);
     }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SaasSubscriptionDetailsInner model = new SaasSubscriptionDetailsInner();
+        model = BinaryData.fromObject(model).toObject(SaasSubscriptionDetailsInner.class);
+    }
 }

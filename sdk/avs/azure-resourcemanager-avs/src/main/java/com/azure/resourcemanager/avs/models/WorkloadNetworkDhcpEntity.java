@@ -5,62 +5,56 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Base class for WorkloadNetworkDhcpServer and WorkloadNetworkDhcpRelay to
- * inherit from.
- */
+/** Base class for WorkloadNetworkDhcpServer and WorkloadNetworkDhcpRelay to inherit from. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "dhcpType",
+    defaultImpl = WorkloadNetworkDhcpEntity.class)
+@JsonTypeName("WorkloadNetworkDhcpEntity")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "SERVER", value = WorkloadNetworkDhcpServer.class),
+    @JsonSubTypes.Type(name = "RELAY", value = WorkloadNetworkDhcpRelay.class)
+})
 @Fluent
-public class WorkloadNetworkDhcpEntity implements JsonSerializable<WorkloadNetworkDhcpEntity> {
-    /*
-     * Type of DHCP: SERVER or RELAY.
-     */
-    private DhcpTypeEnum dhcpType = DhcpTypeEnum.fromString("WorkloadNetworkDhcpEntity");
-
+public class WorkloadNetworkDhcpEntity {
     /*
      * Display name of the DHCP entity.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * NSX Segments consuming DHCP.
      */
+    @JsonProperty(value = "segments", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> segments;
 
     /*
      * The provisioning state
      */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkloadNetworkDhcpProvisioningState provisioningState;
 
     /*
      * NSX revision number.
      */
+    @JsonProperty(value = "revision")
     private Long revision;
 
-    /**
-     * Creates an instance of WorkloadNetworkDhcpEntity class.
-     */
+    /** Creates an instance of WorkloadNetworkDhcpEntity class. */
     public WorkloadNetworkDhcpEntity() {
     }
 
     /**
-     * Get the dhcpType property: Type of DHCP: SERVER or RELAY.
-     * 
-     * @return the dhcpType value.
-     */
-    public DhcpTypeEnum dhcpType() {
-        return this.dhcpType;
-    }
-
-    /**
      * Get the displayName property: Display name of the DHCP entity.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -69,7 +63,7 @@ public class WorkloadNetworkDhcpEntity implements JsonSerializable<WorkloadNetwo
 
     /**
      * Set the displayName property: Display name of the DHCP entity.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the WorkloadNetworkDhcpEntity object itself.
      */
@@ -80,7 +74,7 @@ public class WorkloadNetworkDhcpEntity implements JsonSerializable<WorkloadNetwo
 
     /**
      * Get the segments property: NSX Segments consuming DHCP.
-     * 
+     *
      * @return the segments value.
      */
     public List<String> segments() {
@@ -88,19 +82,8 @@ public class WorkloadNetworkDhcpEntity implements JsonSerializable<WorkloadNetwo
     }
 
     /**
-     * Set the segments property: NSX Segments consuming DHCP.
-     * 
-     * @param segments the segments value to set.
-     * @return the WorkloadNetworkDhcpEntity object itself.
-     */
-    WorkloadNetworkDhcpEntity withSegments(List<String> segments) {
-        this.segments = segments;
-        return this;
-    }
-
-    /**
      * Get the provisioningState property: The provisioning state.
-     * 
+     *
      * @return the provisioningState value.
      */
     public WorkloadNetworkDhcpProvisioningState provisioningState() {
@@ -108,19 +91,8 @@ public class WorkloadNetworkDhcpEntity implements JsonSerializable<WorkloadNetwo
     }
 
     /**
-     * Set the provisioningState property: The provisioning state.
-     * 
-     * @param provisioningState the provisioningState value to set.
-     * @return the WorkloadNetworkDhcpEntity object itself.
-     */
-    WorkloadNetworkDhcpEntity withProvisioningState(WorkloadNetworkDhcpProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
      * Get the revision property: NSX revision number.
-     * 
+     *
      * @return the revision value.
      */
     public Long revision() {
@@ -129,7 +101,7 @@ public class WorkloadNetworkDhcpEntity implements JsonSerializable<WorkloadNetwo
 
     /**
      * Set the revision property: NSX revision number.
-     * 
+     *
      * @param revision the revision value to set.
      * @return the WorkloadNetworkDhcpEntity object itself.
      */
@@ -140,84 +112,9 @@ public class WorkloadNetworkDhcpEntity implements JsonSerializable<WorkloadNetwo
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dhcpType", this.dhcpType == null ? null : this.dhcpType.toString());
-        jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeNumberField("revision", this.revision);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of WorkloadNetworkDhcpEntity from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of WorkloadNetworkDhcpEntity if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the WorkloadNetworkDhcpEntity.
-     */
-    public static WorkloadNetworkDhcpEntity fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                readerToUse.nextToken(); // Prepare for reading
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("dhcpType".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("RELAY".equals(discriminatorValue)) {
-                    return WorkloadNetworkDhcpRelay.fromJson(readerToUse.reset());
-                } else if ("SERVER".equals(discriminatorValue)) {
-                    return WorkloadNetworkDhcpServer.fromJson(readerToUse.reset());
-                } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
-                }
-            }
-        });
-    }
-
-    static WorkloadNetworkDhcpEntity fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            WorkloadNetworkDhcpEntity deserializedWorkloadNetworkDhcpEntity = new WorkloadNetworkDhcpEntity();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("dhcpType".equals(fieldName)) {
-                    deserializedWorkloadNetworkDhcpEntity.dhcpType = DhcpTypeEnum.fromString(reader.getString());
-                } else if ("displayName".equals(fieldName)) {
-                    deserializedWorkloadNetworkDhcpEntity.displayName = reader.getString();
-                } else if ("segments".equals(fieldName)) {
-                    List<String> segments = reader.readArray(reader1 -> reader1.getString());
-                    deserializedWorkloadNetworkDhcpEntity.segments = segments;
-                } else if ("provisioningState".equals(fieldName)) {
-                    deserializedWorkloadNetworkDhcpEntity.provisioningState
-                        = WorkloadNetworkDhcpProvisioningState.fromString(reader.getString());
-                } else if ("revision".equals(fieldName)) {
-                    deserializedWorkloadNetworkDhcpEntity.revision = reader.getNullable(JsonReader::getLong);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedWorkloadNetworkDhcpEntity;
-        });
     }
 }

@@ -12,40 +12,13 @@ import com.azure.resourcemanager.avs.fluent.models.QuotaInner;
 import com.azure.resourcemanager.avs.fluent.models.TrialInner;
 import com.azure.resourcemanager.avs.models.Sku;
 
-/**
- * An instance of this class provides access to all the operations defined in LocationsClient.
- */
+/** An instance of this class provides access to all the operations defined in LocationsClient. */
 public interface LocationsClient {
     /**
-     * Return quota for subscription by region.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription quotas along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QuotaInner> checkQuotaAvailabilityWithResponse(String location, Context context);
-
-    /**
-     * Return quota for subscription by region.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription quotas.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    QuotaInner checkQuotaAvailability(String location);
-
-    /**
      * Return trial status for subscription by region.
-     * 
-     * @param location The name of the Azure region.
-     * @param sku Optionally, check for a specific SKU.
+     *
+     * @param location Azure region.
+     * @param sku The sku to check for trial availability.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,8 +30,8 @@ public interface LocationsClient {
 
     /**
      * Return trial status for subscription by region.
-     * 
-     * @param location The name of the Azure region.
+     *
+     * @param location Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -66,4 +39,29 @@ public interface LocationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     TrialInner checkTrialAvailability(String location);
+
+    /**
+     * Return quota for subscription by region.
+     *
+     * @param location Azure region.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription quotas along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<QuotaInner> checkQuotaAvailabilityWithResponse(String location, Context context);
+
+    /**
+     * Return quota for subscription by region.
+     *
+     * @param location Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription quotas.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    QuotaInner checkQuotaAvailability(String location);
 }

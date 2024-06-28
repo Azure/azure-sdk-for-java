@@ -12,8 +12,7 @@ import com.azure.maps.route.models.RouteMatrixResult;
 public final class RouteMatrixResultPropertiesHelper {
     private static RouteMatrixResultAccessor accessor;
 
-    private RouteMatrixResultPropertiesHelper() {
-    }
+    private RouteMatrixResultPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link RouteMatrixResult} instance.
@@ -25,7 +24,7 @@ public final class RouteMatrixResultPropertiesHelper {
     /**
      * The method called from {@link RouteMatrixResult} to set it's accessor.
      *
-     * @param routeMatrixAccessor The accessor.
+     * @param accessor The accessor.
      */
     public static void setAccessor(final RouteMatrixResultAccessor routeMatrixAccessor) {
         accessor = routeMatrixAccessor;
@@ -34,11 +33,11 @@ public final class RouteMatrixResultPropertiesHelper {
     /**
      * Sets properties of an {@link RouteMatrixResult} using a private model.
      *
-     * @param result The {@link RouteMatrixResult} instance.
-     * @param privateResult The private model object with the properties.
+     * @param result
+     * @param privateResult
      */
     public static void setFromRouteMatrixResultPrivate(RouteMatrixResult result,
-        RouteMatrixResultPrivate privateResult) {
+            RouteMatrixResultPrivate privateResult) {
         accessor.setFromRouteMatrixResultPrivate(result, privateResult);
     }
 }

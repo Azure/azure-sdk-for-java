@@ -8,76 +8,78 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/**
- * Resource collection API of PlacementPolicies.
- */
+/** Resource collection API of PlacementPolicies. */
 public interface PlacementPolicies {
     /**
-     * List PlacementPolicy resources by Cluster.
-     * 
+     * List placement policies in a private cloud cluster.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
+     * @param clusterName Name of the cluster in the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PlacementPolicy list operation as paginated response with {@link PagedIterable}.
+     * @return represents list of placement policies as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PlacementPolicy> list(String resourceGroupName, String privateCloudName, String clusterName);
 
     /**
-     * List PlacementPolicy resources by Cluster.
-     * 
+     * List placement policies in a private cloud cluster.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
+     * @param clusterName Name of the cluster in the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PlacementPolicy list operation as paginated response with {@link PagedIterable}.
+     * @return represents list of placement policies as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PlacementPolicy> list(String resourceGroupName, String privateCloudName, String clusterName,
+    PagedIterable<PlacementPolicy> list(
+        String resourceGroupName, String privateCloudName, String clusterName, Context context);
+
+    /**
+     * Get a placement policy by name in a private cloud cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster in the private cloud.
+     * @param placementPolicyName Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a placement policy by name in a private cloud cluster along with {@link Response}.
+     */
+    Response<PlacementPolicy> getWithResponse(
+        String resourceGroupName,
+        String privateCloudName,
+        String clusterName,
+        String placementPolicyName,
         Context context);
 
     /**
-     * Get a PlacementPolicy.
-     * 
+     * Get a placement policy by name in a private cloud cluster.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param placementPolicyName Name of the placement policy.
-     * @param context The context to associate with this operation.
+     * @param clusterName Name of the cluster in the private cloud.
+     * @param placementPolicyName Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PlacementPolicy along with {@link Response}.
+     * @return a placement policy by name in a private cloud cluster.
      */
-    Response<PlacementPolicy> getWithResponse(String resourceGroupName, String privateCloudName, String clusterName,
-        String placementPolicyName, Context context);
+    PlacementPolicy get(
+        String resourceGroupName, String privateCloudName, String clusterName, String placementPolicyName);
 
     /**
-     * Get a PlacementPolicy.
-     * 
+     * Delete a placement policy in a private cloud cluster.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param placementPolicyName Name of the placement policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PlacementPolicy.
-     */
-    PlacementPolicy get(String resourceGroupName, String privateCloudName, String clusterName,
-        String placementPolicyName);
-
-    /**
-     * Delete a PlacementPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param placementPolicyName Name of the placement policy.
+     * @param clusterName Name of the cluster in the private cloud.
+     * @param placementPolicyName Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -85,46 +87,50 @@ public interface PlacementPolicies {
     void delete(String resourceGroupName, String privateCloudName, String clusterName, String placementPolicyName);
 
     /**
-     * Delete a PlacementPolicy.
-     * 
+     * Delete a placement policy in a private cloud cluster.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param placementPolicyName Name of the placement policy.
+     * @param clusterName Name of the cluster in the private cloud.
+     * @param placementPolicyName Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String privateCloudName, String clusterName, String placementPolicyName,
+    void delete(
+        String resourceGroupName,
+        String privateCloudName,
+        String clusterName,
+        String placementPolicyName,
         Context context);
 
     /**
-     * Get a PlacementPolicy.
-     * 
+     * Get a placement policy by name in a private cloud cluster.
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PlacementPolicy along with {@link Response}.
+     * @return a placement policy by name in a private cloud cluster along with {@link Response}.
      */
     PlacementPolicy getById(String id);
 
     /**
-     * Get a PlacementPolicy.
-     * 
+     * Get a placement policy by name in a private cloud cluster.
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PlacementPolicy along with {@link Response}.
+     * @return a placement policy by name in a private cloud cluster along with {@link Response}.
      */
     Response<PlacementPolicy> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a PlacementPolicy.
-     * 
+     * Delete a placement policy in a private cloud cluster.
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,8 +139,8 @@ public interface PlacementPolicies {
     void deleteById(String id);
 
     /**
-     * Delete a PlacementPolicy.
-     * 
+     * Delete a placement policy in a private cloud cluster.
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +151,7 @@ public interface PlacementPolicies {
 
     /**
      * Begins definition for a new PlacementPolicy resource.
-     * 
+     *
      * @param name resource name.
      * @return the first stage of the new PlacementPolicy definition.
      */

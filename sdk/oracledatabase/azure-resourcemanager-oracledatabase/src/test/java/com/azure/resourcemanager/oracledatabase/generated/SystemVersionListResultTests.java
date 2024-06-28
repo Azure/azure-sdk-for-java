@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.oracledatabase.fluent.models.SystemVersionInner;
 import com.azure.resourcemanager.oracledatabase.models.SystemVersionListResult;
+import com.azure.resourcemanager.oracledatabase.models.SystemVersionProperties;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class SystemVersionListResultTests {
@@ -15,5 +18,18 @@ public final class SystemVersionListResultTests {
             "{\"value\":[{\"properties\":{\"systemVersion\":\"smond\"},\"id\":\"quxvypomgkop\",\"name\":\"whojvp\",\"type\":\"jqg\"}],\"nextLink\":\"smocmbq\"}")
             .toObject(SystemVersionListResult.class);
         Assertions.assertEquals("smocmbq", model.nextLink());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SystemVersionListResult model
+            = new SystemVersionListResult()
+                .withValue(Arrays.asList(new SystemVersionInner().withProperties(new SystemVersionProperties()),
+                    new SystemVersionInner().withProperties(new SystemVersionProperties()),
+                    new SystemVersionInner().withProperties(new SystemVersionProperties()),
+                    new SystemVersionInner().withProperties(new SystemVersionProperties())))
+                .withNextLink("jutiiswacff");
+        model = BinaryData.fromObject(model).toObject(SystemVersionListResult.class);
+        Assertions.assertEquals("jutiiswacff", model.nextLink());
     }
 }

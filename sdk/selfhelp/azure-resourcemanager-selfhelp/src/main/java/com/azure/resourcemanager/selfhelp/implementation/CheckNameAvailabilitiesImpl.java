@@ -27,10 +27,10 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameAvailabilityResponse> checkAvailabilityWithResponse(String scope,
+    public Response<CheckNameAvailabilityResponse> postWithResponse(String scope,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
         Response<CheckNameAvailabilityResponseInner> inner
-            = this.serviceClient().checkAvailabilityWithResponse(scope, checkNameAvailabilityRequest, context);
+            = this.serviceClient().postWithResponse(scope, checkNameAvailabilityRequest, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
@@ -39,8 +39,8 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
         }
     }
 
-    public CheckNameAvailabilityResponse checkAvailability(String scope) {
-        CheckNameAvailabilityResponseInner inner = this.serviceClient().checkAvailability(scope);
+    public CheckNameAvailabilityResponse post(String scope) {
+        CheckNameAvailabilityResponseInner inner = this.serviceClient().post(scope);
         if (inner != null) {
             return new CheckNameAvailabilityResponseImpl(inner, this.manager());
         } else {

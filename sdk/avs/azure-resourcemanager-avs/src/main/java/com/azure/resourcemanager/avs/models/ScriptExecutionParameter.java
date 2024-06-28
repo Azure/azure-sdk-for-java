@@ -6,45 +6,38 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * The arguments passed in to the execution.
- */
+/** The arguments passed in to the execution. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = ScriptExecutionParameter.class)
+@JsonTypeName("ScriptExecutionParameter")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "SecureValue", value = ScriptSecureStringExecutionParameter.class),
+    @JsonSubTypes.Type(name = "Value", value = ScriptStringExecutionParameter.class),
+    @JsonSubTypes.Type(name = "Credential", value = PSCredentialExecutionParameter.class)
+})
 @Fluent
-public class ScriptExecutionParameter implements JsonSerializable<ScriptExecutionParameter> {
-    /*
-     * script execution parameter type
-     */
-    private ScriptExecutionParameterType type = ScriptExecutionParameterType.fromString("ScriptExecutionParameter");
-
+public class ScriptExecutionParameter {
     /*
      * The parameter name
      */
+    @JsonProperty(value = "name", required = true)
     private String name;
 
-    /**
-     * Creates an instance of ScriptExecutionParameter class.
-     */
+    /** Creates an instance of ScriptExecutionParameter class. */
     public ScriptExecutionParameter() {
     }
 
     /**
-     * Get the type property: script execution parameter type.
-     * 
-     * @return the type value.
-     */
-    public ScriptExecutionParameterType type() {
-        return this.type;
-    }
-
-    /**
      * Get the name property: The parameter name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -53,7 +46,7 @@ public class ScriptExecutionParameter implements JsonSerializable<ScriptExecutio
 
     /**
      * Set the name property: The parameter name.
-     * 
+     *
      * @param name the name value to set.
      * @return the ScriptExecutionParameter object itself.
      */
@@ -64,85 +57,16 @@ public class ScriptExecutionParameter implements JsonSerializable<ScriptExecutio
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property name in model ScriptExecutionParameter"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model ScriptExecutionParameter"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScriptExecutionParameter.class);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ScriptExecutionParameter from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ScriptExecutionParameter if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ScriptExecutionParameter.
-     */
-    public static ScriptExecutionParameter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                readerToUse.nextToken(); // Prepare for reading
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("type".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("Credential".equals(discriminatorValue)) {
-                    return PSCredentialExecutionParameter.fromJson(readerToUse.reset());
-                } else if ("SecureValue".equals(discriminatorValue)) {
-                    return ScriptSecureStringExecutionParameter.fromJson(readerToUse.reset());
-                } else if ("Value".equals(discriminatorValue)) {
-                    return ScriptStringExecutionParameter.fromJson(readerToUse.reset());
-                } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
-                }
-            }
-        });
-    }
-
-    static ScriptExecutionParameter fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ScriptExecutionParameter deserializedScriptExecutionParameter = new ScriptExecutionParameter();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("name".equals(fieldName)) {
-                    deserializedScriptExecutionParameter.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedScriptExecutionParameter.type
-                        = ScriptExecutionParameterType.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedScriptExecutionParameter;
-        });
-    }
 }

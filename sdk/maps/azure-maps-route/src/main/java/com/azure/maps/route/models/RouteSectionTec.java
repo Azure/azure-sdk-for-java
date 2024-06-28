@@ -5,11 +5,7 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
@@ -17,28 +13,27 @@ import java.util.List;
  * Can contain effectCode and causes elements.
  */
 @Fluent
-public final class RouteSectionTec implements JsonSerializable<RouteSectionTec> {
+public final class RouteSectionTec {
     /*
-     * The effect on the traffic flow. Contains a value in the tec001:EffectCode table, as defined in the [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard. Can be used to color-code traffic events according to severity.
+     * The effect on the traffic flow. Contains a value in the
+     * tec001:EffectCode table, as defined in the
+     * [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard. Can be
+     * used to color-code traffic events according to severity.
      */
+    @JsonProperty(value = "effectCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer effectCode;
 
     /*
      * Causes array
      */
+    @JsonProperty(value = "causes")
     private List<RouteSectionTecCause> causes;
-
-    /**
-     * Creates an instance of RouteSectionTec class.
-     */
-    public RouteSectionTec() {
-    }
 
     /**
      * Get the effectCode property: The effect on the traffic flow. Contains a value in the tec001:EffectCode table, as
      * defined in the [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard. Can be used to color-code traffic
      * events according to severity.
-     * 
+     *
      * @return the effectCode value.
      */
     public Integer getEffectCode() {
@@ -47,7 +42,7 @@ public final class RouteSectionTec implements JsonSerializable<RouteSectionTec> 
 
     /**
      * Get the causes property: Causes array.
-     * 
+     *
      * @return the causes value.
      */
     public List<RouteSectionTecCause> getCauses() {
@@ -56,52 +51,12 @@ public final class RouteSectionTec implements JsonSerializable<RouteSectionTec> 
 
     /**
      * Set the causes property: Causes array.
-     * 
+     *
      * @param causes the causes value to set.
      * @return the RouteSectionTec object itself.
      */
     public RouteSectionTec setCauses(List<RouteSectionTecCause> causes) {
         this.causes = causes;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("causes", this.causes, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RouteSectionTec from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RouteSectionTec if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the RouteSectionTec.
-     */
-    public static RouteSectionTec fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RouteSectionTec deserializedRouteSectionTec = new RouteSectionTec();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("effectCode".equals(fieldName)) {
-                    deserializedRouteSectionTec.effectCode = reader.getNullable(JsonReader::getInt);
-                } else if ("causes".equals(fieldName)) {
-                    List<RouteSectionTecCause> causes
-                        = reader.readArray(reader1 -> RouteSectionTecCause.fromJson(reader1));
-                    deserializedRouteSectionTec.causes = causes;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedRouteSectionTec;
-        });
     }
 }

@@ -36,6 +36,7 @@ extends:
   parameters:
     ServiceDirectory: metricsadvisor
     JavadocSafeJavaBuildVersion: '1.21'
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-ai-metricsadvisor
         groupId: com.azure

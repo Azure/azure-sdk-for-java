@@ -5,199 +5,124 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * A code identifying the maneuver.
- */
+/** Defines values for GuidanceManeuver. */
 public final class GuidanceManeuver extends ExpandableStringEnum<GuidanceManeuver> {
-    /**
-     * You have arrived.
-     */
+    /** Static value ARRIVE for GuidanceManeuver. */
     public static final GuidanceManeuver ARRIVE = fromString("ARRIVE");
 
-    /**
-     * You have arrived. Your destination is on the left.
-     */
+    /** Static value ARRIVE_LEFT for GuidanceManeuver. */
     public static final GuidanceManeuver ARRIVE_LEFT = fromString("ARRIVE_LEFT");
 
-    /**
-     * You have arrived. Your destination is on the right.
-     */
+    /** Static value ARRIVE_RIGHT for GuidanceManeuver. */
     public static final GuidanceManeuver ARRIVE_RIGHT = fromString("ARRIVE_RIGHT");
 
-    /**
-     * Leave.
-     */
+    /** Static value DEPART for GuidanceManeuver. */
     public static final GuidanceManeuver DEPART = fromString("DEPART");
 
-    /**
-     * Keep straight on.
-     */
+    /** Static value STRAIGHT for GuidanceManeuver. */
     public static final GuidanceManeuver STRAIGHT = fromString("STRAIGHT");
 
-    /**
-     * Keep right.
-     */
+    /** Static value KEEP_RIGHT for GuidanceManeuver. */
     public static final GuidanceManeuver KEEP_RIGHT = fromString("KEEP_RIGHT");
 
-    /**
-     * Bear right.
-     */
+    /** Static value BEAR_RIGHT for GuidanceManeuver. */
     public static final GuidanceManeuver BEAR_RIGHT = fromString("BEAR_RIGHT");
 
-    /**
-     * Turn right.
-     */
+    /** Static value TURN_RIGHT for GuidanceManeuver. */
     public static final GuidanceManeuver TURN_RIGHT = fromString("TURN_RIGHT");
 
-    /**
-     * Turn sharp right.
-     */
+    /** Static value SHARP_RIGHT for GuidanceManeuver. */
     public static final GuidanceManeuver SHARP_RIGHT = fromString("SHARP_RIGHT");
 
-    /**
-     * Keep left.
-     */
+    /** Static value KEEP_LEFT for GuidanceManeuver. */
     public static final GuidanceManeuver KEEP_LEFT = fromString("KEEP_LEFT");
 
-    /**
-     * Bear left.
-     */
+    /** Static value BEAR_LEFT for GuidanceManeuver. */
     public static final GuidanceManeuver BEAR_LEFT = fromString("BEAR_LEFT");
 
-    /**
-     * Turn left.
-     */
+    /** Static value TURN_LEFT for GuidanceManeuver. */
     public static final GuidanceManeuver TURN_LEFT = fromString("TURN_LEFT");
 
-    /**
-     * Turn sharp left.
-     */
+    /** Static value SHARP_LEFT for GuidanceManeuver. */
     public static final GuidanceManeuver SHARP_LEFT = fromString("SHARP_LEFT");
 
-    /**
-     * Make a U-turn.
-     */
+    /** Static value MAKE_UTURN for GuidanceManeuver. */
     public static final GuidanceManeuver MAKE_UTURN = fromString("MAKE_UTURN");
 
-    /**
-     * Take the motorway.
-     */
+    /** Static value ENTER_MOTORWAY for GuidanceManeuver. */
     public static final GuidanceManeuver ENTER_MOTORWAY = fromString("ENTER_MOTORWAY");
 
-    /**
-     * Take the freeway.
-     */
+    /** Static value ENTER_FREEWAY for GuidanceManeuver. */
     public static final GuidanceManeuver ENTER_FREEWAY = fromString("ENTER_FREEWAY");
 
-    /**
-     * Take the highway.
-     */
+    /** Static value ENTER_HIGHWAY for GuidanceManeuver. */
     public static final GuidanceManeuver ENTER_HIGHWAY = fromString("ENTER_HIGHWAY");
 
-    /**
-     * Take the exit.
-     */
+    /** Static value TAKE_EXIT for GuidanceManeuver. */
     public static final GuidanceManeuver TAKE_EXIT = fromString("TAKE_EXIT");
 
-    /**
-     * Take the left exit.
-     */
+    /** Static value MOTORWAY_EXIT_LEFT for GuidanceManeuver. */
     public static final GuidanceManeuver MOTORWAY_EXIT_LEFT = fromString("MOTORWAY_EXIT_LEFT");
 
-    /**
-     * Take the right exit.
-     */
+    /** Static value MOTORWAY_EXIT_RIGHT for GuidanceManeuver. */
     public static final GuidanceManeuver MOTORWAY_EXIT_RIGHT = fromString("MOTORWAY_EXIT_RIGHT");
 
-    /**
-     * Take the ferry.
-     */
+    /** Static value TAKE_FERRY for GuidanceManeuver. */
     public static final GuidanceManeuver TAKE_FERRY = fromString("TAKE_FERRY");
 
-    /**
-     * Cross the roundabout.
-     */
+    /** Static value ROUNDABOUT_CROSS for GuidanceManeuver. */
     public static final GuidanceManeuver ROUNDABOUT_CROSS = fromString("ROUNDABOUT_CROSS");
 
-    /**
-     * At the roundabout take the exit on the right.
-     */
+    /** Static value ROUNDABOUT_RIGHT for GuidanceManeuver. */
     public static final GuidanceManeuver ROUNDABOUT_RIGHT = fromString("ROUNDABOUT_RIGHT");
 
-    /**
-     * At the roundabout take the exit on the left.
-     */
+    /** Static value ROUNDABOUT_LEFT for GuidanceManeuver. */
     public static final GuidanceManeuver ROUNDABOUT_LEFT = fromString("ROUNDABOUT_LEFT");
 
-    /**
-     * Go around the roundabout.
-     */
+    /** Static value ROUNDABOUT_BACK for GuidanceManeuver. */
     public static final GuidanceManeuver ROUNDABOUT_BACK = fromString("ROUNDABOUT_BACK");
 
-    /**
-     * Try to make a U-turn.
-     */
+    /** Static value TRY_MAKE_UTURN for GuidanceManeuver. */
     public static final GuidanceManeuver TRY_MAKE_UTURN = fromString("TRY_MAKE_UTURN");
 
-    /**
-     * Follow.
-     */
+    /** Static value FOLLOW for GuidanceManeuver. */
     public static final GuidanceManeuver FOLLOW = fromString("FOLLOW");
 
-    /**
-     * Switch to the parallel road.
-     */
+    /** Static value SWITCH_PARALLEL_ROAD for GuidanceManeuver. */
     public static final GuidanceManeuver SWITCH_PARALLEL_ROAD = fromString("SWITCH_PARALLEL_ROAD");
 
-    /**
-     * Switch to the main road.
-     */
+    /** Static value SWITCH_MAIN_ROAD for GuidanceManeuver. */
     public static final GuidanceManeuver SWITCH_MAIN_ROAD = fromString("SWITCH_MAIN_ROAD");
 
-    /**
-     * Take the ramp.
-     */
+    /** Static value ENTRANCE_RAMP for GuidanceManeuver. */
     public static final GuidanceManeuver ENTRANCE_RAMP = fromString("ENTRANCE_RAMP");
 
-    /**
-     * You have reached the waypoint. It is on the left.
-     */
+    /** Static value WAYPOINT_LEFT for GuidanceManeuver. */
     public static final GuidanceManeuver WAYPOINT_LEFT = fromString("WAYPOINT_LEFT");
 
-    /**
-     * You have reached the waypoint. It is on the right.
-     */
+    /** Static value WAYPOINT_RIGHT for GuidanceManeuver. */
     public static final GuidanceManeuver WAYPOINT_RIGHT = fromString("WAYPOINT_RIGHT");
 
-    /**
-     * You have reached the waypoint.
-     */
+    /** Static value WAYPOINT_REACHED for GuidanceManeuver. */
     public static final GuidanceManeuver WAYPOINT_REACHED = fromString("WAYPOINT_REACHED");
 
     /**
-     * Creates a new instance of GuidanceManeuver value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public GuidanceManeuver() {
-    }
-
-    /**
      * Creates or finds a GuidanceManeuver from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding GuidanceManeuver.
      */
+    @JsonCreator
     public static GuidanceManeuver fromString(String name) {
         return fromString(name, GuidanceManeuver.class);
     }
 
     /**
      * Gets known GuidanceManeuver values.
-     * 
+     *
      * @return known GuidanceManeuver values.
      */
     public static Collection<GuidanceManeuver> values() {

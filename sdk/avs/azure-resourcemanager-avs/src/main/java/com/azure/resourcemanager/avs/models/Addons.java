@@ -8,69 +8,67 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/**
- * Resource collection API of Addons.
- */
+/** Resource collection API of Addons. */
 public interface Addons {
     /**
-     * List Addon resources by PrivateCloud.
-     * 
+     * List addons in a private cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Addon list operation as paginated response with {@link PagedIterable}.
+     * @return a paged list of addons as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Addon> list(String resourceGroupName, String privateCloudName);
 
     /**
-     * List Addon resources by PrivateCloud.
-     * 
+     * List addons in a private cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Addon list operation as paginated response with {@link PagedIterable}.
+     * @return a paged list of addons as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Addon> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
-     * Get a Addon.
-     * 
+     * Get an addon by name in a private cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon.
+     * @param addonName Name of the addon for the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Addon along with {@link Response}.
+     * @return an addon by name in a private cloud along with {@link Response}.
      */
-    Response<Addon> getWithResponse(String resourceGroupName, String privateCloudName, String addonName,
-        Context context);
+    Response<Addon> getWithResponse(
+        String resourceGroupName, String privateCloudName, String addonName, Context context);
 
     /**
-     * Get a Addon.
-     * 
+     * Get an addon by name in a private cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon.
+     * @param addonName Name of the addon for the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Addon.
+     * @return an addon by name in a private cloud.
      */
     Addon get(String resourceGroupName, String privateCloudName, String addonName);
 
     /**
-     * Delete a Addon.
-     * 
+     * Delete a addon in a private cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon.
+     * @param addonName Name of the addon for the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -78,11 +76,11 @@ public interface Addons {
     void delete(String resourceGroupName, String privateCloudName, String addonName);
 
     /**
-     * Delete a Addon.
-     * 
+     * Delete a addon in a private cloud.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon.
+     * @param addonName Name of the addon for the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -91,31 +89,31 @@ public interface Addons {
     void delete(String resourceGroupName, String privateCloudName, String addonName, Context context);
 
     /**
-     * Get a Addon.
-     * 
+     * Get an addon by name in a private cloud.
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Addon along with {@link Response}.
+     * @return an addon by name in a private cloud along with {@link Response}.
      */
     Addon getById(String id);
 
     /**
-     * Get a Addon.
-     * 
+     * Get an addon by name in a private cloud.
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Addon along with {@link Response}.
+     * @return an addon by name in a private cloud along with {@link Response}.
      */
     Response<Addon> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a Addon.
-     * 
+     * Delete a addon in a private cloud.
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,8 +122,8 @@ public interface Addons {
     void deleteById(String id);
 
     /**
-     * Delete a Addon.
-     * 
+     * Delete a addon in a private cloud.
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,7 +134,7 @@ public interface Addons {
 
     /**
      * Begins definition for a new Addon resource.
-     * 
+     *
      * @param name resource name.
      * @return the first stage of the new Addon definition.
      */

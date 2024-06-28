@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.avs.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.GlobalReachConnectionInner;
 import com.azure.resourcemanager.avs.models.GlobalReachConnection;
@@ -27,10 +26,6 @@ public final class GlobalReachConnectionImpl
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public GlobalReachConnectionProvisioningState provisioningState() {
@@ -82,17 +77,22 @@ public final class GlobalReachConnectionImpl
     }
 
     public GlobalReachConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalReachConnections()
-            .createOrUpdate(resourceGroupName, privateCloudName, globalReachConnectionName, this.innerModel(),
-                Context.NONE);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getGlobalReachConnections()
+                .createOrUpdate(
+                    resourceGroupName, privateCloudName, globalReachConnectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public GlobalReachConnection create(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalReachConnections()
-            .createOrUpdate(resourceGroupName, privateCloudName, globalReachConnectionName, this.innerModel(), context);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getGlobalReachConnections()
+                .createOrUpdate(
+                    resourceGroupName, privateCloudName, globalReachConnectionName, this.innerModel(), context);
         return this;
     }
 
@@ -107,43 +107,51 @@ public final class GlobalReachConnectionImpl
     }
 
     public GlobalReachConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalReachConnections()
-            .createOrUpdate(resourceGroupName, privateCloudName, globalReachConnectionName, this.innerModel(),
-                Context.NONE);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getGlobalReachConnections()
+                .createOrUpdate(
+                    resourceGroupName, privateCloudName, globalReachConnectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public GlobalReachConnection apply(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalReachConnections()
-            .createOrUpdate(resourceGroupName, privateCloudName, globalReachConnectionName, this.innerModel(), context);
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getGlobalReachConnections()
+                .createOrUpdate(
+                    resourceGroupName, privateCloudName, globalReachConnectionName, this.innerModel(), context);
         return this;
     }
 
-    GlobalReachConnectionImpl(GlobalReachConnectionInner innerObject,
-        com.azure.resourcemanager.avs.AvsManager serviceManager) {
+    GlobalReachConnectionImpl(
+        GlobalReachConnectionInner innerObject, com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.globalReachConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "globalReachConnections");
+        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.privateCloudName = Utils.getValueFromIdByName(innerObject.id(), "privateClouds");
+        this.globalReachConnectionName = Utils.getValueFromIdByName(innerObject.id(), "globalReachConnections");
     }
 
     public GlobalReachConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalReachConnections()
-            .getWithResponse(resourceGroupName, privateCloudName, globalReachConnectionName, Context.NONE)
-            .getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getGlobalReachConnections()
+                .getWithResponse(resourceGroupName, privateCloudName, globalReachConnectionName, Context.NONE)
+                .getValue();
         return this;
     }
 
     public GlobalReachConnection refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalReachConnections()
-            .getWithResponse(resourceGroupName, privateCloudName, globalReachConnectionName, context)
-            .getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getGlobalReachConnections()
+                .getWithResponse(resourceGroupName, privateCloudName, globalReachConnectionName, context)
+                .getValue();
         return this;
     }
 

@@ -13,33 +13,29 @@ public final class ImageTemplatePlatformImageSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageTemplatePlatformImageSource model = BinaryData.fromString(
-            "{\"type\":\"PlatformImage\",\"publisher\":\"xdn\",\"offer\":\"vo\",\"sku\":\"ujjugwdkcglh\",\"version\":\"azjdyggd\",\"exactVersion\":\"ixhbkuofqweykhm\",\"planInfo\":{\"planName\":\"evfyexfwhybcib\",\"planProduct\":\"yvdcsitynnaa\",\"planPublisher\":\"dectehfiqsc\"}}")
+            "{\"type\":\"PlatformImage\",\"publisher\":\"cynpwlbjnp\",\"offer\":\"cftadeh\",\"sku\":\"ltyfsop\",\"version\":\"suesnzw\",\"exactVersion\":\"jbavorxzdm\",\"planInfo\":{\"planName\":\"ctbqvudwx\",\"planProduct\":\"ndnvo\",\"planPublisher\":\"gujjugwdkcglh\"}}")
             .toObject(ImageTemplatePlatformImageSource.class);
-        Assertions.assertEquals("xdn", model.publisher());
-        Assertions.assertEquals("vo", model.offer());
-        Assertions.assertEquals("ujjugwdkcglh", model.sku());
-        Assertions.assertEquals("azjdyggd", model.version());
-        Assertions.assertEquals("evfyexfwhybcib", model.planInfo().planName());
-        Assertions.assertEquals("yvdcsitynnaa", model.planInfo().planProduct());
-        Assertions.assertEquals("dectehfiqsc", model.planInfo().planPublisher());
+        Assertions.assertEquals("cynpwlbjnp", model.publisher());
+        Assertions.assertEquals("cftadeh", model.offer());
+        Assertions.assertEquals("ltyfsop", model.sku());
+        Assertions.assertEquals("suesnzw", model.version());
+        Assertions.assertEquals("ctbqvudwx", model.planInfo().planName());
+        Assertions.assertEquals("ndnvo", model.planInfo().planProduct());
+        Assertions.assertEquals("gujjugwdkcglh", model.planInfo().planPublisher());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplatePlatformImageSource model = new ImageTemplatePlatformImageSource().withPublisher("xdn")
-            .withOffer("vo")
-            .withSku("ujjugwdkcglh")
-            .withVersion("azjdyggd")
-            .withPlanInfo(new PlatformImagePurchasePlan().withPlanName("evfyexfwhybcib")
-                .withPlanProduct("yvdcsitynnaa")
-                .withPlanPublisher("dectehfiqsc"));
+        ImageTemplatePlatformImageSource model = new ImageTemplatePlatformImageSource().withPublisher("cynpwlbjnp")
+            .withOffer("cftadeh").withSku("ltyfsop").withVersion("suesnzw").withPlanInfo(new PlatformImagePurchasePlan()
+                .withPlanName("ctbqvudwx").withPlanProduct("ndnvo").withPlanPublisher("gujjugwdkcglh"));
         model = BinaryData.fromObject(model).toObject(ImageTemplatePlatformImageSource.class);
-        Assertions.assertEquals("xdn", model.publisher());
-        Assertions.assertEquals("vo", model.offer());
-        Assertions.assertEquals("ujjugwdkcglh", model.sku());
-        Assertions.assertEquals("azjdyggd", model.version());
-        Assertions.assertEquals("evfyexfwhybcib", model.planInfo().planName());
-        Assertions.assertEquals("yvdcsitynnaa", model.planInfo().planProduct());
-        Assertions.assertEquals("dectehfiqsc", model.planInfo().planPublisher());
+        Assertions.assertEquals("cynpwlbjnp", model.publisher());
+        Assertions.assertEquals("cftadeh", model.offer());
+        Assertions.assertEquals("ltyfsop", model.sku());
+        Assertions.assertEquals("suesnzw", model.version());
+        Assertions.assertEquals("ctbqvudwx", model.planInfo().planName());
+        Assertions.assertEquals("ndnvo", model.planInfo().planProduct());
+        Assertions.assertEquals("gujjugwdkcglh", model.planInfo().planPublisher());
     }
 }

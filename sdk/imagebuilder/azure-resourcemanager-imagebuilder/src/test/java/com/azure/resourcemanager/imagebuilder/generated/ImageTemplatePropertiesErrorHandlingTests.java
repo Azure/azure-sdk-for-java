@@ -21,9 +21,8 @@ public final class ImageTemplatePropertiesErrorHandlingTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplatePropertiesErrorHandling model
-            = new ImageTemplatePropertiesErrorHandling().withOnCustomizerError(OnBuildError.ABORT)
-                .withOnValidationError(OnBuildError.ABORT);
+        ImageTemplatePropertiesErrorHandling model = new ImageTemplatePropertiesErrorHandling()
+            .withOnCustomizerError(OnBuildError.ABORT).withOnValidationError(OnBuildError.ABORT);
         model = BinaryData.fromObject(model).toObject(ImageTemplatePropertiesErrorHandling.class);
         Assertions.assertEquals(OnBuildError.ABORT, model.onCustomizerError());
         Assertions.assertEquals(OnBuildError.ABORT, model.onValidationError());

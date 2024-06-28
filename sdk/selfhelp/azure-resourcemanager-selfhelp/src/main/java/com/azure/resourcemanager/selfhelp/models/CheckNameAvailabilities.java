@@ -23,7 +23,7 @@ public interface CheckNameAvailabilities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for whether the requested resource name is available or not along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResponse> checkAvailabilityWithResponse(String scope,
+    Response<CheckNameAvailabilityResponse> postWithResponse(String scope,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
 
     /**
@@ -36,5 +36,5 @@ public interface CheckNameAvailabilities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for whether the requested resource name is available or not.
      */
-    CheckNameAvailabilityResponse checkAvailability(String scope);
+    CheckNameAvailabilityResponse post(String scope);
 }

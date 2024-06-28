@@ -31,6 +31,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: datadog
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-datadog
         groupId: com.azure.resourcemanager

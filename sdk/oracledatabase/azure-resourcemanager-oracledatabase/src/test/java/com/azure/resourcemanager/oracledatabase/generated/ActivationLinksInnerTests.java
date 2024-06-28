@@ -14,4 +14,10 @@ public final class ActivationLinksInnerTests {
             "{\"newCloudAccountActivationLink\":\"ynkedyatrwyhqmib\",\"existingCloudAccountActivationLink\":\"hwit\"}")
             .toObject(ActivationLinksInner.class);
     }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ActivationLinksInner model = new ActivationLinksInner();
+        model = BinaryData.fromObject(model).toObject(ActivationLinksInner.class);
+    }
 }

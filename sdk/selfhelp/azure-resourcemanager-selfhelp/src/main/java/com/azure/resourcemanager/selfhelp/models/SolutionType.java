@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -46,6 +47,7 @@ public final class SolutionType extends ExpandableStringEnum<SolutionType> {
      * @param name a name to look for.
      * @return the corresponding SolutionType.
      */
+    @JsonCreator
     public static SolutionType fromString(String name) {
         return fromString(name, SolutionType.class);
     }

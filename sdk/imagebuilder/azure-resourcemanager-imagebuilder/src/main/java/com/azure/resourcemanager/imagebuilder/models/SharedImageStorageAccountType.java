@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -41,6 +42,7 @@ public final class SharedImageStorageAccountType extends ExpandableStringEnum<Sh
      * @param name a name to look for.
      * @return the corresponding SharedImageStorageAccountType.
      */
+    @JsonCreator
     public static SharedImageStorageAccountType fromString(String name) {
         return fromString(name, SharedImageStorageAccountType.class);
     }

@@ -5,25 +5,22 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * NSX public IP quota raised.
+ * Flag to indicate whether the private cloud has the quota for provisioned NSX Public IP count raised from 64 to 1024.
  */
 public final class NsxPublicIpQuotaRaisedEnum extends ExpandableStringEnum<NsxPublicIpQuotaRaisedEnum> {
-    /**
-     * Static value Enabled for NsxPublicIpQuotaRaisedEnum.
-     */
+    /** Static value Enabled for NsxPublicIpQuotaRaisedEnum. */
     public static final NsxPublicIpQuotaRaisedEnum ENABLED = fromString("Enabled");
 
-    /**
-     * Static value Disabled for NsxPublicIpQuotaRaisedEnum.
-     */
+    /** Static value Disabled for NsxPublicIpQuotaRaisedEnum. */
     public static final NsxPublicIpQuotaRaisedEnum DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of NsxPublicIpQuotaRaisedEnum value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,17 +29,18 @@ public final class NsxPublicIpQuotaRaisedEnum extends ExpandableStringEnum<NsxPu
 
     /**
      * Creates or finds a NsxPublicIpQuotaRaisedEnum from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding NsxPublicIpQuotaRaisedEnum.
      */
+    @JsonCreator
     public static NsxPublicIpQuotaRaisedEnum fromString(String name) {
         return fromString(name, NsxPublicIpQuotaRaisedEnum.class);
     }
 
     /**
      * Gets known NsxPublicIpQuotaRaisedEnum values.
-     * 
+     *
      * @return known NsxPublicIpQuotaRaisedEnum values.
      */
     public static Collection<NsxPublicIpQuotaRaisedEnum> values() {

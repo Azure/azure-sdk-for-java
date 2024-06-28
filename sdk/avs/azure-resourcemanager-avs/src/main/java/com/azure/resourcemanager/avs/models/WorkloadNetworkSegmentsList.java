@@ -4,40 +4,33 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkSegmentInner;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The response of a WorkloadNetworkSegment list operation.
- */
-@Fluent
-public final class WorkloadNetworkSegmentsList implements JsonSerializable<WorkloadNetworkSegmentsList> {
+/** A list of NSX Segments. */
+@Immutable
+public final class WorkloadNetworkSegmentsList {
     /*
-     * The WorkloadNetworkSegment items on this page
+     * The items on the page
      */
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<WorkloadNetworkSegmentInner> value;
 
     /*
-     * The link to the next page of items
+     * URL to get the next page if any
      */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /**
-     * Creates an instance of WorkloadNetworkSegmentsList class.
-     */
+    /** Creates an instance of WorkloadNetworkSegmentsList class. */
     public WorkloadNetworkSegmentsList() {
     }
 
     /**
-     * Get the value property: The WorkloadNetworkSegment items on this page.
-     * 
+     * Get the value property: The items on the page.
+     *
      * @return the value value.
      */
     public List<WorkloadNetworkSegmentInner> value() {
@@ -45,19 +38,8 @@ public final class WorkloadNetworkSegmentsList implements JsonSerializable<Workl
     }
 
     /**
-     * Set the value property: The WorkloadNetworkSegment items on this page.
-     * 
-     * @param value the value value to set.
-     * @return the WorkloadNetworkSegmentsList object itself.
-     */
-    public WorkloadNetworkSegmentsList withValue(List<WorkloadNetworkSegmentInner> value) {
-        this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: The link to the next page of items.
-     * 
+     * Get the nextLink property: URL to get the next page if any.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,72 +47,13 @@ public final class WorkloadNetworkSegmentsList implements JsonSerializable<Workl
     }
 
     /**
-     * Set the nextLink property: The link to the next page of items.
-     * 
-     * @param nextLink the nextLink value to set.
-     * @return the WorkloadNetworkSegmentsList object itself.
-     */
-    public WorkloadNetworkSegmentsList withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property value in model WorkloadNetworkSegmentsList"));
-        } else {
+        if (value() != null) {
             value().forEach(e -> e.validate());
         }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(WorkloadNetworkSegmentsList.class);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("nextLink", this.nextLink);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of WorkloadNetworkSegmentsList from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of WorkloadNetworkSegmentsList if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the WorkloadNetworkSegmentsList.
-     */
-    public static WorkloadNetworkSegmentsList fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            WorkloadNetworkSegmentsList deserializedWorkloadNetworkSegmentsList = new WorkloadNetworkSegmentsList();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("value".equals(fieldName)) {
-                    List<WorkloadNetworkSegmentInner> value
-                        = reader.readArray(reader1 -> WorkloadNetworkSegmentInner.fromJson(reader1));
-                    deserializedWorkloadNetworkSegmentsList.value = value;
-                } else if ("nextLink".equals(fieldName)) {
-                    deserializedWorkloadNetworkSegmentsList.nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedWorkloadNetworkSegmentsList;
-        });
     }
 }

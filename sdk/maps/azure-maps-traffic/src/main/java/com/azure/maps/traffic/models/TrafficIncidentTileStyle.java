@@ -5,54 +5,37 @@
 package com.azure.maps.traffic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for TrafficIncidentTileStyle.
- */
+/** Defines values for TrafficIncidentTileStyle. */
 public final class TrafficIncidentTileStyle extends ExpandableStringEnum<TrafficIncidentTileStyle> {
-    /**
-     * Creates traffic lines with colored chevrons indicating severity.
-     */
+    /** Static value s1 for TrafficIncidentTileStyle. */
     public static final TrafficIncidentTileStyle S1 = fromString("s1");
 
-    /**
-     * Creates plain lines with certain degree of glow.
-     */
+    /** Static value s2 for TrafficIncidentTileStyle. */
     public static final TrafficIncidentTileStyle S2 = fromString("s2");
 
-    /**
-     * Creates plain lines with certain degree of glow, different from the s2 style.
-     */
+    /** Static value s3 for TrafficIncidentTileStyle. */
     public static final TrafficIncidentTileStyle S3 = fromString("s3");
 
-    /**
-     * Night style.
-     */
+    /** Static value night for TrafficIncidentTileStyle. */
     public static final TrafficIncidentTileStyle NIGHT = fromString("night");
 
     /**
-     * Creates a new instance of TrafficIncidentTileStyle value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public TrafficIncidentTileStyle() {
-    }
-
-    /**
      * Creates or finds a TrafficIncidentTileStyle from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding TrafficIncidentTileStyle.
      */
+    @JsonCreator
     public static TrafficIncidentTileStyle fromString(String name) {
         return fromString(name, TrafficIncidentTileStyle.class);
     }
 
     /**
      * Gets known TrafficIncidentTileStyle values.
-     * 
+     *
      * @return known TrafficIncidentTileStyle values.
      */
     public static Collection<TrafficIncidentTileStyle> values() {

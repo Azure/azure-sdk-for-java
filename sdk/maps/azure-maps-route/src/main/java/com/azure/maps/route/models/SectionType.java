@@ -5,94 +5,61 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for SectionType.
- */
+/** Defines values for SectionType. */
 public final class SectionType extends ExpandableStringEnum<SectionType> {
-    /**
-     * Sections of the route that are cars or trains.
-     */
+    /** Static value carTrain for SectionType. */
     public static final SectionType CAR_OR_TRAIN = fromString("carTrain");
 
-    /**
-     * Sections indicating which countries/regions the route is in.
-     */
+    /** Static value country for SectionType. */
     public static final SectionType COUNTRY = fromString("country");
 
-    /**
-     * Sections of the route that are ferries.
-     */
+    /** Static value ferry for SectionType. */
     public static final SectionType FERRY = fromString("ferry");
 
-    /**
-     * Sections of the route that are motorways.
-     */
+    /** Static value motorway for SectionType. */
     public static final SectionType MOTORWAY = fromString("motorway");
 
-    /**
-     * Sections of the route that are only suited for pedestrians.
-     */
+    /** Static value pedestrian for SectionType. */
     public static final SectionType PEDESTRIAN = fromString("pedestrian");
 
-    /**
-     * Sections of the route that require a toll to be paid.
-     */
+    /** Static value tollRoad for SectionType. */
     public static final SectionType TOLL_ROAD = fromString("tollRoad");
 
-    /**
-     * Sections of the route that require a toll vignette to be present.
-     */
+    /** Static value tollVignette for SectionType. */
     public static final SectionType TOLL_VIGNETTE = fromString("tollVignette");
 
-    /**
-     * Sections of the route that contain traffic information.
-     */
+    /** Static value traffic for SectionType. */
     public static final SectionType TRAFFIC = fromString("traffic");
 
-    /**
-     * Sections in relation to the request parameter `travelMode`.
-     */
+    /** Static value travelMode for SectionType. */
     public static final SectionType TRAVEL_MODE = fromString("travelMode");
 
-    /**
-     * Sections of the route that are tunnels.
-     */
+    /** Static value tunnel for SectionType. */
     public static final SectionType TUNNEL = fromString("tunnel");
 
-    /**
-     * Sections of the route that require use of carpool (HOV/High Occupancy Vehicle) lanes.
-     */
+    /** Static value carpool for SectionType. */
     public static final SectionType CARPOOL = fromString("carpool");
 
-    /**
-     * Sections of the route that are located within urban areas.
-     */
+    /** Static value urban for SectionType. */
     public static final SectionType URBAN = fromString("urban");
 
     /**
-     * Creates a new instance of SectionType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public SectionType() {
-    }
-
-    /**
      * Creates or finds a SectionType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SectionType.
      */
+    @JsonCreator
     public static SectionType fromString(String name) {
         return fromString(name, SectionType.class);
     }
 
     /**
      * Gets known SectionType values.
-     * 
+     *
      * @return known SectionType values.
      */
     public static Collection<SectionType> values() {

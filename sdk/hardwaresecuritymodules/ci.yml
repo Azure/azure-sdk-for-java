@@ -33,6 +33,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: hardwaresecuritymodules
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-hardwaresecuritymodules
         groupId: com.azure.resourcemanager

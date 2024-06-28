@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -41,6 +42,7 @@ public final class ImportanceLevel extends ExpandableStringEnum<ImportanceLevel>
      * @param name a name to look for.
      * @return the corresponding ImportanceLevel.
      */
+    @JsonCreator
     public static ImportanceLevel fromString(String name) {
         return fromString(name, ImportanceLevel.class);
     }

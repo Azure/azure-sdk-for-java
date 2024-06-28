@@ -28,23 +28,14 @@ public final class TranslateOptions {
     private Boolean allowFallback = false;
 
     /**
-     * Creates a new instance of the TranslateOptions class.
-     */
-    public TranslateOptions() {
-
-    }
-
-    /**
-     * Returns the list of target languages.
-     * @return the list of target languages.
+     * @return Specifies the language of the output text.
      */
     public List<String> getTargetLanguages() {
         return targetLanguages;
     }
 
     /**
-     * Sets the list of target languages.
-     * @param targetLanguages the list of target languages.
+     * @param targetLanguages Specifies the language of the output text.
      * @return The updated options.
      */
     public TranslateOptions setTargetLanguages(List<String> targetLanguages) {
@@ -53,9 +44,7 @@ public final class TranslateOptions {
     }
 
     /**
-     * Adds a language to the list of target languages.
-     *
-     * @param targetLanguage language to add to the list of target languages.
+     * @param targetLanguage Specifies the language of the output text.
      * @return The updated options.
      */
     public TranslateOptions addTargetLanguage(String targetLanguage) {
@@ -67,8 +56,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Returns the source language.
-     *
      * @return Specifies the language of the input text.
      */
     public String getSourceLanguage() {
@@ -76,8 +63,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Sets the source language.
-     *
      * @param sourceLanguage Specifies the language of the input text.
      * @return The updated options.
      */
@@ -87,8 +72,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Returns the client-generated GUID to uniquely identify the request.
-     *
      * @return client-generated GUID to uniquely identify the request.
      */
     public String getClientTraceId() {
@@ -96,7 +79,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Sets the client-generated GUID to uniquely identify the request.
      * @param clientTraceId client-generated GUID to uniquely identify the request.
      * @return The updated options.
      */
@@ -106,7 +88,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Returns whether the text being translated is plain text or HTML text.
      * @return specifies whether the text being translated is plain text or HTML text.
      */
     public TextType getTextType() {
@@ -114,8 +95,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Sets whether the text being translated is plain text or HTML text.
-     *
      * @param textType specifies whether the text being translated is plain text or HTML text.
      * @return The updated options.
      */
@@ -125,7 +104,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Returns the category (domain) of the translation.
      * @return specifying the category (domain) of the translation.
      */
     public String getCategory() {
@@ -133,8 +111,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Sets the category (domain) of the translation.
-     *
      * @param category specifying the category (domain) of the translation.
      * @return The updated options.
      */
@@ -144,7 +120,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Returns how profanities should be treated in translations.
      * @return specifies how profanities should be treated in translations.
      */
     public ProfanityAction getProfanityAction() {
@@ -152,7 +127,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Sets how profanities should be treated in translations.
      * @param profanityAction specifies how profanities should be treated in translations.
      * @return The updated options.
      */
@@ -162,7 +136,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Returns how profanities should be marked in translations.
      * @return specifies how profanities should be marked in translations.
      */
     public ProfanityMarker getProfanityMarker() {
@@ -170,7 +143,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Sets how profanities should be marked in translations.
      * @param profanityMarker specifies how profanities should be marked in translations.
      * @return The updated options.
      */
@@ -180,16 +152,14 @@ public final class TranslateOptions {
     }
 
     /**
-     * Returns whether to include alignment projection from source text to translated text.
-     * @return Whether to include alignment projection from source text to translated text.
+     * @return Whether or not to include alignment projection from source text to translated text.
      */
     public Boolean isIncludeAlignment() {
         return includeAlignment;
     }
 
     /**
-     * Sets whether to include alignment projection from source text to translated text.
-     * @param includeAlignment Whether to include alignment projection from source text to translated text.
+     * @param includeAlignment Whether or not to include alignment projection from source text to translated text.
      * @return The updated options.
      */
     public TranslateOptions setIncludeAlignment(Boolean includeAlignment) {
@@ -198,16 +168,14 @@ public final class TranslateOptions {
     }
 
     /**
-     * Returns whether to include sentence boundaries for the input text and the translated text.
-     * @return Whether to include sentence boundaries for the input text and the translated text.
+     * @return Whether or not to include sentence boundaries for the input text and the translated text.
      */
     public Boolean isIncludeSentenceLength() {
         return includeSentenceLength;
     }
 
     /**
-     * Sets whether to include sentence boundaries for the input text and the translated text.
-     * @param includeSentenceLength Whether to include sentence boundaries for the input text and the translated text.
+     * @param includeSentenceLength Whether or not to include sentence boundaries for the input text and the translated text.
      * @return The updated options.
      */
     public TranslateOptions setIncludeSentenceLength(Boolean includeSentenceLength) {
@@ -216,7 +184,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Returns the fallback language if the language of the input text can't be identified.
      * @return fallback language if the language of the input text can't be identified.
      */
     public String getSuggestedSourceLanguage() {
@@ -224,7 +191,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Sets the fallback language if the language of the input text can't be identified.
      * @param suggestedSourceLanguage fallback language if the language of the input text can't be identified.
      * @return The updated options.
      */
@@ -234,7 +200,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Returns the script of the input text.
      * @return the script of the input text.
      */
     public String getSourceLanguageScript() {
@@ -242,7 +207,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Sets the script of the input text.
      * @param sourceLanguageScript the script of the input text.
      * @return The updated options.
      */
@@ -252,7 +216,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Returns the script of the translated text.
      * @return the script of the translated text.
      */
     public String getTargetLanguageScript() {
@@ -260,7 +223,6 @@ public final class TranslateOptions {
     }
 
     /**
-     * Sets the script of the translated text.
      * @param targetLanguageScript the script of the translated text.
      * @return The updated options.
      */
@@ -270,16 +232,14 @@ public final class TranslateOptions {
     }
 
     /**
-     * Returns whether the service allows fallback for Custom Translator requests.
-     * @return Whether the service allows fallback for Custom Translator requests.
+     * @return Whether or not the service allows fallbeck for Custom Translator requests.
      */
     public Boolean isAllowFallback() {
         return allowFallback;
     }
 
     /**
-     * Sets whether the service allows fallback for Custom Translator requests.
-     * @param allowFallback Whether the service allows fallback for Custom Translator requests.
+     * @param allowFallback Whether or not the service allows fallbeck for Custom Translator requests.
      * @return The updated options.
      */
     public TranslateOptions setAllowFallback(Boolean allowFallback) {

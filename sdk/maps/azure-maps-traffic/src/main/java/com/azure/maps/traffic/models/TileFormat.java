@@ -5,44 +5,31 @@
 package com.azure.maps.traffic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for TileFormat.
- */
+/** Defines values for TileFormat. */
 public final class TileFormat extends ExpandableStringEnum<TileFormat> {
-    /**
-     * An image in the png format. Supports zoom levels 0 through 18.
-     */
+    /** Static value png for TileFormat. */
     public static final TileFormat PNG = fromString("png");
 
-    /**
-     * Vector graphic in the pbf format. Supports zoom levels 0 through 22.
-     */
+    /** Static value pbf for TileFormat. */
     public static final TileFormat PBF = fromString("pbf");
 
     /**
-     * Creates a new instance of TileFormat value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public TileFormat() {
-    }
-
-    /**
      * Creates or finds a TileFormat from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding TileFormat.
      */
+    @JsonCreator
     public static TileFormat fromString(String name) {
         return fromString(name, TileFormat.class);
     }
 
     /**
      * Gets known TileFormat values.
-     * 
+     *
      * @return known TileFormat values.
      */
     public static Collection<TileFormat> values() {

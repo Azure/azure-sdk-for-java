@@ -5,20 +5,17 @@
 package com.azure.resourcemanager.selfhelp.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Troubleshooter restart response.
  */
 @Immutable
-public final class RestartTroubleshooterResponseInner implements JsonSerializable<RestartTroubleshooterResponseInner> {
+public final class RestartTroubleshooterResponseInner {
     /*
      * Updated TroubleshooterResource Name .
      */
+    @JsonProperty(value = "troubleshooterResourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String troubleshooterResourceName;
 
     /**
@@ -42,41 +39,5 @@ public final class RestartTroubleshooterResponseInner implements JsonSerializabl
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RestartTroubleshooterResponseInner from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RestartTroubleshooterResponseInner if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the RestartTroubleshooterResponseInner.
-     */
-    public static RestartTroubleshooterResponseInner fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RestartTroubleshooterResponseInner deserializedRestartTroubleshooterResponseInner
-                = new RestartTroubleshooterResponseInner();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("troubleshooterResourceName".equals(fieldName)) {
-                    deserializedRestartTroubleshooterResponseInner.troubleshooterResourceName = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedRestartTroubleshooterResponseInner;
-        });
     }
 }

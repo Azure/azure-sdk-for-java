@@ -9,26 +9,26 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.maps.traffic.implementation.TrafficsImpl;
 import com.azure.maps.traffic.implementation.helpers.Utility;
-import com.azure.maps.traffic.implementation.models.ErrorResponseException;
-import com.azure.maps.traffic.implementation.models.ResponseFormat;
 import com.azure.maps.traffic.models.TrafficFlowSegmentData;
+import com.azure.maps.traffic.implementation.models.ResponseFormat;
+import com.azure.maps.traffic.implementation.models.ErrorResponseException;
+import com.azure.maps.traffic.models.TrafficIncidentDetail;
+import com.azure.maps.traffic.models.TrafficIncidentViewport;
 import com.azure.maps.traffic.models.TrafficFlowSegmentOptions;
 import com.azure.maps.traffic.models.TrafficFlowTileOptions;
-import com.azure.maps.traffic.models.TrafficIncidentDetail;
 import com.azure.maps.traffic.models.TrafficIncidentDetailOptions;
 import com.azure.maps.traffic.models.TrafficIncidentTileOptions;
-import com.azure.maps.traffic.models.TrafficIncidentViewport;
 import com.azure.maps.traffic.models.TrafficIncidentViewportOptions;
-import reactor.core.publisher.Mono;
 
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.withContext;
+import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous TrafficClient type.
 * Creating an async client using a {@link com.azure.core.credential.AzureKeyCredential}:
@@ -79,7 +79,7 @@ public final class TrafficAsyncClient {
 
     /**
      * __Traffic Flow Tile__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.async.get_traffic_flow_tile -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Flow Tile:&quot;&#41;;
@@ -113,12 +113,15 @@ public final class TrafficAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getTrafficFlowTile(TrafficFlowTileOptions options) {
-        return getTrafficFlowTileWithResponse(options).flatMap(FluxUtil::toMono);
+        Mono<StreamResponse> responseMono = this.getTrafficFlowTileWithResponse(options, null);
+        return BinaryData.fromFlux(responseMono.flatMapMany(response -> {
+            return response.getValue();
+        }));    
     }
 
     /**
      * __Traffic Flow Tile__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.async.get_traffic_flow_tile -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Flow Tile:&quot;&#41;;
@@ -152,12 +155,25 @@ public final class TrafficAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTrafficFlowTileWithResponse(TrafficFlowTileOptions options) {
-        return withContext(context -> getTrafficFlowTileWithResponse(options, context));
+        if (options == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("Options is null"));
+        }
+        StreamResponse response = null;
+        try {
+            response = this.getTrafficFlowTileWithResponse(options, null).block();
+        } catch (RuntimeException ex) {
+            return FluxUtil.monoError(LOGGER, ex);
+        } 
+        if (response != null) {
+            return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), BinaryData.fromFlux(response.getValue()).block()));
+        } else {
+            return Mono.error(new NullPointerException("Response is null"));
+        }   
     }
 
     /**
      * __Traffic Flow Tile__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.async.get_traffic_flow_tile -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Flow Tile:&quot;&#41;;
@@ -190,20 +206,28 @@ public final class TrafficAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Mono<Response<BinaryData>> getTrafficFlowTileWithResponse(TrafficFlowTileOptions options, Context context) {
+    Mono<StreamResponse> getTrafficFlowTileWithResponse(TrafficFlowTileOptions options, Context context) {    
         if (options == null) {
-            return monoError(LOGGER, new NullPointerException("Options is null"));
-        }
-
-        return this.serviceClient.getTrafficFlowTileNoCustomHeadersWithResponseAsync(options.getFormat(),
-                options.getTrafficFlowTileStyle(), options.getZoom(), options.getTileIndex(), options.getThickness(),
-                context)
-            .onErrorMap(TrafficAsyncClient::mapThrowable);
+            throw LOGGER.logExceptionAsError(new NullPointerException("Options is null"));
+        }    
+        return this.serviceClient.getTrafficFlowTileWithResponseAsync(
+                options.getFormat(), 
+                options.getTrafficFlowTileStyle(), 
+                options.getZoom(), 
+                options.getTileIndex(), 
+                options.getThickness(),
+                context).onErrorMap(throwable -> {
+                    if (!(throwable instanceof ErrorResponseException)) {
+                        return throwable;
+                    }
+                    ErrorResponseException exception = (ErrorResponseException) throwable;
+                    return new HttpResponseException(exception.getMessage(), exception.getResponse());
+                });
     }
 
     /**
      * __Traffic Flow Segment__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.async.get_traffic_flow_segment -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Flow Segment:&quot;&#41;;
@@ -238,12 +262,15 @@ public final class TrafficAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrafficFlowSegmentData> getTrafficFlowSegment(TrafficFlowSegmentOptions options) {
-        return getTrafficFlowSegmentWithResponse(options).flatMap(FluxUtil::toMono);
+        Mono<Response<TrafficFlowSegmentData>> result = this.getTrafficFlowSegmentWithResponse(options, null);
+        return result.flatMap(response -> {
+            return Mono.just(response.getValue());
+        });
     }
 
     /**
      * __Traffic Flow Segment__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.async.get_traffic_flow_segment -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Flow Segment:&quot;&#41;;
@@ -278,12 +305,12 @@ public final class TrafficAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TrafficFlowSegmentData>> getTrafficFlowSegmentWithResponse(TrafficFlowSegmentOptions options) {
-        return withContext(context -> getTrafficFlowSegmentWithResponse(options, context));
+        return this.getTrafficFlowSegmentWithResponse(options, null);
     }
 
     /**
      * __Traffic Flow Segment__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.async.get_traffic_flow_segment -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Flow Segment:&quot;&#41;;
@@ -316,18 +343,27 @@ public final class TrafficAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Traffic Flow Segment call.
      */
-    Mono<Response<TrafficFlowSegmentData>> getTrafficFlowSegmentWithResponse(TrafficFlowSegmentOptions options,
-        Context context) {
-        return this.serviceClient.getTrafficFlowSegmentWithResponseAsync(ResponseFormat.JSON,
-                options.getTrafficFlowSegmentStyle(), options.getZoom(),
-                Utility.toCoordinates(options.getCoordinates()), options.getUnit(), options.getThickness(),
-                options.getOpenLr(), context)
-            .onErrorMap(TrafficAsyncClient::mapThrowable);
+    Mono<Response<TrafficFlowSegmentData>> getTrafficFlowSegmentWithResponse(TrafficFlowSegmentOptions options, Context context) {
+        return this.serviceClient.getTrafficFlowSegmentWithResponseAsync(
+            ResponseFormat.JSON, 
+            options.getTrafficFlowSegmentStyle(), 
+            options.getZoom(), 
+            Utility.toCoordinates(options.getCoordinates()), 
+            options.getUnit(), 
+            options.getThickness(),
+            options.getOpenLr(),
+            context).onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 
     /**
      * __Traffic Incident Tile__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_tile -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Incident Tile:&quot;&#41;;
@@ -360,12 +396,18 @@ public final class TrafficAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getTrafficIncidentTile(TrafficIncidentTileOptions options) {
-        return getTrafficIncidentTileWithResponse(options).flatMap(FluxUtil::toMono);
+        Mono<StreamResponse> responseMono = this.getTrafficIncidentTileWithResponse(options, null);
+        if (options == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("Options is null"));
+        }
+        return BinaryData.fromFlux(responseMono.flatMapMany(response -> {
+            return response.getValue();
+        })); 
     }
 
     /**
      * __Traffic Incident Tile__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_tile -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Incident Tile:&quot;&#41;;
@@ -398,12 +440,20 @@ public final class TrafficAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTrafficIncidentTileWithResponse(TrafficIncidentTileOptions options) {
-        return withContext(context -> getTrafficIncidentTileWithResponse(options, context));
+        if (options == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("Options is null"));
+        }
+        StreamResponse response = this.getTrafficIncidentTileWithResponse(options, null).block();
+        if (response != null) {
+            return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+        } else {
+            return Mono.error(new NullPointerException("Response is null"));
+        }   
     }
 
     /**
      * __Traffic Incident Tile__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_tile -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Incident Tile:&quot;&#41;;
@@ -435,20 +485,28 @@ public final class TrafficAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Mono<Response<BinaryData>> getTrafficIncidentTileWithResponse(TrafficIncidentTileOptions options, Context context) {
+    Mono<StreamResponse> getTrafficIncidentTileWithResponse(TrafficIncidentTileOptions options, Context context) { 
         if (options == null) {
-            return monoError(LOGGER, new NullPointerException("Options is null"));
-        }
-
-        return this.serviceClient.getTrafficIncidentTileNoCustomHeadersWithResponseAsync(options.getFormat(),
-                options.getTrafficIncidentTileStyle(), options.getZoom(), options.getTileIndex(),
-                options.getTrafficState(), context)
-            .onErrorMap(TrafficAsyncClient::mapThrowable);
+            throw LOGGER.logExceptionAsError(new NullPointerException("Options is null"));
+        }       
+        return this.serviceClient.getTrafficIncidentTileWithResponseAsync(
+            options.getFormat(), 
+            options.getTrafficIncidentTileStyle(), 
+            options.getZoom(), 
+            options.getTileIndex(),
+            options.getTrafficState(),
+            context).onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 
     /**
      * __Traffic Incident Detail__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_detail -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Incident Detail:&quot;&#41;;
@@ -488,12 +546,15 @@ public final class TrafficAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrafficIncidentDetail> getTrafficIncidentDetail(TrafficIncidentDetailOptions options) {
-        return getTrafficIncidentDetailWithResponse(options).flatMap(FluxUtil::toMono);
+        Mono<Response<TrafficIncidentDetail>> result = this.getTrafficIncidentDetailWithResponse(options, null);
+        return result.flatMap(response -> {
+            return Mono.just(response.getValue());
+        });
     }
 
     /**
      * __Traffic Incident Detail__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_detail -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Incident Detail:&quot;&#41;;
@@ -532,14 +593,13 @@ public final class TrafficAsyncClient {
      * @return this object is returned from a successful Traffic incident Detail call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TrafficIncidentDetail>> getTrafficIncidentDetailWithResponse(
-        TrafficIncidentDetailOptions options) {
-        return withContext(context -> getTrafficIncidentDetailWithResponse(options, context));
+    public Mono<Response<TrafficIncidentDetail>> getTrafficIncidentDetailWithResponse(TrafficIncidentDetailOptions options) {
+        return this.getTrafficIncidentDetailWithResponse(options, null);
     }
-
+    
     /**
      * __Traffic Incident Detail__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_detail -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Incident Detail:&quot;&#41;;
@@ -578,19 +638,30 @@ public final class TrafficAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Traffic incident Detail call.
      */
-    Mono<Response<TrafficIncidentDetail>> getTrafficIncidentDetailWithResponse(TrafficIncidentDetailOptions options,
-        Context context) {
-        return this.serviceClient.getTrafficIncidentDetailWithResponseAsync(ResponseFormat.JSON,
-                options.getIncidentDetailStyle(), Utility.toBoundingBox(options.getBoundingBox()),
-                options.getBoundingZoom(), options.getTrafficIncidentDetailTrafficModelId(), options.getLanguage(),
-                options.getProjectionStandard(), options.getIncidentGeometryType(), options.getExpandCluster(),
-                options.getOriginalPosition(), context)
-            .onErrorMap(TrafficAsyncClient::mapThrowable);
+    Mono<Response<TrafficIncidentDetail>> getTrafficIncidentDetailWithResponse(TrafficIncidentDetailOptions options, Context context) {
+        return this.serviceClient.getTrafficIncidentDetailWithResponseAsync(
+            ResponseFormat.JSON,
+            options.getIncidentDetailStyle(),
+            Utility.toBoundingBox(options.getBoundingBox()),
+            options.getBoundingZoom(),
+            options.getTrafficIncidentDetailTrafficModelId(),
+            options.getLanguage(),
+            options.getProjectionStandard(),
+            options.getIncidentGeometryType(),
+            options.getExpandCluster(),
+            options.getOriginalPosition(),
+            context).onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 
     /**
      * __Traffic Incident Viewport__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_viewport -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Incident Viewport:&quot;&#41;;
@@ -628,12 +699,15 @@ public final class TrafficAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrafficIncidentViewport> getTrafficIncidentViewport(TrafficIncidentViewportOptions options) {
-        return getTrafficIncidentViewportWithResponse(options).flatMap(FluxUtil::toMono);
+        Mono<Response<TrafficIncidentViewport>> result = this.getTrafficIncidentViewportWithResponse(options, null);
+        return result.flatMap(response -> {
+            return Mono.just(response.getValue());
+        });
     }
 
     /**
      * __Traffic Incident Viewport__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_viewport -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Incident Viewport:&quot;&#41;;
@@ -670,14 +744,13 @@ public final class TrafficAsyncClient {
      * @return this object is returned from a successful Traffic Incident Viewport call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TrafficIncidentViewport>> getTrafficIncidentViewportWithResponse(
-        TrafficIncidentViewportOptions options) {
-        return withContext(context -> getTrafficIncidentViewportWithResponse(options, context));
+    public Mono<Response<TrafficIncidentViewport>> getTrafficIncidentViewportWithResponse(TrafficIncidentViewportOptions options) {
+        return this.getTrafficIncidentViewportWithResponse(options, null);
     }
-
+    
     /**
      * __Traffic Incident Viewport__
-     *
+     * 
      * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_viewport -->
      * <pre>
      * System.out.println&#40;&quot;Get Traffic Incident Viewport:&quot;&#41;;
@@ -714,20 +787,20 @@ public final class TrafficAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Traffic Incident Viewport call.
      */
-    Mono<Response<TrafficIncidentViewport>> getTrafficIncidentViewportWithResponse(
-        TrafficIncidentViewportOptions options, Context context) {
-        return this.serviceClient.getTrafficIncidentViewportWithResponseAsync(ResponseFormat.JSON,
-                Utility.toBoundingBox(options.getBoundingBox()), options.getBoundingZoom(),
-                Utility.toBoundingBox(options.getOverviewBox()), options.getOverviewZoom(), options.getCopyright(),
-                context)
-            .onErrorMap(TrafficAsyncClient::mapThrowable);
-    }
-
-    private static Throwable mapThrowable(Throwable throwable) {
-        if (!(throwable instanceof ErrorResponseException)) {
-            return throwable;
-        }
-        ErrorResponseException exception = (ErrorResponseException) throwable;
-        return new HttpResponseException(exception.getMessage(), exception.getResponse());
+    Mono<Response<TrafficIncidentViewport>> getTrafficIncidentViewportWithResponse(TrafficIncidentViewportOptions options, Context context) {
+        return this.serviceClient.getTrafficIncidentViewportWithResponseAsync(
+            ResponseFormat.JSON, 
+            Utility.toBoundingBox(options.getBoundingBox()),
+            options.getBoundingZoom(), 
+            Utility.toBoundingBox(options.getOverviewBox()), 
+            options.getOverviewZoom(), 
+            options.getCopyright(),
+            context).onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 }

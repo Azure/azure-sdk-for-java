@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseBackupInner;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseBackupListResult;
+import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseBackupProperties;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class AutonomousDatabaseBackupListResultTests {
@@ -17,5 +20,26 @@ public final class AutonomousDatabaseBackupListResultTests {
         Assertions.assertEquals("imfnjhfjx", model.value().get(0).properties().displayName());
         Assertions.assertEquals(1974208739, model.value().get(0).properties().retentionPeriodInDays());
         Assertions.assertEquals("cskfcktqumiekk", model.nextLink());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AutonomousDatabaseBackupListResult model = new AutonomousDatabaseBackupListResult().withValue(Arrays.asList(
+            new AutonomousDatabaseBackupInner()
+                .withProperties(new AutonomousDatabaseBackupProperties().withDisplayName("mslyzrpzbchckqqz")
+                    .withRetentionPeriodInDays(613432064)),
+            new AutonomousDatabaseBackupInner()
+                .withProperties(new AutonomousDatabaseBackupProperties().withDisplayName("vcikhnvpamqgx")
+                    .withRetentionPeriodInDays(834190026)),
+            new AutonomousDatabaseBackupInner().withProperties(
+                new AutonomousDatabaseBackupProperties().withDisplayName("xg").withRetentionPeriodInDays(205109580)),
+            new AutonomousDatabaseBackupInner()
+                .withProperties(new AutonomousDatabaseBackupProperties().withDisplayName("sphyoulpjrvxa")
+                    .withRetentionPeriodInDays(757390701))))
+            .withNextLink("hky");
+        model = BinaryData.fromObject(model).toObject(AutonomousDatabaseBackupListResult.class);
+        Assertions.assertEquals("mslyzrpzbchckqqz", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(613432064, model.value().get(0).properties().retentionPeriodInDays());
+        Assertions.assertEquals("hky", model.nextLink());
     }
 }

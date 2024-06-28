@@ -4,6 +4,9 @@
 
 package com.azure.ai.translation.text.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Translator profanity actions.
  */
@@ -38,6 +41,7 @@ public enum ProfanityAction {
      * @param value the serialized value to parse.
      * @return the parsed ProfanityAction object, or null if unable to parse.
      */
+    @JsonCreator
     public static ProfanityAction fromString(String value) {
         if (value == null) {
             return null;
@@ -54,6 +58,7 @@ public enum ProfanityAction {
     /**
      * {@inheritDoc}
      */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

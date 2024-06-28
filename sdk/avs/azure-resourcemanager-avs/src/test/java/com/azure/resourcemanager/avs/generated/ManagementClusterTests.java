@@ -12,22 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementClusterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementCluster model = BinaryData.fromString(
-            "{\"clusterSize\":223251370,\"provisioningState\":\"Succeeded\",\"clusterId\":1278778169,\"hosts\":[\"feusnhut\",\"eltmrldhugjzzdat\"],\"vsanDatastoreName\":\"hocdgeab\"}")
-            .toObject(ManagementCluster.class);
-        Assertions.assertEquals(223251370, model.clusterSize());
-        Assertions.assertEquals("feusnhut", model.hosts().get(0));
-        Assertions.assertEquals("hocdgeab", model.vsanDatastoreName());
+        ManagementCluster model =
+            BinaryData
+                .fromString(
+                    "{\"clusterSize\":2068547199,\"provisioningState\":\"Updating\",\"clusterId\":767485321,\"hosts\":[\"iklbbovpl\"]}")
+                .toObject(ManagementCluster.class);
+        Assertions.assertEquals(2068547199, model.clusterSize());
+        Assertions.assertEquals("iklbbovpl", model.hosts().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementCluster model = new ManagementCluster().withClusterSize(223251370)
-            .withHosts(Arrays.asList("feusnhut", "eltmrldhugjzzdat"))
-            .withVsanDatastoreName("hocdgeab");
+        ManagementCluster model =
+            new ManagementCluster().withClusterSize(2068547199).withHosts(Arrays.asList("iklbbovpl"));
         model = BinaryData.fromObject(model).toObject(ManagementCluster.class);
-        Assertions.assertEquals(223251370, model.clusterSize());
-        Assertions.assertEquals("feusnhut", model.hosts().get(0));
-        Assertions.assertEquals("hocdgeab", model.vsanDatastoreName());
+        Assertions.assertEquals(2068547199, model.clusterSize());
+        Assertions.assertEquals("iklbbovpl", model.hosts().get(0));
     }
 }

@@ -5,64 +5,43 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Type of the instruction, e.g., turn or change of road form.
- */
+/** Defines values for GuidanceInstructionType. */
 public final class GuidanceInstructionType extends ExpandableStringEnum<GuidanceInstructionType> {
-    /**
-     * Turn.
-     */
+    /** Static value TURN for GuidanceInstructionType. */
     public static final GuidanceInstructionType TURN = fromString("TURN");
 
-    /**
-     * Road Change.
-     */
+    /** Static value ROAD_CHANGE for GuidanceInstructionType. */
     public static final GuidanceInstructionType ROAD_CHANGE = fromString("ROAD_CHANGE");
 
-    /**
-     * Departure location.
-     */
+    /** Static value LOCATION_DEPARTURE for GuidanceInstructionType. */
     public static final GuidanceInstructionType LOCATION_DEPARTURE = fromString("LOCATION_DEPARTURE");
 
-    /**
-     * Arrival location.
-     */
+    /** Static value LOCATION_ARRIVAL for GuidanceInstructionType. */
     public static final GuidanceInstructionType LOCATION_ARRIVAL = fromString("LOCATION_ARRIVAL");
 
-    /**
-     * Direction information.
-     */
+    /** Static value DIRECTION_INFO for GuidanceInstructionType. */
     public static final GuidanceInstructionType DIRECTION_INFO = fromString("DIRECTION_INFO");
 
-    /**
-     * Way point location.
-     */
+    /** Static value LOCATION_WAYPOINT for GuidanceInstructionType. */
     public static final GuidanceInstructionType LOCATION_WAYPOINT = fromString("LOCATION_WAYPOINT");
 
     /**
-     * Creates a new instance of GuidanceInstructionType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public GuidanceInstructionType() {
-    }
-
-    /**
      * Creates or finds a GuidanceInstructionType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding GuidanceInstructionType.
      */
+    @JsonCreator
     public static GuidanceInstructionType fromString(String name) {
         return fromString(name, GuidanceInstructionType.class);
     }
 
     /**
      * Gets known GuidanceInstructionType values.
-     * 
+     *
      * @return known GuidanceInstructionType values.
      */
     public static Collection<GuidanceInstructionType> values() {

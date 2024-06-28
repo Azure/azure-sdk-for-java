@@ -5,50 +5,28 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * The properties of a Site Recovery Manager (SRM) addon.
- */
+/** The properties of a Site Recovery Manager (SRM) addon. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "addonType")
+@JsonTypeName("SRM")
 @Fluent
 public final class AddonSrmProperties extends AddonProperties {
     /*
-     * Addon type
-     */
-    private AddonType addonType = AddonType.SRM;
-
-    /*
      * The Site Recovery Manager (SRM) license
      */
+    @JsonProperty(value = "licenseKey")
     private String licenseKey;
 
-    /*
-     * The state of the addon provisioning
-     */
-    private AddonProvisioningState provisioningState;
-
-    /**
-     * Creates an instance of AddonSrmProperties class.
-     */
+    /** Creates an instance of AddonSrmProperties class. */
     public AddonSrmProperties() {
     }
 
     /**
-     * Get the addonType property: Addon type.
-     * 
-     * @return the addonType value.
-     */
-    @Override
-    public AddonType addonType() {
-        return this.addonType;
-    }
-
-    /**
      * Get the licenseKey property: The Site Recovery Manager (SRM) license.
-     * 
+     *
      * @return the licenseKey value.
      */
     public String licenseKey() {
@@ -57,7 +35,7 @@ public final class AddonSrmProperties extends AddonProperties {
 
     /**
      * Set the licenseKey property: The Site Recovery Manager (SRM) license.
-     * 
+     *
      * @param licenseKey the licenseKey value to set.
      * @return the AddonSrmProperties object itself.
      */
@@ -67,64 +45,12 @@ public final class AddonSrmProperties extends AddonProperties {
     }
 
     /**
-     * Get the provisioningState property: The state of the addon provisioning.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public AddonProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("addonType", this.addonType == null ? null : this.addonType.toString());
-        jsonWriter.writeStringField("licenseKey", this.licenseKey);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AddonSrmProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AddonSrmProperties if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AddonSrmProperties.
-     */
-    public static AddonSrmProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AddonSrmProperties deserializedAddonSrmProperties = new AddonSrmProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("provisioningState".equals(fieldName)) {
-                    deserializedAddonSrmProperties.provisioningState
-                        = AddonProvisioningState.fromString(reader.getString());
-                } else if ("addonType".equals(fieldName)) {
-                    deserializedAddonSrmProperties.addonType = AddonType.fromString(reader.getString());
-                } else if ("licenseKey".equals(fieldName)) {
-                    deserializedAddonSrmProperties.licenseKey = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAddonSrmProperties;
-        });
     }
 }

@@ -5,54 +5,37 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Type of the incident. Can currently be JAM, ROAD_WORK, ROAD_CLOSURE, or OTHER. See "tec" for detailed information.
- */
+/** Defines values for SimpleCategory. */
 public final class RouteDelayReason extends ExpandableStringEnum<RouteDelayReason> {
-    /**
-     * Traffic jam.
-     */
+    /** Static value JAM for SimpleCategory. */
     public static final RouteDelayReason JAM = fromString("JAM");
 
-    /**
-     * Road work.
-     */
+    /** Static value ROAD_WORK for SimpleCategory. */
     public static final RouteDelayReason ROAD_WORK = fromString("ROAD_WORK");
 
-    /**
-     * Road closure.
-     */
+    /** Static value ROAD_CLOSURE for SimpleCategory. */
     public static final RouteDelayReason ROAD_CLOSURE = fromString("ROAD_CLOSURE");
 
-    /**
-     * Other.
-     */
+    /** Static value OTHER for SimpleCategory. */
     public static final RouteDelayReason OTHER = fromString("OTHER");
 
     /**
-     * Creates a new instance of SimpleCategory value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public RouteDelayReason() {
-    }
-
-    /**
      * Creates or finds a SimpleCategory from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SimpleCategory.
      */
+    @JsonCreator
     public static RouteDelayReason fromString(String name) {
         return fromString(name, RouteDelayReason.class);
     }
 
     /**
      * Gets known SimpleCategory values.
-     * 
+     *
      * @return known SimpleCategory values.
      */
     public static Collection<RouteDelayReason> values() {

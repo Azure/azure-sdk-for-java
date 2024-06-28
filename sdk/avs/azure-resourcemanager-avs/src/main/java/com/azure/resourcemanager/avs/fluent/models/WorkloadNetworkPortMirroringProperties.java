@@ -5,65 +5,63 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.models.PortMirroringDirectionEnum;
 import com.azure.resourcemanager.avs.models.PortMirroringStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringProvisioningState;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * NSX Port Mirroring Properties.
- */
+/** NSX Port Mirroring Properties. */
 @Fluent
-public final class WorkloadNetworkPortMirroringProperties
-    implements JsonSerializable<WorkloadNetworkPortMirroringProperties> {
+public final class WorkloadNetworkPortMirroringProperties {
     /*
      * Display name of the port mirroring profile.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Direction of port mirroring profile.
      */
+    @JsonProperty(value = "direction")
     private PortMirroringDirectionEnum direction;
 
     /*
      * Source VM Group.
      */
+    @JsonProperty(value = "source")
     private String source;
 
     /*
      * Destination VM Group.
      */
+    @JsonProperty(value = "destination")
     private String destination;
 
     /*
      * Port Mirroring Status.
      */
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PortMirroringStatusEnum status;
 
     /*
      * The provisioning state
      */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkloadNetworkPortMirroringProvisioningState provisioningState;
 
     /*
      * NSX revision number.
      */
+    @JsonProperty(value = "revision")
     private Long revision;
 
-    /**
-     * Creates an instance of WorkloadNetworkPortMirroringProperties class.
-     */
+    /** Creates an instance of WorkloadNetworkPortMirroringProperties class. */
     public WorkloadNetworkPortMirroringProperties() {
     }
 
     /**
      * Get the displayName property: Display name of the port mirroring profile.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -72,7 +70,7 @@ public final class WorkloadNetworkPortMirroringProperties
 
     /**
      * Set the displayName property: Display name of the port mirroring profile.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the WorkloadNetworkPortMirroringProperties object itself.
      */
@@ -83,7 +81,7 @@ public final class WorkloadNetworkPortMirroringProperties
 
     /**
      * Get the direction property: Direction of port mirroring profile.
-     * 
+     *
      * @return the direction value.
      */
     public PortMirroringDirectionEnum direction() {
@@ -92,7 +90,7 @@ public final class WorkloadNetworkPortMirroringProperties
 
     /**
      * Set the direction property: Direction of port mirroring profile.
-     * 
+     *
      * @param direction the direction value to set.
      * @return the WorkloadNetworkPortMirroringProperties object itself.
      */
@@ -103,7 +101,7 @@ public final class WorkloadNetworkPortMirroringProperties
 
     /**
      * Get the source property: Source VM Group.
-     * 
+     *
      * @return the source value.
      */
     public String source() {
@@ -112,7 +110,7 @@ public final class WorkloadNetworkPortMirroringProperties
 
     /**
      * Set the source property: Source VM Group.
-     * 
+     *
      * @param source the source value to set.
      * @return the WorkloadNetworkPortMirroringProperties object itself.
      */
@@ -123,7 +121,7 @@ public final class WorkloadNetworkPortMirroringProperties
 
     /**
      * Get the destination property: Destination VM Group.
-     * 
+     *
      * @return the destination value.
      */
     public String destination() {
@@ -132,7 +130,7 @@ public final class WorkloadNetworkPortMirroringProperties
 
     /**
      * Set the destination property: Destination VM Group.
-     * 
+     *
      * @param destination the destination value to set.
      * @return the WorkloadNetworkPortMirroringProperties object itself.
      */
@@ -143,7 +141,7 @@ public final class WorkloadNetworkPortMirroringProperties
 
     /**
      * Get the status property: Port Mirroring Status.
-     * 
+     *
      * @return the status value.
      */
     public PortMirroringStatusEnum status() {
@@ -152,7 +150,7 @@ public final class WorkloadNetworkPortMirroringProperties
 
     /**
      * Get the provisioningState property: The provisioning state.
-     * 
+     *
      * @return the provisioningState value.
      */
     public WorkloadNetworkPortMirroringProvisioningState provisioningState() {
@@ -161,7 +159,7 @@ public final class WorkloadNetworkPortMirroringProperties
 
     /**
      * Get the revision property: NSX revision number.
-     * 
+     *
      * @return the revision value.
      */
     public Long revision() {
@@ -170,7 +168,7 @@ public final class WorkloadNetworkPortMirroringProperties
 
     /**
      * Set the revision property: NSX revision number.
-     * 
+     *
      * @param revision the revision value to set.
      * @return the WorkloadNetworkPortMirroringProperties object itself.
      */
@@ -181,66 +179,9 @@ public final class WorkloadNetworkPortMirroringProperties
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeStringField("direction", this.direction == null ? null : this.direction.toString());
-        jsonWriter.writeStringField("source", this.source);
-        jsonWriter.writeStringField("destination", this.destination);
-        jsonWriter.writeNumberField("revision", this.revision);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of WorkloadNetworkPortMirroringProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of WorkloadNetworkPortMirroringProperties if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the WorkloadNetworkPortMirroringProperties.
-     */
-    public static WorkloadNetworkPortMirroringProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            WorkloadNetworkPortMirroringProperties deserializedWorkloadNetworkPortMirroringProperties
-                = new WorkloadNetworkPortMirroringProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("displayName".equals(fieldName)) {
-                    deserializedWorkloadNetworkPortMirroringProperties.displayName = reader.getString();
-                } else if ("direction".equals(fieldName)) {
-                    deserializedWorkloadNetworkPortMirroringProperties.direction
-                        = PortMirroringDirectionEnum.fromString(reader.getString());
-                } else if ("source".equals(fieldName)) {
-                    deserializedWorkloadNetworkPortMirroringProperties.source = reader.getString();
-                } else if ("destination".equals(fieldName)) {
-                    deserializedWorkloadNetworkPortMirroringProperties.destination = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    deserializedWorkloadNetworkPortMirroringProperties.status
-                        = PortMirroringStatusEnum.fromString(reader.getString());
-                } else if ("provisioningState".equals(fieldName)) {
-                    deserializedWorkloadNetworkPortMirroringProperties.provisioningState
-                        = WorkloadNetworkPortMirroringProvisioningState.fromString(reader.getString());
-                } else if ("revision".equals(fieldName)) {
-                    deserializedWorkloadNetworkPortMirroringProperties.revision
-                        = reader.getNullable(JsonReader::getLong);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedWorkloadNetworkPortMirroringProperties;
-        });
     }
 }

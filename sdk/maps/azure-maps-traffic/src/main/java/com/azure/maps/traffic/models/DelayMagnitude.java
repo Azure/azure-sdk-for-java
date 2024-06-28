@@ -5,59 +5,40 @@
 package com.azure.maps.traffic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * The magnitude of delay associated with incident. These values correspond to incident colors in the traffic tiles.
- */
+/** Defines values for DelayMagnitude. */
 public final class DelayMagnitude extends ExpandableStringEnum<DelayMagnitude> {
-    /**
-     * Unknown.
-     */
+    /** Static value 0 for DelayMagnitude. */
     public static final DelayMagnitude UNKNOWN = fromInt(0);
 
-    /**
-     * Minor.
-     */
+    /** Static value 1 for DelayMagnitude. */
     public static final DelayMagnitude MINOR = fromInt(1);
 
-    /**
-     * Moderate.
-     */
+    /** Static value 2 for DelayMagnitude. */
     public static final DelayMagnitude MODERATE = fromInt(2);
 
-    /**
-     * Major.
-     */
+    /** Static value 3 for DelayMagnitude. */
     public static final DelayMagnitude MAJOR = fromInt(3);
 
-    /**
-     * Indefinite (used for road closures and other indefinite delays).
-     */
+    /** Static value 4 for DelayMagnitude. */
     public static final DelayMagnitude INDEFINITE = fromInt(4);
 
     /**
-     * Creates a new instance of DelayMagnitude value.
-     * 
-     * @deprecated Use the {@link #fromInt(int)} factory method.
-     */
-    @Deprecated
-    public DelayMagnitude() {
-    }
-
-    /**
      * Creates or finds a DelayMagnitude from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding DelayMagnitude.
      */
+    @JsonCreator
     public static DelayMagnitude fromInt(int name) {
         return fromString(String.valueOf(name), DelayMagnitude.class);
     }
 
     /**
      * Gets known DelayMagnitude values.
-     * 
+     *
      * @return known DelayMagnitude values.
      */
     public static Collection<DelayMagnitude> values() {

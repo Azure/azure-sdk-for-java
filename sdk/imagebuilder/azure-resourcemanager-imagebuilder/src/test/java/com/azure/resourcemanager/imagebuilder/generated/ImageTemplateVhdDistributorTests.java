@@ -14,22 +14,23 @@ public final class ImageTemplateVhdDistributorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageTemplateVhdDistributor model = BinaryData.fromString(
-            "{\"type\":\"VHD\",\"uri\":\"kyqxjvuujqgidokg\",\"runOutputName\":\"ljyoxgvcltb\",\"artifactTags\":{\"hkjeszzhbi\":\"c\",\"vecxgodebfqkk\":\"htxfvgxbfsmxnehm\"}}")
+            "{\"type\":\"VHD\",\"uri\":\"mryw\",\"runOutputName\":\"uzoqft\",\"artifactTags\":{\"lsicohoqqnwv\":\"zrnkcqvyxlwh\",\"yxzk\":\"ryavwhheunmmqh\",\"koklya\":\"noc\",\"ewrmjmwvvjektc\":\"uconuqszfkbey\"}}")
             .toObject(ImageTemplateVhdDistributor.class);
-        Assertions.assertEquals("ljyoxgvcltb", model.runOutputName());
-        Assertions.assertEquals("c", model.artifactTags().get("hkjeszzhbi"));
-        Assertions.assertEquals("kyqxjvuujqgidokg", model.uri());
+        Assertions.assertEquals("uzoqft", model.runOutputName());
+        Assertions.assertEquals("zrnkcqvyxlwh", model.artifactTags().get("lsicohoqqnwv"));
+        Assertions.assertEquals("mryw", model.uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateVhdDistributor model = new ImageTemplateVhdDistributor().withRunOutputName("ljyoxgvcltb")
-            .withArtifactTags(mapOf("hkjeszzhbi", "c", "vecxgodebfqkk", "htxfvgxbfsmxnehm"))
-            .withUri("kyqxjvuujqgidokg");
+        ImageTemplateVhdDistributor model = new ImageTemplateVhdDistributor().withRunOutputName("uzoqft")
+            .withArtifactTags(mapOf("lsicohoqqnwv", "zrnkcqvyxlwh", "yxzk", "ryavwhheunmmqh", "koklya", "noc",
+                "ewrmjmwvvjektc", "uconuqszfkbey"))
+            .withUri("mryw");
         model = BinaryData.fromObject(model).toObject(ImageTemplateVhdDistributor.class);
-        Assertions.assertEquals("ljyoxgvcltb", model.runOutputName());
-        Assertions.assertEquals("c", model.artifactTags().get("hkjeszzhbi"));
-        Assertions.assertEquals("kyqxjvuujqgidokg", model.uri());
+        Assertions.assertEquals("uzoqft", model.runOutputName());
+        Assertions.assertEquals("zrnkcqvyxlwh", model.artifactTags().get("lsicohoqqnwv"));
+        Assertions.assertEquals("mryw", model.uri());
     }
 
     // Use "Map.of" if available

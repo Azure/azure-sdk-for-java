@@ -4,40 +4,33 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.avs.fluent.models.AddonInner;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The response of a Addon list operation.
- */
-@Fluent
-public final class AddonList implements JsonSerializable<AddonList> {
+/** A paged list of addons. */
+@Immutable
+public final class AddonList {
     /*
-     * The Addon items on this page
+     * The items on a page
      */
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<AddonInner> value;
 
     /*
-     * The link to the next page of items
+     * URL to get the next page if any
      */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /**
-     * Creates an instance of AddonList class.
-     */
+    /** Creates an instance of AddonList class. */
     public AddonList() {
     }
 
     /**
-     * Get the value property: The Addon items on this page.
-     * 
+     * Get the value property: The items on a page.
+     *
      * @return the value value.
      */
     public List<AddonInner> value() {
@@ -45,19 +38,8 @@ public final class AddonList implements JsonSerializable<AddonList> {
     }
 
     /**
-     * Set the value property: The Addon items on this page.
-     * 
-     * @param value the value value to set.
-     * @return the AddonList object itself.
-     */
-    public AddonList withValue(List<AddonInner> value) {
-        this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: The link to the next page of items.
-     * 
+     * Get the nextLink property: URL to get the next page if any.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,70 +47,13 @@ public final class AddonList implements JsonSerializable<AddonList> {
     }
 
     /**
-     * Set the nextLink property: The link to the next page of items.
-     * 
-     * @param nextLink the nextLink value to set.
-     * @return the AddonList object itself.
-     */
-    public AddonList withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property value in model AddonList"));
-        } else {
+        if (value() != null) {
             value().forEach(e -> e.validate());
         }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AddonList.class);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("nextLink", this.nextLink);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AddonList from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AddonList if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AddonList.
-     */
-    public static AddonList fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AddonList deserializedAddonList = new AddonList();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("value".equals(fieldName)) {
-                    List<AddonInner> value = reader.readArray(reader1 -> AddonInner.fromJson(reader1));
-                    deserializedAddonList.value = value;
-                } else if ("nextLink".equals(fieldName)) {
-                    deserializedAddonList.nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAddonList;
-        });
     }
 }

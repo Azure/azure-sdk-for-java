@@ -3,8 +3,11 @@
 
 package com.azure.ai.translation.text;
 
-import com.azure.ai.translation.text.models.TransliteratedText;
+import java.util.List;
+import java.util.ArrayList;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.ai.translation.text.models.InputTextItem;
+import com.azure.ai.translation.text.models.TransliteratedText;
 
 /**
  * Converts characters or letters of a source language to the corresponding

@@ -5,54 +5,51 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.models.VMGroupStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupProvisioningState;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * NSX VM Group Properties.
- */
+/** NSX VM Group Properties. */
 @Fluent
-public final class WorkloadNetworkVMGroupProperties implements JsonSerializable<WorkloadNetworkVMGroupProperties> {
+public final class WorkloadNetworkVMGroupProperties {
     /*
      * Display name of the VM group.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Virtual machine members of this group.
      */
+    @JsonProperty(value = "members")
     private List<String> members;
 
     /*
      * VM Group status.
      */
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private VMGroupStatusEnum status;
 
     /*
      * The provisioning state
      */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkloadNetworkVMGroupProvisioningState provisioningState;
 
     /*
      * NSX revision number.
      */
+    @JsonProperty(value = "revision")
     private Long revision;
 
-    /**
-     * Creates an instance of WorkloadNetworkVMGroupProperties class.
-     */
+    /** Creates an instance of WorkloadNetworkVMGroupProperties class. */
     public WorkloadNetworkVMGroupProperties() {
     }
 
     /**
      * Get the displayName property: Display name of the VM group.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -61,7 +58,7 @@ public final class WorkloadNetworkVMGroupProperties implements JsonSerializable<
 
     /**
      * Set the displayName property: Display name of the VM group.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the WorkloadNetworkVMGroupProperties object itself.
      */
@@ -72,7 +69,7 @@ public final class WorkloadNetworkVMGroupProperties implements JsonSerializable<
 
     /**
      * Get the members property: Virtual machine members of this group.
-     * 
+     *
      * @return the members value.
      */
     public List<String> members() {
@@ -81,7 +78,7 @@ public final class WorkloadNetworkVMGroupProperties implements JsonSerializable<
 
     /**
      * Set the members property: Virtual machine members of this group.
-     * 
+     *
      * @param members the members value to set.
      * @return the WorkloadNetworkVMGroupProperties object itself.
      */
@@ -92,7 +89,7 @@ public final class WorkloadNetworkVMGroupProperties implements JsonSerializable<
 
     /**
      * Get the status property: VM Group status.
-     * 
+     *
      * @return the status value.
      */
     public VMGroupStatusEnum status() {
@@ -101,7 +98,7 @@ public final class WorkloadNetworkVMGroupProperties implements JsonSerializable<
 
     /**
      * Get the provisioningState property: The provisioning state.
-     * 
+     *
      * @return the provisioningState value.
      */
     public WorkloadNetworkVMGroupProvisioningState provisioningState() {
@@ -110,7 +107,7 @@ public final class WorkloadNetworkVMGroupProperties implements JsonSerializable<
 
     /**
      * Get the revision property: NSX revision number.
-     * 
+     *
      * @return the revision value.
      */
     public Long revision() {
@@ -119,7 +116,7 @@ public final class WorkloadNetworkVMGroupProperties implements JsonSerializable<
 
     /**
      * Set the revision property: NSX revision number.
-     * 
+     *
      * @param revision the revision value to set.
      * @return the WorkloadNetworkVMGroupProperties object itself.
      */
@@ -130,59 +127,9 @@ public final class WorkloadNetworkVMGroupProperties implements JsonSerializable<
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeArrayField("members", this.members, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeNumberField("revision", this.revision);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of WorkloadNetworkVMGroupProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of WorkloadNetworkVMGroupProperties if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the WorkloadNetworkVMGroupProperties.
-     */
-    public static WorkloadNetworkVMGroupProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            WorkloadNetworkVMGroupProperties deserializedWorkloadNetworkVMGroupProperties
-                = new WorkloadNetworkVMGroupProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("displayName".equals(fieldName)) {
-                    deserializedWorkloadNetworkVMGroupProperties.displayName = reader.getString();
-                } else if ("members".equals(fieldName)) {
-                    List<String> members = reader.readArray(reader1 -> reader1.getString());
-                    deserializedWorkloadNetworkVMGroupProperties.members = members;
-                } else if ("status".equals(fieldName)) {
-                    deserializedWorkloadNetworkVMGroupProperties.status
-                        = VMGroupStatusEnum.fromString(reader.getString());
-                } else if ("provisioningState".equals(fieldName)) {
-                    deserializedWorkloadNetworkVMGroupProperties.provisioningState
-                        = WorkloadNetworkVMGroupProvisioningState.fromString(reader.getString());
-                } else if ("revision".equals(fieldName)) {
-                    deserializedWorkloadNetworkVMGroupProperties.revision = reader.getNullable(JsonReader::getLong);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedWorkloadNetworkVMGroupProperties;
-        });
     }
 }

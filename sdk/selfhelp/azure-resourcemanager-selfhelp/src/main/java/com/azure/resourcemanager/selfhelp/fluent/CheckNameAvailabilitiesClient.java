@@ -28,7 +28,7 @@ public interface CheckNameAvailabilitiesClient {
      * @return response for whether the requested resource name is available or not along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResponseInner> checkAvailabilityWithResponse(String scope,
+    Response<CheckNameAvailabilityResponseInner> postWithResponse(String scope,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
 
     /**
@@ -42,5 +42,5 @@ public interface CheckNameAvailabilitiesClient {
      * @return response for whether the requested resource name is available or not.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResponseInner checkAvailability(String scope);
+    CheckNameAvailabilityResponseInner post(String scope);
 }

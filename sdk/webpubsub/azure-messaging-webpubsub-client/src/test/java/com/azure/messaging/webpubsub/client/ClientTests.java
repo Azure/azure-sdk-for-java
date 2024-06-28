@@ -42,15 +42,18 @@ public class ClientTests extends TestBase {
 
         Assertions.assertEquals(WebPubSubClientState.STOPPED, asyncClient.getClientState());
 
-        Mono<Void> startMono = asyncClient.start().doOnSuccess(ignored ->
-            Assertions.assertEquals(WebPubSubClientState.CONNECTED, asyncClient.getClientState()));
+        Mono<Void> startMono = asyncClient.start().doOnSuccess(ignored -> {
+            Assertions.assertEquals(WebPubSubClientState.CONNECTED, asyncClient.getClientState());
+        });
         // test transient state of CONNECTING
-        Mono<Void> verifyMono = Mono.delay(Duration.ofMillis(10)).then().doOnSuccess(ignored ->
-            Assertions.assertEquals(WebPubSubClientState.CONNECTING, asyncClient.getClientState()));
+        Mono<Void> verifyMono = Mono.delay(Duration.ofMillis(10)).then().doOnSuccess(ignored -> {
+            Assertions.assertEquals(WebPubSubClientState.CONNECTING, asyncClient.getClientState());
+        });
         startMono.and(verifyMono).block();
 
-        asyncClient.stop().doOnSuccess(ignored ->
-            Assertions.assertEquals(WebPubSubClientState.STOPPED, asyncClient.getClientState())).block();
+        asyncClient.stop().doOnSuccess(ignored -> {
+            Assertions.assertEquals(WebPubSubClientState.STOPPED, asyncClient.getClientState());
+        }).block();
 
         asyncClient.start().block();
         Assertions.assertEquals(WebPubSubClientState.CONNECTED, asyncClient.getClientState());
@@ -67,7 +70,9 @@ public class ClientTests extends TestBase {
         WebPubSubClient client1 = getClientBuilder("user1")
             .buildClient();
 
-        client1.addOnGroupMessageEventHandler(event -> latch.countDown());
+        client1.addOnGroupMessageEventHandler(event -> {
+            latch.countDown();
+        });
 
         WebPubSubClient client2 = getClientBuilder("user2")
             .buildClient();
@@ -102,8 +107,12 @@ public class ClientTests extends TestBase {
                 stoppedEventReceived.set(true);
                 stoppedLatch.countDown();
             });
-            client.addOnConnectedEventHandler(connectedEvent -> connectedLatch.countDown());
-            client.addOnDisconnectedEventHandler(disconnectedEvent -> disconnectedEventReceived.set(true));
+            client.addOnConnectedEventHandler(connectedEvent -> {
+                connectedLatch.countDown();
+            });
+            client.addOnDisconnectedEventHandler(disconnectedEvent -> {
+                disconnectedEventReceived.set(true);
+            });
 
             client.start();
 
@@ -233,16 +242,20 @@ public class ClientTests extends TestBase {
     @Test
     @LiveOnly
     public void testNoCredential() {
-        Assertions.assertThrows(IllegalStateException.class, () -> new WebPubSubClientBuilder().buildClient());
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            WebPubSubClient client = new WebPubSubClientBuilder().buildClient();
+        });
     }
 
     @Test
     @LiveOnly
     public void testBothCredential() {
-        Assertions.assertThrows(IllegalStateException.class, () -> new WebPubSubClientBuilder()
-            .credential(new WebPubSubClientCredential(() -> "mock"))
-            .clientAccessUrl("mock")
-            .buildClient());
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            WebPubSubClient client = new WebPubSubClientBuilder()
+                .credential(new WebPubSubClientCredential(() -> "mock"))
+                .clientAccessUrl("mock")
+                .buildClient();
+        });
     }
 
     @Test

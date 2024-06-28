@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The Storage Mover resource.
- */
+/** The Storage Mover resource. */
 @Fluent
 public final class StorageMoverUpdateParameters {
     /*
@@ -28,15 +26,13 @@ public final class StorageMoverUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /**
-     * Creates an instance of StorageMoverUpdateParameters class.
-     */
+    /** Creates an instance of StorageMoverUpdateParameters class. */
     public StorageMoverUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The resource specific properties for the Storage Mover resource.
-     * 
+     *
      * @return the innerProperties value.
      */
     private StorageMoverUpdateProperties innerProperties() {
@@ -45,7 +41,7 @@ public final class StorageMoverUpdateParameters {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -54,7 +50,7 @@ public final class StorageMoverUpdateParameters {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the StorageMoverUpdateParameters object itself.
      */
@@ -65,7 +61,7 @@ public final class StorageMoverUpdateParameters {
 
     /**
      * Get the description property: A description for the Storage Mover.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -74,7 +70,7 @@ public final class StorageMoverUpdateParameters {
 
     /**
      * Set the description property: A description for the Storage Mover.
-     * 
+     *
      * @param description the description value to set.
      * @return the StorageMoverUpdateParameters object itself.
      */
@@ -88,7 +84,7 @@ public final class StorageMoverUpdateParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

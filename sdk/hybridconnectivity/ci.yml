@@ -39,6 +39,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: hybridconnectivity
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-hybridconnectivity
         groupId: com.azure.resourcemanager

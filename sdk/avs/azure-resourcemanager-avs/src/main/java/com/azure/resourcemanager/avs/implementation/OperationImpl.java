@@ -5,10 +5,9 @@
 package com.azure.resourcemanager.avs.implementation;
 
 import com.azure.resourcemanager.avs.fluent.models.OperationInner;
-import com.azure.resourcemanager.avs.models.ActionType;
 import com.azure.resourcemanager.avs.models.Operation;
 import com.azure.resourcemanager.avs.models.OperationDisplay;
-import com.azure.resourcemanager.avs.models.Origin;
+import com.azure.resourcemanager.avs.models.OperationProperties;
 
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
@@ -24,20 +23,20 @@ public final class OperationImpl implements Operation {
         return this.innerModel().name();
     }
 
-    public Boolean isDataAction() {
-        return this.innerModel().isDataAction();
-    }
-
     public OperationDisplay display() {
         return this.innerModel().display();
     }
 
-    public Origin origin() {
+    public Boolean isDataAction() {
+        return this.innerModel().isDataAction();
+    }
+
+    public String origin() {
         return this.innerModel().origin();
     }
 
-    public ActionType actionType() {
-        return this.innerModel().actionType();
+    public OperationProperties properties() {
+        return this.innerModel().properties();
     }
 
     public OperationInner innerModel() {

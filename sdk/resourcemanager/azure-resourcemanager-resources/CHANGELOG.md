@@ -1,16 +1,6 @@
 # Release History
 
-## 2.41.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 2.40.0 (2024-06-24)
+## 2.40.0-beta.1 (Unreleased)
 
 ### Features Added
 

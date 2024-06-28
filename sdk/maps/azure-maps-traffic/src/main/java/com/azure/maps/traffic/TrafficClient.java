@@ -9,17 +9,19 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.maps.traffic.implementation.models.ErrorResponseException;
 import com.azure.maps.traffic.models.TrafficFlowSegmentData;
+import com.azure.maps.traffic.models.TrafficIncidentDetail;
+import com.azure.maps.traffic.models.TrafficIncidentViewport;
 import com.azure.maps.traffic.models.TrafficFlowSegmentOptions;
 import com.azure.maps.traffic.models.TrafficFlowTileOptions;
-import com.azure.maps.traffic.models.TrafficIncidentDetail;
 import com.azure.maps.traffic.models.TrafficIncidentDetailOptions;
 import com.azure.maps.traffic.models.TrafficIncidentTileOptions;
-import com.azure.maps.traffic.models.TrafficIncidentViewport;
 import com.azure.maps.traffic.models.TrafficIncidentViewportOptions;
 
 /** Initializes a new instance of the synchronous TrafficClient type.
@@ -44,6 +46,8 @@ import com.azure.maps.traffic.models.TrafficIncidentViewportOptions;
 public final class TrafficClient {
      /**
      * Initializes an instance of TrafficClient client.
+     *
+     * @param asyncClient the service client implementation.
      */
     private final TrafficAsyncClient asyncClient;
 
@@ -124,7 +128,12 @@ public final class TrafficClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTrafficFlowTileWithResponse(TrafficFlowTileOptions options, Context context) {
-        return this.asyncClient.getTrafficFlowTileWithResponse(options, context).block();
+        StreamResponse response = this.asyncClient.getTrafficFlowTileWithResponse(options, context).block();
+        if (response != null) {
+            return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), BinaryData.fromFlux(response.getValue()).block());
+        } else {
+            throw LOGGER.logExceptionAsError(new NullPointerException("Response is null"));
+        }
     }
 
     /**
@@ -194,8 +203,7 @@ public final class TrafficClient {
      * @return the response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TrafficFlowSegmentData> getTrafficFlowSegmentWithResponse(TrafficFlowSegmentOptions options,
-        Context context) {
+    public Response<TrafficFlowSegmentData> getTrafficFlowSegmentWithResponse(TrafficFlowSegmentOptions options, Context context) {
         return this.asyncClient.getTrafficFlowSegmentWithResponse(options, context).block();
     }
 
@@ -263,9 +271,13 @@ public final class TrafficClient {
      * @return the response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTrafficIncidentTileWithResponse(TrafficIncidentTileOptions options,
-        Context context) {
-        return this.asyncClient.getTrafficIncidentTileWithResponse(options, context).block();
+    public Response<BinaryData> getTrafficIncidentTileWithResponse(TrafficIncidentTileOptions options, Context context) {
+        StreamResponse response = this.asyncClient.getTrafficIncidentTileWithResponse(options, context).block();
+        if (response != null) {
+            return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), BinaryData.fromFlux(response.getValue()).block());
+        } else {
+            throw LOGGER.logExceptionAsError(new NullPointerException("Response is null"));
+        }
     }
 
     /**
@@ -343,8 +355,7 @@ public final class TrafficClient {
      * @return the response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TrafficIncidentDetail> getTrafficIncidentDetailWithResponse(TrafficIncidentDetailOptions options,
-        Context context) {
+    public Response<TrafficIncidentDetail> getTrafficIncidentDetailWithResponse(TrafficIncidentDetailOptions options, Context context) {
         return this.asyncClient.getTrafficIncidentDetailWithResponse(options, context).block();
     }
 
@@ -419,8 +430,7 @@ public final class TrafficClient {
      * @return the response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TrafficIncidentViewport> getTrafficIncidentViewportWithResponse(
-        TrafficIncidentViewportOptions options, Context context) {
+    public Response<TrafficIncidentViewport> getTrafficIncidentViewportWithResponse(TrafficIncidentViewportOptions options, Context context) {
         return this.asyncClient.getTrafficIncidentViewportWithResponse(options, context).block();
     }
 }

@@ -145,8 +145,9 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Matrix call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RouteMatrixResult, RouteMatrixResult> beginGetRouteMatrix(RouteMatrixOptions options,
-        Context context) {
+    public SyncPoller<RouteMatrixResult, RouteMatrixResult> beginGetRouteMatrix(
+            RouteMatrixOptions options,
+            Context context) {
         return this.asyncClient.beginGetRouteMatrix(options, context).getSyncPoller();
     }
 
@@ -227,7 +228,8 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouteDirections> getRouteDirectionsWithResponse(RouteDirectionsOptions options, Context context) {
+    public Response<RouteDirections> getRouteDirectionsWithResponse(
+            RouteDirectionsOptions options, Context context) {
         return this.asyncClient.getRouteDirectionsWithContextWithResponse(options, context).block();
     }
 
@@ -282,7 +284,8 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteDirections getRouteDirections(RouteDirectionsOptions options, RouteDirectionsParameters parameters) {
+    public RouteDirections getRouteDirections(
+            RouteDirectionsOptions options, RouteDirectionsParameters parameters) {
         return this.asyncClient.getRouteDirections(options, parameters).block();
     }
 
@@ -338,8 +341,8 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouteDirections> getRouteDirectionsWithResponse(RouteDirectionsOptions options,
-        RouteDirectionsParameters parameters, Context context) {
+    public Response<RouteDirections> getRouteDirectionsWithResponse(
+            RouteDirectionsOptions options, RouteDirectionsParameters parameters, Context context) {
         return this.asyncClient.getRouteDirectionsWithParametersWithResponse(
             options, parameters, context).block();
     }
@@ -383,7 +386,8 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Range call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouteRangeResult> getRouteRangeWithResponse(RouteRangeOptions options, Context context) {
+    public Response<RouteRangeResult> getRouteRangeWithResponse(
+            RouteRangeOptions options, Context context) {
         return this.asyncClient.getRouteRangeWithResponse(options, context).block();
     }
 
@@ -428,8 +432,7 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginRequestRouteDirectionsBatch(
-        List<RouteDirectionsOptions> optionsList) {
+    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginRequestRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList) {
         return this.beginRequestRouteDirectionsBatch(optionsList, null);
     }
 
@@ -475,8 +478,7 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginRequestRouteDirectionsBatch(
-        List<RouteDirectionsOptions> optionsList, Context context) {
+    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginRequestRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList, Context context) {
         return this.asyncClient
             .beginRequestRouteDirectionsBatch(optionsList, context).getSyncPoller();
     }
@@ -492,7 +494,7 @@ public final class MapsRouteClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginGetRouteDirectionsBatch(
-        String batchId) {
+            String batchId) {
         return this.beginGetRouteDirectionsBatch(batchId, null);
     }
 
@@ -508,7 +510,7 @@ public final class MapsRouteClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginGetRouteDirectionsBatch(
-        String batchId, Context context) {
+            String batchId, Context context) {
         return this.asyncClient.beginGetRouteDirectionsBatch(batchId, context).getSyncPoller();
     }
 }

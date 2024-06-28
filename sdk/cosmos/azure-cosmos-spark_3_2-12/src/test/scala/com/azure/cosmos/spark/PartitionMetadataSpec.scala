@@ -34,8 +34,7 @@ class PartitionMetadataSpec extends UnitSpec {
     tenantId = None,
     resourceGroupName = None,
     azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-    sparkEnvironmentInfo = "",
-    clientBuilderInterceptors = None
+    sparkEnvironmentInfo = ""
   )
 
   private[this] val contCfg = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -79,8 +78,7 @@ class PartitionMetadataSpec extends UnitSpec {
       tenantId = None,
       resourceGroupName = None,
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-      sparkEnvironmentInfo = "",
-      clientBuilderInterceptors = None
+      sparkEnvironmentInfo = ""
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -163,8 +161,7 @@ class PartitionMetadataSpec extends UnitSpec {
       tenantId = None,
       resourceGroupName = None,
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-      sparkEnvironmentInfo = "",
-      clientBuilderInterceptors = None
+      sparkEnvironmentInfo = ""
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -247,8 +244,7 @@ class PartitionMetadataSpec extends UnitSpec {
       tenantId = None,
       resourceGroupName = None,
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-      sparkEnvironmentInfo = "",
-      clientBuilderInterceptors = None
+      sparkEnvironmentInfo = ""
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -313,8 +309,7 @@ class PartitionMetadataSpec extends UnitSpec {
       tenantId = None,
       resourceGroupName = None,
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-      sparkEnvironmentInfo = "",
-      clientBuilderInterceptors = None
+      sparkEnvironmentInfo = ""
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -374,8 +369,7 @@ class PartitionMetadataSpec extends UnitSpec {
       tenantId = None,
       resourceGroupName = None,
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-      sparkEnvironmentInfo = "",
-      clientBuilderInterceptors = None
+      sparkEnvironmentInfo = ""
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -429,8 +423,7 @@ class PartitionMetadataSpec extends UnitSpec {
       tenantId = None,
       resourceGroupName = None,
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-      sparkEnvironmentInfo = "",
-      clientBuilderInterceptors = None
+      sparkEnvironmentInfo = ""
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -484,8 +477,7 @@ class PartitionMetadataSpec extends UnitSpec {
       tenantId = None,
       resourceGroupName = None,
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-      sparkEnvironmentInfo = "",
-      clientBuilderInterceptors = None
+      sparkEnvironmentInfo = ""
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -539,8 +531,7 @@ class PartitionMetadataSpec extends UnitSpec {
       tenantId = None,
       resourceGroupName = None,
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-      sparkEnvironmentInfo = "",
-      clientBuilderInterceptors = None
+      sparkEnvironmentInfo = ""
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -594,8 +585,7 @@ class PartitionMetadataSpec extends UnitSpec {
       tenantId = None,
       resourceGroupName = None,
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-      sparkEnvironmentInfo = "",
-      clientBuilderInterceptors = None
+      sparkEnvironmentInfo = ""
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -649,8 +639,7 @@ class PartitionMetadataSpec extends UnitSpec {
       tenantId = None,
       resourceGroupName = None,
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-      sparkEnvironmentInfo = "",
-      clientBuilderInterceptors = None
+      sparkEnvironmentInfo = ""
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -721,8 +710,7 @@ class PartitionMetadataSpec extends UnitSpec {
       tenantId = None,
       resourceGroupName = None,
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-      sparkEnvironmentInfo = "",
-      clientBuilderInterceptors = None
+      sparkEnvironmentInfo = ""
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)

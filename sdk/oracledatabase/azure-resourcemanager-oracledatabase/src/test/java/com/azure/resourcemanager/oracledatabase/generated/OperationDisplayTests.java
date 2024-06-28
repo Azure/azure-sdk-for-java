@@ -14,4 +14,10 @@ public final class OperationDisplayTests {
             "{\"provider\":\"yrtih\",\"resource\":\"tijbpzvgnwzsymgl\",\"operation\":\"fcyzkohdbihanufh\",\"description\":\"bj\"}")
             .toObject(OperationDisplay.class);
     }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OperationDisplay model = new OperationDisplay();
+        model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
+    }
 }

@@ -5,45 +5,39 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Managed service identity (either system assigned, or none).
- */
+/** Identity for the virtual machine. */
 @Fluent
-public final class PrivateCloudIdentity implements JsonSerializable<PrivateCloudIdentity> {
+public final class PrivateCloudIdentity {
     /*
-     * The service principal ID of the system assigned identity. This property will only be provided for a system
-     * assigned identity.
+     * The principal ID of private cloud identity. This property will only be provided for a system assigned identity.
      */
+    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The tenant ID of the system assigned identity. This property will only be provided for a system assigned
+     * The tenant ID associated with the private cloud. This property will only be provided for a system assigned
      * identity.
      */
+    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * Type of managed service identity (either system assigned, or none).
+     * The type of identity used for the private cloud. The type 'SystemAssigned' refers to an implicitly created
+     * identity. The type 'None' will remove any identities from the Private Cloud.
      */
+    @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
-    /**
-     * Creates an instance of PrivateCloudIdentity class.
-     */
+    /** Creates an instance of PrivateCloudIdentity class. */
     public PrivateCloudIdentity() {
     }
 
     /**
-     * Get the principalId property: The service principal ID of the system assigned identity. This property will only
-     * be provided for a system assigned identity.
-     * 
+     * Get the principalId property: The principal ID of private cloud identity. This property will only be provided for
+     * a system assigned identity.
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -51,9 +45,9 @@ public final class PrivateCloudIdentity implements JsonSerializable<PrivateCloud
     }
 
     /**
-     * Get the tenantId property: The tenant ID of the system assigned identity. This property will only be provided for
-     * a system assigned identity.
-     * 
+     * Get the tenantId property: The tenant ID associated with the private cloud. This property will only be provided
+     * for a system assigned identity.
+     *
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -61,8 +55,9 @@ public final class PrivateCloudIdentity implements JsonSerializable<PrivateCloud
     }
 
     /**
-     * Get the type property: Type of managed service identity (either system assigned, or none).
-     * 
+     * Get the type property: The type of identity used for the private cloud. The type 'SystemAssigned' refers to an
+     * implicitly created identity. The type 'None' will remove any identities from the Private Cloud.
+     *
      * @return the type value.
      */
     public ResourceIdentityType type() {
@@ -70,8 +65,9 @@ public final class PrivateCloudIdentity implements JsonSerializable<PrivateCloud
     }
 
     /**
-     * Set the type property: Type of managed service identity (either system assigned, or none).
-     * 
+     * Set the type property: The type of identity used for the private cloud. The type 'SystemAssigned' refers to an
+     * implicitly created identity. The type 'None' will remove any identities from the Private Cloud.
+     *
      * @param type the type value to set.
      * @return the PrivateCloudIdentity object itself.
      */
@@ -82,56 +78,9 @@ public final class PrivateCloudIdentity implements JsonSerializable<PrivateCloud
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (type() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property type in model PrivateCloudIdentity"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(PrivateCloudIdentity.class);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PrivateCloudIdentity from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PrivateCloudIdentity if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PrivateCloudIdentity.
-     */
-    public static PrivateCloudIdentity fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PrivateCloudIdentity deserializedPrivateCloudIdentity = new PrivateCloudIdentity();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("type".equals(fieldName)) {
-                    deserializedPrivateCloudIdentity.type = ResourceIdentityType.fromString(reader.getString());
-                } else if ("principalId".equals(fieldName)) {
-                    deserializedPrivateCloudIdentity.principalId = reader.getString();
-                } else if ("tenantId".equals(fieldName)) {
-                    deserializedPrivateCloudIdentity.tenantId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedPrivateCloudIdentity;
-        });
     }
 }

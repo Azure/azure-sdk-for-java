@@ -5,48 +5,19 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * The NfsMountEndpointUpdateProperties model.
- */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "endpointType",
-    defaultImpl = NfsMountEndpointUpdateProperties.class,
-    visible = true)
+/** The NfsMountEndpointUpdateProperties model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
 @JsonTypeName("NfsMount")
 @Fluent
 public final class NfsMountEndpointUpdateProperties extends EndpointBaseUpdateProperties {
-    /*
-     * The Endpoint resource type.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "endpointType", required = true)
-    private EndpointType endpointType = EndpointType.NFS_MOUNT;
-
-    /**
-     * Creates an instance of NfsMountEndpointUpdateProperties class.
-     */
+    /** Creates an instance of NfsMountEndpointUpdateProperties class. */
     public NfsMountEndpointUpdateProperties() {
     }
 
-    /**
-     * Get the endpointType property: The Endpoint resource type.
-     * 
-     * @return the endpointType value.
-     */
-    @Override
-    public EndpointType endpointType() {
-        return this.endpointType;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public NfsMountEndpointUpdateProperties withDescription(String description) {
         super.withDescription(description);
@@ -55,7 +26,7 @@ public final class NfsMountEndpointUpdateProperties extends EndpointBaseUpdatePr
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
