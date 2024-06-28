@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkloadNetworkSegmentPortVifTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadNetworkSegmentPortVif model =
-            BinaryData.fromString("{\"portName\":\"cvokotllxdyhg\"}").toObject(WorkloadNetworkSegmentPortVif.class);
-        Assertions.assertEquals("cvokotllxdyhg", model.portName());
+        WorkloadNetworkSegmentPortVif model
+            = BinaryData.fromString("{\"portName\":\"bgj\"}").toObject(WorkloadNetworkSegmentPortVif.class);
+        Assertions.assertEquals("bgj", model.portName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkSegmentPortVif model = new WorkloadNetworkSegmentPortVif().withPortName("cvokotllxdyhg");
+        WorkloadNetworkSegmentPortVif model = new WorkloadNetworkSegmentPortVif().withPortName("bgj");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkSegmentPortVif.class);
-        Assertions.assertEquals("cvokotllxdyhg", model.portName());
+        Assertions.assertEquals("bgj", model.portName());
     }
 }

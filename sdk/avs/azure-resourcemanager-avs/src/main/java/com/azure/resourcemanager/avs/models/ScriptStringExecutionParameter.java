@@ -5,28 +5,45 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** a plain text value execution parameter. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Value")
+/**
+ * a plain text value execution parameter.
+ */
 @Fluent
 public final class ScriptStringExecutionParameter extends ScriptExecutionParameter {
     /*
+     * script execution parameter type
+     */
+    private ScriptExecutionParameterType type = ScriptExecutionParameterType.VALUE;
+
+    /*
      * The value for the passed parameter
      */
-    @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of ScriptStringExecutionParameter class. */
+    /**
+     * Creates an instance of ScriptStringExecutionParameter class.
+     */
     public ScriptStringExecutionParameter() {
     }
 
     /**
+     * Get the type property: script execution parameter type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public ScriptExecutionParameterType type() {
+        return this.type;
+    }
+
+    /**
      * Get the value property: The value for the passed parameter.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -35,7 +52,7 @@ public final class ScriptStringExecutionParameter extends ScriptExecutionParamet
 
     /**
      * Set the value property: The value for the passed parameter.
-     *
+     * 
      * @param value the value value to set.
      * @return the ScriptStringExecutionParameter object itself.
      */
@@ -44,7 +61,9 @@ public final class ScriptStringExecutionParameter extends ScriptExecutionParamet
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptStringExecutionParameter withName(String name) {
         super.withName(name);
@@ -53,11 +72,56 @@ public final class ScriptStringExecutionParameter extends ScriptExecutionParamet
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptStringExecutionParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptStringExecutionParameter if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScriptStringExecutionParameter.
+     */
+    public static ScriptStringExecutionParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptStringExecutionParameter deserializedScriptStringExecutionParameter
+                = new ScriptStringExecutionParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedScriptStringExecutionParameter.withName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedScriptStringExecutionParameter.type
+                        = ScriptExecutionParameterType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedScriptStringExecutionParameter.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptStringExecutionParameter;
+        });
     }
 }

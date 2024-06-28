@@ -15,91 +15,90 @@ import com.azure.resourcemanager.avs.fluent.models.ScriptExecutionInner;
 import com.azure.resourcemanager.avs.models.ScriptOutputStreamType;
 import java.util.List;
 
-/** An instance of this class provides access to all the operations defined in ScriptExecutionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ScriptExecutionsClient.
+ */
 public interface ScriptExecutionsClient {
     /**
-     * List script executions in a private cloud.
-     *
+     * List ScriptExecution resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of script executions as paginated response with {@link PagedIterable}.
+     * @return the response of a ScriptExecution list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScriptExecutionInner> list(String resourceGroupName, String privateCloudName);
 
     /**
-     * List script executions in a private cloud.
-     *
+     * List ScriptExecution resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of script executions as paginated response with {@link PagedIterable}.
+     * @return the response of a ScriptExecution list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScriptExecutionInner> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
-     * Get an script execution by name in a private cloud.
-     *
+     * Get a ScriptExecution.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the user-invoked script execution resource.
+     * @param scriptExecutionName Name of the script cmdlet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an script execution by name in a private cloud along with {@link Response}.
+     * @return a ScriptExecution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScriptExecutionInner> getWithResponse(
-        String resourceGroupName, String privateCloudName, String scriptExecutionName, Context context);
+    Response<ScriptExecutionInner> getWithResponse(String resourceGroupName, String privateCloudName,
+        String scriptExecutionName, Context context);
 
     /**
-     * Get an script execution by name in a private cloud.
-     *
+     * Get a ScriptExecution.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the user-invoked script execution resource.
+     * @param scriptExecutionName Name of the script cmdlet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an script execution by name in a private cloud.
+     * @return a ScriptExecution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ScriptExecutionInner get(String resourceGroupName, String privateCloudName, String scriptExecutionName);
 
     /**
-     * Create or update a script execution in a private cloud.
-     *
+     * Create a ScriptExecution.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param scriptExecutionName Name of the user-invoked script execution resource.
-     * @param scriptExecution A script running in the private cloud.
+     * @param privateCloudName Name of the private cloud.
+     * @param scriptExecutionName Name of the script cmdlet.
+     * @param scriptExecution Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an instance of a script executed by a user - custom or AVS.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ScriptExecutionInner>, ScriptExecutionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String scriptExecutionName,
-        ScriptExecutionInner scriptExecution);
+    SyncPoller<PollResult<ScriptExecutionInner>, ScriptExecutionInner> beginCreateOrUpdate(String resourceGroupName,
+        String privateCloudName, String scriptExecutionName, ScriptExecutionInner scriptExecution);
 
     /**
-     * Create or update a script execution in a private cloud.
-     *
+     * Create a ScriptExecution.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param scriptExecutionName Name of the user-invoked script execution resource.
-     * @param scriptExecution A script running in the private cloud.
+     * @param privateCloudName Name of the private cloud.
+     * @param scriptExecutionName Name of the script cmdlet.
+     * @param scriptExecution Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,39 +106,32 @@ public interface ScriptExecutionsClient {
      * @return the {@link SyncPoller} for polling of an instance of a script executed by a user - custom or AVS.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ScriptExecutionInner>, ScriptExecutionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String scriptExecutionName,
-        ScriptExecutionInner scriptExecution,
-        Context context);
+    SyncPoller<PollResult<ScriptExecutionInner>, ScriptExecutionInner> beginCreateOrUpdate(String resourceGroupName,
+        String privateCloudName, String scriptExecutionName, ScriptExecutionInner scriptExecution, Context context);
 
     /**
-     * Create or update a script execution in a private cloud.
-     *
+     * Create a ScriptExecution.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param scriptExecutionName Name of the user-invoked script execution resource.
-     * @param scriptExecution A script running in the private cloud.
+     * @param privateCloudName Name of the private cloud.
+     * @param scriptExecutionName Name of the script cmdlet.
+     * @param scriptExecution Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an instance of a script executed by a user - custom or AVS.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScriptExecutionInner createOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String scriptExecutionName,
+    ScriptExecutionInner createOrUpdate(String resourceGroupName, String privateCloudName, String scriptExecutionName,
         ScriptExecutionInner scriptExecution);
 
     /**
-     * Create or update a script execution in a private cloud.
-     *
+     * Create a ScriptExecution.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param scriptExecutionName Name of the user-invoked script execution resource.
-     * @param scriptExecution A script running in the private cloud.
+     * @param privateCloudName Name of the private cloud.
+     * @param scriptExecutionName Name of the script cmdlet.
+     * @param scriptExecution Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -147,34 +139,30 @@ public interface ScriptExecutionsClient {
      * @return an instance of a script executed by a user - custom or AVS.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScriptExecutionInner createOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String scriptExecutionName,
-        ScriptExecutionInner scriptExecution,
-        Context context);
+    ScriptExecutionInner createOrUpdate(String resourceGroupName, String privateCloudName, String scriptExecutionName,
+        ScriptExecutionInner scriptExecution, Context context);
 
     /**
-     * Cancel a ScriptExecution in a private cloud.
-     *
+     * Delete a ScriptExecution.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the user-invoked script execution resource.
+     * @param scriptExecutionName Name of the script cmdlet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateCloudName, String scriptExecutionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
+        String scriptExecutionName);
 
     /**
-     * Cancel a ScriptExecution in a private cloud.
-     *
+     * Delete a ScriptExecution.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the user-invoked script execution resource.
+     * @param scriptExecutionName Name of the script cmdlet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -182,15 +170,15 @@ public interface ScriptExecutionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateCloudName, String scriptExecutionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
+        String scriptExecutionName, Context context);
 
     /**
-     * Cancel a ScriptExecution in a private cloud.
-     *
+     * Delete a ScriptExecution.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the user-invoked script execution resource.
+     * @param scriptExecutionName Name of the script cmdlet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -199,11 +187,11 @@ public interface ScriptExecutionsClient {
     void delete(String resourceGroupName, String privateCloudName, String scriptExecutionName);
 
     /**
-     * Cancel a ScriptExecution in a private cloud.
-     *
+     * Delete a ScriptExecution.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the user-invoked script execution resource.
+     * @param scriptExecutionName Name of the script cmdlet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -214,12 +202,12 @@ public interface ScriptExecutionsClient {
 
     /**
      * Return the logs for a script execution resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the user-invoked script execution resource.
+     * @param scriptExecutionName Name of the script cmdlet.
      * @param scriptOutputStreamType Name of the desired output stream to return. If not provided, will return all. An
-     *     empty array will return nothing.
+     * empty array will return nothing.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -227,25 +215,21 @@ public interface ScriptExecutionsClient {
      * @return an instance of a script executed by a user - custom or AVS along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScriptExecutionInner> getExecutionLogsWithResponse(
-        String resourceGroupName,
-        String privateCloudName,
-        String scriptExecutionName,
-        List<ScriptOutputStreamType> scriptOutputStreamType,
-        Context context);
+    Response<ScriptExecutionInner> getExecutionLogsWithResponse(String resourceGroupName, String privateCloudName,
+        String scriptExecutionName, List<ScriptOutputStreamType> scriptOutputStreamType, Context context);
 
     /**
      * Return the logs for a script execution resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptExecutionName Name of the user-invoked script execution resource.
+     * @param scriptExecutionName Name of the script cmdlet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an instance of a script executed by a user - custom or AVS.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScriptExecutionInner getExecutionLogs(
-        String resourceGroupName, String privateCloudName, String scriptExecutionName);
+    ScriptExecutionInner getExecutionLogs(String resourceGroupName, String privateCloudName,
+        String scriptExecutionName);
 }

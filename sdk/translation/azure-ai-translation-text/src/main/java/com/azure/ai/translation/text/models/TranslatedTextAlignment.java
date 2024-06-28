@@ -5,14 +5,17 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Alignment information object.
  */
 @Immutable
-public final class TranslatedTextAlignment {
+public final class TranslatedTextAlignment implements JsonSerializable<TranslatedTextAlignment> {
 
     /*
      * Maps input text to translated text. The alignment information is only provided when the request
@@ -23,7 +26,6 @@ public final class TranslatedTextAlignment {
      * be non-contiguous. When no alignment information is available, the alignment element will be empty.
      */
     @Generated
-    @JsonProperty(value = "proj")
     private final String projections;
 
     /**
@@ -32,8 +34,7 @@ public final class TranslatedTextAlignment {
      * @param projections the projections value to set.
      */
     @Generated
-    @JsonCreator
-    private TranslatedTextAlignment(@JsonProperty(value = "proj") String projections) {
+    private TranslatedTextAlignment(String projections) {
         this.projections = projections;
     }
 
@@ -51,5 +52,42 @@ public final class TranslatedTextAlignment {
     @Generated
     public String getProjections() {
         return this.projections;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("proj", this.projections);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TranslatedTextAlignment from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TranslatedTextAlignment if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TranslatedTextAlignment.
+     */
+    @Generated
+    public static TranslatedTextAlignment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String projections = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("proj".equals(fieldName)) {
+                    projections = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new TranslatedTextAlignment(projections);
+        });
     }
 }

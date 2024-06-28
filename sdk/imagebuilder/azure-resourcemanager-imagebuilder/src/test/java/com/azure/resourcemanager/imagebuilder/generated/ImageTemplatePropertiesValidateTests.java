@@ -24,7 +24,8 @@ public final class ImageTemplatePropertiesValidateTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ImageTemplatePropertiesValidate model
-            = new ImageTemplatePropertiesValidate().withContinueDistributeOnFailure(true).withSourceValidationOnly(true)
+            = new ImageTemplatePropertiesValidate().withContinueDistributeOnFailure(true)
+                .withSourceValidationOnly(true)
                 .withInVMValidations(Arrays.asList(new ImageTemplateInVMValidator().withName("zxtheotusivyevcc"),
                     new ImageTemplateInVMValidator().withName("ihnhun")));
         model = BinaryData.fromObject(model).toObject(ImageTemplatePropertiesValidate.class);
