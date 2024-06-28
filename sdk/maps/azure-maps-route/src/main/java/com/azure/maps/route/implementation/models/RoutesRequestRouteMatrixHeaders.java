@@ -5,20 +5,32 @@
 package com.azure.maps.route.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The RoutesRequestRouteMatrixHeaders model. */
+/**
+ * The RoutesRequestRouteMatrixHeaders model.
+ */
 @Fluent
 public final class RoutesRequestRouteMatrixHeaders {
     /*
      * The Location property.
      */
-    @JsonProperty(value = "Location")
     private String location;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of RoutesRequestRouteMatrixHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public RoutesRequestRouteMatrixHeaders(HttpHeaders rawHeaders) {
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
+    }
 
     /**
      * Get the location property: The Location property.
-     *
+     * 
      * @return the location value.
      */
     public String getLocation() {
@@ -27,7 +39,7 @@ public final class RoutesRequestRouteMatrixHeaders {
 
     /**
      * Set the location property: The Location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the RoutesRequestRouteMatrixHeaders object itself.
      */
