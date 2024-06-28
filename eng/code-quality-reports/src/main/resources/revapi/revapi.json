@@ -478,6 +478,13 @@
           "old" : ".*? com\\.azure\\.messaging\\.webpubsub\\.client\\.models.*",
           "new" : ".*? com\\.azure\\.messaging\\.webpubsub\\.client\\.models.*",
           "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.ai\\.translation\\.text\\.models.*",
+          "new" : ".*? com\\.azure\\.ai\\.translation\\.text\\.models.*",
+          "justification": "Migration to azure-json"
         }
       ]
     }

@@ -5,80 +5,72 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Route sections contain additional information about parts of a route. Each section contains at least the elements
  * `startPointIndex`, `endPointIndex`, and `sectionType`.
  */
 @Fluent
-public final class RouteSection {
+public final class RouteSection implements JsonSerializable<RouteSection> {
     /*
-     * Index of the first point (offset 0) in the route this section applies
-     * to.
+     * Index of the first point (offset 0) in the route this section applies to.
      */
-    @JsonProperty(value = "startPointIndex", access = JsonProperty.Access.WRITE_ONLY)
     private Integer startPointIndex;
 
     /*
      * Index of the last point (offset 0) in the route this section applies to.
      */
-    @JsonProperty(value = "endPointIndex", access = JsonProperty.Access.WRITE_ONLY)
     private Integer endPointIndex;
 
     /*
      * Section types of the reported route response
      */
-    @JsonProperty(value = "sectionType", access = JsonProperty.Access.WRITE_ONLY)
     private RouteSectionType sectionType;
 
     /*
-     * Travel mode for the calculated route. The value will be set to `other`
-     * if the requested mode of transport is not possible in this section
+     * Travel mode for the calculated route. The value will be set to `other` if the requested mode of transport is not possible in this section
      */
-    @JsonProperty(value = "travelMode", access = JsonProperty.Access.WRITE_ONLY)
     private RouteTravelMode travelMode;
 
     /*
-     * Type of the incident. Can currently be JAM, ROAD_WORK, ROAD_CLOSURE, or
-     * OTHER. See "tec" for detailed information.
+     * Type of the incident. Can currently be JAM, ROAD_WORK, ROAD_CLOSURE, or OTHER. See "tec" for detailed information.
      */
-    @JsonProperty(value = "simpleCategory", access = JsonProperty.Access.WRITE_ONLY)
     private RouteDelayReason simpleCategory;
 
     /*
-     * Effective speed of the incident in km/h, averaged over its entire
-     * length.
+     * Effective speed of the incident in km/h, averaged over its entire length.
      */
-    @JsonProperty(value = "effectiveSpeedInKmh", access = JsonProperty.Access.WRITE_ONLY)
     private Integer effectiveSpeedInKmh;
 
     /*
      * Delay in seconds caused by the incident.
      */
-    @JsonProperty(value = "delayInSeconds", access = JsonProperty.Access.WRITE_ONLY)
     private Integer delayInSeconds;
 
     /*
-     * The magnitude of delay caused by the incident. These values correspond
-     * to the values of the response field ty of the [Get Traffic Incident
-     * Detail
-     * API](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentdetail).
+     * The magnitude of delay caused by the incident. These values correspond to the values of the response field ty of the [Get Traffic Incident Detail API](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentdetail). 
      */
-    @JsonProperty(value = "magnitudeOfDelay", access = JsonProperty.Access.WRITE_ONLY)
     private DelayMagnitude delayMagnitude;
 
     /*
-     * Details of the traffic event, using definitions in the
-     * [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard. Can
-     * contain effectCode and causes elements.
+     * Details of the traffic event, using definitions in the [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard. Can contain effectCode and causes elements.
      */
-    @JsonProperty(value = "tec")
     private RouteSectionTec tec;
 
     /**
+     * Creates an instance of RouteSection class.
+     */
+    public RouteSection() {
+    }
+
+    /**
      * Get the startPointIndex property: Index of the first point (offset 0) in the route this section applies to.
-     *
+     * 
      * @return the startPointIndex value.
      */
     public Integer getStartPointIndex() {
@@ -87,7 +79,7 @@ public final class RouteSection {
 
     /**
      * Get the endPointIndex property: Index of the last point (offset 0) in the route this section applies to.
-     *
+     * 
      * @return the endPointIndex value.
      */
     public Integer getEndPointIndex() {
@@ -96,7 +88,7 @@ public final class RouteSection {
 
     /**
      * Get the sectionType property: Section types of the reported route response.
-     *
+     * 
      * @return the sectionType value.
      */
     public RouteSectionType getSectionType() {
@@ -106,7 +98,7 @@ public final class RouteSection {
     /**
      * Get the travelMode property: Travel mode for the calculated route. The value will be set to `other` if the
      * requested mode of transport is not possible in this section.
-     *
+     * 
      * @return the travelMode value.
      */
     public RouteTravelMode getTravelMode() {
@@ -116,7 +108,7 @@ public final class RouteSection {
     /**
      * Get the simpleCategory property: Type of the incident. Can currently be JAM, ROAD_WORK, ROAD_CLOSURE, or OTHER.
      * See "tec" for detailed information.
-     *
+     * 
      * @return the simpleCategory value.
      */
     public RouteDelayReason getSimpleCategory() {
@@ -125,7 +117,7 @@ public final class RouteSection {
 
     /**
      * Get the effectiveSpeedInKmh property: Effective speed of the incident in km/h, averaged over its entire length.
-     *
+     * 
      * @return the effectiveSpeedInKmh value.
      */
     public Integer getEffectiveSpeedInKmh() {
@@ -134,7 +126,7 @@ public final class RouteSection {
 
     /**
      * Get the delayInSeconds property: Delay in seconds caused by the incident.
-     *
+     * 
      * @return the delayInSeconds value.
      */
     public Integer getDelayInSeconds() {
@@ -145,7 +137,7 @@ public final class RouteSection {
      * Get the delayMagnitude property: The magnitude of delay caused by the incident. These values correspond to the
      * values of the response field ty of the [Get Traffic Incident Detail
      * API](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentdetail).
-     *
+     * 
      * @return the delayMagnitude value.
      */
     public DelayMagnitude getDelayMagnitude() {
@@ -155,7 +147,7 @@ public final class RouteSection {
     /**
      * Get the tec property: Details of the traffic event, using definitions in the
      * [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard. Can contain effectCode and causes elements.
-     *
+     * 
      * @return the tec value.
      */
     public RouteSectionTec getTec() {
@@ -165,12 +157,64 @@ public final class RouteSection {
     /**
      * Set the tec property: Details of the traffic event, using definitions in the
      * [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard. Can contain effectCode and causes elements.
-     *
+     * 
      * @param tec the tec value to set.
      * @return the RouteSection object itself.
      */
     public RouteSection setTec(RouteSectionTec tec) {
         this.tec = tec;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("tec", this.tec);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteSection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteSection if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteSection.
+     */
+    public static RouteSection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteSection deserializedRouteSection = new RouteSection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startPointIndex".equals(fieldName)) {
+                    deserializedRouteSection.startPointIndex = reader.getNullable(JsonReader::getInt);
+                } else if ("endPointIndex".equals(fieldName)) {
+                    deserializedRouteSection.endPointIndex = reader.getNullable(JsonReader::getInt);
+                } else if ("sectionType".equals(fieldName)) {
+                    deserializedRouteSection.sectionType = RouteSectionType.fromString(reader.getString());
+                } else if ("travelMode".equals(fieldName)) {
+                    deserializedRouteSection.travelMode = RouteTravelMode.fromString(reader.getString());
+                } else if ("simpleCategory".equals(fieldName)) {
+                    deserializedRouteSection.simpleCategory = RouteDelayReason.fromString(reader.getString());
+                } else if ("effectiveSpeedInKmh".equals(fieldName)) {
+                    deserializedRouteSection.effectiveSpeedInKmh = reader.getNullable(JsonReader::getInt);
+                } else if ("delayInSeconds".equals(fieldName)) {
+                    deserializedRouteSection.delayInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("magnitudeOfDelay".equals(fieldName)) {
+                    deserializedRouteSection.delayMagnitude = DelayMagnitude.fromString(reader.getString());
+                } else if ("tec".equals(fieldName)) {
+                    deserializedRouteSection.tec = RouteSectionTec.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteSection;
+        });
     }
 }
