@@ -3,8 +3,6 @@
 
 package com.azure.messaging.webpubsub.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 /**
  * Defines values for ClientEndpointType
  */
