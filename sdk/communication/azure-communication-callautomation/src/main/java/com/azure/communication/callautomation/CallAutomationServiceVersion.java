@@ -21,6 +21,11 @@ public enum CallAutomationServiceVersion implements ServiceVersion {
     V2023_10_15("2023-10-15"),
 
     /**
+     * Service version {@code 2024-04-15}.
+     */
+    V2024_04_15("2024-04-15"),
+
+    /**
      * Service version {@code 2023-10-03-preview}.
      */
     V2023_10_03_PREVIEW("2023-10-03-preview");
