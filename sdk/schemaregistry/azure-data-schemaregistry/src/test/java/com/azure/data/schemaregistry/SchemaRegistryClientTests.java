@@ -3,9 +3,7 @@
 
 package com.azure.data.schemaregistry;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -16,11 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
-
-import java.time.OffsetDateTime;
 
 import static com.azure.data.schemaregistry.Constants.PLAYBACK_TEST_GROUP;
 import static com.azure.data.schemaregistry.Constants.RESOURCE_LENGTH;
@@ -44,22 +38,12 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
     protected void beforeTest() {
         final String endpoint;
         TokenCredential tokenCredential;
-        if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = new TokenCredential() {
-                @Override
-                public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-                    return Mono.fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
-                }
+        tokenCredential = TestUtil.getTestTokenCredential(interceptorManager);
 
-                @Override
-                public AccessToken getTokenSync(TokenRequestContext request) {
-                    return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
-                }
-            };
+        if (interceptorManager.isPlaybackMode()) {
             schemaGroup = PLAYBACK_TEST_GROUP;
             endpoint = "https://foo.servicebus.windows.net";
         } else {
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
             endpoint = System.getenv(Constants.SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE);
             schemaGroup = System.getenv(Constants.SCHEMA_REGISTRY_GROUP);
 

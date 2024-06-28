@@ -6,7 +6,6 @@ package com.azure.data.schemaregistry.apacheavro;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.models.MessageContent;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
@@ -16,7 +15,6 @@ import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCardSuit;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
@@ -44,9 +42,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestProxyTestBase {
     static final String SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE = "SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE";
+    static final String SCHEMA_REGISTRY_AVRO_EVENT_HUB_FULLY_QUALIFIED_NAMESPACE = "SCHEMA_REGISTRY_AVRO_EVENT_HUB_FULLY_QUALIFIED_NAMESPACE";
     static final String SCHEMA_REGISTRY_GROUP = "SCHEMA_REGISTRY_GROUP";
     static final String SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME = "SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME";
-    static final String SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING = "SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING";
 
     // When we regenerate recordings, make sure that the schema group matches what we are persisting.
     static final String PLAYBACK_TEST_GROUP = "azsdk_java_group";
@@ -55,30 +53,29 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestProxy
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
     private String eventHubName;
-    private String connectionString;
+    private TokenCredential tokenCredential;
+
+    private String eventHubQualifiedNameSpace;
 
     @Override
     protected void beforeTest() {
         String endpoint;
-        TokenCredential tokenCredential;
+        tokenCredential = TestUtil.getTestTokenCredential(interceptorManager);
         if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = new MockTokenCredential();
             schemaGroup = PLAYBACK_TEST_GROUP;
 
             endpoint = PLAYBACK_ENDPOINT;
             eventHubName = "javaeventhub";
-            connectionString = "foo-bar";
         } else {
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
             endpoint = System.getenv(SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE);
             eventHubName = System.getenv(SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME);
             schemaGroup = System.getenv(SCHEMA_REGISTRY_GROUP);
-            connectionString = System.getenv(SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING);
+            eventHubQualifiedNameSpace = System.getenv(SCHEMA_REGISTRY_AVRO_EVENT_HUB_FULLY_QUALIFIED_NAMESPACE);
 
             assertNotNull(eventHubName, "'eventHubName' cannot be null in LIVE/RECORD mode.");
             assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
             assertNotNull(schemaGroup, "'schemaGroup' cannot be null in LIVE/RECORD mode.");
-            assertNotNull(connectionString, "'connectionString' cannot be null in LIVE/RECORD mode.");
+            assertNotNull(eventHubQualifiedNameSpace, "'Eventhub' cannot be null in LIVE/RECORD mode.");
         }
 
         builder = new SchemaRegistryClientBuilder()
@@ -154,6 +151,7 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestProxy
         Assumptions.assumeFalse(interceptorManager.isPlaybackMode(),
             "Cannot run this test in playback mode because it uses AMQP and Event Hubs calls.");
 
+
         // Arrange
         final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaGroup(schemaGroup)
@@ -177,10 +175,14 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestProxy
         EventHubConsumerAsyncClient consumer = null;
         try {
             producer = new EventHubClientBuilder()
-                .connectionString(connectionString, eventHubName)
+                .credential(tokenCredential)
+                .eventHubName(eventHubName)
+                .fullyQualifiedNamespace(eventHubQualifiedNameSpace)
                 .buildProducerClient();
             consumer = new EventHubClientBuilder()
-                .connectionString(connectionString, eventHubName)
+                .credential(tokenCredential)
+                .eventHubName(eventHubName)
+                .fullyQualifiedNamespace(eventHubQualifiedNameSpace)
                 .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
                 .buildAsyncConsumerClient();
 
