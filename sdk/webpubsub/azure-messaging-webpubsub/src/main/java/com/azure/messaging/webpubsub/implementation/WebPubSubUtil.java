@@ -5,9 +5,10 @@ package com.azure.messaging.webpubsub.implementation;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
@@ -24,19 +25,19 @@ public final class WebPubSubUtil {
      * @return The token extracted from the JSON payload of the generateClientToken API.
      */
     public static String getToken(BinaryData binaryData) {
-        try (JsonReader jsonReader = JsonProviders.createReader(binaryData.toString())) {
-            return jsonReader.readObject(reader -> {
-                while (reader.nextToken() != com.azure.json.JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-
+        try {
+            JsonParser parser = JsonFactory.builder().build().createParser(binaryData.toString());
+            while (!parser.isClosed()) {
+                JsonToken jsonToken = parser.nextToken();
+                if (JsonToken.FIELD_NAME.equals(jsonToken)) {
+                    String fieldName = parser.getCurrentName();
                     if (TOKEN.equals(fieldName)) {
-                        return reader.getString();
+                        // move parser forward to get value of "token"
+                        parser.nextToken();
+                        return parser.getValueAsString();
                     }
                 }
-
-                return null;
-            });
+            }
         } catch (IOException e) {
             LOGGER.logThrowableAsError(new IllegalStateException("Unable to find token in the response", e));
         }
