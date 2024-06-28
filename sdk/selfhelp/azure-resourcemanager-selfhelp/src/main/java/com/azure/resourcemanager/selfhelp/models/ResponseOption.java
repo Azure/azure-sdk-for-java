@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The status of the resource.
  */
 @Fluent
-public final class ResponseOption {
+public final class ResponseOption implements JsonSerializable<ResponseOption> {
     /*
      * Unique string.
      */
-    @JsonProperty(value = "key")
     private String key;
 
     /*
      * Option description
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
@@ -76,5 +78,44 @@ public final class ResponseOption {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResponseOption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResponseOption if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResponseOption.
+     */
+    public static ResponseOption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResponseOption deserializedResponseOption = new ResponseOption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedResponseOption.key = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedResponseOption.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResponseOption;
+        });
     }
 }

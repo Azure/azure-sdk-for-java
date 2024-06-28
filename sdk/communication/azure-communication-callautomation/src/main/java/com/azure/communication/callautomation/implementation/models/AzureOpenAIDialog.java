@@ -10,6 +10,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Azure Open AI Dialog. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("AzureOpenAI")
+@JsonTypeName("azureOpenAI")
 @Immutable
 public final class AzureOpenAIDialog extends BaseDialog {}

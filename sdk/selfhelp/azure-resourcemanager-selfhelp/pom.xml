@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-selfhelp</artifactId>
-  <version>1.1.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-selfhelp;current} -->
+  <version>1.1.0-beta.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-selfhelp;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Self Help Management</name>
@@ -50,6 +50,11 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.49.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
@@ -67,7 +72,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

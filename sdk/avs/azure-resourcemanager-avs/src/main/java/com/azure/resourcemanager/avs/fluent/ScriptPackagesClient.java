@@ -11,61 +11,63 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.ScriptPackageInner;
 
-/** An instance of this class provides access to all the operations defined in ScriptPackagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ScriptPackagesClient.
+ */
 public interface ScriptPackagesClient {
     /**
-     * List script packages available to run on the private cloud.
-     *
+     * List ScriptPackage resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the available script packages as paginated response with {@link PagedIterable}.
+     * @return the response of a ScriptPackage list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScriptPackageInner> list(String resourceGroupName, String privateCloudName);
 
     /**
-     * List script packages available to run on the private cloud.
-     *
+     * List ScriptPackage resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the available script packages as paginated response with {@link PagedIterable}.
+     * @return the response of a ScriptPackage list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScriptPackageInner> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
-     * Get a script package available to run on a private cloud.
-     *
+     * Get a ScriptPackage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package in the private cloud.
+     * @param scriptPackageName Name of the script package.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a script package available to run on a private cloud along with {@link Response}.
+     * @return a ScriptPackage along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScriptPackageInner> getWithResponse(
-        String resourceGroupName, String privateCloudName, String scriptPackageName, Context context);
+    Response<ScriptPackageInner> getWithResponse(String resourceGroupName, String privateCloudName,
+        String scriptPackageName, Context context);
 
     /**
-     * Get a script package available to run on a private cloud.
-     *
+     * Get a ScriptPackage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package in the private cloud.
+     * @param scriptPackageName Name of the script package.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a script package available to run on a private cloud.
+     * @return a ScriptPackage.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ScriptPackageInner get(String resourceGroupName, String privateCloudName, String scriptPackageName);

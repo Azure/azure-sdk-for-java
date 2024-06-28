@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Administrative credentials for accessing vCenter and NSX-T. */
+/**
+ * Administrative credentials for accessing vCenter and NSX-T.
+ */
 @Immutable
-public final class AdminCredentialsInner {
+public final class AdminCredentialsInner implements JsonSerializable<AdminCredentialsInner> {
     /*
      * NSX-T Manager username
      */
-    @JsonProperty(value = "nsxtUsername", access = JsonProperty.Access.WRITE_ONLY)
     private String nsxtUsername;
 
     /*
      * NSX-T Manager password
      */
-    @JsonProperty(value = "nsxtPassword", access = JsonProperty.Access.WRITE_ONLY)
     private String nsxtPassword;
 
     /*
      * vCenter admin username
      */
-    @JsonProperty(value = "vcenterUsername", access = JsonProperty.Access.WRITE_ONLY)
     private String vcenterUsername;
 
     /*
      * vCenter admin password
      */
-    @JsonProperty(value = "vcenterPassword", access = JsonProperty.Access.WRITE_ONLY)
     private String vcenterPassword;
 
-    /** Creates an instance of AdminCredentialsInner class. */
+    /**
+     * Creates an instance of AdminCredentialsInner class.
+     */
     public AdminCredentialsInner() {
     }
 
     /**
      * Get the nsxtUsername property: NSX-T Manager username.
-     *
+     * 
      * @return the nsxtUsername value.
      */
     public String nsxtUsername() {
@@ -49,7 +53,7 @@ public final class AdminCredentialsInner {
 
     /**
      * Get the nsxtPassword property: NSX-T Manager password.
-     *
+     * 
      * @return the nsxtPassword value.
      */
     public String nsxtPassword() {
@@ -58,7 +62,7 @@ public final class AdminCredentialsInner {
 
     /**
      * Get the vcenterUsername property: vCenter admin username.
-     *
+     * 
      * @return the vcenterUsername value.
      */
     public String vcenterUsername() {
@@ -67,7 +71,7 @@ public final class AdminCredentialsInner {
 
     /**
      * Get the vcenterPassword property: vCenter admin password.
-     *
+     * 
      * @return the vcenterPassword value.
      */
     public String vcenterPassword() {
@@ -76,9 +80,50 @@ public final class AdminCredentialsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdminCredentialsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdminCredentialsInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdminCredentialsInner.
+     */
+    public static AdminCredentialsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdminCredentialsInner deserializedAdminCredentialsInner = new AdminCredentialsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nsxtUsername".equals(fieldName)) {
+                    deserializedAdminCredentialsInner.nsxtUsername = reader.getString();
+                } else if ("nsxtPassword".equals(fieldName)) {
+                    deserializedAdminCredentialsInner.nsxtPassword = reader.getString();
+                } else if ("vcenterUsername".equals(fieldName)) {
+                    deserializedAdminCredentialsInner.vcenterUsername = reader.getString();
+                } else if ("vcenterPassword".equals(fieldName)) {
+                    deserializedAdminCredentialsInner.vcenterPassword = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdminCredentialsInner;
+        });
     }
 }

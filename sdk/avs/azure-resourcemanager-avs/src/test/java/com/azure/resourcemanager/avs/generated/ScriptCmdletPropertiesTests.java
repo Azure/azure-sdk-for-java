@@ -10,11 +10,9 @@ import com.azure.resourcemanager.avs.fluent.models.ScriptCmdletProperties;
 public final class ScriptCmdletPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScriptCmdletProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"kh\",\"timeout\":\"ygo\",\"parameters\":[{\"type\":\"String\",\"name\":\"qjbvleorfmlu\",\"description\":\"tqzfavyv\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"},{\"type\":\"Credential\",\"name\":\"euayjkqabqgzsles\",\"description\":\"bhernntiew\",\"visibility\":\"Visible\",\"optional\":\"Required\"},{\"type\":\"Credential\",\"name\":\"rbe\",\"description\":\"agohbuff\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"}]}")
-                .toObject(ScriptCmdletProperties.class);
+        ScriptCmdletProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Failed\",\"description\":\"afnn\",\"timeout\":\"pichkoymkcdy\",\"audience\":\"Automation\",\"parameters\":[{\"type\":\"Int\",\"name\":\"reqnovvqfov\",\"description\":\"xywsuws\",\"visibility\":\"Visible\",\"optional\":\"Required\"}]}")
+            .toObject(ScriptCmdletProperties.class);
     }
 
     @org.junit.jupiter.api.Test

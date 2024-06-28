@@ -6,70 +6,41 @@ package com.azure.resourcemanager.storagemover.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagemover.StorageMoverManager;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
 import com.azure.resourcemanager.storagemover.models.JobDefinition;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class JobDefinitionsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"description\":\"n\",\"copyMode\":\"Additive\",\"sourceName\":\"glzpswiydm\",\"sourceResourceId\":\"yhz\",\"sourceSubpath\":\"ss\",\"targetName\":\"dbzm\",\"targetResourceId\":\"dfznudaodv\",\"targetSubpath\":\"bncblylpstdbhhx\",\"latestJobRunName\":\"zdzucerscdntnevf\",\"latestJobRunResourceId\":\"jmygtdsslswtmwer\",\"latestJobRunStatus\":\"Started\",\"agentName\":\"pyqs\",\"agentResourceId\":\"wab\",\"provisioningState\":\"Failed\"},\"id\":\"hhszh\",\"name\":\"d\",\"type\":\"lvwiwubmwmbesl\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"xc\",\"copyMode\":\"Additive\",\"sourceName\":\"bfovasrruvwbhsq\",\"sourceResourceId\":\"ubcgjbirxb\",\"sourceSubpath\":\"bsrfbj\",\"targetName\":\"dtws\",\"targetResourceId\":\"t\",\"targetSubpath\":\"pvjzbe\",\"latestJobRunName\":\"l\",\"latestJobRunResourceId\":\"nfqqnvwp\",\"latestJobRunStatus\":\"Canceled\",\"agentName\":\"ruoujmk\",\"agentResourceId\":\"hwqytj\",\"provisioningState\":\"Succeeded\"},\"id\":\"wj\",\"name\":\"wgdrjervnaenqp\",\"type\":\"hin\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        StorageMoverManager manager = StorageMoverManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<JobDefinition> response
+            = manager.jobDefinitions().list("bgycduiertgccym", "aolps", "lqlfm", com.azure.core.util.Context.NONE);
 
-        StorageMoverManager manager =
-            StorageMoverManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<JobDefinition> response =
-            manager.jobDefinitions().list("obl", "tkblmpewww", "bkrvrnsvshqj", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("xc", response.iterator().next().description());
+        Assertions.assertEquals("n", response.iterator().next().description());
         Assertions.assertEquals(CopyMode.ADDITIVE, response.iterator().next().copyMode());
-        Assertions.assertEquals("bfovasrruvwbhsq", response.iterator().next().sourceName());
-        Assertions.assertEquals("bsrfbj", response.iterator().next().sourceSubpath());
-        Assertions.assertEquals("dtws", response.iterator().next().targetName());
-        Assertions.assertEquals("pvjzbe", response.iterator().next().targetSubpath());
-        Assertions.assertEquals("ruoujmk", response.iterator().next().agentName());
+        Assertions.assertEquals("glzpswiydm", response.iterator().next().sourceName());
+        Assertions.assertEquals("ss", response.iterator().next().sourceSubpath());
+        Assertions.assertEquals("dbzm", response.iterator().next().targetName());
+        Assertions.assertEquals("bncblylpstdbhhx", response.iterator().next().targetSubpath());
+        Assertions.assertEquals("pyqs", response.iterator().next().agentName());
     }
 }
