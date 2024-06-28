@@ -38,7 +38,7 @@ function SetCurrentVersion($GroupId, $ArtifactId, $Version) {
 function UpdateDependencyOfClientSDK() {
   $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
   $updateVersionFilePath = Join-Path $repoRoot "eng" "versioning" "update_versions.py"
-  $cmdOutput = python $updateVersionFilePath --ut all --bt client --sr
+  $cmdOutput = python $updateVersionFilePath --ut library --bt client --sr
 }
 
 # Get all azure com client artifacts from Maven.
