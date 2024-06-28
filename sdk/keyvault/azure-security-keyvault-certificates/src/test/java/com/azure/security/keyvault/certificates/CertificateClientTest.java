@@ -9,8 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
@@ -70,8 +68,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CertificateClientTest extends CertificateClientTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(CertificateClientTest.class);
-
     private CertificateClient certificateClient;
 
     @Override
@@ -865,7 +861,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificateWithPolicy importedCertificate =
                 certificateClient.importCertificate(importCertificateOptions);
 
-            assertTrue("73b4319cdf38e0797084535d9c02fd04d4b2b2e6"
+            assertTrue("db1497bc2c82b365c5c7c73f611513ee117790a9"
                 .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintAsString()));
             assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
@@ -873,10 +869,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
             X509Certificate x509Certificate = assertDoesNotThrow(
                 () -> loadCerToX509Certificate(importedCertificate.getCer()));
 
-            assertTrue(x509Certificate.getSubjectX500Principal().getName()
-                .contains("CN=Test,OU=Test,O=Contoso,L=Redmond,ST=WA,C=US"));
-            assertTrue(x509Certificate.getIssuerX500Principal().getName()
-                .contains("CN=Test,OU=Test,O=Contoso,L=Redmond,ST=WA,C=US"));
+            assertEquals("CN=KeyVaultTest", x509Certificate.getSubjectX500Principal().getName());
+            assertEquals("CN=KeyVaultTest", x509Certificate.getIssuerX500Principal().getName());
         });
     }
 
@@ -981,7 +975,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             }
         }
 
-        LOGGER.log(LogLevel.VERBOSE, () -> "Deleted Certificate " + certificateName + " was not purged");
+        System.err.printf("Deleted Key %s was not purged \n", certificateName);
     }
 
 }
