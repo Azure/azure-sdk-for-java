@@ -5,28 +5,50 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of an Arc addon. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "addonType")
-@JsonTypeName("Arc")
+/**
+ * The properties of an Arc addon.
+ */
 @Fluent
 public final class AddonArcProperties extends AddonProperties {
     /*
+     * Addon type
+     */
+    private AddonType addonType = AddonType.ARC;
+
+    /*
      * The VMware vCenter resource ID
      */
-    @JsonProperty(value = "vCenter")
     private String vCenter;
 
-    /** Creates an instance of AddonArcProperties class. */
+    /*
+     * The state of the addon provisioning
+     */
+    private AddonProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of AddonArcProperties class.
+     */
     public AddonArcProperties() {
     }
 
     /**
+     * Get the addonType property: Addon type.
+     * 
+     * @return the addonType value.
+     */
+    @Override
+    public AddonType addonType() {
+        return this.addonType;
+    }
+
+    /**
      * Get the vCenter property: The VMware vCenter resource ID.
-     *
+     * 
      * @return the vCenter value.
      */
     public String vCenter() {
@@ -35,7 +57,7 @@ public final class AddonArcProperties extends AddonProperties {
 
     /**
      * Set the vCenter property: The VMware vCenter resource ID.
-     *
+     * 
      * @param vCenter the vCenter value to set.
      * @return the AddonArcProperties object itself.
      */
@@ -45,12 +67,64 @@ public final class AddonArcProperties extends AddonProperties {
     }
 
     /**
+     * Get the provisioningState property: The state of the addon provisioning.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public AddonProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("addonType", this.addonType == null ? null : this.addonType.toString());
+        jsonWriter.writeStringField("vCenter", this.vCenter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddonArcProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddonArcProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddonArcProperties.
+     */
+    public static AddonArcProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddonArcProperties deserializedAddonArcProperties = new AddonArcProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedAddonArcProperties.provisioningState
+                        = AddonProvisioningState.fromString(reader.getString());
+                } else if ("addonType".equals(fieldName)) {
+                    deserializedAddonArcProperties.addonType = AddonType.fromString(reader.getString());
+                } else if ("vCenter".equals(fieldName)) {
+                    deserializedAddonArcProperties.vCenter = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddonArcProperties;
+        });
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storagemover.fluent.models.AgentUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Agent resource. */
+/**
+ * The Agent resource.
+ */
 @Fluent
 public final class AgentUpdateParameters {
     /*
@@ -17,13 +19,15 @@ public final class AgentUpdateParameters {
     @JsonProperty(value = "properties")
     private AgentUpdateProperties innerProperties;
 
-    /** Creates an instance of AgentUpdateParameters class. */
+    /**
+     * Creates an instance of AgentUpdateParameters class.
+     */
     public AgentUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AgentUpdateProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class AgentUpdateParameters {
 
     /**
      * Get the description property: A description for the Agent.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -41,7 +45,7 @@ public final class AgentUpdateParameters {
 
     /**
      * Set the description property: A description for the Agent.
-     *
+     * 
      * @param description the description value to set.
      * @return the AgentUpdateParameters object itself.
      */
@@ -54,8 +58,37 @@ public final class AgentUpdateParameters {
     }
 
     /**
+     * Get the uploadLimitSchedule property: The WAN-link upload limit schedule that applies to any Job Run the agent
+     * executes. Data plane operations (migrating files) are affected. Control plane operations ensure seamless
+     * migration functionality and are not limited by this schedule. The schedule is interpreted with the agent's local
+     * time.
+     * 
+     * @return the uploadLimitSchedule value.
+     */
+    public UploadLimitSchedule uploadLimitSchedule() {
+        return this.innerProperties() == null ? null : this.innerProperties().uploadLimitSchedule();
+    }
+
+    /**
+     * Set the uploadLimitSchedule property: The WAN-link upload limit schedule that applies to any Job Run the agent
+     * executes. Data plane operations (migrating files) are affected. Control plane operations ensure seamless
+     * migration functionality and are not limited by this schedule. The schedule is interpreted with the agent's local
+     * time.
+     * 
+     * @param uploadLimitSchedule the uploadLimitSchedule value to set.
+     * @return the AgentUpdateParameters object itself.
+     */
+    public AgentUpdateParameters withUploadLimitSchedule(UploadLimitSchedule uploadLimitSchedule) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AgentUpdateProperties();
+        }
+        this.innerProperties().withUploadLimitSchedule(uploadLimitSchedule);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

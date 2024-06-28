@@ -1,14 +1,11 @@
 # Release History
 
-## 1.0.0-beta.25 (Unreleased)
+## 1.0.0-beta.25 (2024-06-28)
 
-### Features Added
+### Other changes
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- [ResourceAttributes has been deprecated upstream](https://github.com/Azure/azure-sdk-for-java/pull/40504)
+- [Handle 206](https://github.com/Azure/azure-sdk-for-java/pull/40416)
 
 ## 1.0.0-beta.24 (2024-05-29)
 

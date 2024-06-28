@@ -13,99 +13,97 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.models.DatastoreInner;
 
-/** An instance of this class provides access to all the operations defined in DatastoresClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatastoresClient.
+ */
 public interface DatastoresClient {
     /**
-     * List datastores in a private cloud cluster.
-     *
+     * List Datastore resources by Cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
+     * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of datastores as paginated response with {@link PagedIterable}.
+     * @return the response of a Datastore list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatastoreInner> list(String resourceGroupName, String privateCloudName, String clusterName);
 
     /**
-     * List datastores in a private cloud cluster.
-     *
+     * List Datastore resources by Cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
+     * @param clusterName Name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of datastores as paginated response with {@link PagedIterable}.
+     * @return the response of a Datastore list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatastoreInner> list(
-        String resourceGroupName, String privateCloudName, String clusterName, Context context);
+    PagedIterable<DatastoreInner> list(String resourceGroupName, String privateCloudName, String clusterName,
+        Context context);
 
     /**
-     * Get a datastore in a private cloud cluster.
-     *
+     * Get a Datastore.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
-     * @param datastoreName Name of the datastore in the private cloud cluster.
+     * @param clusterName Name of the cluster.
+     * @param datastoreName Name of the datastore.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a datastore in a private cloud cluster along with {@link Response}.
+     * @return a Datastore along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatastoreInner> getWithResponse(
-        String resourceGroupName, String privateCloudName, String clusterName, String datastoreName, Context context);
+    Response<DatastoreInner> getWithResponse(String resourceGroupName, String privateCloudName, String clusterName,
+        String datastoreName, Context context);
 
     /**
-     * Get a datastore in a private cloud cluster.
-     *
+     * Get a Datastore.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
-     * @param datastoreName Name of the datastore in the private cloud cluster.
+     * @param clusterName Name of the cluster.
+     * @param datastoreName Name of the datastore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a datastore in a private cloud cluster.
+     * @return a Datastore.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DatastoreInner get(String resourceGroupName, String privateCloudName, String clusterName, String datastoreName);
 
     /**
-     * Create or update a datastore in a private cloud cluster.
-     *
+     * Create a Datastore.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
-     * @param datastoreName Name of the datastore in the private cloud cluster.
-     * @param datastore A datastore in a private cloud cluster.
+     * @param clusterName Name of the cluster.
+     * @param datastoreName Name of the datastore.
+     * @param datastore Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a datastore resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String clusterName,
-        String datastoreName,
-        DatastoreInner datastore);
+    SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreateOrUpdate(String resourceGroupName,
+        String privateCloudName, String clusterName, String datastoreName, DatastoreInner datastore);
 
     /**
-     * Create or update a datastore in a private cloud cluster.
-     *
+     * Create a Datastore.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
-     * @param datastoreName Name of the datastore in the private cloud cluster.
-     * @param datastore A datastore in a private cloud cluster.
+     * @param clusterName Name of the cluster.
+     * @param datastoreName Name of the datastore.
+     * @param datastore Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -113,43 +111,34 @@ public interface DatastoresClient {
      * @return the {@link SyncPoller} for polling of a datastore resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String clusterName,
-        String datastoreName,
-        DatastoreInner datastore,
-        Context context);
+    SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreateOrUpdate(String resourceGroupName,
+        String privateCloudName, String clusterName, String datastoreName, DatastoreInner datastore, Context context);
 
     /**
-     * Create or update a datastore in a private cloud cluster.
-     *
+     * Create a Datastore.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
-     * @param datastoreName Name of the datastore in the private cloud cluster.
-     * @param datastore A datastore in a private cloud cluster.
+     * @param clusterName Name of the cluster.
+     * @param datastoreName Name of the datastore.
+     * @param datastore Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a datastore resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatastoreInner createOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String clusterName,
-        String datastoreName,
-        DatastoreInner datastore);
+    DatastoreInner createOrUpdate(String resourceGroupName, String privateCloudName, String clusterName,
+        String datastoreName, DatastoreInner datastore);
 
     /**
-     * Create or update a datastore in a private cloud cluster.
-     *
+     * Create a Datastore.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
-     * @param datastoreName Name of the datastore in the private cloud cluster.
-     * @param datastore A datastore in a private cloud cluster.
+     * @param clusterName Name of the cluster.
+     * @param datastoreName Name of the datastore.
+     * @param datastore Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -157,37 +146,32 @@ public interface DatastoresClient {
      * @return a datastore resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatastoreInner createOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String clusterName,
-        String datastoreName,
-        DatastoreInner datastore,
-        Context context);
+    DatastoreInner createOrUpdate(String resourceGroupName, String privateCloudName, String clusterName,
+        String datastoreName, DatastoreInner datastore, Context context);
 
     /**
-     * Delete a datastore in a private cloud cluster.
-     *
+     * Delete a Datastore.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
-     * @param datastoreName Name of the datastore in the private cloud cluster.
+     * @param clusterName Name of the cluster.
+     * @param datastoreName Name of the datastore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateCloudName, String clusterName, String datastoreName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
+        String clusterName, String datastoreName);
 
     /**
-     * Delete a datastore in a private cloud cluster.
-     *
+     * Delete a Datastore.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
-     * @param datastoreName Name of the datastore in the private cloud cluster.
+     * @param clusterName Name of the cluster.
+     * @param datastoreName Name of the datastore.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -195,16 +179,16 @@ public interface DatastoresClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateCloudName, String clusterName, String datastoreName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
+        String clusterName, String datastoreName, Context context);
 
     /**
-     * Delete a datastore in a private cloud cluster.
-     *
+     * Delete a Datastore.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
-     * @param datastoreName Name of the datastore in the private cloud cluster.
+     * @param clusterName Name of the cluster.
+     * @param datastoreName Name of the datastore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -213,18 +197,18 @@ public interface DatastoresClient {
     void delete(String resourceGroupName, String privateCloudName, String clusterName, String datastoreName);
 
     /**
-     * Delete a datastore in a private cloud cluster.
-     *
+     * Delete a Datastore.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
-     * @param datastoreName Name of the datastore in the private cloud cluster.
+     * @param clusterName Name of the cluster.
+     * @param datastoreName Name of the datastore.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String privateCloudName, String clusterName, String datastoreName, Context context);
+    void delete(String resourceGroupName, String privateCloudName, String clusterName, String datastoreName,
+        Context context);
 }

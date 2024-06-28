@@ -6,7 +6,6 @@ package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.fluent.models.OperationInner;
-import com.azure.resourcemanager.oracledatabase.models.OperationDisplay;
 
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
@@ -14,11 +13,5 @@ public final class OperationInnerTests {
         OperationInner model = BinaryData.fromString(
             "{\"name\":\"usarhmofc\",\"isDataAction\":false,\"display\":{\"provider\":\"urkdtmlx\",\"resource\":\"kuksjtxukcdm\",\"operation\":\"rcryuanzwuxzdxta\",\"description\":\"lhmwhfpmrqobm\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}")
             .toObject(OperationInner.class);
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        OperationInner model = new OperationInner().withDisplay(new OperationDisplay());
-        model = BinaryData.fromObject(model).toObject(OperationInner.class);
     }
 }
