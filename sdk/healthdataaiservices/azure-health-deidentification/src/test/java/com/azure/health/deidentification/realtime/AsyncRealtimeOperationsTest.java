@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.health.deidentification.realtime;
 
 import com.azure.core.credential.AccessToken;
@@ -8,7 +11,6 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.health.deidentification.DeidentificationAsyncClient;
-import com.azure.health.deidentification.DeidentificationClient;
 import com.azure.health.deidentification.DeidentificationClientBuilder;
 import com.azure.health.deidentification.models.*;
 import com.azure.identity.DefaultAzureCredentialBuilder;
