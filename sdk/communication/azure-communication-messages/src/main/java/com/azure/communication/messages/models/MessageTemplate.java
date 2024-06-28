@@ -20,14 +20,15 @@ public final class MessageTemplate {
      */
     @Generated
     @JsonProperty(value = "name")
-    private final String name;
+    private String name;
 
     /*
-     * The template's language, in the ISO 639 format, consist of a two-letter language code followed by an optional two-letter country code, e.g., 'en' or 'en_US'.
+     * The template's language, in the ISO 639 format, consist of a two-letter language code followed by an optional
+     * two-letter country code, e.g., 'en' or 'en_US'.
      */
     @Generated
     @JsonProperty(value = "language")
-    private final String language;
+    private String language;
 
     /*
      * The template values.
