@@ -4,19 +4,35 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-import com.azure.core.util.Context;
+import com.azure.resourcemanager.scvmm.models.ForceDelete;
 
-/** Samples for Clouds Delete. */
+/**
+ * Samples for Clouds Delete.
+ */
 public final class CloudsDeleteSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/DeleteCloud.json
+     * x-ms-original-file:
+     * specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/Clouds_Delete_MaximumSet_Gen.json
      */
     /**
-     * Sample code: DeleteCloud.
-     *
+     * Sample code: Clouds_Delete_MaximumSet.
+     * 
      * @param manager Entry point to ScvmmManager.
      */
-    public static void deleteCloud(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.clouds().delete("testrg", "HRCloud", null, Context.NONE);
+    public static void cloudsDeleteMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.clouds().delete("rgscvmm", "-", ForceDelete.TRUE, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/Clouds_Delete_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: Clouds_Delete_MinimumSet.
+     * 
+     * @param manager Entry point to ScvmmManager.
+     */
+    public static void cloudsDeleteMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.clouds().delete("rgscvmm", "1", null, com.azure.core.util.Context.NONE);
     }
 }

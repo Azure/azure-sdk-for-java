@@ -124,17 +124,19 @@ public final class AccessTokenUtil {
 
         oauth2Url.append(OAUTH2_TOKEN_POSTFIX);
 
-        StringBuilder requestBody = new StringBuilder();
+        String encodedClientSecret = "";
 
         try {
-            clientSecret = URLEncoder.encode(clientSecret, "UTF-8");
+            encodedClientSecret = URLEncoder.encode(clientSecret, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             LOGGER.warning("Failed to encode client secret for access token request");
         }
 
+        StringBuilder requestBody = new StringBuilder();
+
         requestBody.append(GRANT_TYPE_FRAGMENT)
             .append(CLIENT_ID_FRAGMENT).append(clientId)
-            .append(CLIENT_SECRET_FRAGMENT).append(clientSecret)
+            .append(CLIENT_SECRET_FRAGMENT).append(encodedClientSecret)
             .append(RESOURCE_FRAGMENT).append(resource);
 
         String body =

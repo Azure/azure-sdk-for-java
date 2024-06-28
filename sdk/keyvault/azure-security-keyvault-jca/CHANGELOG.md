@@ -9,6 +9,7 @@
 - Removed support for providing a custom login URI to get access tokens from via the system property `azure.login.uri`.
 
 ### Bugs Fixed
+- Fix bug: AccessTokenUtil does not urlencode its parameters when getting an access token. ([40616](https://github.com/Azure/azure-sdk-for-java/issues/40616))
 - Changed the authentication mechanism to allow for discovering the login URI for a given Azure Key Vault instance by requesting an authentication challenge from the service, as opposed to using a hard-coded list of URIs to choose from depending on a vault's URI. This should add support for customers using Azure Stack instances, for example.
 
 ## 2.9.0-beta.1 (2024-05-15)
