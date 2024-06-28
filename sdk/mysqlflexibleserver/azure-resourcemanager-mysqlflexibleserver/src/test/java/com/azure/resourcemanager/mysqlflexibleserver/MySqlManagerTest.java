@@ -14,11 +14,10 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.resourcemanager.mysqlflexibleserver.models.*;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Server;
 import com.azure.resourcemanager.resources.ResourceManager;
 import io.netty.util.internal.StringUtil;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -26,7 +25,7 @@ import java.util.UUID;
 
 public class MySqlManagerTest extends TestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_EAST;
+    private static final Region REGION = Region.US_WEST;
     private String resourceGroupName = "rg" + randomPadding();
     private MySqlManager mysqlManager;
     private ResourceManager resourceManager;
@@ -70,7 +69,6 @@ public class MySqlManagerTest extends TestBase {
 
     @Test
     @LiveOnly
-    @Disabled("An unexpected error occured while processing the request.")
     public void testCreateServer() {
         Server server = null;
         String randomPadding = randomPadding();
