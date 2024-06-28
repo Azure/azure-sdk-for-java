@@ -13,6 +13,7 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -34,7 +35,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.webpubsub.implementation.WebPubSubServiceClientImpl;
+import com.azure.messaging.webpubsub.implementation.AzureWebPubSubServiceRestApiImpl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -236,10 +237,10 @@ public final class WebPubSubServiceClientBuilder implements
     }
 
     /**
-     * Target hub name, which should start with alphabetic characters and only contain alphanumeric characters or
+     * Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or
      * underscore.
      *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alphanumeric
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @return The updated {@link WebPubSubServiceClientBuilder} object.
      * @throws NullPointerException If {@code hub} is {@code null}.
@@ -409,7 +410,7 @@ public final class WebPubSubServiceClientBuilder implements
     }
 
 
-    private WebPubSubServiceClientImpl buildInnerClient() {
+    private AzureWebPubSubServiceRestApiImpl buildInnerClient() {
         if (hub == null || hub.isEmpty()) {
             logger.logThrowableAsError(
                 new IllegalStateException("hub is not valid - it must be non-null and non-empty."));
@@ -452,7 +453,7 @@ public final class WebPubSubServiceClientBuilder implements
 
 
         if (pipeline != null) {
-            return new WebPubSubServiceClientImpl(pipeline, endpoint, serviceVersion);
+            return new AzureWebPubSubServiceRestApiImpl(pipeline, endpoint, serviceVersion);
         }
 
         // Global Env configuration store
@@ -461,7 +462,8 @@ public final class WebPubSubServiceClientBuilder implements
 
         final String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         final String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        String applicationId =
+            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -488,9 +490,11 @@ public final class WebPubSubServiceClientBuilder implements
         }
         policies.addAll(this.policies);
 
-        HttpHeaders addHeaders = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
-        if (addHeaders != null) {
-            policies.add(new AddHeadersPolicy(addHeaders));
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -499,7 +503,7 @@ public final class WebPubSubServiceClientBuilder implements
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-        return new WebPubSubServiceClientImpl(buildPipeline, endpoint, serviceVersion);
+        return new AzureWebPubSubServiceRestApiImpl(buildPipeline, endpoint, serviceVersion);
     }
 
 
