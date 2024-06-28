@@ -363,7 +363,7 @@ def main():
     if succeeded:
         succeeded = compile_arm_package(sdk_root, module)
         if succeeded:
-            latest_release_version = get_latest_release_version(current_version, stable_version)
+            latest_release_version = get_latest_release_version(stable_version, current_version)
             compare_with_maven_package(sdk_root, GROUP_ID, service, latest_release_version, current_version, module)
 
             if args.get("auto_commit_external_change") and args.get("user_name") and args.get("user_email"):
