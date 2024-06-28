@@ -5,59 +5,48 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for Locale.
- */
+/** Defines values for Locale. */
 public final class Locale extends ExpandableStringEnum<Locale> {
-    /**
-     * Static value en-AU for Locale.
-     */
+    /** Static value en-AU for Locale. */
     public static final Locale EN_AU = fromString("en-AU");
 
-    /**
-     * Static value en-CA for Locale.
-     */
+    /** Static value en-CA for Locale. */
     public static final Locale EN_CA = fromString("en-CA");
 
-    /**
-     * Static value en-GB for Locale.
-     */
+    /** Static value en-GB for Locale. */
     public static final Locale EN_GB = fromString("en-GB");
 
-    /**
-     * Static value en-IN for Locale.
-     */
+    /** Static value en-IN for Locale. */
     public static final Locale EN_IN = fromString("en-IN");
 
-    /**
-     * Static value en-US for Locale.
-     */
+    /** Static value en-US for Locale. */
     public static final Locale EN_US = fromString("en-US");
 
     /**
      * Creates a new instance of Locale value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public Locale() {
-    }
+    public Locale() {}
 
     /**
      * Creates or finds a Locale from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding Locale.
      */
+    @JsonCreator
     public static Locale fromString(String name) {
         return fromString(name, Locale.class);
     }
 
     /**
      * Gets known Locale values.
-     * 
+     *
      * @return known Locale values.
      */
     public static Collection<Locale> values() {
