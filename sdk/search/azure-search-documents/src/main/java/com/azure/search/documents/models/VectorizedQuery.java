@@ -19,6 +19,11 @@ import java.util.List;
 public final class VectorizedQuery extends VectorQuery {
 
     /*
+     * The kind of vector query being performed.
+     */
+    private VectorQueryKind kind = VectorQueryKind.VECTOR;
+
+    /*
      * The vector representation of a search query.
      */
     private final List<Float> vector;
@@ -30,6 +35,16 @@ public final class VectorizedQuery extends VectorQuery {
      */
     public VectorizedQuery(List<Float> vector) {
         this.vector = vector;
+    }
+
+    /**
+     * Get the kind property: The kind of vector query being performed.
+     *
+     * @return the kind value.
+     */
+    @Override
+    public VectorQueryKind getKind() {
+        return this.kind;
     }
 
     /**
@@ -86,16 +101,19 @@ public final class VectorizedQuery extends VectorQuery {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", VectorQueryKind.VECTOR == null ? null : VectorQueryKind.VECTOR.toString());
         jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
         jsonWriter.writeStringField("fields", getFields());
         jsonWriter.writeBooleanField("exhaustive", isExhaustive());
         jsonWriter.writeNumberField("oversampling", getOversampling());
         jsonWriter.writeNumberField("weight", getWeight());
         jsonWriter.writeArrayField("vector", this.vector, (writer, element) -> writer.writeFloat(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -105,8 +123,7 @@ public final class VectorizedQuery extends VectorQuery {
      * @param jsonReader The JsonReader being read.
      * @return An instance of VectorizedQuery if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VectorizedQuery.
      */
     public static VectorizedQuery fromJson(JsonReader jsonReader) throws IOException {
@@ -118,17 +135,11 @@ public final class VectorizedQuery extends VectorQuery {
             Float weight = null;
             boolean vectorFound = false;
             List<Float> vector = null;
+            VectorQueryKind kind = VectorQueryKind.VECTOR;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    String kind = reader.getString();
-                    if (!"vector".equals(kind)) {
-                        throw new IllegalStateException(
-                            "'kind' was expected to be non-null and equal to 'vector'. The found 'kind' was '" + kind
-                                + "'.");
-                    }
-                } else if ("k".equals(fieldName)) {
+                if ("k".equals(fieldName)) {
                     kNearestNeighborsCount = reader.getNullable(JsonReader::getInt);
                 } else if ("fields".equals(fieldName)) {
                     fields = reader.getString();
@@ -141,6 +152,8 @@ public final class VectorizedQuery extends VectorQuery {
                 } else if ("vector".equals(fieldName)) {
                     vector = reader.readArray(reader1 -> reader1.getFloat());
                     vectorFound = true;
+                } else if ("kind".equals(fieldName)) {
+                    kind = VectorQueryKind.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -152,6 +165,7 @@ public final class VectorizedQuery extends VectorQuery {
                 deserializedVectorizedQuery.setExhaustive(exhaustive);
                 deserializedVectorizedQuery.setOversampling(oversampling);
                 deserializedVectorizedQuery.setWeight(weight);
+                deserializedVectorizedQuery.kind = kind;
                 return deserializedVectorizedQuery;
             }
             throw new IllegalStateException("Missing required property: vector");

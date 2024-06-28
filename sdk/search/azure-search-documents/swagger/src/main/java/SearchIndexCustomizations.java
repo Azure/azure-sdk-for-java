@@ -3,9 +3,12 @@
 
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
-import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
@@ -15,8 +18,10 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.LongLiteralExpr;
+import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -90,18 +95,161 @@ public class SearchIndexCustomizations extends Customization {
 
     private void customizeAutocompleteOptions(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
+            clazz.tryAddImportToParentCompilationUnit(JsonSerializable.class);
+            clazz.tryAddImportToParentCompilationUnit(JsonReader.class);
+            clazz.tryAddImportToParentCompilationUnit(JsonWriter.class);
+            clazz.tryAddImportToParentCompilationUnit(JsonToken.class);
+            clazz.tryAddImportToParentCompilationUnit(IOException.class);
+
+            clazz.addImplementedType("JsonSerializable<AutocompleteOptions>");
+
             clazz.getMethodsByName("isUseFuzzyMatching").get(0).setName("useFuzzyMatching");
             addVarArgsOverload(clazz, "searchFields", "String");
+
+            clazz.addMethod("toJson", Modifier.Keyword.PUBLIC)
+                .addAnnotation(new MarkerAnnotationExpr("Override"))
+                .setType("JsonWriter")
+                .addParameter("JsonWriter", "jsonWriter")
+                .addThrownException(IOException.class)
+                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                    "{",
+                    "jsonWriter.writeStartObject();",
+                    "jsonWriter.writeStringField(\"autocompleteMode\", this.autocompleteMode == null ? null : this.autocompleteMode.toString());",
+                    "jsonWriter.writeStringField(\"$filter\", this.filter);",
+                    "jsonWriter.writeBooleanField(\"UseFuzzyMatching\", this.useFuzzyMatching);",
+                    "jsonWriter.writeStringField(\"highlightPostTag\", this.highlightPostTag);",
+                    "jsonWriter.writeStringField(\"highlightPreTag\", this.highlightPreTag);",
+                    "jsonWriter.writeNumberField(\"minimumCoverage\", this.minimumCoverage);",
+                    "jsonWriter.writeArrayField(\"searchFields\", this.searchFields, (writer, element) -> writer.writeString(element));",
+                    "jsonWriter.writeNumberField(\"$top\", this.top);",
+                    "return jsonWriter.writeEndObject();",
+                    "}"
+                )))
+                .setJavadocComment("{@inheritDoc}");
+
+            clazz.addMethod("fromJson", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
+                .setType("AutocompleteOptions")
+                .addParameter("JsonReader", "jsonReader")
+                .addThrownException(IOException.class)
+                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                    "{",
+                    "return jsonReader.readObject(reader -> {",
+                    "    AutocompleteOptions deserializedAutocompleteOptions = new AutocompleteOptions();",
+                    "    while (reader.nextToken() != JsonToken.END_OBJECT) {",
+                    "        String fieldName = reader.getFieldName();",
+                    "        reader.nextToken();",
+                    "        if (\"autocompleteMode\".equals(fieldName)) {",
+                    "            deserializedAutocompleteOptions.autocompleteMode = AutocompleteMode.fromString(reader.getString());",
+                    "        } else if (\"$filter\".equals(fieldName)) {",
+                    "            deserializedAutocompleteOptions.filter = reader.getString();",
+                    "        } else if (\"UseFuzzyMatching\".equals(fieldName)) {",
+                    "            deserializedAutocompleteOptions.useFuzzyMatching = reader.getNullable(JsonReader::getBoolean);",
+                    "        } else if (\"highlightPostTag\".equals(fieldName)) {",
+                    "            deserializedAutocompleteOptions.highlightPostTag = reader.getString();",
+                    "        } else if (\"highlightPreTag\".equals(fieldName)) {",
+                    "            deserializedAutocompleteOptions.highlightPreTag = reader.getString();",
+                    "        } else if (\"minimumCoverage\".equals(fieldName)) {",
+                    "            deserializedAutocompleteOptions.minimumCoverage = reader.getNullable(JsonReader::getDouble);",
+                    "        } else if (\"searchFields\".equals(fieldName)) {",
+                    "            List<String> searchFields = reader.readArray(reader1 -> reader1.getString());",
+                    "            deserializedAutocompleteOptions.searchFields = searchFields;",
+                    "        } else if (\"$top\".equals(fieldName)) {",
+                    "            deserializedAutocompleteOptions.top = reader.getNullable(JsonReader::getInt);",
+                    "        } else {",
+                    "            reader.skipChildren();",
+                    "        }",
+                    "    }",
+                    "    return deserializedAutocompleteOptions;",
+                    "});",
+                    "}"
+                )))
+                .setJavadocComment(new Javadoc(JavadocDescription.parseText("Reads an instance of AutocompleteOptions from the JsonReader."))
+                    .addBlockTag("param", "jsonReader", "The JsonReader being read.")
+                    .addBlockTag("return", "An instance of AutocompleteOptions if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.")
+                    .addBlockTag("throws", "IOException If an error occurs while reading the AutocompleteOptions."));
         });
     }
 
     private void customizeSuggestOptions(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
+            clazz.tryAddImportToParentCompilationUnit(JsonSerializable.class);
+            clazz.tryAddImportToParentCompilationUnit(JsonReader.class);
+            clazz.tryAddImportToParentCompilationUnit(JsonWriter.class);
+            clazz.tryAddImportToParentCompilationUnit(JsonToken.class);
+            clazz.tryAddImportToParentCompilationUnit(IOException.class);
+
             clazz.getMethodsByName("isUseFuzzyMatching").get(0).setName("useFuzzyMatching");
 
             addVarArgsOverload(clazz, "orderBy", "String");
             addVarArgsOverload(clazz, "searchFields", "String");
             addVarArgsOverload(clazz, "select", "String");
+
+            clazz.addMethod("toJson", Modifier.Keyword.PUBLIC)
+                .addAnnotation(new MarkerAnnotationExpr("Override"))
+                .setType("JsonWriter")
+                .addParameter("JsonWriter", "jsonWriter")
+                .addThrownException(IOException.class)
+                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                    "{",
+                    "jsonWriter.writeStartObject();",
+                    "jsonWriter.writeStringField(\"$filter\", this.filter);",
+                    "jsonWriter.writeBooleanField(\"UseFuzzyMatching\", this.useFuzzyMatching);",
+                    "jsonWriter.writeStringField(\"highlightPostTag\", this.highlightPostTag);",
+                    "jsonWriter.writeStringField(\"highlightPreTag\", this.highlightPreTag);",
+                    "jsonWriter.writeNumberField(\"minimumCoverage\", this.minimumCoverage);",
+                    "jsonWriter.writeArrayField(\"OrderBy\", this.orderBy, (writer, element) -> writer.writeString(element));",
+                    "jsonWriter.writeArrayField(\"searchFields\", this.searchFields, (writer, element) -> writer.writeString(element));",
+                    "jsonWriter.writeArrayField(\"$select\", this.select, (writer, element) -> writer.writeString(element));",
+                    "jsonWriter.writeNumberField(\"$top\", this.top);",
+                    "return jsonWriter.writeEndObject();",
+                    "}"
+                )))
+                .setJavadocComment("{@inheritDoc}");
+
+            clazz.addMethod("fromJson", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
+                .setType("SuggestOptions")
+                .addParameter("JsonReader", "jsonReader")
+                .addThrownException(IOException.class)
+                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                    "{",
+                    "return jsonReader.readObject(reader -> {",
+                    "    SuggestOptions deserializedSuggestOptions = new SuggestOptions();",
+                    "    while (reader.nextToken() != JsonToken.END_OBJECT) {",
+                    "        String fieldName = reader.getFieldName();",
+                    "        reader.nextToken();",
+                    "        if (\"$filter\".equals(fieldName)) {",
+                    "            deserializedSuggestOptions.filter = reader.getString();",
+                    "        } else if (\"UseFuzzyMatching\".equals(fieldName)) {",
+                    "            deserializedSuggestOptions.useFuzzyMatching = reader.getNullable(JsonReader::getBoolean);",
+                    "        } else if (\"highlightPostTag\".equals(fieldName)) {",
+                    "            deserializedSuggestOptions.highlightPostTag = reader.getString();",
+                    "        } else if (\"highlightPreTag\".equals(fieldName)) {",
+                    "            deserializedSuggestOptions.highlightPreTag = reader.getString();",
+                    "        } else if (\"minimumCoverage\".equals(fieldName)) {",
+                    "            deserializedSuggestOptions.minimumCoverage = reader.getNullable(JsonReader::getDouble);",
+                    "        } else if (\"OrderBy\".equals(fieldName)) {",
+                    "            List<String> orderBy = reader.readArray(reader1 -> reader1.getString());",
+                    "            deserializedSuggestOptions.orderBy = orderBy;",
+                    "        } else if (\"searchFields\".equals(fieldName)) {",
+                    "            List<String> searchFields = reader.readArray(reader1 -> reader1.getString());",
+                    "            deserializedSuggestOptions.searchFields = searchFields;",
+                    "        } else if (\"$select\".equals(fieldName)) {",
+                    "            List<String> select = reader.readArray(reader1 -> reader1.getString());",
+                    "            deserializedSuggestOptions.select = select;",
+                    "        } else if (\"$top\".equals(fieldName)) {",
+                    "            deserializedSuggestOptions.top = reader.getNullable(JsonReader::getInt);",
+                    "        } else {",
+                    "            reader.skipChildren();",
+                    "        }",
+                    "    }",
+                    "    return deserializedSuggestOptions;",
+                    "});",
+                    "}"
+                )))
+                .setJavadocComment(new Javadoc(JavadocDescription.parseText("Reads an instance of SuggestOptions from the JsonReader."))
+                    .addBlockTag("param", "jsonReader", "The JsonReader being read.")
+                    .addBlockTag("return", "An instance of SuggestOptions if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.")
+                    .addBlockTag("throws", "IOException If an error occurs while reading the SuggestOptions."));
         });
     }
 

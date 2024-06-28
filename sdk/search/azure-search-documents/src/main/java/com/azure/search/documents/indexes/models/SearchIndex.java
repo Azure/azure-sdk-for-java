@@ -161,9 +161,9 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     }
 
     /**
-     * Get the defaultScoringProfile property: The name of the scoring profile to use if none is specified in the
-     * query. If this property is not set and no scoring profile is specified in the query, then default scoring
-     * (tf-idf) will be used.
+     * Get the defaultScoringProfile property: The name of the scoring profile to use if none is specified in the query.
+     * If this property is not set and no scoring profile is specified in the query, then default scoring (tf-idf) will
+     * be used.
      *
      * @return the defaultScoringProfile value.
      */
@@ -172,9 +172,9 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     }
 
     /**
-     * Set the defaultScoringProfile property: The name of the scoring profile to use if none is specified in the
-     * query. If this property is not set and no scoring profile is specified in the query, then default scoring
-     * (tf-idf) will be used.
+     * Set the defaultScoringProfile property: The name of the scoring profile to use if none is specified in the query.
+     * If this property is not set and no scoring profile is specified in the query, then default scoring (tf-idf) will
+     * be used.
      *
      * @param defaultScoringProfile the defaultScoringProfile value to set.
      * @return the SearchIndex object itself.
@@ -420,6 +420,9 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -21,6 +21,11 @@ import java.util.stream.Collectors;
 public final class PatternTokenizer extends LexicalTokenizer {
 
     /*
+     * A URI fragment specifying the type of tokenizer.
+     */
+    private String odataType = "#Microsoft.Azure.Search.PatternTokenizer";
+
+    /*
      * A regular expression pattern to match token separators. Default is an expression that matches one or more
      * non-word characters.
      */
@@ -45,6 +50,16 @@ public final class PatternTokenizer extends LexicalTokenizer {
      */
     public PatternTokenizer(String name) {
         super(name);
+    }
+
+    /**
+     * Get the odataType property: A URI fragment specifying the type of tokenizer.
+     *
+     * @return the odataType value.
+     */
+    @Override
+    public String getOdataType() {
+        return this.odataType;
     }
 
     /**
@@ -100,9 +115,9 @@ public final class PatternTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Get the group property: The zero-based ordinal of the matching group in the regular expression pattern to
-     * extract into tokens. Use -1 if you want to use the entire pattern to split the input into tokens, irrespective
-     * of matching groups. Default is -1.
+     * Get the group property: The zero-based ordinal of the matching group in the regular expression pattern to extract
+     * into tokens. Use -1 if you want to use the entire pattern to split the input into tokens, irrespective of
+     * matching groups. Default is -1.
      *
      * @return the group value.
      */
@@ -111,9 +126,9 @@ public final class PatternTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Set the group property: The zero-based ordinal of the matching group in the regular expression pattern to
-     * extract into tokens. Use -1 if you want to use the entire pattern to split the input into tokens, irrespective
-     * of matching groups. Default is -1.
+     * Set the group property: The zero-based ordinal of the matching group in the regular expression pattern to extract
+     * into tokens. Use -1 if you want to use the entire pattern to split the input into tokens, irrespective of
+     * matching groups. Default is -1.
      *
      * @param group the group value to set.
      * @return the PatternTokenizer object itself.
@@ -123,11 +138,14 @@ public final class PatternTokenizer extends LexicalTokenizer {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.PatternTokenizer");
         jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeStringField("pattern", this.pattern);
         jsonWriter.writeStringField("flags", this.flags == null ? null : this.flags.toString());
         jsonWriter.writeNumberField("group", this.group);
@@ -140,30 +158,25 @@ public final class PatternTokenizer extends LexicalTokenizer {
      * @param jsonReader The JsonReader being read.
      * @return An instance of PatternTokenizer if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PatternTokenizer.
      */
     public static PatternTokenizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
             String name = null;
+            String odataType = "#Microsoft.Azure.Search.PatternTokenizer";
             String pattern = null;
             RegexFlags flags = null;
             Integer group = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.PatternTokenizer".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PatternTokenizer'. The found '@odata.type' was '"
-                                + odataType + "'.");
-                    }
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     name = reader.getString();
                     nameFound = true;
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
                 } else if ("pattern".equals(fieldName)) {
                     pattern = reader.getString();
                 } else if ("flags".equals(fieldName)) {
@@ -176,6 +189,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
             }
             if (nameFound) {
                 PatternTokenizer deserializedPatternTokenizer = new PatternTokenizer(name);
+                deserializedPatternTokenizer.odataType = odataType;
                 deserializedPatternTokenizer.pattern = pattern;
                 deserializedPatternTokenizer.flags = flags;
                 deserializedPatternTokenizer.group = group;

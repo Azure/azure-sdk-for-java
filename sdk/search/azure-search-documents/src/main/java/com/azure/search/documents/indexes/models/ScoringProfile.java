@@ -35,8 +35,8 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
     private List<ScoringFunction> functions;
 
     /*
-     * A value indicating how the results of individual scoring functions should be combined. Defaults to "Sum".
-     * Ignored if there are no scoring functions.
+     * A value indicating how the results of individual scoring functions should be combined. Defaults to "Sum". Ignored
+     * if there are no scoring functions.
      */
     private ScoringFunctionAggregation functionAggregation;
 
@@ -120,6 +120,9 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

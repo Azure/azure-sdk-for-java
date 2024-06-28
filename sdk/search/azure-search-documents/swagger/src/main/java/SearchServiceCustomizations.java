@@ -11,11 +11,9 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.ExplicitConstructorInvocationStmt;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -96,7 +94,6 @@ public class SearchServiceCustomizations extends Customization {
         customizeSearchIndexerDataSourceConnection(publicCustomization.getClass("SearchIndexerDataSourceConnection"));
         customizeSemanticPrioritizedFields(publicCustomization.getClass("SemanticPrioritizedFields"));
         customizeVectorSearch(publicCustomization.getClass("VectorSearch"));
-        customizeWebApiSkill(publicCustomization.getClass("WebApiSkill"));
         // customizeSearchError(implCustomization.getClass("SearchError"));
 
         bulkRemoveFromJsonMethods(publicCustomization.getClass("SearchIndexerKnowledgeStoreProjectionSelector"),
@@ -810,95 +807,6 @@ public class SearchServiceCustomizations extends Customization {
                 "}"
             )));
         });
-    }
-
-    private void customizeWebApiSkill(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> clazz.getConstructors().getFirst().addParameter("String", "url"));
-        classCustomization.getConstructor("WebApiSkill").replaceBody("super(inputs, outputs);\n" +
-            "        this.url = url;");
-
-        classCustomization.getMethod("fromJson").replaceBody("return jsonReader.readObject(reader -> {\n" +
-            "            boolean inputsFound = false;\n" +
-            "            List<InputFieldMappingEntry> inputs = null;\n" +
-            "            boolean outputsFound = false;\n" +
-            "            List<OutputFieldMappingEntry> outputs = null;\n" +
-            "            String name = null;\n" +
-            "            String description = null;\n" +
-            "            String context = null;\n" +
-            "            Integer batchSize = null;\n" +
-            "            Integer degreeOfParallelism = null;\n" +
-            "            String url = null;\n" +
-            "            Map<String, String> httpHeaders = null;\n" +
-            "            String httpMethod = null;\n" +
-            "            Duration timeout = null;\n" +
-            "            String authResourceId = null;\n" +
-            "            SearchIndexerDataIdentity authIdentity = null;\n" +
-            "            while (reader.nextToken() != JsonToken.END_OBJECT) {\n" +
-            "                String fieldName = reader.getFieldName();\n" +
-            "                reader.nextToken();\n" +
-            "                if (\"@odata.type\".equals(fieldName)) {\n" +
-            "                    String odataType = reader.getString();\n" +
-            "                    if (!\"#Microsoft.Skills.Custom.WebApiSkill\".equals(odataType)) {\n" +
-            "                        throw new IllegalStateException(\n" +
-            "                            \"'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Custom.WebApiSkill'. The found '@odata.type' was '\"\n" +
-            "                                + odataType + \"'.\");\n" +
-            "                    }\n" +
-            "                } else if (\"inputs\".equals(fieldName)) {\n" +
-            "                    inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));\n" +
-            "                    inputsFound = true;\n" +
-            "                } else if (\"outputs\".equals(fieldName)) {\n" +
-            "                    outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));\n" +
-            "                    outputsFound = true;\n" +
-            "                } else if (\"name\".equals(fieldName)) {\n" +
-            "                    name = reader.getString();\n" +
-            "                } else if (\"description\".equals(fieldName)) {\n" +
-            "                    description = reader.getString();\n" +
-            "                } else if (\"context\".equals(fieldName)) {\n" +
-            "                    context = reader.getString();\n" +
-            "                } else if (\"batchSize\".equals(fieldName)) {\n" +
-            "                    batchSize = reader.getNullable(JsonReader::getInt);\n" +
-            "                } else if (\"degreeOfParallelism\".equals(fieldName)) {\n" +
-            "                    degreeOfParallelism = reader.getNullable(JsonReader::getInt);\n" +
-            "                } else if (\"uri\".equals(fieldName)) {\n" +
-            "                    url = reader.getString();\n" +
-            "                } else if (\"httpHeaders\".equals(fieldName)) {\n" +
-            "                    httpHeaders = reader.readMap(reader1 -> reader1.getString());\n" +
-            "                } else if (\"httpMethod\".equals(fieldName)) {\n" +
-            "                    httpMethod = reader.getString();\n" +
-            "                } else if (\"timeout\".equals(fieldName)) {\n" +
-            "                    timeout = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));\n" +
-            "                } else if (\"authResourceId\".equals(fieldName)) {\n" +
-            "                    authResourceId = reader.getString();\n" +
-            "                } else if (\"authIdentity\".equals(fieldName)) {\n" +
-            "                    authIdentity = SearchIndexerDataIdentity.fromJson(reader);\n" +
-            "                } else {\n" +
-            "                    reader.skipChildren();\n" +
-            "                }\n" +
-            "            }\n" +
-            "            if (inputsFound && outputsFound) {\n" +
-            "                WebApiSkill deserializedWebApiSkill = new WebApiSkill(inputs, outputs, url);\n" +
-            "                deserializedWebApiSkill.setName(name);\n" +
-            "                deserializedWebApiSkill.setDescription(description);\n" +
-            "                deserializedWebApiSkill.setContext(context);\n" +
-            "                deserializedWebApiSkill.batchSize = batchSize;\n" +
-            "                deserializedWebApiSkill.degreeOfParallelism = degreeOfParallelism;\n" +
-            "                deserializedWebApiSkill.httpHeaders = httpHeaders;\n" +
-            "                deserializedWebApiSkill.httpMethod = httpMethod;\n" +
-            "                deserializedWebApiSkill.timeout = timeout;\n" +
-            "                deserializedWebApiSkill.authResourceId = authResourceId;\n" +
-            "                deserializedWebApiSkill.authIdentity = authIdentity;\n" +
-            "                return deserializedWebApiSkill;\n" +
-            "            }\n" +
-            "            List<String> missingProperties = new ArrayList<>();\n" +
-            "            if (!inputsFound) {\n" +
-            "                missingProperties.add(\"inputs\");\n" +
-            "            }\n" +
-            "            if (!outputsFound) {\n" +
-            "                missingProperties.add(\"outputs\");\n" +
-            "            }\n" +
-            "            throw new IllegalStateException(\n" +
-            "                \"Missing required property/properties: \" + String.join(\", \", missingProperties));\n" +
-            "        });");
     }
 
     private static void bulkRemoveFromJsonMethods(ClassCustomization... classCustomizations) {

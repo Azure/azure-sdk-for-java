@@ -20,6 +20,11 @@ import java.util.List;
 public final class ElisionTokenFilter extends TokenFilter {
 
     /*
+     * A URI fragment specifying the type of token filter.
+     */
+    private String odataType = "#Microsoft.Azure.Search.ElisionTokenFilter";
+
+    /*
      * The set of articles to remove.
      */
     private List<String> articles;
@@ -31,6 +36,16 @@ public final class ElisionTokenFilter extends TokenFilter {
      */
     public ElisionTokenFilter(String name) {
         super(name);
+    }
+
+    /**
+     * Get the odataType property: A URI fragment specifying the type of token filter.
+     *
+     * @return the odataType value.
+     */
+    @Override
+    public String getOdataType() {
+        return this.odataType;
     }
 
     /**
@@ -53,11 +68,14 @@ public final class ElisionTokenFilter extends TokenFilter {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.ElisionTokenFilter");
         jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeArrayField("articles", this.articles, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -68,28 +86,23 @@ public final class ElisionTokenFilter extends TokenFilter {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ElisionTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ElisionTokenFilter.
      */
     public static ElisionTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
             String name = null;
+            String odataType = "#Microsoft.Azure.Search.ElisionTokenFilter";
             List<String> articles = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.ElisionTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.ElisionTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
-                    }
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     name = reader.getString();
                     nameFound = true;
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
                 } else if ("articles".equals(fieldName)) {
                     articles = reader.readArray(reader1 -> reader1.getString());
                 } else {
@@ -98,6 +111,7 @@ public final class ElisionTokenFilter extends TokenFilter {
             }
             if (nameFound) {
                 ElisionTokenFilter deserializedElisionTokenFilter = new ElisionTokenFilter(name);
+                deserializedElisionTokenFilter.odataType = odataType;
                 deserializedElisionTokenFilter.articles = articles;
                 return deserializedElisionTokenFilter;
             }

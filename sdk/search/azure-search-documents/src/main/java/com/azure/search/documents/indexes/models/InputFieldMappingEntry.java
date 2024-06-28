@@ -117,6 +117,9 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -85,6 +85,9 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
         return this.vaultUrl;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

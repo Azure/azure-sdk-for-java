@@ -19,6 +19,11 @@ import java.util.List;
 public final class StopwordsTokenFilter extends TokenFilter {
 
     /*
+     * A URI fragment specifying the type of token filter.
+     */
+    private String odataType = "#Microsoft.Azure.Search.StopwordsTokenFilter";
+
+    /*
      * The list of stopwords. This property and the stopwords list property cannot both be set.
      */
     private List<String> stopwords;
@@ -47,6 +52,16 @@ public final class StopwordsTokenFilter extends TokenFilter {
      */
     public StopwordsTokenFilter(String name) {
         super(name);
+    }
+
+    /**
+     * Get the odataType property: A URI fragment specifying the type of token filter.
+     *
+     * @return the odataType value.
+     */
+    @Override
+    public String getOdataType() {
+        return this.odataType;
     }
 
     /**
@@ -137,11 +152,14 @@ public final class StopwordsTokenFilter extends TokenFilter {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.StopwordsTokenFilter");
         jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeArrayField("stopwords", this.stopwords, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("stopwordsList", this.stopwordsList == null ? null : this.stopwordsList.toString());
         jsonWriter.writeBooleanField("ignoreCase", this.caseIgnored);
@@ -155,14 +173,14 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @param jsonReader The JsonReader being read.
      * @return An instance of StopwordsTokenFilter if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StopwordsTokenFilter.
      */
     public static StopwordsTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
             String name = null;
+            String odataType = "#Microsoft.Azure.Search.StopwordsTokenFilter";
             List<String> stopwords = null;
             StopwordsList stopwordsList = null;
             Boolean caseIgnored = null;
@@ -170,16 +188,11 @@ public final class StopwordsTokenFilter extends TokenFilter {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.StopwordsTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StopwordsTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
-                    }
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     name = reader.getString();
                     nameFound = true;
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
                 } else if ("stopwords".equals(fieldName)) {
                     stopwords = reader.readArray(reader1 -> reader1.getString());
                 } else if ("stopwordsList".equals(fieldName)) {
@@ -194,6 +207,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
             }
             if (nameFound) {
                 StopwordsTokenFilter deserializedStopwordsTokenFilter = new StopwordsTokenFilter(name);
+                deserializedStopwordsTokenFilter.odataType = odataType;
                 deserializedStopwordsTokenFilter.stopwords = stopwords;
                 deserializedStopwordsTokenFilter.stopwordsList = stopwordsList;
                 deserializedStopwordsTokenFilter.caseIgnored = caseIgnored;
