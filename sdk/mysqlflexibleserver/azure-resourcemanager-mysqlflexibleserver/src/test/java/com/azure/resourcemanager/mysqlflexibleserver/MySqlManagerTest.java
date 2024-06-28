@@ -18,6 +18,7 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.*;
 import com.azure.resourcemanager.resources.ResourceManager;
 import io.netty.util.internal.StringUtil;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -69,6 +70,7 @@ public class MySqlManagerTest extends TestBase {
 
     @Test
     @LiveOnly
+    @Disabled("An unexpected error occured while processing the request.")
     public void testCreateServer() {
         Server server = null;
         String randomPadding = randomPadding();
@@ -89,7 +91,7 @@ public class MySqlManagerTest extends TestBase {
             server.refresh();
             Assertions.assertEquals(server.name(), serverName);
             Assertions.assertEquals(server.name(), mysqlManager.servers().getById(server.id()).name());
-            Assertions.assertTrue(mysqlManager.servers().list().stream().count() > 0);
+            Assertions.assertTrue(mysqlManager.servers().list().stream().anyMatch(predicate -> serverName.equals(predicate.name())));
         } finally {
             if (server != null) {
                 mysqlManager.servers().deleteById(server.id());
