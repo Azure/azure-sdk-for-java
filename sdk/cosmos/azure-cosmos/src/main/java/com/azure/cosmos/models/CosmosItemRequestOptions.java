@@ -574,6 +574,15 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * Gets the custom ids.
+     *
+     * @return the custom ids.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return keywordIdentifiers;
+    }
+
+    /**
      * Gets the custom item request options
      *
      * @return Map of custom request options

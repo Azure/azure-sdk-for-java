@@ -1002,7 +1002,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         keywordIdentifiers.add("customerId");
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions().setKeywordIdentifiers(keywordIdentifiers);
         CosmosItemResponse<InternalObjectNode> createResponse = containerDirect.createItem(internalObjectNode, cosmosItemRequestOptions);
+        ArrayList<String> diagnosticsList = new ArrayList<>();
         String diagnostics = createResponse.getDiagnostics().toString();
+        diagnosticsList.add(diagnostics);
+        diagnostics = containerDirect.readItem(internalObjectNode.getId(), new PartitionKey(internalObjectNode.getId()), cosmosItemRequestOptions
+            ,InternalObjectNode.class).getDiagnostics().toString();
+        diagnosticsList.add(diagnostics);
+        diagnostics = containerDirect.upsertItem(internalObjectNode, cosmosItemRequestOptions).getDiagnostics().toString();
+        diagnosticsList.add(diagnostics);
+        diagnostics = containerDirect.replaceItem(internalObjectNode, internalObjectNode.getId(), new PartitionKey(internalObjectNode.getId()), cosmosItemRequestOptions).getDiagnostics().toString();
+
+
         isValidJSON(diagnostics);
         assertThat(diagnostics).contains("\"keywordIdentifiers\":[\"orderId\",\"customerId\"]");
 

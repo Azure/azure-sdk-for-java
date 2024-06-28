@@ -530,6 +530,11 @@ public final class CosmosChangeFeedRequestOptions {
         return this;
     }
 
+    /**
+     * Gets the custom ids.
+     *
+     * @return the custom ids.
+     */
     public Set<String> getKeywordIdentifiers() {
         return this.actualRequestOptions.getKeywordIdentifiers();
     }

@@ -1901,6 +1901,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (options != null) {
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
@@ -5877,6 +5878,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             orderedApplicableRegionsForSpeculation,
                             region)
                     );
+
+                    clonedRequest.requestContext.setKeywordIdentifiers(req.requestContext.getKeywordIdentifiers());
 
                     // Non-Transient errors are mapped to a value - this ensures the firstWithValue
                     // operator below will complete the composite Mono for both successful values
