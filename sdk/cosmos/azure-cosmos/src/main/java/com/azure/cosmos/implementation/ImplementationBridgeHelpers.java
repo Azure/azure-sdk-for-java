@@ -1711,6 +1711,10 @@ public class ImplementationBridgeHelpers {
             <T> Map<String, Object> serializeSafe(CosmosItemSerializer serializer, T item);
 
             <T> T deserializeSafe(CosmosItemSerializer serializer, Map<String, Object> jsonNodeMap, Class<T> classType);
+
+            void setShouldWrapSerializationExceptions(
+                CosmosItemSerializer serializer,
+                boolean shouldWrapSerializationExceptions);
         }
     }
 }
