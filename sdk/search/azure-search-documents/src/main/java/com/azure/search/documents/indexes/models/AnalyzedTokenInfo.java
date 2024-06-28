@@ -15,9 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Information about a token returned by an analyzer.
- */
+/** Information about a token returned by an analyzer. */
 @Immutable
 public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenInfo> {
     /*
@@ -44,7 +42,7 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
 
     /**
      * Creates an instance of AnalyzedTokenInfo class.
-     * 
+     *
      * @param token the token value to set.
      * @param startOffset the startOffset value to set.
      * @param endOffset the endOffset value to set.
@@ -59,7 +57,7 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
 
     /**
      * Get the token property: The token returned by the analyzer.
-     * 
+     *
      * @return the token value.
      */
     public String getToken() {
@@ -68,7 +66,7 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
 
     /**
      * Get the startOffset property: The index of the first character of the token in the input text.
-     * 
+     *
      * @return the startOffset value.
      */
     public int getStartOffset() {
@@ -77,7 +75,7 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
 
     /**
      * Get the endOffset property: The index of the last character of the token in the input text.
-     * 
+     *
      * @return the endOffset value.
      */
     public int getEndOffset() {
@@ -86,9 +84,9 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
 
     /**
      * Get the position property: The position of the token in the input text relative to other tokens. The first token
-     * in the input text has position 0, the next has position 1, and so on. Depending on the analyzer used, some
-     * tokens might have the same position, for example if they are synonyms of each other.
-     * 
+     * in the input text has position 0, the next has position 1, and so on. Depending on the analyzer used, some tokens
+     * might have the same position, for example if they are synonyms of each other.
+     *
      * @return the position value.
      */
     public int getPosition() {
@@ -103,62 +101,66 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
 
     /**
      * Reads an instance of AnalyzedTokenInfo from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AnalyzedTokenInfo if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzedTokenInfo.
      */
     public static AnalyzedTokenInfo fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean tokenFound = false;
-            String token = null;
-            boolean startOffsetFound = false;
-            int startOffset = 0;
-            boolean endOffsetFound = false;
-            int endOffset = 0;
-            boolean positionFound = false;
-            int position = 0;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean tokenFound = false;
+                    String token = null;
+                    boolean startOffsetFound = false;
+                    int startOffset = 0;
+                    boolean endOffsetFound = false;
+                    int endOffset = 0;
+                    boolean positionFound = false;
+                    int position = 0;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("token".equals(fieldName)) {
-                    token = reader.getString();
-                    tokenFound = true;
-                } else if ("startOffset".equals(fieldName)) {
-                    startOffset = reader.getInt();
-                    startOffsetFound = true;
-                } else if ("endOffset".equals(fieldName)) {
-                    endOffset = reader.getInt();
-                    endOffsetFound = true;
-                } else if ("position".equals(fieldName)) {
-                    position = reader.getInt();
-                    positionFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (tokenFound && startOffsetFound && endOffsetFound && positionFound) {
-                return new AnalyzedTokenInfo(token, startOffset, endOffset, position);
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!tokenFound) {
-                missingProperties.add("token");
-            }
-            if (!startOffsetFound) {
-                missingProperties.add("startOffset");
-            }
-            if (!endOffsetFound) {
-                missingProperties.add("endOffset");
-            }
-            if (!positionFound) {
-                missingProperties.add("position");
-            }
+                        if ("token".equals(fieldName)) {
+                            token = reader.getString();
+                            tokenFound = true;
+                        } else if ("startOffset".equals(fieldName)) {
+                            startOffset = reader.getInt();
+                            startOffsetFound = true;
+                        } else if ("endOffset".equals(fieldName)) {
+                            endOffset = reader.getInt();
+                            endOffsetFound = true;
+                        } else if ("position".equals(fieldName)) {
+                            position = reader.getInt();
+                            positionFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (tokenFound && startOffsetFound && endOffsetFound && positionFound) {
+                        AnalyzedTokenInfo deserializedAnalyzedTokenInfo =
+                                new AnalyzedTokenInfo(token, startOffset, endOffset, position);
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                        return deserializedAnalyzedTokenInfo;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!tokenFound) {
+                        missingProperties.add("token");
+                    }
+                    if (!startOffsetFound) {
+                        missingProperties.add("startOffset");
+                    }
+                    if (!endOffsetFound) {
+                        missingProperties.add("endOffset");
+                    }
+                    if (!positionFound) {
+                        missingProperties.add("position");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }
