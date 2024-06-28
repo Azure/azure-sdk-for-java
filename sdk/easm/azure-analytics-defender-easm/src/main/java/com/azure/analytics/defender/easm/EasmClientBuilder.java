@@ -21,8 +21,8 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -84,7 +84,7 @@ public final class EasmClientBuilder implements HttpTrait<EasmClientBuilder>, Co
     @Override
     public EasmClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
-            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.pipeline = pipeline;
         return this;
@@ -214,60 +214,6 @@ public final class EasmClientBuilder implements HttpTrait<EasmClientBuilder>, Co
     }
 
     /*
-     * The ID of the target subscription.
-     */
-    @Generated
-    private String subscriptionId;
-
-    /**
-     * Sets The ID of the target subscription.
-     *
-     * @param subscriptionId the subscriptionId value.
-     * @return the EasmClientBuilder.
-     */
-    @Generated
-    public EasmClientBuilder subscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
-    /*
-     * The name of the Resource Group.
-     */
-    @Generated
-    private String resourceGroupName;
-
-    /**
-     * Sets The name of the Resource Group.
-     *
-     * @param resourceGroupName the resourceGroupName value.
-     * @return the EasmClientBuilder.
-     */
-    @Generated
-    public EasmClientBuilder resourceGroupName(String resourceGroupName) {
-        this.resourceGroupName = resourceGroupName;
-        return this;
-    }
-
-    /*
-     * The name of the Workspace.
-     */
-    @Generated
-    private String workspaceName;
-
-    /**
-     * Sets The name of the Workspace.
-     *
-     * @param workspaceName the workspaceName value.
-     * @return the EasmClientBuilder.
-     */
-    @Generated
-    public EasmClientBuilder workspaceName(String workspaceName) {
-        this.workspaceName = workspaceName;
-        return this;
-    }
-
-    /*
      * Service version
      */
     @Generated
@@ -314,7 +260,7 @@ public final class EasmClientBuilder implements HttpTrait<EasmClientBuilder>, Co
         EasmServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : EasmServiceVersion.getLatest();
         EasmClientImpl client = new EasmClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
-            this.endpoint, this.subscriptionId, this.resourceGroupName, this.workspaceName, localServiceVersion);
+            this.endpoint, localServiceVersion);
         return client;
     }
 
@@ -337,7 +283,8 @@ public final class EasmClientBuilder implements HttpTrait<EasmClientBuilder>, Co
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
@@ -345,12 +292,15 @@ public final class EasmClientBuilder implements HttpTrait<EasmClientBuilder>, Co
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient).clientOptions(localClientOptions).build();
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
         return httpPipeline;
     }
 
