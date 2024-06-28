@@ -47,7 +47,12 @@ class ConnectionStringBuilder {
     }
 
     private static Map<String, String> getKeyValuePairs(String connectionString) {
-        validate(connectionString);
+        if (connectionString.length() > CONNECTION_STRING_MAX_LENGTH) { // guard against malicious input
+            throw new IllegalArgumentException(
+                "ConnectionString values with more than "
+                    + CONNECTION_STRING_MAX_LENGTH
+                    + " characters are not allowed.");
+        }
         // parse key value pairs
         Map<String, String> kvps;
         try {
@@ -58,18 +63,6 @@ class ConnectionStringBuilder {
         }
 
         return kvps;
-    }
-
-    private static void validate(String connectionString) {
-        if (!connectionString.startsWith("InstrumentationKey=")) {
-            throw new IllegalStateException("Your connection string seems to have the wrong format.");
-        }
-        if (connectionString.length() > CONNECTION_STRING_MAX_LENGTH) { // guard against malicious input
-            throw new IllegalArgumentException(
-                "ConnectionString values with more than "
-                    + CONNECTION_STRING_MAX_LENGTH
-                    + " characters are not allowed.");
-        }
     }
 
     private static Map<String, String> extractKeyValuesFromConnectionString(String connectionString) {
