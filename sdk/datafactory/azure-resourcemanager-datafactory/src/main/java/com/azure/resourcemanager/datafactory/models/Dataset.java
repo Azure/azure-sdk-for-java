@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -137,7 +137,7 @@ public class Dataset {
      */
     @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Dataset";
 
     /*
      * Dataset description.
@@ -146,13 +146,15 @@ public class Dataset {
     private String description;
 
     /*
-     * Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
+     * Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType:
+     * DatasetDataElement.
      */
     @JsonProperty(value = "structure")
     private Object structure;
 
     /*
-     * Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType: DatasetSchemaDataElement.
+     * Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array),
+     * itemType: DatasetSchemaDataElement.
      */
     @JsonProperty(value = "schema")
     private Object schema;
@@ -183,7 +185,8 @@ public class Dataset {
     private DatasetFolder folder;
 
     /*
-     * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files, folders, and documents.
+     * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files,
+     * folders, and documents.
      */
     @JsonIgnore
     private Map<String, Object> additionalProperties;
@@ -192,7 +195,6 @@ public class Dataset {
      * Creates an instance of Dataset class.
      */
     public Dataset() {
-        this.type = "Dataset";
     }
 
     /**
@@ -376,7 +378,7 @@ public class Dataset {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

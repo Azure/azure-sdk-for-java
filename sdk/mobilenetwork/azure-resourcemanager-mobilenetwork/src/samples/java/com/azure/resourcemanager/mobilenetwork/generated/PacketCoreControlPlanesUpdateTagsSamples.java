@@ -16,9 +16,7 @@ import java.util.Map;
  */
 public final class PacketCoreControlPlanesUpdateTagsSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/
-     * PacketCoreControlPlanePatch.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlanePatch.json
      */
     /**
      * Sample code: Patch packet core control plane.
@@ -28,12 +26,14 @@ public final class PacketCoreControlPlanesUpdateTagsSamples {
     public static void
         patchPacketCoreControlPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         PacketCoreControlPlane resource = manager.packetCoreControlPlanes()
-            .getByResourceGroupWithResponse("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).withIdentity(new ManagedServiceIdentity()
-            .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-            .withUserAssignedIdentities(mapOf(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",
-                new UserAssignedIdentity())))
+            .getByResourceGroupWithResponse("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("tag1", "value1", "tag2", "value2"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",
+                    new UserAssignedIdentity())))
             .apply();
     }
 

@@ -12,27 +12,12 @@ public final class PrivateIpAddressPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateIpAddressPropertiesInner model = BinaryData.fromString(
-            "{\"displayName\":\"afxtsgum\",\"hostnameLabel\":\"jglikkxwslolb\",\"ocid\":\"pvuzlmv\",\"ipAddress\":\"elfk\",\"subnetId\":\"gplcrpwjxeznoigb\"}")
+            "{\"displayName\":\"zq\",\"hostnameLabel\":\"zh\",\"ocid\":\"tw\",\"ipAddress\":\"sgogczhonnxk\",\"subnetId\":\"lgnyhmo\"}")
             .toObject(PrivateIpAddressPropertiesInner.class);
-        Assertions.assertEquals("afxtsgum", model.displayName());
-        Assertions.assertEquals("jglikkxwslolb", model.hostnameLabel());
-        Assertions.assertEquals("pvuzlmv", model.ocid());
-        Assertions.assertEquals("elfk", model.ipAddress());
-        Assertions.assertEquals("gplcrpwjxeznoigb", model.subnetId());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        PrivateIpAddressPropertiesInner model = new PrivateIpAddressPropertiesInner().withDisplayName("afxtsgum")
-            .withHostnameLabel("jglikkxwslolb")
-            .withOcid("pvuzlmv")
-            .withIpAddress("elfk")
-            .withSubnetId("gplcrpwjxeznoigb");
-        model = BinaryData.fromObject(model).toObject(PrivateIpAddressPropertiesInner.class);
-        Assertions.assertEquals("afxtsgum", model.displayName());
-        Assertions.assertEquals("jglikkxwslolb", model.hostnameLabel());
-        Assertions.assertEquals("pvuzlmv", model.ocid());
-        Assertions.assertEquals("elfk", model.ipAddress());
-        Assertions.assertEquals("gplcrpwjxeznoigb", model.subnetId());
+        Assertions.assertEquals("zq", model.displayName());
+        Assertions.assertEquals("zh", model.hostnameLabel());
+        Assertions.assertEquals("tw", model.ocid());
+        Assertions.assertEquals("sgogczhonnxk", model.ipAddress());
+        Assertions.assertEquals("lgnyhmo", model.subnetId());
     }
 }

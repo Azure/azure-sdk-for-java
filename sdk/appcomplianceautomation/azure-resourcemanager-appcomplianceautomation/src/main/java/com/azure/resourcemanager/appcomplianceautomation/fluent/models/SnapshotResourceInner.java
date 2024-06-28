@@ -4,34 +4,54 @@
 
 package com.azure.resourcemanager.appcomplianceautomation.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcomplianceautomation.models.SnapshotProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A class represent a AppComplianceAutomation snapshot resource. */
-@Immutable
+/**
+ * A class represent a AppComplianceAutomation snapshot resource.
+ */
+@Fluent
 public final class SnapshotResourceInner extends ProxyResource {
     /*
-     * Snapshot's property'.
+     * Snapshot's property.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private SnapshotProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SnapshotResourceInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of SnapshotResourceInner class.
+     */
     public SnapshotResourceInner() {
     }
 
     /**
-     * Get the properties property: Snapshot's property'.
-     *
+     * Get the properties property: Snapshot's property.
+     * 
      * @return the properties value.
      */
     public SnapshotProperties properties() {
@@ -39,8 +59,19 @@ public final class SnapshotResourceInner extends ProxyResource {
     }
 
     /**
+     * Set the properties property: Snapshot's property.
+     * 
+     * @param properties the properties value to set.
+     * @return the SnapshotResourceInner object itself.
+     */
+    public SnapshotResourceInner withProperties(SnapshotProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -48,13 +79,88 @@ public final class SnapshotResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SnapshotResourceInner.
+     */
+    public static SnapshotResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotResourceInner deserializedSnapshotResourceInner = new SnapshotResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSnapshotResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSnapshotResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSnapshotResourceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSnapshotResourceInner.properties = SnapshotProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSnapshotResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotResourceInner;
+        });
     }
 }

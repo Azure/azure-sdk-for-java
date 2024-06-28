@@ -5,41 +5,40 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Translation result.
  */
 @Immutable
-public final class TranslationText {
+public final class TranslationText implements JsonSerializable<TranslationText> {
 
     /*
      * A string giving the translated text.
      */
     @Generated
-    @JsonProperty(value = "text")
     private final String text;
 
     /*
      * An object giving the translated text in the script specified by the toScript parameter.
      */
     @Generated
-    @JsonProperty(value = "transliteration")
     private TransliteratedText transliteration;
 
     /*
      * Alignment information.
      */
     @Generated
-    @JsonProperty(value = "alignment")
     private TranslatedTextAlignment alignment;
 
     /*
      * Sentence boundaries in the input and output texts.
      */
     @Generated
-    @JsonProperty(value = "sentLen")
     private SentenceBoundaries sentenceBoundaries;
 
     /**
@@ -49,9 +48,7 @@ public final class TranslationText {
      * @param text the text value to set.
      */
     @Generated
-    @JsonCreator
-    private TranslationText(@JsonProperty(value = "to") String targetLanguage,
-        @JsonProperty(value = "text") String text) {
+    private TranslationText(String targetLanguage, String text) {
         this.targetLanguage = targetLanguage;
         this.text = text;
     }
@@ -111,6 +108,62 @@ public final class TranslationText {
      * A string representing the language code of the target language.
      */
     @Generated
-    @JsonProperty(value = "to")
     private final String targetLanguage;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("to", this.targetLanguage);
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeJsonField("transliteration", this.transliteration);
+        jsonWriter.writeJsonField("alignment", this.alignment);
+        jsonWriter.writeJsonField("sentLen", this.sentenceBoundaries);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TranslationText from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TranslationText if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TranslationText.
+     */
+    @Generated
+    public static TranslationText fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String targetLanguage = null;
+            String text = null;
+            TransliteratedText transliteration = null;
+            TranslatedTextAlignment alignment = null;
+            SentenceBoundaries sentenceBoundaries = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("to".equals(fieldName)) {
+                    targetLanguage = reader.getString();
+                } else if ("text".equals(fieldName)) {
+                    text = reader.getString();
+                } else if ("transliteration".equals(fieldName)) {
+                    transliteration = TransliteratedText.fromJson(reader);
+                } else if ("alignment".equals(fieldName)) {
+                    alignment = TranslatedTextAlignment.fromJson(reader);
+                } else if ("sentLen".equals(fieldName)) {
+                    sentenceBoundaries = SentenceBoundaries.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            TranslationText deserializedTranslationText = new TranslationText(targetLanguage, text);
+            deserializedTranslationText.transliteration = transliteration;
+            deserializedTranslationText.alignment = alignment;
+            deserializedTranslationText.sentenceBoundaries = sentenceBoundaries;
+            return deserializedTranslationText;
+        });
+    }
 }

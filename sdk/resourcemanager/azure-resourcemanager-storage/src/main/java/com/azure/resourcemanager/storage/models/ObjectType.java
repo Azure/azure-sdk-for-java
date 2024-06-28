@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -26,7 +25,7 @@ public final class ObjectType extends ExpandableStringEnum<ObjectType> {
 
     /**
      * Creates a new instance of ObjectType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,7 +34,7 @@ public final class ObjectType extends ExpandableStringEnum<ObjectType> {
 
     /**
      * Creates or finds a ObjectType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ObjectType.
      */
@@ -46,7 +45,7 @@ public final class ObjectType extends ExpandableStringEnum<ObjectType> {
 
     /**
      * Gets known ObjectType values.
-     *
+     * 
      * @return known ObjectType values.
      */
     public static Collection<ObjectType> values() {

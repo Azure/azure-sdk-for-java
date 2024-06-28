@@ -37,7 +37,8 @@ public final class SapHanaSource extends TabularSource {
     private Object packetSize;
 
     /*
-     * The partition mechanism that will be used for SAP HANA read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable", "SapHanaDynamicRange". 
+     * The partition mechanism that will be used for SAP HANA read in parallel. Possible values include: "None",
+     * "PhysicalPartitionsOfTable", "SapHanaDynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;

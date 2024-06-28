@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +24,7 @@ public final class MigrationState extends ExpandableStringEnum<MigrationState> {
 
     /**
      * Creates a new instance of MigrationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +33,7 @@ public final class MigrationState extends ExpandableStringEnum<MigrationState> {
 
     /**
      * Creates or finds a MigrationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MigrationState.
      */
@@ -45,7 +44,7 @@ public final class MigrationState extends ExpandableStringEnum<MigrationState> {
 
     /**
      * Gets known MigrationState values.
-     *
+     * 
      * @return known MigrationState values.
      */
     public static Collection<MigrationState> values() {

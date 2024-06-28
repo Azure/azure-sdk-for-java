@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -19,7 +19,9 @@ import java.util.Map;
 @Fluent
 public final class RedirectIncompatibleRowSettings {
     /*
-     * Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked service used for redirecting incompatible row. Must be specified if redirectIncompatibleRowSettings is specified. Type: string (or Expression with resultType string).
+     * Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked service used for redirecting incompatible
+     * row. Must be specified if redirectIncompatibleRowSettings is specified. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "linkedServiceName", required = true)
     private Object linkedServiceName;
@@ -112,7 +114,7 @@ public final class RedirectIncompatibleRowSettings {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Map;
 
 /**
@@ -35,7 +34,9 @@ public final class Identity {
     private IdentityType type;
 
     /*
-     * Gets or sets a list of key value pairs that describe the set of User Assigned identities that will be used with this storage account. The key is the ARM resource identifier of the identity. Only 1 User Assigned identity is permitted here.
+     * Gets or sets a list of key value pairs that describe the set of User Assigned identities that will be used with
+     * this storage account. The key is the ARM resource identifier of the identity. Only 1 User Assigned identity is
+     * permitted here.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -49,7 +50,7 @@ public final class Identity {
 
     /**
      * Get the principalId property: The principal ID of resource identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -58,7 +59,7 @@ public final class Identity {
 
     /**
      * Get the tenantId property: The tenant ID of resource.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -67,7 +68,7 @@ public final class Identity {
 
     /**
      * Get the type property: The identity type.
-     *
+     * 
      * @return the type value.
      */
     public IdentityType type() {
@@ -76,7 +77,7 @@ public final class Identity {
 
     /**
      * Set the type property: The identity type.
-     *
+     * 
      * @param type the type value to set.
      * @return the Identity object itself.
      */
@@ -89,7 +90,7 @@ public final class Identity {
      * Get the userAssignedIdentities property: Gets or sets a list of key value pairs that describe the set of User
      * Assigned identities that will be used with this storage account. The key is the ARM resource identifier of the
      * identity. Only 1 User Assigned identity is permitted here.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserAssignedIdentity> userAssignedIdentities() {
@@ -100,7 +101,7 @@ public final class Identity {
      * Set the userAssignedIdentities property: Gets or sets a list of key value pairs that describe the set of User
      * Assigned identities that will be used with this storage account. The key is the ARM resource identifier of the
      * identity. Only 1 User Assigned identity is permitted here.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the Identity object itself.
      */
@@ -111,7 +112,7 @@ public final class Identity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

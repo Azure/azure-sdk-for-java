@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -31,7 +30,6 @@ public final class DialogInputType extends ExpandableStringEnum<DialogInputType>
      * @param name a name to look for.
      * @return the corresponding DialogInputType.
      */
-    @JsonCreator
     public static DialogInputType fromString(String name) {
         return fromString(name, DialogInputType.class);
     }

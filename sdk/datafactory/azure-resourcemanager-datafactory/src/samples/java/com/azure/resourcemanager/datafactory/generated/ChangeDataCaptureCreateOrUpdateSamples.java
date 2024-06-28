@@ -15,7 +15,8 @@ import java.util.List;
  */
 public final class ChangeDataCaptureCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ChangeDataCapture_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ChangeDataCapture_Create.json
      */
     /**
      * Sample code: ChangeDataCapture_Create.
@@ -36,7 +37,8 @@ public final class ChangeDataCaptureCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ChangeDataCapture_Update.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ChangeDataCapture_Update.json
      */
     /**
      * Sample code: ChangeDataCapture_Update.

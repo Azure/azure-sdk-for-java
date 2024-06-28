@@ -11,7 +11,7 @@
                 "AZURE_TEST_HTTP_CLIENTS": "okhttp",
                 "AZURE_TEST_AGENT": "UBUNTU_2004_JAVA8"
             },
-            "macos-11": {
+            "macos-latest": {
                 "OSVmImage": "env:MACVMIMAGE",
                 "Pool": "env:MACPOOL",
                 "JavaTestVersion": "1.21",

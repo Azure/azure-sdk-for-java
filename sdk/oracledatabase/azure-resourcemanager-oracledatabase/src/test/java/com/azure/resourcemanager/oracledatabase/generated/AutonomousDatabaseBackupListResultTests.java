@@ -5,30 +5,17 @@
 package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseBackupInner;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseBackupListResult;
-import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseBackupProperties;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class AutonomousDatabaseBackupListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseBackupListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"autonomousDatabaseId\":\"qerpqlpqwcc\",\"databaseSizeInTBs\":1945025825,\"dbVersion\":\"bdbutauvf\",\"displayName\":\"kuwhh\",\"ocid\":\"ykojoxafnndlpic\",\"isAutomatic\":false,\"isRestorable\":true,\"lifecycleDetails\":\"cdyhbpkkpwdreqn\",\"lifecycleState\":\"Active\",\"retentionPeriodInDays\":217402337,\"sizeInTBs\":1985211204,\"timeAvailableTil\":\"2021-11-12T04:23:21Z\",\"timeEnded\":\"ywsuwsy\",\"type\":\"Full\",\"provisioningState\":\"Canceled\"},\"id\":\"tgadgvraeaen\",\"name\":\"qnzarrwl\",\"type\":\"uu\"}],\"nextLink\":\"fqka\"}")
+            "{\"value\":[{\"properties\":{\"autonomousDatabaseOcid\":\"lqiyntorzihl\",\"databaseSizeInTbs\":49.48448478517735,\"dbVersion\":\"w\",\"displayName\":\"mslyzrpzbchckqqz\",\"ocid\":\"ox\",\"isAutomatic\":true,\"isRestorable\":true,\"lifecycleDetails\":\"zynkedya\",\"lifecycleState\":\"Updating\",\"retentionPeriodInDays\":613432064,\"sizeInTbs\":96.57825190481805,\"timeAvailableTil\":\"2021-01-03T03:03:31Z\",\"timeStarted\":\"hwit\",\"timeEnded\":\"ypyynpcdpumnzg\",\"backupType\":\"Incremental\",\"provisioningState\":\"Provisioning\"},\"id\":\"biknsorgjhxbld\",\"name\":\"lwwrl\",\"type\":\"dmtnc\"},{\"properties\":{\"autonomousDatabaseOcid\":\"otllxdyhgsyo\",\"databaseSizeInTbs\":76.4408233006057,\"dbVersion\":\"tdtbnnhadooc\",\"displayName\":\"vcikhnvpamqgx\",\"ocid\":\"u\",\"isAutomatic\":false,\"isRestorable\":false,\"lifecycleDetails\":\"ggxkallatmelwuip\",\"lifecycleState\":\"Updating\",\"retentionPeriodInDays\":834190026,\"sizeInTbs\":2.810475899500664,\"timeAvailableTil\":\"2021-05-02T17:56:11Z\",\"timeStarted\":\"vc\",\"timeEnded\":\"y\",\"backupType\":\"Full\",\"provisioningState\":\"Provisioning\"},\"id\":\"xmueed\",\"name\":\"drd\",\"type\":\"stkwqqtch\"},{\"properties\":{\"autonomousDatabaseOcid\":\"mfmtdaaygdvw\",\"databaseSizeInTbs\":64.60106325135558,\"dbVersion\":\"hgwxrtfudx\",\"displayName\":\"xg\",\"ocid\":\"agvrvmnpkuk\",\"isAutomatic\":false,\"isRestorable\":false,\"lifecycleDetails\":\"lxgwimfnjhf\",\"lifecycleState\":\"Deleting\",\"retentionPeriodInDays\":205109580,\"sizeInTbs\":31.287428465157674,\"timeAvailableTil\":\"2021-08-02T13:39:17Z\",\"timeStarted\":\"rey\",\"timeEnded\":\"zi\",\"backupType\":\"LongTerm\",\"provisioningState\":\"Failed\"},\"id\":\"eaivxwczel\",\"name\":\"c\",\"type\":\"r\"},{\"properties\":{\"autonomousDatabaseOcid\":\"feaenwab\",\"databaseSizeInTbs\":17.173487054126536,\"dbVersion\":\"ddxbjhwuaanoz\",\"displayName\":\"sphyoulpjrvxa\",\"ocid\":\"rvimjwosytxitcsk\",\"isAutomatic\":false,\"isRestorable\":false,\"lifecycleDetails\":\"miekkezzikhlyfjh\",\"lifecycleState\":\"Updating\",\"retentionPeriodInDays\":757390701,\"sizeInTbs\":63.00553127765698,\"timeAvailableTil\":\"2021-03-10T16:44:56Z\",\"timeStarted\":\"g\",\"timeEnded\":\"qidbqfatpxllrxcy\",\"backupType\":\"LongTerm\",\"provisioningState\":\"Provisioning\"},\"id\":\"uvarmywdmjsjq\",\"name\":\"jhhyxxrwlycoduhp\",\"type\":\"xkgymareqnajxqu\"}],\"nextLink\":\"hky\"}")
             .toObject(AutonomousDatabaseBackupListResult.class);
-        Assertions.assertEquals("kuwhh", model.value().get(0).properties().displayName());
-        Assertions.assertEquals(217402337, model.value().get(0).properties().retentionPeriodInDays());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        AutonomousDatabaseBackupListResult model
-            = new AutonomousDatabaseBackupListResult().withValue(Arrays.asList(new AutonomousDatabaseBackupInner()
-                .withProperties(new AutonomousDatabaseBackupProperties().withDisplayName("kuwhh")
-                    .withRetentionPeriodInDays(217402337))));
-        model = BinaryData.fromObject(model).toObject(AutonomousDatabaseBackupListResult.class);
-        Assertions.assertEquals("kuwhh", model.value().get(0).properties().displayName());
-        Assertions.assertEquals(217402337, model.value().get(0).properties().retentionPeriodInDays());
+        Assertions.assertEquals("mslyzrpzbchckqqz", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(613432064, model.value().get(0).properties().retentionPeriodInDays());
+        Assertions.assertEquals("hky", model.nextLink());
     }
 }

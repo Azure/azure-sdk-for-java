@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The updatable properties of the OracleSubscription.
  */
 @Fluent
-public final class OracleSubscriptionUpdateProperties {
+public final class OracleSubscriptionUpdateProperties implements JsonSerializable<OracleSubscriptionUpdateProperties> {
     /*
      * Product code for the term unit
      */
-    @JsonProperty(value = "productCode")
     private String productCode;
 
     /*
      * Intent for the update operation
      */
-    @JsonProperty(value = "intent")
     private Intent intent;
 
     /**
@@ -76,5 +78,45 @@ public final class OracleSubscriptionUpdateProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("productCode", this.productCode);
+        jsonWriter.writeStringField("intent", this.intent == null ? null : this.intent.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OracleSubscriptionUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OracleSubscriptionUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OracleSubscriptionUpdateProperties.
+     */
+    public static OracleSubscriptionUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OracleSubscriptionUpdateProperties deserializedOracleSubscriptionUpdateProperties
+                = new OracleSubscriptionUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("productCode".equals(fieldName)) {
+                    deserializedOracleSubscriptionUpdateProperties.productCode = reader.getString();
+                } else if ("intent".equals(fieldName)) {
+                    deserializedOracleSubscriptionUpdateProperties.intent = Intent.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOracleSubscriptionUpdateProperties;
+        });
     }
 }

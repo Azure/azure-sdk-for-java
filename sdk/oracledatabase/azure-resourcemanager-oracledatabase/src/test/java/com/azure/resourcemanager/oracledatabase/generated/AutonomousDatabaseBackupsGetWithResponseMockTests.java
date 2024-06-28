@@ -21,7 +21,7 @@ public final class AutonomousDatabaseBackupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"autonomousDatabaseId\":\"daultxijjumfq\",\"databaseSizeInTBs\":129557013,\"dbVersion\":\"nqnm\",\"displayName\":\"ngz\",\"ocid\":\"qxtbjwgnyf\",\"isAutomatic\":true,\"isRestorable\":false,\"lifecycleDetails\":\"t\",\"lifecycleState\":\"Failed\",\"retentionPeriodInDays\":79446354,\"sizeInTBs\":566108141,\"timeAvailableTil\":\"2021-04-16T04:30:48Z\",\"timeEnded\":\"cfhmlrqryxyn\",\"type\":\"LongTerm\",\"provisioningState\":\"Provisioning\"},\"id\":\"sovwxznptgoeiyb\",\"name\":\"abpfhvfs\",\"type\":\"kvntjlrigjkskyri\"}";
+            = "{\"properties\":{\"autonomousDatabaseOcid\":\"ebwtswb\",\"databaseSizeInTbs\":55.97734627377354,\"dbVersion\":\"duragegizvc\",\"displayName\":\"elisdjub\",\"ocid\":\"bqigkx\",\"isAutomatic\":true,\"isRestorable\":true,\"lifecycleDetails\":\"akgacyrcmjdm\",\"lifecycleState\":\"Deleting\",\"retentionPeriodInDays\":897810587,\"sizeInTbs\":44.78254253574537,\"timeAvailableTil\":\"2021-04-29T13:51:01Z\",\"timeStarted\":\"lniofrzgbzje\",\"timeEnded\":\"st\",\"backupType\":\"Full\",\"provisioningState\":\"Succeeded\"},\"id\":\"bcuiiz\",\"name\":\"ktwfa\",\"type\":\"snvpdibmi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class AutonomousDatabaseBackupsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AutonomousDatabaseBackup response = manager.autonomousDatabaseBackups()
-            .getWithResponse("awbzasqb", "clj", "kyexaoguyaipi", com.azure.core.util.Context.NONE)
+            .getWithResponse("hfqpofv", "bcblemb", "kbwvqvxkdiv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ngz", response.properties().displayName());
-        Assertions.assertEquals(79446354, response.properties().retentionPeriodInDays());
+        Assertions.assertEquals("elisdjub", response.properties().displayName());
+        Assertions.assertEquals(897810587, response.properties().retentionPeriodInDays());
     }
 }

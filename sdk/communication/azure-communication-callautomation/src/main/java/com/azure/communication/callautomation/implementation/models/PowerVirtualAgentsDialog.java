@@ -5,30 +5,51 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Map;
 
-/** Power Virtual Agents Dialog. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("PowerVirtualAgents")
+/**
+ * Power Virtual Agents Dialog.
+ */
 @Fluent
 public final class PowerVirtualAgentsDialog extends BaseDialog {
     /*
+     * Determines the type of the dialog.
+     */
+    private DialogInputType kind = DialogInputType.POWER_VIRTUAL_AGENTS;
+
+    /*
      * Bot identifier.
      */
-    @JsonProperty(value = "botAppId", required = true)
     private String botAppId;
 
     /*
      * Language.
      */
-    @JsonProperty(value = "language")
     private String language;
 
     /**
+     * Creates an instance of PowerVirtualAgentsDialog class.
+     */
+    public PowerVirtualAgentsDialog() {
+    }
+
+    /**
+     * Get the kind property: Determines the type of the dialog.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public DialogInputType getKind() {
+        return this.kind;
+    }
+
+    /**
      * Get the botAppId property: Bot identifier.
-     *
+     * 
      * @return the botAppId value.
      */
     public String getBotAppId() {
@@ -37,7 +58,7 @@ public final class PowerVirtualAgentsDialog extends BaseDialog {
 
     /**
      * Set the botAppId property: Bot identifier.
-     *
+     * 
      * @param botAppId the botAppId value to set.
      * @return the PowerVirtualAgentsDialog object itself.
      */
@@ -48,7 +69,7 @@ public final class PowerVirtualAgentsDialog extends BaseDialog {
 
     /**
      * Get the language property: Language.
-     *
+     * 
      * @return the language value.
      */
     public String getLanguage() {
@@ -57,12 +78,68 @@ public final class PowerVirtualAgentsDialog extends BaseDialog {
 
     /**
      * Set the language property: Language.
-     *
+     * 
      * @param language the language value to set.
      * @return the PowerVirtualAgentsDialog object itself.
      */
     public PowerVirtualAgentsDialog setLanguage(String language) {
         this.language = language;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PowerVirtualAgentsDialog setContext(Map<String, Object> context) {
+        super.setContext(context);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("context", getContext(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("botAppId", this.botAppId);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("language", this.language);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PowerVirtualAgentsDialog from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PowerVirtualAgentsDialog if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PowerVirtualAgentsDialog.
+     */
+    public static PowerVirtualAgentsDialog fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PowerVirtualAgentsDialog deserializedPowerVirtualAgentsDialog = new PowerVirtualAgentsDialog();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("context".equals(fieldName)) {
+                    Map<String, Object> context = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedPowerVirtualAgentsDialog.setContext(context);
+                } else if ("botAppId".equals(fieldName)) {
+                    deserializedPowerVirtualAgentsDialog.botAppId = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedPowerVirtualAgentsDialog.kind = DialogInputType.fromString(reader.getString());
+                } else if ("language".equals(fieldName)) {
+                    deserializedPowerVirtualAgentsDialog.language = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPowerVirtualAgentsDialog;
+        });
     }
 }

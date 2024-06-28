@@ -14,13 +14,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AmazonS3LinkedServiceTypeProperties {
     /*
-     * The authentication type of S3. Allowed value: AccessKey (default) or TemporarySecurityCredentials. Type: string (or Expression with resultType string).
+     * The authentication type of S3. Allowed value: AccessKey (default) or TemporarySecurityCredentials. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
-     * The access key identifier of the Amazon S3 Identity and Access Management (IAM) user. Type: string (or Expression with resultType string).
+     * The access key identifier of the Amazon S3 Identity and Access Management (IAM) user. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "accessKeyId")
     private Object accessKeyId;
@@ -32,7 +34,9 @@ public final class AmazonS3LinkedServiceTypeProperties {
     private SecretBase secretAccessKey;
 
     /*
-     * This value specifies the endpoint to access with the S3 Connector. This is an optional property; change it only if you want to try a different service endpoint or want to switch between https and http. Type: string (or Expression with resultType string).
+     * This value specifies the endpoint to access with the S3 Connector. This is an optional property; change it only
+     * if you want to try a different service endpoint or want to switch between https and http. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "serviceUrl")
     private Object serviceUrl;
@@ -44,7 +48,8 @@ public final class AmazonS3LinkedServiceTypeProperties {
     private SecretBase sessionToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

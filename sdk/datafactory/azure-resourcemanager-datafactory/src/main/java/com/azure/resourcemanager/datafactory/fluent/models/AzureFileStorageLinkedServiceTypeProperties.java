@@ -33,7 +33,8 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString")
     private Object connectionString;
@@ -45,7 +46,8 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference accountKey;
 
     /*
-     * SAS URI of the Azure File resource. It is mutually exclusive with connectionString property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * SAS URI of the Azure File resource. It is mutually exclusive with connectionString property. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "sasUri")
     private Object sasUri;
@@ -57,7 +59,8 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference sasToken;
 
     /*
-     * The azure file share name. It is required when auth with accountKey/sasToken. Type: string (or Expression with resultType string).
+     * The azure file share name. It is required when auth with accountKey/sasToken. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "fileShare")
     private Object fileShare;
@@ -69,7 +72,8 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     private Object snapshot;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

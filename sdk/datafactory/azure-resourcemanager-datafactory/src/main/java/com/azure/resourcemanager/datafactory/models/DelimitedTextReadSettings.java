@@ -29,7 +29,8 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
     private String type = "DelimitedTextReadSettings";
 
     /*
-     * Indicates the number of non-empty rows to skip when reading data from input files. Type: integer (or Expression with resultType integer).
+     * Indicates the number of non-empty rows to skip when reading data from input files. Type: integer (or Expression
+     * with resultType integer).
      */
     @JsonProperty(value = "skipLineCount")
     private Object skipLineCount;

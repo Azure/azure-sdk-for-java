@@ -6,62 +6,32 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.ScriptCmdlet;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ScriptCmdletsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"swokm\",\"timeout\":\"hl\",\"audience\":\"Any\",\"parameters\":[{\"type\":\"Bool\",\"name\":\"qkzszuwiwtglxxh\",\"description\":\"fpgpicrmnzhrgm\",\"visibility\":\"Visible\",\"optional\":\"Optional\"},{\"type\":\"Int\",\"name\":\"cbfrm\",\"description\":\"dths\",\"visibility\":\"Hidden\",\"optional\":\"Required\"},{\"type\":\"Bool\",\"name\":\"a\",\"description\":\"lacjfrnxo\",\"visibility\":\"Hidden\",\"optional\":\"Required\"}]},\"id\":\"lwvsgm\",\"name\":\"ohqfzizv\",\"type\":\"xmmkjs\"}";
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"iov\",\"timeout\":\"cgxuugqkctotiowl\",\"parameters\":[{\"type\":\"Bool\",\"name\":\"tjgwdtguk\",\"description\":\"nblwphqlkcc\",\"visibility\":\"Visible\",\"optional\":\"Optional\"}]},\"id\":\"qwahoi\",\"name\":\"lwgniiprglvawu\",\"type\":\"z\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AvsManager manager = AvsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ScriptCmdlet response = manager.scriptCmdlets()
+            .getWithResponse("r", "govfgpikqmhhaow", "rmzvupo", "qzdfuydzvkfvxcn", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        AvsManager manager =
-            AvsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ScriptCmdlet response =
-            manager
-                .scriptCmdlets()
-                .getWithResponse("emmucfxh", "kkflrmymyincqlhr", "s", "sl", com.azure.core.util.Context.NONE)
-                .getValue();
     }
 }

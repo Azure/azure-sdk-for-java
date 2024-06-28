@@ -47,7 +47,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: maps
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-maps
         groupId: com.azure.resourcemanager
