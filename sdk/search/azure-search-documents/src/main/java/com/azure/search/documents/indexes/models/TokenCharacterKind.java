@@ -6,38 +6,24 @@
 
 package com.azure.search.documents.indexes.models;
 
-/**
- * Represents classes of characters on which a token filter can operate.
- */
+/** Represents classes of characters on which a token filter can operate. */
 public enum TokenCharacterKind {
-    /**
-     * Keeps letters in tokens.
-     */
+    /** Keeps letters in tokens. */
     LETTER("letter"),
 
-    /**
-     * Keeps digits in tokens.
-     */
+    /** Keeps digits in tokens. */
     DIGIT("digit"),
 
-    /**
-     * Keeps whitespace in tokens.
-     */
+    /** Keeps whitespace in tokens. */
     WHITESPACE("whitespace"),
 
-    /**
-     * Keeps punctuation in tokens.
-     */
+    /** Keeps punctuation in tokens. */
     PUNCTUATION("punctuation"),
 
-    /**
-     * Keeps symbols in tokens.
-     */
+    /** Keeps symbols in tokens. */
     SYMBOL("symbol");
 
-    /**
-     * The actual serialized value for a TokenCharacterKind instance.
-     */
+    /** The actual serialized value for a TokenCharacterKind instance. */
     private final String value;
 
     TokenCharacterKind(String value) {
@@ -46,7 +32,7 @@ public enum TokenCharacterKind {
 
     /**
      * Parses a serialized value to a TokenCharacterKind instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed TokenCharacterKind object, or null if unable to parse.
      */
@@ -63,9 +49,7 @@ public enum TokenCharacterKind {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

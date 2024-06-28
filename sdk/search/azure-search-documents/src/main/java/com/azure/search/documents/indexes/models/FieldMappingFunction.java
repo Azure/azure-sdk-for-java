@@ -12,11 +12,11 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-/**
- * Represents a function that transforms a value from a data source before indexing.
- */
+/** Represents a function that transforms a value from a data source before indexing. */
 @Fluent
 public final class FieldMappingFunction implements JsonSerializable<FieldMappingFunction> {
     /*
@@ -31,7 +31,7 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
 
     /**
      * Creates an instance of FieldMappingFunction class.
-     * 
+     *
      * @param name the name value to set.
      */
     public FieldMappingFunction(String name) {
@@ -40,7 +40,7 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
 
     /**
      * Get the name property: The name of the field mapping function.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -50,7 +50,7 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
     /**
      * Get the parameters property: A dictionary of parameter name/value pairs to pass to the function. Each value must
      * be of a primitive type.
-     * 
+     *
      * @return the parameters value.
      */
     public Map<String, Object> getParameters() {
@@ -60,7 +60,7 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
     /**
      * Set the parameters property: A dictionary of parameter name/value pairs to pass to the function. Each value must
      * be of a primitive type.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the FieldMappingFunction object itself.
      */
@@ -79,38 +79,45 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
 
     /**
      * Reads an instance of FieldMappingFunction from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of FieldMappingFunction if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FieldMappingFunction.
      */
     public static FieldMappingFunction fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            Map<String, Object> parameters = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    Map<String, Object> parameters = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("parameters".equals(fieldName)) {
-                    parameters = reader.readMap(reader1 -> reader1.readUntyped());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                FieldMappingFunction deserializedFieldMappingFunction = new FieldMappingFunction(name);
-                deserializedFieldMappingFunction.parameters = parameters;
+                        if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("parameters".equals(fieldName)) {
+                            parameters = reader.readMap(reader1 -> reader1.readUntyped());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        FieldMappingFunction deserializedFieldMappingFunction = new FieldMappingFunction(name);
+                        deserializedFieldMappingFunction.parameters = parameters;
 
-                return deserializedFieldMappingFunction;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+                        return deserializedFieldMappingFunction;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

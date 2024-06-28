@@ -6,23 +6,15 @@
 
 package com.azure.search.documents.models;
 
-/**
- * Specifies whether any or all of the search terms must be matched in order to count the document as a match.
- */
+/** Specifies whether any or all of the search terms must be matched in order to count the document as a match. */
 public enum SearchMode {
-    /**
-     * Any of the search terms must be matched in order to count the document as a match.
-     */
+    /** Any of the search terms must be matched in order to count the document as a match. */
     ANY("any"),
 
-    /**
-     * All of the search terms must be matched in order to count the document as a match.
-     */
+    /** All of the search terms must be matched in order to count the document as a match. */
     ALL("all");
 
-    /**
-     * The actual serialized value for a SearchMode instance.
-     */
+    /** The actual serialized value for a SearchMode instance. */
     private final String value;
 
     SearchMode(String value) {
@@ -31,7 +23,7 @@ public enum SearchMode {
 
     /**
      * Parses a serialized value to a SearchMode instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed SearchMode object, or null if unable to parse.
      */
@@ -48,9 +40,7 @@ public enum SearchMode {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

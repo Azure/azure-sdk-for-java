@@ -4,8 +4,6 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.reactivestreams.Publisher;
@@ -16,7 +14,6 @@ import java.util.stream.Stream;
 /**
  * Tests non-REST call cases.
  */
-@Execution(ExecutionMode.CONCURRENT)
 public class NonRestCallTests {
     @ParameterizedTest
     @MethodSource("apiCallReturnsErrorSupplier")
@@ -33,19 +30,16 @@ public class NonRestCallTests {
         return Stream.of(
             client.createOrUpdateDataSourceConnection(null),
             client.createOrUpdateDataSourceConnectionWithResponse(null, true),
-            client.createOrUpdateDataSourceConnectionWithResponse(null),
             client.deleteDataSourceConnectionWithResponse(null, true),
 
             client.createOrUpdateIndexer(null),
             client.createOrUpdateIndexerWithResponse(null, true),
-            client.createOrUpdateIndexerWithResponse(null),
             client.deleteIndexerWithResponse(null, true),
 
             client.createSkillset(null),
             client.createSkillsetWithResponse(null),
             client.createOrUpdateSkillset(null),
             client.createOrUpdateSkillsetWithResponse(null, true),
-            client.createOrUpdateIndexerWithResponse(null),
             client.deleteSkillsetWithResponse(null, true)
         );
     }

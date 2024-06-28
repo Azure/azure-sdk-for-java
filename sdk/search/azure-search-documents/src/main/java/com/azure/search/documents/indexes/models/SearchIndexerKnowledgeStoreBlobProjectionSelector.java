@@ -11,11 +11,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Abstract class to share properties between concrete selectors.
- */
+/** Abstract class to share properties between concrete selectors. */
 @Fluent
-public class SearchIndexerKnowledgeStoreBlobProjectionSelector extends SearchIndexerKnowledgeStoreProjectionSelector {
+public abstract class SearchIndexerKnowledgeStoreBlobProjectionSelector
+        extends SearchIndexerKnowledgeStoreProjectionSelector {
     /*
      * Blob container to store projections in.
      */
@@ -23,7 +22,7 @@ public class SearchIndexerKnowledgeStoreBlobProjectionSelector extends SearchInd
 
     /**
      * Creates an instance of SearchIndexerKnowledgeStoreBlobProjectionSelector class.
-     * 
+     *
      * @param storageContainer the storageContainer value to set.
      */
     public SearchIndexerKnowledgeStoreBlobProjectionSelector(String storageContainer) {
@@ -32,52 +31,42 @@ public class SearchIndexerKnowledgeStoreBlobProjectionSelector extends SearchInd
 
     /**
      * Get the storageContainer property: Blob container to store projections in.
-     * 
+     *
      * @return the storageContainer value.
      */
     public String getStorageContainer() {
         return this.storageContainer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SearchIndexerKnowledgeStoreBlobProjectionSelector setReferenceKeyName(String referenceKeyName) {
         super.setReferenceKeyName(referenceKeyName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SearchIndexerKnowledgeStoreBlobProjectionSelector setGeneratedKeyName(String generatedKeyName) {
         super.setGeneratedKeyName(generatedKeyName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SearchIndexerKnowledgeStoreBlobProjectionSelector setSource(String source) {
         super.setSource(source);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SearchIndexerKnowledgeStoreBlobProjectionSelector setSourceContext(String sourceContext) {
         super.setSourceContext(sourceContext);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SearchIndexerKnowledgeStoreBlobProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
         super.setInputs(inputs);
@@ -95,5 +84,4 @@ public class SearchIndexerKnowledgeStoreBlobProjectionSelector extends SearchInd
         jsonWriter.writeStringField("storageContainer", this.storageContainer);
         return jsonWriter.writeEndObject();
     }
-
 }

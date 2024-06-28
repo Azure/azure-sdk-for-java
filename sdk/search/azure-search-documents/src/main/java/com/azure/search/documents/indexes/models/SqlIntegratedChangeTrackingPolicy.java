@@ -18,11 +18,8 @@ import java.io.IOException;
  */
 @Immutable
 public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetectionPolicy {
-    /**
-     * Creates an instance of SqlIntegratedChangeTrackingPolicy class.
-     */
-    public SqlIntegratedChangeTrackingPolicy() {
-    }
+    /** Creates an instance of SqlIntegratedChangeTrackingPolicy class. */
+    public SqlIntegratedChangeTrackingPolicy() {}
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -33,34 +30,36 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
 
     /**
      * Reads an instance of SqlIntegratedChangeTrackingPolicy from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SqlIntegratedChangeTrackingPolicy if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     *     null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the SqlIntegratedChangeTrackingPolicy.
      */
     public static SqlIntegratedChangeTrackingPolicy fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SqlIntegratedChangeTrackingPolicy deserializedSqlIntegratedChangeTrackingPolicy
-                = new SqlIntegratedChangeTrackingPolicy();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    SqlIntegratedChangeTrackingPolicy deserializedSqlIntegratedChangeTrackingPolicy =
+                            new SqlIntegratedChangeTrackingPolicy();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else {
-                    reader.skipChildren();
-                }
-            }
 
-            return deserializedSqlIntegratedChangeTrackingPolicy;
-        });
+                    return deserializedSqlIntegratedChangeTrackingPolicy;
+                });
     }
 }

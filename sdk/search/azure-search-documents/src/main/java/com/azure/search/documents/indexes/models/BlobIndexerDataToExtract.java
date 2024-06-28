@@ -15,9 +15,7 @@ import java.util.Collection;
  * application, or image files such as .jpg and .png, in Azure blobs.
  */
 public final class BlobIndexerDataToExtract extends ExpandableStringEnum<BlobIndexerDataToExtract> {
-    /**
-     * Indexes just the standard blob properties and user-specified metadata.
-     */
+    /** Indexes just the standard blob properties and user-specified metadata. */
     public static final BlobIndexerDataToExtract STORAGE_METADATA = fromString("storageMetadata");
 
     /**
@@ -26,23 +24,20 @@ public final class BlobIndexerDataToExtract extends ExpandableStringEnum<BlobInd
      */
     public static final BlobIndexerDataToExtract ALL_METADATA = fromString("allMetadata");
 
-    /**
-     * Extracts all metadata and textual content from each blob.
-     */
+    /** Extracts all metadata and textual content from each blob. */
     public static final BlobIndexerDataToExtract CONTENT_AND_METADATA = fromString("contentAndMetadata");
 
     /**
      * Creates a new instance of BlobIndexerDataToExtract value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public BlobIndexerDataToExtract() {
-    }
+    public BlobIndexerDataToExtract() {}
 
     /**
      * Creates or finds a BlobIndexerDataToExtract from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding BlobIndexerDataToExtract.
      */
@@ -52,7 +47,7 @@ public final class BlobIndexerDataToExtract extends ExpandableStringEnum<BlobInd
 
     /**
      * Gets known BlobIndexerDataToExtract values.
-     * 
+     *
      * @return known BlobIndexerDataToExtract values.
      */
     public static Collection<BlobIndexerDataToExtract> values() {

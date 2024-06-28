@@ -2,11 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.FieldMapping;
@@ -27,9 +25,6 @@ import com.azure.search.documents.indexes.models.SearchIndexerLimits;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
-import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -46,10 +41,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_NAME;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.verifyHttpResponseError;
@@ -70,20 +65,53 @@ public class IndexersManagementTests extends SearchTestBase {
         return next.process();
     };
 
-    private static SearchIndexerClient sharedIndexerClient;
-    private static SearchIndexClient sharedIndexClient;
-    private static SearchIndexerSkillset sharedSkillset;
-    private static SearchIndexerDataSourceConnection sharedDatasource;
-    private static SearchIndex sharedIndex;
-
+    private final List<String> dataSourcesToDelete = new ArrayList<>();
     private final List<String> indexersToDelete = new ArrayList<>();
+    private final List<String> indexesToDelete = new ArrayList<>();
+    private final List<String> skillsetsToDelete = new ArrayList<>();
 
     private SearchIndexerClient searchIndexerClient;
     private SearchIndexerAsyncClient searchIndexerAsyncClient;
+    private SearchIndexClient searchIndexClient;
+    private SearchIndexAsyncClient searchIndexAsyncClient;
+
+    private String createDataSourceSync() {
+        SearchIndexerDataSourceConnection dataSource = createBlobDataSource();
+        searchIndexerClient.createOrUpdateDataSourceConnection(dataSource);
+
+        dataSourcesToDelete.add(dataSource.getName());
+
+        return dataSource.getName();
+    }
+
+    private String createDataSourceAsync() {
+        SearchIndexerDataSourceConnection dataSource = createBlobDataSource();
+        searchIndexerAsyncClient.createOrUpdateDataSourceConnection(dataSource).block();
+
+        dataSourcesToDelete.add(dataSource.getName());
+
+        return dataSource.getName();
+    }
+
+    private String createIndexSync() {
+        SearchIndex index = createTestIndexForLiveDatasource();
+        searchIndexClient.createIndex(index);
+        indexesToDelete.add(index.getName());
+
+        return index.getName();
+    }
+
+    private String createIndexAsync() {
+        SearchIndex index = createTestIndexForLiveDatasource();
+        searchIndexAsyncClient.createIndex(index).block();
+        indexesToDelete.add(index.getName());
+
+        return index.getName();
+    }
 
     private SearchIndexer createTestDataSourceAndIndexer() {
         // Create the indexer object
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync());
         searchIndexerClient.createIndexer(indexer);
         indexersToDelete.add(indexer.getName());
 
@@ -119,59 +147,41 @@ public class IndexersManagementTests extends SearchTestBase {
             .verifyComplete();
     }
 
-    @BeforeAll
-    public static void setupSharedResources() {
-        sharedIndexerClient = new SearchIndexerClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
-            .buildClient();
-        sharedIndexClient = new SearchIndexClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
-            .buildClient();
-
-        sharedSkillset = createSkillsetObject();
-        sharedDatasource = createSharedDataSource();
-        sharedIndex = createTestIndexForLiveDatasource();
-
-        if (TEST_MODE != TestMode.PLAYBACK) {
-            sharedSkillset = sharedIndexerClient.createSkillset(sharedSkillset);
-            sharedDatasource = sharedIndexerClient.createOrUpdateDataSourceConnection(sharedDatasource);
-            sharedIndex = sharedIndexClient.createIndex(sharedIndex);
-        }
-    }
-
-    @AfterAll
-    public static void cleanupSharedResources() {
-        if (TEST_MODE == TestMode.PLAYBACK) {
-            return; // Running in PLAYBACK, no need to run.
-        }
-
-        sharedIndexerClient.deleteSkillset(sharedSkillset.getName());
-        sharedIndexerClient.deleteDataSourceConnection(sharedDatasource.getName());
-        sharedIndexClient.deleteIndex(sharedIndex.getName());
-    }
-
     @Override
     protected void beforeTest() {
         super.beforeTest();
 
         searchIndexerClient = getSearchIndexerClientBuilder(true).buildClient();
         searchIndexerAsyncClient = getSearchIndexerClientBuilder(false).buildAsyncClient();
+
+        searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
     }
 
     @Override
     protected void afterTest() {
         super.afterTest();
 
+        for (String skillset : skillsetsToDelete) {
+            searchIndexerClient.deleteSkillset(skillset);
+        }
+
+        for (String dataSource : dataSourcesToDelete) {
+            searchIndexerClient.deleteDataSourceConnection(dataSource);
+        }
+
         for (String indexer : indexersToDelete) {
             searchIndexerClient.deleteIndexer(indexer);
+        }
+
+        for (String index : indexesToDelete) {
+            searchIndexClient.deleteIndex(index);
         }
     }
 
     @Test
     public void createIndexerReturnsCorrectDefinitionSync() {
-        SearchIndexer expectedIndexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
+        SearchIndexer expectedIndexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync())
             .setIsDisabled(true)
             .setParameters(new IndexingParameters()
                 .setBatchSize(50)
@@ -187,7 +197,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void createIndexerReturnsCorrectDefinitionAsync() {
-        SearchIndexer expectedIndexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
+        SearchIndexer expectedIndexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync())
             .setIsDisabled(true)
             .setParameters(new IndexingParameters()
                 .setBatchSize(50)
@@ -205,8 +215,8 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateAndListIndexersSync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexSync();
+        String dataSourceName = createDataSourceSync();
 
         // Create two indexers
         SearchIndexer indexer1 = createBaseTestIndexerObject("a" + testResourceNamer.randomName("indexer", 32),
@@ -232,8 +242,8 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateAndListIndexersAsync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexAsync();
+        String dataSourceName = createDataSourceAsync();
 
         // Create two indexers
         SearchIndexer indexer1 = createBaseTestIndexerObject("a" + testResourceNamer.randomName("indexer", 32),
@@ -261,8 +271,8 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateAndListIndexerNamesSync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexSync();
+        String dataSourceName = createDataSourceSync();
 
         SearchIndexer indexer1 = createBaseTestIndexerObject("a" + testResourceNamer.randomName("indexer", 32),
             indexName, dataSourceName);
@@ -282,8 +292,8 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateAndListIndexerNamesAsync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexAsync();
+        String dataSourceName = createDataSourceAsync();
 
         SearchIndexer indexer1 = createBaseTestIndexerObject("a" + testResourceNamer.randomName("indexer", 32),
             indexName, dataSourceName);
@@ -306,7 +316,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void createIndexerFailsWithUsefulMessageOnUserErrorSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), "thisdatasourcedoesnotexist");
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), "thisdatasourcedoesnotexist");
 
         assertHttpResponseException(() -> searchIndexerClient.createIndexer(indexer),
             HttpURLConnection.HTTP_BAD_REQUEST,
@@ -315,7 +325,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void createIndexerFailsWithUsefulMessageOnUserErrorAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), "thisdatasourcedoesnotexist");
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), "thisdatasourcedoesnotexist");
 
         StepVerifier.create(searchIndexerAsyncClient.createIndexer(indexer))
             .verifyErrorSatisfies(throwable -> verifyHttpResponseError(throwable, HttpURLConnection.HTTP_BAD_REQUEST,
@@ -417,7 +427,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canRunIndexerAndGetIndexerStatusSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync());
 
         // When an indexer is created, the execution info may not be available immediately. Hence, a
         // pipeline policy that injects a "mock_status" query string is added to the client, which results in service
@@ -440,7 +450,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canRunIndexerAndGetIndexerStatusAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync());
 
         // When an indexer is created, the execution info may not be available immediately. Hence, a
         // pipeline policy that injects a "mock_status" query string is added to the client, which results in service
@@ -466,8 +476,8 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateIndexerSync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexSync();
+        String dataSourceName = createDataSourceSync();
 
         SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
         searchIndexerClient.createIndexer(initial);
@@ -484,8 +494,8 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateIndexerAsync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexAsync();
+        String dataSourceName = createDataSourceAsync();
 
         SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
         searchIndexerAsyncClient.createIndexer(initial).block();
@@ -505,8 +515,8 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateIndexerFieldMappingSync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexSync();
+        String dataSourceName = createDataSourceSync();
 
         SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
         searchIndexerClient.createIndexer(initial);
@@ -523,8 +533,8 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateIndexerFieldMappingAsync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexAsync();
+        String dataSourceName = createDataSourceAsync();
 
         SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
         searchIndexerAsyncClient.createIndexer(initial).block();
@@ -544,7 +554,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateIndexerWithFieldMappingSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync())
             .setFieldMappings(Collections.singletonList(new FieldMapping("state_alpha").setTargetFieldName("state")));
 
         createAndValidateIndexerSync(indexer);
@@ -552,7 +562,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateIndexerWithFieldMappingAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync())
             .setFieldMappings(Collections.singletonList(new FieldMapping("state_alpha").setTargetFieldName("state")));
 
         createAndValidateIndexerAsync(indexer);
@@ -560,8 +570,8 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateIndexerDisabledSync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexSync();
+        String dataSourceName = createDataSourceSync();
 
         SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
         searchIndexerClient.createIndexer(initial);
@@ -577,8 +587,8 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateIndexerDisabledAsync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexAsync();
+        String dataSourceName = createDataSourceAsync();
 
         SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
         searchIndexerAsyncClient.createIndexer(initial).block();
@@ -597,8 +607,8 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateIndexerScheduleSync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexSync();
+        String dataSourceName = createDataSourceSync();
 
         SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
         searchIndexerClient.createIndexer(initial);
@@ -614,8 +624,8 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateIndexerScheduleAsync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexAsync();
+        String dataSourceName = createDataSourceAsync();
 
         SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
         searchIndexerAsyncClient.createIndexer(initial).block();
@@ -634,7 +644,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateIndexerWithScheduleSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync())
             .setSchedule(new IndexingSchedule(Duration.ofMinutes(10)));
 
         createAndValidateIndexerSync(indexer);
@@ -642,7 +652,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateIndexerWithScheduleAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync())
             .setSchedule(new IndexingSchedule(Duration.ofMinutes(10)));
 
         createAndValidateIndexerAsync(indexer);
@@ -650,8 +660,8 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateIndexerBatchSizeMaxFailedItemsSync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexSync();
+        String dataSourceName = createDataSourceSync();
 
         SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
         searchIndexerClient.createIndexer(initial);
@@ -666,8 +676,8 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateIndexerBatchSizeMaxFailedItemsAsync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexAsync();
+        String dataSourceName = createDataSourceAsync();
 
         SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
         searchIndexerAsyncClient.createIndexer(initial).block();
@@ -685,7 +695,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateIndexerWithBatchSizeMaxFailedItemsSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync());
         SearchIndexer updatedExpected = createIndexerWithDifferentIndexingParameters(indexer);
 
         createAndValidateIndexerSync(updatedExpected);
@@ -693,7 +703,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateIndexerWithBatchSizeMaxFailedItemsAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync());
         SearchIndexer updatedExpected = createIndexerWithDifferentIndexingParameters(indexer);
 
         createAndValidateIndexerAsync(updatedExpected);
@@ -701,14 +711,15 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateIndexerBlobParamsSync() {
-        String indexName = sharedIndex.getName();
+        String indexName = createIndexSync();
+        String dataSourceName = searchIndexerClient.createDataSourceConnection(createBlobDataSource()).getName();
+        dataSourcesToDelete.add(dataSourceName);
 
-        SearchIndexer initial = createBaseTestIndexerObject(indexName, sharedDatasource.getName()).setIsDisabled(true);
+        SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
         searchIndexerClient.createIndexer(initial);
         indexersToDelete.add(initial.getName());
 
-        SearchIndexer updated = createIndexerWithStorageConfig(initial.getName(), indexName,
-            sharedDatasource.getName());
+        SearchIndexer updated = createIndexerWithStorageConfig(initial.getName(), indexName, dataSourceName);
         SearchIndexer indexerResponse = searchIndexerClient.createOrUpdateIndexer(updated);
 
         setSameStartTime(updated, indexerResponse);
@@ -717,14 +728,17 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateIndexerBlobParamsAsync() {
-        String indexName = sharedIndex.getName();
+        String indexName = createIndexSync();
+        String dataSourceName = searchIndexerAsyncClient.createDataSourceConnection(createBlobDataSource())
+            .map(SearchIndexerDataSourceConnection::getName)
+            .block();
+        dataSourcesToDelete.add(dataSourceName);
 
-        SearchIndexer initial = createBaseTestIndexerObject(indexName, sharedDatasource.getName()).setIsDisabled(true);
+        SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
         searchIndexerAsyncClient.createIndexer(initial).block();
         indexersToDelete.add(initial.getName());
 
-        SearchIndexer updated = createIndexerWithStorageConfig(initial.getName(), indexName,
-            sharedDatasource.getName());
+        SearchIndexer updated = createIndexerWithStorageConfig(initial.getName(), indexName, dataSourceName);
 
         StepVerifier.create(searchIndexerAsyncClient.createOrUpdateIndexer(updated))
             .assertNext(indexerResponse -> {
@@ -736,24 +750,41 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateIndexerWithBlobParamsSync() {
+        // Create the needed Azure blob resources and data source object
+        SearchIndexerDataSourceConnection blobDataSource = createBlobDataSource();
+
+        // Create the data source within the search service
+        SearchIndexerDataSourceConnection dataSource =
+            searchIndexerClient.createOrUpdateDataSourceConnection(blobDataSource);
+
+        dataSourcesToDelete.add(dataSource.getName());
+
         // modify the indexer's blob params
-        SearchIndexer indexer = createIndexerWithStorageConfig(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createIndexerWithStorageConfig(createIndexSync(), dataSource.getName());
 
         createAndValidateIndexerSync(indexer);
     }
 
     @Test
     public void canCreateIndexerWithBlobParamsAsync() {
+        // Create the needed Azure blob resources and data source object
+        SearchIndexerDataSourceConnection blobDataSource = createBlobDataSource();
+
         // Create the data source within the search service
-        String targetIndexName = sharedIndex.getName();
-        SearchIndexer indexer = createIndexerWithStorageConfig(targetIndexName, sharedDatasource.getName());
+        String targetIndexName = createIndexAsync();
+        SearchIndexer indexer = searchIndexerAsyncClient.createOrUpdateDataSourceConnection(blobDataSource)
+            .map(dataSource -> {
+                dataSourcesToDelete.add(dataSource.getName());
+                return createIndexerWithStorageConfig(targetIndexName, dataSource.getName());
+            })
+            .block();
 
         createAndValidateIndexerAsync(indexer);
     }
 
     @Test
     public void canCreateAndDeleteIndexerSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync());
         searchIndexerClient.createIndexer(indexer);
 
         searchIndexerClient.deleteIndexer(indexer.getName());
@@ -762,7 +793,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateAndDeleteIndexerAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync());
         searchIndexerAsyncClient.createIndexer(indexer).block();
 
         searchIndexerAsyncClient.deleteIndexer(indexer.getName()).block();
@@ -773,7 +804,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateAndDeleteIndexerWithResponseSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync());
         searchIndexerClient.createIndexerWithResponse(indexer, Context.NONE);
 
         searchIndexerClient.deleteIndexerWithResponse(indexer, false, Context.NONE);
@@ -782,7 +813,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateAndDeleteIndexerWithResponseAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync());
         searchIndexerAsyncClient.createIndexerWithResponse(indexer).block();
 
         searchIndexerAsyncClient.deleteIndexerWithResponse(indexer, false).block();
@@ -794,7 +825,7 @@ public class IndexersManagementTests extends SearchTestBase {
     @Test
     public void deleteIndexerIsIdempotentSync() {
         // Create the indexer object
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync());
 
         // Try deleting before the indexer even exists.
         Response<Void> result = searchIndexerClient.deleteIndexerWithResponse(indexer, false,
@@ -815,7 +846,7 @@ public class IndexersManagementTests extends SearchTestBase {
     @Test
     public void deleteIndexerIsIdempotentAsync() {
         // Create the indexer object
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync());
 
         // Try deleting before the indexer even exists.
         StepVerifier.create(searchIndexerAsyncClient.deleteIndexerWithResponse(indexer, false))
@@ -837,7 +868,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateAndGetIndexerSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync());
         searchIndexerClient.createIndexer(indexer);
         indexersToDelete.add(indexer.getName());
 
@@ -850,7 +881,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateAndGetIndexerAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync());
         searchIndexerAsyncClient.createIndexer(indexer).block();
         indexersToDelete.add(indexer.getName());
 
@@ -878,7 +909,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void createOrUpdateIndexerIfNotExistsSucceedsOnNoResourceSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync());
         SearchIndexer created = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, true, Context.NONE)
             .getValue();
         indexersToDelete.add(created.getName());
@@ -888,7 +919,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void createOrUpdateIndexerIfNotExistsSucceedsOnNoResourceAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync());
 
         StepVerifier.create(searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, true))
             .assertNext(response -> {
@@ -900,7 +931,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void deleteIndexerIfExistsWorksOnlyWhenResourceExistsSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync());
         SearchIndexer created = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, false, Context.NONE)
             .getValue();
 
@@ -917,7 +948,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void deleteIndexerIfExistsWorksOnlyWhenResourceExistsAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync());
 
         Mono<Response<Void>> createDeleteThenFailToDeleteMono =
             searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, false)
@@ -933,7 +964,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void deleteIndexerIfNotChangedWorksOnlyOnCurrentResourceSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync());
         SearchIndexer stale = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, true, Context.NONE)
             .getValue();
 
@@ -952,7 +983,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void deleteIndexerIfNotChangedWorksOnlyOnCurrentResourceAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync());
         SearchIndexer stale = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, true)
             .map(Response::getValue)
             .block();
@@ -974,7 +1005,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void updateIndexerIfExistsSucceedsOnExistingResourceSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync());
         SearchIndexer original = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, false, Context.NONE)
             .getValue();
         String originalETag = original.getETag();
@@ -991,7 +1022,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void updateIndexerIfExistsSucceedsOnExistingResourceAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync());
 
         Mono<Tuple2<String, String>> createAndUpdateIndexerMono =
             searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, false)
@@ -1015,7 +1046,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void updateIndexerIfNotChangedFailsWhenResourceChangedSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync());
         SearchIndexer original = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, false, Context.NONE)
             .getValue();
         String originalETag = original.getETag();
@@ -1042,7 +1073,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void updateIndexerIfNotChangedFailsWhenResourceChangedAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync());
 
         Mono<Response<SearchIndexer>> createUpdateAndFailToUpdateMono =
             searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, false)
@@ -1072,7 +1103,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void updateIndexerIfNotChangedSucceedsWhenResourceUnchangedSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync());
         SearchIndexer original = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, false, Context.NONE)
             .getValue();
         String originalETag = original.getETag();
@@ -1091,7 +1122,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void updateIndexerIfNotChangedSucceedsWhenResourceUnchangedAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexAsync(), createDataSourceAsync());
 
         Mono<Tuple2<String, String>> createAndUpdateIndexerMono =
             searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, false)
@@ -1116,15 +1147,18 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateIndexerSkillsetSync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexSync();
+        String dataSourceName = createDataSourceSync();
 
         SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
         searchIndexerClient.createIndexer(initial);
         indexersToDelete.add(initial.getName());
 
+        SearchIndexerSkillset skillset = createSkillsetObject();
+        searchIndexerClient.createSkillset(skillset);
+        skillsetsToDelete.add(skillset.getName());
         SearchIndexer updated = createBaseTestIndexerObject(initial.getName(), indexName, dataSourceName)
-            .setSkillsetName(sharedSkillset.getName());
+            .setSkillsetName(skillset.getName());
         SearchIndexer indexerResponse = searchIndexerClient.createOrUpdateIndexer(updated);
 
         setSameStartTime(updated, indexerResponse);
@@ -1133,15 +1167,19 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateIndexerSkillsetAsync() {
-        String indexName = sharedIndex.getName();
-        String dataSourceName = sharedDatasource.getName();
+        String indexName = createIndexAsync();
+        String dataSourceName = createDataSourceAsync();
 
         SearchIndexer initial = createBaseTestIndexerObject(indexName, dataSourceName).setIsDisabled(true);
         searchIndexerAsyncClient.createIndexer(initial).block();
         indexersToDelete.add(initial.getName());
 
+        SearchIndexerSkillset skillset = createSkillsetObject();
+        searchIndexerAsyncClient.createSkillset(skillset).block();
+        skillsetsToDelete.add(skillset.getName());
+
         SearchIndexer updated = createBaseTestIndexerObject(initial.getName(), indexName, dataSourceName)
-            .setSkillsetName(sharedSkillset.getName());
+            .setSkillsetName(skillset.getName());
         SearchIndexer indexerResponse = searchIndexerClient.createOrUpdateIndexer(updated);
 
         setSameStartTime(updated, indexerResponse);
@@ -1150,16 +1188,25 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateIndexerWithSkillsetSync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
-            .setSkillsetName(sharedSkillset.getName());
+        SearchIndexerSkillset skillset = searchIndexerClient.createSkillset(createSkillsetObject());
+        skillsetsToDelete.add(skillset.getName());
+
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync())
+            .setSkillsetName(skillset.getName());
 
         createAndValidateIndexerSync(indexer);
     }
 
     @Test
     public void canCreateIndexerWithSkillsetAsync() {
-        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
-            .setSkillsetName(sharedSkillset.getName());
+        SearchIndexerSkillset skillset = searchIndexerAsyncClient.createSkillset(createSkillsetObject())
+            .blockOptional()
+            .orElseThrow(NoSuchElementException::new);
+
+        skillsetsToDelete.add(skillset.getName());
+
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync())
+            .setSkillsetName(skillset.getName());
 
         createAndValidateIndexerAsync(indexer);
     }
@@ -1169,32 +1216,29 @@ public class IndexersManagementTests extends SearchTestBase {
      *
      * @return the newly created skillset object
      */
-    private static SearchIndexerSkillset createSkillsetObject() {
+    SearchIndexerSkillset createSkillsetObject() {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
-            new InputFieldMappingEntry("url").setSource("/document/url"),
-            new InputFieldMappingEntry("queryString").setSource("/document/queryString"));
+            new InputFieldMappingEntry("url")
+                .setSource("/document/url"),
+            new InputFieldMappingEntry("queryString")
+                .setSource("/document/queryString")
+        );
 
-        List<OutputFieldMappingEntry> outputs = Collections.singletonList(new OutputFieldMappingEntry("text")
-            .setTargetName("mytext"));
+        List<OutputFieldMappingEntry> outputs = Collections.singletonList(
+            new OutputFieldMappingEntry("text")
+                .setTargetName("mytext")
+        );
 
-        List<SearchIndexerSkill> skills = Collections.singletonList(new OcrSkill(inputs, outputs)
-            .setShouldDetectOrientation(true)
-            .setName("myocr")
-            .setDescription("Tested OCR skill")
-            .setContext("/document"));
-
-        return new SearchIndexerSkillset("shared-ocr-skillset")
+        List<SearchIndexerSkill> skills = Collections.singletonList(
+            new OcrSkill(inputs, outputs)
+                .setShouldDetectOrientation(true)
+                .setName("myocr")
+                .setDescription("Tested OCR skill")
+                .setContext("/document")
+        );
+        return new SearchIndexerSkillset(testResourceNamer.randomName("ocr-skillset", 32))
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
-    }
-
-    private static SearchIndexerDataSourceConnection createSharedDataSource() {
-        // create the new data source object for this storage account and container
-        return SearchIndexerDataSources.createFromAzureBlobStorage("shared-" + BLOB_DATASOURCE_NAME,
-            STORAGE_CONNECTION_STRING, BLOB_CONTAINER_NAME, "/", "real live blob",
-            new SoftDeleteColumnDeletionDetectionPolicy()
-                .setSoftDeleteColumnName("fieldName")
-                .setSoftDeleteMarkerValue("someValue"));
     }
 
     SearchIndexer createBaseTestIndexerObject(String targetIndexName, String dataSourceName) {
@@ -1216,8 +1260,8 @@ public class IndexersManagementTests extends SearchTestBase {
      *
      * @return the newly created Index object
      */
-    private static SearchIndex createTestIndexForLiveDatasource() {
-        return new SearchIndex("shared" + IndexersManagementTests.TARGET_INDEX_NAME)
+    SearchIndex createTestIndexForLiveDatasource() {
+        return new SearchIndex(testResourceNamer.randomName(IndexersManagementTests.TARGET_INDEX_NAME, 32))
             .setFields(Arrays.asList(
                 new SearchField("county_name", SearchFieldDataType.STRING)
                     .setSearchable(Boolean.FALSE)

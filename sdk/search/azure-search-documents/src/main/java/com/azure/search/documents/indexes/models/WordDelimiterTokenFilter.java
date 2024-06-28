@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -149,8 +150,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the numbersCatenated property: A value indicating whether maximum runs of number parts will be catenated.
-     * For example, if this is set to true, "1-2" becomes "12". Default is false.
+     * Get the numbersCatenated property: A value indicating whether maximum runs of number parts will be catenated. For
+     * example, if this is set to true, "1-2" becomes "12". Default is false.
      *
      * @return the numbersCatenated value.
      */
@@ -159,8 +160,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the numbersCatenated property: A value indicating whether maximum runs of number parts will be catenated.
-     * For example, if this is set to true, "1-2" becomes "12". Default is false.
+     * Set the numbersCatenated property: A value indicating whether maximum runs of number parts will be catenated. For
+     * example, if this is set to true, "1-2" becomes "12". Default is false.
      *
      * @param numbersCatenated the numbersCatenated value to set.
      * @return the WordDelimiterTokenFilter object itself.
@@ -193,8 +194,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the splitOnCaseChange property: A value indicating whether to split words on caseChange. For example, if
-     * this is set to true, "AzureSearch" becomes "Azure" "Search". Default is true.
+     * Get the splitOnCaseChange property: A value indicating whether to split words on caseChange. For example, if this
+     * is set to true, "AzureSearch" becomes "Azure" "Search". Default is true.
      *
      * @return the splitOnCaseChange value.
      */
@@ -203,8 +204,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the splitOnCaseChange property: A value indicating whether to split words on caseChange. For example, if
-     * this is set to true, "AzureSearch" becomes "Azure" "Search". Default is true.
+     * Set the splitOnCaseChange property: A value indicating whether to split words on caseChange. For example, if this
+     * is set to true, "AzureSearch" becomes "Azure" "Search". Default is true.
      *
      * @param splitOnCaseChange the splitOnCaseChange value to set.
      * @return the WordDelimiterTokenFilter object itself.
@@ -314,8 +315,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
         jsonWriter.writeBooleanField("preserveOriginal", this.preserveOriginal);
         jsonWriter.writeBooleanField("splitOnNumerics", this.splitOnNumerics);
         jsonWriter.writeBooleanField("stemEnglishPossessive", this.stemEnglishPossessive);
-        jsonWriter.writeArrayField("protectedWords", this.protectedWords,
-            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField(
+                "protectedWords", this.protectedWords, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -324,78 +325,86 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of WordDelimiterTokenFilter if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the WordDelimiterTokenFilter.
      */
     public static WordDelimiterTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            Boolean generateWordParts = null;
-            Boolean generateNumberParts = null;
-            Boolean wordsCatenated = null;
-            Boolean numbersCatenated = null;
-            Boolean catenateAll = null;
-            Boolean splitOnCaseChange = null;
-            Boolean preserveOriginal = null;
-            Boolean splitOnNumerics = null;
-            Boolean stemEnglishPossessive = null;
-            List<String> protectedWords = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.WordDelimiterTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.WordDelimiterTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    Boolean generateWordParts = null;
+                    Boolean generateNumberParts = null;
+                    Boolean wordsCatenated = null;
+                    Boolean numbersCatenated = null;
+                    Boolean catenateAll = null;
+                    Boolean splitOnCaseChange = null;
+                    Boolean preserveOriginal = null;
+                    Boolean splitOnNumerics = null;
+                    Boolean stemEnglishPossessive = null;
+                    List<String> protectedWords = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.WordDelimiterTokenFilter".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.WordDelimiterTokenFilter'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("generateWordParts".equals(fieldName)) {
+                            generateWordParts = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("generateNumberParts".equals(fieldName)) {
+                            generateNumberParts = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("catenateWords".equals(fieldName)) {
+                            wordsCatenated = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("catenateNumbers".equals(fieldName)) {
+                            numbersCatenated = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("catenateAll".equals(fieldName)) {
+                            catenateAll = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("splitOnCaseChange".equals(fieldName)) {
+                            splitOnCaseChange = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("preserveOriginal".equals(fieldName)) {
+                            preserveOriginal = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("splitOnNumerics".equals(fieldName)) {
+                            splitOnNumerics = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("stemEnglishPossessive".equals(fieldName)) {
+                            stemEnglishPossessive = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("protectedWords".equals(fieldName)) {
+                            protectedWords = reader.readArray(reader1 -> reader1.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("generateWordParts".equals(fieldName)) {
-                    generateWordParts = reader.getNullable(JsonReader::getBoolean);
-                } else if ("generateNumberParts".equals(fieldName)) {
-                    generateNumberParts = reader.getNullable(JsonReader::getBoolean);
-                } else if ("catenateWords".equals(fieldName)) {
-                    wordsCatenated = reader.getNullable(JsonReader::getBoolean);
-                } else if ("catenateNumbers".equals(fieldName)) {
-                    numbersCatenated = reader.getNullable(JsonReader::getBoolean);
-                } else if ("catenateAll".equals(fieldName)) {
-                    catenateAll = reader.getNullable(JsonReader::getBoolean);
-                } else if ("splitOnCaseChange".equals(fieldName)) {
-                    splitOnCaseChange = reader.getNullable(JsonReader::getBoolean);
-                } else if ("preserveOriginal".equals(fieldName)) {
-                    preserveOriginal = reader.getNullable(JsonReader::getBoolean);
-                } else if ("splitOnNumerics".equals(fieldName)) {
-                    splitOnNumerics = reader.getNullable(JsonReader::getBoolean);
-                } else if ("stemEnglishPossessive".equals(fieldName)) {
-                    stemEnglishPossessive = reader.getNullable(JsonReader::getBoolean);
-                } else if ("protectedWords".equals(fieldName)) {
-                    protectedWords = reader.readArray(reader1 -> reader1.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                WordDelimiterTokenFilter deserializedWordDelimiterTokenFilter = new WordDelimiterTokenFilter(name);
-                deserializedWordDelimiterTokenFilter.generateWordParts = generateWordParts;
-                deserializedWordDelimiterTokenFilter.generateNumberParts = generateNumberParts;
-                deserializedWordDelimiterTokenFilter.wordsCatenated = wordsCatenated;
-                deserializedWordDelimiterTokenFilter.numbersCatenated = numbersCatenated;
-                deserializedWordDelimiterTokenFilter.catenateAll = catenateAll;
-                deserializedWordDelimiterTokenFilter.splitOnCaseChange = splitOnCaseChange;
-                deserializedWordDelimiterTokenFilter.preserveOriginal = preserveOriginal;
-                deserializedWordDelimiterTokenFilter.splitOnNumerics = splitOnNumerics;
-                deserializedWordDelimiterTokenFilter.stemEnglishPossessive = stemEnglishPossessive;
-                deserializedWordDelimiterTokenFilter.protectedWords = protectedWords;
-                return deserializedWordDelimiterTokenFilter;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+                    if (nameFound) {
+                        WordDelimiterTokenFilter deserializedWordDelimiterTokenFilter =
+                                new WordDelimiterTokenFilter(name);
+                        deserializedWordDelimiterTokenFilter.generateWordParts = generateWordParts;
+                        deserializedWordDelimiterTokenFilter.generateNumberParts = generateNumberParts;
+                        deserializedWordDelimiterTokenFilter.wordsCatenated = wordsCatenated;
+                        deserializedWordDelimiterTokenFilter.numbersCatenated = numbersCatenated;
+                        deserializedWordDelimiterTokenFilter.catenateAll = catenateAll;
+                        deserializedWordDelimiterTokenFilter.splitOnCaseChange = splitOnCaseChange;
+                        deserializedWordDelimiterTokenFilter.preserveOriginal = preserveOriginal;
+                        deserializedWordDelimiterTokenFilter.splitOnNumerics = splitOnNumerics;
+                        deserializedWordDelimiterTokenFilter.stemEnglishPossessive = stemEnglishPossessive;
+                        deserializedWordDelimiterTokenFilter.protectedWords = protectedWords;
+                        return deserializedWordDelimiterTokenFilter;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**

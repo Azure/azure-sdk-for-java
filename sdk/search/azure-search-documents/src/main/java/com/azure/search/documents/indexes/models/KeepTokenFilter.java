@@ -85,54 +85,56 @@ public final class KeepTokenFilter extends TokenFilter {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeepTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the KeepTokenFilter.
      */
     public static KeepTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            boolean keepWordsFound = false;
-            List<String> keepWords = null;
-            Boolean lowerCaseKeepWords = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.KeepTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.KeepTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    boolean keepWordsFound = false;
+                    List<String> keepWords = null;
+                    Boolean lowerCaseKeepWords = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.KeepTokenFilter".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.KeepTokenFilter'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("keepWords".equals(fieldName)) {
+                            keepWords = reader.readArray(reader1 -> reader1.getString());
+                            keepWordsFound = true;
+                        } else if ("keepWordsCase".equals(fieldName)) {
+                            lowerCaseKeepWords = reader.getNullable(JsonReader::getBoolean);
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("keepWords".equals(fieldName)) {
-                    keepWords = reader.readArray(reader1 -> reader1.getString());
-                    keepWordsFound = true;
-                } else if ("keepWordsCase".equals(fieldName)) {
-                    lowerCaseKeepWords = reader.getNullable(JsonReader::getBoolean);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound && keepWordsFound) {
-                KeepTokenFilter deserializedKeepTokenFilter = new KeepTokenFilter(name, keepWords);
-                deserializedKeepTokenFilter.lowerCaseKeepWords = lowerCaseKeepWords;
-                return deserializedKeepTokenFilter;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!nameFound) {
-                missingProperties.add("name");
-            }
-            if (!keepWordsFound) {
-                missingProperties.add("keepWords");
-            }
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    if (nameFound && keepWordsFound) {
+                        KeepTokenFilter deserializedKeepTokenFilter = new KeepTokenFilter(name, keepWords);
+                        deserializedKeepTokenFilter.lowerCaseKeepWords = lowerCaseKeepWords;
+                        return deserializedKeepTokenFilter;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    if (!keepWordsFound) {
+                        missingProperties.add("keepWords");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }
