@@ -5,8 +5,10 @@ package com.azure.security.keyvault.jca.implementation.utils;
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import org.apache.http.HttpResponse;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -123,6 +125,12 @@ public final class AccessTokenUtil {
         oauth2Url.append(OAUTH2_TOKEN_POSTFIX);
 
         StringBuilder requestBody = new StringBuilder();
+
+        try {
+            clientSecret = URLEncoder.encode(clientSecret, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.warning("Failed to encode client secret for access token request");
+        }
 
         requestBody.append(GRANT_TYPE_FRAGMENT)
             .append(CLIENT_ID_FRAGMENT).append(clientId)
