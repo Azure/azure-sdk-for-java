@@ -118,7 +118,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
             return null;
         } else {
             String[] flagStrings = this.flags.toString().split("\\|");
-            return java.util.Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList());
+            return Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList());
         }
     }
 
@@ -246,7 +246,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
             this.flags = null;
             return this;
         } else {
-            return setFlags(java.util.Arrays.asList(flags));
+            return setFlags(Arrays.asList(flags));
         }
     }
 }
