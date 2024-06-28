@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -62,7 +61,6 @@ public final class DayOfWeekName extends ExpandableStringEnum<DayOfWeekName> {
      * @param name a name to look for.
      * @return the corresponding DayOfWeekName.
      */
-    @JsonCreator
     public static DayOfWeekName fromString(String name) {
         return fromString(name, DayOfWeekName.class);
     }

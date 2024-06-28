@@ -79,12 +79,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -95,9 +97,9 @@ public class ImplementationBridgeHelpers {
     private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
 
     private static void  initializeAllAccessors() {
-        BridgeInternal.initializeAllAccessors();
         ModelBridgeInternal.initializeAllAccessors();
         UtilBridgeInternal.initializeAllAccessors();
+        BridgeInternal.initializeAllAccessors();
     }
 
     public static final class CosmosClientBuilderHelper {
@@ -495,6 +497,9 @@ public class ImplementationBridgeHelpers {
             int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
             void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker);
             BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
+            CosmosBulkExecutionOptions setSchedulerOverride(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, Scheduler customScheduler);
+            Scheduler getSchedulerOverride(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
 
             CosmosBulkExecutionOptions clone(CosmosBulkExecutionOptions toBeCloned);
         }
@@ -1424,7 +1429,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosExceptionAccessor {
             CosmosException createCosmosException(int statusCode, Exception innerException);
-            List<String> getReplicaStatusList(CosmosException cosmosException);
+            Map<String, Set<String>> getReplicaStatusList(CosmosException cosmosException);
             CosmosException setRntbdChannelStatistics(CosmosException cosmosException, RntbdChannelStatistics rntbdChannelStatistics);
             RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException);
 
@@ -1670,6 +1675,42 @@ public class ImplementationBridgeHelpers {
             Duration getMinInRegionRetryTime(SessionRetryOptions sessionRetryOptions);
 
             int getMaxInRegionRetryCount(SessionRetryOptions sessionRetryOptions);
+        }
+    }
+
+    public static final class CosmosItemSerializerHelper {
+        private static final AtomicReference<CosmosItemSerializerAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean cosmosItemSerializerClassLoaded = new AtomicBoolean(false);
+
+        private CosmosItemSerializerHelper() {}
+
+        public static void setCosmosItemSerializerAccessor(final CosmosItemSerializerAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosItemSerializerAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosItemSerializerAccessor...");
+                cosmosItemSerializerClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosItemSerializerAccessor getCosmosItemSerializerAccessor() {
+            if (!cosmosItemSerializerClassLoaded.get()) {
+                logger.debug("Initializing CosmosItemSerializerAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosItemSerializerAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosItemSerializerAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosItemSerializerAccessor {
+            <T> Map<String, Object> serializeSafe(CosmosItemSerializer serializer, T item);
+
+            <T> T deserializeSafe(CosmosItemSerializer serializer, Map<String, Object> jsonNodeMap, Class<T> classType);
         }
     }
 }

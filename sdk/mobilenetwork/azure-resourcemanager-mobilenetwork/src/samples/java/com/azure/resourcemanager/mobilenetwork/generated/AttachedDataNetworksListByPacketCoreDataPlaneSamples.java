@@ -9,9 +9,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
  */
 public final class AttachedDataNetworksListByPacketCoreDataPlaneSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/
-     * AttachedDataNetworkListByPacketCoreDataPlane.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/AttachedDataNetworkListByPacketCoreDataPlane.json
      */
     /**
      * Sample code: List attached data networks in a data plane.
@@ -20,7 +18,7 @@ public final class AttachedDataNetworksListByPacketCoreDataPlaneSamples {
      */
     public static void
         listAttachedDataNetworksInADataPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.attachedDataNetworks().listByPacketCoreDataPlane("rg1", "TestPacketCoreCP", "TestPacketCoreDP",
-            com.azure.core.util.Context.NONE);
+        manager.attachedDataNetworks()
+            .listByPacketCoreDataPlane("rg1", "TestPacketCoreCP", "TestPacketCoreDP", com.azure.core.util.Context.NONE);
     }
 }

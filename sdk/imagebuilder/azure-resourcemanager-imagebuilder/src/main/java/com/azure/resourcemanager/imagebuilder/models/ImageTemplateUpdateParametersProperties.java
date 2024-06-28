@@ -5,19 +5,28 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters for updating an image template.
  */
 @Fluent
-public final class ImageTemplateUpdateParametersProperties {
+public final class ImageTemplateUpdateParametersProperties
+    implements JsonSerializable<ImageTemplateUpdateParametersProperties> {
     /*
      * The distribution targets where the image output needs to go to.
      */
-    @JsonProperty(value = "distribute")
     private List<ImageTemplateDistributor> distribute;
+
+    /*
+     * Describes how virtual machine is set up to build images
+     */
+    private ImageTemplateVmProfile vmProfile;
 
     /**
      * Creates an instance of ImageTemplateUpdateParametersProperties class.
@@ -46,6 +55,26 @@ public final class ImageTemplateUpdateParametersProperties {
     }
 
     /**
+     * Get the vmProfile property: Describes how virtual machine is set up to build images.
+     * 
+     * @return the vmProfile value.
+     */
+    public ImageTemplateVmProfile vmProfile() {
+        return this.vmProfile;
+    }
+
+    /**
+     * Set the vmProfile property: Describes how virtual machine is set up to build images.
+     * 
+     * @param vmProfile the vmProfile value to set.
+     * @return the ImageTemplateUpdateParametersProperties object itself.
+     */
+    public ImageTemplateUpdateParametersProperties withVmProfile(ImageTemplateVmProfile vmProfile) {
+        this.vmProfile = vmProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -54,5 +83,51 @@ public final class ImageTemplateUpdateParametersProperties {
         if (distribute() != null) {
             distribute().forEach(e -> e.validate());
         }
+        if (vmProfile() != null) {
+            vmProfile().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("distribute", this.distribute, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("vmProfile", this.vmProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateUpdateParametersProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateUpdateParametersProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplateUpdateParametersProperties.
+     */
+    public static ImageTemplateUpdateParametersProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateUpdateParametersProperties deserializedImageTemplateUpdateParametersProperties
+                = new ImageTemplateUpdateParametersProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("distribute".equals(fieldName)) {
+                    List<ImageTemplateDistributor> distribute
+                        = reader.readArray(reader1 -> ImageTemplateDistributor.fromJson(reader1));
+                    deserializedImageTemplateUpdateParametersProperties.distribute = distribute;
+                } else if ("vmProfile".equals(fieldName)) {
+                    deserializedImageTemplateUpdateParametersProperties.vmProfile
+                        = ImageTemplateVmProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateUpdateParametersProperties;
+        });
     }
 }

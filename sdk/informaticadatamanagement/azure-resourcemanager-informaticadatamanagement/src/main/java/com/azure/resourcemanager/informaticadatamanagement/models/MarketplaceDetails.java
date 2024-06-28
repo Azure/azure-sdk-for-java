@@ -6,23 +6,25 @@ package com.azure.resourcemanager.informaticadatamanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Marketplace details.
  */
 @Fluent
-public final class MarketplaceDetails {
+public final class MarketplaceDetails implements JsonSerializable<MarketplaceDetails> {
     /*
      * Marketplace Subscription Id
      */
-    @JsonProperty(value = "marketplaceSubscriptionId", required = true)
     private String marketplaceSubscriptionId;
 
     /*
      * Marketplace offer details.
      */
-    @JsonProperty(value = "offerDetails", required = true)
     private OfferDetails offerDetails;
 
     /**
@@ -92,4 +94,44 @@ public final class MarketplaceDetails {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MarketplaceDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("marketplaceSubscriptionId", this.marketplaceSubscriptionId);
+        jsonWriter.writeJsonField("offerDetails", this.offerDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MarketplaceDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MarketplaceDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MarketplaceDetails.
+     */
+    public static MarketplaceDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MarketplaceDetails deserializedMarketplaceDetails = new MarketplaceDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("marketplaceSubscriptionId".equals(fieldName)) {
+                    deserializedMarketplaceDetails.marketplaceSubscriptionId = reader.getString();
+                } else if ("offerDetails".equals(fieldName)) {
+                    deserializedMarketplaceDetails.offerDetails = OfferDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMarketplaceDetails;
+        });
+    }
 }

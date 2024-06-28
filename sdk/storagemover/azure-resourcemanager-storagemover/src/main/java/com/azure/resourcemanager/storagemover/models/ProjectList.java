@@ -9,7 +9,9 @@ import com.azure.resourcemanager.storagemover.fluent.models.ProjectInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Project resources. */
+/**
+ * List of Project resources.
+ */
 @Immutable
 public final class ProjectList {
     /*
@@ -19,19 +21,21 @@ public final class ProjectList {
     private List<ProjectInner> value;
 
     /*
-     * Request URL that can be used to query next page of containers. Returned when total number of requested
-     * containers exceed maximum page size.
+     * Request URL that can be used to query next page of containers. Returned when total number of requested containers
+     * exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ProjectList class. */
+    /**
+     * Creates an instance of ProjectList class.
+     */
     public ProjectList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<ProjectInner> value() {
@@ -41,7 +45,7 @@ public final class ProjectList {
     /**
      * Get the nextLink property: Request URL that can be used to query next page of containers. Returned when total
      * number of requested containers exceed maximum page size.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -50,7 +54,7 @@ public final class ProjectList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

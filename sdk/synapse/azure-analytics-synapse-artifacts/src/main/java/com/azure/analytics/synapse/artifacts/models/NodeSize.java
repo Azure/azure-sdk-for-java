@@ -5,54 +5,69 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The level of compute power that each node in the Big Data pool has. */
+/**
+ * The level of compute power that each node in the Big Data pool has.
+ */
 public final class NodeSize extends ExpandableStringEnum<NodeSize> {
-    /** Static value None for NodeSize. */
+    /**
+     * Static value None for NodeSize.
+     */
     public static final NodeSize NONE = fromString("None");
 
-    /** Static value Small for NodeSize. */
+    /**
+     * Static value Small for NodeSize.
+     */
     public static final NodeSize SMALL = fromString("Small");
 
-    /** Static value Medium for NodeSize. */
+    /**
+     * Static value Medium for NodeSize.
+     */
     public static final NodeSize MEDIUM = fromString("Medium");
 
-    /** Static value Large for NodeSize. */
+    /**
+     * Static value Large for NodeSize.
+     */
     public static final NodeSize LARGE = fromString("Large");
 
-    /** Static value XLarge for NodeSize. */
+    /**
+     * Static value XLarge for NodeSize.
+     */
     public static final NodeSize XLARGE = fromString("XLarge");
 
-    /** Static value XXLarge for NodeSize. */
+    /**
+     * Static value XXLarge for NodeSize.
+     */
     public static final NodeSize XXLARGE = fromString("XXLarge");
 
-    /** Static value XXXLarge for NodeSize. */
+    /**
+     * Static value XXXLarge for NodeSize.
+     */
     public static final NodeSize XXXLARGE = fromString("XXXLarge");
 
     /**
      * Creates a new instance of NodeSize value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public NodeSize() {}
+    public NodeSize() {
+    }
 
     /**
      * Creates or finds a NodeSize from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NodeSize.
      */
-    @JsonCreator
     public static NodeSize fromString(String name) {
         return fromString(name, NodeSize.class);
     }
 
     /**
      * Gets known NodeSize values.
-     *
+     * 
      * @return known NodeSize values.
      */
     public static Collection<NodeSize> values() {

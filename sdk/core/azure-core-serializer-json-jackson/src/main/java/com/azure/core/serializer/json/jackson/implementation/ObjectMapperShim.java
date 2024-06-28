@@ -328,7 +328,7 @@ public final class ObjectMapperShim {
             ReflectiveInvoker constructor = getFromHeadersConstructorCache(deserializedHeadersType);
 
             if (constructor != NO_CONSTRUCTOR_REFLECTIVE_INVOKER) {
-                return (T) constructor.invokeWithArguments(headers);
+                return (T) constructor.invokeStatic(headers);
             }
         } catch (Exception exception) {
             // invokeWithArguments will fail with a non-RuntimeException if the reflective call was invalid.

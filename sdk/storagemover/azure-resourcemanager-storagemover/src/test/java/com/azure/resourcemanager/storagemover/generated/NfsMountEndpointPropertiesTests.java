@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class NfsMountEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NfsMountEndpointProperties model =
-            BinaryData
-                .fromString(
-                    "{\"endpointType\":\"NfsMount\",\"host\":\"bldngkpoc\",\"nfsVersion\":\"NFSv3\",\"export\":\"z\",\"description\":\"o\",\"provisioningState\":\"Succeeded\"}")
-                .toObject(NfsMountEndpointProperties.class);
-        Assertions.assertEquals("o", model.description());
-        Assertions.assertEquals("bldngkpoc", model.host());
-        Assertions.assertEquals(NfsVersion.NFSV3, model.nfsVersion());
-        Assertions.assertEquals("z", model.export());
+        NfsMountEndpointProperties model = BinaryData.fromString(
+            "{\"endpointType\":\"NfsMount\",\"host\":\"yq\",\"nfsVersion\":\"NFSv4\",\"export\":\"uujqgidokgjljyo\",\"description\":\"vcltbgsncgh\",\"provisioningState\":\"Succeeded\"}")
+            .toObject(NfsMountEndpointProperties.class);
+        Assertions.assertEquals("vcltbgsncgh", model.description());
+        Assertions.assertEquals("yq", model.host());
+        Assertions.assertEquals(NfsVersion.NFSV4, model.nfsVersion());
+        Assertions.assertEquals("uujqgidokgjljyo", model.export());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NfsMountEndpointProperties model =
-            new NfsMountEndpointProperties()
-                .withDescription("o")
-                .withHost("bldngkpoc")
-                .withNfsVersion(NfsVersion.NFSV3)
-                .withExport("z");
+        NfsMountEndpointProperties model = new NfsMountEndpointProperties().withDescription("vcltbgsncgh")
+            .withHost("yq")
+            .withNfsVersion(NfsVersion.NFSV4)
+            .withExport("uujqgidokgjljyo");
         model = BinaryData.fromObject(model).toObject(NfsMountEndpointProperties.class);
-        Assertions.assertEquals("o", model.description());
-        Assertions.assertEquals("bldngkpoc", model.host());
-        Assertions.assertEquals(NfsVersion.NFSV3, model.nfsVersion());
-        Assertions.assertEquals("z", model.export());
+        Assertions.assertEquals("vcltbgsncgh", model.description());
+        Assertions.assertEquals("yq", model.host());
+        Assertions.assertEquals(NfsVersion.NFSV4, model.nfsVersion());
+        Assertions.assertEquals("uujqgidokgjljyo", model.export());
     }
 }

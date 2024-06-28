@@ -19,32 +19,36 @@ public final class LinkedServiceDebugResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedServiceDebugResource model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"xmqeqalh\",\"connectVia\":{\"referenceName\":\"nhg\",\"parameters\":{\"ta\":\"datayynfsvkhgbv\",\"jcpeogkhnmg\":\"dataarfdlpukhpyrnei\",\"xddbhfhpfpaz\":\"dataro\"}},\"description\":\"oywjxhpdulont\",\"parameters\":{\"ehtuevrhr\":{\"type\":\"Bool\",\"defaultValue\":\"dataw\"}},\"annotations\":[\"dataoogwxhnsduugwb\",\"datareur\"],\"\":{\"lnvnafvvkyfedev\":\"datafuarenlvhht\",\"lcqxypokk\":\"databo\",\"zng\":\"dataminqcym\"}},\"name\":\"dxxewuninv\"}")
+            "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"ffm\",\"parameters\":{\"dby\":\"datawfbkgozxwo\",\"zqaclna\":\"datap\"}},\"description\":\"biygnugjknfsmfct\",\"parameters\":{\"jhvsujztczyt\":{\"type\":\"Float\",\"defaultValue\":\"datayilflqoiquvrehmr\"},\"auunfprnjletlx\":{\"type\":\"Bool\",\"defaultValue\":\"dataw\"},\"nlqwzdvpiwhx\":{\"type\":\"Object\",\"defaultValue\":\"datapddouifamowaziyn\"},\"quhuxylrj\":{\"type\":\"SecureString\",\"defaultValue\":\"datadtmaa\"}},\"annotations\":[\"dataygjbmzyospspsh\"],\"\":{\"df\":\"datakyjpmspbps\",\"vczkcnyxrxmunjd\":\"datapyogtieyuj\",\"nkvxlxpaglqi\":\"datavg\",\"khpzvuqdflv\":\"databgkc\"}},\"name\":\"iypfp\"}")
             .toObject(LinkedServiceDebugResource.class);
-        Assertions.assertEquals("dxxewuninv", model.name());
-        Assertions.assertEquals("nhg", model.properties().connectVia().referenceName());
-        Assertions.assertEquals("oywjxhpdulont", model.properties().description());
-        Assertions.assertEquals(ParameterType.BOOL, model.properties().parameters().get("ehtuevrhr").type());
+        Assertions.assertEquals("iypfp", model.name());
+        Assertions.assertEquals("ffm", model.properties().connectVia().referenceName());
+        Assertions.assertEquals("biygnugjknfsmfct", model.properties().description());
+        Assertions.assertEquals(ParameterType.FLOAT, model.properties().parameters().get("jhvsujztczyt").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedServiceDebugResource model
-            = new LinkedServiceDebugResource().withName("dxxewuninv")
-                .withProperties(new LinkedService()
-                    .withConnectVia(new IntegrationRuntimeReference().withReferenceName("nhg")
-                        .withParameters(mapOf("ta", "datayynfsvkhgbv", "jcpeogkhnmg", "dataarfdlpukhpyrnei",
-                            "xddbhfhpfpaz", "dataro")))
-                    .withDescription("oywjxhpdulont")
-                    .withParameters(mapOf("ehtuevrhr",
-                        new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataw")))
-                    .withAnnotations(Arrays.asList("dataoogwxhnsduugwb", "datareur"))
-                    .withAdditionalProperties(mapOf("type", "xmqeqalh")));
+        LinkedServiceDebugResource model = new LinkedServiceDebugResource().withName("iypfp")
+            .withProperties(new LinkedService()
+                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("ffm")
+                    .withParameters(mapOf("dby", "datawfbkgozxwo", "zqaclna", "datap")))
+                .withDescription("biygnugjknfsmfct")
+                .withParameters(mapOf("jhvsujztczyt",
+                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datayilflqoiquvrehmr"),
+                    "auunfprnjletlx",
+                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataw"), "nlqwzdvpiwhx",
+                    new ParameterSpecification().withType(ParameterType.OBJECT)
+                        .withDefaultValue("datapddouifamowaziyn"),
+                    "quhuxylrj",
+                    new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datadtmaa")))
+                .withAnnotations(Arrays.asList("dataygjbmzyospspsh"))
+                .withAdditionalProperties(mapOf("type", "LinkedService")));
         model = BinaryData.fromObject(model).toObject(LinkedServiceDebugResource.class);
-        Assertions.assertEquals("dxxewuninv", model.name());
-        Assertions.assertEquals("nhg", model.properties().connectVia().referenceName());
-        Assertions.assertEquals("oywjxhpdulont", model.properties().description());
-        Assertions.assertEquals(ParameterType.BOOL, model.properties().parameters().get("ehtuevrhr").type());
+        Assertions.assertEquals("iypfp", model.name());
+        Assertions.assertEquals("ffm", model.properties().connectVia().referenceName());
+        Assertions.assertEquals("biygnugjknfsmfct", model.properties().description());
+        Assertions.assertEquals(ParameterType.FLOAT, model.properties().parameters().get("jhvsujztczyt").type());
     }
 
     // Use "Map.of" if available

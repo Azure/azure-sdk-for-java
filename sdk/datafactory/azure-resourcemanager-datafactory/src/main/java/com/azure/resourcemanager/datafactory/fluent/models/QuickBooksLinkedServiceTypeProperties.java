@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class QuickBooksLinkedServiceTypeProperties {
     /*
-     * Properties used to connect to QuickBooks. It is mutually exclusive with any other properties in the linked service. Type: object.
+     * Properties used to connect to QuickBooks. It is mutually exclusive with any other properties in the linked
+     * service. Type: object.
      */
     @JsonProperty(value = "connectionProperties")
     private Object connectionProperties;
@@ -62,7 +63,8 @@ public final class QuickBooksLinkedServiceTypeProperties {
     private Object useEncryptedEndpoints;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

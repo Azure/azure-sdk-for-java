@@ -6,21 +6,12 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.models.ResourceItem;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceItemTests {
-    @Test
-    public void testDeserialize() {
-        ResourceItem model =
-            BinaryData
-                .fromString(
-                    "{\"subscriptionId\":\"zahmgkbrpyydhibn\",\"resourceGroup\":\"qkpikadrgvtqagnb\",\"resourceType\":\"nhijggmebfsi\",\"resourceId\":\"butr\"}")
-                .toObject(ResourceItem.class);
-    }
-
-    @Test
-    public void testSerialize() {
-        ResourceItem model = new ResourceItem();
-        model = BinaryData.fromObject(model).toObject(ResourceItem.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ResourceItem model = BinaryData.fromString(
+            "{\"subscriptionId\":\"qmt\",\"resourceGroup\":\"ltmm\",\"resourceType\":\"hyeozphvwau\",\"resourceId\":\"ncyg\"}")
+            .toObject(ResourceItem.class);
     }
 }

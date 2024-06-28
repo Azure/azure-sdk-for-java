@@ -5,45 +5,59 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Azure ML Update Resource management activity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureMLUpdateResource")
-@JsonFlatten
+/**
+ * Azure ML Update Resource management activity.
+ */
 @Fluent
 public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /*
-     * Name of the Trained Model module in the Web Service experiment to be updated. Type: string (or Expression with
-     * resultType string).
+     * Type of activity.
      */
-    @JsonProperty(value = "typeProperties.trainedModelName", required = true)
+    private String type = "AzureMLUpdateResource";
+
+    /*
+     * Name of the Trained Model module in the Web Service experiment to be updated. Type: string (or Expression with resultType string).
+     */
     private Object trainedModelName;
 
     /*
      * Name of Azure Storage linked service holding the .ilearner file that will be uploaded by the update operation.
      */
-    @JsonProperty(value = "typeProperties.trainedModelLinkedServiceName", required = true)
     private LinkedServiceReference trainedModelLinkedServiceName;
 
     /*
-     * The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by the
-     * update operation.  Type: string (or Expression with resultType string).
+     * The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by the update operation.  Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.trainedModelFilePath", required = true)
     private Object trainedModelFilePath;
 
-    /** Creates an instance of AzureMLUpdateResourceActivity class. */
-    public AzureMLUpdateResourceActivity() {}
+    /**
+     * Creates an instance of AzureMLUpdateResourceActivity class.
+     */
+    public AzureMLUpdateResourceActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the trainedModelName property: Name of the Trained Model module in the Web Service experiment to be updated.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the trainedModelName value.
      */
     public Object getTrainedModelName() {
@@ -53,7 +67,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * Set the trainedModelName property: Name of the Trained Model module in the Web Service experiment to be updated.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param trainedModelName the trainedModelName value to set.
      * @return the AzureMLUpdateResourceActivity object itself.
      */
@@ -65,7 +79,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * Get the trainedModelLinkedServiceName property: Name of Azure Storage linked service holding the .ilearner file
      * that will be uploaded by the update operation.
-     *
+     * 
      * @return the trainedModelLinkedServiceName value.
      */
     public LinkedServiceReference getTrainedModelLinkedServiceName() {
@@ -75,12 +89,12 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * Set the trainedModelLinkedServiceName property: Name of Azure Storage linked service holding the .ilearner file
      * that will be uploaded by the update operation.
-     *
+     * 
      * @param trainedModelLinkedServiceName the trainedModelLinkedServiceName value to set.
      * @return the AzureMLUpdateResourceActivity object itself.
      */
-    public AzureMLUpdateResourceActivity setTrainedModelLinkedServiceName(
-            LinkedServiceReference trainedModelLinkedServiceName) {
+    public AzureMLUpdateResourceActivity
+        setTrainedModelLinkedServiceName(LinkedServiceReference trainedModelLinkedServiceName) {
         this.trainedModelLinkedServiceName = trainedModelLinkedServiceName;
         return this;
     }
@@ -89,7 +103,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
      * Get the trainedModelFilePath property: The relative file path in trainedModelLinkedService to represent the
      * .ilearner file that will be uploaded by the update operation. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the trainedModelFilePath value.
      */
     public Object getTrainedModelFilePath() {
@@ -100,7 +114,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
      * Set the trainedModelFilePath property: The relative file path in trainedModelLinkedService to represent the
      * .ilearner file that will be uploaded by the update operation. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param trainedModelFilePath the trainedModelFilePath value to set.
      * @return the AzureMLUpdateResourceActivity object itself.
      */
@@ -109,59 +123,178 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMLUpdateResourceActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMLUpdateResourceActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMLUpdateResourceActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMLUpdateResourceActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMLUpdateResourceActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMLUpdateResourceActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMLUpdateResourceActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMLUpdateResourceActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (trainedModelName != null || trainedModelLinkedServiceName != null || trainedModelFilePath != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("trainedModelName", this.trainedModelName);
+            jsonWriter.writeJsonField("trainedModelLinkedServiceName", this.trainedModelLinkedServiceName);
+            jsonWriter.writeUntypedField("trainedModelFilePath", this.trainedModelFilePath);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMLUpdateResourceActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMLUpdateResourceActivity if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureMLUpdateResourceActivity.
+     */
+    public static AzureMLUpdateResourceActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMLUpdateResourceActivity deserializedAzureMLUpdateResourceActivity
+                = new AzureMLUpdateResourceActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureMLUpdateResourceActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureMLUpdateResourceActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedAzureMLUpdateResourceActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedAzureMLUpdateResourceActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedAzureMLUpdateResourceActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedAzureMLUpdateResourceActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedAzureMLUpdateResourceActivity
+                        .setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedAzureMLUpdateResourceActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureMLUpdateResourceActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("trainedModelName".equals(fieldName)) {
+                            deserializedAzureMLUpdateResourceActivity.trainedModelName = reader.readUntyped();
+                        } else if ("trainedModelLinkedServiceName".equals(fieldName)) {
+                            deserializedAzureMLUpdateResourceActivity.trainedModelLinkedServiceName
+                                = LinkedServiceReference.fromJson(reader);
+                        } else if ("trainedModelFilePath".equals(fieldName)) {
+                            deserializedAzureMLUpdateResourceActivity.trainedModelFilePath = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureMLUpdateResourceActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureMLUpdateResourceActivity;
+        });
     }
 }

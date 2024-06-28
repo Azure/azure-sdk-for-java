@@ -19,7 +19,9 @@ public final class DateAfterCreation {
     private float daysAfterCreationGreaterThan;
 
     /*
-     * Value indicating the age in days after last blob tier change time. This property is only applicable for tierToArchive actions and requires daysAfterCreationGreaterThan to be set for snapshots and blob version based actions. The blob will be archived if both the conditions are satisfied.
+     * Value indicating the age in days after last blob tier change time. This property is only applicable for
+     * tierToArchive actions and requires daysAfterCreationGreaterThan to be set for snapshots and blob version based
+     * actions. The blob will be archived if both the conditions are satisfied.
      */
     @JsonProperty(value = "daysAfterLastTierChangeGreaterThan")
     private Float daysAfterLastTierChangeGreaterThan;

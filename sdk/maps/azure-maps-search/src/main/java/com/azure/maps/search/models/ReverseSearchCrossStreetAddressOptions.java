@@ -10,7 +10,8 @@ import com.azure.core.models.GeoPosition;
  * Class holding optional parameters for Search.
  */
 @Fluent
-public final class ReverseSearchCrossStreetAddressOptions extends BaseReverseSearchOptions<ReverseSearchCrossStreetAddressOptions> {
+public final class ReverseSearchCrossStreetAddressOptions
+    extends BaseReverseSearchOptions<ReverseSearchCrossStreetAddressOptions> {
     private Integer top;
 
     /**

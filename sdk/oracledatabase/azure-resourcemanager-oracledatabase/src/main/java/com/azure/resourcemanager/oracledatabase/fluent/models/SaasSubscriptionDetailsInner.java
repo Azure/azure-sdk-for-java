@@ -5,90 +5,83 @@
 package com.azure.resourcemanager.oracledatabase.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * SaaS Subscription Details model.
  */
 @Immutable
-public final class SaasSubscriptionDetailsInner {
+public final class SaasSubscriptionDetailsInner implements JsonSerializable<SaasSubscriptionDetailsInner> {
     /*
      * Purchased SaaS subscription ID
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * SaaS subscription name
      */
-    @JsonProperty(value = "subscriptionName", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionName;
 
     /*
      * Creation Date and Time
      */
-    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
     /*
      * Purchased offer ID
      */
-    @JsonProperty(value = "offerId", access = JsonProperty.Access.WRITE_ONLY)
     private String offerId;
 
     /*
      * Purchased offer's plan ID
      */
-    @JsonProperty(value = "planId", access = JsonProperty.Access.WRITE_ONLY)
     private String planId;
 
     /*
      * Indicates the status of the Subscription.
      */
-    @JsonProperty(value = "saasSubscriptionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String saasSubscriptionStatus;
 
     /*
      * Publisher ID
      */
-    @JsonProperty(value = "publisherId", access = JsonProperty.Access.WRITE_ONLY)
     private String publisherId;
 
     /*
      * Purchaser Email ID
      */
-    @JsonProperty(value = "purchaserEmailId", access = JsonProperty.Access.WRITE_ONLY)
     private String purchaserEmailId;
 
     /*
      * Purchaser Tenant ID
      */
-    @JsonProperty(value = "purchaserTenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String purchaserTenantId;
 
     /*
      * Purchase Term Unit
      */
-    @JsonProperty(value = "termUnit", access = JsonProperty.Access.WRITE_ONLY)
     private String termUnit;
 
     /*
      * AutoRenew flag
      */
-    @JsonProperty(value = "isAutoRenew", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isAutoRenew;
 
     /*
      * FreeTrial flag
      */
-    @JsonProperty(value = "isFreeTrial", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isFreeTrial;
 
     /**
      * Creates an instance of SaasSubscriptionDetailsInner class.
      */
-    public SaasSubscriptionDetailsInner() {
+    private SaasSubscriptionDetailsInner() {
     }
 
     /**
@@ -205,5 +198,63 @@ public final class SaasSubscriptionDetailsInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SaasSubscriptionDetailsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SaasSubscriptionDetailsInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SaasSubscriptionDetailsInner.
+     */
+    public static SaasSubscriptionDetailsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SaasSubscriptionDetailsInner deserializedSaasSubscriptionDetailsInner = new SaasSubscriptionDetailsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetailsInner.id = reader.getString();
+                } else if ("subscriptionName".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetailsInner.subscriptionName = reader.getString();
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetailsInner.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("offerId".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetailsInner.offerId = reader.getString();
+                } else if ("planId".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetailsInner.planId = reader.getString();
+                } else if ("saasSubscriptionStatus".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetailsInner.saasSubscriptionStatus = reader.getString();
+                } else if ("publisherId".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetailsInner.publisherId = reader.getString();
+                } else if ("purchaserEmailId".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetailsInner.purchaserEmailId = reader.getString();
+                } else if ("purchaserTenantId".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetailsInner.purchaserTenantId = reader.getString();
+                } else if ("termUnit".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetailsInner.termUnit = reader.getString();
+                } else if ("isAutoRenew".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetailsInner.isAutoRenew = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isFreeTrial".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetailsInner.isFreeTrial = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSaasSubscriptionDetailsInner;
+        });
     }
 }

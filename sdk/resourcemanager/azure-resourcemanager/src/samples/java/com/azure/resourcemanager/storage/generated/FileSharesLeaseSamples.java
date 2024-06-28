@@ -12,7 +12,8 @@ import com.azure.resourcemanager.storage.models.LeaseShareRequest;
  */
 public final class FileSharesLeaseSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesLease_Break.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesLease_Break.json
      */
     /**
      * Sample code: Break a lease on a share.
@@ -31,7 +32,8 @@ public final class FileSharesLeaseSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesLease_Acquire.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesLease_Acquire.json
      */
     /**
      * Sample code: Acquire a lease on a share.

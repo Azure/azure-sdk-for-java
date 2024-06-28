@@ -11,13 +11,7 @@ public final class SaasSubscriptionDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SaasSubscriptionDetailsInner model = BinaryData.fromString(
-            "{\"id\":\"odfvuefywsbp\",\"subscriptionName\":\"mwyhr\",\"timeCreated\":\"2021-01-24T04:18:46Z\",\"offerId\":\"ft\",\"planId\":\"kcpwiy\",\"saasSubscriptionStatus\":\"qtmnubexkpzk\",\"publisherId\":\"ondjmq\",\"purchaserEmailId\":\"vypomgkopkwho\",\"purchaserTenantId\":\"pajqgxysm\",\"termUnit\":\"mbqfqvmk\",\"isAutoRenew\":false,\"isFreeTrial\":true}")
+            "{\"id\":\"iexpbtgiwbwo\",\"subscriptionName\":\"washr\",\"timeCreated\":\"2021-08-01T13:56:15Z\",\"offerId\":\"cnqxwbpokulpi\",\"planId\":\"waasip\",\"saasSubscriptionStatus\":\"iobyu\",\"publisherId\":\"rpqlp\",\"purchaserEmailId\":\"cciuqgbdbutau\",\"purchaserTenantId\":\"btkuwhh\",\"termUnit\":\"ykojoxafnndlpic\",\"isAutoRenew\":false,\"isFreeTrial\":true}")
             .toObject(SaasSubscriptionDetailsInner.class);
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        SaasSubscriptionDetailsInner model = new SaasSubscriptionDetailsInner();
-        model = BinaryData.fromObject(model).toObject(SaasSubscriptionDetailsInner.class);
     }
 }

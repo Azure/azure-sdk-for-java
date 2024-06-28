@@ -13,16 +13,19 @@ public final class FileServerWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileServerWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"vfiskkqspzwsxn\",\"maxConcurrentConnections\":\"datackpcssusdr\",\"disableMetricsCollection\":\"datammrzwm\",\"copyBehavior\":\"datatkcvolaxnuk\",\"metadata\":[{\"name\":\"datau\",\"value\":\"datadcqoxyxiyhmj\"}],\"\":{\"qiygbouv\":\"datawkezgva\"}}")
+            "{\"type\":\"FileServerWriteSettings\",\"maxConcurrentConnections\":\"datactjneibhztlzb\",\"disableMetricsCollection\":\"datayvjispkgkhvpvbz\",\"copyBehavior\":\"dataovhxstxs\",\"metadata\":[{\"name\":\"datavsd\",\"value\":\"datashhcdlsowyhxwh\"},{\"name\":\"datafgtwxmj\",\"value\":\"datazfi\"},{\"name\":\"datamwmce\",\"value\":\"datachrfm\"},{\"name\":\"datajxxwzdwmjurtno\",\"value\":\"dataiohdxyuk\"}],\"\":{\"izefajgble\":\"datafwykrpojenpsff\",\"cevfbiekydk\":\"dataxpeuahvxfn\",\"yrvdszrizpej\":\"datadkzfkneck\",\"mhzcicitykzy\":\"datayrzzxqtcgs\"}}")
             .toObject(FileServerWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileServerWriteSettings model = new FileServerWriteSettings().withMaxConcurrentConnections("datackpcssusdr")
-            .withDisableMetricsCollection("datammrzwm")
-            .withCopyBehavior("datatkcvolaxnuk")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("datau").withValue("datadcqoxyxiyhmj")));
+        FileServerWriteSettings model = new FileServerWriteSettings().withMaxConcurrentConnections("datactjneibhztlzb")
+            .withDisableMetricsCollection("datayvjispkgkhvpvbz")
+            .withCopyBehavior("dataovhxstxs")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datavsd").withValue("datashhcdlsowyhxwh"),
+                new MetadataItem().withName("datafgtwxmj").withValue("datazfi"),
+                new MetadataItem().withName("datamwmce").withValue("datachrfm"),
+                new MetadataItem().withName("datajxxwzdwmjurtno").withValue("dataiohdxyuk")));
         model = BinaryData.fromObject(model).toObject(FileServerWriteSettings.class);
     }
 }

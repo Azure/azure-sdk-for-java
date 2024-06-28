@@ -5,37 +5,45 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Trigger referenced dependency. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = TriggerDependencyReference.class)
-@JsonTypeName("TriggerDependencyReference")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-            name = "TumblingWindowTriggerDependencyReference",
-            value = TumblingWindowTriggerDependencyReference.class)
-})
+/**
+ * Trigger referenced dependency.
+ */
 @Fluent
 public class TriggerDependencyReference extends DependencyReference {
     /*
+     * The type of dependency reference.
+     */
+    private String type = "TriggerDependencyReference";
+
+    /*
      * Referenced trigger.
      */
-    @JsonProperty(value = "referenceTrigger", required = true)
     private TriggerReference referenceTrigger;
 
-    /** Creates an instance of TriggerDependencyReference class. */
-    public TriggerDependencyReference() {}
+    /**
+     * Creates an instance of TriggerDependencyReference class.
+     */
+    public TriggerDependencyReference() {
+    }
+
+    /**
+     * Get the type property: The type of dependency reference.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the referenceTrigger property: Referenced trigger.
-     *
+     * 
      * @return the referenceTrigger value.
      */
     public TriggerReference getReferenceTrigger() {
@@ -44,12 +52,77 @@ public class TriggerDependencyReference extends DependencyReference {
 
     /**
      * Set the referenceTrigger property: Referenced trigger.
-     *
+     * 
      * @param referenceTrigger the referenceTrigger value to set.
      * @return the TriggerDependencyReference object itself.
      */
     public TriggerDependencyReference setReferenceTrigger(TriggerReference referenceTrigger) {
         this.referenceTrigger = referenceTrigger;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("referenceTrigger", this.referenceTrigger);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggerDependencyReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggerDependencyReference if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TriggerDependencyReference.
+     */
+    public static TriggerDependencyReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("TumblingWindowTriggerDependencyReference".equals(discriminatorValue)) {
+                    return TumblingWindowTriggerDependencyReference.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static TriggerDependencyReference fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggerDependencyReference deserializedTriggerDependencyReference = new TriggerDependencyReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("referenceTrigger".equals(fieldName)) {
+                    deserializedTriggerDependencyReference.referenceTrigger = TriggerReference.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedTriggerDependencyReference.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggerDependencyReference;
+        });
     }
 }

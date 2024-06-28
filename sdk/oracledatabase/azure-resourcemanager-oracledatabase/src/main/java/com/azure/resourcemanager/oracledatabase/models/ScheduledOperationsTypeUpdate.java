@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The list of scheduled operations.
  */
 @Fluent
-public final class ScheduledOperationsTypeUpdate {
+public final class ScheduledOperationsTypeUpdate implements JsonSerializable<ScheduledOperationsTypeUpdate> {
     /*
      * Day of week
      */
-    @JsonProperty(value = "dayOfWeek")
     private DayOfWeekUpdate dayOfWeek;
 
     /*
      * auto start time. value must be of ISO-8601 format HH:mm
      */
-    @JsonProperty(value = "scheduledStartTime")
     private String scheduledStartTime;
 
     /*
      * auto stop time. value must be of ISO-8601 format HH:mm
      */
-    @JsonProperty(value = "scheduledStopTime")
     private String scheduledStopTime;
 
     /**
@@ -105,5 +106,48 @@ public final class ScheduledOperationsTypeUpdate {
         if (dayOfWeek() != null) {
             dayOfWeek().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dayOfWeek", this.dayOfWeek);
+        jsonWriter.writeStringField("scheduledStartTime", this.scheduledStartTime);
+        jsonWriter.writeStringField("scheduledStopTime", this.scheduledStopTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledOperationsTypeUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledOperationsTypeUpdate if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduledOperationsTypeUpdate.
+     */
+    public static ScheduledOperationsTypeUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledOperationsTypeUpdate deserializedScheduledOperationsTypeUpdate
+                = new ScheduledOperationsTypeUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dayOfWeek".equals(fieldName)) {
+                    deserializedScheduledOperationsTypeUpdate.dayOfWeek = DayOfWeekUpdate.fromJson(reader);
+                } else if ("scheduledStartTime".equals(fieldName)) {
+                    deserializedScheduledOperationsTypeUpdate.scheduledStartTime = reader.getString();
+                } else if ("scheduledStopTime".equals(fieldName)) {
+                    deserializedScheduledOperationsTypeUpdate.scheduledStopTime = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledOperationsTypeUpdate;
+        });
     }
 }

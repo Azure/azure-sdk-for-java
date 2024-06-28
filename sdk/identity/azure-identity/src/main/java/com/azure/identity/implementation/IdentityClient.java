@@ -6,6 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -40,6 +41,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -51,6 +53,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -65,6 +68,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static com.azure.identity.implementation.util.ValidationUtil.validateSecretFile;
 
 /**
  * The identity client that contains APIs to retrieve access tokens
@@ -98,13 +103,22 @@ public class IdentityClient extends IdentityClientBase {
      * @param clientAssertionTimeout the timeout to use for the client assertion.
      * @param options the options configuring the client.
      */
-    IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
-        String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
-        byte[] certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
-        Duration clientAssertionTimeout, IdentityClientOptions options) {
+    IdentityClient(String tenantId,
+                   String clientId,
+                   String clientSecret,
+                   String certificatePath,
+                   String clientAssertionFilePath,
+                   String resourceId,
+                   Supplier<String> clientAssertionSupplier,
+                   Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline,
+                   byte[] certificate,
+                   String certificatePassword,
+                   boolean isSharedTokenCacheCredential,
+                   Duration clientAssertionTimeout,
+                   IdentityClientOptions options) {
         super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId,
-            clientAssertionSupplier, certificate, certificatePassword, isSharedTokenCacheCredential,
-            clientAssertionTimeout, options);
+            clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate, certificatePassword,
+            isSharedTokenCacheCredential, clientAssertionTimeout, options);
 
         this.publicClientApplicationAccessor = new SynchronizedAccessor<>(() ->
             getPublicClientApplication(isSharedTokenCacheCredential, false));
@@ -556,6 +570,9 @@ public class IdentityClient extends IdentityClientBase {
         if (clientAssertionSupplier != null) {
             builder.clientCredential(ClientCredentialFactory
                 .createFromClientAssertion(clientAssertionSupplier.get()));
+        } else if (clientAssertionSupplierWithHttpPipeline != null) {
+            builder.clientCredential(ClientCredentialFactory
+                .createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(getPipeline())));
         }
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
@@ -993,8 +1010,10 @@ public class IdentityClient extends IdentityClientBase {
                         null));
                 }
 
-                String secretKeyPath = realm.substring(separatorIndex + 1);
-                secretKey = new String(Files.readAllBytes(Paths.get(secretKeyPath)), StandardCharsets.UTF_8);
+                String secretKeyPathHeaderValue = realm.substring(separatorIndex + 1);
+                Path secretKeyPath = validateSecretFile(new File(secretKeyPathHeaderValue), LOGGER);
+
+                secretKey = new String(Files.readAllBytes(secretKeyPath), StandardCharsets.UTF_8);
 
 
                 if (connection != null) {

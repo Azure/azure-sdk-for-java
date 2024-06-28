@@ -6,18 +6,17 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.BlobStorageInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
 import com.azure.communication.callautomation.implementation.models.ChannelAffinityInternal;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.callautomation.implementation.models.ExternalStorageInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingChannelInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
-import com.azure.communication.callautomation.implementation.models.RecordingStorageTypeInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingStorageInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingStorageKind;
 import com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal;
-import com.azure.communication.callautomation.models.BlobStorage;
+import com.azure.communication.callautomation.models.AzureBlobContainerRecordingStorage;
 import com.azure.communication.callautomation.models.CallLocator;
 import com.azure.communication.callautomation.models.CallLocatorKind;
 import com.azure.communication.callautomation.models.ChannelAffinity;
@@ -159,9 +158,6 @@ public final class CallRecordingAsync {
         if (options.getRecordingChannel() != null) {
             request.setRecordingChannelType(RecordingChannelInternal.fromString(options.getRecordingChannel().toString()));
         }
-        if (options.getPauseOnStart() != null) {
-            request.setPauseOnStart(options.getPauseOnStart());
-        }
         if (options.getRecordingStateCallbackUrl() != null) {
             request.setRecordingStateCallbackUri(options.getRecordingStateCallbackUrl());
         }
@@ -177,15 +173,17 @@ public final class CallRecordingAsync {
                 .collect(Collectors.toList());
             request.setChannelAffinity(channelAffinityInternals);
         }
-        if (options.getExternalStorage() != null) {
-            ExternalStorageInternal externalStorageInternal = new ExternalStorageInternal()
-                .setStorageType(RecordingStorageTypeInternal.fromString(options.getExternalStorage().getStorageType().toString()));
-
-            if (options.getExternalStorage() instanceof BlobStorage) {
-                externalStorageInternal.setBlobStorage(getBlobStorageInternalFromBlobStorage((BlobStorage) options.getExternalStorage()));
+        if (options.getRecordingStorage() != null) {
+            if (options.getRecordingStorage() instanceof AzureBlobContainerRecordingStorage) {
+                AzureBlobContainerRecordingStorage blobStorage = (AzureBlobContainerRecordingStorage) options.getRecordingStorage();
+                RecordingStorageInternal recordingStorageInternal = new RecordingStorageInternal()
+                    .setRecordingDestinationContainerUrl(blobStorage.getRecordingDestinationContainerUrl())
+                    .setRecordingStorageKind(RecordingStorageKind.AZURE_BLOB_STORAGE);
+                request.setExternalStorage(recordingStorageInternal);
             }
-
-            request.setExternalStorage(externalStorageInternal);
+        }
+        if (options.getPauseOnStart() != null) {
+            request.setPauseOnStart(options.getPauseOnStart());
         }
 
         return request;
@@ -575,10 +573,6 @@ public final class CallRecordingAsync {
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
-    }
-
-    private BlobStorageInternal getBlobStorageInternalFromBlobStorage(BlobStorage blobStorage) {
-        return new BlobStorageInternal().setContainerUri(blobStorage.getContainerUrl());
     }
 
     private ChannelAffinityInternal getChannelAffinityInternal(ChannelAffinity channelAffinity) {

@@ -5,43 +5,47 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request body structure for creating data flow debug session. */
+/**
+ * Request body structure for creating data flow debug session.
+ */
 @Fluent
-public final class CreateDataFlowDebugSessionRequest {
+public final class CreateDataFlowDebugSessionRequest implements JsonSerializable<CreateDataFlowDebugSessionRequest> {
     /*
-     * Compute type of the cluster. The value will be overwritten by the same setting in integration runtime if
-     * provided.
+     * Compute type of the cluster. The value will be overwritten by the same setting in integration runtime if provided.
      */
-    @JsonProperty(value = "computeType")
     private String computeType;
 
     /*
      * Core count of the cluster. The value will be overwritten by the same setting in integration runtime if provided.
      */
-    @JsonProperty(value = "coreCount")
     private Integer coreCount;
 
     /*
      * Time to live setting of the cluster in minutes.
      */
-    @JsonProperty(value = "timeToLive")
     private Integer timeToLive;
 
     /*
      * Set to use integration runtime setting for data flow debug session.
      */
-    @JsonProperty(value = "integrationRuntime")
     private IntegrationRuntimeDebugResource integrationRuntime;
 
-    /** Creates an instance of CreateDataFlowDebugSessionRequest class. */
-    public CreateDataFlowDebugSessionRequest() {}
+    /**
+     * Creates an instance of CreateDataFlowDebugSessionRequest class.
+     */
+    public CreateDataFlowDebugSessionRequest() {
+    }
 
     /**
      * Get the computeType property: Compute type of the cluster. The value will be overwritten by the same setting in
      * integration runtime if provided.
-     *
+     * 
      * @return the computeType value.
      */
     public String getComputeType() {
@@ -51,7 +55,7 @@ public final class CreateDataFlowDebugSessionRequest {
     /**
      * Set the computeType property: Compute type of the cluster. The value will be overwritten by the same setting in
      * integration runtime if provided.
-     *
+     * 
      * @param computeType the computeType value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
@@ -63,7 +67,7 @@ public final class CreateDataFlowDebugSessionRequest {
     /**
      * Get the coreCount property: Core count of the cluster. The value will be overwritten by the same setting in
      * integration runtime if provided.
-     *
+     * 
      * @return the coreCount value.
      */
     public Integer getCoreCount() {
@@ -73,7 +77,7 @@ public final class CreateDataFlowDebugSessionRequest {
     /**
      * Set the coreCount property: Core count of the cluster. The value will be overwritten by the same setting in
      * integration runtime if provided.
-     *
+     * 
      * @param coreCount the coreCount value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
@@ -84,7 +88,7 @@ public final class CreateDataFlowDebugSessionRequest {
 
     /**
      * Get the timeToLive property: Time to live setting of the cluster in minutes.
-     *
+     * 
      * @return the timeToLive value.
      */
     public Integer getTimeToLive() {
@@ -93,7 +97,7 @@ public final class CreateDataFlowDebugSessionRequest {
 
     /**
      * Set the timeToLive property: Time to live setting of the cluster in minutes.
-     *
+     * 
      * @param timeToLive the timeToLive value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
@@ -104,7 +108,7 @@ public final class CreateDataFlowDebugSessionRequest {
 
     /**
      * Get the integrationRuntime property: Set to use integration runtime setting for data flow debug session.
-     *
+     * 
      * @return the integrationRuntime value.
      */
     public IntegrationRuntimeDebugResource getIntegrationRuntime() {
@@ -113,12 +117,59 @@ public final class CreateDataFlowDebugSessionRequest {
 
     /**
      * Set the integrationRuntime property: Set to use integration runtime setting for data flow debug session.
-     *
+     * 
      * @param integrationRuntime the integrationRuntime value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
     public CreateDataFlowDebugSessionRequest setIntegrationRuntime(IntegrationRuntimeDebugResource integrationRuntime) {
         this.integrationRuntime = integrationRuntime;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("computeType", this.computeType);
+        jsonWriter.writeNumberField("coreCount", this.coreCount);
+        jsonWriter.writeNumberField("timeToLive", this.timeToLive);
+        jsonWriter.writeJsonField("integrationRuntime", this.integrationRuntime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateDataFlowDebugSessionRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateDataFlowDebugSessionRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreateDataFlowDebugSessionRequest.
+     */
+    public static CreateDataFlowDebugSessionRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateDataFlowDebugSessionRequest deserializedCreateDataFlowDebugSessionRequest
+                = new CreateDataFlowDebugSessionRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computeType".equals(fieldName)) {
+                    deserializedCreateDataFlowDebugSessionRequest.computeType = reader.getString();
+                } else if ("coreCount".equals(fieldName)) {
+                    deserializedCreateDataFlowDebugSessionRequest.coreCount = reader.getNullable(JsonReader::getInt);
+                } else if ("timeToLive".equals(fieldName)) {
+                    deserializedCreateDataFlowDebugSessionRequest.timeToLive = reader.getNullable(JsonReader::getInt);
+                } else if ("integrationRuntime".equals(fieldName)) {
+                    deserializedCreateDataFlowDebugSessionRequest.integrationRuntime
+                        = IntegrationRuntimeDebugResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateDataFlowDebugSessionRequest;
+        });
     }
 }

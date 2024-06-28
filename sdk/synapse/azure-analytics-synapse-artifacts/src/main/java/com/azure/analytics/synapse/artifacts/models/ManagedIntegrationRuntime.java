@@ -5,47 +5,62 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** Managed integration runtime, including managed elastic and managed dedicated integration runtimes. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Managed")
-@JsonFlatten
+/**
+ * Managed integration runtime, including managed elastic and managed dedicated integration runtimes.
+ */
 @Fluent
 public class ManagedIntegrationRuntime extends IntegrationRuntime {
     /*
+     * Type of integration runtime.
+     */
+    private IntegrationRuntimeType type = IntegrationRuntimeType.MANAGED;
+
+    /*
      * Integration runtime state, only valid for managed dedicated integration runtime.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private IntegrationRuntimeState state;
 
     /*
      * Managed Virtual Network reference.
      */
-    @JsonProperty(value = "managedVirtualNetwork")
     private ManagedVirtualNetworkReference managedVirtualNetwork;
 
     /*
      * The compute resource for managed integration runtime.
      */
-    @JsonProperty(value = "typeProperties.computeProperties")
     private IntegrationRuntimeComputeProperties computeProperties;
 
     /*
      * SSIS properties for managed integration runtime.
      */
-    @JsonProperty(value = "typeProperties.ssisProperties")
     private IntegrationRuntimeSsisProperties ssisProperties;
 
-    /** Creates an instance of ManagedIntegrationRuntime class. */
-    public ManagedIntegrationRuntime() {}
+    /**
+     * Creates an instance of ManagedIntegrationRuntime class.
+     */
+    public ManagedIntegrationRuntime() {
+    }
+
+    /**
+     * Get the type property: Type of integration runtime.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public IntegrationRuntimeType getType() {
+        return this.type;
+    }
 
     /**
      * Get the state property: Integration runtime state, only valid for managed dedicated integration runtime.
-     *
+     * 
      * @return the state value.
      */
     public IntegrationRuntimeState getState() {
@@ -54,7 +69,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Get the managedVirtualNetwork property: Managed Virtual Network reference.
-     *
+     * 
      * @return the managedVirtualNetwork value.
      */
     public ManagedVirtualNetworkReference getManagedVirtualNetwork() {
@@ -63,7 +78,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Set the managedVirtualNetwork property: Managed Virtual Network reference.
-     *
+     * 
      * @param managedVirtualNetwork the managedVirtualNetwork value to set.
      * @return the ManagedIntegrationRuntime object itself.
      */
@@ -74,7 +89,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Get the computeProperties property: The compute resource for managed integration runtime.
-     *
+     * 
      * @return the computeProperties value.
      */
     public IntegrationRuntimeComputeProperties getComputeProperties() {
@@ -83,7 +98,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Set the computeProperties property: The compute resource for managed integration runtime.
-     *
+     * 
      * @param computeProperties the computeProperties value to set.
      * @return the ManagedIntegrationRuntime object itself.
      */
@@ -94,7 +109,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Get the ssisProperties property: SSIS properties for managed integration runtime.
-     *
+     * 
      * @return the ssisProperties value.
      */
     public IntegrationRuntimeSsisProperties getSsisProperties() {
@@ -103,7 +118,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Set the ssisProperties property: SSIS properties for managed integration runtime.
-     *
+     * 
      * @param ssisProperties the ssisProperties value to set.
      * @return the ManagedIntegrationRuntime object itself.
      */
@@ -112,10 +127,90 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedIntegrationRuntime setDescription(String description) {
         super.setDescription(description);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("managedVirtualNetwork", this.managedVirtualNetwork);
+        if (computeProperties != null || ssisProperties != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeJsonField("computeProperties", this.computeProperties);
+            jsonWriter.writeJsonField("ssisProperties", this.ssisProperties);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIntegrationRuntime from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIntegrationRuntime if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedIntegrationRuntime.
+     */
+    public static ManagedIntegrationRuntime fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIntegrationRuntime deserializedManagedIntegrationRuntime = new ManagedIntegrationRuntime();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntime.setDescription(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntime.type = IntegrationRuntimeType.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntime.state
+                        = IntegrationRuntimeState.fromString(reader.getString());
+                } else if ("managedVirtualNetwork".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntime.managedVirtualNetwork
+                        = ManagedVirtualNetworkReference.fromJson(reader);
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("computeProperties".equals(fieldName)) {
+                            deserializedManagedIntegrationRuntime.computeProperties
+                                = IntegrationRuntimeComputeProperties.fromJson(reader);
+                        } else if ("ssisProperties".equals(fieldName)) {
+                            deserializedManagedIntegrationRuntime.ssisProperties
+                                = IntegrationRuntimeSsisProperties.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedManagedIntegrationRuntime.setAdditionalProperties(additionalProperties);
+
+            return deserializedManagedIntegrationRuntime;
+        });
     }
 }

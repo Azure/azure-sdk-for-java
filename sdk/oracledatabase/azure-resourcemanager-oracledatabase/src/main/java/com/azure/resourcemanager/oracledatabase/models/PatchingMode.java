@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * PatchingMode enum.
+ * Patching mode enum.
  */
 public final class PatchingMode extends ExpandableStringEnum<PatchingMode> {
     /**
@@ -37,7 +36,6 @@ public final class PatchingMode extends ExpandableStringEnum<PatchingMode> {
      * @param name a name to look for.
      * @return the corresponding PatchingMode.
      */
-    @JsonCreator
     public static PatchingMode fromString(String name) {
         return fromString(name, PatchingMode.class);
     }

@@ -5,31 +5,54 @@
 package com.azure.resourcemanager.appcomplianceautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates the control family status. */
+/**
+ * Indicates the control family status.
+ */
 public final class ControlFamilyStatus extends ExpandableStringEnum<ControlFamilyStatus> {
-    /** Static value Healthy for ControlFamilyStatus. */
-    public static final ControlFamilyStatus HEALTHY = fromString("Healthy");
+    /**
+     * Static value Passed for ControlFamilyStatus.
+     */
+    public static final ControlFamilyStatus PASSED = fromString("Passed");
 
-    /** Static value Unhealthy for ControlFamilyStatus. */
-    public static final ControlFamilyStatus UNHEALTHY = fromString("Unhealthy");
+    /**
+     * Static value Failed for ControlFamilyStatus.
+     */
+    public static final ControlFamilyStatus FAILED = fromString("Failed");
+
+    /**
+     * Static value NotApplicable for ControlFamilyStatus.
+     */
+    public static final ControlFamilyStatus NOT_APPLICABLE = fromString("NotApplicable");
+
+    /**
+     * Static value PendingApproval for ControlFamilyStatus.
+     */
+    public static final ControlFamilyStatus PENDING_APPROVAL = fromString("PendingApproval");
+
+    /**
+     * Creates a new instance of ControlFamilyStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ControlFamilyStatus() {
+    }
 
     /**
      * Creates or finds a ControlFamilyStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ControlFamilyStatus.
      */
-    @JsonCreator
     public static ControlFamilyStatus fromString(String name) {
         return fromString(name, ControlFamilyStatus.class);
     }
 
     /**
      * Gets known ControlFamilyStatus values.
-     *
+     * 
      * @return known ControlFamilyStatus values.
      */
     public static Collection<ControlFamilyStatus> values() {

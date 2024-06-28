@@ -6,24 +6,26 @@ package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Defines a GitHub organization.
  */
 @Fluent
-public final class GitHubOrganization {
+public final class GitHubOrganization implements JsonSerializable<GitHubOrganization> {
     /*
      * The GitHub organization URL in which the pool should be created.
      */
-    @JsonProperty(value = "url", required = true)
     private String url;
 
     /*
      * Optional list of repositories in which the pool should be created.
      */
-    @JsonProperty(value = "repositories")
     private List<String> repositories;
 
     /**
@@ -85,4 +87,45 @@ public final class GitHubOrganization {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GitHubOrganization.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeArrayField("repositories", this.repositories, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitHubOrganization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitHubOrganization if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GitHubOrganization.
+     */
+    public static GitHubOrganization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitHubOrganization deserializedGitHubOrganization = new GitHubOrganization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedGitHubOrganization.url = reader.getString();
+                } else if ("repositories".equals(fieldName)) {
+                    List<String> repositories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGitHubOrganization.repositories = repositories;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitHubOrganization;
+        });
+    }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class SolutionProvisioningState extends ExpandableStringEnum<Soluti
      * @param name a name to look for.
      * @return the corresponding SolutionProvisioningState.
      */
-    @JsonCreator
     public static SolutionProvisioningState fromString(String name) {
         return fromString(name, SolutionProvisioningState.class);
     }

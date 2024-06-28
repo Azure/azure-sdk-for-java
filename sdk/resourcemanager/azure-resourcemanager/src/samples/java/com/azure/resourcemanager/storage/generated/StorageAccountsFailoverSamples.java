@@ -11,7 +11,8 @@ import com.azure.resourcemanager.storage.models.FailoverType;
  */
 public final class StorageAccountsFailoverSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountFailover.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountFailover.json
      */
     /**
      * Sample code: StorageAccountFailover.
@@ -27,7 +28,9 @@ public final class StorageAccountsFailoverSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountFailoverPlanned.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountFailoverPlanned
+     * .json
      */
     /**
      * Sample code: StorageAccountFailoverPlanned.

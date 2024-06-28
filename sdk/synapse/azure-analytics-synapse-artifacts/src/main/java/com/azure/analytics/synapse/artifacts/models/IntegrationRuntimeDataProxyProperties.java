@@ -5,35 +5,42 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Data proxy properties for a managed dedicated integration runtime. */
+/**
+ * Data proxy properties for a managed dedicated integration runtime.
+ */
 @Fluent
-public final class IntegrationRuntimeDataProxyProperties {
+public final class IntegrationRuntimeDataProxyProperties
+    implements JsonSerializable<IntegrationRuntimeDataProxyProperties> {
     /*
      * The self-hosted integration runtime reference.
      */
-    @JsonProperty(value = "connectVia")
     private EntityReference connectVia;
 
     /*
      * The staging linked service reference.
      */
-    @JsonProperty(value = "stagingLinkedService")
     private EntityReference stagingLinkedService;
 
     /*
      * The path to contain the staged data in the Blob storage.
      */
-    @JsonProperty(value = "path")
     private String path;
 
-    /** Creates an instance of IntegrationRuntimeDataProxyProperties class. */
-    public IntegrationRuntimeDataProxyProperties() {}
+    /**
+     * Creates an instance of IntegrationRuntimeDataProxyProperties class.
+     */
+    public IntegrationRuntimeDataProxyProperties() {
+    }
 
     /**
      * Get the connectVia property: The self-hosted integration runtime reference.
-     *
+     * 
      * @return the connectVia value.
      */
     public EntityReference getConnectVia() {
@@ -42,7 +49,7 @@ public final class IntegrationRuntimeDataProxyProperties {
 
     /**
      * Set the connectVia property: The self-hosted integration runtime reference.
-     *
+     * 
      * @param connectVia the connectVia value to set.
      * @return the IntegrationRuntimeDataProxyProperties object itself.
      */
@@ -53,7 +60,7 @@ public final class IntegrationRuntimeDataProxyProperties {
 
     /**
      * Get the stagingLinkedService property: The staging linked service reference.
-     *
+     * 
      * @return the stagingLinkedService value.
      */
     public EntityReference getStagingLinkedService() {
@@ -62,7 +69,7 @@ public final class IntegrationRuntimeDataProxyProperties {
 
     /**
      * Set the stagingLinkedService property: The staging linked service reference.
-     *
+     * 
      * @param stagingLinkedService the stagingLinkedService value to set.
      * @return the IntegrationRuntimeDataProxyProperties object itself.
      */
@@ -73,7 +80,7 @@ public final class IntegrationRuntimeDataProxyProperties {
 
     /**
      * Get the path property: The path to contain the staged data in the Blob storage.
-     *
+     * 
      * @return the path value.
      */
     public String getPath() {
@@ -82,12 +89,56 @@ public final class IntegrationRuntimeDataProxyProperties {
 
     /**
      * Set the path property: The path to contain the staged data in the Blob storage.
-     *
+     * 
      * @param path the path value to set.
      * @return the IntegrationRuntimeDataProxyProperties object itself.
      */
     public IntegrationRuntimeDataProxyProperties setPath(String path) {
         this.path = path;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", this.connectVia);
+        jsonWriter.writeJsonField("stagingLinkedService", this.stagingLinkedService);
+        jsonWriter.writeStringField("path", this.path);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeDataProxyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeDataProxyProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeDataProxyProperties.
+     */
+    public static IntegrationRuntimeDataProxyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeDataProxyProperties deserializedIntegrationRuntimeDataProxyProperties
+                = new IntegrationRuntimeDataProxyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedIntegrationRuntimeDataProxyProperties.connectVia = EntityReference.fromJson(reader);
+                } else if ("stagingLinkedService".equals(fieldName)) {
+                    deserializedIntegrationRuntimeDataProxyProperties.stagingLinkedService
+                        = EntityReference.fromJson(reader);
+                } else if ("path".equals(fieldName)) {
+                    deserializedIntegrationRuntimeDataProxyProperties.path = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationRuntimeDataProxyProperties;
+        });
     }
 }
