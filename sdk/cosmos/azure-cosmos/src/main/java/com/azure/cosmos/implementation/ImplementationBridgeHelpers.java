@@ -496,6 +496,8 @@ public class ImplementationBridgeHelpers {
 
             BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
 
+            CosmosBulkExecutionOptions setSchedulerOverride(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, Scheduler customScheduler);
+
             CosmosBulkExecutionOptions clone(CosmosBulkExecutionOptions toBeCloned);
             CosmosBulkExecutionOptionsImpl getImpl(CosmosBulkExecutionOptions options);
         }
