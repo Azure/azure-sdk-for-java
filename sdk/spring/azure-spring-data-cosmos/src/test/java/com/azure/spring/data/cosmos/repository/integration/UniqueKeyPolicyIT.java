@@ -70,7 +70,7 @@ public class UniqueKeyPolicyIT {
     }
 
     @AfterClass
-    public static void cleanUp() {
+    public static void teardown() {
         collectionManager.deleteContainer(information);
     }
 
