@@ -5,13 +5,19 @@
 package com.azure.communication.chat.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /**
  * Result of the send message operation.
  */
 @Fluent
-public final class SendChatMessageResult {
+public final class SendChatMessageResult implements JsonSerializable<SendChatMessageResult> {
     /*
      * A server-generated message id.
      */
@@ -26,7 +32,7 @@ public final class SendChatMessageResult {
 
     /**
      * Get the id property: A server-generated message id.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -35,12 +41,46 @@ public final class SendChatMessageResult {
 
     /**
      * Set the id property: A server-generated message id.
-     * 
+     *
      * @param id the id value to set.
      * @return the SendChatMessageResult object itself.
      */
     public SendChatMessageResult setId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SendChatMessageResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SendChatMessageResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SendChatMessageResult.
+     */
+    public static SendChatMessageResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SendChatMessageResult result = new SendChatMessageResult();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    result.setId(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return result;
+        });
     }
 }

@@ -5,14 +5,21 @@ package com.azure.communication.chat.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The ChatMessageReadReceipt model.
  */
 @Fluent
-public final class ChatMessageReadReceipt {
+public final class ChatMessageReadReceipt implements JsonSerializable<ChatMessageReadReceipt> {
     /**
      * Identifies a participant in Azure Communication services. A participant
      * is, for example, a phone number or an Azure communication user. This
@@ -98,5 +105,48 @@ public final class ChatMessageReadReceipt {
     public ChatMessageReadReceipt setReadOn(OffsetDateTime readOn) {
         this.readOn = readOn;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        // Not serializing any properties, all are json read only.
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddChatParticipantsResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddChatParticipantsResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddChatParticipantsResult.
+     */
+    public static ChatMessageReadReceipt fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final ChatMessageReadReceipt receipt = new ChatMessageReadReceipt();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                // if ("senderCommunicationIdentifier".equals(fieldName)) {
+                    // TODO (anu) : uncomment this after generating protocol layer
+                    // final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
+                    // receipt.setSender(CommunicationIdentifierConverter.convert(identifier));
+                if ("chatMessageId".equals(fieldName)) {
+                    receipt.setChatMessageId(reader.getString());
+                } else if ("readOn".equals(fieldName)) {
+                    final String value = reader.getString();
+                    if (!CoreUtils.isNullOrEmpty(value)) {
+                        receipt.setReadOn(OffsetDateTime.parse(value));
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return receipt;
+        });
     }
 }

@@ -5,14 +5,20 @@
 package com.azure.communication.chat.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Details of the message to send.
  */
 @Fluent
-public final class SendChatMessageOptions {
+public final class SendChatMessageOptions implements JsonSerializable<SendChatMessageOptions> {
     /*
      * Chat message content.
      */
@@ -46,7 +52,7 @@ public final class SendChatMessageOptions {
 
     /**
      * Get the content property: Chat message content.
-     * 
+     *
      * @return the content value.
      */
     public String getContent() {
@@ -55,7 +61,7 @@ public final class SendChatMessageOptions {
 
     /**
      * Set the content property: Chat message content.
-     * 
+     *
      * @param content the content value to set.
      * @return the SendChatMessageOptions object itself.
      */
@@ -67,7 +73,7 @@ public final class SendChatMessageOptions {
     /**
      * Get the senderDisplayName property: The display name of the chat message sender. This property is used to
      * populate sender name for push notifications.
-     * 
+     *
      * @return the senderDisplayName value.
      */
     public String getSenderDisplayName() {
@@ -77,7 +83,7 @@ public final class SendChatMessageOptions {
     /**
      * Set the senderDisplayName property: The display name of the chat message sender. This property is used to
      * populate sender name for push notifications.
-     * 
+     *
      * @param senderDisplayName the senderDisplayName value to set.
      * @return the SendChatMessageOptions object itself.
      */
@@ -88,7 +94,7 @@ public final class SendChatMessageOptions {
 
     /**
      * Get the type property: The chat message type.
-     * 
+     *
      * @return the type value.
      */
     public ChatMessageType getType() {
@@ -97,7 +103,7 @@ public final class SendChatMessageOptions {
 
     /**
      * Set the type property: The chat message type.
-     * 
+     *
      * @param type the type value to set.
      * @return the SendChatMessageOptions object itself.
      */
@@ -108,7 +114,7 @@ public final class SendChatMessageOptions {
 
     /**
      * Get the metadata property: Message metadata.
-     * 
+     *
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
@@ -117,12 +123,55 @@ public final class SendChatMessageOptions {
 
     /**
      * Set the metadata property: Message metadata.
-     * 
+     *
      * @param metadata the metadata value to set.
      * @return the SendChatMessageOptions object itself.
      */
     public SendChatMessageOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("content", content);
+        jsonWriter.writeStringField("senderDisplayName", senderDisplayName);
+        jsonWriter.writeStringField("type", type != null ? type.toString() : null);
+        jsonWriter.writeMapField("metadata", metadata, JsonWriter::writeString);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SendChatMessageOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SendChatMessageOptions if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SendChatMessageOptions.
+     */
+    public static SendChatMessageOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final SendChatMessageOptions options = new SendChatMessageOptions();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("content".equals(fieldName)) {
+                    options.setContent(reader.getString());
+                } else if ("senderDisplayName".equals(fieldName)) {
+                    options.setSenderDisplayName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    options.setType(ChatMessageType.fromString(reader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    options.setMetadata(reader.readMap(JsonReader::getString));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return options;
+        });
     }
 }
