@@ -7,24 +7,33 @@ package com.azure.resourcemanager.storagemover.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The resource specific properties for the Storage Mover resource. */
+/**
+ * The resource specific properties for the Storage Mover resource.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "endpointType",
-    defaultImpl = EndpointBaseProperties.class)
+    defaultImpl = EndpointBaseProperties.class,
+    visible = true)
 @JsonTypeName("EndpointBaseProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureStorageBlobContainer", value = AzureStorageBlobContainerEndpointProperties.class),
     @JsonSubTypes.Type(name = "NfsMount", value = NfsMountEndpointProperties.class),
     @JsonSubTypes.Type(name = "AzureStorageSmbFileShare", value = AzureStorageSmbFileShareEndpointProperties.class),
-    @JsonSubTypes.Type(name = "SmbMount", value = SmbMountEndpointProperties.class)
-})
+    @JsonSubTypes.Type(name = "SmbMount", value = SmbMountEndpointProperties.class) })
 @Fluent
 public class EndpointBaseProperties {
+    /*
+     * The Endpoint resource type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "endpointType", required = true)
+    private EndpointType endpointType = EndpointType.fromString("EndpointBaseProperties");
+
     /*
      * A description for the Endpoint.
      */
@@ -37,13 +46,24 @@ public class EndpointBaseProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of EndpointBaseProperties class. */
+    /**
+     * Creates an instance of EndpointBaseProperties class.
+     */
     public EndpointBaseProperties() {
     }
 
     /**
+     * Get the endpointType property: The Endpoint resource type.
+     * 
+     * @return the endpointType value.
+     */
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
      * Get the description property: A description for the Endpoint.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -52,7 +72,7 @@ public class EndpointBaseProperties {
 
     /**
      * Set the description property: A description for the Endpoint.
-     *
+     * 
      * @param description the description value to set.
      * @return the EndpointBaseProperties object itself.
      */
@@ -63,7 +83,7 @@ public class EndpointBaseProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of this resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -72,7 +92,7 @@ public class EndpointBaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

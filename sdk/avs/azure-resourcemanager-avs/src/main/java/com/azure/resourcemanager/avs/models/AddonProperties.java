@@ -5,39 +5,45 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of an addon. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "addonType",
-    defaultImpl = AddonProperties.class)
-@JsonTypeName("AddonProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "SRM", value = AddonSrmProperties.class),
-    @JsonSubTypes.Type(name = "VR", value = AddonVrProperties.class),
-    @JsonSubTypes.Type(name = "HCX", value = AddonHcxProperties.class),
-    @JsonSubTypes.Type(name = "Arc", value = AddonArcProperties.class)
-})
+/**
+ * The properties of an addon.
+ */
 @Immutable
-public class AddonProperties {
+public class AddonProperties implements JsonSerializable<AddonProperties> {
+    /*
+     * Addon type
+     */
+    private AddonType addonType = AddonType.fromString("AddonProperties");
+
     /*
      * The state of the addon provisioning
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AddonProvisioningState provisioningState;
 
-    /** Creates an instance of AddonProperties class. */
+    /**
+     * Creates an instance of AddonProperties class.
+     */
     public AddonProperties() {
     }
 
     /**
+     * Get the addonType property: Addon type.
+     * 
+     * @return the addonType value.
+     */
+    public AddonType addonType() {
+        return this.addonType;
+    }
+
+    /**
      * Get the provisioningState property: The state of the addon provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AddonProvisioningState provisioningState() {
@@ -45,10 +51,91 @@ public class AddonProperties {
     }
 
     /**
+     * Set the provisioningState property: The state of the addon provisioning.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the AddonProperties object itself.
+     */
+    AddonProperties withProvisioningState(AddonProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("addonType", this.addonType == null ? null : this.addonType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddonProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddonProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddonProperties.
+     */
+    public static AddonProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("addonType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Arc".equals(discriminatorValue)) {
+                    return AddonArcProperties.fromJson(readerToUse.reset());
+                } else if ("HCX".equals(discriminatorValue)) {
+                    return AddonHcxProperties.fromJson(readerToUse.reset());
+                } else if ("SRM".equals(discriminatorValue)) {
+                    return AddonSrmProperties.fromJson(readerToUse.reset());
+                } else if ("VR".equals(discriminatorValue)) {
+                    return AddonVrProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AddonProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddonProperties deserializedAddonProperties = new AddonProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("addonType".equals(fieldName)) {
+                    deserializedAddonProperties.addonType = AddonType.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAddonProperties.provisioningState
+                        = AddonProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddonProperties;
+        });
     }
 }
