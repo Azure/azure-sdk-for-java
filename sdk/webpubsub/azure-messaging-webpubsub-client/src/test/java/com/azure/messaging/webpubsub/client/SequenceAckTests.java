@@ -3,7 +3,7 @@
 
 package com.azure.messaging.webpubsub.client;
 
-import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.test.annotation.DoNotRecord;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ public class SequenceAckTests extends TestBase {
     // we may want to add a message interceptor to client to inspect the wire messages
 
     @Test
-    @LiveOnly
+    @DoNotRecord(skipInPlayback = true)
     public void testNewSequenceIdAfterStop() {
         String groupName = "testNewSequenceIdAfterStop";
 
@@ -46,7 +46,7 @@ public class SequenceAckTests extends TestBase {
     }
 
     @Test
-    @LiveOnly
+    @DoNotRecord(skipInPlayback = true)
     public void testContinuedSequenceIdAfterRecover() {
         String groupName = "testContinuedSequenceIdAfterRecover";
 
@@ -73,7 +73,7 @@ public class SequenceAckTests extends TestBase {
     }
 
     @Test
-    @LiveOnly
+    @DoNotRecord(skipInPlayback = true)
     public void testNewSequenceIdAfterReconnect() {
         String groupName = "testNewSequenceIdAfterReconnect";
 
