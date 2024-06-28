@@ -26,6 +26,7 @@ import com.azure.resourcemanager.workloads.models.ManagedRGConfiguration;
 import com.azure.resourcemanager.workloads.models.Monitor;
 import com.azure.resourcemanager.workloads.models.RoutingPreference;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -59,7 +60,7 @@ public class WorkloadsManagerTests extends TestBase {
 
         workloadsManager = WorkloadsManager
             .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
         resourceManager = ResourceManager
@@ -90,6 +91,7 @@ public class WorkloadsManagerTests extends TestBase {
 
     @Test
     @LiveOnly
+    @Disabled("The virtual network integration operation for the function app failed due to invalid subnet.")
     public void testCreateMonitor() {
         Monitor monitor = null;
         String randomPadding = randomPadding();
@@ -129,13 +131,15 @@ public class WorkloadsManagerTests extends TestBase {
                         .withAddressSpace("172.29.0.0/16")
                         .withSubnet("default", "172.29.0.0/24")
                         .create()
+                        .subnets()
+                        .get("default")
                         .id())
                 .create();
             // @embedmeEnd
             monitor.refresh();
             Assertions.assertEquals(monitor.name(), monitorName);
             Assertions.assertEquals(monitor.name(), workloadsManager.monitors().getById(monitor.id()).name());
-            Assertions.assertTrue(workloadsManager.monitors().list().stream().count() > 0);
+            Assertions.assertTrue(workloadsManager.monitors().list().stream().anyMatch(predicate -> monitorName.equals(predicate.name())));
         } finally {
             if (monitor != null) {
                 workloadsManager.monitors().deleteById(monitor.id());
