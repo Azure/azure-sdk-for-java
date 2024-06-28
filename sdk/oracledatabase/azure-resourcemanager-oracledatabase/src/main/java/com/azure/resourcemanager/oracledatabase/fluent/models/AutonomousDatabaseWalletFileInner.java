@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.oracledatabase.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * Autonomous Database Wallet File resource model.
  */
-@Fluent
+@Immutable
 public final class AutonomousDatabaseWalletFileInner implements JsonSerializable<AutonomousDatabaseWalletFileInner> {
     /*
      * The base64 encoded wallet files
@@ -25,7 +25,7 @@ public final class AutonomousDatabaseWalletFileInner implements JsonSerializable
     /**
      * Creates an instance of AutonomousDatabaseWalletFileInner class.
      */
-    public AutonomousDatabaseWalletFileInner() {
+    private AutonomousDatabaseWalletFileInner() {
     }
 
     /**
@@ -35,17 +35,6 @@ public final class AutonomousDatabaseWalletFileInner implements JsonSerializable
      */
     public String walletFiles() {
         return this.walletFiles;
-    }
-
-    /**
-     * Set the walletFiles property: The base64 encoded wallet files.
-     * 
-     * @param walletFiles the walletFiles value to set.
-     * @return the AutonomousDatabaseWalletFileInner object itself.
-     */
-    public AutonomousDatabaseWalletFileInner withWalletFiles(String walletFiles) {
-        this.walletFiles = walletFiles;
-        return this;
     }
 
     /**

@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of the cloud link. */
+/**
+ * Cloud Link status.
+ */
 public final class CloudLinkStatus extends ExpandableStringEnum<CloudLinkStatus> {
-    /** Static value Active for CloudLinkStatus. */
+    /**
+     * Static value Active for CloudLinkStatus.
+     */
     public static final CloudLinkStatus ACTIVE = fromString("Active");
 
-    /** Static value Building for CloudLinkStatus. */
+    /**
+     * Static value Building for CloudLinkStatus.
+     */
     public static final CloudLinkStatus BUILDING = fromString("Building");
 
-    /** Static value Deleting for CloudLinkStatus. */
+    /**
+     * Static value Deleting for CloudLinkStatus.
+     */
     public static final CloudLinkStatus DELETING = fromString("Deleting");
 
-    /** Static value Failed for CloudLinkStatus. */
+    /**
+     * Static value Failed for CloudLinkStatus.
+     */
     public static final CloudLinkStatus FAILED = fromString("Failed");
 
-    /** Static value Disconnected for CloudLinkStatus. */
+    /**
+     * Static value Disconnected for CloudLinkStatus.
+     */
     public static final CloudLinkStatus DISCONNECTED = fromString("Disconnected");
 
     /**
      * Creates a new instance of CloudLinkStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class CloudLinkStatus extends ExpandableStringEnum<CloudLinkStatus>
 
     /**
      * Creates or finds a CloudLinkStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CloudLinkStatus.
      */
-    @JsonCreator
     public static CloudLinkStatus fromString(String name) {
         return fromString(name, CloudLinkStatus.class);
     }
 
     /**
      * Gets known CloudLinkStatus values.
-     *
+     * 
      * @return known CloudLinkStatus values.
      */
     public static Collection<CloudLinkStatus> values() {

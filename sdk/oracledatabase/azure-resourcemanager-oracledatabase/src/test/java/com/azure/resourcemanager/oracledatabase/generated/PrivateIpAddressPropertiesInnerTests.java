@@ -20,19 +20,4 @@ public final class PrivateIpAddressPropertiesInnerTests {
         Assertions.assertEquals("sgogczhonnxk", model.ipAddress());
         Assertions.assertEquals("lgnyhmo", model.subnetId());
     }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        PrivateIpAddressPropertiesInner model = new PrivateIpAddressPropertiesInner().withDisplayName("zq")
-            .withHostnameLabel("zh")
-            .withOcid("tw")
-            .withIpAddress("sgogczhonnxk")
-            .withSubnetId("lgnyhmo");
-        model = BinaryData.fromObject(model).toObject(PrivateIpAddressPropertiesInner.class);
-        Assertions.assertEquals("zq", model.displayName());
-        Assertions.assertEquals("zh", model.hostnameLabel());
-        Assertions.assertEquals("tw", model.ocid());
-        Assertions.assertEquals("sgogczhonnxk", model.ipAddress());
-        Assertions.assertEquals("lgnyhmo", model.subnetId());
-    }
 }

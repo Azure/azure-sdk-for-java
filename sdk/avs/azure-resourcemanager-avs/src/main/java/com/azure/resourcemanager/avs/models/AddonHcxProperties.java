@@ -6,28 +6,50 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of an HCX addon. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "addonType")
-@JsonTypeName("HCX")
+/**
+ * The properties of an HCX addon.
+ */
 @Fluent
 public final class AddonHcxProperties extends AddonProperties {
     /*
+     * Addon type
+     */
+    private AddonType addonType = AddonType.HCX;
+
+    /*
      * The HCX offer, example VMware MaaS Cloud Provider (Enterprise)
      */
-    @JsonProperty(value = "offer", required = true)
     private String offer;
 
-    /** Creates an instance of AddonHcxProperties class. */
+    /*
+     * The state of the addon provisioning
+     */
+    private AddonProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of AddonHcxProperties class.
+     */
     public AddonHcxProperties() {
     }
 
     /**
+     * Get the addonType property: Addon type.
+     * 
+     * @return the addonType value.
+     */
+    @Override
+    public AddonType addonType() {
+        return this.addonType;
+    }
+
+    /**
      * Get the offer property: The HCX offer, example VMware MaaS Cloud Provider (Enterprise).
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -36,7 +58,7 @@ public final class AddonHcxProperties extends AddonProperties {
 
     /**
      * Set the offer property: The HCX offer, example VMware MaaS Cloud Provider (Enterprise).
-     *
+     * 
      * @param offer the offer value to set.
      * @return the AddonHcxProperties object itself.
      */
@@ -46,19 +68,71 @@ public final class AddonHcxProperties extends AddonProperties {
     }
 
     /**
+     * Get the provisioningState property: The state of the addon provisioning.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public AddonProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (offer() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property offer in model AddonHcxProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property offer in model AddonHcxProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AddonHcxProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("offer", this.offer);
+        jsonWriter.writeStringField("addonType", this.addonType == null ? null : this.addonType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddonHcxProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddonHcxProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AddonHcxProperties.
+     */
+    public static AddonHcxProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddonHcxProperties deserializedAddonHcxProperties = new AddonHcxProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedAddonHcxProperties.provisioningState
+                        = AddonProvisioningState.fromString(reader.getString());
+                } else if ("offer".equals(fieldName)) {
+                    deserializedAddonHcxProperties.offer = reader.getString();
+                } else if ("addonType".equals(fieldName)) {
+                    deserializedAddonHcxProperties.addonType = AddonType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddonHcxProperties;
+        });
+    }
 }

@@ -10,6 +10,8 @@ import com.azure.core.models.GeoBoundingBox;
 
 /**
  * Class holding optional parameters for Search.
+ *
+ * @param <T> The extending type.
  */
 public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
     private Integer top;
@@ -19,6 +21,12 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
     private GeoBoundingBox boundingBox;
     private String language;
     private LocalizedMapView localizedMapView;
+
+    /**
+     * Creates a new instance of {@link BaseSearchOptions}.
+     */
+    public BaseSearchOptions() {
+    }
 
     /**
      * Returns the top value.
