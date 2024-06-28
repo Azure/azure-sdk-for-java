@@ -6,7 +6,6 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.RequestOptions;
 
-
 /**
  * Encapsulates options that can be specified for an operation used in Bulk execution. It can be passed while
  * creating bulk request using {@link CosmosBulkOperations}.

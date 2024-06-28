@@ -5,8 +5,6 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.RequestOptions;
 
-import java.util.Set;
-
 /**
  * Encapsulates options that can be specified for an operation within a {@link CosmosBatch}.
  */

@@ -45,23 +45,23 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private CosmosItemSerializer customSerializer;
     private Set<String> keywordIdentifiers;
 
-    public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl topBeCloned) {
-        this.continuationState = topBeCloned.continuationState;
-        this.feedRangeInternal = topBeCloned.feedRangeInternal;
-        this.properties = topBeCloned.properties;
-        this.maxItemCount = topBeCloned.maxItemCount;
-        this.maxPrefetchPageCount = topBeCloned.maxPrefetchPageCount;
-        this.mode = topBeCloned.mode;
-        this.startFromInternal = topBeCloned.startFromInternal;
-        this.isSplitHandlingDisabled = topBeCloned.isSplitHandlingDisabled;
-        this.quotaInfoEnabled = topBeCloned.quotaInfoEnabled;
-        this.throughputControlGroupName = topBeCloned.throughputControlGroupName;
-        this.customOptions = topBeCloned.customOptions;
-        this.operationContextAndListenerTuple = topBeCloned.operationContextAndListenerTuple;
-        this.thresholds = topBeCloned.thresholds;
-        this.excludeRegions = topBeCloned.excludeRegions;
-        this.customSerializer = topBeCloned.customSerializer;
-        this.keywordIdentifiers = topBeCloned.keywordIdentifiers;
+    public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
+        this.continuationState = toBeCloned.continuationState;
+        this.feedRangeInternal = toBeCloned.feedRangeInternal;
+        this.properties = toBeCloned.properties;
+        this.maxItemCount = toBeCloned.maxItemCount;
+        this.maxPrefetchPageCount = toBeCloned.maxPrefetchPageCount;
+        this.mode = toBeCloned.mode;
+        this.startFromInternal = toBeCloned.startFromInternal;
+        this.isSplitHandlingDisabled = toBeCloned.isSplitHandlingDisabled;
+        this.quotaInfoEnabled = toBeCloned.quotaInfoEnabled;
+        this.throughputControlGroupName = toBeCloned.throughputControlGroupName;
+        this.customOptions = toBeCloned.customOptions;
+        this.operationContextAndListenerTuple = toBeCloned.operationContextAndListenerTuple;
+        this.thresholds = toBeCloned.thresholds;
+        this.excludeRegions = toBeCloned.excludeRegions;
+        this.customSerializer = toBeCloned.customSerializer;
+        this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
     }
 
     public CosmosChangeFeedRequestOptionsImpl(

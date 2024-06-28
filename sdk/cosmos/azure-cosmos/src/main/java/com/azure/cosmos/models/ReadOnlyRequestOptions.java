@@ -134,7 +134,6 @@ public interface ReadOnlyRequestOptions {
      */
     String getQueryNameOrDefault(String defaultQueryName);
 
-
     /**
      * Gets the custom correlated ids.
      *

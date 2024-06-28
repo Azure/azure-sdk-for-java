@@ -6,8 +6,6 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.RequestOptions;
 
-import java.util.Set;
-
 /**
  * Encapsulates options that can be specified for an patch operation used in Bulk execution. It can be passed while
  * creating bulk patch request using {@link CosmosBulkOperations}.
@@ -124,7 +122,6 @@ public final class CosmosBulkPatchItemRequestOptions {
         this.ifMatchETag = ifMatchETag;
         return this;
     }
-
 
     RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();
