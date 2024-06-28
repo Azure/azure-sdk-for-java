@@ -294,7 +294,7 @@ public final class StorageCommonTestUtils {
     }
 
     /**
-     * Gets token credentials for a test.
+     * Gets token credentials for a test. 
      *
      * @param interceptorManager The interceptor manager to use.
      * @return The TokenCredential to use.
