@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Parameter group.
@@ -45,21 +46,21 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
     private String highlightPostTag;
 
     /*
-     * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit
-     * highlighting is disabled.
+     * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting
+     * is disabled.
      */
     private String highlightPreTag;
 
     /*
      * A number between 0 and 100 indicating the percentage of the index that must be covered by an autocomplete query
-     * in order for the query to be reported as a success. This parameter can be useful for ensuring search
-     * availability even for services with only one replica. The default is 80.
+     * in order for the query to be reported as a success. This parameter can be useful for ensuring search availability
+     * even for services with only one replica. The default is 80.
      */
     private Double minimumCoverage;
 
     /*
-     * The list of field names to consider when querying for auto-completed terms. Target fields must be included in
-     * the specified suggester.
+     * The list of field names to consider when querying for auto-completed terms. Target fields must be included in the
+     * specified suggester.
      */
     private List<String> searchFields;
 
@@ -190,8 +191,8 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
 
     /**
      * Get the minimumCoverage property: A number between 0 and 100 indicating the percentage of the index that must be
-     * covered by an autocomplete query in order for the query to be reported as a success. This parameter can be
-     * useful for ensuring search availability even for services with only one replica. The default is 80.
+     * covered by an autocomplete query in order for the query to be reported as a success. This parameter can be useful
+     * for ensuring search availability even for services with only one replica. The default is 80.
      *
      * @return the minimumCoverage value.
      */
@@ -201,8 +202,8 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
 
     /**
      * Set the minimumCoverage property: A number between 0 and 100 indicating the percentage of the index that must be
-     * covered by an autocomplete query in order for the query to be reported as a success. This parameter can be
-     * useful for ensuring search availability even for services with only one replica. The default is 80.
+     * covered by an autocomplete query in order for the query to be reported as a success. This parameter can be useful
+     * for ensuring search availability even for services with only one replica. The default is 80.
      *
      * @param minimumCoverage the minimumCoverage value to set.
      * @return the AutocompleteOptions object itself.
@@ -213,8 +214,8 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
     }
 
     /**
-     * Get the searchFields property: The list of field names to consider when querying for auto-completed terms.
-     * Target fields must be included in the specified suggester.
+     * Get the searchFields property: The list of field names to consider when querying for auto-completed terms. Target
+     * fields must be included in the specified suggester.
      *
      * @return the searchFields value.
      */
@@ -223,8 +224,8 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
     }
 
     /**
-     * Set the searchFields property: The list of field names to consider when querying for auto-completed terms.
-     * Target fields must be included in the specified suggester.
+     * Set the searchFields property: The list of field names to consider when querying for auto-completed terms. Target
+     * fields must be included in the specified suggester.
      *
      * @param searchFields the searchFields value to set.
      * @return the AutocompleteOptions object itself.
@@ -235,8 +236,8 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
     }
 
     /**
-     * Get the top property: The number of auto-completed terms to retrieve. This must be a value between 1 and 100.
-     * The default is 5.
+     * Get the top property: The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The
+     * default is 5.
      *
      * @return the top value.
      */
@@ -245,8 +246,8 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
     }
 
     /**
-     * Set the top property: The number of auto-completed terms to retrieve. This must be a value between 1 and 100.
-     * The default is 5.
+     * Set the top property: The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The
+     * default is 5.
      *
      * @param top the top value to set.
      * @return the AutocompleteOptions object itself.
@@ -256,6 +257,21 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
         return this;
     }
 
+    /**
+     * Set the searchFields property: The list of field names to consider when querying for auto-completed terms. Target
+     * fields must be included in the specified suggester.
+     *
+     * @param searchFields the searchFields value to set.
+     * @return the AutocompleteOptions object itself.
+     */
+    public AutocompleteOptions setSearchFields(String... searchFields) {
+        this.searchFields = (searchFields == null) ? null : Arrays.asList(searchFields);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -308,17 +324,5 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
             }
             return deserializedAutocompleteOptions;
         });
-    }
-
-    /**
-     * Set the searchFields property: The list of field names to consider when querying for auto-completed terms.
-     * Target fields must be included in the specified suggester.
-     *
-     * @param searchFields the searchFields value to set.
-     * @return the AutocompleteOptions object itself.
-     */
-    public AutocompleteOptions setSearchFields(String... searchFields) {
-        this.searchFields = (searchFields == null) ? null : java.util.Arrays.asList(searchFields);
-        return this;
     }
 }

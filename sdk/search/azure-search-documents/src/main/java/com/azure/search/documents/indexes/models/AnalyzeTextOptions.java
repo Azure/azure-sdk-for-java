@@ -30,11 +30,6 @@ public final class AnalyzeTextOptions {
     private final LexicalTokenizerName tokenizerName;
 
     /*
-     * The name of the normalizer to use to normalize the given text.
-     */
-    private final LexicalNormalizerName normalizerName;
-
-    /*
      * An optional list of token filters to use when breaking the given text.
      */
     private List<TokenFilterName> tokenFilters;
@@ -55,7 +50,6 @@ public final class AnalyzeTextOptions {
         this.text = text;
         this.analyzerName = analyzerName;
         this.tokenizerName = null;
-        this.normalizerName = null;
     }
 
     /**
@@ -68,20 +62,6 @@ public final class AnalyzeTextOptions {
         this.text = text;
         this.tokenizerName = tokenizerName;
         this.analyzerName = null;
-        this.normalizerName = null;
-    }
-
-    /**
-     * Constructor to {@link AnalyzeTextOptions} which takes normalizerName.
-     *
-     * @param text The text break into tokens.
-     * @param normalizerName The name of the normalizer to use to break the given text.
-     */
-    public AnalyzeTextOptions(String text, LexicalNormalizerName normalizerName) {
-        this.text = text;
-        this.normalizerName = normalizerName;
-        this.analyzerName = null;
-        this.tokenizerName = null;
     }
 
     /**
@@ -111,14 +91,6 @@ public final class AnalyzeTextOptions {
         return this.tokenizerName;
     }
 
-    /**
-     * Get the normalizer name property: The name of the normalizer to use to normalize the given text.
-     *
-     * @return the normalizer value.
-     */
-    public LexicalNormalizerName getNormalizer() {
-        return this.normalizerName;
-    }
 
     /**
      * Get the tokenFilters property: An optional list of token filters to use when breaking the given text.

@@ -219,7 +219,7 @@
 # ServiceOwners:                                     @bingisbestest @nerajput1607
 
 # ServiceLabel: %Cognitive - Translator
-# ServiceOwners:                                     @swmachan
+# ServiceOwners:                                     @swmachan @MikeyMCZ
 
 # ServiceLabel: %Cognitive - Speech
 # ServiceOwners:                                     @rhurey
@@ -772,6 +772,10 @@
 # ServiceLabel: %Tables
 # AzureSdkOwners:                                    @jairmyree
 # ServiceOwners:                                     @klaaslanghout
+
+# ServiceLabel: %Text Translation
+# PRLabel:  %Text Translation
+/sdk/translation/azure-ai-translation-text/         @MikeyMCZ
 
 # PRLabel: %EngSys
 /sdk/template/                                       @hallipr @weshaggard @JimSuplizio

@@ -20,6 +20,11 @@ import java.util.List;
 public final class OcrSkill extends SearchIndexerSkill {
 
     /*
+     * A URI fragment specifying the type of skill.
+     */
+    private String odataType = "#Microsoft.Skills.Vision.OcrSkill";
+
+    /*
      * A value indicating which language code to use. Default is `en`.
      */
     private OcrSkillLanguage defaultLanguageCode;
@@ -33,7 +38,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      * Defines the sequence of characters to use between the lines of text recognized by the OCR skill. The default
      * value is "space".
      */
-    private LineEnding lineEnding;
+    private OcrLineEnding lineEnding;
 
     /**
      * Creates an instance of OcrSkill class.
@@ -43,6 +48,16 @@ public final class OcrSkill extends SearchIndexerSkill {
      */
     public OcrSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
+    }
+
+    /**
+     * Get the odataType property: A URI fragment specifying the type of skill.
+     *
+     * @return the odataType value.
+     */
+    @Override
+    public String getOdataType() {
+        return this.odataType;
     }
 
     /**
@@ -93,7 +108,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      *
      * @return the lineEnding value.
      */
-    public LineEnding getLineEnding() {
+    public OcrLineEnding getLineEnding() {
         return this.lineEnding;
     }
 
@@ -104,7 +119,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      * @param lineEnding the lineEnding value to set.
      * @return the OcrSkill object itself.
      */
-    public OcrSkill setLineEnding(LineEnding lineEnding) {
+    public OcrSkill setLineEnding(OcrLineEnding lineEnding) {
         this.lineEnding = lineEnding;
         return this;
     }
@@ -136,15 +151,18 @@ public final class OcrSkill extends SearchIndexerSkill {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", "#Microsoft.Skills.Vision.OcrSkill");
         jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeStringField("defaultLanguageCode",
             this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString());
         jsonWriter.writeBooleanField("detectOrientation", this.shouldDetectOrientation);
@@ -158,8 +176,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      * @param jsonReader The JsonReader being read.
      * @return An instance of OcrSkill if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OcrSkill.
      */
     public static OcrSkill fromJson(JsonReader jsonReader) throws IOException {
@@ -171,20 +188,14 @@ public final class OcrSkill extends SearchIndexerSkill {
             String name = null;
             String description = null;
             String context = null;
+            String odataType = "#Microsoft.Skills.Vision.OcrSkill";
             OcrSkillLanguage defaultLanguageCode = null;
             Boolean shouldDetectOrientation = null;
-            LineEnding lineEnding = null;
+            OcrLineEnding lineEnding = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Skills.Vision.OcrSkill".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Vision.OcrSkill'. The found '@odata.type' was '"
-                                + odataType + "'.");
-                    }
-                } else if ("inputs".equals(fieldName)) {
+                if ("inputs".equals(fieldName)) {
                     inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
                     inputsFound = true;
                 } else if ("outputs".equals(fieldName)) {
@@ -196,12 +207,14 @@ public final class OcrSkill extends SearchIndexerSkill {
                     description = reader.getString();
                 } else if ("context".equals(fieldName)) {
                     context = reader.getString();
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
                 } else if ("defaultLanguageCode".equals(fieldName)) {
                     defaultLanguageCode = OcrSkillLanguage.fromString(reader.getString());
                 } else if ("detectOrientation".equals(fieldName)) {
                     shouldDetectOrientation = reader.getNullable(JsonReader::getBoolean);
                 } else if ("lineEnding".equals(fieldName)) {
-                    lineEnding = LineEnding.fromString(reader.getString());
+                    lineEnding = OcrLineEnding.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -211,6 +224,7 @@ public final class OcrSkill extends SearchIndexerSkill {
                 deserializedOcrSkill.setName(name);
                 deserializedOcrSkill.setDescription(description);
                 deserializedOcrSkill.setContext(context);
+                deserializedOcrSkill.odataType = odataType;
                 deserializedOcrSkill.defaultLanguageCode = defaultLanguageCode;
                 deserializedOcrSkill.shouldDetectOrientation = shouldDetectOrientation;
                 deserializedOcrSkill.lineEnding = lineEnding;
