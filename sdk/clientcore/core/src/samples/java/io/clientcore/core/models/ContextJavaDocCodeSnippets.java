@@ -16,7 +16,7 @@ public class ContextJavaDocCodeSnippets {
     public void constructContextObject() {
         // BEGIN: io.clientcore.core.util.context#object-object
         // Create an empty context having no data
-        Context emptyContext = Context.EMPTY;
+        Context emptyContext = Context.none();
 
         // OpenTelemetry context can be optionally passed using PARENT_TRACE_CONTEXT_KEY
         // when OpenTelemetry context is not provided explicitly, ambient

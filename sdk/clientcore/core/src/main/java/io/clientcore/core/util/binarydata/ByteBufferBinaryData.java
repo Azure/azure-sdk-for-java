@@ -47,13 +47,18 @@ public final class ByteBufferBinaryData extends BinaryData {
     }
 
     @Override
-    public byte[] toBytes() {
-        return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
+    public <T> T toObject(Class<T> clazz, ObjectSerializer serializer) throws IOException {
+        return serializer.deserializeFromBytes(toBytes(), clazz);
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
+    public <T> T toObjectFromType(Type type, ObjectSerializer serializer) throws IOException {
         return serializer.deserializeFromBytes(toBytes(), type);
+    }
+
+    @Override
+    public byte[] toBytes() {
+        return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
     }
 
     @Override
