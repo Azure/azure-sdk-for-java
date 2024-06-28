@@ -34,7 +34,6 @@ public enum ClientEndpointType {
      * @param value the serialized value to parse.
      * @return the parsed ClientEndpointType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ClientEndpointType fromString(String value) {
         ClientEndpointType[] items = ClientEndpointType.values();
         for (ClientEndpointType item : items) {
