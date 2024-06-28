@@ -5,42 +5,36 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The EnrichmentStatus model.
- */
+/** The EnrichmentStatus model. */
 @Immutable
-public final class EnrichmentStatus implements JsonSerializable<EnrichmentStatus> {
+public final class EnrichmentStatus {
     /*
      * data slice timestamp.
      */
+    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
     /*
      * latest enrichment status for this data slice.
      */
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * the trimmed message describes details of the enrichment status.
      */
+    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /**
-     * Creates an instance of EnrichmentStatus class.
-     */
-    public EnrichmentStatus() {
-    }
+    /** Creates an instance of EnrichmentStatus class. */
+    public EnrichmentStatus() {}
 
     /**
      * Get the timestamp property: data slice timestamp.
-     * 
+     *
      * @return the timestamp value.
      */
     public OffsetDateTime getTimestamp() {
@@ -49,7 +43,7 @@ public final class EnrichmentStatus implements JsonSerializable<EnrichmentStatus
 
     /**
      * Get the status property: latest enrichment status for this data slice.
-     * 
+     *
      * @return the status value.
      */
     public String getStatus() {
@@ -58,47 +52,10 @@ public final class EnrichmentStatus implements JsonSerializable<EnrichmentStatus
 
     /**
      * Get the message property: the trimmed message describes details of the enrichment status.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
         return this.message;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of EnrichmentStatus from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of EnrichmentStatus if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the EnrichmentStatus.
-     */
-    public static EnrichmentStatus fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            EnrichmentStatus deserializedEnrichmentStatus = new EnrichmentStatus();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("timestamp".equals(fieldName)) {
-                    deserializedEnrichmentStatus.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("status".equals(fieldName)) {
-                    deserializedEnrichmentStatus.status = reader.getString();
-                } else if ("message".equals(fieldName)) {
-                    deserializedEnrichmentStatus.message = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedEnrichmentStatus;
-        });
     }
 }

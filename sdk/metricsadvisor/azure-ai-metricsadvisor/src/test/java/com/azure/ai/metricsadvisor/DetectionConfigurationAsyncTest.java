@@ -9,6 +9,7 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeed;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,6 +27,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     public void createDetectionConfigurationForWholeSeries(HttpClient httpClient,
         MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
@@ -67,6 +69,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     public void createDetectionConfigurationForSeriesAndGroup(HttpClient httpClient,
                                                               MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
@@ -107,6 +110,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     public void createDetectionConfigurationForMultipleSeriesAndGroup(HttpClient httpClient,
                                                                       MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
@@ -156,6 +160,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     public void updateDetectionConfiguration(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
         MetricsAdvisorAdministrationAsyncClient client

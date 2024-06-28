@@ -5,34 +5,29 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 
-/**
- * The AzureDataExplorerDataFeed model.
- */
+/** The AzureDataExplorerDataFeed model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
+@JsonTypeName("AzureDataExplorer")
 @Fluent
 public final class AzureDataExplorerDataFeed extends DataFeedDetail {
     /*
      * The dataSourceParameter property.
      */
+    @JsonProperty(value = "dataSourceParameter", required = true)
     private SqlSourceParameter dataSourceParameter;
 
-    /**
-     * Creates an instance of AzureDataExplorerDataFeed class.
-     */
-    public AzureDataExplorerDataFeed() {
-    }
+    /** Creates an instance of AzureDataExplorerDataFeed class. */
+    public AzureDataExplorerDataFeed() {}
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
-     * 
+     *
      * @return the dataSourceParameter value.
      */
     public SqlSourceParameter getDataSourceParameter() {
@@ -41,7 +36,7 @@ public final class AzureDataExplorerDataFeed extends DataFeedDetail {
 
     /**
      * Set the dataSourceParameter property: The dataSourceParameter property.
-     * 
+     *
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureDataExplorerDataFeed object itself.
      */
@@ -50,366 +45,171 @@ public final class AzureDataExplorerDataFeed extends DataFeedDetail {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setGranularityName(Granularity granularityName) {
         super.setGranularityName(granularityName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setGranularityAmount(Integer granularityAmount) {
         super.setGranularityAmount(granularityAmount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setMetrics(List<DataFeedMetric> metrics) {
         super.setMetrics(metrics);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setDimension(List<DataFeedDimension> dimension) {
         super.setDimension(dimension);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setAdmins(List<String> admins) {
         super.setAdmins(admins);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setViewers(List<String> viewers) {
         super.setViewers(viewers);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerDataFeed setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType",
-            DataSourceType.AZURE_DATA_EXPLORER == null ? null : DataSourceType.AZURE_DATA_EXPLORER.toString());
-        jsonWriter.writeStringField("dataFeedName", getDataFeedName());
-        jsonWriter.writeStringField("granularityName",
-            getGranularityName() == null ? null : getGranularityName().toString());
-        jsonWriter.writeArrayField("metrics", getMetrics(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("dataStartFrom",
-            getDataStartFrom() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getDataStartFrom()));
-        jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
-        jsonWriter.writeNumberField("granularityAmount", getGranularityAmount());
-        jsonWriter.writeArrayField("dimension", getDimension(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("timestampColumn", getTimestampColumn());
-        jsonWriter.writeNumberField("startOffsetInSeconds", getStartOffsetInSeconds());
-        jsonWriter.writeNumberField("maxConcurrency", getMaxConcurrency());
-        jsonWriter.writeNumberField("minRetryIntervalInSeconds", getMinRetryIntervalInSeconds());
-        jsonWriter.writeNumberField("stopRetryAfterInSeconds", getStopRetryAfterInSeconds());
-        jsonWriter.writeStringField("needRollup", getNeedRollup() == null ? null : getNeedRollup().toString());
-        jsonWriter.writeStringField("rollUpMethod", getRollUpMethod() == null ? null : getRollUpMethod().toString());
-        jsonWriter.writeArrayField("rollUpColumns", getRollUpColumns(),
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("allUpIdentification", getAllUpIdentification());
-        jsonWriter.writeStringField("fillMissingPointType",
-            getFillMissingPointType() == null ? null : getFillMissingPointType().toString());
-        jsonWriter.writeNumberField("fillMissingPointValue", getFillMissingPointValue());
-        jsonWriter.writeStringField("viewMode", getViewMode() == null ? null : getViewMode().toString());
-        jsonWriter.writeArrayField("admins", getAdmins(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("viewers", getViewers(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("actionLinkTemplate", getActionLinkTemplate());
-        jsonWriter.writeStringField("authenticationType",
-            getAuthenticationType() == null ? null : getAuthenticationType().toString());
-        jsonWriter.writeStringField("credentialId", getCredentialId());
-        jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AzureDataExplorerDataFeed from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureDataExplorerDataFeed if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the AzureDataExplorerDataFeed.
-     */
-    public static AzureDataExplorerDataFeed fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AzureDataExplorerDataFeed deserializedAzureDataExplorerDataFeed = new AzureDataExplorerDataFeed();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("dataSourceType".equals(fieldName)) {
-                    String dataSourceType = reader.getString();
-                    if (!"AzureDataExplorer".equals(dataSourceType)) {
-                        throw new IllegalStateException(
-                            "'dataSourceType' was expected to be non-null and equal to 'AzureDataExplorer'. The found 'dataSourceType' was '"
-                                + dataSourceType + "'.");
-                    }
-                } else if ("dataFeedName".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setDataFeedName(reader.getString());
-                } else if ("granularityName".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed
-                        .setGranularityName(Granularity.fromString(reader.getString()));
-                } else if ("metrics".equals(fieldName)) {
-                    List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
-                    deserializedAzureDataExplorerDataFeed.setMetrics(metrics);
-                } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setDataStartFrom(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                } else if ("dataFeedId".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed
-                        .setDataFeedId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
-                } else if ("dataFeedDescription".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setDataFeedDescription(reader.getString());
-                } else if ("granularityAmount".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setGranularityAmount(reader.getNullable(JsonReader::getInt));
-                } else if ("dimension".equals(fieldName)) {
-                    List<DataFeedDimension> dimension
-                        = reader.readArray(reader1 -> DataFeedDimension.fromJson(reader1));
-                    deserializedAzureDataExplorerDataFeed.setDimension(dimension);
-                } else if ("timestampColumn".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setTimestampColumn(reader.getString());
-                } else if ("startOffsetInSeconds".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed
-                        .setStartOffsetInSeconds(reader.getNullable(JsonReader::getLong));
-                } else if ("maxConcurrency".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setMaxConcurrency(reader.getNullable(JsonReader::getInt));
-                } else if ("minRetryIntervalInSeconds".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed
-                        .setMinRetryIntervalInSeconds(reader.getNullable(JsonReader::getLong));
-                } else if ("stopRetryAfterInSeconds".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed
-                        .setStopRetryAfterInSeconds(reader.getNullable(JsonReader::getLong));
-                } else if ("needRollup".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setNeedRollup(NeedRollupEnum.fromString(reader.getString()));
-                } else if ("rollUpMethod".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setRollUpMethod(RollUpMethod.fromString(reader.getString()));
-                } else if ("rollUpColumns".equals(fieldName)) {
-                    List<String> rollUpColumns = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAzureDataExplorerDataFeed.setRollUpColumns(rollUpColumns);
-                } else if ("allUpIdentification".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setAllUpIdentification(reader.getString());
-                } else if ("fillMissingPointType".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed
-                        .setFillMissingPointType(FillMissingPointType.fromString(reader.getString()));
-                } else if ("fillMissingPointValue".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed
-                        .setFillMissingPointValue(reader.getNullable(JsonReader::getDouble));
-                } else if ("viewMode".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setViewMode(ViewMode.fromString(reader.getString()));
-                } else if ("admins".equals(fieldName)) {
-                    List<String> admins = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAzureDataExplorerDataFeed.setAdmins(admins);
-                } else if ("viewers".equals(fieldName)) {
-                    List<String> viewers = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAzureDataExplorerDataFeed.setViewers(viewers);
-                } else if ("isAdmin".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setIsAdmin(reader.getNullable(JsonReader::getBoolean));
-                } else if ("creator".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setCreator(reader.getString());
-                } else if ("status".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setStatus(EntityStatus.fromString(reader.getString()));
-                } else if ("createdTime".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setCreatedTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                } else if ("actionLinkTemplate".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setActionLinkTemplate(reader.getString());
-                } else if ("authenticationType".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed
-                        .setAuthenticationType(AuthenticationTypeEnum.fromString(reader.getString()));
-                } else if ("credentialId".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setCredentialId(reader.getString());
-                } else if ("dataSourceParameter".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.dataSourceParameter = SqlSourceParameter.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAzureDataExplorerDataFeed;
-        });
     }
 }
