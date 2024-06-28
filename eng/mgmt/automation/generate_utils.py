@@ -190,7 +190,7 @@ def update_changelog(changelog_file, changelog):
 
 
 def compare_with_maven_package(sdk_root: str, group_id: str, service: str, previous_version: str, current_version: str, module: str):
-    if previous_version == current_version:
+    if previous_version == current_version or previous_version is None:
         logging.info("[Changelog][Skip] no previous version")
         return False, ""
 
