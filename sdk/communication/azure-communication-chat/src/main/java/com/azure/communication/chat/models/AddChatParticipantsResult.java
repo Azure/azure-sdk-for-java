@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +21,6 @@ public final class AddChatParticipantsResult implements JsonSerializable<AddChat
     /**
      * The participants that failed to be added to the chat thread.
      */
-    @JsonProperty(value = "invalidParticipants", access = JsonProperty.Access.WRITE_ONLY)
     private List<ChatError> invalidParticipants;
 
     /**

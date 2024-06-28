@@ -3,6 +3,8 @@
 
 package com.azure.communication.chat.models;
 
+import com.azure.communication.chat.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
@@ -123,9 +125,8 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
         jsonWriter.writeStringField("id", id);
         jsonWriter.writeStringField("topic", topic);
         jsonWriter.writeStringField("createdOn", createdOn != null ? createdOn.toString() : null);
-        // TODO (anu) : uncomment this after generating protocol layer
-        // final CommunicationIdentifierModel identifier = CommunicationIdentifierConverter.convert(createdBy);
-        // jsonWriter.writeJsonField("createdBy", identifier);
+        final CommunicationIdentifierModel identifier = CommunicationIdentifierConverter.convert(createdBy);
+        jsonWriter.writeJsonField("createdBy", identifier);
         return jsonWriter.writeEndObject();
     }
 
@@ -152,10 +153,9 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
                     if (!CoreUtils.isNullOrEmpty(value)) {
                         properties.setCreatedOn(OffsetDateTime.parse(value));
                     }
-                // } else if ("createdBy".equals(fieldName)) {
-                    // TODO (anu) : uncomment this after generating protocol layer
-                    // final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
-                    // properties.setCreatedBy(CommunicationIdentifierConverter.convert(identifier));
+                } else if ("createdBy".equals(fieldName)) {
+                    final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
+                    properties.setCreatedBy(CommunicationIdentifierConverter.convert(identifier));
                 } else {
                     reader.skipChildren();
                 }

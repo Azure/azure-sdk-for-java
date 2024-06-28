@@ -3,17 +3,17 @@
 
 package com.azure.communication.chat.models;
 
+import com.azure.communication.chat.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * The ChatParticipant model.
@@ -26,20 +26,17 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
      * model must be interpreted as a union: Apart from rawId, at most one
      * further property may be set.
      */
-    @JsonProperty(value = "communicationIdentifier", required = true)
     private CommunicationIdentifier communicationIdentifier;
 
     /**
      * Display name for the chat participant.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
      * Time from which the chat history is shared with the member. The
      * timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "shareHistoryTime")
     private OffsetDateTime shareHistoryTime;
 
     /**
@@ -114,11 +111,10 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        // TODO (anu) : uncomment this after generating protocol layer
-        // final CommunicationIdentifierModel identifier = CommunicationIdentifierConverter.convert(communicationIdentifier);
-        // jsonWriter.writeJsonField("communicationIdentifier", identifier);
+        final CommunicationIdentifierModel identifier = CommunicationIdentifierConverter.convert(communicationIdentifier);
+        jsonWriter.writeJsonField("communicationIdentifier", identifier);
         jsonWriter.writeStringField("displayName", displayName);
-        jsonWriter.writeStringField("startDateTime", shareHistoryTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        jsonWriter.writeStringField("startDateTime", shareHistoryTime.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -136,14 +132,13 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                // if ("communicationIdentifier".equals(fieldName)) {
-                    // TODO (anu) : uncomment this after generating protocol layer
-                    // final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
-                    // participant.communicationIdentifier = CommunicationIdentifierConverter.convert(identifier);
-                if ("displayName".equals(fieldName)) {
+                if ("communicationIdentifier".equals(fieldName)) {
+                    final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
+                    participant.communicationIdentifier = CommunicationIdentifierConverter.convert(identifier);
+                } else if ("displayName".equals(fieldName)) {
                     participant.displayName = reader.getString();
                 } else if ("startDateTime".equals(fieldName)) {
-                    participant.shareHistoryTime = OffsetDateTime.parse(reader.getString(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                    participant.shareHistoryTime = OffsetDateTime.parse(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

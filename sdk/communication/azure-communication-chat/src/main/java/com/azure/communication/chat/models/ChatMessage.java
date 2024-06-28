@@ -3,6 +3,8 @@
 
 package com.azure.communication.chat.models;
 
+import com.azure.communication.chat.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
@@ -10,7 +12,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -24,40 +25,34 @@ public final class ChatMessage implements JsonSerializable<ChatMessage> {
     /**
      * The id of the chat message.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
      * Type of the chat message.
      *
      */
-    @JsonProperty(value = "type", required = true)
     private ChatMessageType type;
 
     /**
      * Version of the chat message.
      */
-    @JsonProperty(value = "version", required = true)
     private String version;
 
     /**
      * Content of the chat message.
      */
-    @JsonProperty(value = "content")
     private ChatMessageContent content;
 
     /**
      * The display name of the chat message sender. This property is used to
      * populate sender name for push notifications.
      */
-    @JsonProperty(value = "senderDisplayName")
     private String senderDisplayName;
 
     /**
      * The timestamp when the chat message arrived at the server. The timestamp
      * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "createdOn")
     private OffsetDateTime createdOn;
 
     /**
@@ -66,27 +61,23 @@ public final class ChatMessage implements JsonSerializable<ChatMessage> {
      * model must be interpreted as a union: Apart from rawId, at most one
      * further property may be set.
      */
-    @JsonProperty(value = "senderCommunicationIdentifier")
     private CommunicationIdentifier sender;
 
     /**
      * The timestamp when the chat message was deleted. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "deletedOn")
     private OffsetDateTime deletedOn;
 
     /**
      * The timestamp when the chat message was edited. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "editedOn")
     private OffsetDateTime editedOn;
 
     /**
      * Message metadata.
      */
-    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /**
@@ -353,10 +344,9 @@ public final class ChatMessage implements JsonSerializable<ChatMessage> {
                     if (!CoreUtils.isNullOrEmpty(value)) {
                         message.setCreatedOn(OffsetDateTime.parse(value));
                     }
-                // } else if ("senderCommunicationIdentifier".equals(fieldName)) {
-                    // TODO (anu) : uncomment this after generating protocol layer
-                    // final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
-                    // receipt.setSender(CommunicationIdentifierConverter.convert(identifier));
+                } else if ("senderCommunicationIdentifier".equals(fieldName)) {
+                    final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
+                    message.setSender(CommunicationIdentifierConverter.convert(identifier));
                 } else if ("deletedOn".equals(fieldName)) {
                     final String value = reader.getString();
                     if (!CoreUtils.isNullOrEmpty(value)) {

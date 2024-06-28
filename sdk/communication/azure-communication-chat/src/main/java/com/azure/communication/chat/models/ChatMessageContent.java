@@ -3,13 +3,14 @@
 
 package com.azure.communication.chat.models;
 
+import com.azure.communication.chat.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,20 +21,15 @@ import java.util.List;
 @Fluent
 public final class ChatMessageContent implements JsonSerializable<ChatMessageContent> {
 
-    @JsonProperty(value = "message")
-    private String message;
+    private final String message;
 
-    @JsonProperty(value = "topic")
-    private String topic;
+    private final String topic;
 
-    @JsonProperty(value = "participants")
-    private Iterable<ChatParticipant> participants;
+    private final Iterable<ChatParticipant> participants;
 
-    @JsonProperty(value = "attachments")
     private Iterable<ChatAttachment> attachments;
 
-    @JsonProperty(value = "initiatorCommunicationIdentifier")
-    private CommunicationIdentifier initiator;
+    private final CommunicationIdentifier initiator;
 
     /**
      * Constructs a new ChatMessageContent
@@ -154,10 +150,9 @@ public final class ChatMessageContent implements JsonSerializable<ChatMessageCon
                     participants = reader.readArray(ChatParticipant::fromJson);
                 } else if ("attachments".equals(fieldName)) {
                     attachments = reader.readArray(ChatAttachment::fromJson);
-                // } else if ("initiatorCommunicationIdentifier".equals(fieldName)) {
-                    // TODO (anu) : uncomment this after generating protocol layer
-                    // final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
-                    // initiator = CommunicationIdentifierConverter.convert(identifier);
+                } else if ("initiatorCommunicationIdentifier".equals(fieldName)) {
+                    final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
+                    initiator = CommunicationIdentifierConverter.convert(identifier);
                 } else {
                     reader.skipChildren();
                 }
