@@ -784,6 +784,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                         long totalStreamMessages = chatCompletionsStream.size();
                         String functionName = null;
                         String toolCallId = null;
+                        int toolCallIndex = 0;
                         String content = null;
                         assertTrue(totalStreamMessages > 0);
 
@@ -804,6 +805,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                                         content = chatChoice.getDelta().getContent();
                                         functionName = functionCall.getName();
                                         toolCallId = toolCall.getId();
+                                        toolCallIndex = toolCall.getIndex();
                                     }
                                     argumentsBuilder.append(functionCall.getArguments());
                                 }
@@ -817,7 +819,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                         }
                         assertFunctionToolCallArgs(argumentsBuilder.toString());
                         FunctionCall functionCall = new FunctionCall(functionName, argumentsBuilder.toString());
-                        ChatCompletionsFunctionToolCall functionToolCall = new ChatCompletionsFunctionToolCall(toolCallId, functionCall);
+                        ChatCompletionsFunctionToolCall functionToolCall = new ChatCompletionsFunctionToolCall(toolCallId, toolCallIndex, functionCall);
 
                         ChatCompletionsOptions followUpChatCompletionsOptions = getChatCompletionsOptionWithToolCallFollowUp(
                                 functionToolCall, content);
