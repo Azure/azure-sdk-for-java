@@ -216,7 +216,7 @@ public class TestSuiteBase extends DocumentClientTest {
                             requestOptions.setPartitionKey(new PartitionKey(propertyValue));
                         }
 
-                        return houseKeepingClient.deleteDocument(doc.getSelfLink(), requestOptions, collection.getSelfLink());
+                        return houseKeepingClient.deleteDocument(doc.getSelfLink(), requestOptions);
                     }).then().block();
 
             logger.info("Truncating DocumentCollection {} triggers ...", collection.getId());
@@ -585,7 +585,7 @@ public class TestSuiteBase extends DocumentClientTest {
     public static void deleteDocument(AsyncDocumentClient client, String documentLink, PartitionKey pk, String collectionLink) {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(pk);
-        client.deleteDocument(documentLink, options, collectionLink).block();
+        client.deleteDocument(documentLink, options).block();
     }
 
     public static void deleteUserIfExists(AsyncDocumentClient client, String databaseId, String userId) {

@@ -171,7 +171,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
                 .withId(docDefinition.getId())
                 .build();
 
-        validateSuccess(client.readDocument(docLink, options, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId())), validator, TIMEOUT);
+        validateSuccess(client.readDocument(docLink, options), validator, TIMEOUT);
 
         validateNoDocumentOperationThroughGateway();
     }

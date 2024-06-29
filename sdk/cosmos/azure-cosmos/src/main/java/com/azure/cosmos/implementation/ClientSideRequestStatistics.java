@@ -47,7 +47,7 @@ public class ClientSideRequestStatistics {
     private Set<URI> failedReplicas;
     private Instant requestStartTimeUTC;
     private Instant requestEndTimeUTC;
-    private Set<String> regionsContacted;
+//    private Set<String> regionsContacted;
     private NavigableSet<RegionWithContext> regionsContactedWithContext;
     private Set<URI> locationEndpointsContacted;
     private RetryContext retryContext;
@@ -71,7 +71,7 @@ public class ClientSideRequestStatistics {
         this.addressResolutionStatistics = new HashMap<>();
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>());
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
-        this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
+//        this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
         this.regionsContactedWithContext = Collections.synchronizedNavigableSet(new TreeSet<>());
         this.locationEndpointsContacted = Collections.synchronizedSet(new HashSet<>());
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
@@ -93,7 +93,7 @@ public class ClientSideRequestStatistics {
         this.addressResolutionStatistics = new HashMap<>(toBeCloned.addressResolutionStatistics);
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>(toBeCloned.contactedReplicas));
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>(toBeCloned.failedReplicas));
-        this.regionsContacted = Collections.synchronizedSet(new HashSet<>(toBeCloned.regionsContacted));
+//        this.regionsContacted = Collections.synchronizedSet(new HashSet<>(toBeCloned.regionsContacted));
         this.regionsContactedWithContext = Collections.synchronizedNavigableSet(new TreeSet<>(toBeCloned.regionsContactedWithContext));
         this.locationEndpointsContacted = Collections.synchronizedSet(
             new HashSet<>(toBeCloned.locationEndpointsContacted));
@@ -187,7 +187,7 @@ public class ClientSideRequestStatistics {
             if (locationEndPoint != null) {
                 storeResponseStatistics.regionName =
                     globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType());
-                this.regionsContacted.add(storeResponseStatistics.regionName);
+//                this.regionsContacted.add(storeResponseStatistics.regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
                 this.regionsContactedWithContext.add(new RegionWithContext(storeResponseStatistics.regionName, locationEndPoint));
             }
@@ -224,7 +224,7 @@ public class ClientSideRequestStatistics {
 
                 String regionName = globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType());
 
-                this.regionsContacted.add(regionName);
+//                this.regionsContacted.add(regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
 
                 this.regionsContactedWithContext.add(new RegionWithContext(regionName, locationEndPoint));
@@ -437,20 +437,20 @@ public class ClientSideRequestStatistics {
         }
     }
 
-    private void mergeRegionsContacted(Set<String> other) {
-        if (other == null) {
-            return;
-        }
-
-        if (this.regionsContacted == null || this.regionsContacted.isEmpty()) {
-            this.regionsContacted = other;
-            return;
-        }
-
-        for (String region : other) {
-            this.regionsContacted.add(region);
-        }
-    }
+//    private void mergeRegionsContacted(Set<String> other) {
+//        if (other == null) {
+//            return;
+//        }
+//
+//        if (this.regionsContacted == null || this.regionsContacted.isEmpty()) {
+//            this.regionsContacted = other;
+//            return;
+//        }
+//
+//        for (String region : other) {
+//            this.regionsContacted.add(region);
+//        }
+//    }
 
     private void mergeStartTime(Instant other) {
         if (other == null) {
@@ -497,7 +497,7 @@ public class ClientSideRequestStatistics {
         this.mergeContactedReplicas(other.contactedReplicas);
         this.mergeFailedReplica(other.failedReplicas);
         this.mergeLocationEndpointsContacted(other.locationEndpointsContacted);
-        this.mergeRegionsContacted(other.regionsContacted);
+//        this.mergeRegionsContacted(other.regionsContacted);
         this.mergeRegionWithContextSet(other.regionsContactedWithContext);
         this.mergeStartTime(other.requestStartTimeUTC);
         this.mergeEndTime(other.requestEndTimeUTC);
@@ -529,12 +529,12 @@ public class ClientSideRequestStatistics {
     }
 
     public Set<String> getContactedRegionNames() {
-        return regionsContacted;
+        return this.regionsContactedWithContext.stream().map(regionWithContext -> regionWithContext.regionContacted).collect(Collectors.toSet());
     }
 
-    public void setRegionsContacted(Set<String> regionsContacted) {
-        this.regionsContacted = Collections.synchronizedSet(regionsContacted);
-    }
+//    public void setRegionsContacted(Set<String> regionsContacted) {
+//        this.regionsContacted = Collections.synchronizedSet(regionsContacted);
+//    }
 
     public Set<URI> getLocationEndpointsContacted() {
         return locationEndpointsContacted;
@@ -740,7 +740,7 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("responseStatisticsList", statistics.responseStatisticsList);
             generator.writeObjectField("supplementalResponseStatisticsList", getCappedSupplementalResponseStatisticsList(statistics.supplementalResponseStatisticsList));
             generator.writeObjectField("addressResolutionStatistics", statistics.addressResolutionStatistics);
-            generator.writeObjectField("regionsContacted", statistics.regionsContacted);
+            generator.writeObjectField("regionsContacted", statistics.getContactedRegionNames());
             generator.writeObjectField("retryContext", statistics.retryContext);
             generator.writeObjectField("metadataDiagnosticsContext", statistics.getMetadataDiagnosticsContext());
             generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());

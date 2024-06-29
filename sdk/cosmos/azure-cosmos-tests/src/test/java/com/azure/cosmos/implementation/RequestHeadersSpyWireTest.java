@@ -208,7 +208,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             cosmosItemRequestOptions,
             CosmosItemSerializer.DEFAULT_SERIALIZER);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
-        client.readDocument(documentLink, requestOptions, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId())).block();
+        client.readDocument(documentLink, requestOptions).block();
 
         List<HttpRequest> requests = client.getCapturedRequests();
         for (HttpRequest httpRequest : requests) {
@@ -232,7 +232,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             CosmosItemSerializer.DEFAULT_SERIALIZER);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
 
-        assertThatThrownBy(() -> client.readDocument(documentLink, requestOptions, getDocumentCollectionLink()).block())
+        assertThatThrownBy(() -> client.readDocument(documentLink, requestOptions).block())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("MaxIntegratedCacheStaleness granularity is milliseconds");
     }
@@ -252,7 +252,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             CosmosItemSerializer.DEFAULT_SERIALIZER);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
 
-        assertThatThrownBy(() -> client.readDocument(documentLink, requestOptions, getDocumentCollectionLink()).block())
+        assertThatThrownBy(() -> client.readDocument(documentLink, requestOptions).block())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("MaxIntegratedCacheStaleness duration cannot be negative");
     }
@@ -274,7 +274,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             cosmosItemRequestOptions,
             CosmosItemSerializer.DEFAULT_SERIALIZER);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
-        ResourceResponse<Document> response = client.readDocument(documentLink, requestOptions, getDocumentCollectionLink()).block();
+        ResourceResponse<Document> response = client.readDocument(documentLink, requestOptions).block();
         if (cacheBypass) {
             String responseHeader = response.getResponseHeaders().get("x-ms-cosmos-cache-bypass");
             assertThat(responseHeader).isNotNull();

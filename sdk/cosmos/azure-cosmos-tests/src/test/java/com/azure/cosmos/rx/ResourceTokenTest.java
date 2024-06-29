@@ -315,7 +315,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             }
 
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(documentUrl, options, documentCollection.getSelfLink());
+                    .readDocument(documentUrl, options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .withId(documentId).build();
             validateSuccess(readObservable, validator);
@@ -346,7 +346,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(PartitionKey.NONE);
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocument.getSelfLink(), options, createdCollection.getSelfLink());
+                    .readDocument(createdDocument.getSelfLink(), options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .withId(createdDocument.getId()).build();
             validateSuccess(readObservable, validator);
@@ -382,7 +382,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(partitionKey));
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(documentUrl, options, documentCollection.getSelfLink());
+                    .readDocument(documentUrl, options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .withId(documentId).build();
             validateSuccess(readObservable, validator);
@@ -419,7 +419,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             options.setPartitionKey(new PartitionKey(partitionKey));
 
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(documentUrl, options, documentCollection.getSelfLink());
+                    .readDocument(documentUrl, options);
             FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
             validateFailure(readObservable, validator);
         } finally {
@@ -451,7 +451,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(PARTITION_KEY_VALUE_2));
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocumentWithPartitionKey.getSelfLink(), options, createdCollection.getSelfLink());
+                    .readDocument(createdDocumentWithPartitionKey.getSelfLink(), options);
             FailureValidator validator = new FailureValidator.Builder().resourceTokenNotFound().build();
             validateFailure(readObservable, validator);
         } finally {

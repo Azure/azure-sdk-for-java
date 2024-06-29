@@ -455,7 +455,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         originalDocument.set("prop", uuid, CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         return client
-            .replaceDocument(originalDocument.getSelfLink(), originalDocument, null, getCollectionLink())
+            .replaceDocument(originalDocument.getSelfLink(), originalDocument, null)
             .block()
             .getResource();
     }

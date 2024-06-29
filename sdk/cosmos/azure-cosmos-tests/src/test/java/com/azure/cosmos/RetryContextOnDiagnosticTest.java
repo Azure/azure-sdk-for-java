@@ -230,7 +230,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
-        responseFlux = rxDocumentClient.readDocument(itemSelfLink, requestOptions, cosmosAsyncContainer.getLinkWithoutTrailingSlash());
+        responseFlux = rxDocumentClient.readDocument(itemSelfLink, requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();
@@ -240,7 +240,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
-        responseFlux = rxDocumentClient.deleteDocument(itemSelfLink, requestOptions, cosmosAsyncContainer.getLinkWithoutTrailingSlash());
+        responseFlux = rxDocumentClient.deleteDocument(itemSelfLink, requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();
@@ -250,7 +250,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
-        responseFlux = rxDocumentClient.replaceDocument(itemSelfLink, new Document(), requestOptions, cosmosAsyncContainer.getLinkWithoutTrailingSlash());
+        responseFlux = rxDocumentClient.replaceDocument(itemSelfLink, new Document(), requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();

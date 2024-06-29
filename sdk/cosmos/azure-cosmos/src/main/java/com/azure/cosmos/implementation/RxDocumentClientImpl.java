@@ -2577,7 +2577,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> replaceDocument(String documentLink, Object document,
-                                                            RequestOptions options, String collectionLink) {
+                                                            RequestOptions options) {
+
+        String collectionLink = Utils.getCollectionName(documentLink);
 
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
@@ -2673,7 +2675,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options, String collectionLink) {
+    public Mono<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options) {
+
+        String collectionLink = Utils.getCollectionName(document.getSelfLink());
+
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Replace,
@@ -2864,8 +2869,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<Document>> patchDocument(String documentLink,
                                                           CosmosPatchOperations cosmosPatchOperations,
-                                                          RequestOptions options,
-                                                          String collectionLink) {
+                                                          RequestOptions options) {
+
+        String collectionLink = Utils.getCollectionName(documentLink);
+
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Patch,
@@ -3000,7 +3007,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options, String collectionLink) {
+    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options) {
+
+        String collectionLink = Utils.getCollectionName(documentLink);
+
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Delete,
@@ -3018,7 +3028,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options, String collectionLink) {
+    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options) {
+
+        String collectionLink = Utils.getCollectionName(documentLink);
+
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Delete,
@@ -3168,15 +3181,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options, String collectionLink) {
-        return readDocument(documentLink, options, this, collectionLink);
+    public Mono<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options) {
+        return readDocument(documentLink, options, this);
     }
 
     private Mono<ResourceResponse<Document>> readDocument(
         String documentLink,
         RequestOptions options,
-        DiagnosticsClientContext innerDiagnosticsFactory,
-        String collectionLink) {
+        DiagnosticsClientContext innerDiagnosticsFactory) {
+
+        String collectionLinkDuplicate = Utils.getCollectionName(documentLink);
 
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
@@ -3185,7 +3199,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             false,
             innerDiagnosticsFactory,
-            collectionLink);
+            collectionLinkDuplicate);
     }
 
     private Mono<ResourceResponse<Document>> readDocumentCore(
@@ -3369,8 +3383,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 partitionRangeItemKeyMap,
                                 resourceLink,
                                 state.getQueryOptions(),
-                                klass,
-                                collectionLink);
+                                klass);
 
                             // create the executable query
                             Flux<FeedResponse<T>> queries = queryForReadMany(
@@ -3653,8 +3666,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         List<CosmosItemIdentity>> singleItemPartitionRequestMap,
         String resourceLink,
         CosmosQueryRequestOptions queryRequestOptions,
-        Class<T> klass,
-        String collectionLink) {
+        Class<T> klass) {
 
         // if there is any factory method being passed in, use the factory method to deserializ the object
         // else fallback to use the original way
@@ -3670,7 +3682,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         .getCosmosQueryRequestOptionsAccessor()
                         .toRequestOptions(queryRequestOptions);
                     requestOptions.setPartitionKey(firstIdentity.getPartitionKey());
-                    return this.readDocument((resourceLink + firstIdentity.getId()), requestOptions, diagnosticsFactory, collectionLink)
+                    return this.readDocument((resourceLink + firstIdentity.getId()), requestOptions, diagnosticsFactory)
                         .flatMap(resourceResponse -> Mono.just(
                             new ImmutablePair<ResourceResponse<Document>, CosmosException>(resourceResponse, null)
                         ))
