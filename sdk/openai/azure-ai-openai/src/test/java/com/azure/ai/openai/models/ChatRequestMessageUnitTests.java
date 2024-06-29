@@ -64,8 +64,8 @@ public class ChatRequestMessageUnitTests {
 
         // content type: Array
         final ChatRequestUserMessage messageInArray = new ChatRequestUserMessage(new ChatMessageContentItem[]{
-                new ChatMessageTextContentItem("textContent"),
-                new ChatMessageImageContentItem(new ChatMessageImageUrl("testImage"))
+            new ChatMessageTextContentItem("textContent"),
+            new ChatMessageImageContentItem(new ChatMessageImageUrl("testImage"))
         });
         // TODO (shawn): Currently the conversion from Object to Array doesn't work, so we show how to get the Array
         //  from the List as a temporary way to get Array of items
