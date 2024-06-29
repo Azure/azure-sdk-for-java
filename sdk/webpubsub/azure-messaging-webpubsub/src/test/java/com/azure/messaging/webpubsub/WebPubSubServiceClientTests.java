@@ -264,6 +264,15 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
+    public void testAddConnectionsToGroups() {
+        BinaryData groupsToAdd = BinaryData.fromString("{\"groups\": [\"group1\", \"group2\"], \"filter\": \"userId eq 'user 1'\"}");
+        assertResponse(
+            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, groupsToAdd, new RequestOptions()),
+            200
+        );
+    }
+
+    @Test
     public void testAadCredential() {
         WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
             .endpoint(TestUtils.getEndpoint())
@@ -299,7 +308,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
             To do this, refer to https://learn.microsoft.com/en-us/azure/azure-web-pubsub/quickstarts-pubsub-among-clients
             and define the connected event callback to get the connectionID.
          */
-        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "sZ9IS4UZLYZGVtVL8sULUA-DPgpgK02",
+        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "JHioWOSbKapj1ZxPn2715A-DPgpgK02",
             requestOptions).getValue();
         Assertions.assertTrue(permission);
     }
