@@ -229,7 +229,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
 
                              return false;
                          },
-                         (conflictException) -> client.readDocument(getDocumentLink(document), null, getCollectionLink())
+                         (conflictException) -> client.readDocument(getDocumentLink(document), null)
                      )
                     .doOnNext(r -> cache.put(key, r.getResource()))
                     .map(ResourceResponse::getResource).flux();
@@ -245,7 +245,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(d.getString(partitionKey)));
 
-        return client.readDocument(getDocumentLink(d), options, getCollectionLink())
+        return client.readDocument(getDocumentLink(d), options)
                 .map(ResourceResponse::getResource).flux();
     }
 
