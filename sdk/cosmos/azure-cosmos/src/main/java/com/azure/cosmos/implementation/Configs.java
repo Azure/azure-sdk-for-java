@@ -622,45 +622,51 @@ public class Configs {
     }
 
     public static int getStaleCollectionCacheRefreshRetryCount() {
+
         String valueFromSystemProperty = System.getProperty(STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
 
-        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Integer.valueOf(valueFromSystemProperty);
+        if (!StringUtils.isNotEmpty(valueFromSystemProperty)) {
+            return Integer.parseInt(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
-        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Integer.valueOf(valueFromEnvVariable);
+
+        if (!StringUtils.isNotEmpty(valueFromEnvVariable)) {
+            return Integer.parseInt(valueFromEnvVariable);
         }
 
         return DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT;
     }
 
     public static int getStaleCollectionCacheRefreshRetryIntervalInSeconds() {
+
         String valueFromSystemProperty = System.getProperty(STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS);
 
-        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Integer.valueOf(valueFromSystemProperty);
+        if (!StringUtils.isNotEmpty(valueFromSystemProperty)) {
+            return Integer.parseInt(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS);
-        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Integer.valueOf(valueFromEnvVariable);
+
+        if (!StringUtils.isNotEmpty(valueFromEnvVariable)) {
+            return Integer.parseInt(valueFromEnvVariable);
         }
 
         return DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS;
     }
 
     public static int getStalePartitionUnavailabilityRefreshIntervalInSeconds() {
+
         String valueFromSystemProperty = System.getProperty(STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
 
-        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Integer.valueOf(valueFromSystemProperty);
+        if (!StringUtils.isNotEmpty(valueFromSystemProperty)) {
+            return Integer.parseInt(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
-        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Integer.valueOf(valueFromEnvVariable);
+
+        if (!StringUtils.isNotEmpty(valueFromEnvVariable)) {
+            return Integer.parseInt(valueFromEnvVariable);
         }
 
         return DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS;
