@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.validationstests.models;
 
-public class ValidationJson {
+public class ValidationTestCase {
     private String featureFlagName;
     private Object inputs;
     private IsEnabled isEnabled;
