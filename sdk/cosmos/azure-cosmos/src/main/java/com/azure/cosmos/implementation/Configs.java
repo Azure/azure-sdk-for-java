@@ -625,13 +625,13 @@ public class Configs {
 
         String valueFromSystemProperty = System.getProperty(STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
 
-        if (!StringUtils.isNotEmpty(valueFromSystemProperty)) {
+        if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
             return Integer.parseInt(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
 
-        if (!StringUtils.isNotEmpty(valueFromEnvVariable)) {
+        if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
             return Integer.parseInt(valueFromEnvVariable);
         }
 
@@ -642,13 +642,13 @@ public class Configs {
 
         String valueFromSystemProperty = System.getProperty(STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS);
 
-        if (!StringUtils.isNotEmpty(valueFromSystemProperty)) {
+        if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
             return Integer.parseInt(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS);
 
-        if (!StringUtils.isNotEmpty(valueFromEnvVariable)) {
+        if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
             return Integer.parseInt(valueFromEnvVariable);
         }
 
@@ -659,13 +659,13 @@ public class Configs {
 
         String valueFromSystemProperty = System.getProperty(STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
 
-        if (!StringUtils.isNotEmpty(valueFromSystemProperty)) {
+        if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
             return Integer.parseInt(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
 
-        if (!StringUtils.isNotEmpty(valueFromEnvVariable)) {
+        if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
             return Integer.parseInt(valueFromEnvVariable);
         }
 
