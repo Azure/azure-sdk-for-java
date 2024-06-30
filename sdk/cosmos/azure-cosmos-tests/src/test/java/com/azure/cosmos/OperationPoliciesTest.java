@@ -104,7 +104,6 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
                 .setExcludeRegions(new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(","))))
                 .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(keywordIdentifiers).split(","))));
-
         }
     }
 
