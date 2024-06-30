@@ -146,16 +146,16 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         ServerSideFeature serverSideFeature = null;
         try {
             LinkedHashMap<String, Object> ff = new LinkedHashMap<String, Object>();
-            if (featureValue.getClass().isAssignableFrom(LinkedHashMap.class.getClass())) {
+            if (featureValue.getClass().isAssignableFrom(LinkedHashMap.class)) {
                 ff = (LinkedHashMap<String, Object>) featureValue;
             }
             LinkedHashMap<String, Object> conditions = new LinkedHashMap<String, Object>();
             if (ff.containsKey("conditions")
-                && ff.get("conditions").getClass().isAssignableFrom(LinkedHashMap.class.getClass())) {
+                && ff.get("conditions").getClass().isAssignableFrom(LinkedHashMap.class)) {
                 conditions = (LinkedHashMap<String, Object>) ff.get("conditions");
             }
 
-            if (conditions.get("client_filters") instanceof List) {
+            if (conditions.get("client_filters") instanceof List) { // todo do we need to convert the list to Map<Interger, xxx>?
                 conditions.put("client_filters", null);
             }
 
