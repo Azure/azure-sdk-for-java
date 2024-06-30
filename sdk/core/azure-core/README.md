@@ -18,6 +18,7 @@ APIs in one client library, you will know how to use them in other client librar
 ### Prerequisites
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority][java8_client_compatibility].
 
 ### Include the package
 
@@ -260,7 +261,7 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 <!-- links -->
 
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
-
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core%2FREADME.png)
