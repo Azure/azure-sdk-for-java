@@ -325,6 +325,21 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     }
 
     @Test
+    public void testAddConnectionsToGroupsThrowErrorWhenHubIsNull() {
+        BinaryData groupsToAdd = BinaryData.fromString("{\"groups\": [\"group1\", \"group2\"], \"filter\": \"userId eq 'user 1'\"}");
+        StepVerifier.create(
+            client.addConnectionsToGroupsWithResponse(null, groupsToAdd, new RequestOptions())
+        ).expectError(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void testAddConnectionsToGroupsThrowErrorWhenGroupsToAddIsNull() {
+        StepVerifier.create(
+            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, null, new RequestOptions())
+        ).expectError(IllegalArgumentException.class);
+    }
+
+    @Test
     public void testAadCredential() {
         WebPubSubServiceClientBuilder builder = new WebPubSubServiceClientBuilder()
             .endpoint(TestUtils.getEndpoint())
@@ -354,7 +369,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
 
-        StepVerifier.create(client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "JHioWOSbKapj1ZxPn2715A-DPgpgK02",
+        StepVerifier.create(client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "q6MY8-6w2oQ7GAa4ViNr4w-DPgpgK02",
             requestOptions))
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());

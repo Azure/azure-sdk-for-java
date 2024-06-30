@@ -30,8 +30,7 @@ import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class WebPubSubServiceClientTests extends TestProxyTestBase {
@@ -273,6 +272,17 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
+    public void testAddConnectionsToGroupsThrowErrorWhenHubIsNull() {
+        BinaryData groupsToAdd = BinaryData.fromString("{\"groups\": [\"group1\", \"group2\"], \"filter\": \"userId eq 'user 1'\"}");
+        assertThrows(IllegalArgumentException.class, () -> client.addConnectionsToGroupsWithResponse(null, groupsToAdd, new RequestOptions()));
+    }
+
+    @Test
+    public void testAddConnectionsToGroupsThrowErrorWhenGroupsToAddIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, null, new RequestOptions()));
+    }
+
+    @Test
     public void testAadCredential() {
         WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
             .endpoint(TestUtils.getEndpoint())
@@ -308,7 +318,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
             To do this, refer to https://learn.microsoft.com/en-us/azure/azure-web-pubsub/quickstarts-pubsub-among-clients
             and define the connected event callback to get the connectionID.
          */
-        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "JHioWOSbKapj1ZxPn2715A-DPgpgK02",
+        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "q6MY8-6w2oQ7GAa4ViNr4w-DPgpgK02",
             requestOptions).getValue();
         Assertions.assertTrue(permission);
     }
