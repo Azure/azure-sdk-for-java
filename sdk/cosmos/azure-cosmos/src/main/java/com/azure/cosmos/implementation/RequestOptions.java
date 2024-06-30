@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 /**
  * Encapsulates options that can be specified for a request issued to the Azure Cosmos DB database service.
  */
-public class RequestOptions {
+public class RequestOptions implements OverridableRequestOptions {
     private Map<String, String> customOptions;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
@@ -49,9 +49,9 @@ public class RequestOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private CosmosDiagnosticsThresholds thresholds;
-
+    private boolean useTrackingIds;
     private String trackingId;
-    private boolean nonIdempotentWriteRetriesEnabled = false;
+    private Boolean nonIdempotentWriteRetriesEnabled;
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
     private List<String> excludeRegions;
 
@@ -151,7 +151,8 @@ public class RequestOptions {
         return this;
     }
 
-    public boolean getNonIdempotentWriteRetriesEnabled() {
+    @Override
+    public Boolean getNonIdempotentWriteRetriesEnabled() {
         return this.nonIdempotentWriteRetriesEnabled;
     }
 
@@ -258,6 +259,7 @@ public class RequestOptions {
      *
      * @return the consistency level.
      */
+    @Override
     public ConsistencyLevel getConsistencyLevel() {
         return this.consistencyLevel;
     }
@@ -463,6 +465,7 @@ public class RequestOptions {
      *
      * @return a boolean indicating whether payload will be included in the response or not for this request.
      */
+    @Override
     public Boolean isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
     }
@@ -489,6 +492,7 @@ public class RequestOptions {
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
     }
 
+    @Override
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }
@@ -497,6 +501,7 @@ public class RequestOptions {
         this.throughputControlGroupName = throughputControlGroupName;
     }
 
+    @Override
     public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
         return dedicatedGatewayRequestOptions;
     }
@@ -505,8 +510,54 @@ public class RequestOptions {
         this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
     }
 
+    @Override
     public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
         return this.thresholds;
+    }
+
+    @Override
+    public Boolean isScanInQueryEnabled() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxDegreeOfParallelism() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxBufferedItemCount() {
+        return null;
+    }
+
+    @Override
+    public Integer getResponseContinuationTokenLimitInKb() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxItemCount() {
+        return null;
+    }
+
+    @Override
+    public Boolean isQueryMetricsEnabled() {
+        return null;
+    }
+
+    @Override
+    public Boolean isIndexMetricsEnabled() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxPrefetchPageCount() {
+        return null;
+    }
+
+    @Override
+    public String getQueryNameOrDefault(String defaultQueryName) {
+        return null;
     }
 
     public void setDiagnosticsThresholds(CosmosDiagnosticsThresholds thresholds) {
@@ -530,20 +581,34 @@ public class RequestOptions {
         this.endToEndOperationLatencyConfig = endToEndOperationLatencyPolicyConfig;
     }
 
+    @Override
     public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig(){
         return this.endToEndOperationLatencyConfig;
     }
 
-    public List<String> getExcludeRegions() {
+    @Override
+    public List<String> getExcludedRegions() {
         return this.excludeRegions;
     }
 
-    public void setExcludeRegions(List<String> excludeRegions) {
+    public void setExcludedRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
     }
 
     public AtomicReference<Runnable> getMarkE2ETimeoutInRequestContextCallbackHook() {
         return this.markE2ETimeoutInRequestContextCallbackHook;
+    }
+
+    @Override
+    public void override(ReadOnlyRequestOptions cosmosCommonRequestOptions) {
+        this.consistencyLevel = overrideOption(cosmosCommonRequestOptions.getConsistencyLevel(), this.consistencyLevel);
+        this.contentResponseOnWriteEnabled = overrideOption(cosmosCommonRequestOptions.isContentResponseOnWriteEnabled(), this.contentResponseOnWriteEnabled);
+        this.nonIdempotentWriteRetriesEnabled = overrideOption(cosmosCommonRequestOptions.getNonIdempotentWriteRetriesEnabled(), this.nonIdempotentWriteRetriesEnabled);
+        this.dedicatedGatewayRequestOptions = overrideOption(cosmosCommonRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
+        this.excludeRegions = overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.throughputControlGroupName = overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.thresholds = overrideOption(cosmosCommonRequestOptions.getDiagnosticsThresholds(), this.thresholds);
+        this.endToEndOperationLatencyConfig = overrideOption(cosmosCommonRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.endToEndOperationLatencyConfig);
     }
 
     public CosmosItemSerializer getEffectiveItemSerializer() {

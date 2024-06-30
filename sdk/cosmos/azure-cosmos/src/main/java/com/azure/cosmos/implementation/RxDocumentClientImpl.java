@@ -74,6 +74,7 @@ import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosOperationDetails;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -170,6 +171,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor itemResponseAccessor =
         ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
 
+    private static final ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor changeFeedOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+
+    private static final ImplementationBridgeHelpers.CosmosOperationDetailsHelper.CosmosOperationDetailsAccessor operationDetailsAccessor =
+        ImplementationBridgeHelpers.CosmosOperationDetailsHelper.getCosmosOperationDetailsAccessor();
+
     private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
@@ -250,6 +257,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean sessionCapturingOverrideEnabled;
     private final boolean sessionCapturingDisabled;
     private final boolean isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig;
+    private List<CosmosOperationPolicy> operationPolicies;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -315,7 +323,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 SessionRetryOptions sessionRetryOptions,
                                 CosmosContainerProactiveInitConfig containerProactiveInitConfig,
                                 CosmosItemSerializer defaultCustomSerializer,
-                                boolean isRegionScopedSessionCapturingEnabled) {
+                                boolean isRegionScopedSessionCapturingEnabled,
+                                List<CosmosOperationPolicy> operationPolicies) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -338,6 +347,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 defaultCustomSerializer,
                 isRegionScopedSessionCapturingEnabled);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
+        this.operationPolicies = operationPolicies;
     }
 
     private RxDocumentClientImpl(URI serviceEndpoint,
@@ -1838,7 +1848,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEffectiveClientContext(clientContextOverride),
             operationType, ResourceType.Document, path, requestHeaders, options, content);
 
-        if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+        if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
@@ -2797,7 +2807,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEffectiveClientContext(clientContextOverride),
             OperationType.Replace, ResourceType.Document, path, requestHeaders, options, content);
 
-        if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+        if (options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
@@ -2963,7 +2973,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             content);
 
-        if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+        if (options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
         if (options != null) {
@@ -3191,7 +3201,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         DiagnosticsClientContext innerDiagnosticsFactory) {
 
-        String collectionLinkDuplicate = Utils.getCollectionName(documentLink);
+        String collectionLink = Utils.getCollectionName(documentLink);
 
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
@@ -3200,7 +3210,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             false,
             innerDiagnosticsFactory,
-            collectionLinkDuplicate);
+            collectionLink);
     }
 
     private Mono<ResourceResponse<Document>> readDocumentCore(
@@ -5976,9 +5986,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     monoList.add(initialMonoAcrossAllRegions);
                                 }
                             } else {
-                                clonedOptions.setExcludeRegions(
+                                clonedOptions.setExcludedRegions(
                                     getEffectiveExcludedRegionsForHedging(
-                                        nonNullRequestOptions.getExcludeRegions(),
+                                        nonNullRequestOptions.getExcludedRegions(),
                                         orderedApplicableRegionsForSpeculation,
                                         region)
                                 );
@@ -6210,7 +6220,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             resourceType,
             operationType,
             isIdempotentWriteRetriesEnabled,
-            options.getExcludeRegions());
+            options.getExcludedRegions());
     }
 
     private List<String> getApplicableRegionsForSpeculation(

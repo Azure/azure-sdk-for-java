@@ -537,19 +537,19 @@ public final class CosmosChangeFeedRequestOptions {
     }
 
     String getCollectionRid() {
-        return collectionRid;
+        return this.actualRequestOptions.getCollectionRid();
     }
 
     void setCollectionRid(String collectionRid) {
-        this.collectionRid = collectionRid;
+        this.actualRequestOptions.setCollectionRid(collectionRid);
     }
 
     PartitionKeyDefinition getPartitionKeyDefinition() {
-        return partitionKeyDefinition;
+        return this.actualRequestOptions.getPartitionKeyDefinition();
     }
 
     void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
-        this.partitionKeyDefinition = partitionKeyDefinition;
+        this.actualRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

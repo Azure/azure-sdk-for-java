@@ -623,6 +623,11 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
+                public Integer getMaxItemCountForVectorSearch(CosmosQueryRequestOptions options) {
+                    return options.getMaxItemCountForVectorSearch();
+                }
+
+                @Override
                 public void setPartitionKeyDefinition(CosmosQueryRequestOptions options, PartitionKeyDefinition partitionKeyDefinition) {
                     options.actualRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
                 }
@@ -640,11 +645,6 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public String getCollectionRid(CosmosQueryRequestOptions options) {
                     return options.actualRequestOptions.getCollectionRid();
-                }
-
-                @Override
-                public Integer getMaxItemCountForVectorSearch(CosmosQueryRequestOptions options) {
-                    return options.getMaxItemCountForVectorSearch();
                 }
             });
     }
