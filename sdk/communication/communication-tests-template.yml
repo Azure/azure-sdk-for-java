@@ -25,10 +25,16 @@ parameters:
       Path: eng/pipelines/templates/stages/platform-matrix.json
       Selection: sparse
       GenerateVMJobs: true
+- name: UseFederatedAuth
+  type: boolean
+  default: false
 - name: CloudConfig
   type: object
   default:
     Public:
+      ServiceConnection: azure-sdk-tests
+      SubscriptionConfigurationFilePaths:
+        - eng/common/TestResources/sub-config/AzurePublicMsft.json
       SubscriptionConfigurations:
         - $(sub-config-communication-services-cloud-test-resources-common)
         - $(sub-config-communication-services-cloud-test-resources-java)
