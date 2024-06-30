@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.MultipartDataHelper;
 import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
@@ -51,8 +50,6 @@ import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addMod
  */
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
-
-    private static final ClientLogger LOGGER = new ClientLogger(OpenAIClient.class);
 
     @Generated
     private final OpenAIClientImpl serviceClient;

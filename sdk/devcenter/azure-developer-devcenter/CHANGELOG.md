@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.0.1 (2024-06-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.1`.
+
 ## 1.0.0 (2024-04-30)
 
 This release targets Azure Dev Center 2023-04-01 General Available API, which is the same version as the previous 1.0.0-beta.3 release. The main improvement was the addition of models as Convenience API was enabled for the SDK. 

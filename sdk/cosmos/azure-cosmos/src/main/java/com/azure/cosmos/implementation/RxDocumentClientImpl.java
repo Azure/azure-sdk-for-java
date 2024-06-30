@@ -15,6 +15,7 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.CosmosOperationPolicy;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
@@ -1844,7 +1845,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if( options != null) {
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
         }
 
 
@@ -1890,7 +1891,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null) {
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
@@ -1900,7 +1901,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (options != null) {
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
         }
 
         request.requestContext.setPointOperationContext(new PointOperationContextForCircuitBreaker(new AtomicBoolean(false), false));
@@ -2803,7 +2804,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null) {
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
         }
 
 
@@ -2968,7 +2969,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null) {
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
         }
 
 
@@ -3103,14 +3104,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 getEffectiveClientContext(clientContextOverride),
                 OperationType.Delete, ResourceType.Document, path, requestHeaders, options);
 
-            if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+            if (options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
                 request.setNonIdempotentWriteRetriesEnabled(true);
             }
 
             if (options != null) {
                 options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                     () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-                request.requestContext.setExcludeRegions(options.getExcludeRegions());
+                request.requestContext.setExcludeRegions(options.getExcludedRegions());
             }
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(
@@ -3256,7 +3257,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
@@ -3917,10 +3918,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public <T> Flux<FeedResponse<T>> queryDocumentChangeFeed(
         final DocumentCollection collection,
-        final CosmosChangeFeedRequestOptions changeFeedOptions,
+        final CosmosChangeFeedRequestOptions requestOptions,
         Class<T> classOfT) {
 
         checkNotNull(collection, "Argument 'collection' must not be null.");
+
 
         ChangeFeedQueryImpl<T> changeFeedQueryImpl = new ChangeFeedQueryImpl<>(
             this,
@@ -3928,14 +3930,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             classOfT,
             collection.getAltLink(),
             collection.getResourceId(),
-            changeFeedOptions);
+            requestOptions);
 
         return changeFeedQueryImpl.executeAsync();
     }
 
     @Override
     public <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFlux(DocumentCollection collection, ChangeFeedOperationState state, Class<T> classOfT) {
-        return queryDocumentChangeFeed(collection, state.getChangeFeedOptions(), classOfT);
+
+        CosmosChangeFeedRequestOptions clonedOptions = changeFeedOptionsAccessor.clone(state.getChangeFeedOptions());
+
+        CosmosChangeFeedRequestOptionsImpl optionsImpl = changeFeedOptionsAccessor.getImpl(clonedOptions);
+
+        CosmosOperationDetails operationDetails = operationDetailsAccessor.create(optionsImpl, state.getDiagnosticsContextSnapshot());
+        this.operationPolicies.forEach(policy -> {
+            try {
+                policy.process(operationDetails);
+            } catch (RuntimeException exception) {
+                logger.info("The following exception was thrown by a custom policy on changeFeed operation" + exception.getMessage());
+                throw(exception);
+            }
+        });
+        ctxAccessor.setRequestOptions(state.getDiagnosticsContextSnapshot(), optionsImpl);
+        return queryDocumentChangeFeed(collection, clonedOptions, classOfT);
     }
 
     @Override
@@ -4341,7 +4358,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     requestHeaders, options);
 
             if (options != null) {
-                request.requestContext.setExcludeRegions(options.getExcludeRegions());
+                request.requestContext.setExcludeRegions(options.getExcludedRegions());
             }
 
             if (retryPolicy != null) {

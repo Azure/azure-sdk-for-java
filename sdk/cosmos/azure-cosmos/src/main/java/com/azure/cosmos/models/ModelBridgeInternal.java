@@ -43,7 +43,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
@@ -764,6 +763,7 @@ public final class ModelBridgeInternal {
         CosmosPatchOperations.initialize();
         CosmosReadManyRequestOptions.initialize();
         CosmosQueryRequestOptions.initialize();
+        CosmosOperationDetails.initialize();
         FeedResponse.initialize();
         PartitionKey.initialize();
         CosmosClientTelemetryConfig.initialize();

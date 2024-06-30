@@ -238,7 +238,7 @@ class DocumentProducer<T> {
             }
 
             // we are dealing with Split
-            logger.info(
+            logger.debug(
                 "DocumentProducer handling a partition gone in [{}], detail:[{}], Context: {}",
                 feedRange,
                 dce,

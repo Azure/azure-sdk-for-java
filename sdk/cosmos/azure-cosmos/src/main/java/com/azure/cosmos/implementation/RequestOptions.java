@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ReadOnlyRequestOptions;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.ThroughputProperties;
 
@@ -552,6 +553,49 @@ public class RequestOptions {
     public void setEffectiveItemSerializer(CosmosItemSerializer serializer) {
         this.effectiveItemSerializer = serializer;
     }
+
+    public void setUseTrackingIds(boolean useTrackingIds) {
+        this.useTrackingIds = useTrackingIds;
+    }
+
+    public boolean getUseTrackingIds() {
+        return this.useTrackingIds;
+    }
+
+    public WriteRetryPolicy calculateAndGetEffectiveNonIdempotentRetriesEnabled(
+        WriteRetryPolicy clientDefault,
+        boolean operationDefault) {
+
+        if (this.nonIdempotentWriteRetriesEnabled != null) {
+            return new WriteRetryPolicy(
+                this.nonIdempotentWriteRetriesEnabled,
+                this.useTrackingIds);
+        }
+
+        if (!operationDefault) {
+            this.setNonIdempotentWriteRetriesEnabled(false);
+            this.setUseTrackingIds(false);
+            return WriteRetryPolicy.DISABLED;
+        }
+
+        if (clientDefault != null) {
+            if (clientDefault.isEnabled()) {
+                this.setNonIdempotentWriteRetriesEnabled(true);
+                this.setUseTrackingIds(clientDefault.useTrackingIdProperty());
+            } else {
+                this.setNonIdempotentWriteRetriesEnabled(false);
+                this.setUseTrackingIds(false);
+            }
+
+            return clientDefault;
+        }
+
+        this.setNonIdempotentWriteRetriesEnabled(false);
+        this.setUseTrackingIds(false);
+        return WriteRetryPolicy.DISABLED;
+    }
+
+
 
     public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
         this.partitionKeyDefinition = partitionKeyDefinition;
