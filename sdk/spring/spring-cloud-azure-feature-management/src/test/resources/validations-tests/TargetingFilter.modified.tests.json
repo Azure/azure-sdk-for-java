@@ -1,0 +1,98 @@
+[
+    {
+        "FriendlyName": "Aiden62",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Aiden"},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, 62% default rollout Aiden is part of it."
+    },
+    {
+        "FriendlyName": "Aiden62 - Stage1",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Aiden", "groups":["Stage1"]},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, group is not part of default rollout calculation, no change."
+    },
+    {
+        "FriendlyName": "Aiden62 - Stage2",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Aiden", "groups":["Stage2"]},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, group is not part of default rollout calculation, no change."
+    },
+    {
+        "FriendlyName": "Aiden62 - Stage3",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Aiden", "groups":["Stage3"]},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, group is not part of default rollout calculation, no change."
+    },
+    {
+        "FriendlyName": "Brittney62",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Brittney"},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, 62% default rollout Brittney is part of it."
+    },
+    {
+        "FriendlyName": "Brittney62 - Stage1",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Brittney", "groups":["Stage1"]},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, group is not part of default rollout calculation, no change."
+    },
+    {
+        "FriendlyName": "Brittney62 - Stage2",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Brittney", "groups":["Stage2"]},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, group is not part of default rollout calculation, no change."
+    },
+    {
+        "FriendlyName": "Brittney62 - Stage3",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Brittney", "groups":["Stage3"]},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, group is not part of default rollout calculation, no change."
+    }
+]

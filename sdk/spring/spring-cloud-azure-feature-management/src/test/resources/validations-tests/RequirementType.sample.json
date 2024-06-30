@@ -1,0 +1,144 @@
+{
+    "feature_management": {
+        "feature_flags": [
+            {
+                "id": "DefaultRequirementTypeFirstFilterPassed",
+                "description": "A feature flag that has multiple filters, but doesn't specify any requirement type, which is the default. Will always return true.",
+                "enabled": true,
+                "conditions": {
+                    "client_filters": [
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "Start": "Tue, 27 Jun 2023 06:00:00 GMT"
+                            }
+                        },
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "Start": "Thu, 29 Jun 2023 07:00:00 GMT",
+                                "End": "Wed, 30 Aug 2023 07:00:00 GMT"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "DefaultRequirementTypeLastFilterPassed",
+                "description": "Same as DefaultRequirementTypeFirstFilterPassed, but filter order is switched. Will always return true.",
+                "enabled": true,
+                "conditions": {
+                    "client_filters": [
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "Start": "Thu, 29 Jun 2023 07:00:00 GMT",
+                                "End": "Wed, 30 Aug 2023 07:00:00 GMT"
+                            }
+                        },
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "Start": "Tue, 27 Jun 2023 06:00:00 GMT"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "RequirementTypeAnyFirstFilterPassed",
+                "description": "Same as DefaultRequirementTypeFirstFilterPassed, but requirement type is specified. Will always return true.",
+                "enabled": true,
+                "conditions": {
+                    "client_filters": [
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "Start": "Tue, 27 Jun 2023 06:00:00 GMT"
+                            }
+                        },
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "Start": "Thu, 29 Jun 2023 07:00:00 GMT",
+                                "End": "Wed, 30 Aug 2023 07:00:00 GMT"
+                            }
+                        }
+                    ],
+                    "requirement_type": "Any"
+                }
+            },
+            {
+                "id": "RequirementTypeAnyLastFilterPassed",
+                "description": "Same as DefaultRequirementTypeLastFilterPassed, but requirement type is specified. Will always return true.",
+                "enabled": true,
+                "conditions": {
+                    "client_filters": [
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "Start": "Thu, 29 Jun 2023 07:00:00 GMT",
+                                "End": "Wed, 30 Aug 2023 07:00:00 GMT"
+                            }
+                        },
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "Start": "Tue, 27 Jun 2023 06:00:00 GMT"
+                            }
+                        }
+                    ],
+                    "requirement_type": "Any"
+                }
+            },
+            {
+                "id": "RequirementTypeAllPassed",
+                "description": "Requirement type All. Will always return true.",
+                "enabled": true,
+                "conditions": {
+                    "client_filters": [
+                        {
+                            "name": "Microsoft.Targeting",
+                            "parameters": {
+                                "Audience": {
+                                    "DefaultRolloutPercentage": 100
+                                }
+                            }
+                        },
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "Start": "Tue, 27 Jun 2023 06:00:00 GMT"
+                            }
+                        }
+                    ],
+                    "requirement_type": "All"
+                }
+            },
+            {
+                "id": "RequirementTypeAllLastFilterFailed",
+                "description": "Requirement type All. Will always return false.",
+                "enabled": true,
+                "conditions": {
+                    "client_filters": [
+                        {
+                            "name": "Microsoft.Targeting",
+                            "parameters": {
+                                "Audience": {
+                                    "DefaultRolloutPercentage": 100
+                                }
+                            }
+                        },
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "End": "Tue, 27 Jun 2023 06:00:00 GMT"
+                            }
+                        }
+                    ],
+                    "requirement_type": "All"
+                }
+            }
+        ]
+    }
+}
