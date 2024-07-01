@@ -3,95 +3,106 @@
 
 package com.azure.messaging.servicebus;
 
-public class ProxySelectorTest {
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.SocketAddress;
+import java.net.URI;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+
+public class ProxySelectorTest extends IntegrationTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(ProxySelectorTest.class);
+
+    private static final int PROXY_PORT = 9002;
+    private static final InetSocketAddress SIMPLE_PROXY_ADDRESS = new InetSocketAddress("localhost", PROXY_PORT);
+    private ProxySelector defaultProxySelector;
+
+    public ProxySelectorTest() {
+        super(new ClientLogger(ProxySelectorTest.class));
+    }
+
+    @Override
+    public void beforeTest() {
+        defaultProxySelector = ProxySelector.getDefault();
+    }
+
+    @Override
+    public void afterTest() {
+        ProxySelector.setDefault(defaultProxySelector);
+    }
+
+    @Disabled("Fix when proxy error is propagated back up to receiver.")
+    @Test
+    public void proxySelectorConnectFailedInvokeTest() throws InterruptedException {
+        final String queueName = getQueueName(9);
+
+        Assertions.assertNotNull(queueName, "'queueName' is not set in environment variable.");
+
+        // doesn't start proxy server and verifies that the connectFailed callback is invoked.
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
+        ProxySelector.setDefault(new ProxySelector() {
+            @Override
+            public List<Proxy> select(URI uri) {
+                return Collections.singletonList(new Proxy(Proxy.Type.HTTP, SIMPLE_PROXY_ADDRESS));
+            }
+
+            @Override
+            public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
+                countDownLatch.countDown();
+            }
+        });
+
+        final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromString("Hello"));
+        final ServiceBusSenderAsyncClient sender = getBuilder(USE_CREDENTIALS, logger)
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
+            .sender()
+            .queueName(queueName)
+            .buildAsyncClient();
+
+        toClose(sender);
+        StepVerifier.create(sender.sendMessage(message))
+            .expectErrorSatisfies(error -> {
+                // The message can vary because it is returned from proton-j, so we don't want to compare against that.
+                // This is a transient error from ExceptionUtil.java: line 67.
+                LOGGER.log(LogLevel.VERBOSE, () -> "Error", error);
+            })
+            .verify(TIMEOUT);
+
+        final boolean awaited = countDownLatch.await(2, TimeUnit.SECONDS);
+        Assertions.assertTrue(awaited);
+    }
+
+    private static ServiceBusClientBuilder getBuilder(boolean useCredentials, ClientLogger logger) {
+        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
+        logger.info("Getting Builder using credentials : [{}] ", useCredentials);
+        if (useCredentials) {
+            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+            assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
+                "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
+            final TokenCredential tokenCredential = new AzurePowerShellCredentialBuilder().build();
+            return builder.credential(fullyQualifiedDomainName, tokenCredential);
+        } else {
+            return builder.connectionString(getConnectionString());
+        }
+    }
 }
-
-//
-//import com.azure.core.amqp.AmqpRetryOptions;
-//import com.azure.core.amqp.AmqpTransportType;
-//import com.azure.core.util.BinaryData;
-//import com.azure.core.util.logging.ClientLogger;
-//import com.azure.core.util.logging.LogLevel;
-//import com.azure.identity.AzurePowerShellCredentialBuilder;
-//import org.junit.jupiter.api.Assertions;
-//import org.junit.jupiter.api.Disabled;
-//import org.junit.jupiter.api.Test;
-//import reactor.test.StepVerifier;
-//
-//import java.io.IOException;
-//import java.net.InetSocketAddress;
-//import java.net.Proxy;
-//import java.net.ProxySelector;
-//import java.net.SocketAddress;
-//import java.net.URI;
-//import java.time.Duration;
-//import java.util.Collections;
-//import java.util.List;
-//import java.util.concurrent.CountDownLatch;
-//import java.util.concurrent.TimeUnit;
-//
-//public class ProxySelectorTest extends IntegrationTestBase {
-//    private static final ClientLogger LOGGER = new ClientLogger(ProxySelectorTest.class);
-//
-//    private static final int PROXY_PORT = 9002;
-//    private static final InetSocketAddress SIMPLE_PROXY_ADDRESS = new InetSocketAddress("localhost", PROXY_PORT);
-//    private ProxySelector defaultProxySelector;
-//
-//    public ProxySelectorTest() {
-//        super(new ClientLogger(ProxySelectorTest.class));
-//    }
-//
-//    @Override
-//    public void beforeTest() {
-//        defaultProxySelector = ProxySelector.getDefault();
-//    }
-//
-//    @Override
-//    public void afterTest() {
-//        ProxySelector.setDefault(defaultProxySelector);
-//    }
-//
-//    @Disabled("Fix when proxy error is propagated back up to receiver.")
-//    @Test
-//    public void proxySelectorConnectFailedInvokeTest() throws InterruptedException {
-//        final String queueName = getQueueName(9);
-//
-//        Assertions.assertNotNull(queueName, "'queueName' is not set in environment variable.");
-//
-//        // doesn't start proxy server and verifies that the connectFailed callback is invoked.
-//        final CountDownLatch countDownLatch = new CountDownLatch(1);
-//        ProxySelector.setDefault(new ProxySelector() {
-//            @Override
-//            public List<Proxy> select(URI uri) {
-//                return Collections.singletonList(new Proxy(Proxy.Type.HTTP, SIMPLE_PROXY_ADDRESS));
-//            }
-//
-//            @Override
-//            public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
-//                countDownLatch.countDown();
-//            }
-//        });
-//
-//        final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromString("Hello"));
-//        final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-//            .credential(new AzurePowerShellCredentialBuilder().build())
-//            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-//            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-//            .sender()
-//            .queueName(queueName)
-//            .buildAsyncClient();
-//
-//        toClose(sender);
-//        StepVerifier.create(sender.sendMessage(message))
-//            .expectErrorSatisfies(error -> {
-//                // The message can vary because it is returned from proton-j, so we don't want to compare against that.
-//                // This is a transient error from ExceptionUtil.java: line 67.
-//                LOGGER.log(LogLevel.VERBOSE, () -> "Error", error);
-//            })
-//            .verify(TIMEOUT);
-//
-//        final boolean awaited = countDownLatch.await(2, TimeUnit.SECONDS);
-//        Assertions.assertTrue(awaited);
-//    }
-//}

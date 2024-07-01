@@ -220,16 +220,12 @@ public abstract class IntegrationTestBase extends TestBase {
             .scheduler(scheduler)
             .configuration(v1OrV2(true));
 
-        System.out.println("Getting Builder using credentials : " + useCredentials);
         logger.info("Getting Builder using credentials : [{}] ", useCredentials);
         if (useCredentials) {
             final String fullyQualifiedDomainName = getFullyQualifiedDomainName();
-
             assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
                 "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
-
             final TokenCredential tokenCredential = new AzurePowerShellCredentialBuilder().build();
-
             return builder.credential(fullyQualifiedDomainName, tokenCredential);
         } else {
             return builder.connectionString(getConnectionString());
