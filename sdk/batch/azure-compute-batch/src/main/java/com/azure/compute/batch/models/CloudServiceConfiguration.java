@@ -96,6 +96,9 @@ public final class CloudServiceConfiguration implements JsonSerializable<CloudSe
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -106,6 +109,9 @@ public final class CloudServiceConfiguration implements JsonSerializable<CloudSe
         return jsonWriter;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static CloudServiceConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String family = null;
