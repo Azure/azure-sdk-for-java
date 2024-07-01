@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices;
 
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropertiesDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotHubDefinitionDescription;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LinkedHubTests extends DeviceProvisioningTestBase {
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void linkedHubsCRUD() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();

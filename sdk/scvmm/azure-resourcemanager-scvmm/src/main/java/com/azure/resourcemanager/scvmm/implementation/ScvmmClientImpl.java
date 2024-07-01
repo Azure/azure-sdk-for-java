@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.scvmm.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,9 +13,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -23,12 +25,14 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.scvmm.fluent.AvailabilitySetsClient;
 import com.azure.resourcemanager.scvmm.fluent.CloudsClient;
+import com.azure.resourcemanager.scvmm.fluent.GuestAgentsClient;
 import com.azure.resourcemanager.scvmm.fluent.InventoryItemsClient;
 import com.azure.resourcemanager.scvmm.fluent.OperationsClient;
 import com.azure.resourcemanager.scvmm.fluent.ScvmmClient;
+import com.azure.resourcemanager.scvmm.fluent.VirtualMachineInstancesClient;
 import com.azure.resourcemanager.scvmm.fluent.VirtualMachineTemplatesClient;
-import com.azure.resourcemanager.scvmm.fluent.VirtualMachinesClient;
 import com.azure.resourcemanager.scvmm.fluent.VirtualNetworksClient;
+import com.azure.resourcemanager.scvmm.fluent.VmInstanceHybridIdentityMetadatasClient;
 import com.azure.resourcemanager.scvmm.fluent.VmmServersClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -36,175 +40,232 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the ScvmmClientImpl type. */
+/**
+ * Initializes a new instance of the ScvmmClientImpl type.
+ */
 @ServiceClient(builder = ScvmmClientBuilder.class)
 public final class ScvmmClientImpl implements ScvmmClient {
-    /** The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
-     * Gets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-     *
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The VmmServersClient object to access its operations. */
-    private final VmmServersClient vmmServers;
+    /**
+     * The VirtualMachineInstancesClient object to access its operations.
+     */
+    private final VirtualMachineInstancesClient virtualMachineInstances;
 
     /**
-     * Gets the VmmServersClient object to access its operations.
-     *
-     * @return the VmmServersClient object.
+     * Gets the VirtualMachineInstancesClient object to access its operations.
+     * 
+     * @return the VirtualMachineInstancesClient object.
      */
-    public VmmServersClient getVmmServers() {
-        return this.vmmServers;
+    public VirtualMachineInstancesClient getVirtualMachineInstances() {
+        return this.virtualMachineInstances;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The GuestAgentsClient object to access its operations.
+     */
+    private final GuestAgentsClient guestAgents;
+
+    /**
+     * Gets the GuestAgentsClient object to access its operations.
+     * 
+     * @return the GuestAgentsClient object.
+     */
+    public GuestAgentsClient getGuestAgents() {
+        return this.guestAgents;
+    }
+
+    /**
+     * The VmInstanceHybridIdentityMetadatasClient object to access its operations.
+     */
+    private final VmInstanceHybridIdentityMetadatasClient vmInstanceHybridIdentityMetadatas;
+
+    /**
+     * Gets the VmInstanceHybridIdentityMetadatasClient object to access its operations.
+     * 
+     * @return the VmInstanceHybridIdentityMetadatasClient object.
+     */
+    public VmInstanceHybridIdentityMetadatasClient getVmInstanceHybridIdentityMetadatas() {
+        return this.vmInstanceHybridIdentityMetadatas;
+    }
+
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The CloudsClient object to access its operations. */
-    private final CloudsClient clouds;
-
     /**
-     * Gets the CloudsClient object to access its operations.
-     *
-     * @return the CloudsClient object.
+     * The AvailabilitySetsClient object to access its operations.
      */
-    public CloudsClient getClouds() {
-        return this.clouds;
-    }
-
-    /** The VirtualNetworksClient object to access its operations. */
-    private final VirtualNetworksClient virtualNetworks;
-
-    /**
-     * Gets the VirtualNetworksClient object to access its operations.
-     *
-     * @return the VirtualNetworksClient object.
-     */
-    public VirtualNetworksClient getVirtualNetworks() {
-        return this.virtualNetworks;
-    }
-
-    /** The VirtualMachinesClient object to access its operations. */
-    private final VirtualMachinesClient virtualMachines;
-
-    /**
-     * Gets the VirtualMachinesClient object to access its operations.
-     *
-     * @return the VirtualMachinesClient object.
-     */
-    public VirtualMachinesClient getVirtualMachines() {
-        return this.virtualMachines;
-    }
-
-    /** The VirtualMachineTemplatesClient object to access its operations. */
-    private final VirtualMachineTemplatesClient virtualMachineTemplates;
-
-    /**
-     * Gets the VirtualMachineTemplatesClient object to access its operations.
-     *
-     * @return the VirtualMachineTemplatesClient object.
-     */
-    public VirtualMachineTemplatesClient getVirtualMachineTemplates() {
-        return this.virtualMachineTemplates;
-    }
-
-    /** The AvailabilitySetsClient object to access its operations. */
     private final AvailabilitySetsClient availabilitySets;
 
     /**
      * Gets the AvailabilitySetsClient object to access its operations.
-     *
+     * 
      * @return the AvailabilitySetsClient object.
      */
     public AvailabilitySetsClient getAvailabilitySets() {
         return this.availabilitySets;
     }
 
-    /** The InventoryItemsClient object to access its operations. */
+    /**
+     * The CloudsClient object to access its operations.
+     */
+    private final CloudsClient clouds;
+
+    /**
+     * Gets the CloudsClient object to access its operations.
+     * 
+     * @return the CloudsClient object.
+     */
+    public CloudsClient getClouds() {
+        return this.clouds;
+    }
+
+    /**
+     * The VirtualMachineTemplatesClient object to access its operations.
+     */
+    private final VirtualMachineTemplatesClient virtualMachineTemplates;
+
+    /**
+     * Gets the VirtualMachineTemplatesClient object to access its operations.
+     * 
+     * @return the VirtualMachineTemplatesClient object.
+     */
+    public VirtualMachineTemplatesClient getVirtualMachineTemplates() {
+        return this.virtualMachineTemplates;
+    }
+
+    /**
+     * The VirtualNetworksClient object to access its operations.
+     */
+    private final VirtualNetworksClient virtualNetworks;
+
+    /**
+     * Gets the VirtualNetworksClient object to access its operations.
+     * 
+     * @return the VirtualNetworksClient object.
+     */
+    public VirtualNetworksClient getVirtualNetworks() {
+        return this.virtualNetworks;
+    }
+
+    /**
+     * The VmmServersClient object to access its operations.
+     */
+    private final VmmServersClient vmmServers;
+
+    /**
+     * Gets the VmmServersClient object to access its operations.
+     * 
+     * @return the VmmServersClient object.
+     */
+    public VmmServersClient getVmmServers() {
+        return this.vmmServers;
+    }
+
+    /**
+     * The InventoryItemsClient object to access its operations.
+     */
     private final InventoryItemsClient inventoryItems;
 
     /**
      * Gets the InventoryItemsClient object to access its operations.
-     *
+     * 
      * @return the InventoryItemsClient object.
      */
     public InventoryItemsClient getInventoryItems() {
@@ -213,41 +274,37 @@ public final class ScvmmClientImpl implements ScvmmClient {
 
     /**
      * Initializes an instance of ScvmmClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The Azure subscription ID. This is a GUID-formatted string (e.g.
-     *     00000000-0000-0000-0000-000000000000).
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    ScvmmClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    ScvmmClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
+        AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-06-05-preview";
-        this.vmmServers = new VmmServersClientImpl(this);
+        this.apiVersion = "2023-10-07";
+        this.virtualMachineInstances = new VirtualMachineInstancesClientImpl(this);
+        this.guestAgents = new GuestAgentsClientImpl(this);
+        this.vmInstanceHybridIdentityMetadatas = new VmInstanceHybridIdentityMetadatasClientImpl(this);
         this.operations = new OperationsClientImpl(this);
-        this.clouds = new CloudsClientImpl(this);
-        this.virtualNetworks = new VirtualNetworksClientImpl(this);
-        this.virtualMachines = new VirtualMachinesClientImpl(this);
-        this.virtualMachineTemplates = new VirtualMachineTemplatesClientImpl(this);
         this.availabilitySets = new AvailabilitySetsClientImpl(this);
+        this.clouds = new CloudsClientImpl(this);
+        this.virtualMachineTemplates = new VirtualMachineTemplatesClientImpl(this);
+        this.virtualNetworks = new VirtualNetworksClientImpl(this);
+        this.vmmServers = new VmmServersClientImpl(this);
         this.inventoryItems = new InventoryItemsClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -256,20 +313,17 @@ public final class ScvmmClientImpl implements ScvmmClient {
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -279,26 +333,15 @@ public final class ScvmmClientImpl implements ScvmmClient {
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -311,19 +354,16 @@ public final class ScvmmClientImpl implements ScvmmClient {
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -364,7 +404,7 @@ public final class ScvmmClientImpl implements ScvmmClient {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

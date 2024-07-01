@@ -12,12 +12,18 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * A skill that analyzes image files. It extracts a rich set of visual features based on the image content.
  */
 @Fluent
 public final class ImageAnalysisSkill extends SearchIndexerSkill {
+
+    /*
+     * A URI fragment specifying the type of skill.
+     */
+    private String odataType = "#Microsoft.Skills.Vision.ImageAnalysisSkill";
 
     /*
      * A value indicating which language code to use. Default is `en`.
@@ -42,6 +48,16 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      */
     public ImageAnalysisSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
+    }
+
+    /**
+     * Get the odataType property: A URI fragment specifying the type of skill.
+     *
+     * @return the odataType value.
+     */
+    @Override
+    public String getOdataType() {
+        return this.odataType;
     }
 
     /**
@@ -131,15 +147,18 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", "#Microsoft.Skills.Vision.ImageAnalysisSkill");
         jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeStringField("defaultLanguageCode",
             this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString());
         jsonWriter.writeArrayField("visualFeatures", this.visualFeatures,
@@ -155,8 +174,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ImageAnalysisSkill if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ImageAnalysisSkill.
      */
     public static ImageAnalysisSkill fromJson(JsonReader jsonReader) throws IOException {
@@ -168,20 +186,14 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
             String name = null;
             String description = null;
             String context = null;
+            String odataType = "#Microsoft.Skills.Vision.ImageAnalysisSkill";
             ImageAnalysisSkillLanguage defaultLanguageCode = null;
             List<VisualFeature> visualFeatures = null;
             List<ImageDetail> details = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Skills.Vision.ImageAnalysisSkill".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Vision.ImageAnalysisSkill'. The found '@odata.type' was '"
-                                + odataType + "'.");
-                    }
-                } else if ("inputs".equals(fieldName)) {
+                if ("inputs".equals(fieldName)) {
                     inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
                     inputsFound = true;
                 } else if ("outputs".equals(fieldName)) {
@@ -193,6 +205,8 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
                     description = reader.getString();
                 } else if ("context".equals(fieldName)) {
                     context = reader.getString();
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
                 } else if ("defaultLanguageCode".equals(fieldName)) {
                     defaultLanguageCode = ImageAnalysisSkillLanguage.fromString(reader.getString());
                 } else if ("visualFeatures".equals(fieldName)) {
@@ -208,6 +222,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
                 deserializedImageAnalysisSkill.setName(name);
                 deserializedImageAnalysisSkill.setDescription(description);
                 deserializedImageAnalysisSkill.setContext(context);
+                deserializedImageAnalysisSkill.odataType = odataType;
                 deserializedImageAnalysisSkill.defaultLanguageCode = defaultLanguageCode;
                 deserializedImageAnalysisSkill.visualFeatures = visualFeatures;
                 deserializedImageAnalysisSkill.details = details;
@@ -232,7 +247,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      * @return the ImageAnalysisSkill object itself.
      */
     public ImageAnalysisSkill setVisualFeatures(VisualFeature... visualFeatures) {
-        this.visualFeatures = (visualFeatures == null) ? null : java.util.Arrays.asList(visualFeatures);
+        this.visualFeatures = (visualFeatures == null) ? null : Arrays.asList(visualFeatures);
         return this;
     }
 
@@ -243,7 +258,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      * @return the ImageAnalysisSkill object itself.
      */
     public ImageAnalysisSkill setDetails(ImageDetail... details) {
-        this.details = (details == null) ? null : java.util.Arrays.asList(details);
+        this.details = (details == null) ? null : Arrays.asList(details);
         return this;
     }
 }
