@@ -16,11 +16,10 @@ import com.azure.communication.callingserver.models.events.PlayFailed;
 import com.azure.communication.callingserver.models.events.RecordingStateChangedEvent;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -82,40 +81,34 @@ public final class EventHandler {
     }
 
     private static CallAutomationEventBase parseSingleCloudEvent(String data, String eventType) {
-        try {
-            CallAutomationEventBase ret = null;
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-
-            JsonNode eventData = mapper.readTree(data);
-
+        try (JsonReader jsonReader = JsonProviders.createReader(data)) {
+            CallAutomationEventBase ret;
             if (Objects.equals(eventType, "Microsoft.Communication.CallConnected")) {
-                ret = mapper.convertValue(eventData, CallConnectedEvent.class);
+                ret = CallConnectedEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallDisconnected")) {
-                ret = mapper.convertValue(eventData, CallDisconnectedEvent.class);
+                ret = CallDisconnectedEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantsFailed")) {
-                ret = mapper.convertValue(eventData, AddParticipantsFailedEvent.class);
+                ret = AddParticipantsFailedEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantsSucceeded")) {
-                ret = mapper.convertValue(eventData, AddParticipantsSucceededEvent.class);
+                ret = AddParticipantsSucceededEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallTransferAccepted")) {
-                ret = mapper.convertValue(eventData, CallTransferAcceptedEvent.class);
+                ret = CallTransferAcceptedEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallTransferFailed")) {
-                ret = mapper.convertValue(eventData, CallTransferFailedEvent.class);
+                ret = CallTransferFailedEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.ParticipantsUpdated")) {
-                ret = mapper.convertValue(eventData, ParticipantsUpdatedEvent.class);
+                ret = ParticipantsUpdatedEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallRecordingStateChanged")) {
-                ret = mapper.convertValue(eventData, RecordingStateChangedEvent.class);
+                ret = RecordingStateChangedEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCompleted")) {
-                ret = mapper.convertValue(eventData, PlayCompleted.class);
+                ret = PlayCompleted.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayFailed")) {
-                ret = mapper.convertValue(eventData, PlayFailed.class);
+                ret = PlayFailed.fromJson(jsonReader);
+            } else {
+                ret = null;
             }
-
             return ret;
-        } catch (RuntimeException e) {
-            throw LOGGER.logExceptionAsError(e);
-        } catch (JsonProcessingException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
