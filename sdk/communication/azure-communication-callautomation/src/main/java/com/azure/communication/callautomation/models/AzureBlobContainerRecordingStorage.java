@@ -3,7 +3,11 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The AzureCommunicationRecordingStorage model. */
 public class AzureBlobContainerRecordingStorage extends RecordingStorage {
@@ -11,19 +15,17 @@ public class AzureBlobContainerRecordingStorage extends RecordingStorage {
     /*
      * Defines the kind of recording storage
      */
-    @JsonProperty(value = "recordingStorageType", required = true)
-    private RecordingStorageType recordingStorageType;
+    private final RecordingStorageType recordingStorageType;
 
     /*
      * Uri of a container or a location within a container
      */
-    @JsonProperty(value = "recordingDestinationContainerUrl")
     private String recordingDestinationContainerUrl;
 
-    /** Creates an instance of AzureCommunicationRecordingStorage class. 
-     * 
+    /** Creates an instance of AzureCommunicationRecordingStorage class.
+     *
      * @param recordingDestinationContainerUrl the recordingDestinationContainerUrl value to set.
-    */
+     */
     public AzureBlobContainerRecordingStorage(String recordingDestinationContainerUrl) {
         this.recordingStorageType = RecordingStorageType.fromString("AzureBlobStorage");
         this.recordingDestinationContainerUrl = recordingDestinationContainerUrl;
@@ -46,5 +48,37 @@ public class AzureBlobContainerRecordingStorage extends RecordingStorage {
     @Override
     public RecordingStorageType getRecordingStorageType() {
         return this.recordingStorageType;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recordingStorageType", recordingStorageType != null ? recordingStorageType.toString() : null);
+        jsonWriter.writeStringField("recordingDestinationContainerUrl", recordingDestinationContainerUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobContainerRecordingStorage from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobContainerRecordingStorage if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBlobContainerRecordingStorage.
+     */
+    public static AzureBlobContainerRecordingStorage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String recordingDestinationContainerUrl = null;
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("recordingDestinationContainerUrl".equals(fieldName)) {
+                    recordingDestinationContainerUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new AzureBlobContainerRecordingStorage(recordingDestinationContainerUrl);
+        });
     }
 }

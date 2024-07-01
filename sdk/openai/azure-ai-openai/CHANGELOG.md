@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a bug during the serialization and deserialization of the `content` property in the `ChatRequestUserMessage`. ([#40687](https://github.com/Azure/azure-sdk-for-java/pull/40687))
+
 ### Other Changes
 
 ## 1.0.0-beta.9 (2024-06-06)

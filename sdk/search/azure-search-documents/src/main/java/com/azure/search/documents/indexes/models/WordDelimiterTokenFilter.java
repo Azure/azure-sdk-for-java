@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Splits words into subwords and performs optional transformations on subword groups. This token filter is implemented
@@ -18,6 +19,11 @@ import java.util.List;
  */
 @Fluent
 public final class WordDelimiterTokenFilter extends TokenFilter {
+
+    /*
+     * A URI fragment specifying the type of token filter.
+     */
+    private String odataType = "#Microsoft.Azure.Search.WordDelimiterTokenFilter";
 
     /*
      * A value indicating whether to generate part words. If set, causes parts of words to be generated; for example
@@ -85,6 +91,16 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
+     * Get the odataType property: A URI fragment specifying the type of token filter.
+     *
+     * @return the odataType value.
+     */
+    @Override
+    public String getOdataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the generateWordParts property: A value indicating whether to generate part words. If set, causes parts of
      * words to be generated; for example "AzureSearch" becomes "Azure" "Search". Default is true.
      *
@@ -149,8 +165,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the numbersCatenated property: A value indicating whether maximum runs of number parts will be catenated.
-     * For example, if this is set to true, "1-2" becomes "12". Default is false.
+     * Get the numbersCatenated property: A value indicating whether maximum runs of number parts will be catenated. For
+     * example, if this is set to true, "1-2" becomes "12". Default is false.
      *
      * @return the numbersCatenated value.
      */
@@ -159,8 +175,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the numbersCatenated property: A value indicating whether maximum runs of number parts will be catenated.
-     * For example, if this is set to true, "1-2" becomes "12". Default is false.
+     * Set the numbersCatenated property: A value indicating whether maximum runs of number parts will be catenated. For
+     * example, if this is set to true, "1-2" becomes "12". Default is false.
      *
      * @param numbersCatenated the numbersCatenated value to set.
      * @return the WordDelimiterTokenFilter object itself.
@@ -193,8 +209,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the splitOnCaseChange property: A value indicating whether to split words on caseChange. For example, if
-     * this is set to true, "AzureSearch" becomes "Azure" "Search". Default is true.
+     * Get the splitOnCaseChange property: A value indicating whether to split words on caseChange. For example, if this
+     * is set to true, "AzureSearch" becomes "Azure" "Search". Default is true.
      *
      * @return the splitOnCaseChange value.
      */
@@ -203,8 +219,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the splitOnCaseChange property: A value indicating whether to split words on caseChange. For example, if
-     * this is set to true, "AzureSearch" becomes "Azure" "Search". Default is true.
+     * Set the splitOnCaseChange property: A value indicating whether to split words on caseChange. For example, if this
+     * is set to true, "AzureSearch" becomes "Azure" "Search". Default is true.
      *
      * @param splitOnCaseChange the splitOnCaseChange value to set.
      * @return the WordDelimiterTokenFilter object itself.
@@ -300,11 +316,14 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.WordDelimiterTokenFilter");
         jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeBooleanField("generateWordParts", this.generateWordParts);
         jsonWriter.writeBooleanField("generateNumberParts", this.generateNumberParts);
         jsonWriter.writeBooleanField("catenateWords", this.wordsCatenated);
@@ -325,14 +344,14 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param jsonReader The JsonReader being read.
      * @return An instance of WordDelimiterTokenFilter if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WordDelimiterTokenFilter.
      */
     public static WordDelimiterTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
             String name = null;
+            String odataType = "#Microsoft.Azure.Search.WordDelimiterTokenFilter";
             Boolean generateWordParts = null;
             Boolean generateNumberParts = null;
             Boolean wordsCatenated = null;
@@ -346,16 +365,11 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.WordDelimiterTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.WordDelimiterTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
-                    }
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     name = reader.getString();
                     nameFound = true;
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
                 } else if ("generateWordParts".equals(fieldName)) {
                     generateWordParts = reader.getNullable(JsonReader::getBoolean);
                 } else if ("generateNumberParts".equals(fieldName)) {
@@ -382,6 +396,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
             }
             if (nameFound) {
                 WordDelimiterTokenFilter deserializedWordDelimiterTokenFilter = new WordDelimiterTokenFilter(name);
+                deserializedWordDelimiterTokenFilter.odataType = odataType;
                 deserializedWordDelimiterTokenFilter.generateWordParts = generateWordParts;
                 deserializedWordDelimiterTokenFilter.generateNumberParts = generateNumberParts;
                 deserializedWordDelimiterTokenFilter.wordsCatenated = wordsCatenated;
@@ -405,7 +420,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @return the WordDelimiterTokenFilter object itself.
      */
     public WordDelimiterTokenFilter setProtectedWords(String... protectedWords) {
-        this.protectedWords = (protectedWords == null) ? null : java.util.Arrays.asList(protectedWords);
+        this.protectedWords = (protectedWords == null) ? null : Arrays.asList(protectedWords);
         return this;
     }
 }

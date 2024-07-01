@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.scvmm.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the resource properties. */
+/**
+ * Defines the resource properties.
+ */
 @Fluent
-public final class InventoryItemDetails {
+public final class InventoryItemDetails implements JsonSerializable<InventoryItemDetails> {
     /*
      * Gets or sets the inventory Item ID for the resource.
      */
-    @JsonProperty(value = "inventoryItemId")
     private String inventoryItemId;
 
     /*
-     * Gets or sets the Managed Object name in VMM for the resource.
+     * Gets or sets the Managed Object name in Vmm for the resource.
      */
-    @JsonProperty(value = "inventoryItemName")
     private String inventoryItemName;
 
     /**
+     * Creates an instance of InventoryItemDetails class.
+     */
+    public InventoryItemDetails() {
+    }
+
+    /**
      * Get the inventoryItemId property: Gets or sets the inventory Item ID for the resource.
-     *
+     * 
      * @return the inventoryItemId value.
      */
     public String inventoryItemId() {
@@ -33,7 +43,7 @@ public final class InventoryItemDetails {
 
     /**
      * Set the inventoryItemId property: Gets or sets the inventory Item ID for the resource.
-     *
+     * 
      * @param inventoryItemId the inventoryItemId value to set.
      * @return the InventoryItemDetails object itself.
      */
@@ -43,8 +53,8 @@ public final class InventoryItemDetails {
     }
 
     /**
-     * Get the inventoryItemName property: Gets or sets the Managed Object name in VMM for the resource.
-     *
+     * Get the inventoryItemName property: Gets or sets the Managed Object name in Vmm for the resource.
+     * 
      * @return the inventoryItemName value.
      */
     public String inventoryItemName() {
@@ -52,8 +62,8 @@ public final class InventoryItemDetails {
     }
 
     /**
-     * Set the inventoryItemName property: Gets or sets the Managed Object name in VMM for the resource.
-     *
+     * Set the inventoryItemName property: Gets or sets the Managed Object name in Vmm for the resource.
+     * 
      * @param inventoryItemName the inventoryItemName value to set.
      * @return the InventoryItemDetails object itself.
      */
@@ -64,9 +74,48 @@ public final class InventoryItemDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("inventoryItemId", this.inventoryItemId);
+        jsonWriter.writeStringField("inventoryItemName", this.inventoryItemName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InventoryItemDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InventoryItemDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InventoryItemDetails.
+     */
+    public static InventoryItemDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InventoryItemDetails deserializedInventoryItemDetails = new InventoryItemDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inventoryItemId".equals(fieldName)) {
+                    deserializedInventoryItemDetails.inventoryItemId = reader.getString();
+                } else if ("inventoryItemName".equals(fieldName)) {
+                    deserializedInventoryItemDetails.inventoryItemName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInventoryItemDetails;
+        });
     }
 }

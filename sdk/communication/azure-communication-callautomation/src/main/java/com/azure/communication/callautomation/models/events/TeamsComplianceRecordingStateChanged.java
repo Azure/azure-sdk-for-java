@@ -5,10 +5,11 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -19,26 +20,20 @@ public final class TeamsComplianceRecordingStateChanged extends CallAutomationEv
     /**
      * Recording Id.
      */
-    @JsonProperty(value = "recordingId")
-    private final String recordingId;
+    private String recordingId;
 
     /**
      * Recording state.
      */
-    @JsonProperty(value = "state")
-    private final RecordingState recordingState;
+    private RecordingState recordingState;
 
     /**
      * Time of when it started recording.
      */
-    @JsonIgnore
-    private final OffsetDateTime startDateTime;
+    private OffsetDateTime startDateTime;
 
-    @JsonCreator
-    private TeamsComplianceRecordingStateChanged(@JsonProperty("startDateTime") String startDateTime) {
-        this.startDateTime = OffsetDateTime.parse(startDateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        this.recordingId = null;
-        this.recordingState = null;
+    private TeamsComplianceRecordingStateChanged() {
+
     }
 
     /**
@@ -66,5 +61,48 @@ public final class TeamsComplianceRecordingStateChanged extends CallAutomationEv
      */
     public OffsetDateTime getStartDateTime() {
         return startDateTime;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recordingId", recordingId);
+        jsonWriter.writeStringField("state", recordingState != null ? recordingState.toString() : null);
+        jsonWriter.writeStringField("startDateTime", startDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        super.writeFields(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TeamsComplianceRecordingStateChanged from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TeamsComplianceRecordingStateChanged if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TeamsComplianceRecordingStateChanged.
+     */
+    public static TeamsComplianceRecordingStateChanged fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final TeamsComplianceRecordingStateChanged event = new TeamsComplianceRecordingStateChanged();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("recordingId".equals(fieldName)) {
+                    event.recordingId = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    event.recordingState = RecordingState.fromString(reader.getString());
+                } else if ("startDateTime".equals(fieldName)) {
+                    event.startDateTime = OffsetDateTime.parse(reader.getString(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                } else {
+                    if (!event.readField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
+                }
+            }
+            return event;
+        });
     }
 }

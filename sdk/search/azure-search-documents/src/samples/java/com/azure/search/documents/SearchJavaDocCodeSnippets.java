@@ -15,16 +15,12 @@ import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
-import com.azure.search.documents.indexes.models.CreateOrUpdateDataSourceConnectionOptions;
-import com.azure.search.documents.indexes.models.CreateOrUpdateIndexerOptions;
-import com.azure.search.documents.indexes.models.CreateOrUpdateSkillsetOptions;
 import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.OcrSkill;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -1704,26 +1700,6 @@ public class SearchJavaDocCodeSnippets {
         // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean-Context
     }
 
-    /**
-     * Code snippet for {@link SearchIndexerClient#createOrUpdateIndexerWithResponse(CreateOrUpdateIndexerOptions, Context)}
-     */
-    public void createOrUpdateIndexerWithResponse2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions-Context
-        SearchIndexer searchIndexerFromService = SEARCH_INDEXER_CLIENT.getIndexer("searchIndexer");
-        searchIndexerFromService.setFieldMappings(Collections.singletonList(
-            new FieldMapping("hotelName").setTargetFieldName("HotelName")));
-        CreateOrUpdateIndexerOptions options = new CreateOrUpdateIndexerOptions(searchIndexerFromService)
-            .setOnlyIfUnchanged(true)
-            .setCacheReprocessingChangeDetectionDisabled(false)
-            .setCacheResetRequirementsIgnored(true);
-        Response<SearchIndexer> indexerFromService = SEARCH_INDEXER_CLIENT.createOrUpdateIndexerWithResponse(
-            options, new Context(KEY_1, VALUE_1));
-        System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
-                + "The target field name of indexer is %s.%n", indexerFromService.getStatusCode(),
-            indexerFromService.getValue().getName(),
-            indexerFromService.getValue().getFieldMappings().get(0).getTargetFieldName());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions-Context
-    }
 
     /**
      * Code snippet for {@link SearchIndexerClient#deleteIndexer(String)}
@@ -1806,40 +1782,6 @@ public class SearchJavaDocCodeSnippets {
         System.out.printf("The status code of the response is %s.%nThe indexer status is %s.%n",
             response.getStatusCode(), response.getValue().getStatus());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatusWithResponse#String-Context
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerClient#resetDocuments(String, Boolean, List, List)}
-     */
-    public void resetDocuments() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-Boolean-List-List
-        // Reset the documents with keys 1234 and 4321.
-        SEARCH_INDEXER_CLIENT.resetDocuments("searchIndexer", false, Arrays.asList("1234", "4321"), null);
-
-        // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-        SEARCH_INDEXER_CLIENT.resetDocuments("searchIndexer", true, Arrays.asList("1235", "5321"), null);
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-Boolean-List-List
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerClient#resetDocumentsWithResponse(SearchIndexer, Boolean, List, List, Context)}
-     */
-    public void resetDocumentsWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List-Context
-        SearchIndexer searchIndexer = SEARCH_INDEXER_CLIENT.getIndexer("searchIndexer");
-
-        // Reset the documents with keys 1234 and 4321.
-        Response<Void> resetDocsResult = SEARCH_INDEXER_CLIENT.resetDocumentsWithResponse(searchIndexer, false,
-            Arrays.asList("1234", "4321"), null, new Context(KEY_1, VALUE_1));
-        System.out.printf("Requesting documents to be reset completed with status code %d.%n",
-            resetDocsResult.getStatusCode());
-
-        // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-        resetDocsResult = SEARCH_INDEXER_CLIENT.resetDocumentsWithResponse(searchIndexer, true,
-            Arrays.asList("1235", "5321"), null, new Context(KEY_1, VALUE_1));
-        System.out.printf("Overwriting the documents to be reset completed with status code %d.%n",
-            resetDocsResult.getStatusCode());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List-Context
     }
 
     /**
@@ -1985,25 +1927,6 @@ public class SearchJavaDocCodeSnippets {
             + "The container name of dataSource is %s.%n", updateDataSource.getStatusCode(),
             updateDataSource.getValue().getName(), updateDataSource.getValue().getContainer().getName());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerClient#createOrUpdateDataSourceConnectionWithResponse(CreateOrUpdateDataSourceConnectionOptions, Context)}
-     */
-    public void createOrUpdateDataSourceWithResponse2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions-Context
-        SearchIndexerDataSourceConnection dataSource = SEARCH_INDEXER_CLIENT.getDataSourceConnection("dataSource");
-        dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
-        CreateOrUpdateDataSourceConnectionOptions options = new CreateOrUpdateDataSourceConnectionOptions(dataSource)
-            .setOnlyIfUnchanged(true)
-            .setCacheResetRequirementsIgnored(true);
-
-        Response<SearchIndexerDataSourceConnection> updateDataSource = SEARCH_INDEXER_CLIENT
-            .createOrUpdateDataSourceConnectionWithResponse(options, new Context(KEY_1, VALUE_1));
-        System.out.printf("The status code of the response is %s.%nThe dataSource name is %s. "
-                + "The container name of dataSource is %s.%n", updateDataSource.getStatusCode(),
-            updateDataSource.getValue().getName(), updateDataSource.getValue().getContainer().getName());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions-Context
     }
 
     /**
@@ -2199,26 +2122,6 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerClient#createOrUpdateSkillsetWithResponse(CreateOrUpdateSkillsetOptions, Context)}
-     */
-    public void createOrUpdateIndexerSkillsetWithResponse2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions-Context
-        SearchIndexerSkillset indexerSkillset = SEARCH_INDEXER_CLIENT.getSkillset("searchIndexerSkillset");
-        indexerSkillset.setDescription("This is new description!");
-        CreateOrUpdateSkillsetOptions options = new CreateOrUpdateSkillsetOptions(indexerSkillset)
-            .setOnlyIfUnchanged(true)
-            .setCacheReprocessingChangeDetectionDisabled(false)
-            .setCacheResetRequirementsIgnored(true);
-        Response<SearchIndexerSkillset> updateSkillsetResponse = SEARCH_INDEXER_CLIENT.createOrUpdateSkillsetWithResponse(
-            options, new Context(KEY_1, VALUE_1));
-        System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "
-                + "The description of indexer skillset is %s.%n", updateSkillsetResponse.getStatusCode(),
-            updateSkillsetResponse.getValue().getName(),
-            updateSkillsetResponse.getValue().getDescription());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions-Context
-    }
-
-    /**
      * Code snippet for {@link SearchIndexerClient#deleteSkillset(String)}
      */
     public void deleteSearchIndexerSkillset() {
@@ -2237,30 +2140,6 @@ public class SearchJavaDocCodeSnippets {
             new Context(KEY_1, VALUE_1));
         System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean-Context
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerClient#resetSkills(String, List)}
-     */
-    public void resetSkills() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetSkills#String-List
-        // Reset the "myOcr" and "myText" skills.
-        SEARCH_INDEXER_CLIENT.resetSkills("searchIndexerSkillset", Arrays.asList("myOcr", "myText"));
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetSkills#String-List
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerClient#resetSkillsWithResponse(SearchIndexerSkillset, List, Context)}
-     */
-    public void resetSkillsWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#SearchIndexerSkillset-List-Context
-        SearchIndexerSkillset searchIndexerSkillset = SEARCH_INDEXER_CLIENT.getSkillset("searchIndexerSkillset");
-
-        // Reset the "myOcr" and "myText" skills.
-        Response<Void> resetSkillsResponse = SEARCH_INDEXER_CLIENT.resetSkillsWithResponse(searchIndexerSkillset,
-            Arrays.asList("myOcr", "myText"), new Context(KEY_1, VALUE_1));
-        System.out.printf("Resetting skills completed with status code %d.%n", resetSkillsResponse.getStatusCode());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#SearchIndexerSkillset-List-Context
     }
 
     private static final SearchIndexerAsyncClient SEARCH_INDEXER_ASYNC_CLIENT = new SearchIndexerClientBuilder()
@@ -2390,29 +2269,6 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateIndexerWithResponse(CreateOrUpdateIndexerOptions)}
-     */
-    public void createOrUpdateIndexerWithResponseAsync2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions
-        SEARCH_INDEXER_ASYNC_CLIENT.getIndexer("searchIndexer")
-            .flatMap(searchIndexerFromService -> {
-                searchIndexerFromService.setFieldMappings(Collections.singletonList(
-                    new FieldMapping("hotelName").setTargetFieldName("HotelName")));
-                return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateIndexerWithResponse(
-                    new CreateOrUpdateIndexerOptions(searchIndexerFromService)
-                        .setOnlyIfUnchanged(true)
-                        .setCacheReprocessingChangeDetectionDisabled(false)
-                        .setCacheResetRequirementsIgnored(true));
-            })
-            .subscribe(indexerFromService ->
-                System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
-                        + "The target field name of indexer is %s.%n", indexerFromService.getStatusCode(),
-                    indexerFromService.getValue().getName(),
-                    indexerFromService.getValue().getFieldMappings().get(0).getTargetFieldName()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions
-    }
-
-    /**
      * Code snippet for {@link SearchIndexerAsyncClient#deleteIndexer(String)}
      */
     public void deleteSearchIndexerAsync() {
@@ -2498,41 +2354,6 @@ public class SearchJavaDocCodeSnippets {
                 System.out.printf("The status code of the response is %s.%nThe indexer status is %s.%n",
                 response.getStatusCode(), response.getValue().getStatus()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#resetDocuments(String, Boolean, List, List)}
-     */
-    public void resetDocumentsAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocuments#String-Boolean-List-List
-        // Reset the documents with keys 1234 and 4321.
-        SEARCH_INDEXER_ASYNC_CLIENT.resetDocuments("searchIndexer", false, Arrays.asList("1234", "4321"), null)
-            // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-            .then(SEARCH_INDEXER_ASYNC_CLIENT.resetDocuments("searchIndexer", true, Arrays.asList("1235", "5321"), null))
-            .subscribe();
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocuments#String-Boolean-List-List
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#resetDocumentsWithResponse(SearchIndexer, Boolean, List, List)}
-     */
-    public void resetDocumentsWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List
-        SEARCH_INDEXER_ASYNC_CLIENT.getIndexer("searchIndexer")
-            .flatMap(searchIndexer -> SEARCH_INDEXER_ASYNC_CLIENT.resetDocumentsWithResponse(searchIndexer, false,
-                    Arrays.asList("1234", "4321"), null)
-                .flatMap(resetDocsResult -> {
-                    System.out.printf("Requesting documents to be reset completed with status code %d.%n",
-                        resetDocsResult.getStatusCode());
-
-                    // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-                    return SEARCH_INDEXER_ASYNC_CLIENT.resetDocumentsWithResponse(searchIndexer, true,
-                        Arrays.asList("1235", "5321"), null);
-                }))
-            .subscribe(resetDocsResult ->
-                System.out.printf("Overwriting the documents to be reset completed with status code %d.%n",
-                    resetDocsResult.getStatusCode()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List
     }
 
     /**
@@ -2645,25 +2466,7 @@ public class SearchJavaDocCodeSnippets {
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean
     }
 
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateDataSourceConnectionWithResponse(CreateOrUpdateDataSourceConnectionOptions)}
-     */
-    public void createOrUpdateDataSourceWithResponseAsync2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions
-        SEARCH_INDEXER_ASYNC_CLIENT.getDataSourceConnection("dataSource")
-            .flatMap(dataSource -> {
-                dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
-                return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateDataSourceConnectionWithResponse(
-                    new CreateOrUpdateDataSourceConnectionOptions(dataSource)
-                        .setOnlyIfUnchanged(true)
-                        .setCacheResetRequirementsIgnored(true));
-            })
-            .subscribe(updateDataSource ->
-                System.out.printf("The status code of the response is %s.%nThe dataSource name is %s. "
-                        + "The container name of dataSource is %s.%n", updateDataSource.getStatusCode(),
-                    updateDataSource.getValue().getName(), updateDataSource.getValue().getContainer().getName()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions
-    }
+
 
 
     /**
@@ -2827,27 +2630,6 @@ public class SearchJavaDocCodeSnippets {
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean
     }
 
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateSkillsetWithResponse(CreateOrUpdateSkillsetOptions)}
-     */
-    public void createOrUpdateIndexerSkillsetWithResponseAsync2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions
-        SEARCH_INDEXER_ASYNC_CLIENT.getSkillset("searchIndexerSkillset")
-            .flatMap(indexerSkillset -> {
-                indexerSkillset.setDescription("This is new description!");
-                return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateSkillsetWithResponse(
-                    new CreateOrUpdateSkillsetOptions(indexerSkillset)
-                        .setOnlyIfUnchanged(true)
-                        .setCacheReprocessingChangeDetectionDisabled(false)
-                        .setCacheResetRequirementsIgnored(true));
-            })
-            .subscribe(updateSkillsetResponse ->
-                System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "
-                        + "The description of indexer skillset is %s.%n", updateSkillsetResponse.getStatusCode(),
-                    updateSkillsetResponse.getValue().getName(),
-                    updateSkillsetResponse.getValue().getDescription()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions
-    }
 
     /**
      * Code snippet for {@link SearchIndexerAsyncClient#deleteSkillset(String)}
@@ -2870,284 +2652,5 @@ public class SearchJavaDocCodeSnippets {
             .subscribe(deleteResponse ->
                 System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#resetSkills(String, List)}
-     */
-    public void resetSkillsAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkills#String-List
-        // Reset the "myOcr" and "myText" skills.
-        SEARCH_INDEXER_ASYNC_CLIENT.resetSkills("searchIndexerSkillset", Arrays.asList("myOcr", "myText"))
-            .subscribe();
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkills#String-List
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#resetSkillsWithResponse(SearchIndexerSkillset, List)}
-     */
-    public void resetSkillsWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#SearchIndexerSkillset-List
-        SEARCH_INDEXER_ASYNC_CLIENT.getSkillset("searchIndexerSkillset")
-            .flatMap(searchIndexerSkillset -> SEARCH_INDEXER_ASYNC_CLIENT.resetSkillsWithResponse(searchIndexerSkillset,
-                Arrays.asList("myOcr", "myText")))
-            .subscribe(resetSkillsResponse -> System.out.printf("Resetting skills completed with status code %d.%n",
-                resetSkillsResponse.getStatusCode()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#SearchIndexerSkillset-List
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#createAlias(SearchAlias)}.
-     */
-    public void createAliasAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias
-        SEARCH_INDEX_ASYNC_CLIENT.createAlias(new SearchAlias("my-alias", Collections.singletonList("index-to-alias")))
-            .subscribe(searchAlias -> System.out.printf("Created alias '%s' that aliases index '%s'.",
-                searchAlias.getName(), searchAlias.getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#createAliasWithResponse(SearchAlias)}.
-     */
-    public void createAliasWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias
-        SEARCH_INDEX_ASYNC_CLIENT.createAliasWithResponse(new SearchAlias("my-alias",
-                Collections.singletonList("index-to-alias")))
-            .subscribe(response ->
-                System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
-                    response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#createAlias(SearchAlias)}.
-     */
-    public void createAlias() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createAlias#SearchAlias
-        SearchAlias searchAlias = SEARCH_INDEX_CLIENT.createAlias(new SearchAlias("my-alias",
-            Collections.singletonList("index-to-alias")));
-        System.out.printf("Created alias '%s' that aliases index '%s'.", searchAlias.getName(),
-            searchAlias.getIndexes().get(0));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.createAlias#SearchAlias
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#createAliasWithResponse(SearchAlias, Context)}.
-     */
-    public void createAliasWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context
-        Response<SearchAlias> response = SEARCH_INDEX_CLIENT.createAliasWithResponse(new SearchAlias("my-alias",
-            Collections.singletonList("index-to-alias")), new Context(KEY_1, VALUE_1));
-
-        System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
-            response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context
-
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#createOrUpdateAlias(SearchAlias)}.
-     */
-    public void createOrUpdateAliasAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias
-        SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAlias(
-                new SearchAlias("my-alias", Collections.singletonList("index-to-alias")))
-            .flatMap(searchAlias -> {
-                System.out.printf("Created alias '%s' that aliases index '%s'.", searchAlias.getName(),
-                    searchAlias.getIndexes().get(0));
-
-                return SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAlias(new SearchAlias(searchAlias.getName(),
-                    Collections.singletonList("new-index-to-alias")));
-            }).subscribe(searchAlias -> System.out.printf("Updated alias '%s' to aliases index '%s'.",
-                searchAlias.getName(), searchAlias.getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#createOrUpdateAliasWithResponse(SearchAlias, boolean)}.
-     */
-    public void createOrUpdateAliasWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean
-        SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAliasWithResponse(
-                new SearchAlias("my-alias", Collections.singletonList("index-to-alias")), false)
-            .flatMap(response -> {
-                System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
-                    response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
-
-                return SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAliasWithResponse(
-                    new SearchAlias(response.getValue().getName(), Collections.singletonList("new-index-to-alias"))
-                        .setETag(response.getValue().getETag()), true);
-            }).subscribe(response ->
-                System.out.printf("Response status code %d. Updated alias '%s' that aliases index '%s'.",
-                    response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#createOrUpdateAlias(SearchAlias)}.
-     */
-    public void createOrUpdateAlias() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias
-        SearchAlias searchAlias = SEARCH_INDEX_CLIENT.createOrUpdateAlias(
-            new SearchAlias("my-alias", Collections.singletonList("index-to-alias")));
-
-        System.out.printf("Created alias '%s' that aliases index '%s'.", searchAlias.getName(),
-            searchAlias.getIndexes().get(0));
-
-        searchAlias = SEARCH_INDEX_CLIENT.createOrUpdateAlias(new SearchAlias(searchAlias.getName(),
-            Collections.singletonList("new-index-to-alias")));
-
-        System.out.printf("Updated alias '%s' to aliases index '%s'.", searchAlias.getName(),
-            searchAlias.getIndexes().get(0));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#createOrUpdateAliasWithResponse(SearchAlias, boolean, Context)}.
-     */
-    public void createOrUpdateAliasWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context
-        Response<SearchAlias> response = SEARCH_INDEX_CLIENT.createOrUpdateAliasWithResponse(
-            new SearchAlias("my-alias", Collections.singletonList("index-to-alias")), false, new Context(KEY_1, VALUE_1));
-
-        System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
-            response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
-
-        response = SEARCH_INDEX_CLIENT.createOrUpdateAliasWithResponse(
-            new SearchAlias(response.getValue().getName(), Collections.singletonList("new-index-to-alias"))
-                .setETag(response.getValue().getETag()), true, new Context(KEY_1, VALUE_1));
-
-        System.out.printf("Response status code %d. Updated alias '%s' that aliases index '%s'.",
-            response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#getAlias(String)}.
-     */
-    public void getAliasAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getAlias#String
-        SEARCH_INDEX_ASYNC_CLIENT.getAlias("my-alias")
-            .subscribe(searchAlias -> System.out.printf("Retrieved alias '%s' that aliases index '%s'.",
-                searchAlias.getName(), searchAlias.getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getAlias#String
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#getAliasWithResponse(String)}.
-     */
-    public void getAliasWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String
-        SEARCH_INDEX_ASYNC_CLIENT.getAliasWithResponse("my-alias")
-            .subscribe(response ->
-                System.out.printf("Response status code %d. Retrieved alias '%s' that aliases index '%s'.",
-                    response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#getAlias(String)}.
-     */
-    public void getAlias() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getAlias#String
-        SearchAlias searchAlias = SEARCH_INDEX_CLIENT.getAlias("my-alias");
-
-        System.out.printf("Retrieved alias '%s' that aliases index '%s'.", searchAlias.getName(),
-            searchAlias.getIndexes().get(0));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.getAlias#String
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#getAliasWithResponse(String, Context)}.
-     */
-    public void getAliasWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context
-        Response<SearchAlias> response = SEARCH_INDEX_CLIENT.getAliasWithResponse("my-alias", new Context(KEY_1, VALUE_1));
-
-        System.out.printf("Response status code %d. Retrieved alias '%s' that aliases index '%s'.",
-            response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#deleteAlias(String)}.
-     */
-    public void deleteAliasAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String
-        SEARCH_INDEX_ASYNC_CLIENT.deleteAlias("my-alias")
-            .subscribe(ignored -> System.out.println("Deleted alias 'my-alias'."));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#deleteAliasWithResponse(SearchAlias, boolean)}.
-     */
-    public void deleteAliasWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean
-        SEARCH_INDEX_ASYNC_CLIENT.getAlias("my-alias")
-            .flatMap(searchAlias -> SEARCH_INDEX_ASYNC_CLIENT.deleteAliasWithResponse(searchAlias, true))
-            .subscribe(response -> System.out.printf("Response status code %d. Deleted alias 'my-alias'.",
-                response.getStatusCode()));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#deleteAlias(String)}.
-     */
-    public void deleteAlias() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String
-        SEARCH_INDEX_CLIENT.deleteAlias("my-alias");
-
-        System.out.println("Deleted alias 'my-alias'.");
-        // END: com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#deleteAliasWithResponse(SearchAlias, boolean, Context)}.
-     */
-    public void deleteAliasWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context
-        SearchAlias searchAlias = SEARCH_INDEX_CLIENT.getAlias("my-alias");
-
-        Response<Void> response = SEARCH_INDEX_CLIENT.deleteAliasWithResponse(searchAlias, true,
-            new Context(KEY_1, VALUE_1));
-
-        System.out.printf("Response status code %d. Deleted alias 'my-alias'.", response.getStatusCode());
-        // END: com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#listAliases()}.
-     */
-    public void listAliasesAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases
-        SEARCH_INDEX_ASYNC_CLIENT.listAliases()
-            .doOnNext(searchAlias -> System.out.printf("Listed alias '%s' that aliases index '%s'.",
-                searchAlias.getName(), searchAlias.getIndexes().get(0)))
-            .subscribe();
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#listAliases()}.
-     */
-    public void listAliases() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listAliases
-        SEARCH_INDEX_CLIENT.listAliases()
-            .forEach(searchAlias -> System.out.printf("Listed alias '%s' that aliases index '%s'.",
-                searchAlias.getName(), searchAlias.getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.listAliases
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#listAliases(Context)}.
-     */
-    public void listAliasesWithContext() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context
-        SEARCH_INDEX_CLIENT.listAliases(new Context(KEY_1, VALUE_1))
-            .forEach(searchAlias -> System.out.printf("Listed alias '%s' that aliases index '%s'.",
-                searchAlias.getName(), searchAlias.getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context
     }
 }

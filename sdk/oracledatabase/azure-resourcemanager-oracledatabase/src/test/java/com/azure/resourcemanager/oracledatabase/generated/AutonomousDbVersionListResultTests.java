@@ -5,10 +5,7 @@
 package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDbVersionInner;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDbVersionListResult;
-import com.azure.resourcemanager.oracledatabase.models.AutonomousDbVersionProperties;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class AutonomousDbVersionListResultTests {
@@ -17,16 +14,6 @@ public final class AutonomousDbVersionListResultTests {
         AutonomousDbVersionListResult model = BinaryData.fromString(
             "{\"value\":[{\"properties\":{\"version\":\"rts\",\"dbWorkload\":\"DW\",\"isDefaultForFree\":true,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":true,\"isPaidEnabled\":true},\"id\":\"mx\",\"name\":\"gkvtmelmqkrhah\",\"type\":\"ljuahaquhcdh\"}],\"nextLink\":\"ualaexqpvfadmw\"}")
             .toObject(AutonomousDbVersionListResult.class);
-        Assertions.assertEquals("ualaexqpvfadmw", model.nextLink());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        AutonomousDbVersionListResult model = new AutonomousDbVersionListResult()
-            .withValue(
-                Arrays.asList(new AutonomousDbVersionInner().withProperties(new AutonomousDbVersionProperties())))
-            .withNextLink("ualaexqpvfadmw");
-        model = BinaryData.fromObject(model).toObject(AutonomousDbVersionListResult.class);
         Assertions.assertEquals("ualaexqpvfadmw", model.nextLink());
     }
 }

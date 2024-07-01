@@ -11,12 +11,18 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Tokenizes the input into n-grams of the given size(s). This tokenizer is implemented using Apache Lucene.
  */
 @Fluent
 public final class NGramTokenizer extends LexicalTokenizer {
+
+    /*
+     * A URI fragment specifying the type of tokenizer.
+     */
+    private String odataType = "#Microsoft.Azure.Search.NGramTokenizer";
 
     /*
      * The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of maxGram.
@@ -43,8 +49,18 @@ public final class NGramTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Get the minGram property: The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value
-     * of maxGram.
+     * Get the odataType property: A URI fragment specifying the type of tokenizer.
+     *
+     * @return the odataType value.
+     */
+    @Override
+    public String getOdataType() {
+        return this.odataType;
+    }
+
+    /**
+     * Get the minGram property: The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of
+     * maxGram.
      *
      * @return the minGram value.
      */
@@ -53,8 +69,8 @@ public final class NGramTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Set the minGram property: The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value
-     * of maxGram.
+     * Set the minGram property: The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of
+     * maxGram.
      *
      * @param minGram the minGram value to set.
      * @return the NGramTokenizer object itself.
@@ -104,11 +120,14 @@ public final class NGramTokenizer extends LexicalTokenizer {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.NGramTokenizer");
         jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeNumberField("minGram", this.minGram);
         jsonWriter.writeNumberField("maxGram", this.maxGram);
         jsonWriter.writeArrayField("tokenChars", this.tokenChars,
@@ -122,30 +141,25 @@ public final class NGramTokenizer extends LexicalTokenizer {
      * @param jsonReader The JsonReader being read.
      * @return An instance of NGramTokenizer if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the NGramTokenizer.
      */
     public static NGramTokenizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
             String name = null;
+            String odataType = "#Microsoft.Azure.Search.NGramTokenizer";
             Integer minGram = null;
             Integer maxGram = null;
             List<TokenCharacterKind> tokenChars = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.NGramTokenizer".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.NGramTokenizer'. The found '@odata.type' was '"
-                                + odataType + "'.");
-                    }
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     name = reader.getString();
                     nameFound = true;
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
                 } else if ("minGram".equals(fieldName)) {
                     minGram = reader.getNullable(JsonReader::getInt);
                 } else if ("maxGram".equals(fieldName)) {
@@ -158,6 +172,7 @@ public final class NGramTokenizer extends LexicalTokenizer {
             }
             if (nameFound) {
                 NGramTokenizer deserializedNGramTokenizer = new NGramTokenizer(name);
+                deserializedNGramTokenizer.odataType = odataType;
                 deserializedNGramTokenizer.minGram = minGram;
                 deserializedNGramTokenizer.maxGram = maxGram;
                 deserializedNGramTokenizer.tokenChars = tokenChars;
@@ -174,7 +189,7 @@ public final class NGramTokenizer extends LexicalTokenizer {
      * @return the NGramTokenizer object itself.
      */
     public NGramTokenizer setTokenChars(TokenCharacterKind... tokenChars) {
-        this.tokenChars = (tokenChars == null) ? null : java.util.Arrays.asList(tokenChars);
+        this.tokenChars = (tokenChars == null) ? null : Arrays.asList(tokenChars);
         return this;
     }
 }

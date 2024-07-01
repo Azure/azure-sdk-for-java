@@ -5,74 +5,68 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
 
+import java.io.IOException;
 import java.time.Duration;
 
 /** Options to configure the Recognize operation **/
 @Fluent
-public abstract class CallMediaRecognizeOptions {
+public abstract class CallMediaRecognizeOptions implements JsonSerializable<CallMediaRecognizeOptions> {
     /*
      * Determines the type of the recognition.
      */
-    @JsonProperty(value = "recognizeInputType", required = true)
     private RecognizeInputType recognizeInputType;
 
     /*
      * The source of the audio to be played for recognition.
      */
-    @JsonProperty(value = "playPrompt")
     private PlaySource playPrompt;
 
     /*
      * If set recognize can barge into other existing
      * queued-up/currently-processing requests.
      */
-    @JsonProperty(value = "interruptCallMediaOperation")
     private Boolean interruptCallMediaOperation;
 
     /*
      * If set recognize can barge into other existing
      * queued-up/currently-processing requests.
      */
-    @JsonProperty(value = "stopCurrentOperations")
     private Boolean stopCurrentOperations;
 
     /*
      * The value to identify context of the operation.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
      * Determines if we interrupt the prompt and start recognizing.
      */
-    @JsonProperty(value = "interruptPrompt")
     private Boolean interruptPrompt;
 
     /*
      * Time to wait for first input after prompt (if any).
      */
-    @JsonProperty(value = "initialSilenceTimeout")
     private Duration initialSilenceTimeout;
 
     /*
      * Endpoint where the custom model was deployed.
      */
-    @JsonProperty(value = "speechModelEndpointId")
     private String speechModelEndpointId;
 
- /*
+    /*
      * Target participant of DTMF tone recognition.
      */
-    @JsonProperty(value = "targetParticipant")
+    @SuppressWarnings("FieldMayBeFinal")
     private CommunicationIdentifier targetParticipant;
 
     /**
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
-    @JsonProperty(value = "operationCallbackUrl")
     private String operationCallbackUrl;
 
     /**
@@ -280,4 +274,40 @@ public abstract class CallMediaRecognizeOptions {
         return this;
     }
 
+    /**
+     * Reads an instance of CallMediaRecognizeOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CallMediaRecognizeOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExternalStorage.
+     */
+    public static CallMediaRecognizeOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            // The discriminator value to identity the actual type.
+            String recognizeInputType = null;
+            final JsonReader reader1 = reader.bufferObject();
+            reader1.nextToken();
+            while (reader1.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader1.getFieldName();
+                reader1.nextToken();
+                if ("recognizeInputType".equals(fieldName)) {
+                    recognizeInputType = reader1.getString();
+                } else {
+                    reader1.skipChildren();
+                }
+            }
+            CallMediaRecognizeOptions options = null;
+            if ("dtmf".equals(recognizeInputType)) {
+                options = CallMediaRecognizeDtmfOptions.fromJson(reader1.reset());
+            } else if ("choices".equals(recognizeInputType)) {
+                options = CallMediaRecognizeChoiceOptions.fromJson(reader1.reset());
+            } else if ("speech".equals(recognizeInputType)) {
+                options = CallMediaRecognizeSpeechOptions.fromJson(reader1.reset());
+            } else if ("speechordtmf".equals(recognizeInputType)) {
+                options = CallMediaRecognizeSpeechOrDtmfOptions.fromJson(reader1.reset());
+            }
+            return options;
+        });
+    }
 }

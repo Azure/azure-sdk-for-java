@@ -18,6 +18,11 @@ import java.io.IOException;
 public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
 
     /*
+     * A URI fragment specifying the type of tokenizer.
+     */
+    private String odataType = "#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer";
+
+    /*
      * The maximum token length. Tokens longer than the maximum length are split. Maximum token length that can be used
      * is 300 characters. Tokens longer than 300 characters are first split into tokens of length 300 and then each of
      * those tokens is split based on the max token length set. Default is 255.
@@ -42,6 +47,16 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
      */
     public MicrosoftLanguageStemmingTokenizer(String name) {
         super(name);
+    }
+
+    /**
+     * Get the odataType property: A URI fragment specifying the type of tokenizer.
+     *
+     * @return the odataType value.
+     */
+    @Override
+    public String getOdataType() {
+        return this.odataType;
     }
 
     /**
@@ -110,11 +125,14 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer");
         jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeNumberField("maxTokenLength", this.maxTokenLength);
         jsonWriter.writeBooleanField("isSearchTokenizer", this.isSearchTokenizerUsed);
         jsonWriter.writeStringField("language", this.language == null ? null : this.language.toString());
@@ -127,30 +145,25 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
      * @param jsonReader The JsonReader being read.
      * @return An instance of MicrosoftLanguageStemmingTokenizer if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MicrosoftLanguageStemmingTokenizer.
      */
     public static MicrosoftLanguageStemmingTokenizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
             String name = null;
+            String odataType = "#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer";
             Integer maxTokenLength = null;
             Boolean isSearchTokenizerUsed = null;
             MicrosoftStemmingTokenizerLanguage language = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer'. The found '@odata.type' was '"
-                                + odataType + "'.");
-                    }
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     name = reader.getString();
                     nameFound = true;
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
                 } else if ("maxTokenLength".equals(fieldName)) {
                     maxTokenLength = reader.getNullable(JsonReader::getInt);
                 } else if ("isSearchTokenizer".equals(fieldName)) {
@@ -164,6 +177,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
             if (nameFound) {
                 MicrosoftLanguageStemmingTokenizer deserializedMicrosoftLanguageStemmingTokenizer
                     = new MicrosoftLanguageStemmingTokenizer(name);
+                deserializedMicrosoftLanguageStemmingTokenizer.odataType = odataType;
                 deserializedMicrosoftLanguageStemmingTokenizer.maxTokenLength = maxTokenLength;
                 deserializedMicrosoftLanguageStemmingTokenizer.isSearchTokenizerUsed = isSearchTokenizerUsed;
                 deserializedMicrosoftLanguageStemmingTokenizer.language = language;

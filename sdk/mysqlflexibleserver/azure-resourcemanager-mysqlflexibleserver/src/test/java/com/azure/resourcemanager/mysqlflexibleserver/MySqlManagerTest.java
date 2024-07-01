@@ -10,11 +10,11 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.mysqlflexibleserver.models.*;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Server;
 import com.azure.resourcemanager.resources.ResourceManager;
 import io.netty.util.internal.StringUtil;
 import org.junit.jupiter.api.Assertions;
@@ -25,7 +25,7 @@ import java.util.UUID;
 
 public class MySqlManagerTest extends TestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_EAST;
+    private static final Region REGION = Region.US_WEST;
     private String resourceGroupName = "rg" + randomPadding();
     private MySqlManager mysqlManager;
     private ResourceManager resourceManager;
@@ -33,7 +33,7 @@ public class MySqlManagerTest extends TestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         mysqlManager = MySqlManager
@@ -68,7 +68,7 @@ public class MySqlManagerTest extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCreateServer() {
         Server server = null;
         String randomPadding = randomPadding();

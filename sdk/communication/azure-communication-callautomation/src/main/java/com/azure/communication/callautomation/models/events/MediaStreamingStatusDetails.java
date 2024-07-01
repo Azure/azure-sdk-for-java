@@ -4,7 +4,6 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for MediaStreamingStatusDetails. */
@@ -65,7 +64,6 @@ public final class MediaStreamingStatusDetails extends ExpandableStringEnum<Medi
      * @param name a name to look for.
      * @return the corresponding MediaStreamingStatusDetails.
      */
-    @JsonCreator
     public static MediaStreamingStatusDetails fromString(String name) {
         return fromString(name, MediaStreamingStatusDetails.class);
     }

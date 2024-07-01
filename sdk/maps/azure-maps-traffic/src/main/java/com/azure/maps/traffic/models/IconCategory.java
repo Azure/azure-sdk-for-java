@@ -5,70 +5,111 @@
 package com.azure.maps.traffic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IconCategory. */
+/**
+ * The icon category associated with this incident. Values are numbers in the range 0-13, with the following meanings --
+ * 0: Unknown, 1: Accident, 2: Fog, 3: Dangerous Conditions, 4: Rain, 5: Ice, 6: Jam, 7: Lane Closed, 8: Road Closed, 9:
+ * Road Works, 10: Wind, 11: Flooding, 12: Detour, 13: Cluster.
+ */
 public final class IconCategory extends ExpandableStringEnum<IconCategory> {
-    /** Static value 0 for IconCategory. */
+    /**
+     * Unknown.
+     */
     public static final IconCategory UNKNOWN = fromInt(0);
 
-    /** Static value 1 for IconCategory. */
+    /**
+     * Accident.
+     */
     public static final IconCategory ACCIDENT = fromInt(1);
 
-    /** Static value 2 for IconCategory. */
+    /**
+     * Fog.
+     */
     public static final IconCategory FOG = fromInt(2);
 
-    /** Static value 3 for IconCategory. */
+    /**
+     * Dangerous Conditions.
+     */
     public static final IconCategory DANGEROUS_CONDITIONS = fromInt(3);
 
-    /** Static value 4 for IconCategory. */
+    /**
+     * Rain.
+     */
     public static final IconCategory RAIN = fromInt(4);
 
-    /** Static value 5 for IconCategory. */
+    /**
+     * Ice.
+     */
     public static final IconCategory ICE = fromInt(5);
 
-    /** Static value 6 for IconCategory. */
+    /**
+     * Jam.
+     */
     public static final IconCategory JAM = fromInt(6);
 
-    /** Static value 7 for IconCategory. */
+    /**
+     * Lane Closed.
+     */
     public static final IconCategory LANE_CLOSED = fromInt(7);
 
-    /** Static value 8 for IconCategory. */
+    /**
+     * Road Closed.
+     */
     public static final IconCategory ROAD_CLOSED = fromInt(8);
 
-    /** Static value 9 for IconCategory. */
+    /**
+     * Road Works.
+     */
     public static final IconCategory ROAD_WORKS = fromInt(9);
 
-    /** Static value 10 for IconCategory. */
+    /**
+     * Wind.
+     */
     public static final IconCategory WIND = fromInt(10);
 
-    /** Static value 11 for IconCategory. */
+    /**
+     * Flooding.
+     */
     public static final IconCategory FLOODING = fromInt(11);
 
-    /** Static value 12 for IconCategory. */
+    /**
+     * Detour.
+     */
     public static final IconCategory DETOUR = fromInt(12);
 
-    /** Static value 13 for IconCategory. */
+    /**
+     * Cluster: Returned if a cluster contains incidents with different icon categories.
+     */
     public static final IconCategory CLUSTER = fromInt(13);
 
-    /** Static value 14 for IconCategory. */
+    /**
+     * Broken Down Vehicle.
+     */
     public static final IconCategory BROKEN_DOWN_VEHICLE = fromInt(14);
 
     /**
+     * Creates a new instance of IconCategory value.
+     * 
+     * @deprecated Use the {@link #fromInt(int)} factory method.
+     */
+    @Deprecated
+    public IconCategory() {
+    }
+
+    /**
      * Creates or finds a IconCategory from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IconCategory.
      */
-    @JsonCreator
     public static IconCategory fromInt(int name) {
         return fromString(String.valueOf(name), IconCategory.class);
     }
 
     /**
      * Gets known IconCategory values.
-     *
+     * 
      * @return known IconCategory values.
      */
     public static Collection<IconCategory> values() {

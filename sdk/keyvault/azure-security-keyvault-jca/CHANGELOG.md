@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fix bug: AccessTokenUtil does not urlencode its parameters when getting an access token. ([40616](https://github.com/Azure/azure-sdk-for-java/issues/40616))
 
 ### Other Changes
 

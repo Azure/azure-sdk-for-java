@@ -5,34 +5,38 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The cause of the traffic event. Can contain mainCauseCode and subCauseCode elements. Can be used to define
  * iconography and descriptions.
  */
 @Immutable
-public final class RouteSectionTecCause {
+public final class RouteSectionTecCause implements JsonSerializable<RouteSectionTecCause> {
     /*
-     * The main cause of the traffic event. Contains a value in the
-     * tec002:CauseCode table, as defined in the
-     * [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard.
+     * The main cause of the traffic event. Contains a value in the tec002:CauseCode table, as defined in the [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard.
      */
-    @JsonProperty(value = "mainCauseCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer mainCauseCode;
 
     /*
-     * The subcause of the traffic event. Contains a value in the sub cause
-     * table defined by the mainCauseCode, as defined in the
-     * [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard.
+     * The subcause of the traffic event. Contains a value in the sub cause table defined by the mainCauseCode, as defined in the [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard.
      */
-    @JsonProperty(value = "subCauseCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer subCauseCode;
+
+    /**
+     * Creates an instance of RouteSectionTecCause class.
+     */
+    public RouteSectionTecCause() {
+    }
 
     /**
      * Get the mainCauseCode property: The main cause of the traffic event. Contains a value in the tec002:CauseCode
      * table, as defined in the [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard.
-     *
+     * 
      * @return the mainCauseCode value.
      */
     public Integer getMainCauseCode() {
@@ -42,10 +46,47 @@ public final class RouteSectionTecCause {
     /**
      * Get the subCauseCode property: The subcause of the traffic event. Contains a value in the sub cause table defined
      * by the mainCauseCode, as defined in the [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard.
-     *
+     * 
      * @return the subCauseCode value.
      */
     public Integer getSubCauseCode() {
         return this.subCauseCode;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteSectionTecCause from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteSectionTecCause if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteSectionTecCause.
+     */
+    public static RouteSectionTecCause fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteSectionTecCause deserializedRouteSectionTecCause = new RouteSectionTecCause();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mainCauseCode".equals(fieldName)) {
+                    deserializedRouteSectionTecCause.mainCauseCode = reader.getNullable(JsonReader::getInt);
+                } else if ("subCauseCode".equals(fieldName)) {
+                    deserializedRouteSectionTecCause.subCauseCode = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteSectionTecCause;
+        });
     }
 }

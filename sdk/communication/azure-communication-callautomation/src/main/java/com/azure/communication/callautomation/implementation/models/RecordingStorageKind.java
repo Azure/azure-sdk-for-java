@@ -5,29 +5,46 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecordingStorageKind. */
+/**
+ * Defines the kind of external storage.
+ */
 public final class RecordingStorageKind extends ExpandableStringEnum<RecordingStorageKind> {
-    /** Static value azureCommunicationServices for RecordingStorageKind. */
+    /**
+     * Static value azureCommunicationServices for RecordingStorageKind.
+     */
     public static final RecordingStorageKind AZURE_COMMUNICATION_SERVICES = fromString("azureCommunicationServices");
 
-    /** Static value azureBlobStorage for RecordingStorageKind. */
+    /**
+     * Static value azureBlobStorage for RecordingStorageKind.
+     */
     public static final RecordingStorageKind AZURE_BLOB_STORAGE = fromString("azureBlobStorage");
 
     /**
+     * Creates a new instance of RecordingStorageKind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecordingStorageKind() {
+    }
+
+    /**
      * Creates or finds a RecordingStorageKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecordingStorageKind.
      */
-    @JsonCreator
     public static RecordingStorageKind fromString(String name) {
         return fromString(name, RecordingStorageKind.class);
     }
 
-    /** @return known RecordingStorageKind values. */
+    /**
+     * Gets known RecordingStorageKind values.
+     * 
+     * @return known RecordingStorageKind values.
+     */
     public static Collection<RecordingStorageKind> values() {
         return values(RecordingStorageKind.class);
     }

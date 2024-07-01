@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.oracledatabase.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * PrivateIpAddress resource properties.
  */
-@Fluent
+@Immutable
 public final class PrivateIpAddressPropertiesInner implements JsonSerializable<PrivateIpAddressPropertiesInner> {
     /*
      * PrivateIpAddresses displayName
@@ -45,7 +45,7 @@ public final class PrivateIpAddressPropertiesInner implements JsonSerializable<P
     /**
      * Creates an instance of PrivateIpAddressPropertiesInner class.
      */
-    public PrivateIpAddressPropertiesInner() {
+    private PrivateIpAddressPropertiesInner() {
     }
 
     /**
@@ -58,34 +58,12 @@ public final class PrivateIpAddressPropertiesInner implements JsonSerializable<P
     }
 
     /**
-     * Set the displayName property: PrivateIpAddresses displayName.
-     * 
-     * @param displayName the displayName value to set.
-     * @return the PrivateIpAddressPropertiesInner object itself.
-     */
-    public PrivateIpAddressPropertiesInner withDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
-    }
-
-    /**
      * Get the hostnameLabel property: PrivateIpAddresses hostnameLabel.
      * 
      * @return the hostnameLabel value.
      */
     public String hostnameLabel() {
         return this.hostnameLabel;
-    }
-
-    /**
-     * Set the hostnameLabel property: PrivateIpAddresses hostnameLabel.
-     * 
-     * @param hostnameLabel the hostnameLabel value to set.
-     * @return the PrivateIpAddressPropertiesInner object itself.
-     */
-    public PrivateIpAddressPropertiesInner withHostnameLabel(String hostnameLabel) {
-        this.hostnameLabel = hostnameLabel;
-        return this;
     }
 
     /**
@@ -98,17 +76,6 @@ public final class PrivateIpAddressPropertiesInner implements JsonSerializable<P
     }
 
     /**
-     * Set the ocid property: PrivateIpAddresses Id.
-     * 
-     * @param ocid the ocid value to set.
-     * @return the PrivateIpAddressPropertiesInner object itself.
-     */
-    public PrivateIpAddressPropertiesInner withOcid(String ocid) {
-        this.ocid = ocid;
-        return this;
-    }
-
-    /**
      * Get the ipAddress property: PrivateIpAddresses ipAddress.
      * 
      * @return the ipAddress value.
@@ -118,34 +85,12 @@ public final class PrivateIpAddressPropertiesInner implements JsonSerializable<P
     }
 
     /**
-     * Set the ipAddress property: PrivateIpAddresses ipAddress.
-     * 
-     * @param ipAddress the ipAddress value to set.
-     * @return the PrivateIpAddressPropertiesInner object itself.
-     */
-    public PrivateIpAddressPropertiesInner withIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-        return this;
-    }
-
-    /**
      * Get the subnetId property: PrivateIpAddresses subnetId.
      * 
      * @return the subnetId value.
      */
     public String subnetId() {
         return this.subnetId;
-    }
-
-    /**
-     * Set the subnetId property: PrivateIpAddresses subnetId.
-     * 
-     * @param subnetId the subnetId value to set.
-     * @return the PrivateIpAddressPropertiesInner object itself.
-     */
-    public PrivateIpAddressPropertiesInner withSubnetId(String subnetId) {
-        this.subnetId = subnetId;
-        return this;
     }
 
     /**

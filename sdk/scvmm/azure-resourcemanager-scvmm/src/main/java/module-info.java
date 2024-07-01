@@ -4,16 +4,10 @@
 
 module com.azure.resourcemanager.scvmm {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.scvmm;
     exports com.azure.resourcemanager.scvmm.fluent;
     exports com.azure.resourcemanager.scvmm.fluent.models;
     exports com.azure.resourcemanager.scvmm.models;
-
-    opens com.azure.resourcemanager.scvmm.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.scvmm.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.scvmm.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.scvmm.models to com.azure.core, com.fasterxml.jackson.databind;
 }

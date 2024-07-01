@@ -5,29 +5,31 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** This object is returned from a successful Route Directions call. */
+/**
+ * This object is returned from a successful Route Directions call.
+ */
 @Fluent
-public class RouteDirections {
+public class RouteDirections implements JsonSerializable<RouteDirections> {
     /*
      * Format Version property
      */
-    @JsonProperty(value = "formatVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String formatVersion;
 
     /*
      * Routes array
      */
-    @JsonProperty(value = "routes", access = JsonProperty.Access.WRITE_ONLY)
     private List<MapsSearchRoute> routes;
 
     /*
-     * Optimized sequence of waypoints. It shows the index from the user
-     * provided waypoint sequence for the original and optimized list. For
-     * instance, a response:
-     *
+     * Optimized sequence of waypoints. It shows the index from the user provided waypoint sequence for the original and optimized list. For instance, a response: 
+     * 
      * ```
      * <optimizedWaypoints>
      * <waypoint providedIndex="0" optimizedIndex="1"/>
@@ -35,23 +37,25 @@ public class RouteDirections {
      * <waypoint providedIndex="2" optimizedIndex="0"/>
      * </optimizedWaypoints>
      * ```
-     *
-     * means that the original sequence is [0, 1, 2] and optimized sequence is
-     * [1, 2, 0]. Since the index starts by 0 the original is "first, second,
-     * third" while the optimized is "second, third, first".
+     * 
+     * means that the original sequence is [0, 1, 2] and optimized sequence is [1, 2, 0]. Since the index starts by 0 the original is "first, second, third" while the optimized is "second, third, first".
      */
-    @JsonProperty(value = "optimizedWaypoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<RouteOptimizedWaypoint> optimizedWaypoints;
 
     /*
      * Reports the effective settings used in the current call.
      */
-    @JsonProperty(value = "report")
     private RouteReport report;
 
     /**
+     * Creates an instance of RouteDirections class.
+     */
+    public RouteDirections() {
+    }
+
+    /**
      * Get the formatVersion property: Format Version property.
-     *
+     * 
      * @return the formatVersion value.
      */
     public String getFormatVersion() {
@@ -59,8 +63,19 @@ public class RouteDirections {
     }
 
     /**
+     * Set the formatVersion property: Format Version property.
+     * 
+     * @param formatVersion the formatVersion value to set.
+     * @return the RouteDirections object itself.
+     */
+    RouteDirections setFormatVersion(String formatVersion) {
+        this.formatVersion = formatVersion;
+        return this;
+    }
+
+    /**
      * Get the routes property: Routes array.
-     *
+     * 
      * @return the routes value.
      */
     public List<MapsSearchRoute> getRoutes() {
@@ -68,16 +83,31 @@ public class RouteDirections {
     }
 
     /**
+     * Set the routes property: Routes array.
+     * 
+     * @param routes the routes value to set.
+     * @return the RouteDirections object itself.
+     */
+    RouteDirections setRoutes(List<MapsSearchRoute> routes) {
+        this.routes = routes;
+        return this;
+    }
+
+    /**
      * Get the optimizedWaypoints property: Optimized sequence of waypoints. It shows the index from the user provided
      * waypoint sequence for the original and optimized list. For instance, a response:
-     *
-     * <p>``` &lt;optimizedWaypoints&gt; &lt;waypoint providedIndex="0" optimizedIndex="1"/&gt; &lt;waypoint
-     * providedIndex="1" optimizedIndex="2"/&gt; &lt;waypoint providedIndex="2" optimizedIndex="0"/&gt;
-     * &lt;/optimizedWaypoints&gt; ```
-     *
-     * <p>means that the original sequence is [0, 1, 2] and optimized sequence is [1, 2, 0]. Since the index starts by 0
+     * 
+     * ```
+     * &lt;optimizedWaypoints&gt;
+     * &lt;waypoint providedIndex="0" optimizedIndex="1"/&gt;
+     * &lt;waypoint providedIndex="1" optimizedIndex="2"/&gt;
+     * &lt;waypoint providedIndex="2" optimizedIndex="0"/&gt;
+     * &lt;/optimizedWaypoints&gt;
+     * ```
+     * 
+     * means that the original sequence is [0, 1, 2] and optimized sequence is [1, 2, 0]. Since the index starts by 0
      * the original is "first, second, third" while the optimized is "second, third, first".
-     *
+     * 
      * @return the optimizedWaypoints value.
      */
     public List<RouteOptimizedWaypoint> getOptimizedWaypoints() {
@@ -85,8 +115,31 @@ public class RouteDirections {
     }
 
     /**
+     * Set the optimizedWaypoints property: Optimized sequence of waypoints. It shows the index from the user provided
+     * waypoint sequence for the original and optimized list. For instance, a response:
+     * 
+     * ```
+     * &lt;optimizedWaypoints&gt;
+     * &lt;waypoint providedIndex="0" optimizedIndex="1"/&gt;
+     * &lt;waypoint providedIndex="1" optimizedIndex="2"/&gt;
+     * &lt;waypoint providedIndex="2" optimizedIndex="0"/&gt;
+     * &lt;/optimizedWaypoints&gt;
+     * ```
+     * 
+     * means that the original sequence is [0, 1, 2] and optimized sequence is [1, 2, 0]. Since the index starts by 0
+     * the original is "first, second, third" while the optimized is "second, third, first".
+     * 
+     * @param optimizedWaypoints the optimizedWaypoints value to set.
+     * @return the RouteDirections object itself.
+     */
+    RouteDirections setOptimizedWaypoints(List<RouteOptimizedWaypoint> optimizedWaypoints) {
+        this.optimizedWaypoints = optimizedWaypoints;
+        return this;
+    }
+
+    /**
      * Get the report property: Reports the effective settings used in the current call.
-     *
+     * 
      * @return the report value.
      */
     public RouteReport getReport() {
@@ -95,12 +148,57 @@ public class RouteDirections {
 
     /**
      * Set the report property: Reports the effective settings used in the current call.
-     *
+     * 
      * @param report the report value to set.
      * @return the RouteDirections object itself.
      */
     public RouteDirections setReport(RouteReport report) {
         this.report = report;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("report", this.report);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteDirections from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteDirections if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteDirections.
+     */
+    public static RouteDirections fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteDirections deserializedRouteDirections = new RouteDirections();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("formatVersion".equals(fieldName)) {
+                    deserializedRouteDirections.formatVersion = reader.getString();
+                } else if ("routes".equals(fieldName)) {
+                    List<MapsSearchRoute> routes = reader.readArray(reader1 -> MapsSearchRoute.fromJson(reader1));
+                    deserializedRouteDirections.routes = routes;
+                } else if ("optimizedWaypoints".equals(fieldName)) {
+                    List<RouteOptimizedWaypoint> optimizedWaypoints
+                        = reader.readArray(reader1 -> RouteOptimizedWaypoint.fromJson(reader1));
+                    deserializedRouteDirections.optimizedWaypoints = optimizedWaypoints;
+                } else if ("report".equals(fieldName)) {
+                    deserializedRouteDirections.report = RouteReport.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteDirections;
+        });
     }
 }

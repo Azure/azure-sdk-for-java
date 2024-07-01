@@ -8,118 +8,124 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AvailabilitySets. */
+/**
+ * Resource collection API of AvailabilitySets.
+ */
 public interface AvailabilitySets {
     /**
-     * Implements AvailabilitySet GET method.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * Implements GET AvailabilitySets in a subscription.
+     * 
+     * List of AvailabilitySets in a subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a AvailabilitySet list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<AvailabilitySet> list();
+
+    /**
+     * Implements GET AvailabilitySets in a subscription.
+     * 
+     * List of AvailabilitySets in a subscription.
+     * 
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AvailabilitySets resource definition.
+     * @return the response of a AvailabilitySet list operation as paginated response with {@link PagedIterable}.
      */
-    AvailabilitySet getByResourceGroup(String resourceGroupName, String availabilitySetName);
+    PagedIterable<AvailabilitySet> list(Context context);
 
     /**
+     * Implements GET AvailabilitySets in a resource group.
+     * 
+     * List of AvailabilitySets in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a AvailabilitySet list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<AvailabilitySet> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * Implements GET AvailabilitySets in a resource group.
+     * 
+     * List of AvailabilitySets in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a AvailabilitySet list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<AvailabilitySet> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Gets an AvailabilitySet.
+     * 
      * Implements AvailabilitySet GET method.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the AvailabilitySets resource definition along with {@link Response}.
      */
-    Response<AvailabilitySet> getByResourceGroupWithResponse(
-        String resourceGroupName, String availabilitySetName, Context context);
+    Response<AvailabilitySet> getByResourceGroupWithResponse(String resourceGroupName,
+        String availabilitySetResourceName, Context context);
 
     /**
-     * Deregisters the ScVmm availability set from Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String availabilitySetName, Boolean force);
-
-    /**
-     * Deregisters the ScVmm availability set from Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String availabilitySetName);
-
-    /**
-     * Deregisters the ScVmm availability set from Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName Name of the AvailabilitySet.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String availabilitySetName, Boolean force, Context context);
-
-    /**
-     * List of AvailabilitySets in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AvailabilitySets as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<AvailabilitySet> listByResourceGroup(String resourceGroupName);
-
-    /**
-     * List of AvailabilitySets in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AvailabilitySets as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<AvailabilitySet> listByResourceGroup(String resourceGroupName, Context context);
-
-    /**
-     * List of AvailabilitySets in a subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AvailabilitySets as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<AvailabilitySet> list();
-
-    /**
-     * List of AvailabilitySets in a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AvailabilitySets as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<AvailabilitySet> list(Context context);
-
-    /**
+     * Gets an AvailabilitySet.
+     * 
      * Implements AvailabilitySet GET method.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the AvailabilitySets resource definition.
+     */
+    AvailabilitySet getByResourceGroup(String resourceGroupName, String availabilitySetResourceName);
+
+    /**
+     * Implements AvailabilitySet DELETE method.
+     * 
+     * Deregisters the ScVmm availability set from Azure.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String availabilitySetResourceName);
+
+    /**
+     * Implements AvailabilitySet DELETE method.
+     * 
+     * Deregisters the ScVmm availability set from Azure.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param availabilitySetResourceName Name of the AvailabilitySet.
+     * @param force Forces the resource to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String availabilitySetResourceName, ForceDelete force, Context context);
+
+    /**
+     * Gets an AvailabilitySet.
+     * 
+     * Implements AvailabilitySet GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -129,8 +135,10 @@ public interface AvailabilitySets {
     AvailabilitySet getById(String id);
 
     /**
+     * Gets an AvailabilitySet.
+     * 
      * Implements AvailabilitySet GET method.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -141,8 +149,10 @@ public interface AvailabilitySets {
     Response<AvailabilitySet> getByIdWithResponse(String id, Context context);
 
     /**
+     * Implements AvailabilitySet DELETE method.
+     * 
      * Deregisters the ScVmm availability set from Azure.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -151,21 +161,22 @@ public interface AvailabilitySets {
     void deleteById(String id);
 
     /**
+     * Implements AvailabilitySet DELETE method.
+     * 
      * Deregisters the ScVmm availability set from Azure.
-     *
+     * 
      * @param id the resource ID.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * @param force Forces the resource to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Boolean force, Context context);
+    void deleteByIdWithResponse(String id, ForceDelete force, Context context);
 
     /**
      * Begins definition for a new AvailabilitySet resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AvailabilitySet definition.
      */

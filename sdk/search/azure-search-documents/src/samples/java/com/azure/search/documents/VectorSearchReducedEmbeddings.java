@@ -19,8 +19,8 @@ import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
-import com.azure.search.documents.indexes.models.AzureOpenAIParameters;
 import com.azure.search.documents.indexes.models.AzureOpenAIVectorizer;
+import com.azure.search.documents.indexes.models.AzureOpenAIVectorizerParameters;
 import com.azure.search.documents.indexes.models.HnswAlgorithmConfiguration;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -55,8 +55,8 @@ public class VectorSearchReducedEmbeddings {
         createVectorIndex(vectorIndex);
 
         // Now, we can instantiate the 'SearchClient' and upload the documents to the 'Hotel' index we created earlier.
-        SearchClient searchClient = new SearchClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("SEARCH_ENDPOINT"))
+        SearchClient searchClient = new SearchClientBuilder().endpoint(
+                Configuration.getGlobalConfiguration().get("SEARCH_ENDPOINT"))
             .indexName("hotel")
             .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("SEARCH_API_KEY")))
             .buildClient();
@@ -120,14 +120,14 @@ public class VectorSearchReducedEmbeddings {
                     .setVectorSearchDimensions(modelDimensions)
                     .setVectorSearchProfileName(vectorSearchProfileName))
             .setVectorSearch(new VectorSearch().setProfiles(
-                    new VectorSearchProfile(vectorSearchProfileName, vectorSearchHnswConfig).setVectorizer("openai"))
+                    new VectorSearchProfile(vectorSearchProfileName, vectorSearchHnswConfig).setVectorizerName("openai"))
                 .setAlgorithms(new HnswAlgorithmConfiguration(vectorSearchHnswConfig))
-                .setVectorizers(Collections.singletonList(new AzureOpenAIVectorizer("openai").setAzureOpenAIParameters(
-                    new AzureOpenAIParameters().setResourceUri(
+                .setVectorizers(Collections.singletonList(new AzureOpenAIVectorizer("openai").setParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl(
                             Configuration.getGlobalConfiguration().get("OPENAI_ENDPOINT"))
                         .setApiKey(Configuration.getGlobalConfiguration().get("OPENAI_KEY"))
-                        .setDeploymentId(deploymentId)
-                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE)))));
+                        .setDeploymentName(deploymentId)
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING_3_LARGE)))));
     }
 
     public static void createVectorIndex(SearchIndex vectorIndex) {
@@ -280,13 +280,9 @@ public class VectorSearchReducedEmbeddings {
         String key = Configuration.getGlobalConfiguration().get("OPENAI_API_KEY");
         KeyCredential credential = new KeyCredential(key);
 
-        OpenAIClient openAIClient = new OpenAIClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildClient();
-        EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(Collections.singletonList(input))
-            .setModel("my-text-embedding-3-small")
-            .setDimensions(256);
+        OpenAIClient openAIClient = new OpenAIClientBuilder().endpoint(endpoint).credential(credential).buildClient();
+        EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(Collections.singletonList(input)).setModel(
+            "my-text-embedding-3-small").setDimensions(256);
 
         Embeddings embeddings = openAIClient.getEmbeddings("my-text-embedding-3-small", embeddingsOptions);
         return embeddings.getData().get(0).getEmbedding();
@@ -295,8 +291,7 @@ public class VectorSearchReducedEmbeddings {
     public static List<VectorHotel> getHotelDocuments() {
         // In the sample code below, we are using 'getEmbeddings' method mentioned above to get embeddings for the
         // vector fields named 'DescriptionVector' and 'CategoryVector'.
-        return Arrays.asList(
-            new VectorHotel().setHotelId("1")
+        return Arrays.asList(new VectorHotel().setHotelId("1")
                 .setHotelName("Fancy Stay")
                 .setDescription("Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a "
                     + "spa, and a really helpful concierge. The location is perfect -- right downtown, close to "
@@ -306,8 +301,7 @@ public class VectorSearchReducedEmbeddings {
                         + "and a really helpful concierge. The location is perfect -- right downtown, close to all "
                         + "the tourist attractions. We highly recommend this hotel."))
                 .setCategory("Luxury")
-                .setCategoryVector(getEmbeddings("Luxury")),
-            new VectorHotel().setHotelId("2")
+                .setCategoryVector(getEmbeddings("Luxury")), new VectorHotel().setHotelId("2")
                 .setHotelName("Roach Motel")
                 .setDescription("Cheapest hotel in town. Infact, a motel.")
                 .setDescriptionVector(getEmbeddings("Cheapest hotel in town. Infact, a motel."))
@@ -327,10 +321,9 @@ public class VectorSearchReducedEmbeddings {
      * of nearest neighbors to return as top hits.
      */
     public static void vectorSearch(SearchClient searchClient) {
-        SearchPagedIterable response = searchClient.search(null, new SearchOptions()
-            .setVectorSearchOptions(new VectorSearchOptions()
-                .setQueries(new VectorizableTextQuery("Luxury hotels in town")
-                    .setKNearestNeighborsCount(3)
+        SearchPagedIterable response = searchClient.search(null, new SearchOptions().setVectorSearchOptions(
+            new VectorSearchOptions().setQueries(
+                new VectorizableTextQuery("Luxury hotels in town").setKNearestNeighborsCount(3)
                     .setFields("DescriptionVector"))), Context.NONE);
 
         int count = 0;

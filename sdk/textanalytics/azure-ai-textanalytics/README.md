@@ -62,7 +62,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.4.0</version>
+    <version>5.4.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

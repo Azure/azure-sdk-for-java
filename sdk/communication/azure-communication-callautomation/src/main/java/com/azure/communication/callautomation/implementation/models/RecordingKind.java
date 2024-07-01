@@ -5,32 +5,51 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecordingKind. */
+/**
+ * Defines values for RecordingKind.
+ */
 public final class RecordingKind extends ExpandableStringEnum<RecordingKind> {
-    /** Static value azureCommunicationServices for RecordingKind. */
+    /**
+     * Static value azureCommunicationServices for RecordingKind.
+     */
     public static final RecordingKind AZURE_COMMUNICATION_SERVICES = fromString("azureCommunicationServices");
 
-    /** Static value teams for RecordingKind. */
+    /**
+     * Static value teams for RecordingKind.
+     */
     public static final RecordingKind TEAMS = fromString("teams");
 
-    /** Static value teamsCompliance for RecordingKind. */
+    /**
+     * Static value teamsCompliance for RecordingKind.
+     */
     public static final RecordingKind TEAMS_COMPLIANCE = fromString("teamsCompliance");
 
     /**
+     * Creates a new instance of RecordingKind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecordingKind() {
+    }
+
+    /**
      * Creates or finds a RecordingKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecordingKind.
      */
-    @JsonCreator
     public static RecordingKind fromString(String name) {
         return fromString(name, RecordingKind.class);
     }
 
-    /** @return known RecordingKind values. */
+    /**
+     * Gets known RecordingKind values.
+     * 
+     * @return known RecordingKind values.
+     */
     public static Collection<RecordingKind> values() {
         return values(RecordingKind.class);
     }

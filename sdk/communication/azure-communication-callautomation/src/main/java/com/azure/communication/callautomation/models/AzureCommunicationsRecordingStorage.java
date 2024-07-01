@@ -3,7 +3,10 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The AzureBlobContainerRecordingStorage model. */
 public class AzureCommunicationsRecordingStorage extends RecordingStorage {
@@ -11,11 +14,10 @@ public class AzureCommunicationsRecordingStorage extends RecordingStorage {
     /*
      * Defines the kind of recording storage
      */
-    @JsonProperty(value = "recordingStorageType", required = true)
-    private RecordingStorageType recordingStorageType;
+    private final RecordingStorageType recordingStorageType;
 
-    /** 
-     * Creates an instance of AzureBlobContainerRecordingStorage class. 
+    /**
+     * Creates an instance of AzureBlobContainerRecordingStorage class.
      */
     public AzureCommunicationsRecordingStorage() {
         this.recordingStorageType = RecordingStorageType.fromString("AzureCommunicationServices");
@@ -29,5 +31,26 @@ public class AzureCommunicationsRecordingStorage extends RecordingStorage {
     @Override
     public RecordingStorageType getRecordingStorageType() {
         return this.recordingStorageType;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recordingStorageType", recordingStorageType != null ? recordingStorageType.toString() : null);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureCommunicationsRecordingStorage from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureCommunicationsRecordingStorage if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureCommunicationsRecordingStorage.
+     */
+    public static AzureCommunicationsRecordingStorage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            return new AzureCommunicationsRecordingStorage();
+        });
     }
 }

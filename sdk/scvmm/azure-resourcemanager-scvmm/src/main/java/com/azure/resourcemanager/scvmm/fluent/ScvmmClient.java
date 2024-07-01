@@ -7,95 +7,111 @@ package com.azure.resourcemanager.scvmm.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for ScvmmClient class. */
+/**
+ * The interface for ScvmmClient class.
+ */
 public interface ScvmmClient {
     /**
-     * Gets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-     *
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the VmmServersClient object to access its operations.
-     *
-     * @return the VmmServersClient object.
+     * Gets the VirtualMachineInstancesClient object to access its operations.
+     * 
+     * @return the VirtualMachineInstancesClient object.
      */
-    VmmServersClient getVmmServers();
+    VirtualMachineInstancesClient getVirtualMachineInstances();
+
+    /**
+     * Gets the GuestAgentsClient object to access its operations.
+     * 
+     * @return the GuestAgentsClient object.
+     */
+    GuestAgentsClient getGuestAgents();
+
+    /**
+     * Gets the VmInstanceHybridIdentityMetadatasClient object to access its operations.
+     * 
+     * @return the VmInstanceHybridIdentityMetadatasClient object.
+     */
+    VmInstanceHybridIdentityMetadatasClient getVmInstanceHybridIdentityMetadatas();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
-     * Gets the CloudsClient object to access its operations.
-     *
-     * @return the CloudsClient object.
-     */
-    CloudsClient getClouds();
-
-    /**
-     * Gets the VirtualNetworksClient object to access its operations.
-     *
-     * @return the VirtualNetworksClient object.
-     */
-    VirtualNetworksClient getVirtualNetworks();
-
-    /**
-     * Gets the VirtualMachinesClient object to access its operations.
-     *
-     * @return the VirtualMachinesClient object.
-     */
-    VirtualMachinesClient getVirtualMachines();
-
-    /**
-     * Gets the VirtualMachineTemplatesClient object to access its operations.
-     *
-     * @return the VirtualMachineTemplatesClient object.
-     */
-    VirtualMachineTemplatesClient getVirtualMachineTemplates();
-
-    /**
      * Gets the AvailabilitySetsClient object to access its operations.
-     *
+     * 
      * @return the AvailabilitySetsClient object.
      */
     AvailabilitySetsClient getAvailabilitySets();
 
     /**
+     * Gets the CloudsClient object to access its operations.
+     * 
+     * @return the CloudsClient object.
+     */
+    CloudsClient getClouds();
+
+    /**
+     * Gets the VirtualMachineTemplatesClient object to access its operations.
+     * 
+     * @return the VirtualMachineTemplatesClient object.
+     */
+    VirtualMachineTemplatesClient getVirtualMachineTemplates();
+
+    /**
+     * Gets the VirtualNetworksClient object to access its operations.
+     * 
+     * @return the VirtualNetworksClient object.
+     */
+    VirtualNetworksClient getVirtualNetworks();
+
+    /**
+     * Gets the VmmServersClient object to access its operations.
+     * 
+     * @return the VmmServersClient object.
+     */
+    VmmServersClient getVmmServers();
+
+    /**
      * Gets the InventoryItemsClient object to access its operations.
-     *
+     * 
      * @return the InventoryItemsClient object.
      */
     InventoryItemsClient getInventoryItems();

@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Represents a search index definition, which describes the fields and search behavior of an index.
@@ -69,11 +70,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * The character filters for the index.
      */
     private List<CharFilter> charFilters;
-
-    /*
-     * The normalizers for the index.
-     */
-    private List<LexicalNormalizer> normalizers;
 
     /*
      * A description of an encryption key that you create in Azure Key Vault. This key is used to provide an additional
@@ -166,9 +162,9 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     }
 
     /**
-     * Get the defaultScoringProfile property: The name of the scoring profile to use if none is specified in the
-     * query. If this property is not set and no scoring profile is specified in the query, then default scoring
-     * (tf-idf) will be used.
+     * Get the defaultScoringProfile property: The name of the scoring profile to use if none is specified in the query.
+     * If this property is not set and no scoring profile is specified in the query, then default scoring (tf-idf) will
+     * be used.
      *
      * @return the defaultScoringProfile value.
      */
@@ -177,9 +173,9 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     }
 
     /**
-     * Set the defaultScoringProfile property: The name of the scoring profile to use if none is specified in the
-     * query. If this property is not set and no scoring profile is specified in the query, then default scoring
-     * (tf-idf) will be used.
+     * Set the defaultScoringProfile property: The name of the scoring profile to use if none is specified in the query.
+     * If this property is not set and no scoring profile is specified in the query, then default scoring (tf-idf) will
+     * be used.
      *
      * @param defaultScoringProfile the defaultScoringProfile value to set.
      * @return the SearchIndex object itself.
@@ -310,26 +306,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     }
 
     /**
-     * Get the normalizers property: The normalizers for the index.
-     *
-     * @return the normalizers value.
-     */
-    public List<LexicalNormalizer> getNormalizers() {
-        return this.normalizers;
-    }
-
-    /**
-     * Set the normalizers property: The normalizers for the index.
-     *
-     * @param normalizers the normalizers value to set.
-     * @return the SearchIndex object itself.
-     */
-    public SearchIndex setNormalizers(List<LexicalNormalizer> normalizers) {
-        this.normalizers = normalizers;
-        return this;
-    }
-
-    /**
      * Get the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
      * is used to provide an additional level of encryption-at-rest for your data when you want full assurance that no
      * one, not even Microsoft, can decrypt your data. Once you have encrypted your data, it will always remain
@@ -445,6 +421,9 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -459,7 +438,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         jsonWriter.writeArrayField("tokenizers", this.tokenizers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("tokenFilters", this.tokenFilters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("charFilters", this.charFilters, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("normalizers", this.normalizers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
         jsonWriter.writeJsonField("similarity", this.similarity);
         jsonWriter.writeJsonField("semantic", this.semanticSearch);
@@ -490,7 +468,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             List<LexicalTokenizer> tokenizers = null;
             List<TokenFilter> tokenFilters = null;
             List<CharFilter> charFilters = null;
-            List<LexicalNormalizer> normalizers = null;
             SearchResourceEncryptionKey encryptionKey = null;
             SimilarityAlgorithm similarity = null;
             SemanticSearch semanticSearch = null;
@@ -520,8 +497,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                     tokenFilters = reader.readArray(reader1 -> TokenFilter.fromJson(reader1));
                 } else if ("charFilters".equals(fieldName)) {
                     charFilters = reader.readArray(reader1 -> CharFilter.fromJson(reader1));
-                } else if ("normalizers".equals(fieldName)) {
-                    normalizers = reader.readArray(reader1 -> LexicalNormalizer.fromJson(reader1));
                 } else if ("encryptionKey".equals(fieldName)) {
                     encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
                 } else if ("similarity".equals(fieldName)) {
@@ -547,7 +522,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                 deserializedSearchIndex.tokenizers = tokenizers;
                 deserializedSearchIndex.tokenFilters = tokenFilters;
                 deserializedSearchIndex.charFilters = charFilters;
-                deserializedSearchIndex.normalizers = normalizers;
                 deserializedSearchIndex.encryptionKey = encryptionKey;
                 deserializedSearchIndex.similarity = similarity;
                 deserializedSearchIndex.semanticSearch = semanticSearch;
@@ -577,7 +551,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setFields(SearchField... fields) {
-        this.fields = (fields == null) ? null : java.util.Arrays.asList(fields);
+        this.fields = (fields == null) ? null : Arrays.asList(fields);
         return this;
     }
 
@@ -588,7 +562,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setScoringProfiles(ScoringProfile... scoringProfiles) {
-        this.scoringProfiles = (scoringProfiles == null) ? null : java.util.Arrays.asList(scoringProfiles);
+        this.scoringProfiles = (scoringProfiles == null) ? null : Arrays.asList(scoringProfiles);
         return this;
     }
 
@@ -599,7 +573,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setSuggesters(SearchSuggester... suggesters) {
-        this.suggesters = (suggesters == null) ? null : java.util.Arrays.asList(suggesters);
+        this.suggesters = (suggesters == null) ? null : Arrays.asList(suggesters);
         return this;
     }
 
@@ -610,7 +584,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setAnalyzers(LexicalAnalyzer... analyzers) {
-        this.analyzers = (analyzers == null) ? null : java.util.Arrays.asList(analyzers);
+        this.analyzers = (analyzers == null) ? null : Arrays.asList(analyzers);
         return this;
     }
 
@@ -621,7 +595,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setTokenizers(LexicalTokenizer... tokenizers) {
-        this.tokenizers = (tokenizers == null) ? null : java.util.Arrays.asList(tokenizers);
+        this.tokenizers = (tokenizers == null) ? null : Arrays.asList(tokenizers);
         return this;
     }
 
@@ -632,7 +606,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setTokenFilters(TokenFilter... tokenFilters) {
-        this.tokenFilters = (tokenFilters == null) ? null : java.util.Arrays.asList(tokenFilters);
+        this.tokenFilters = (tokenFilters == null) ? null : Arrays.asList(tokenFilters);
         return this;
     }
 
@@ -643,18 +617,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setCharFilters(CharFilter... charFilters) {
-        this.charFilters = (charFilters == null) ? null : java.util.Arrays.asList(charFilters);
-        return this;
-    }
-
-    /**
-     * Set the normalizers property: The normalizers for the index.
-     *
-     * @param normalizers the normalizers value to set.
-     * @return the SearchIndex object itself.
-     */
-    public SearchIndex setNormalizers(LexicalNormalizer... normalizers) {
-        this.normalizers = (normalizers == null) ? null : java.util.Arrays.asList(normalizers);
+        this.charFilters = (charFilters == null) ? null : Arrays.asList(charFilters);
         return this;
     }
 }

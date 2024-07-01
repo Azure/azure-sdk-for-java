@@ -5,9 +5,11 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.models.RecordingStateInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingStateResponseInternal;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,14 +32,14 @@ public class CallRecordingUnitTestBase {
         new AbstractMap.SimpleEntry<>("", 404)                 //getRecordingState
     ));
 
-    private String serializeObject(Object o) {
-        ObjectMapper mapper = new ObjectMapper();
-        String body = null;
-        try {
-            body = mapper.writeValueAsString(o);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+    private String serializeObject(RecordingStateResponseInternal o) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            o.toJson(writer);
+            writer.flush();
+            return outputStream.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return body;
     }
 }

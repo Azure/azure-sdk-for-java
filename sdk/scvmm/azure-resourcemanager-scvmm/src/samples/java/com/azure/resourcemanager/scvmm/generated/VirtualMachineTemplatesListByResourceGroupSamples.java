@@ -4,20 +4,35 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualMachineTemplates ListByResourceGroup. */
+/**
+ * Samples for VirtualMachineTemplates ListByResourceGroup.
+ */
 public final class VirtualMachineTemplatesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListVirtualMachineTemplatesByResourceGroup.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
+     * VirtualMachineTemplates_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
-     * Sample code: ListVirtualMachineTemplatesByResourceGroup.
-     *
+     * Sample code: VirtualMachineTemplates_ListByResourceGroup_MinimumSet.
+     * 
      * @param manager Entry point to ScvmmManager.
      */
-    public static void listVirtualMachineTemplatesByResourceGroup(
-        com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.virtualMachineTemplates().listByResourceGroup("testrg", Context.NONE);
+    public static void
+        virtualMachineTemplatesListByResourceGroupMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.virtualMachineTemplates().listByResourceGroup("rgscvmm", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
+     * VirtualMachineTemplates_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VirtualMachineTemplates_ListByResourceGroup_MaximumSet.
+     * 
+     * @param manager Entry point to ScvmmManager.
+     */
+    public static void
+        virtualMachineTemplatesListByResourceGroupMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.virtualMachineTemplates().listByResourceGroup("rgscvmm", com.azure.core.util.Context.NONE);
     }
 }

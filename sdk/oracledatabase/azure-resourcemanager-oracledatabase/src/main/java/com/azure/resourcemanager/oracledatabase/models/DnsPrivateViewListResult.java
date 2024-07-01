@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.oracledatabase.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * The response of a DnsPrivateView list operation.
  */
-@Fluent
+@Immutable
 public final class DnsPrivateViewListResult implements JsonSerializable<DnsPrivateViewListResult> {
     /*
      * The DnsPrivateView items on this page
@@ -32,7 +32,7 @@ public final class DnsPrivateViewListResult implements JsonSerializable<DnsPriva
     /**
      * Creates an instance of DnsPrivateViewListResult class.
      */
-    public DnsPrivateViewListResult() {
+    private DnsPrivateViewListResult() {
     }
 
     /**
@@ -45,34 +45,12 @@ public final class DnsPrivateViewListResult implements JsonSerializable<DnsPriva
     }
 
     /**
-     * Set the value property: The DnsPrivateView items on this page.
-     * 
-     * @param value the value value to set.
-     * @return the DnsPrivateViewListResult object itself.
-     */
-    public DnsPrivateViewListResult withValue(List<DnsPrivateViewInner> value) {
-        this.value = value;
-        return this;
-    }
-
-    /**
      * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
     public String nextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The link to the next page of items.
-     * 
-     * @param nextLink the nextLink value to set.
-     * @return the DnsPrivateViewListResult object itself.
-     */
-    public DnsPrivateViewListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 
     /**

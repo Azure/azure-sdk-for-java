@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Parameter group.
@@ -39,8 +40,8 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
     private String highlightPostTag;
 
     /*
-     * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit
-     * highlighting of suggestions is disabled.
+     * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting
+     * of suggestions is disabled.
      */
     private String highlightPreTag;
 
@@ -53,10 +54,10 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
 
     /*
      * The list of OData $orderby expressions by which to sort the results. Each expression can be either a field name
-     * or a call to either the geo.distance() or the search.score() functions. Each expression can be followed by asc
-     * to indicate ascending, or desc to indicate descending. The default is ascending order. Ties will be broken by
-     * the match scores of documents. If no $orderby is specified, the default sort order is descending by document
-     * match score. There can be at most 32 $orderby clauses.
+     * or a call to either the geo.distance() or the search.score() functions. Each expression can be followed by asc to
+     * indicate ascending, or desc to indicate descending. The default is ascending order. Ties will be broken by the
+     * match scores of documents. If no $orderby is specified, the default sort order is descending by document match
+     * score. There can be at most 32 $orderby clauses.
      */
     private List<String> orderBy;
 
@@ -199,9 +200,9 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
     /**
      * Get the orderBy property: The list of OData $orderby expressions by which to sort the results. Each expression
      * can be either a field name or a call to either the geo.distance() or the search.score() functions. Each
-     * expression can be followed by asc to indicate ascending, or desc to indicate descending. The default is
-     * ascending order. Ties will be broken by the match scores of documents. If no $orderby is specified, the default
-     * sort order is descending by document match score. There can be at most 32 $orderby clauses.
+     * expression can be followed by asc to indicate ascending, or desc to indicate descending. The default is ascending
+     * order. Ties will be broken by the match scores of documents. If no $orderby is specified, the default sort order
+     * is descending by document match score. There can be at most 32 $orderby clauses.
      *
      * @return the orderBy value.
      */
@@ -212,9 +213,9 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
     /**
      * Set the orderBy property: The list of OData $orderby expressions by which to sort the results. Each expression
      * can be either a field name or a call to either the geo.distance() or the search.score() functions. Each
-     * expression can be followed by asc to indicate ascending, or desc to indicate descending. The default is
-     * ascending order. Ties will be broken by the match scores of documents. If no $orderby is specified, the default
-     * sort order is descending by document match score. There can be at most 32 $orderby clauses.
+     * expression can be followed by asc to indicate ascending, or desc to indicate descending. The default is ascending
+     * order. Ties will be broken by the match scores of documents. If no $orderby is specified, the default sort order
+     * is descending by document match score. There can be at most 32 $orderby clauses.
      *
      * @param orderBy the orderBy value to set.
      * @return the SuggestOptions object itself.
@@ -290,6 +291,48 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
         return this;
     }
 
+    /**
+     * Set the orderBy property: The list of OData $orderby expressions by which to sort the results. Each expression
+     * can be either a field name or a call to either the geo.distance() or the search.score() functions. Each
+     * expression can be followed by asc to indicate ascending, or desc to indicate descending. The default is ascending
+     * order. Ties will be broken by the match scores of documents. If no $orderby is specified, the default sort order
+     * is descending by document match score. There can be at most 32 $orderby clauses.
+     *
+     * @param orderBy the orderBy value to set.
+     * @return the SuggestOptions object itself.
+     */
+    public SuggestOptions setOrderBy(String... orderBy) {
+        this.orderBy = (orderBy == null) ? null : Arrays.asList(orderBy);
+        return this;
+    }
+
+    /**
+     * Set the searchFields property: The list of field names to search for the specified search text. Target fields
+     * must be included in the specified suggester.
+     *
+     * @param searchFields the searchFields value to set.
+     * @return the SuggestOptions object itself.
+     */
+    public SuggestOptions setSearchFields(String... searchFields) {
+        this.searchFields = (searchFields == null) ? null : Arrays.asList(searchFields);
+        return this;
+    }
+
+    /**
+     * Set the select property: The list of fields to retrieve. If unspecified, only the key field will be included in
+     * the results.
+     *
+     * @param select the select value to set.
+     * @return the SuggestOptions object itself.
+     */
+    public SuggestOptions setSelect(String... select) {
+        this.select = (select == null) ? null : Arrays.asList(select);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -346,44 +389,5 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
             }
             return deserializedSuggestOptions;
         });
-    }
-
-    /**
-     * Set the orderBy property: The list of OData $orderby expressions by which to sort the results. Each expression
-     * can be either a field name or a call to either the geo.distance() or the search.score() functions. Each
-     * expression can be followed by asc to indicate ascending, or desc to indicate descending. The default is
-     * ascending order. Ties will be broken by the match scores of documents. If no $orderby is specified, the default
-     * sort order is descending by document match score. There can be at most 32 $orderby clauses.
-     *
-     * @param orderBy the orderBy value to set.
-     * @return the SuggestOptions object itself.
-     */
-    public SuggestOptions setOrderBy(String... orderBy) {
-        this.orderBy = (orderBy == null) ? null : java.util.Arrays.asList(orderBy);
-        return this;
-    }
-
-    /**
-     * Set the searchFields property: The list of field names to search for the specified search text. Target fields
-     * must be included in the specified suggester.
-     *
-     * @param searchFields the searchFields value to set.
-     * @return the SuggestOptions object itself.
-     */
-    public SuggestOptions setSearchFields(String... searchFields) {
-        this.searchFields = (searchFields == null) ? null : java.util.Arrays.asList(searchFields);
-        return this;
-    }
-
-    /**
-     * Set the select property: The list of fields to retrieve. If unspecified, only the key field will be included in
-     * the results.
-     *
-     * @param select the select value to set.
-     * @return the SuggestOptions object itself.
-     */
-    public SuggestOptions setSelect(String... select) {
-        this.select = (select == null) ? null : java.util.Arrays.asList(select);
-        return this;
     }
 }

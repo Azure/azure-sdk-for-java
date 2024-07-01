@@ -5,31 +5,46 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AlternativeRouteType. */
+/**
+ * Defines values for AlternativeRouteType.
+ */
 public final class AlternativeRouteType extends ExpandableStringEnum<AlternativeRouteType> {
-    /** Static value anyRoute for AlternativeRouteType. */
+    /**
+     * Allow any alternative route to be returned irrespective of how it compares to the reference route in terms of
+     * optimality.
+     */
     public static final AlternativeRouteType ANY_ROUTE = fromString("anyRoute");
 
-    /** Static value betterRoute for AlternativeRouteType. */
+    /**
+     * Return an alternative route only if it is better than the reference route according to the given planning
+     * criteria.
+     */
     public static final AlternativeRouteType BETTER_ROUTE = fromString("betterRoute");
 
     /**
+     * Creates a new instance of AlternativeRouteType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlternativeRouteType() {
+    }
+
+    /**
      * Creates or finds a AlternativeRouteType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AlternativeRouteType.
      */
-    @JsonCreator
     public static AlternativeRouteType fromString(String name) {
         return fromString(name, AlternativeRouteType.class);
     }
 
     /**
      * Gets known AlternativeRouteType values.
-     *
+     * 
      * @return known AlternativeRouteType values.
      */
     public static Collection<AlternativeRouteType> values() {

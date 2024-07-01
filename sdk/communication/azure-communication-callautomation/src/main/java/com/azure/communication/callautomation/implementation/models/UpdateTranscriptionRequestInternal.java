@@ -5,20 +5,31 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The UpdateTranscriptionRequestInternal model. */
+/**
+ * The UpdateTranscriptionRequestInternal model.
+ */
 @Fluent
-public final class UpdateTranscriptionRequestInternal {
+public final class UpdateTranscriptionRequestInternal implements JsonSerializable<UpdateTranscriptionRequestInternal> {
     /*
      * Defines new locale for transcription.
      */
-    @JsonProperty(value = "locale", required = true)
     private String locale;
 
     /**
+     * Creates an instance of UpdateTranscriptionRequestInternal class.
+     */
+    public UpdateTranscriptionRequestInternal() {
+    }
+
+    /**
      * Get the locale property: Defines new locale for transcription.
-     *
+     * 
      * @return the locale value.
      */
     public String getLocale() {
@@ -27,12 +38,50 @@ public final class UpdateTranscriptionRequestInternal {
 
     /**
      * Set the locale property: Defines new locale for transcription.
-     *
+     * 
      * @param locale the locale value to set.
      * @return the UpdateTranscriptionRequestInternal object itself.
      */
     public UpdateTranscriptionRequestInternal setLocale(String locale) {
         this.locale = locale;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("locale", this.locale);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateTranscriptionRequestInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateTranscriptionRequestInternal if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateTranscriptionRequestInternal.
+     */
+    public static UpdateTranscriptionRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateTranscriptionRequestInternal deserializedUpdateTranscriptionRequestInternal
+                = new UpdateTranscriptionRequestInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("locale".equals(fieldName)) {
+                    deserializedUpdateTranscriptionRequestInternal.locale = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateTranscriptionRequestInternal;
+        });
     }
 }

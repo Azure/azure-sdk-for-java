@@ -13,6 +13,7 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -30,12 +31,12 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.maps.geolocation.implementation.GeolocationClientImpl;
 import com.azure.maps.geolocation.implementation.GeolocationClientImplBuilder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -56,20 +57,21 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.maps.geolocation.sync.builder.ad.instantiation -->
  */
-@ServiceClientBuilder(serviceClients = {GeolocationClient.class, GeolocationAsyncClient.class})
-public final class GeolocationClientBuilder implements AzureKeyCredentialTrait<GeolocationClientBuilder>,
-    TokenCredentialTrait<GeolocationClientBuilder>, HttpTrait<GeolocationClientBuilder>,
-    ConfigurationTrait<GeolocationClientBuilder>, EndpointTrait<GeolocationClientBuilder> {
+@ServiceClientBuilder(serviceClients = { GeolocationClient.class, GeolocationAsyncClient.class })
+public final class GeolocationClientBuilder
+    implements AzureKeyCredentialTrait<GeolocationClientBuilder>, TokenCredentialTrait<GeolocationClientBuilder>,
+    HttpTrait<GeolocationClientBuilder>, ConfigurationTrait<GeolocationClientBuilder>,
+    EndpointTrait<GeolocationClientBuilder> {
 
     // auth scope
-    static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
+    static final String[] DEFAULT_SCOPES = new String[] { "https://atlas.microsoft.com/.default" };
 
     // constants
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private static final String X_MS_CLIENT_ID = "x-ms-client-id";
+    private static final HttpHeaderName X_MS_CLIENT_ID = HttpHeaderName.fromString("x-ms-client-id");
     private static final ClientLogger LOGGER = new ClientLogger(GeolocationClientBuilder.class);
-    private final Map<String, String> properties = new HashMap<>();
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-maps-geolocation.properties");
 
     // subscription-key
     static final String GEOLOCATION_SUBSCRIPTION_KEY = "subscription-key";
@@ -118,7 +120,7 @@ public final class GeolocationClientBuilder implements AzureKeyCredentialTrait<G
         return this;
     }
 
-     /**
+    /**
      * Set endpoint of the service.
      *
      * @param endpoint url of the service
@@ -256,13 +258,14 @@ public final class GeolocationClientBuilder implements AzureKeyCredentialTrait<G
      * @throws NullPointerException If {@code keyCredential} is null.
      */
     @Override
-    public GeolocationClientBuilder credential(AzureKeyCredential keyCredential)  {
+    public GeolocationClientBuilder credential(AzureKeyCredential keyCredential) {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
 
     /**
      * Sets retry options
+     *
      * @param retryOptions the retry options for the client
      * @return a reference to this {@code GeolocationClientBuilder}
      */
@@ -296,13 +299,13 @@ public final class GeolocationClientBuilder implements AzureKeyCredentialTrait<G
         builder.httpClient(this.httpClient);
         builder.httpLogOptions(this.httpLogOptions);
 
-        GeolocationClientImpl client = builder.buildClient();
-        return client;
+        return builder.buildClient();
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
@@ -312,15 +315,14 @@ public final class GeolocationClientBuilder implements AzureKeyCredentialTrait<G
 
         // Configure pipelines and user agent
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "JavaGeolocationSDK");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, serviceVersion.getVersion());
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "JavaGeolocationSDK");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, serviceVersion.getVersion());
         String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
 
         // configure headers
-        HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
 
@@ -347,19 +349,16 @@ public final class GeolocationClientBuilder implements AzureKeyCredentialTrait<G
 
         // Add final policies
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new CookiePolicy());
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         // build the http pipeline
-        HttpPipeline httpPipeline =
-            new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(httpClient)
-                .build();
-        return httpPipeline;
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
     }
 
     /**

@@ -137,6 +137,9 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

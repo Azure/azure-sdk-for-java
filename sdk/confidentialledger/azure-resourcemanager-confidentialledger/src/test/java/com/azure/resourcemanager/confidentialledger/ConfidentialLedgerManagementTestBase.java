@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.confidentialledger;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -14,16 +13,15 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -138,7 +136,7 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
     public static void setCredential() {
         String testMode = getTestModeForStaticMethods();
         if ("PLAYBACK".equals(testMode)) {
-            credential = (request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            credential = new MockTokenCredential();
         } else {
             credential = new DefaultAzureCredentialBuilder().build();
         }

@@ -5,65 +5,67 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The DialogUpdated model. */
+/**
+ * The DialogUpdated model.
+ */
 @Fluent
-public final class DialogUpdated {
+public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
     /*
-     * Used by customers when calling answerCall action to correlate the
-     * request to the response event.
+     * Used by customers when calling answerCall action to correlate the request to the response event.
      */
-    @JsonProperty(value = "operationContext", access = JsonProperty.Access.WRITE_ONLY)
     private String operationContext;
 
     /*
      * Contains the resulting SIP code/sub-code and message from NGC services.
      */
-    @JsonProperty(value = "resultInformation", access = JsonProperty.Access.WRITE_ONLY)
     private ResultInformation resultInformation;
 
     /*
      * Determines the type of the dialog.
      */
-    @JsonProperty(value = "dialogInputType")
     private DialogInputType dialogInputType;
 
     /*
      * Dialog ID
      */
-    @JsonProperty(value = "dialogId", access = JsonProperty.Access.WRITE_ONLY)
     private String dialogId;
 
     /*
      * Ivr Context
      */
-    @JsonProperty(value = "ivrContext", access = JsonProperty.Access.WRITE_ONLY)
     private Object ivrContext;
 
     /*
      * Call connection ID.
      */
-    @JsonProperty(value = "callConnectionId", access = JsonProperty.Access.WRITE_ONLY)
     private String callConnectionId;
 
     /*
      * Server call ID.
      */
-    @JsonProperty(value = "serverCallId", access = JsonProperty.Access.WRITE_ONLY)
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
-    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
+
+    /**
+     * Creates an instance of DialogUpdated class.
+     */
+    public DialogUpdated() {
+    }
 
     /**
      * Get the operationContext property: Used by customers when calling answerCall action to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -72,7 +74,7 @@ public final class DialogUpdated {
 
     /**
      * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
-     *
+     * 
      * @return the resultInformation value.
      */
     public ResultInformation getResultInformation() {
@@ -81,7 +83,7 @@ public final class DialogUpdated {
 
     /**
      * Get the dialogInputType property: Determines the type of the dialog.
-     *
+     * 
      * @return the dialogInputType value.
      */
     public DialogInputType getDialogInputType() {
@@ -90,7 +92,7 @@ public final class DialogUpdated {
 
     /**
      * Set the dialogInputType property: Determines the type of the dialog.
-     *
+     * 
      * @param dialogInputType the dialogInputType value to set.
      * @return the DialogUpdated object itself.
      */
@@ -101,7 +103,7 @@ public final class DialogUpdated {
 
     /**
      * Get the dialogId property: Dialog ID.
-     *
+     * 
      * @return the dialogId value.
      */
     public String getDialogId() {
@@ -110,7 +112,7 @@ public final class DialogUpdated {
 
     /**
      * Get the ivrContext property: Ivr Context.
-     *
+     * 
      * @return the ivrContext value.
      */
     public Object getIvrContext() {
@@ -119,7 +121,7 @@ public final class DialogUpdated {
 
     /**
      * Get the callConnectionId property: Call connection ID.
-     *
+     * 
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
@@ -128,7 +130,7 @@ public final class DialogUpdated {
 
     /**
      * Get the serverCallId property: Server call ID.
-     *
+     * 
      * @return the serverCallId value.
      */
     public String getServerCallId() {
@@ -138,10 +140,61 @@ public final class DialogUpdated {
     /**
      * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
      * ID.
-     *
+     * 
      * @return the correlationId value.
      */
     public String getCorrelationId() {
         return this.correlationId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dialogInputType",
+            this.dialogInputType == null ? null : this.dialogInputType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DialogUpdated from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DialogUpdated if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DialogUpdated.
+     */
+    public static DialogUpdated fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DialogUpdated deserializedDialogUpdated = new DialogUpdated();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationContext".equals(fieldName)) {
+                    deserializedDialogUpdated.operationContext = reader.getString();
+                } else if ("resultInformation".equals(fieldName)) {
+                    deserializedDialogUpdated.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("dialogInputType".equals(fieldName)) {
+                    deserializedDialogUpdated.dialogInputType = DialogInputType.fromString(reader.getString());
+                } else if ("dialogId".equals(fieldName)) {
+                    deserializedDialogUpdated.dialogId = reader.getString();
+                } else if ("ivrContext".equals(fieldName)) {
+                    deserializedDialogUpdated.ivrContext = reader.readUntyped();
+                } else if ("callConnectionId".equals(fieldName)) {
+                    deserializedDialogUpdated.callConnectionId = reader.getString();
+                } else if ("serverCallId".equals(fieldName)) {
+                    deserializedDialogUpdated.serverCallId = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedDialogUpdated.correlationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDialogUpdated;
+        });
     }
 }

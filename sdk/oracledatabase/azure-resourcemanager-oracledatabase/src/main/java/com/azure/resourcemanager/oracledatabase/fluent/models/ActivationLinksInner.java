@@ -29,7 +29,7 @@ public final class ActivationLinksInner implements JsonSerializable<ActivationLi
     /**
      * Creates an instance of ActivationLinksInner class.
      */
-    public ActivationLinksInner() {
+    private ActivationLinksInner() {
     }
 
     /**

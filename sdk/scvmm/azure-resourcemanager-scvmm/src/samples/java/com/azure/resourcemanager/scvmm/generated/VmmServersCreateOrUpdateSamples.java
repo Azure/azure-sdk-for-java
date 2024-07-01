@@ -5,32 +5,68 @@
 package com.azure.resourcemanager.scvmm.generated;
 
 import com.azure.resourcemanager.scvmm.models.ExtendedLocation;
-import com.azure.resourcemanager.scvmm.models.VmmServerPropertiesCredentials;
+import com.azure.resourcemanager.scvmm.models.VmmCredential;
+import com.azure.resourcemanager.scvmm.models.VmmServerProperties;
+import java.util.HashMap;
+import java.util.Map;
 
-/** Samples for VmmServers CreateOrUpdate. */
+/**
+ * Samples for VmmServers CreateOrUpdate.
+ */
 public final class VmmServersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/CreateVMMServer.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
+     * VmmServers_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
-     * Sample code: CreateVMMServer.
-     *
+     * Sample code: VmmServers_CreateOrUpdate_MinimumSet.
+     * 
      * @param manager Entry point to ScvmmManager.
      */
-    public static void createVMMServer(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager
-            .vmmServers()
-            .define("ContosoVMMServer")
-            .withRegion("East US")
-            .withExistingResourceGroup("testrg")
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withType("customLocation")
-                    .withName(
-                        "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"))
-            .withFqdn("VMM.contoso.com")
-            .withCredentials(new VmmServerPropertiesCredentials().withUsername("testuser").withPassword("password"))
-            .withPort(1234)
+    public static void vmmServersCreateOrUpdateMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.vmmServers()
+            .define("w")
+            .withRegion("hslxkyzktvwpqbypvs")
+            .withExistingResourceGroup("rgscvmm")
+            .withExtendedLocation(new ExtendedLocation())
             .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
+     * VmmServers_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VmmServers_CreateOrUpdate_MaximumSet.
+     * 
+     * @param manager Entry point to ScvmmManager.
+     */
+    public static void vmmServersCreateOrUpdateMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.vmmServers()
+            .define("-")
+            .withRegion("hslxkyzktvwpqbypvs")
+            .withExistingResourceGroup("rgscvmm")
+            .withExtendedLocation(new ExtendedLocation().withType("customLocation")
+                .withName(
+                    "/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/customLocationName"))
+            .withTags(mapOf("key4834", "fakeTokenPlaceholder"))
+            .withProperties(new VmmServerProperties()
+                .withCredentials(
+                    new VmmCredential().withUsername("jbuoltypmrgqfi").withPassword("fakeTokenPlaceholder"))
+                .withFqdn("pvzcjaqrswbvptgx")
+                .withPort(4))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

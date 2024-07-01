@@ -13,10 +13,11 @@ import com.azure.communication.callautomation.models.streaming.transcription.Tra
 import com.azure.communication.callautomation.models.streaming.transcription.TranscriptionMetadata;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -56,38 +57,53 @@ public final class StreamingDataParser {
      * @return a MediaStreamingPackageBase object.
      */
     public static StreamingData parse(String stringJson) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-            JsonNode jsonData = mapper.readTree(stringJson);
+        try (JsonReader jsonReader = JsonProviders.createReader(stringJson)) {
+            return jsonReader.readObject(reader -> {
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-            //region Audio
-            if (stringJson.contains("AudioData")) {
-                AudioDataConverter audioInternal = mapper.convertValue(jsonData.get("audioData"), AudioDataConverter.class);
-                return new AudioData(audioInternal.getData(), audioInternal.getTimestamp(), audioInternal.getParticipantRawID(), audioInternal.isSilent());
-            }
-            if (stringJson.contains("AudioMetadata")) {
-                AudioMetadataConverter metadataInternal = mapper.convertValue(jsonData.get("audioMetadata"), AudioMetadataConverter.class);
-                return new AudioMetadata(metadataInternal.getMediaSubscriptionId(), metadataInternal.getEncoding(), metadataInternal.getSampleRate(), metadataInternal.getChannels(), metadataInternal.getLength());
-            }
-            //endregion
+                    if ("audioData".equals(fieldName)) {
+                        // Possible return of AudioData
+                        final AudioDataConverter audioInternal = AudioDataConverter.fromJson(reader);
+                        if (audioInternal != null) {
+                            return new AudioData(audioInternal.getData(), audioInternal.getTimestamp(), audioInternal.getParticipantRawID(), audioInternal.isSilent());
+                        } else {
+                            return null;
+                        }
+                    } else if ("audioMetadata".equals(fieldName)) {
+                        // Possible return of AudioMetadata
+                        final AudioMetadataConverter metadataInternal = AudioMetadataConverter.fromJson(reader);
+                        if (metadataInternal != null) {
+                            return new AudioMetadata(metadataInternal.getMediaSubscriptionId(), metadataInternal.getEncoding(), metadataInternal.getSampleRate(), metadataInternal.getChannels(), metadataInternal.getLength());
+                        } else {
+                            return null;
+                        }
+                    } else if ("transcriptionData".equals(fieldName)) {
+                        // Possible return of TranscriptionData
+                        final TranscriptionDataConverter transcriptionInternal = TranscriptionDataConverter.fromJson(reader);
+                        if (transcriptionInternal != null) {
+                            return new TranscriptionData(transcriptionInternal.getText(), transcriptionInternal.getFormat(), transcriptionInternal.getConfidence(), transcriptionInternal.getOffset(), transcriptionInternal.getDuration(), transcriptionInternal.getWords(), transcriptionInternal.getParticipantRawID(), transcriptionInternal.getResultStatus());
+                        } else {
+                            return null;
+                        }
+                    } else if ("transcriptionMetadata".equals(fieldName)) {
+                        // Possible return of TranscriptionMetadata.
+                        final TranscriptionMetadataConverter transcriptionMetadataInternal = TranscriptionMetadataConverter.fromJson(reader);
+                        if (transcriptionMetadataInternal != null) {
+                            return new TranscriptionMetadata(transcriptionMetadataInternal.getTranscriptionSubscriptionId(), transcriptionMetadataInternal.getLocale(), transcriptionMetadataInternal.getCallConnectionId(), transcriptionMetadataInternal.getCorrelationId());
+                        } else {
+                            return null;
+                        }
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
 
-            //region Transcription
-            if (stringJson.contains("TranscriptionData")) {
-                TranscriptionDataConverter transcriptionInternal = mapper.convertValue(jsonData.get("transcriptionData"), TranscriptionDataConverter.class);
-                return new TranscriptionData(transcriptionInternal.getText(), transcriptionInternal.getFormat(), transcriptionInternal.getConfidence(), transcriptionInternal.getOffset(), transcriptionInternal.getDuration(), transcriptionInternal.getWords(), transcriptionInternal.getParticipantRawID(), transcriptionInternal.getResultStatus());
-            }
-            if (stringJson.contains("TranscriptionMetadata")) {
-                TranscriptionMetadataConverter transcriptionMetadataInternal = mapper.convertValue(jsonData.get("transcriptionMetadata"), TranscriptionMetadataConverter.class);
-                return new TranscriptionMetadata(transcriptionMetadataInternal.getTranscriptionSubscriptionId(), transcriptionMetadataInternal.getLocale(), transcriptionMetadataInternal.getCallConnectionId(), transcriptionMetadataInternal.getCorrelationId());
-            }
-            //endregion
-
-            return null;
-        } catch (RuntimeException e) {
-            throw LOGGER.logExceptionAsError(e);
-        } catch (JsonProcessingException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                return null; // cases triggered.
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

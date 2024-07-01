@@ -425,7 +425,7 @@ public class CosmosItemRequestOptions {
         return this;
     }
 
-    RequestOptions toRequestOptions(CosmosItemSerializer effectiveItemSerializer) {
+    RequestOptions toRequestOptions() {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(getIfMatchETag());
         requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
@@ -444,13 +444,14 @@ public class CosmosItemRequestOptions {
             requestOptions.setNonIdempotentWriteRetriesEnabled(this.nonIdempotentWriteRetriesEnabled);
         }
         requestOptions.setCosmosEndToEndLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
-        requestOptions.setExcludeRegions(excludeRegions);
+        requestOptions.setExcludedRegions(excludeRegions);
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());
             }
         }
-        requestOptions.setEffectiveItemSerializer(effectiveItemSerializer);
+        requestOptions.setEffectiveItemSerializer(this.customSerializer);
+        requestOptions.setUseTrackingIds(this.useTrackingIds);
         return requestOptions;
     }
 
@@ -585,8 +586,8 @@ public class CosmosItemRequestOptions {
             new ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor() {
 
                 @Override
-                public RequestOptions toRequestOptions(CosmosItemRequestOptions itemRequestOptions, CosmosItemSerializer effectiveItemSerializer) {
-                    return itemRequestOptions.toRequestOptions(effectiveItemSerializer);
+                public RequestOptions toRequestOptions(CosmosItemRequestOptions itemRequestOptions) {
+                    return itemRequestOptions.toRequestOptions();
                 }
 
                 @Override
@@ -619,54 +620,6 @@ public class CosmosItemRequestOptions {
                 @Override
                 public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosItemRequestOptions cosmosItemRequestOptions) {
                     return cosmosItemRequestOptions.thresholds;
-                }
-
-                @Override
-                public CosmosItemRequestOptions setNonIdempotentWriteRetryPolicy(
-                    CosmosItemRequestOptions cosmosItemRequestOptions,
-                    boolean enabled,
-                    boolean useTrackingIds) {
-
-                    return cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(enabled, useTrackingIds);
-                }
-
-                @Override
-                public WriteRetryPolicy calculateAndGetEffectiveNonIdempotentRetriesEnabled(
-                    CosmosItemRequestOptions cosmosItemRequestOptions,
-                    WriteRetryPolicy clientDefault,
-                    boolean operationDefault) {
-
-                    if (cosmosItemRequestOptions.nonIdempotentWriteRetriesEnabled != null) {
-                        return new WriteRetryPolicy(
-                            cosmosItemRequestOptions.nonIdempotentWriteRetriesEnabled,
-                            cosmosItemRequestOptions.useTrackingIds);
-                    }
-
-                    if (!operationDefault) {
-                        cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(
-                            false,
-                            false);
-                        return WriteRetryPolicy.DISABLED;
-                    }
-
-                    if (clientDefault != null) {
-                        if (clientDefault.isEnabled()) {
-                            cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(
-                                true,
-                                clientDefault.useTrackingIdProperty());
-                        } else {
-                            cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(
-                                false,
-                                false);
-                        }
-
-                        return clientDefault;
-                    }
-
-                    cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(
-                        false,
-                        false);
-                    return WriteRetryPolicy.DISABLED;
                 }
 
                 @Override

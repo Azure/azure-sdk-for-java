@@ -66,8 +66,8 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
     }
 
     /**
-     * Get the shouldBoostBeyondRangeByConstant property: A value indicating whether to apply a constant boost for
-     * field values beyond the range end value; default is false.
+     * Get the shouldBoostBeyondRangeByConstant property: A value indicating whether to apply a constant boost for field
+     * values beyond the range end value; default is false.
      *
      * @return the shouldBoostBeyondRangeByConstant value.
      */
@@ -76,8 +76,8 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
     }
 
     /**
-     * Set the shouldBoostBeyondRangeByConstant property: A value indicating whether to apply a constant boost for
-     * field values beyond the range end value; default is false.
+     * Set the shouldBoostBeyondRangeByConstant property: A value indicating whether to apply a constant boost for field
+     * values beyond the range end value; default is false.
      *
      * @param shouldBoostBeyondRangeByConstant the shouldBoostBeyondRangeByConstant value to set.
      * @return the MagnitudeScoringParameters object itself.
@@ -87,6 +87,9 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -34,8 +34,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
+import com.azure.search.documents.implementation.models.ErrorResponseException;
 import com.azure.search.documents.implementation.models.IndexBatch;
-import com.azure.search.documents.implementation.models.SearchErrorException;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.SearchAudience;
@@ -197,10 +197,10 @@ public final class Utility {
     public static <T> T executeRestCallWithExceptionHandling(Supplier<T> supplier, ClientLogger logger) {
         try {
             return supplier.get();
-        } catch (com.azure.search.documents.indexes.implementation.models.SearchErrorException exception) {
+        } catch (com.azure.search.documents.indexes.implementation.models.ErrorResponseException exception) {
             throw logger.logExceptionAsError(new HttpResponseException(exception.getMessage(),
                 exception.getResponse()));
-        } catch (com.azure.search.documents.implementation.models.SearchErrorException exception) {
+        } catch (com.azure.search.documents.implementation.models.ErrorResponseException exception) {
             throw logger.logExceptionAsError(new HttpResponseException(exception.getMessage(),
                 exception.getResponse()));
         } catch (RuntimeException ex) {
@@ -231,14 +231,14 @@ public final class Utility {
      * isn't found, otherwise the passed {@link Throwable} unmodified.
      */
     public static Throwable exceptionMapper(Throwable throwable) {
-        if (!(throwable instanceof SearchErrorException)) {
+        if (!(throwable instanceof ErrorResponseException)) {
             return throwable;
         }
 
-        return mapSearchErrorException((SearchErrorException) throwable);
+        return mapErrorResponseException((ErrorResponseException) throwable);
     }
 
-    public static HttpResponseException mapSearchErrorException(SearchErrorException exception) {
+    public static HttpResponseException mapErrorResponseException(ErrorResponseException exception) {
         if (exception.getResponse().getStatusCode() == 404) {
             return new ResourceNotFoundException(DOCUMENT_NOT_FOUND, exception.getResponse());
         }

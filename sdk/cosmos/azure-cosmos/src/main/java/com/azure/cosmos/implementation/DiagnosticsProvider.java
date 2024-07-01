@@ -761,8 +761,9 @@ public final class DiagnosticsProvider {
             trackingId,
             clientAccessor.getConnectionMode(client),
             clientAccessor.getUserAgent(client),
-            null, 
-            null);
+            null,
+            null,
+            requestOptions);
 
         if (requestOptions != null) {
             requestOptions.setDiagnosticsContextSupplier(() -> cosmosCtx);
@@ -1165,7 +1166,7 @@ public final class DiagnosticsProvider {
         private boolean isTransportLevelTracingEnabled() {
             return clientTelemetryConfigAccessor.isTransportLevelTracingEnabled(this.config);
         }
-        
+
         private boolean showQueryStatement() {
             if(ShowQueryMode.ALL.equals(clientTelemetryConfigAccessor.showQueryMode(this.config))
                    || ShowQueryMode.PARAMETERIZED_ONLY.equals(clientTelemetryConfigAccessor.showQueryMode(this.config))) {
@@ -1212,7 +1213,7 @@ public final class DiagnosticsProvider {
                     !cosmosCtx.getOperationId().equals(ctxAccessor.getSpanName(cosmosCtx))) {
                     spanOptions.setAttribute("db.cosmosdb.operation_id", cosmosCtx.getOperationId());
                 }
-                
+
                 if (showQueryStatement() && null != cosmosCtx.getQueryStatement() ) {
                     spanOptions.setAttribute("db.statement", cosmosCtx.getQueryStatement());
                 }

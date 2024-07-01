@@ -32,7 +32,7 @@ public final class OperationListResult implements JsonSerializable<OperationList
     /**
      * Creates an instance of OperationListResult class.
      */
-    public OperationListResult() {
+    private OperationListResult() {
     }
 
     /**

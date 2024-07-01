@@ -1,33 +1,45 @@
 parameters:
-  PackageName: not-specified
-  SafeName: not-specified
-  Clouds: 'Public'
-  TestMode: 'LIVE'
-  EnvVars: {}
-  MatrixConfigs:
+- name: PackageName
+  type: string
+  default: not-specified
+- name: SafeName
+  type: string
+  default: not-specified
+- name: Clouds
+  type: string
+  default: 'Public'
+- name: TestMode
+  type: string
+  default: 'LIVE'
+- name: EnvVars
+  type: object
+  default: {}
+- name: MatrixConfigs
+  type: object
+  default:
     - Name: Java_live_test_base
       Path: eng/pipelines/templates/stages/platform-matrix.json
       Selection: sparse
       GenerateVMJobs: true
 
 extends:
-  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
-    CloudConfig:
-      Public:
-        SubscriptionConfigurations:
-          - $(sub-config-azure-cloud-test-resources)
-    Clouds: ${{ parameters.Clouds }}
-    TestMode: ${{ parameters.TestMode }}
-    Artifacts:
-      - name: ${{ parameters.PackageName }}
-        groupId: com.azure
-        safeName: ${{ parameters.SafeName }}
-    ServiceDirectory: maps
-    EnvVars:
-      #SKIP_LIVE_TEST: TRUE
-      ${{ each var in parameters.EnVars }}:
-        ${{ var.key }}: ${{ var.value }}
-    MatrixConfigs:
-      - ${{ each config in parameters.MatrixConfigs }}:
-        -  ${{ config }}
+    stages:
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          UseFederatedAuth: true
+          Clouds: ${{ parameters.Clouds }}
+          TestMode: ${{ parameters.TestMode }}
+          Artifacts:
+            - name: ${{ parameters.PackageName }}
+              groupId: com.azure
+              safeName: ${{ parameters.SafeName }}
+          ServiceDirectory: maps
+          EnvVars:
+            #SKIP_LIVE_TEST: TRUE
+            ${{ each var in parameters.EnvVars }}:
+              ${{ var.key }}: ${{ var.value }}
+          MatrixConfigs:
+            - ${{ each config in parameters.MatrixConfigs }}:
+              -  ${{ config }}

@@ -5,14 +5,17 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Dictionary Example.
  */
 @Immutable
-public final class DictionaryExample {
+public final class DictionaryExample implements JsonSerializable<DictionaryExample> {
 
     /*
      * The string to concatenate before the value of sourceTerm to form a complete example.
@@ -20,7 +23,6 @@ public final class DictionaryExample {
      * This value may be an empty string.
      */
     @Generated
-    @JsonProperty(value = "sourcePrefix")
     private final String sourcePrefix;
 
     /*
@@ -29,7 +31,6 @@ public final class DictionaryExample {
      * marked in a user interface, e.g., by bolding it.
      */
     @Generated
-    @JsonProperty(value = "sourceTerm")
     private final String sourceTerm;
 
     /*
@@ -38,28 +39,24 @@ public final class DictionaryExample {
      * This value may be an empty string.
      */
     @Generated
-    @JsonProperty(value = "sourceSuffix")
     private final String sourceSuffix;
 
     /*
      * A string similar to sourcePrefix but for the target.
      */
     @Generated
-    @JsonProperty(value = "targetPrefix")
     private final String targetPrefix;
 
     /*
      * A string similar to sourceTerm but for the target.
      */
     @Generated
-    @JsonProperty(value = "targetTerm")
     private final String targetTerm;
 
     /*
      * A string similar to sourceSuffix but for the target.
      */
     @Generated
-    @JsonProperty(value = "targetSuffix")
     private final String targetSuffix;
 
     /**
@@ -73,13 +70,8 @@ public final class DictionaryExample {
      * @param targetSuffix the targetSuffix value to set.
      */
     @Generated
-    @JsonCreator
-    private DictionaryExample(@JsonProperty(value = "sourcePrefix") String sourcePrefix,
-        @JsonProperty(value = "sourceTerm") String sourceTerm,
-        @JsonProperty(value = "sourceSuffix") String sourceSuffix,
-        @JsonProperty(value = "targetPrefix") String targetPrefix,
-        @JsonProperty(value = "targetTerm") String targetTerm,
-        @JsonProperty(value = "targetSuffix") String targetSuffix) {
+    private DictionaryExample(String sourcePrefix, String sourceTerm, String sourceSuffix, String targetPrefix,
+        String targetTerm, String targetSuffix) {
         this.sourcePrefix = sourcePrefix;
         this.sourceTerm = sourceTerm;
         this.sourceSuffix = sourceSuffix;
@@ -154,5 +146,63 @@ public final class DictionaryExample {
     @Generated
     public String getTargetSuffix() {
         return this.targetSuffix;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourcePrefix", this.sourcePrefix);
+        jsonWriter.writeStringField("sourceTerm", this.sourceTerm);
+        jsonWriter.writeStringField("sourceSuffix", this.sourceSuffix);
+        jsonWriter.writeStringField("targetPrefix", this.targetPrefix);
+        jsonWriter.writeStringField("targetTerm", this.targetTerm);
+        jsonWriter.writeStringField("targetSuffix", this.targetSuffix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DictionaryExample from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DictionaryExample if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DictionaryExample.
+     */
+    @Generated
+    public static DictionaryExample fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String sourcePrefix = null;
+            String sourceTerm = null;
+            String sourceSuffix = null;
+            String targetPrefix = null;
+            String targetTerm = null;
+            String targetSuffix = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("sourcePrefix".equals(fieldName)) {
+                    sourcePrefix = reader.getString();
+                } else if ("sourceTerm".equals(fieldName)) {
+                    sourceTerm = reader.getString();
+                } else if ("sourceSuffix".equals(fieldName)) {
+                    sourceSuffix = reader.getString();
+                } else if ("targetPrefix".equals(fieldName)) {
+                    targetPrefix = reader.getString();
+                } else if ("targetTerm".equals(fieldName)) {
+                    targetTerm = reader.getString();
+                } else if ("targetSuffix".equals(fieldName)) {
+                    targetSuffix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new DictionaryExample(sourcePrefix, sourceTerm, sourceSuffix, targetPrefix, targetTerm,
+                targetSuffix);
+        });
     }
 }

@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Contains configuration options related to vector search.
@@ -37,7 +38,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
     /*
      * Contains configuration options specific to the compression method used during indexing or querying.
      */
-    private List<VectorSearchCompressionConfiguration> compressions;
+    private List<VectorSearchCompression> compressions;
 
     /**
      * Creates an instance of VectorSearch class.
@@ -113,7 +114,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      *
      * @return the compressions value.
      */
-    public List<VectorSearchCompressionConfiguration> getCompressions() {
+    public List<VectorSearchCompression> getCompressions() {
         return this.compressions;
     }
 
@@ -124,11 +125,14 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      * @param compressions the compressions value to set.
      * @return the VectorSearch object itself.
      */
-    public VectorSearch setCompressions(List<VectorSearchCompressionConfiguration> compressions) {
+    public VectorSearch setCompressions(List<VectorSearchCompression> compressions) {
         this.compressions = compressions;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -166,8 +170,8 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
                         = reader.readArray(reader1 -> VectorSearchVectorizer.fromJson(reader1));
                     deserializedVectorSearch.vectorizers = vectorizers;
                 } else if ("compressions".equals(fieldName)) {
-                    List<VectorSearchCompressionConfiguration> compressions
-                        = reader.readArray(reader1 -> VectorSearchCompressionConfiguration.fromJson(reader1));
+                    List<VectorSearchCompression> compressions
+                        = reader.readArray(reader1 -> VectorSearchCompression.fromJson(reader1));
                     deserializedVectorSearch.compressions = compressions;
                 } else {
                     reader.skipChildren();
@@ -184,7 +188,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      * @return the VectorSearch object itself.
      */
     public VectorSearch setProfiles(VectorSearchProfile... profiles) {
-        this.profiles = (profiles == null) ? null : java.util.Arrays.asList(profiles);
+        this.profiles = (profiles == null) ? null : Arrays.asList(profiles);
         return this;
     }
 
@@ -196,7 +200,30 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      * @return the VectorSearch object itself.
      */
     public VectorSearch setAlgorithms(VectorSearchAlgorithmConfiguration... algorithms) {
-        this.algorithms = (algorithms == null) ? null : java.util.Arrays.asList(algorithms);
+        this.algorithms = (algorithms == null) ? null : Arrays.asList(algorithms);
+        return this;
+    }
+
+    /**
+     * Set the compressions property: Contains configuration options specific to the compression method used during
+     * indexing or querying.
+     *
+     * @param compressions the compressions value to set.
+     * @return the VectorSearch object itself.
+     */
+    public VectorSearch setCompressions(VectorSearchCompression... compressions) {
+        this.compressions = (compressions == null) ? null : Arrays.asList(compressions);
+        return this;
+    }
+
+    /**
+     * Set the vectorizers property: Contains configuration options on how to vectorize text vector queries.
+     *
+     * @param vectorizers the vectorizers value to set.
+     * @return the VectorSearch object itself.
+     */
+    public VectorSearch setVectorizers(VectorSearchVectorizer... vectorizers) {
+        this.vectorizers = (vectorizers == null) ? null : Arrays.asList(vectorizers);
         return this;
     }
 }

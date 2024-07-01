@@ -9,12 +9,12 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.CoreUtils;
+import com.azure.search.documents.implementation.models.ErrorResponseException;
 import com.azure.search.documents.indexes.implementation.models.AnalyzeResult;
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
-import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.BlobIndexerDataToExtract;
 import com.azure.search.documents.indexes.models.BlobIndexerImageAction;
@@ -126,14 +126,14 @@ public class MappingUtils {
     }
 
     public static Throwable exceptionMapper(Throwable throwable) {
-        if (throwable instanceof SearchErrorException) {
-            SearchErrorException exception = (SearchErrorException) throwable;
+        if (throwable instanceof ErrorResponseException) {
+            ErrorResponseException exception = (ErrorResponseException) throwable;
             return new HttpResponseException(exception.getMessage(), exception.getResponse());
         }
 
-        if (throwable instanceof com.azure.search.documents.implementation.models.SearchErrorException) {
-            com.azure.search.documents.implementation.models.SearchErrorException exception =
-                (com.azure.search.documents.implementation.models.SearchErrorException) throwable;
+        if (throwable instanceof com.azure.search.documents.indexes.implementation.models.ErrorResponseException) {
+            com.azure.search.documents.indexes.implementation.models.ErrorResponseException exception =
+                (com.azure.search.documents.indexes.implementation.models.ErrorResponseException) throwable;
             return new HttpResponseException(exception.getMessage(), exception.getResponse());
         }
 

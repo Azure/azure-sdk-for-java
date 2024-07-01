@@ -3,17 +3,7 @@
 
 package com.azure.maps.route.implementation.helpers;
 
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -38,6 +28,15 @@ import com.azure.maps.route.models.RouteDirectionsParameters;
 import com.azure.maps.route.models.RouteMatrixQuery;
 import com.azure.maps.route.models.RouteMatrixResult;
 
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 public class Utility {
     private static final Pattern UUID_PATTERN = Pattern.compile("[0-9A-Fa-f\\-]{36}");
     private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
@@ -53,7 +52,7 @@ public class Utility {
         }
 
         // if not, let's go
-        final String location = headers.getValue("Location");
+        final String location = headers.getValue(HttpHeaderName.LOCATION);
 
         if (location != null) {
             Matcher matcher = UUID_PATTERN.matcher(location);
@@ -64,27 +63,25 @@ public class Utility {
         return null;
     }
 
-
     /**
      * converts the internal representation of {@link RouteMatrixResult} into the public one
      * from inside the HTTP response.
+     *
      * @param response
      * @return
      */
     public static SimpleResponse<RouteMatrixResult> createRouteMatrixResponse(
-            Response<RouteMatrixResultPrivate> response) {
+        Response<RouteMatrixResultPrivate> response) {
         RouteMatrixResult result = response.getValue() != null
-            ? Utility.toRouteMatrixResult(response.getValue()) : null;
-        SimpleResponse<RouteMatrixResult> simpleResponse = new SimpleResponse<>(response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            result);
+            ? Utility.toRouteMatrixResult(response.getValue())
+            : null;
 
-        return simpleResponse;
+        return new SimpleResponse<>(response, result);
     }
 
     /**
      * Converts a private {@link RouteMatrixResultPrivate} to a public @{link RouteMatrixResult}
+     *
      * @param privateResult
      * @return a public instance of {@link RouteMatrixResult}
      */
@@ -96,6 +93,7 @@ public class Utility {
 
     /**
      * Converts a private {@link RouteMatrixQueryPrivate} into a public {@link RouteMatrixQuery}
+     *
      * @param query
      * @return
      */
@@ -105,24 +103,16 @@ public class Utility {
         GeoJsonMultiPoint destinations = new GeoJsonMultiPoint();
 
         // origins
-        List<List<Double>> originCoordinates = query.getOrigins()
-            .getPoints()
-            .stream()
-            .map(point -> {
-                GeoPosition position = point.getCoordinates();
-                return Arrays.asList(position.getLongitude(), position.getLatitude());
-            })
-            .collect(Collectors.toList());
+        List<List<Double>> originCoordinates = query.getOrigins().getPoints().stream().map(point -> {
+            GeoPosition position = point.getCoordinates();
+            return Arrays.asList(position.getLongitude(), position.getLatitude());
+        }).collect(Collectors.toList());
 
         // destinations
-        List<List<Double>> destCoordinates = query.getDestinations()
-            .getPoints()
-            .stream()
-            .map(point -> {
-                GeoPosition position = point.getCoordinates();
-                return Arrays.asList(position.getLongitude(), position.getLatitude());
-            })
-            .collect(Collectors.toList());
+        List<List<Double>> destCoordinates = query.getDestinations().getPoints().stream().map(point -> {
+            GeoPosition position = point.getCoordinates();
+            return Arrays.asList(position.getLongitude(), position.getLatitude());
+        }).collect(Collectors.toList());
 
         origins.setCoordinates(originCoordinates);
         destinations.setCoordinates(destCoordinates);
@@ -138,8 +128,7 @@ public class Utility {
      * @return a String containing all route points
      */
     public static String toRouteQueryString(List<GeoPosition> routePoints) {
-        return routePoints
-            .stream()
+        return routePoints.stream()
             .map(item -> item.getLatitude() + "," + item.getLongitude())
             .collect(Collectors.joining(":"));
     }
@@ -150,7 +139,7 @@ public class Utility {
      * return private parameters
      */
     public static RouteDirectionParametersPrivate toRouteDirectionParametersPrivate(
-            RouteDirectionsParameters parameters) {
+        RouteDirectionsParameters parameters) {
         RouteDirectionParametersPrivate privateParams = new RouteDirectionParametersPrivate();
 
         // set allowVignette
@@ -172,7 +161,7 @@ public class Utility {
     /**
      * Converts a {@link GeoCollection} into a private {@link GeoJsonGeometryCollection}.
      *
-     * @param object
+     * @param collection
      * @return
      */
     public static GeoJsonGeometryCollection toGeoJsonGeometryCollection(GeoCollection collection) {
@@ -181,14 +170,15 @@ public class Utility {
         SERIALIZER.serialize(baos, collection);
 
         // deserialize into GeoJsonObject
-        final TypeReference<GeoJsonGeometryCollection> typeReference = new TypeReference<GeoJsonGeometryCollection>() { };
+        final TypeReference<GeoJsonGeometryCollection> typeReference = new TypeReference<GeoJsonGeometryCollection>() {
+        };
         return SERIALIZER.deserializeFromBytes(baos.toByteArray(), typeReference);
     }
 
     /**
      * Converts a {@link GeoPolygonCollection} into a private {@link GeoJsonMultiPolygon}.
      *
-     * @param object
+     * @param collection
      * @return
      */
     public static GeoJsonMultiPolygon toGeoJsonMultiPolygon(GeoPolygonCollection collection) {
@@ -197,34 +187,36 @@ public class Utility {
         SERIALIZER.serialize(baos, collection);
 
         // deserialize into GeoJsonObject
-        final TypeReference<GeoJsonMultiPolygon> typeReference = new TypeReference<GeoJsonMultiPolygon>() { };
+        final TypeReference<GeoJsonMultiPolygon> typeReference = new TypeReference<GeoJsonMultiPolygon>() {
+        };
         return SERIALIZER.deserializeFromBytes(baos.toByteArray(), typeReference);
     }
 
     /**
      * converts the internal representation of {@link RouteDirectionsBatchResult} into the public one
      * from inside the HTTP response.
+     *
      * @param response
      * @return
      */
     public static SimpleResponse<RouteDirectionsBatchResult> createRouteDirectionsResponse(
-            Response<RouteDirectionsBatchResultPrivate> response) {
-        RouteDirectionsBatchResult result =
-            response.getValue() != null ? Utility.toRouteDirectionsBatchResult(response.getValue()) : null;
+        Response<RouteDirectionsBatchResultPrivate> response) {
+        RouteDirectionsBatchResult result = response.getValue() != null ? Utility.toRouteDirectionsBatchResult(
+            response.getValue()) : null;
         SimpleResponse<RouteDirectionsBatchResult> simpleResponse = new SimpleResponse<>(response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            result);
+            response.getStatusCode(), response.getHeaders(), result);
 
         return simpleResponse;
     }
 
     /**
      * Converts a private {@link RouteDirectionsBatchResultPrivate} to a public @{link RouteDirectionsBatchResult}
+     *
      * @param privateResult
      * @return a public instance of {@link RouteDirectionsBatchResult}
      */
-    private static RouteDirectionsBatchResult toRouteDirectionsBatchResult(RouteDirectionsBatchResultPrivate privateResult) {
+    private static RouteDirectionsBatchResult toRouteDirectionsBatchResult(
+        RouteDirectionsBatchResultPrivate privateResult) {
         RouteDirectionsBatchResult routeDirections = new RouteDirectionsBatchResult();
         RouteDirectionsBatchResultPropertiesHelper.setFromRouteDirectionsBatchResultPrivate(routeDirections,
             privateResult);
@@ -239,77 +231,75 @@ public class Utility {
      * @return
      */
     public static BatchRequestItem toRouteDirectionsBatchItem(RouteDirectionsOptions options) {
-        Map<String, Object> params = new HashMap<>();
+        UrlBuilder urlBuilder = new UrlBuilder();
 
         // single value parameters
-        params.compute("query", (k, v) -> Utility.toRouteQueryString(options.getRoutePoints()));
-        params.compute("maxAlternatives", (k, v) -> options.getMaxAlternatives());
-        params.compute("alternativeType", (k, v) -> options.getAlternativeType());
-        params.compute("minDeviationDistance", (k, v) -> options.getMinDeviationDistance());
-        params.compute("arriveAt", (k, v) -> options.getArriveAt());
-        params.compute("departAt", (k, v) -> options.getDepartAt());
-        params.compute("minDeviationTime", (k, v) -> options.getMinDeviationTime());
-        params.compute("instructionsType", (k, v) -> options.getInstructionsType());
-        params.compute("language", (k, v) -> options.getLanguage());
-        params.compute("computeBestOrder", (k, v) -> options.getComputeBestWaypointOrder());
-        params.compute("routeRepresentationForBestOrder", (k, v) -> options.getRouteRepresentationForBestOrder());
-        params.compute("computeTravelTimeFor", (k, v) -> options.getComputeTravelTime());
-        params.compute("vehicleHeading", (k, v) -> options.getVehicleHeading());
-        params.compute("report", (k, v) -> options.getReport());
-        params.compute("sectionType", (k, v) -> options.getFilterSectionType());
-        params.compute("vehicleAxleWeight", (k, v) -> options.getVehicleAxleWeight());
-        params.compute("vehicleWidth", (k, v) -> options.getVehicleWidth());
-        params.compute("vehicleHeight", (k, v) -> options.getVehicleHeight());
-        params.compute("vehicleLength", (k, v) -> options.getVehicleLength());
-        params.compute("vehicleMaxSpeed", (k, v) -> options.getVehicleMaxSpeed());
-        params.compute("vehicleWeight", (k, v) -> options.getVehicleWeight());
-        params.compute("vehicleCommercial", (k, v) -> options.isCommercialVehicle());
-        params.compute("windingness", (k, v) -> options.getWindingness());
-        params.compute("hilliness", (k, v) -> options.getInclineLevel());
-        params.compute("travelMode", (k, v) -> options.getTravelMode());
-        params.compute("avoid", (k, v) -> options.getAvoidRouteTypes());
-        params.compute("traffic", (k, v) -> options.isGetUseTrafficData());
-        params.compute("routeType", (k, v) -> options.getRouteType());
-        params.compute("vehicleLoadType", (k, v) -> options.getVehicleLoadType());
-        params.compute("vehicleEngineType", (k, v) -> options.getVehicleEngineType());
-        params.compute("constantSpeedConsumptionInLitersPerHundredkm", (k, v) -> options.getConstantSpeedConsumptionInLitersPerHundredKm());
-        params.compute("currentFuelInLiters", (k, v) -> options.getCurrentFuelInLiters());
-        params.compute("auxiliaryPowerInLitersPerHour", (k, v) -> options.getAuxiliaryPowerInLitersPerHour());
-        params.compute("fuelEnergyDensityInMJoulesPerLiter", (k, v) -> options.getFuelEnergyDensityInMegajoulesPerLiter());
-        params.compute("accelerationEfficiency", (k, v) -> options.getAccelerationEfficiency());
-        params.compute("decelerationEfficiency", (k, v) -> options.getDecelerationEfficiency());
-        params.compute("uphillEfficiency", (k, v) -> options.getUphillEfficiency());
-        params.compute("downhillEfficiency", (k, v) -> options.getDownhillEfficiency());
-        params.compute("constantSpeedConsumptionInkWhPerHundredkm", (k, v) -> options.getConstantSpeedConsumptionInKwHPerHundredKm());
-        params.compute("currentChargeInkWh", (k, v) -> options.getCurrentChargeInKwH());
-        params.compute("maxChargeInkWh", (k, v) -> options.getMaxChargeInKwH());
-        params.compute("auxiliaryPowerInkW", (k, v) -> options.getAuxiliaryPowerInKw());
+        processQueryParameter(urlBuilder, "query", Utility.toRouteQueryString(options.getRoutePoints()));
+        processQueryParameter(urlBuilder, "maxAlternatives", options.getMaxAlternatives());
+        processQueryParameter(urlBuilder, "alternativeType", options.getAlternativeType());
+        processQueryParameter(urlBuilder, "minDeviationDistance", options.getMinDeviationDistance());
+        processQueryParameter(urlBuilder, "arriveAt", options.getArriveAt());
+        processQueryParameter(urlBuilder, "departAt", options.getDepartAt());
+        processQueryParameter(urlBuilder, "minDeviationTime", options.getMinDeviationTime());
+        processQueryParameter(urlBuilder, "instructionsType", options.getInstructionsType());
+        processQueryParameter(urlBuilder, "language", options.getLanguage());
+        processQueryParameter(urlBuilder, "computeBestOrder", options.getComputeBestWaypointOrder());
+        processQueryParameter(urlBuilder, "routeRepresentationForBestOrder", options.getRouteRepresentationForBestOrder());
+        processQueryParameter(urlBuilder, "computeTravelTimeFor", options.getComputeTravelTime());
+        processQueryParameter(urlBuilder, "vehicleHeading", options.getVehicleHeading());
+        processQueryParameter(urlBuilder, "report", options.getReport());
+        processQueryParameter(urlBuilder, "sectionType", options.getFilterSectionType());
+        processQueryParameter(urlBuilder, "vehicleAxleWeight", options.getVehicleAxleWeight());
+        processQueryParameter(urlBuilder, "vehicleWidth", options.getVehicleWidth());
+        processQueryParameter(urlBuilder, "vehicleHeight", options.getVehicleHeight());
+        processQueryParameter(urlBuilder, "vehicleLength", options.getVehicleLength());
+        processQueryParameter(urlBuilder, "vehicleMaxSpeed", options.getVehicleMaxSpeed());
+        processQueryParameter(urlBuilder, "vehicleWeight", options.getVehicleWeight());
+        processQueryParameter(urlBuilder, "vehicleCommercial", options.isCommercialVehicle());
+        processQueryParameter(urlBuilder, "windingness", options.getWindingness());
+        processQueryParameter(urlBuilder, "hilliness", options.getInclineLevel());
+        processQueryParameter(urlBuilder, "travelMode", options.getTravelMode());
+        processQueryParameter(urlBuilder, "avoid", options.getAvoidRouteTypes());
+        processQueryParameter(urlBuilder, "traffic", options.isGetUseTrafficData());
+        processQueryParameter(urlBuilder, "routeType", options.getRouteType());
+        processQueryParameter(urlBuilder, "vehicleLoadType", options.getVehicleLoadType());
+        processQueryParameter(urlBuilder, "vehicleEngineType", options.getVehicleEngineType());
+        processQueryParameter(urlBuilder, "constantSpeedConsumptionInLitersPerHundredkm",
+            options.getConstantSpeedConsumptionInLitersPerHundredKm());
+        processQueryParameter(urlBuilder, "currentFuelInLiters", options.getCurrentFuelInLiters());
+        processQueryParameter(urlBuilder, "auxiliaryPowerInLitersPerHour", options.getAuxiliaryPowerInLitersPerHour());
+        processQueryParameter(urlBuilder, "fuelEnergyDensityInMJoulesPerLiter",
+            options.getFuelEnergyDensityInMegajoulesPerLiter());
+        processQueryParameter(urlBuilder, "accelerationEfficiency", options.getAccelerationEfficiency());
+        processQueryParameter(urlBuilder, "decelerationEfficiency", options.getDecelerationEfficiency());
+        processQueryParameter(urlBuilder, "uphillEfficiency", options.getUphillEfficiency());
+        processQueryParameter(urlBuilder, "downhillEfficiency", options.getDownhillEfficiency());
+        processQueryParameter(urlBuilder, "constantSpeedConsumptionInkWhPerHundredkm",
+            options.getConstantSpeedConsumptionInKwHPerHundredKm());
+        processQueryParameter(urlBuilder, "currentChargeInkWh", options.getCurrentChargeInKwH());
+        processQueryParameter(urlBuilder, "maxChargeInkWh", options.getMaxChargeInKwH());
+        processQueryParameter(urlBuilder, "auxiliaryPowerInkW", options.getAuxiliaryPowerInKw());
 
         // convert to batchrequestitem
-        BatchRequestItem item = convertParametersToRequestItem(params);
-        return item;
+        return new BatchRequestItem().setQuery(urlBuilder.getQueryString());
     }
 
     /**
-     * Converts a map of parameters into a BatchRequestItem.
+     * Adds the given query parameter key-value pair to the UrlBuilder.
      *
-     * @param params
-     * @return
+     * @param urlBuilder the UrlBuilder to add the query parameter to
+     * @param name the name of the query parameter
+     * @param value the value of the query parameter
      */
-    private static BatchRequestItem convertParametersToRequestItem(Map<String, Object> params) {
-        // batch request item conversion
-        BatchRequestItem item = new BatchRequestItem();
-        UrlBuilder urlBuilder = new UrlBuilder();
-
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            try {
-                urlBuilder.addQueryParameter(entry.getKey(), URLEncoder.encode(entry.getValue().toString(), "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
-            }
+    private static void processQueryParameter(UrlBuilder urlBuilder, String name, Object value) {
+        if (value == null) {
+            return;
         }
 
-        item.setQuery(urlBuilder.getQueryString());
-        return item;
+        try {
+            urlBuilder.addQueryParameter(name, URLEncoder.encode(String.valueOf(value), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

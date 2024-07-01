@@ -29,7 +29,7 @@ public final class CloudAccountDetailsInner implements JsonSerializable<CloudAcc
     /**
      * Creates an instance of CloudAccountDetailsInner class.
      */
-    public CloudAccountDetailsInner() {
+    private CloudAccountDetailsInner() {
     }
 
     /**

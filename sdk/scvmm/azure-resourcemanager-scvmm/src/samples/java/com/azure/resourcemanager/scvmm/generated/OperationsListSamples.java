@@ -4,19 +4,35 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListOperations.json
+     * x-ms-original-file:
+     * specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/Operations_List_MinimumSet_Gen.
+     * json
      */
     /**
-     * Sample code: ListOperations.
-     *
+     * Sample code: Operations_List_MinimumSet.
+     * 
      * @param manager Entry point to ScvmmManager.
      */
-    public static void listOperations(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.operations().list(Context.NONE);
+    public static void operationsListMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/Operations_List_MaximumSet_Gen.
+     * json
+     */
+    /**
+     * Sample code: Operations_List_MaximumSet.
+     * 
+     * @param manager Entry point to ScvmmManager.
+     */
+    public static void operationsListMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

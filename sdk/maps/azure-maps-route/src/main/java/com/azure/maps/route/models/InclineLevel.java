@@ -5,34 +5,49 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InclineLevel. */
+/**
+ * Defines values for InclineLevel.
+ */
 public final class InclineLevel extends ExpandableStringEnum<InclineLevel> {
-    /** Static value low for InclineLevel. */
+    /**
+     * low.
+     */
     public static final InclineLevel LOW = fromString("low");
 
-    /** Static value normal for InclineLevel. */
+    /**
+     * normal.
+     */
     public static final InclineLevel NORMAL = fromString("normal");
 
-    /** Static value high for InclineLevel. */
+    /**
+     * high.
+     */
     public static final InclineLevel HIGH = fromString("high");
 
     /**
+     * Creates a new instance of InclineLevel value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InclineLevel() {
+    }
+
+    /**
      * Creates or finds a InclineLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InclineLevel.
      */
-    @JsonCreator
     public static InclineLevel fromString(String name) {
         return fromString(name, InclineLevel.class);
     }
 
     /**
      * Gets known InclineLevel values.
-     *
+     * 
      * @return known InclineLevel values.
      */
     public static Collection<InclineLevel> values() {

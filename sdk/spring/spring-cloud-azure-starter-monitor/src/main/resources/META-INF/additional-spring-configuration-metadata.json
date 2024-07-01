@@ -1,0 +1,14 @@
+{
+  "groups": [
+    {
+      "name": "azure-monitor-spring"
+    }
+  ],
+  "properties": [
+    {
+      "name": "applicationinsights.connection.string",
+      "type": "java.lang.String",
+      "description": "The Application Insights connection string."
+    }
+  ]
+}

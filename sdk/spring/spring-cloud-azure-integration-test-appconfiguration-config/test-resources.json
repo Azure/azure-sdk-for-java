@@ -5,9 +5,6 @@
 		"testApplicationId": {
 			"type": "string"
 		},
-		"testApplicationSecret": {
-			"type": "String"
-		},
 		"tenantId": {
 			"type": "String"
 		},
@@ -164,10 +161,6 @@
 		"AZURE_CLIENT_ID": {
 			"type": "string",
 			"value": "[parameters('testApplicationId')]"
-		},
-		"AZURE_CLIENT_SECRET": {
-			"type": "string",
-			"value": "[parameters('testApplicationSecret')]"
 		},
 		"STORE_NAME": {
 			"type": "string",

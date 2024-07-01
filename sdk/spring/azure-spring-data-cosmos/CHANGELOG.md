@@ -3,6 +3,7 @@
 ### 3.47.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added hierarchical or sub-partitioning support to 'azure-spring-data-cosmos' - See [PR 38365](https://github.com/Azure/azure-sdk-for-java/pull/38365).
 
 #### Breaking Changes
 

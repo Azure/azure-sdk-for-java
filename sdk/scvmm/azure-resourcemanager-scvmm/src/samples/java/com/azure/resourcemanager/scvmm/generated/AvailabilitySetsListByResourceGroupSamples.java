@@ -4,19 +4,35 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AvailabilitySets ListByResourceGroup. */
+/**
+ * Samples for AvailabilitySets ListByResourceGroup.
+ */
 public final class AvailabilitySetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListAvailabilitySetsByResourceGroup.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
+     * AvailabilitySets_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
-     * Sample code: ListAvailabilitySetsByResourceGroup.
-     *
+     * Sample code: AvailabilitySets_ListByResourceGroup_MinimumSet.
+     * 
      * @param manager Entry point to ScvmmManager.
      */
-    public static void listAvailabilitySetsByResourceGroup(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.availabilitySets().listByResourceGroup("testrg", Context.NONE);
+    public static void
+        availabilitySetsListByResourceGroupMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.availabilitySets().listByResourceGroup("rgscvmm", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
+     * AvailabilitySets_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvailabilitySets_ListByResourceGroup_MaximumSet.
+     * 
+     * @param manager Entry point to ScvmmManager.
+     */
+    public static void
+        availabilitySetsListByResourceGroupMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.availabilitySets().listByResourceGroup("rgscvmm", com.azure.core.util.Context.NONE);
     }
 }

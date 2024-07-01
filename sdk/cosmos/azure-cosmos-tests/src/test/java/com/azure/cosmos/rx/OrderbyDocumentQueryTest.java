@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.CosmosItemSerializerNoExceptionWrapping;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -205,7 +205,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             // For now in Spark don't need to worry about extracting values - we would need a wrapper to
             // allow inferring schema anyway.
             .setCustomItemSerializer(
-                new CosmosItemSerializer() {
+                new CosmosItemSerializerNoExceptionWrapping() {
                     @Override
                     public <T> Map<String, Object> serialize(T item) {
                         return null;

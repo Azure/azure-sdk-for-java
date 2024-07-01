@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Input field mapping for a skill.
@@ -117,6 +118,9 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -177,7 +181,7 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
      * @return the InputFieldMappingEntry object itself.
      */
     public InputFieldMappingEntry setInputs(InputFieldMappingEntry... inputs) {
-        this.inputs = (inputs == null) ? null : java.util.Arrays.asList(inputs);
+        this.inputs = (inputs == null) ? null : Arrays.asList(inputs);
         return this;
     }
 }

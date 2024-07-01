@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosItemSerializer
+import com.azure.cosmos.{CosmosItemSerializerNoExceptionWrapping}
 import com.azure.cosmos.implementation.{HttpConstants, ObjectNodeMap, ServiceUnavailableException, SparkRowItem, Strings, Utils}
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.TransientIOErrorsRetryingIteratorITest.maxRetryCountPerIOOperation
@@ -57,7 +57,7 @@ class TransientIOErrorsRetryingIteratorITest
     val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
       .setCustomItemSerializer(
-        new CosmosItemSerializer {
+        new CosmosItemSerializerNoExceptionWrapping {
           override def serialize[T](item: T): util.Map[String, AnyRef] = ???
 
           override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {
@@ -200,7 +200,7 @@ class TransientIOErrorsRetryingIteratorITest
     val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
       .setCustomItemSerializer(
-        new CosmosItemSerializer {
+        new CosmosItemSerializerNoExceptionWrapping {
           override def serialize[T](item: T): util.Map[String, AnyRef] = ???
 
           override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {

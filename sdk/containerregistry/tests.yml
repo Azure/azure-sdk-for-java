@@ -3,6 +3,7 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
+    UseFederatedAuth: true
     ServiceDirectory: containerregistry
     SupportedClouds: 'Public,UsGov,China'
     Artifacts:
@@ -12,7 +13,5 @@ extends:
     TimeoutInMinutes: 90
     EnvVars:
       AZURE_LOG_LEVEL: 2
-      AZURE_CLIENT_ID: $(CONTAINERREGISTRY_CLIENT_ID)
-      AZURE_CLIENT_SECRET: $(CONTAINERREGISTRY_CLIENT_SECRET)
       AZURE_TENANT_ID: $(CONTAINERREGISTRY_TENANT_ID)
       AZURE_SUBSCRIPTION_ID: $(CONTAINERREGISTRY_SUBSCRIPTION_ID)

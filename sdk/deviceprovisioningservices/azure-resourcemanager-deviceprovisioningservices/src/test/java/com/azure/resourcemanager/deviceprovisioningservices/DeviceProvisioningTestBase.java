@@ -12,7 +12,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropertiesDescription;
@@ -42,14 +42,14 @@ public class DeviceProvisioningTestBase extends TestBase {
 
     public ResourceManager createResourceManager() {
         return ResourceManager
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
+            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
             .withDefaultSubscription();
     }
 
     public IotDpsManager createIotDpsManager() {
         return IotDpsManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
     }
 
     public ResourceGroup createResourceGroup(ResourceManager resourceManager) {
@@ -73,7 +73,7 @@ public class DeviceProvisioningTestBase extends TestBase {
     public IotHubManager createIotHubManager() {
         return IotHubManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
     }
 
     public ProvisioningServiceDescriptionInner createProvisioningService(IotDpsManager iotDpsManager, ResourceGroup resourceGroup) {
