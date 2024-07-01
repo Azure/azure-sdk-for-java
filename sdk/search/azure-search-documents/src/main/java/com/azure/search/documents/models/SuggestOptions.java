@@ -12,11 +12,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Arrays;
 
-/**
- * Parameter group.
- */
+/** Parameter group. */
 @Fluent
 public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
 
@@ -40,8 +37,8 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
     private String highlightPostTag;
 
     /*
-     * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting
-     * of suggestions is disabled.
+     * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit
+     * highlighting of suggestions is disabled.
      */
     private String highlightPreTag;
 
@@ -54,10 +51,10 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
 
     /*
      * The list of OData $orderby expressions by which to sort the results. Each expression can be either a field name
-     * or a call to either the geo.distance() or the search.score() functions. Each expression can be followed by asc to
-     * indicate ascending, or desc to indicate descending. The default is ascending order. Ties will be broken by the
-     * match scores of documents. If no $orderby is specified, the default sort order is descending by document match
-     * score. There can be at most 32 $orderby clauses.
+     * or a call to either the geo.distance() or the search.score() functions. Each expression can be followed by asc
+     * to indicate ascending, or desc to indicate descending. The default is ascending order. Ties will be broken by
+     * the match scores of documents. If no $orderby is specified, the default sort order is descending by document
+     * match score. There can be at most 32 $orderby clauses.
      */
     private List<String> orderBy;
 
@@ -77,11 +74,8 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      */
     private Integer top;
 
-    /**
-     * Creates an instance of SuggestOptions class.
-     */
-    public SuggestOptions() {
-    }
+    /** Creates an instance of SuggestOptions class. */
+    public SuggestOptions() {}
 
     /**
      * Get the filter property: An OData expression that filters the documents considered for suggestions.
@@ -291,48 +285,6 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
         return this;
     }
 
-    /**
-     * Set the orderBy property: The list of OData $orderby expressions by which to sort the results. Each expression
-     * can be either a field name or a call to either the geo.distance() or the search.score() functions. Each
-     * expression can be followed by asc to indicate ascending, or desc to indicate descending. The default is ascending
-     * order. Ties will be broken by the match scores of documents. If no $orderby is specified, the default sort order
-     * is descending by document match score. There can be at most 32 $orderby clauses.
-     *
-     * @param orderBy the orderBy value to set.
-     * @return the SuggestOptions object itself.
-     */
-    public SuggestOptions setOrderBy(String... orderBy) {
-        this.orderBy = (orderBy == null) ? null : Arrays.asList(orderBy);
-        return this;
-    }
-
-    /**
-     * Set the searchFields property: The list of field names to search for the specified search text. Target fields
-     * must be included in the specified suggester.
-     *
-     * @param searchFields the searchFields value to set.
-     * @return the SuggestOptions object itself.
-     */
-    public SuggestOptions setSearchFields(String... searchFields) {
-        this.searchFields = (searchFields == null) ? null : Arrays.asList(searchFields);
-        return this;
-    }
-
-    /**
-     * Set the select property: The list of fields to retrieve. If unspecified, only the key field will be included in
-     * the results.
-     *
-     * @param select the select value to set.
-     * @return the SuggestOptions object itself.
-     */
-    public SuggestOptions setSelect(String... select) {
-        this.select = (select == null) ? null : Arrays.asList(select);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -353,41 +305,81 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SuggestOptions if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the SuggestOptions.
      */
     public static SuggestOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SuggestOptions deserializedSuggestOptions = new SuggestOptions();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("$filter".equals(fieldName)) {
-                    deserializedSuggestOptions.filter = reader.getString();
-                } else if ("UseFuzzyMatching".equals(fieldName)) {
-                    deserializedSuggestOptions.useFuzzyMatching = reader.getNullable(JsonReader::getBoolean);
-                } else if ("highlightPostTag".equals(fieldName)) {
-                    deserializedSuggestOptions.highlightPostTag = reader.getString();
-                } else if ("highlightPreTag".equals(fieldName)) {
-                    deserializedSuggestOptions.highlightPreTag = reader.getString();
-                } else if ("minimumCoverage".equals(fieldName)) {
-                    deserializedSuggestOptions.minimumCoverage = reader.getNullable(JsonReader::getDouble);
-                } else if ("OrderBy".equals(fieldName)) {
-                    List<String> orderBy = reader.readArray(reader1 -> reader1.getString());
-                    deserializedSuggestOptions.orderBy = orderBy;
-                } else if ("searchFields".equals(fieldName)) {
-                    List<String> searchFields = reader.readArray(reader1 -> reader1.getString());
-                    deserializedSuggestOptions.searchFields = searchFields;
-                } else if ("$select".equals(fieldName)) {
-                    List<String> select = reader.readArray(reader1 -> reader1.getString());
-                    deserializedSuggestOptions.select = select;
-                } else if ("$top".equals(fieldName)) {
-                    deserializedSuggestOptions.top = reader.getNullable(JsonReader::getInt);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedSuggestOptions;
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    SuggestOptions deserializedSuggestOptions = new SuggestOptions();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("$filter".equals(fieldName)) {
+                            deserializedSuggestOptions.filter = reader.getString();
+                        } else if ("UseFuzzyMatching".equals(fieldName)) {
+                            deserializedSuggestOptions.useFuzzyMatching = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("highlightPostTag".equals(fieldName)) {
+                            deserializedSuggestOptions.highlightPostTag = reader.getString();
+                        } else if ("highlightPreTag".equals(fieldName)) {
+                            deserializedSuggestOptions.highlightPreTag = reader.getString();
+                        } else if ("minimumCoverage".equals(fieldName)) {
+                            deserializedSuggestOptions.minimumCoverage = reader.getNullable(JsonReader::getDouble);
+                        } else if ("OrderBy".equals(fieldName)) {
+                            List<String> orderBy = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSuggestOptions.orderBy = orderBy;
+                        } else if ("searchFields".equals(fieldName)) {
+                            List<String> searchFields = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSuggestOptions.searchFields = searchFields;
+                        } else if ("$select".equals(fieldName)) {
+                            List<String> select = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSuggestOptions.select = select;
+                        } else if ("$top".equals(fieldName)) {
+                            deserializedSuggestOptions.top = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    return deserializedSuggestOptions;
+                });
+    }
+
+    /**
+     * Set the orderBy property: The list of OData $orderby expressions by which to sort the results. Each expression
+     * can be either a field name or a call to either the geo.distance() or the search.score() functions. Each
+     * expression can be followed by asc to indicate ascending, or desc to indicate descending. The default is ascending
+     * order. Ties will be broken by the match scores of documents. If no $orderby is specified, the default sort order
+     * is descending by document match score. There can be at most 32 $orderby clauses.
+     *
+     * @param orderBy the orderBy value to set.
+     * @return the SuggestOptions object itself.
+     */
+    public SuggestOptions setOrderBy(String... orderBy) {
+        this.orderBy = (orderBy == null) ? null : java.util.Arrays.asList(orderBy);
+        return this;
+    }
+
+    /**
+     * Set the searchFields property: The list of field names to search for the specified search text. Target fields
+     * must be included in the specified suggester.
+     *
+     * @param searchFields the searchFields value to set.
+     * @return the SuggestOptions object itself.
+     */
+    public SuggestOptions setSearchFields(String... searchFields) {
+        this.searchFields = (searchFields == null) ? null : java.util.Arrays.asList(searchFields);
+        return this;
+    }
+
+    /**
+     * Set the select property: The list of fields to retrieve. If unspecified, only the key field will be included in
+     * the results.
+     *
+     * @param select the select value to set.
+     * @return the SuggestOptions object itself.
+     */
+    public SuggestOptions setSelect(String... select) {
+        this.select = (select == null) ? null : java.util.Arrays.asList(select);
+        return this;
     }
 }

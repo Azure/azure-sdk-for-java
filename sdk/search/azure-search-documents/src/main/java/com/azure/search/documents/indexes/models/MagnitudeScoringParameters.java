@@ -14,9 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Provides parameter values to a magnitude scoring function.
- */
+/** Provides parameter values to a magnitude scoring function. */
 @Fluent
 public final class MagnitudeScoringParameters implements JsonSerializable<MagnitudeScoringParameters> {
 
@@ -87,9 +85,6 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -104,48 +99,49 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of MagnitudeScoringParameters if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MagnitudeScoringParameters.
      */
     public static MagnitudeScoringParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean boostingRangeStartFound = false;
-            double boostingRangeStart = 0.0;
-            boolean boostingRangeEndFound = false;
-            double boostingRangeEnd = 0.0;
-            Boolean shouldBoostBeyondRangeByConstant = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("boostingRangeStart".equals(fieldName)) {
-                    boostingRangeStart = reader.getDouble();
-                    boostingRangeStartFound = true;
-                } else if ("boostingRangeEnd".equals(fieldName)) {
-                    boostingRangeEnd = reader.getDouble();
-                    boostingRangeEndFound = true;
-                } else if ("constantBoostBeyondRange".equals(fieldName)) {
-                    shouldBoostBeyondRangeByConstant = reader.getNullable(JsonReader::getBoolean);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (boostingRangeStartFound && boostingRangeEndFound) {
-                MagnitudeScoringParameters deserializedMagnitudeScoringParameters
-                    = new MagnitudeScoringParameters(boostingRangeStart, boostingRangeEnd);
-                deserializedMagnitudeScoringParameters.shouldBoostBeyondRangeByConstant
-                    = shouldBoostBeyondRangeByConstant;
-                return deserializedMagnitudeScoringParameters;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!boostingRangeStartFound) {
-                missingProperties.add("boostingRangeStart");
-            }
-            if (!boostingRangeEndFound) {
-                missingProperties.add("boostingRangeEnd");
-            }
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean boostingRangeStartFound = false;
+                    double boostingRangeStart = 0.0;
+                    boolean boostingRangeEndFound = false;
+                    double boostingRangeEnd = 0.0;
+                    Boolean shouldBoostBeyondRangeByConstant = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("boostingRangeStart".equals(fieldName)) {
+                            boostingRangeStart = reader.getDouble();
+                            boostingRangeStartFound = true;
+                        } else if ("boostingRangeEnd".equals(fieldName)) {
+                            boostingRangeEnd = reader.getDouble();
+                            boostingRangeEndFound = true;
+                        } else if ("constantBoostBeyondRange".equals(fieldName)) {
+                            shouldBoostBeyondRangeByConstant = reader.getNullable(JsonReader::getBoolean);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (boostingRangeStartFound && boostingRangeEndFound) {
+                        MagnitudeScoringParameters deserializedMagnitudeScoringParameters =
+                                new MagnitudeScoringParameters(boostingRangeStart, boostingRangeEnd);
+                        deserializedMagnitudeScoringParameters.shouldBoostBeyondRangeByConstant =
+                                shouldBoostBeyondRangeByConstant;
+                        return deserializedMagnitudeScoringParameters;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!boostingRangeStartFound) {
+                        missingProperties.add("boostingRangeStart");
+                    }
+                    if (!boostingRangeEndFound) {
+                        missingProperties.add("boostingRangeEnd");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

@@ -3,8 +3,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.FixedDelayOptions;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchAsyncClient;
@@ -25,22 +23,18 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnecti
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Execution(ExecutionMode.CONCURRENT)
 public class SearchRequestUrlRewriterPolicyTests {
     @ParameterizedTest
     @MethodSource("correctUrlRewriteSupplier")
@@ -62,7 +56,6 @@ public class SearchRequestUrlRewriterPolicyTests {
             .indexName("test")
             .endpoint("https://test.search.windows.net")
             .credential(new MockTokenCredential())
-            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
             .addPolicy(new SearchRequestUrlRewriterPolicy())
             .httpClient(urlRewriteHttpClient);
         SearchClient searchClient = searchClientBuilder.buildClient();
@@ -71,7 +64,6 @@ public class SearchRequestUrlRewriterPolicyTests {
         SearchIndexClientBuilder searchIndexClientBuilder = new SearchIndexClientBuilder()
             .endpoint("https://test.search.windows.net")
             .credential(new MockTokenCredential())
-            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
             .addPolicy(new SearchRequestUrlRewriterPolicy())
             .httpClient(urlRewriteHttpClient);
         SearchIndexClient searchIndexClient = searchIndexClientBuilder.buildClient();
@@ -80,7 +72,6 @@ public class SearchRequestUrlRewriterPolicyTests {
         SearchIndexerClientBuilder searchIndexerClientBuilder = new SearchIndexerClientBuilder()
             .endpoint("https://test.search.windows.net")
             .credential(new MockTokenCredential())
-            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
             .addPolicy(new SearchRequestUrlRewriterPolicy())
             .httpClient(urlRewriteHttpClient);
         SearchIndexerClient searchIndexerClient = searchIndexerClientBuilder.buildClient();
@@ -183,6 +174,7 @@ public class SearchRequestUrlRewriterPolicyTests {
                 synonymMapUrl),
             Arguments.of(toCallable(searchIndexAsyncClient.getServiceStatisticsWithResponse()),
                 "https://test.search.windows.net/servicestats"),
+
             Arguments.of(toCallable(() -> searchIndexerClient.createOrUpdateDataSourceConnectionWithResponse(dataSource,
                 true, Context.NONE)), dataSourceUrl),
             Arguments.of(toCallable(() -> searchIndexerClient.createDataSourceConnectionWithResponse(dataSource,
@@ -263,7 +255,6 @@ public class SearchRequestUrlRewriterPolicyTests {
                 "https://test.search.windows.net/skillsets"),
             Arguments.of(toCallable(searchIndexerAsyncClient.createOrUpdateSkillsetWithResponse(skillset, false)),
                 skillsetUrl),
-            Arguments.of(toCallable(searchIndexerAsyncClient.deleteSkillsetWithResponse(skillset, true)), skillsetUrl),
             Arguments.of(toCallable(searchIndexerAsyncClient.deleteSkillsetWithResponse(skillset, true)), skillsetUrl)
         );
     }

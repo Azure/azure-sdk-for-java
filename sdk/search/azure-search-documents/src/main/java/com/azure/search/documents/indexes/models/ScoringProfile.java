@@ -11,12 +11,11 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
+import java.util.Objects;
 
-/**
- * Defines parameters for a search index that influence scoring in search queries.
- */
+/** Defines parameters for a search index that influence scoring in search queries. */
 @Fluent
 public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
 
@@ -36,8 +35,8 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
     private List<ScoringFunction> functions;
 
     /*
-     * A value indicating how the results of individual scoring functions should be combined. Defaults to "Sum". Ignored
-     * if there are no scoring functions.
+     * A value indicating how the results of individual scoring functions should be combined. Defaults to "Sum".
+     * Ignored if there are no scoring functions.
      */
     private ScoringFunctionAggregation functionAggregation;
 
@@ -121,17 +120,13 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("text", this.textWeights);
         jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("functionAggregation",
-            this.functionAggregation == null ? null : this.functionAggregation.toString());
+        jsonWriter.writeStringField("functionAggregation", Objects.toString(this.functionAggregation, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -140,42 +135,48 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ScoringProfile if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ScoringProfile.
      */
     public static ScoringProfile fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            TextWeights textWeights = null;
-            List<ScoringFunction> functions = null;
-            ScoringFunctionAggregation functionAggregation = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("text".equals(fieldName)) {
-                    textWeights = TextWeights.fromJson(reader);
-                } else if ("functions".equals(fieldName)) {
-                    functions = reader.readArray(reader1 -> ScoringFunction.fromJson(reader1));
-                } else if ("functionAggregation".equals(fieldName)) {
-                    functionAggregation = ScoringFunctionAggregation.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                ScoringProfile deserializedScoringProfile = new ScoringProfile(name);
-                deserializedScoringProfile.textWeights = textWeights;
-                deserializedScoringProfile.functions = functions;
-                deserializedScoringProfile.functionAggregation = functionAggregation;
-                return deserializedScoringProfile;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    TextWeights textWeights = null;
+                    List<ScoringFunction> functions = null;
+                    ScoringFunctionAggregation functionAggregation = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("text".equals(fieldName)) {
+                            textWeights = TextWeights.fromJson(reader);
+                        } else if ("functions".equals(fieldName)) {
+                            functions = reader.readArray(reader1 -> ScoringFunction.fromJson(reader1));
+                        } else if ("functionAggregation".equals(fieldName)) {
+                            functionAggregation = ScoringFunctionAggregation.fromString(reader.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        ScoringProfile deserializedScoringProfile = new ScoringProfile(name);
+                        deserializedScoringProfile.textWeights = textWeights;
+                        deserializedScoringProfile.functions = functions;
+                        deserializedScoringProfile.functionAggregation = functionAggregation;
+                        return deserializedScoringProfile;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**
@@ -185,7 +186,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
      * @return the ScoringProfile object itself.
      */
     public ScoringProfile setFunctions(ScoringFunction... functions) {
-        this.functions = (functions == null) ? null : Arrays.asList(functions);
+        this.functions = (functions == null) ? null : java.util.Arrays.asList(functions);
         return this;
     }
 }

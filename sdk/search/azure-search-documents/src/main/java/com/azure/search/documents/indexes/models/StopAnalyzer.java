@@ -10,8 +10,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 
 /**
  * Divides text at non-letters; Applies the lowercase and stopword token filters. This analyzer is implemented using
@@ -19,11 +19,6 @@ import java.util.Arrays;
  */
 @Fluent
 public final class StopAnalyzer extends LexicalAnalyzer {
-
-    /*
-     * A URI fragment specifying the type of analyzer.
-     */
-    private String odataType = "#Microsoft.Azure.Search.StopAnalyzer";
 
     /*
      * A list of stopwords.
@@ -37,16 +32,6 @@ public final class StopAnalyzer extends LexicalAnalyzer {
      */
     public StopAnalyzer(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of analyzer.
-     *
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -69,14 +54,11 @@ public final class StopAnalyzer extends LexicalAnalyzer {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.StopAnalyzer");
         jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeArrayField("stopwords", this.stopwords, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -86,38 +68,49 @@ public final class StopAnalyzer extends LexicalAnalyzer {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of StopAnalyzer if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the StopAnalyzer.
      */
     public static StopAnalyzer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            String odataType = "#Microsoft.Azure.Search.StopAnalyzer";
-            List<String> stopwords = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("@odata.type".equals(fieldName)) {
-                    odataType = reader.getString();
-                } else if ("stopwords".equals(fieldName)) {
-                    stopwords = reader.readArray(reader1 -> reader1.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                StopAnalyzer deserializedStopAnalyzer = new StopAnalyzer(name);
-                deserializedStopAnalyzer.odataType = odataType;
-                deserializedStopAnalyzer.stopwords = stopwords;
-                return deserializedStopAnalyzer;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    List<String> stopwords = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.StopAnalyzer".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StopAnalyzer'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("stopwords".equals(fieldName)) {
+                            stopwords = reader.readArray(reader1 -> reader1.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        StopAnalyzer deserializedStopAnalyzer = new StopAnalyzer(name);
+                        deserializedStopAnalyzer.stopwords = stopwords;
+                        return deserializedStopAnalyzer;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**
@@ -127,7 +120,7 @@ public final class StopAnalyzer extends LexicalAnalyzer {
      * @return the StopAnalyzer object itself.
      */
     public StopAnalyzer setStopwords(String... stopwords) {
-        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
+        this.stopwords = (stopwords == null) ? null : java.util.Arrays.asList(stopwords);
         return this;
     }
 }

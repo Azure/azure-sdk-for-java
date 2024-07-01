@@ -12,18 +12,11 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
+import java.util.Objects;
 
-/**
- * A skill looks for text from a custom, user-defined list of words and phrases.
- */
+/** A skill looks for text from a custom, user-defined list of words and phrases. */
 @Fluent
 public final class CustomEntityLookupSkill extends SearchIndexerSkill {
-
-    /*
-     * A URI fragment specifying the type of skill.
-     */
-    private String odataType = "#Microsoft.Skills.Text.CustomEntityLookupSkill";
 
     /*
      * A value indicating which language code to use. Default is `en`.
@@ -31,9 +24,9 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     private CustomEntityLookupSkillLanguage defaultLanguageCode;
 
     /*
-     * Path to a JSON or CSV file containing all the target text to match against. This entity definition is read at the
-     * beginning of an indexer run. Any updates to this file during an indexer run will not take effect until subsequent
-     * runs. This config must be accessible over HTTPS.
+     * Path to a JSON or CSV file containing all the target text to match against. This entity definition is read at
+     * the beginning of an indexer run. Any updates to this file during an indexer run will not take effect until
+     * subsequent runs. This config must be accessible over HTTPS.
      */
     private String entitiesDefinitionUri;
 
@@ -68,16 +61,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      */
     public CustomEntityLookupSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of skill.
-     *
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -210,50 +193,42 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CustomEntityLookupSkill setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CustomEntityLookupSkill setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CustomEntityLookupSkill setContext(String context) {
         super.setContext(context);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Skills.Text.CustomEntityLookupSkill");
         jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
-        jsonWriter.writeStringField("defaultLanguageCode",
-            this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString());
+        jsonWriter.writeStringField("defaultLanguageCode", Objects.toString(this.defaultLanguageCode, null));
         jsonWriter.writeStringField("entitiesDefinitionUri", this.entitiesDefinitionUri);
-        jsonWriter.writeArrayField("inlineEntitiesDefinition", this.inlineEntitiesDefinition,
-            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField(
+                "inlineEntitiesDefinition",
+                this.inlineEntitiesDefinition,
+                (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("globalDefaultCaseSensitive", this.globalDefaultCaseSensitive);
         jsonWriter.writeBooleanField("globalDefaultAccentSensitive", this.globalDefaultAccentSensitive);
         jsonWriter.writeNumberField("globalDefaultFuzzyEditDistance", this.globalDefaultFuzzyEditDistance);
@@ -265,84 +240,91 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomEntityLookupSkill if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the CustomEntityLookupSkill.
      */
     public static CustomEntityLookupSkill fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean inputsFound = false;
-            List<InputFieldMappingEntry> inputs = null;
-            boolean outputsFound = false;
-            List<OutputFieldMappingEntry> outputs = null;
-            String name = null;
-            String description = null;
-            String context = null;
-            String odataType = "#Microsoft.Skills.Text.CustomEntityLookupSkill";
-            CustomEntityLookupSkillLanguage defaultLanguageCode = null;
-            String entitiesDefinitionUri = null;
-            List<CustomEntity> inlineEntitiesDefinition = null;
-            Boolean globalDefaultCaseSensitive = null;
-            Boolean globalDefaultAccentSensitive = null;
-            Integer globalDefaultFuzzyEditDistance = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                    inputsFound = true;
-                } else if ("outputs".equals(fieldName)) {
-                    outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
-                    outputsFound = true;
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("context".equals(fieldName)) {
-                    context = reader.getString();
-                } else if ("@odata.type".equals(fieldName)) {
-                    odataType = reader.getString();
-                } else if ("defaultLanguageCode".equals(fieldName)) {
-                    defaultLanguageCode = CustomEntityLookupSkillLanguage.fromString(reader.getString());
-                } else if ("entitiesDefinitionUri".equals(fieldName)) {
-                    entitiesDefinitionUri = reader.getString();
-                } else if ("inlineEntitiesDefinition".equals(fieldName)) {
-                    inlineEntitiesDefinition = reader.readArray(reader1 -> CustomEntity.fromJson(reader1));
-                } else if ("globalDefaultCaseSensitive".equals(fieldName)) {
-                    globalDefaultCaseSensitive = reader.getNullable(JsonReader::getBoolean);
-                } else if ("globalDefaultAccentSensitive".equals(fieldName)) {
-                    globalDefaultAccentSensitive = reader.getNullable(JsonReader::getBoolean);
-                } else if ("globalDefaultFuzzyEditDistance".equals(fieldName)) {
-                    globalDefaultFuzzyEditDistance = reader.getNullable(JsonReader::getInt);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (inputsFound && outputsFound) {
-                CustomEntityLookupSkill deserializedCustomEntityLookupSkill
-                    = new CustomEntityLookupSkill(inputs, outputs);
-                deserializedCustomEntityLookupSkill.setName(name);
-                deserializedCustomEntityLookupSkill.setDescription(description);
-                deserializedCustomEntityLookupSkill.setContext(context);
-                deserializedCustomEntityLookupSkill.odataType = odataType;
-                deserializedCustomEntityLookupSkill.defaultLanguageCode = defaultLanguageCode;
-                deserializedCustomEntityLookupSkill.entitiesDefinitionUri = entitiesDefinitionUri;
-                deserializedCustomEntityLookupSkill.inlineEntitiesDefinition = inlineEntitiesDefinition;
-                deserializedCustomEntityLookupSkill.globalDefaultCaseSensitive = globalDefaultCaseSensitive;
-                deserializedCustomEntityLookupSkill.globalDefaultAccentSensitive = globalDefaultAccentSensitive;
-                deserializedCustomEntityLookupSkill.globalDefaultFuzzyEditDistance = globalDefaultFuzzyEditDistance;
-                return deserializedCustomEntityLookupSkill;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!inputsFound) {
-                missingProperties.add("inputs");
-            }
-            if (!outputsFound) {
-                missingProperties.add("outputs");
-            }
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean inputsFound = false;
+                    List<InputFieldMappingEntry> inputs = null;
+                    boolean outputsFound = false;
+                    List<OutputFieldMappingEntry> outputs = null;
+                    String name = null;
+                    String description = null;
+                    String context = null;
+                    CustomEntityLookupSkillLanguage defaultLanguageCode = null;
+                    String entitiesDefinitionUri = null;
+                    List<CustomEntity> inlineEntitiesDefinition = null;
+                    Boolean globalDefaultCaseSensitive = null;
+                    Boolean globalDefaultAccentSensitive = null;
+                    Integer globalDefaultFuzzyEditDistance = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Skills.Text.CustomEntityLookupSkill".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.CustomEntityLookupSkill'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputsFound = true;
+                        } else if ("outputs".equals(fieldName)) {
+                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
+                            outputsFound = true;
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getString();
+                        } else if ("context".equals(fieldName)) {
+                            context = reader.getString();
+                        } else if ("defaultLanguageCode".equals(fieldName)) {
+                            defaultLanguageCode = CustomEntityLookupSkillLanguage.fromString(reader.getString());
+                        } else if ("entitiesDefinitionUri".equals(fieldName)) {
+                            entitiesDefinitionUri = reader.getString();
+                        } else if ("inlineEntitiesDefinition".equals(fieldName)) {
+                            inlineEntitiesDefinition = reader.readArray(reader1 -> CustomEntity.fromJson(reader1));
+                        } else if ("globalDefaultCaseSensitive".equals(fieldName)) {
+                            globalDefaultCaseSensitive = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("globalDefaultAccentSensitive".equals(fieldName)) {
+                            globalDefaultAccentSensitive = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("globalDefaultFuzzyEditDistance".equals(fieldName)) {
+                            globalDefaultFuzzyEditDistance = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (inputsFound && outputsFound) {
+                        CustomEntityLookupSkill deserializedCustomEntityLookupSkill =
+                                new CustomEntityLookupSkill(inputs, outputs);
+                        deserializedCustomEntityLookupSkill.setName(name);
+                        deserializedCustomEntityLookupSkill.setDescription(description);
+                        deserializedCustomEntityLookupSkill.setContext(context);
+                        deserializedCustomEntityLookupSkill.defaultLanguageCode = defaultLanguageCode;
+                        deserializedCustomEntityLookupSkill.entitiesDefinitionUri = entitiesDefinitionUri;
+                        deserializedCustomEntityLookupSkill.inlineEntitiesDefinition = inlineEntitiesDefinition;
+                        deserializedCustomEntityLookupSkill.globalDefaultCaseSensitive = globalDefaultCaseSensitive;
+                        deserializedCustomEntityLookupSkill.globalDefaultAccentSensitive = globalDefaultAccentSensitive;
+                        deserializedCustomEntityLookupSkill.globalDefaultFuzzyEditDistance =
+                                globalDefaultFuzzyEditDistance;
+                        return deserializedCustomEntityLookupSkill;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!inputsFound) {
+                        missingProperties.add("inputs");
+                    }
+                    if (!outputsFound) {
+                        missingProperties.add("outputs");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**
@@ -352,8 +334,8 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      * @return the CustomEntityLookupSkill object itself.
      */
     public CustomEntityLookupSkill setInlineEntitiesDefinition(CustomEntity... inlineEntitiesDefinition) {
-        this.inlineEntitiesDefinition
-            = (inlineEntitiesDefinition == null) ? null : Arrays.asList(inlineEntitiesDefinition);
+        this.inlineEntitiesDefinition =
+                (inlineEntitiesDefinition == null) ? null : java.util.Arrays.asList(inlineEntitiesDefinition);
         return this;
     }
 }

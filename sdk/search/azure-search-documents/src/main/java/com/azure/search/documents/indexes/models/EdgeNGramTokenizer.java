@@ -10,8 +10,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Tokenizes the input from an edge into n-grams of the given size(s). This tokenizer is implemented using Apache
@@ -19,11 +20,6 @@ import java.util.Arrays;
  */
 @Fluent
 public final class EdgeNGramTokenizer extends LexicalTokenizer {
-
-    /*
-     * A URI fragment specifying the type of tokenizer.
-     */
-    private String odataType = "#Microsoft.Azure.Search.EdgeNGramTokenizer";
 
     /*
      * The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of maxGram.
@@ -47,16 +43,6 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
      */
     public EdgeNGramTokenizer(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of tokenizer.
-     *
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -121,18 +107,17 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.EdgeNGramTokenizer");
         jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeNumberField("minGram", this.minGram);
         jsonWriter.writeNumberField("maxGram", this.maxGram);
-        jsonWriter.writeArrayField("tokenChars", this.tokenChars,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField(
+                "tokenChars",
+                this.tokenChars,
+                (writer, element) -> writer.writeString(Objects.toString(element, null)));
         return jsonWriter.writeEndObject();
     }
 
@@ -141,46 +126,58 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of EdgeNGramTokenizer if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the EdgeNGramTokenizer.
      */
     public static EdgeNGramTokenizer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            String odataType = "#Microsoft.Azure.Search.EdgeNGramTokenizer";
-            Integer minGram = null;
-            Integer maxGram = null;
-            List<TokenCharacterKind> tokenChars = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("@odata.type".equals(fieldName)) {
-                    odataType = reader.getString();
-                } else if ("minGram".equals(fieldName)) {
-                    minGram = reader.getNullable(JsonReader::getInt);
-                } else if ("maxGram".equals(fieldName)) {
-                    maxGram = reader.getNullable(JsonReader::getInt);
-                } else if ("tokenChars".equals(fieldName)) {
-                    tokenChars = reader.readArray(reader1 -> TokenCharacterKind.fromString(reader1.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                EdgeNGramTokenizer deserializedEdgeNGramTokenizer = new EdgeNGramTokenizer(name);
-                deserializedEdgeNGramTokenizer.odataType = odataType;
-                deserializedEdgeNGramTokenizer.minGram = minGram;
-                deserializedEdgeNGramTokenizer.maxGram = maxGram;
-                deserializedEdgeNGramTokenizer.tokenChars = tokenChars;
-                return deserializedEdgeNGramTokenizer;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    Integer minGram = null;
+                    Integer maxGram = null;
+                    List<TokenCharacterKind> tokenChars = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.EdgeNGramTokenizer".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.EdgeNGramTokenizer'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("minGram".equals(fieldName)) {
+                            minGram = reader.getNullable(JsonReader::getInt);
+                        } else if ("maxGram".equals(fieldName)) {
+                            maxGram = reader.getNullable(JsonReader::getInt);
+                        } else if ("tokenChars".equals(fieldName)) {
+                            tokenChars =
+                                    reader.readArray(reader1 -> TokenCharacterKind.fromString(reader1.getString()));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        EdgeNGramTokenizer deserializedEdgeNGramTokenizer = new EdgeNGramTokenizer(name);
+                        deserializedEdgeNGramTokenizer.minGram = minGram;
+                        deserializedEdgeNGramTokenizer.maxGram = maxGram;
+                        deserializedEdgeNGramTokenizer.tokenChars = tokenChars;
+                        return deserializedEdgeNGramTokenizer;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**
@@ -190,7 +187,7 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
      * @return the EdgeNGramTokenizer object itself.
      */
     public EdgeNGramTokenizer setTokenChars(TokenCharacterKind... tokenChars) {
-        this.tokenChars = (tokenChars == null) ? null : Arrays.asList(tokenChars);
+        this.tokenChars = (tokenChars == null) ? null : java.util.Arrays.asList(tokenChars);
         return this;
     }
 }

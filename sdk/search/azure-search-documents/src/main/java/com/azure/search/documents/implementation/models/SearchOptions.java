@@ -6,18 +6,21 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
 import com.azure.search.documents.models.SemanticErrorMode;
+import java.io.IOException;
 import java.util.List;
-import java.util.Arrays;
+import java.util.Objects;
 
-/**
- * Parameter group.
- */
+/** Parameter group. */
 @Fluent
-public final class SearchOptions {
+public final class SearchOptions implements JsonSerializable<SearchOptions> {
 
     /*
      * A value that specifies whether to fetch the total count of results. Default is false. Setting this value to true
@@ -52,24 +55,24 @@ public final class SearchOptions {
     private String highlightPreTag;
 
     /*
-     * A number between 0 and 100 indicating the percentage of the index that must be covered by a search query in order
-     * for the query to be reported as a success. This parameter can be useful for ensuring search availability even for
-     * services with only one replica. The default is 100.
+     * A number between 0 and 100 indicating the percentage of the index that must be covered by a search query in
+     * order for the query to be reported as a success. This parameter can be useful for ensuring search availability
+     * even for services with only one replica. The default is 100.
      */
     private Double minimumCoverage;
 
     /*
      * The list of OData $orderby expressions by which to sort the results. Each expression can be either a field name
-     * or a call to either the geo.distance() or the search.score() functions. Each expression can be followed by asc to
-     * indicate ascending, and desc to indicate descending. The default is ascending order. Ties will be broken by the
-     * match scores of documents. If no OrderBy is specified, the default sort order is descending by document match
-     * score. There can be at most 32 $orderby clauses.
+     * or a call to either the geo.distance() or the search.score() functions. Each expression can be followed by asc
+     * to indicate ascending, and desc to indicate descending. The default is ascending order. Ties will be broken by
+     * the match scores of documents. If no OrderBy is specified, the default sort order is descending by document
+     * match score. There can be at most 32 $orderby clauses.
      */
     private List<String> orderBy;
 
     /*
-     * A value that specifies the syntax of the search query. The default is 'simple'. Use 'full' if your query uses the
-     * Lucene query syntax.
+     * A value that specifies the syntax of the search query. The default is 'simple'. Use 'full' if your query uses
+     * the Lucene query syntax.
      */
     private QueryType queryType;
 
@@ -93,8 +96,8 @@ public final class SearchOptions {
     private List<String> searchFields;
 
     /*
-     * A value that specifies whether any or all of the search terms must be matched in order to count the document as a
-     * match.
+     * A value that specifies whether any or all of the search terms must be matched in order to count the document as
+     * a match.
      */
     private SearchMode searchMode;
 
@@ -105,9 +108,9 @@ public final class SearchOptions {
     private ScoringStatistics scoringStatistics;
 
     /*
-     * A value to be used to create a sticky session, which can help to get more consistent results. As long as the same
-     * sessionId is used, a best-effort attempt will be made to target the same replica set. Be wary that reusing the
-     * same sessionID values repeatedly can interfere with the load balancing of the requests across replicas and
+     * A value to be used to create a sticky session, which can help to get more consistent results. As long as the
+     * same sessionId is used, a best-effort attempt will be made to target the same replica set. Be wary that reusing
+     * the same sessionID values repeatedly can interfere with the load balancing of the requests across replicas and
      * adversely affect the performance of the search service. The value used as sessionId cannot start with a '_'
      * character.
      */
@@ -119,8 +122,8 @@ public final class SearchOptions {
     private List<String> select;
 
     /*
-     * The number of search results to skip. This value cannot be greater than 100,000. If you need to scan documents in
-     * sequence, but cannot use $skip due to this limitation, consider using $orderby on a totally-ordered key and
+     * The number of search results to skip. This value cannot be greater than 100,000. If you need to scan documents
+     * in sequence, but cannot use $skip due to this limitation, consider using $orderby on a totally-ordered key and
      * $filter with a range query instead.
      */
     private Integer skip;
@@ -139,13 +142,13 @@ public final class SearchOptions {
     private String semanticConfiguration;
 
     /*
-     * Allows the user to choose whether a semantic call should fail completely, or to return partial results (default).
+     * Allows the user to choose whether a semantic call should fail completely, or to return partial results.
      */
     private SemanticErrorMode semanticErrorHandling;
 
     /*
-     * Allows the user to set an upper bound on the amount of time it takes for semantic enrichment to finish processing
-     * before the request fails.
+     * Allows the user to set an upper bound on the amount of time it takes for semantic enrichment to finish
+     * processing before the request fails.
      */
     private Integer semanticMaxWaitInMilliseconds;
 
@@ -167,18 +170,8 @@ public final class SearchOptions {
      */
     private String captions;
 
-    /*
-     * Allows setting a separate search query that will be solely used for semantic reranking, semantic captions and
-     * semantic answers. Is useful for scenarios where there is a need to use different queries between the base
-     * retrieval and ranking phase, and the L2 semantic phase.
-     */
-    private String semanticQuery;
-
-    /**
-     * Creates an instance of SearchOptions class.
-     */
-    public SearchOptions() {
-    }
+    /** Creates an instance of SearchOptions class. */
+    public SearchOptions() {}
 
     /**
      * Get the includeTotalCount property: A value that specifies whether to fetch the total count of results. Default
@@ -622,7 +615,7 @@ public final class SearchOptions {
 
     /**
      * Get the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely,
-     * or to return partial results (default).
+     * or to return partial results.
      *
      * @return the semanticErrorHandling value.
      */
@@ -632,7 +625,7 @@ public final class SearchOptions {
 
     /**
      * Set the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely,
-     * or to return partial results (default).
+     * or to return partial results.
      *
      * @param semanticErrorHandling the semanticErrorHandling value to set.
      * @return the SearchOptions object itself.
@@ -720,28 +713,113 @@ public final class SearchOptions {
         return this;
     }
 
-    /**
-     * Get the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
-     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
-     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
-     *
-     * @return the semanticQuery value.
-     */
-    public String getSemanticQuery() {
-        return this.semanticQuery;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("includeTotalCount", this.includeTotalCount);
+        jsonWriter.writeArrayField("Facets", this.facets, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("$filter", this.filter);
+        jsonWriter.writeArrayField(
+                "HighlightFields", this.highlightFields, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("highlightPostTag", this.highlightPostTag);
+        jsonWriter.writeStringField("highlightPreTag", this.highlightPreTag);
+        jsonWriter.writeNumberField("minimumCoverage", this.minimumCoverage);
+        jsonWriter.writeArrayField("OrderBy", this.orderBy, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("queryType", Objects.toString(this.queryType, null));
+        jsonWriter.writeArrayField(
+                "ScoringParameters", this.scoringParameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("scoringProfile", this.scoringProfile);
+        jsonWriter.writeArrayField("searchFields", this.searchFields, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("searchMode", Objects.toString(this.searchMode, null));
+        jsonWriter.writeStringField("scoringStatistics", Objects.toString(this.scoringStatistics, null));
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeArrayField("$select", this.select, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("$skip", this.skip);
+        jsonWriter.writeNumberField("$top", this.top);
+        jsonWriter.writeStringField("semanticConfiguration", this.semanticConfiguration);
+        jsonWriter.writeStringField("semanticErrorHandling", Objects.toString(this.semanticErrorHandling, null));
+        jsonWriter.writeNumberField("semanticMaxWaitInMilliseconds", this.semanticMaxWaitInMilliseconds);
+        jsonWriter.writeStringField("answers", this.answers);
+        jsonWriter.writeStringField("captions", this.captions);
+        return jsonWriter.writeEndObject();
     }
 
     /**
-     * Set the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
-     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
-     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
+     * Reads an instance of SearchOptions from the JsonReader.
      *
-     * @param semanticQuery the semanticQuery value to set.
-     * @return the SearchOptions object itself.
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchOptions if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchOptions.
      */
-    public SearchOptions setSemanticQuery(String semanticQuery) {
-        this.semanticQuery = semanticQuery;
-        return this;
+    public static SearchOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    SearchOptions deserializedSearchOptions = new SearchOptions();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("includeTotalCount".equals(fieldName)) {
+                            deserializedSearchOptions.includeTotalCount = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("Facets".equals(fieldName)) {
+                            List<String> facets = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSearchOptions.facets = facets;
+                        } else if ("$filter".equals(fieldName)) {
+                            deserializedSearchOptions.filter = reader.getString();
+                        } else if ("HighlightFields".equals(fieldName)) {
+                            List<String> highlightFields = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSearchOptions.highlightFields = highlightFields;
+                        } else if ("highlightPostTag".equals(fieldName)) {
+                            deserializedSearchOptions.highlightPostTag = reader.getString();
+                        } else if ("highlightPreTag".equals(fieldName)) {
+                            deserializedSearchOptions.highlightPreTag = reader.getString();
+                        } else if ("minimumCoverage".equals(fieldName)) {
+                            deserializedSearchOptions.minimumCoverage = reader.getNullable(JsonReader::getDouble);
+                        } else if ("OrderBy".equals(fieldName)) {
+                            List<String> orderBy = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSearchOptions.orderBy = orderBy;
+                        } else if ("queryType".equals(fieldName)) {
+                            deserializedSearchOptions.queryType = QueryType.fromString(reader.getString());
+                        } else if ("ScoringParameters".equals(fieldName)) {
+                            List<String> scoringParameters = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSearchOptions.scoringParameters = scoringParameters;
+                        } else if ("scoringProfile".equals(fieldName)) {
+                            deserializedSearchOptions.scoringProfile = reader.getString();
+                        } else if ("searchFields".equals(fieldName)) {
+                            List<String> searchFields = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSearchOptions.searchFields = searchFields;
+                        } else if ("searchMode".equals(fieldName)) {
+                            deserializedSearchOptions.searchMode = SearchMode.fromString(reader.getString());
+                        } else if ("scoringStatistics".equals(fieldName)) {
+                            deserializedSearchOptions.scoringStatistics =
+                                    ScoringStatistics.fromString(reader.getString());
+                        } else if ("sessionId".equals(fieldName)) {
+                            deserializedSearchOptions.sessionId = reader.getString();
+                        } else if ("$select".equals(fieldName)) {
+                            List<String> select = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSearchOptions.select = select;
+                        } else if ("$skip".equals(fieldName)) {
+                            deserializedSearchOptions.skip = reader.getNullable(JsonReader::getInt);
+                        } else if ("$top".equals(fieldName)) {
+                            deserializedSearchOptions.top = reader.getNullable(JsonReader::getInt);
+                        } else if ("semanticConfiguration".equals(fieldName)) {
+                            deserializedSearchOptions.semanticConfiguration = reader.getString();
+                        } else if ("semanticErrorHandling".equals(fieldName)) {
+                            deserializedSearchOptions.semanticErrorHandling =
+                                    SemanticErrorMode.fromString(reader.getString());
+                        } else if ("semanticMaxWaitInMilliseconds".equals(fieldName)) {
+                            deserializedSearchOptions.semanticMaxWaitInMilliseconds =
+                                    reader.getNullable(JsonReader::getInt);
+                        } else if ("answers".equals(fieldName)) {
+                            deserializedSearchOptions.answers = reader.getString();
+                        } else if ("captions".equals(fieldName)) {
+                            deserializedSearchOptions.captions = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    return deserializedSearchOptions;
+                });
     }
 
     /**
@@ -752,7 +830,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setFacets(String... facets) {
-        this.facets = (facets == null) ? null : Arrays.asList(facets);
+        this.facets = (facets == null) ? null : java.util.Arrays.asList(facets);
         return this;
     }
 
@@ -767,7 +845,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setOrderBy(String... orderBy) {
-        this.orderBy = (orderBy == null) ? null : Arrays.asList(orderBy);
+        this.orderBy = (orderBy == null) ? null : java.util.Arrays.asList(orderBy);
         return this;
     }
 
@@ -780,7 +858,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setSearchFields(String... searchFields) {
-        this.searchFields = (searchFields == null) ? null : Arrays.asList(searchFields);
+        this.searchFields = (searchFields == null) ? null : java.util.Arrays.asList(searchFields);
         return this;
     }
 
@@ -792,7 +870,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setSelect(String... select) {
-        this.select = (select == null) ? null : Arrays.asList(select);
+        this.select = (select == null) ? null : java.util.Arrays.asList(select);
         return this;
     }
 
@@ -804,7 +882,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setHighlightFields(String... highlightFields) {
-        this.highlightFields = (highlightFields == null) ? null : Arrays.asList(highlightFields);
+        this.highlightFields = (highlightFields == null) ? null : java.util.Arrays.asList(highlightFields);
         return this;
     }
 }

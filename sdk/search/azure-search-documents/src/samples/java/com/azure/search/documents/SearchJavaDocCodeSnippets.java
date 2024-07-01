@@ -1138,7 +1138,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateSynonymMap() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMap#SynonymMap
-        SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap("synonymMapName");
+        SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap("searchIndex");
         synonymMap.setSynonyms("United States, United States of America, USA, America\nWashington, Wash. => WA");
         SynonymMap updatedSynonymMap = SEARCH_INDEX_CLIENT.createOrUpdateSynonymMap(synonymMap);
         System.out.printf("The synonym map name is %s. The synonyms are %s.%n", updatedSynonymMap.getName(),
@@ -1699,7 +1699,6 @@ public class SearchJavaDocCodeSnippets {
             indexerFromService.getValue().getFieldMappings().get(0).getTargetFieldName());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean-Context
     }
-
 
     /**
      * Code snippet for {@link SearchIndexerClient#deleteIndexer(String)}
@@ -2466,9 +2465,6 @@ public class SearchJavaDocCodeSnippets {
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean
     }
 
-
-
-
     /**
      * Code snippet for {@link SearchIndexerAsyncClient#deleteDataSourceConnection(String)}
      */
@@ -2629,7 +2625,6 @@ public class SearchJavaDocCodeSnippets {
                 updateSkillsetResponse.getValue().getDescription()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean
     }
-
 
     /**
      * Code snippet for {@link SearchIndexerAsyncClient#deleteSkillset(String)}

@@ -12,7 +12,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Arrays;
 
 /**
  * Describes the title, content, and keywords fields to be used for semantic ranking, captions, highlights, and answers.
@@ -40,11 +39,8 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      */
     private List<SemanticField> keywordsFields;
 
-    /**
-     * Creates an instance of SemanticPrioritizedFields class.
-     */
-    public SemanticPrioritizedFields() {
-    }
+    /** Creates an instance of SemanticPrioritizedFields class. */
+    public SemanticPrioritizedFields() {}
 
     /**
      * Get the titleField property: Defines the title field to be used for semantic ranking, captions, highlights, and
@@ -120,17 +116,14 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("titleField", this.titleField);
-        jsonWriter.writeArrayField("prioritizedContentFields", this.contentFields,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("prioritizedKeywordsFields", this.keywordsFields,
-            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField(
+                "prioritizedContentFields", this.contentFields, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField(
+                "prioritizedKeywordsFields", this.keywordsFields, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -139,29 +132,32 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SemanticPrioritizedFields if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     *     it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SemanticPrioritizedFields.
      */
     public static SemanticPrioritizedFields fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SemanticPrioritizedFields deserializedSemanticPrioritizedFields = new SemanticPrioritizedFields();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("titleField".equals(fieldName)) {
-                    deserializedSemanticPrioritizedFields.titleField = SemanticField.fromJson(reader);
-                } else if ("prioritizedContentFields".equals(fieldName)) {
-                    List<SemanticField> contentFields = reader.readArray(reader1 -> SemanticField.fromJson(reader1));
-                    deserializedSemanticPrioritizedFields.contentFields = contentFields;
-                } else if ("prioritizedKeywordsFields".equals(fieldName)) {
-                    List<SemanticField> keywordsFields = reader.readArray(reader1 -> SemanticField.fromJson(reader1));
-                    deserializedSemanticPrioritizedFields.keywordsFields = keywordsFields;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedSemanticPrioritizedFields;
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    SemanticPrioritizedFields deserializedSemanticPrioritizedFields = new SemanticPrioritizedFields();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("titleField".equals(fieldName)) {
+                            deserializedSemanticPrioritizedFields.titleField = SemanticField.fromJson(reader);
+                        } else if ("prioritizedContentFields".equals(fieldName)) {
+                            List<SemanticField> contentFields =
+                                    reader.readArray(reader1 -> SemanticField.fromJson(reader1));
+                            deserializedSemanticPrioritizedFields.contentFields = contentFields;
+                        } else if ("prioritizedKeywordsFields".equals(fieldName)) {
+                            List<SemanticField> keywordsFields =
+                                    reader.readArray(reader1 -> SemanticField.fromJson(reader1));
+                            deserializedSemanticPrioritizedFields.keywordsFields = keywordsFields;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    return deserializedSemanticPrioritizedFields;
+                });
     }
 
     /**
@@ -174,7 +170,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * @return the SemanticPrioritizedFields object itself.
      */
     public SemanticPrioritizedFields setContentFields(SemanticField... contentFields) {
-        this.contentFields = (contentFields == null) ? null : Arrays.asList(contentFields);
+        this.contentFields = (contentFields == null) ? null : java.util.Arrays.asList(contentFields);
         return this;
     }
 
@@ -188,7 +184,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * @return the SemanticPrioritizedFields object itself.
      */
     public SemanticPrioritizedFields setKeywordsFields(SemanticField... keywordsFields) {
-        this.keywordsFields = (keywordsFields == null) ? null : Arrays.asList(keywordsFields);
+        this.keywordsFields = (keywordsFields == null) ? null : java.util.Arrays.asList(keywordsFields);
         return this;
     }
 }

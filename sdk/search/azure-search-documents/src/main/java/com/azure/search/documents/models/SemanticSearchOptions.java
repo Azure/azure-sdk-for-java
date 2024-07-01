@@ -48,13 +48,6 @@ public final class SemanticSearchOptions {
      */
     private QueryCaption queryCaption;
 
-    /*
-     * Allows setting a separate search query that will be solely used for semantic reranking, semantic captions and
-     * semantic answers. Is useful for scenarios where there is a need to use different queries between the base
-     * retrieval and ranking phase, and the L2 semantic phase.
-     */
-    private String semanticQuery;
-
     /**
      * Creates a new instance of {@link SemanticSearchOptions}.
      */
@@ -180,30 +173,6 @@ public final class SemanticSearchOptions {
      */
     public SemanticSearchOptions setQueryCaption(QueryCaption queryCaption) {
         this.queryCaption = queryCaption;
-        return this;
-    }
-
-    /**
-     * Get the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
-     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
-     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
-     *
-     * @return the semanticQuery value.
-     */
-    public String getSemanticQuery() {
-        return this.semanticQuery;
-    }
-
-    /**
-     * Set the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
-     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
-     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
-     *
-     * @param semanticQuery the semanticQuery value to set.
-     * @return the SemanticSearchOptions object itself.
-     */
-    public SemanticSearchOptions setSemanticQuery(String semanticQuery) {
-        this.semanticQuery = semanticQuery;
         return this;
     }
 }

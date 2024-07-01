@@ -10,17 +10,13 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-/**
- * Divides text using language-specific rules and reduces words to their base forms.
- */
+/** Divides text using language-specific rules and reduces words to their base forms. */
 @Fluent
 public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
-
-    /*
-     * A URI fragment specifying the type of tokenizer.
-     */
-    private String odataType = "#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer";
 
     /*
      * The maximum token length. Tokens longer than the maximum length are split. Maximum token length that can be used
@@ -47,16 +43,6 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
      */
     public MicrosoftLanguageStemmingTokenizer(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of tokenizer.
-     *
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -125,17 +111,14 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer");
         jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeNumberField("maxTokenLength", this.maxTokenLength);
         jsonWriter.writeBooleanField("isSearchTokenizer", this.isSearchTokenizerUsed);
-        jsonWriter.writeStringField("language", this.language == null ? null : this.language.toString());
+        jsonWriter.writeStringField("language", Objects.toString(this.language, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -144,46 +127,57 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of MicrosoftLanguageStemmingTokenizer if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     *     null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the MicrosoftLanguageStemmingTokenizer.
      */
     public static MicrosoftLanguageStemmingTokenizer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            String odataType = "#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer";
-            Integer maxTokenLength = null;
-            Boolean isSearchTokenizerUsed = null;
-            MicrosoftStemmingTokenizerLanguage language = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("@odata.type".equals(fieldName)) {
-                    odataType = reader.getString();
-                } else if ("maxTokenLength".equals(fieldName)) {
-                    maxTokenLength = reader.getNullable(JsonReader::getInt);
-                } else if ("isSearchTokenizer".equals(fieldName)) {
-                    isSearchTokenizerUsed = reader.getNullable(JsonReader::getBoolean);
-                } else if ("language".equals(fieldName)) {
-                    language = MicrosoftStemmingTokenizerLanguage.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                MicrosoftLanguageStemmingTokenizer deserializedMicrosoftLanguageStemmingTokenizer
-                    = new MicrosoftLanguageStemmingTokenizer(name);
-                deserializedMicrosoftLanguageStemmingTokenizer.odataType = odataType;
-                deserializedMicrosoftLanguageStemmingTokenizer.maxTokenLength = maxTokenLength;
-                deserializedMicrosoftLanguageStemmingTokenizer.isSearchTokenizerUsed = isSearchTokenizerUsed;
-                deserializedMicrosoftLanguageStemmingTokenizer.language = language;
-                return deserializedMicrosoftLanguageStemmingTokenizer;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    Integer maxTokenLength = null;
+                    Boolean isSearchTokenizerUsed = null;
+                    MicrosoftStemmingTokenizerLanguage language = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("maxTokenLength".equals(fieldName)) {
+                            maxTokenLength = reader.getNullable(JsonReader::getInt);
+                        } else if ("isSearchTokenizer".equals(fieldName)) {
+                            isSearchTokenizerUsed = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("language".equals(fieldName)) {
+                            language = MicrosoftStemmingTokenizerLanguage.fromString(reader.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        MicrosoftLanguageStemmingTokenizer deserializedMicrosoftLanguageStemmingTokenizer =
+                                new MicrosoftLanguageStemmingTokenizer(name);
+                        deserializedMicrosoftLanguageStemmingTokenizer.maxTokenLength = maxTokenLength;
+                        deserializedMicrosoftLanguageStemmingTokenizer.isSearchTokenizerUsed = isSearchTokenizerUsed;
+                        deserializedMicrosoftLanguageStemmingTokenizer.language = language;
+                        return deserializedMicrosoftLanguageStemmingTokenizer;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

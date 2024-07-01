@@ -10,9 +10,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.Arrays;
 
 /**
  * Flexibly separates text into terms via a regular expression pattern. This analyzer is implemented using Apache
@@ -20,11 +21,6 @@ import java.util.Arrays;
  */
 @Fluent
 public final class PatternAnalyzer extends LexicalAnalyzer {
-
-    /*
-     * A URI fragment specifying the type of analyzer.
-     */
-    private String odataType = "#Microsoft.Azure.Search.PatternAnalyzer";
 
     /*
      * A value indicating whether terms should be lower-cased. Default is true.
@@ -54,16 +50,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      */
     public PatternAnalyzer(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of analyzer.
-     *
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -118,7 +104,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
             return null;
         } else {
             String[] flagStrings = this.flags.toString().split("\\|");
-            return Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList());
+            return java.util.Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList());
         }
     }
 
@@ -158,17 +144,14 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.PatternAnalyzer");
         jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeBooleanField("lowercase", this.lowerCaseTerms);
         jsonWriter.writeStringField("pattern", this.pattern);
-        jsonWriter.writeStringField("flags", this.flags == null ? null : this.flags.toString());
+        jsonWriter.writeStringField("flags", Objects.toString(this.flags, null));
         jsonWriter.writeArrayField("stopwords", this.stopwords, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -178,50 +161,61 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of PatternAnalyzer if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the PatternAnalyzer.
      */
     public static PatternAnalyzer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            String odataType = "#Microsoft.Azure.Search.PatternAnalyzer";
-            Boolean lowerCaseTerms = null;
-            String pattern = null;
-            RegexFlags flags = null;
-            List<String> stopwords = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("@odata.type".equals(fieldName)) {
-                    odataType = reader.getString();
-                } else if ("lowercase".equals(fieldName)) {
-                    lowerCaseTerms = reader.getNullable(JsonReader::getBoolean);
-                } else if ("pattern".equals(fieldName)) {
-                    pattern = reader.getString();
-                } else if ("flags".equals(fieldName)) {
-                    flags = RegexFlags.fromString(reader.getString());
-                } else if ("stopwords".equals(fieldName)) {
-                    stopwords = reader.readArray(reader1 -> reader1.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                PatternAnalyzer deserializedPatternAnalyzer = new PatternAnalyzer(name);
-                deserializedPatternAnalyzer.odataType = odataType;
-                deserializedPatternAnalyzer.lowerCaseTerms = lowerCaseTerms;
-                deserializedPatternAnalyzer.pattern = pattern;
-                deserializedPatternAnalyzer.flags = flags;
-                deserializedPatternAnalyzer.stopwords = stopwords;
-                return deserializedPatternAnalyzer;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    Boolean lowerCaseTerms = null;
+                    String pattern = null;
+                    RegexFlags flags = null;
+                    List<String> stopwords = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.PatternAnalyzer".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PatternAnalyzer'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("lowercase".equals(fieldName)) {
+                            lowerCaseTerms = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("pattern".equals(fieldName)) {
+                            pattern = reader.getString();
+                        } else if ("flags".equals(fieldName)) {
+                            flags = RegexFlags.fromString(reader.getString());
+                        } else if ("stopwords".equals(fieldName)) {
+                            stopwords = reader.readArray(reader1 -> reader1.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        PatternAnalyzer deserializedPatternAnalyzer = new PatternAnalyzer(name);
+                        deserializedPatternAnalyzer.lowerCaseTerms = lowerCaseTerms;
+                        deserializedPatternAnalyzer.pattern = pattern;
+                        deserializedPatternAnalyzer.flags = flags;
+                        deserializedPatternAnalyzer.stopwords = stopwords;
+                        return deserializedPatternAnalyzer;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**
@@ -231,7 +225,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @return the PatternAnalyzer object itself.
      */
     public PatternAnalyzer setStopwords(String... stopwords) {
-        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
+        this.stopwords = (stopwords == null) ? null : java.util.Arrays.asList(stopwords);
         return this;
     }
 
@@ -246,7 +240,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
             this.flags = null;
             return this;
         } else {
-            return setFlags(Arrays.asList(flags));
+            return setFlags(java.util.Arrays.asList(flags));
         }
     }
 }

@@ -10,19 +10,12 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 
-/**
- * Standard Apache Lucene analyzer; Composed of the standard tokenizer, lowercase filter and stop filter.
- */
+/** Standard Apache Lucene analyzer; Composed of the standard tokenizer, lowercase filter and stop filter. */
 @Fluent
 public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
-
-    /*
-     * A URI fragment specifying the type of analyzer.
-     */
-    private String odataType = "#Microsoft.Azure.Search.StandardAnalyzer";
 
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum length are split. The maximum token
@@ -42,16 +35,6 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      */
     public LuceneStandardAnalyzer(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of analyzer.
-     *
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -96,14 +79,11 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.StandardAnalyzer");
         jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeNumberField("maxTokenLength", this.maxTokenLength);
         jsonWriter.writeArrayField("stopwords", this.stopwords, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
@@ -114,42 +94,53 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of LuceneStandardAnalyzer if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the LuceneStandardAnalyzer.
      */
     public static LuceneStandardAnalyzer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            String odataType = "#Microsoft.Azure.Search.StandardAnalyzer";
-            Integer maxTokenLength = null;
-            List<String> stopwords = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("@odata.type".equals(fieldName)) {
-                    odataType = reader.getString();
-                } else if ("maxTokenLength".equals(fieldName)) {
-                    maxTokenLength = reader.getNullable(JsonReader::getInt);
-                } else if ("stopwords".equals(fieldName)) {
-                    stopwords = reader.readArray(reader1 -> reader1.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                LuceneStandardAnalyzer deserializedLuceneStandardAnalyzer = new LuceneStandardAnalyzer(name);
-                deserializedLuceneStandardAnalyzer.odataType = odataType;
-                deserializedLuceneStandardAnalyzer.maxTokenLength = maxTokenLength;
-                deserializedLuceneStandardAnalyzer.stopwords = stopwords;
-                return deserializedLuceneStandardAnalyzer;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    Integer maxTokenLength = null;
+                    List<String> stopwords = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.StandardAnalyzer".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StandardAnalyzer'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("maxTokenLength".equals(fieldName)) {
+                            maxTokenLength = reader.getNullable(JsonReader::getInt);
+                        } else if ("stopwords".equals(fieldName)) {
+                            stopwords = reader.readArray(reader1 -> reader1.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        LuceneStandardAnalyzer deserializedLuceneStandardAnalyzer = new LuceneStandardAnalyzer(name);
+                        deserializedLuceneStandardAnalyzer.maxTokenLength = maxTokenLength;
+                        deserializedLuceneStandardAnalyzer.stopwords = stopwords;
+                        return deserializedLuceneStandardAnalyzer;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**
@@ -159,7 +150,7 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      * @return the LuceneStandardAnalyzer object itself.
      */
     public LuceneStandardAnalyzer setStopwords(String... stopwords) {
-        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
+        this.stopwords = (stopwords == null) ? null : java.util.Arrays.asList(stopwords);
         return this;
     }
 }

@@ -12,17 +12,11 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * A skill that extracts text from image files.
- */
+/** A skill that extracts text from image files. */
 @Fluent
 public final class OcrSkill extends SearchIndexerSkill {
-
-    /*
-     * A URI fragment specifying the type of skill.
-     */
-    private String odataType = "#Microsoft.Skills.Vision.OcrSkill";
 
     /*
      * A value indicating which language code to use. Default is `en`.
@@ -34,12 +28,6 @@ public final class OcrSkill extends SearchIndexerSkill {
      */
     private Boolean shouldDetectOrientation;
 
-    /*
-     * Defines the sequence of characters to use between the lines of text recognized by the OCR skill. The default
-     * value is "space".
-     */
-    private OcrLineEnding lineEnding;
-
     /**
      * Creates an instance of OcrSkill class.
      *
@@ -48,16 +36,6 @@ public final class OcrSkill extends SearchIndexerSkill {
      */
     public OcrSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of skill.
-     *
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -102,71 +80,38 @@ public final class OcrSkill extends SearchIndexerSkill {
         return this;
     }
 
-    /**
-     * Get the lineEnding property: Defines the sequence of characters to use between the lines of text recognized by
-     * the OCR skill. The default value is "space".
-     *
-     * @return the lineEnding value.
-     */
-    public OcrLineEnding getLineEnding() {
-        return this.lineEnding;
-    }
-
-    /**
-     * Set the lineEnding property: Defines the sequence of characters to use between the lines of text recognized by
-     * the OCR skill. The default value is "space".
-     *
-     * @param lineEnding the lineEnding value to set.
-     * @return the OcrSkill object itself.
-     */
-    public OcrSkill setLineEnding(OcrLineEnding lineEnding) {
-        this.lineEnding = lineEnding;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OcrSkill setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OcrSkill setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OcrSkill setContext(String context) {
         super.setContext(context);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Skills.Vision.OcrSkill");
         jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
-        jsonWriter.writeStringField("defaultLanguageCode",
-            this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString());
+        jsonWriter.writeStringField("defaultLanguageCode", Objects.toString(this.defaultLanguageCode, null));
         jsonWriter.writeBooleanField("detectOrientation", this.shouldDetectOrientation);
-        jsonWriter.writeStringField("lineEnding", this.lineEnding == null ? null : this.lineEnding.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -175,71 +120,73 @@ public final class OcrSkill extends SearchIndexerSkill {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of OcrSkill if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     *     to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the OcrSkill.
      */
     public static OcrSkill fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean inputsFound = false;
-            List<InputFieldMappingEntry> inputs = null;
-            boolean outputsFound = false;
-            List<OutputFieldMappingEntry> outputs = null;
-            String name = null;
-            String description = null;
-            String context = null;
-            String odataType = "#Microsoft.Skills.Vision.OcrSkill";
-            OcrSkillLanguage defaultLanguageCode = null;
-            Boolean shouldDetectOrientation = null;
-            OcrLineEnding lineEnding = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                    inputsFound = true;
-                } else if ("outputs".equals(fieldName)) {
-                    outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
-                    outputsFound = true;
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("context".equals(fieldName)) {
-                    context = reader.getString();
-                } else if ("@odata.type".equals(fieldName)) {
-                    odataType = reader.getString();
-                } else if ("defaultLanguageCode".equals(fieldName)) {
-                    defaultLanguageCode = OcrSkillLanguage.fromString(reader.getString());
-                } else if ("detectOrientation".equals(fieldName)) {
-                    shouldDetectOrientation = reader.getNullable(JsonReader::getBoolean);
-                } else if ("lineEnding".equals(fieldName)) {
-                    lineEnding = OcrLineEnding.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (inputsFound && outputsFound) {
-                OcrSkill deserializedOcrSkill = new OcrSkill(inputs, outputs);
-                deserializedOcrSkill.setName(name);
-                deserializedOcrSkill.setDescription(description);
-                deserializedOcrSkill.setContext(context);
-                deserializedOcrSkill.odataType = odataType;
-                deserializedOcrSkill.defaultLanguageCode = defaultLanguageCode;
-                deserializedOcrSkill.shouldDetectOrientation = shouldDetectOrientation;
-                deserializedOcrSkill.lineEnding = lineEnding;
-                return deserializedOcrSkill;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!inputsFound) {
-                missingProperties.add("inputs");
-            }
-            if (!outputsFound) {
-                missingProperties.add("outputs");
-            }
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean inputsFound = false;
+                    List<InputFieldMappingEntry> inputs = null;
+                    boolean outputsFound = false;
+                    List<OutputFieldMappingEntry> outputs = null;
+                    String name = null;
+                    String description = null;
+                    String context = null;
+                    OcrSkillLanguage defaultLanguageCode = null;
+                    Boolean shouldDetectOrientation = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Skills.Vision.OcrSkill".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Vision.OcrSkill'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputsFound = true;
+                        } else if ("outputs".equals(fieldName)) {
+                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
+                            outputsFound = true;
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getString();
+                        } else if ("context".equals(fieldName)) {
+                            context = reader.getString();
+                        } else if ("defaultLanguageCode".equals(fieldName)) {
+                            defaultLanguageCode = OcrSkillLanguage.fromString(reader.getString());
+                        } else if ("detectOrientation".equals(fieldName)) {
+                            shouldDetectOrientation = reader.getNullable(JsonReader::getBoolean);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (inputsFound && outputsFound) {
+                        OcrSkill deserializedOcrSkill = new OcrSkill(inputs, outputs);
+                        deserializedOcrSkill.setName(name);
+                        deserializedOcrSkill.setDescription(description);
+                        deserializedOcrSkill.setContext(context);
+                        deserializedOcrSkill.defaultLanguageCode = defaultLanguageCode;
+                        deserializedOcrSkill.shouldDetectOrientation = shouldDetectOrientation;
+                        return deserializedOcrSkill;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!inputsFound) {
+                        missingProperties.add("inputs");
+                    }
+                    if (!outputsFound) {
+                        missingProperties.add("outputs");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**

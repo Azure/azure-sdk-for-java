@@ -11,12 +11,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 
-/**
- * Represents a search index definition, which describes the fields and search behavior of an index.
- */
+/** Represents a search index definition, which describes the fields and search behavior of an index. */
 @Fluent
 public final class SearchIndex implements JsonSerializable<SearchIndex> {
 
@@ -421,16 +419,13 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("scoringProfiles", this.scoringProfiles,
-            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField(
+                "scoringProfiles", this.scoringProfiles, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("defaultScoringProfile", this.defaultScoringProfile);
         jsonWriter.writeJsonField("corsOptions", this.corsOptions);
         jsonWriter.writeArrayField("suggesters", this.suggesters, (writer, element) -> writer.writeJson(element));
@@ -451,86 +446,92 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndex if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndex.
      */
     public static SearchIndex fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            List<SearchField> fields = null;
-            List<ScoringProfile> scoringProfiles = null;
-            String defaultScoringProfile = null;
-            CorsOptions corsOptions = null;
-            List<SearchSuggester> suggesters = null;
-            List<LexicalAnalyzer> analyzers = null;
-            List<LexicalTokenizer> tokenizers = null;
-            List<TokenFilter> tokenFilters = null;
-            List<CharFilter> charFilters = null;
-            SearchResourceEncryptionKey encryptionKey = null;
-            SimilarityAlgorithm similarity = null;
-            SemanticSearch semanticSearch = null;
-            VectorSearch vectorSearch = null;
-            String eTag = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("fields".equals(fieldName)) {
-                    fields = reader.readArray(reader1 -> SearchField.fromJson(reader1));
-                } else if ("scoringProfiles".equals(fieldName)) {
-                    scoringProfiles = reader.readArray(reader1 -> ScoringProfile.fromJson(reader1));
-                } else if ("defaultScoringProfile".equals(fieldName)) {
-                    defaultScoringProfile = reader.getString();
-                } else if ("corsOptions".equals(fieldName)) {
-                    corsOptions = CorsOptions.fromJson(reader);
-                } else if ("suggesters".equals(fieldName)) {
-                    suggesters = reader.readArray(reader1 -> SearchSuggester.fromJson(reader1));
-                } else if ("analyzers".equals(fieldName)) {
-                    analyzers = reader.readArray(reader1 -> LexicalAnalyzer.fromJson(reader1));
-                } else if ("tokenizers".equals(fieldName)) {
-                    tokenizers = reader.readArray(reader1 -> LexicalTokenizer.fromJson(reader1));
-                } else if ("tokenFilters".equals(fieldName)) {
-                    tokenFilters = reader.readArray(reader1 -> TokenFilter.fromJson(reader1));
-                } else if ("charFilters".equals(fieldName)) {
-                    charFilters = reader.readArray(reader1 -> CharFilter.fromJson(reader1));
-                } else if ("encryptionKey".equals(fieldName)) {
-                    encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
-                } else if ("similarity".equals(fieldName)) {
-                    similarity = SimilarityAlgorithm.fromJson(reader);
-                } else if ("semantic".equals(fieldName)) {
-                    semanticSearch = SemanticSearch.fromJson(reader);
-                } else if ("vectorSearch".equals(fieldName)) {
-                    vectorSearch = VectorSearch.fromJson(reader);
-                } else if ("@odata.etag".equals(fieldName)) {
-                    eTag = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                SearchIndex deserializedSearchIndex = new SearchIndex(name);
-                deserializedSearchIndex.fields = fields;
-                deserializedSearchIndex.scoringProfiles = scoringProfiles;
-                deserializedSearchIndex.defaultScoringProfile = defaultScoringProfile;
-                deserializedSearchIndex.corsOptions = corsOptions;
-                deserializedSearchIndex.suggesters = suggesters;
-                deserializedSearchIndex.analyzers = analyzers;
-                deserializedSearchIndex.tokenizers = tokenizers;
-                deserializedSearchIndex.tokenFilters = tokenFilters;
-                deserializedSearchIndex.charFilters = charFilters;
-                deserializedSearchIndex.encryptionKey = encryptionKey;
-                deserializedSearchIndex.similarity = similarity;
-                deserializedSearchIndex.semanticSearch = semanticSearch;
-                deserializedSearchIndex.vectorSearch = vectorSearch;
-                deserializedSearchIndex.eTag = eTag;
-                return deserializedSearchIndex;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    List<SearchField> fields = null;
+                    List<ScoringProfile> scoringProfiles = null;
+                    String defaultScoringProfile = null;
+                    CorsOptions corsOptions = null;
+                    List<SearchSuggester> suggesters = null;
+                    List<LexicalAnalyzer> analyzers = null;
+                    List<LexicalTokenizer> tokenizers = null;
+                    List<TokenFilter> tokenFilters = null;
+                    List<CharFilter> charFilters = null;
+                    SearchResourceEncryptionKey encryptionKey = null;
+                    SimilarityAlgorithm similarity = null;
+                    SemanticSearch semanticSearch = null;
+                    VectorSearch vectorSearch = null;
+                    String eTag = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("fields".equals(fieldName)) {
+                            fields = reader.readArray(reader1 -> SearchField.fromJson(reader1));
+                        } else if ("scoringProfiles".equals(fieldName)) {
+                            scoringProfiles = reader.readArray(reader1 -> ScoringProfile.fromJson(reader1));
+                        } else if ("defaultScoringProfile".equals(fieldName)) {
+                            defaultScoringProfile = reader.getString();
+                        } else if ("corsOptions".equals(fieldName)) {
+                            corsOptions = CorsOptions.fromJson(reader);
+                        } else if ("suggesters".equals(fieldName)) {
+                            suggesters = reader.readArray(reader1 -> SearchSuggester.fromJson(reader1));
+                        } else if ("analyzers".equals(fieldName)) {
+                            analyzers = reader.readArray(reader1 -> LexicalAnalyzer.fromJson(reader1));
+                        } else if ("tokenizers".equals(fieldName)) {
+                            tokenizers = reader.readArray(reader1 -> LexicalTokenizer.fromJson(reader1));
+                        } else if ("tokenFilters".equals(fieldName)) {
+                            tokenFilters = reader.readArray(reader1 -> TokenFilter.fromJson(reader1));
+                        } else if ("charFilters".equals(fieldName)) {
+                            charFilters = reader.readArray(reader1 -> CharFilter.fromJson(reader1));
+                        } else if ("encryptionKey".equals(fieldName)) {
+                            encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
+                        } else if ("similarity".equals(fieldName)) {
+                            similarity = SimilarityAlgorithm.fromJson(reader);
+                        } else if ("semantic".equals(fieldName)) {
+                            semanticSearch = SemanticSearch.fromJson(reader);
+                        } else if ("vectorSearch".equals(fieldName)) {
+                            vectorSearch = VectorSearch.fromJson(reader);
+                        } else if ("@odata.etag".equals(fieldName)) {
+                            eTag = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        SearchIndex deserializedSearchIndex = new SearchIndex(name);
+                        deserializedSearchIndex.fields = fields;
+                        deserializedSearchIndex.scoringProfiles = scoringProfiles;
+                        deserializedSearchIndex.defaultScoringProfile = defaultScoringProfile;
+                        deserializedSearchIndex.corsOptions = corsOptions;
+                        deserializedSearchIndex.suggesters = suggesters;
+                        deserializedSearchIndex.analyzers = analyzers;
+                        deserializedSearchIndex.tokenizers = tokenizers;
+                        deserializedSearchIndex.tokenFilters = tokenFilters;
+                        deserializedSearchIndex.charFilters = charFilters;
+                        deserializedSearchIndex.encryptionKey = encryptionKey;
+                        deserializedSearchIndex.similarity = similarity;
+                        deserializedSearchIndex.semanticSearch = semanticSearch;
+                        deserializedSearchIndex.vectorSearch = vectorSearch;
+                        deserializedSearchIndex.eTag = eTag;
+                        return deserializedSearchIndex;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**
@@ -551,7 +552,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setFields(SearchField... fields) {
-        this.fields = (fields == null) ? null : Arrays.asList(fields);
+        this.fields = (fields == null) ? null : java.util.Arrays.asList(fields);
         return this;
     }
 
@@ -562,7 +563,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setScoringProfiles(ScoringProfile... scoringProfiles) {
-        this.scoringProfiles = (scoringProfiles == null) ? null : Arrays.asList(scoringProfiles);
+        this.scoringProfiles = (scoringProfiles == null) ? null : java.util.Arrays.asList(scoringProfiles);
         return this;
     }
 
@@ -573,7 +574,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setSuggesters(SearchSuggester... suggesters) {
-        this.suggesters = (suggesters == null) ? null : Arrays.asList(suggesters);
+        this.suggesters = (suggesters == null) ? null : java.util.Arrays.asList(suggesters);
         return this;
     }
 
@@ -584,7 +585,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setAnalyzers(LexicalAnalyzer... analyzers) {
-        this.analyzers = (analyzers == null) ? null : Arrays.asList(analyzers);
+        this.analyzers = (analyzers == null) ? null : java.util.Arrays.asList(analyzers);
         return this;
     }
 
@@ -595,7 +596,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setTokenizers(LexicalTokenizer... tokenizers) {
-        this.tokenizers = (tokenizers == null) ? null : Arrays.asList(tokenizers);
+        this.tokenizers = (tokenizers == null) ? null : java.util.Arrays.asList(tokenizers);
         return this;
     }
 
@@ -606,7 +607,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setTokenFilters(TokenFilter... tokenFilters) {
-        this.tokenFilters = (tokenFilters == null) ? null : Arrays.asList(tokenFilters);
+        this.tokenFilters = (tokenFilters == null) ? null : java.util.Arrays.asList(tokenFilters);
         return this;
     }
 
@@ -617,7 +618,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setCharFilters(CharFilter... charFilters) {
-        this.charFilters = (charFilters == null) ? null : Arrays.asList(charFilters);
+        this.charFilters = (charFilters == null) ? null : java.util.Arrays.asList(charFilters);
         return this;
     }
 }

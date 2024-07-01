@@ -87,10 +87,10 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/dc27f9b32787533cd4d07fe0de5245f2f8354dbe/specification/search/data-plane/Azure.Search/stable/2024-07-01/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/58e92dd03733bc175e6a9540f4bc53703b57fcc9/specification/search/data-plane/Azure.Search/stable/2023-11-01/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
+custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchError,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,VectorQueryKind
 customization-class: src/main/java/SearchIndexCustomizations.java
 directive:
     - rename-model:
@@ -105,10 +105,10 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/bfb929ca5fd9e73258071724b440ae244e084c56/specification/search/data-plane/Azure.Search/stable/2024-07-01/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/58e92dd03733bc175e6a9540f4bc53703b57fcc9/specification/search/data-plane/Azure.Search/stable/2023-11-01/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
+custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchError,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,VectorSearchAlgorithmKind
 customization-class: src/main/java/SearchServiceCustomizations.java
 directive:
     - rename-model:
@@ -167,7 +167,7 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.1.32'
+use: '@autorest/java@4.1.22'
 enable-sync-stack: true
 generate-client-interfaces: false
 context-client-method-parameter: true
@@ -220,7 +220,7 @@ directive:
 
 ``` yaml $(tag) == 'searchservice'
 directive:
-  - from: "searchservice.json"
+  - from: swagger-document
     where: $.definitions
     transform: >
       $.SearchIndex.required = $.SearchIndex.required.filter(required => required === 'name');
@@ -235,12 +235,11 @@ directive:
 ### Renames
 ``` yaml $(tag) == 'searchservice'
 directive:
-  - from: "searchservice.json"
+  - from: swagger-document
     where: $.definitions
     transform: >
       $.ServiceCounters["x-ms-client-name"] = "SearchServiceCounters";
       $.ServiceLimits["x-ms-client-name"] = "SearchServiceLimits";
-      $.ServiceLimits.properties.maxStoragePerIndex["x-ms-client-name"] = "maxStoragePerIndexInBytes";
       $.ServiceStatistics["x-ms-client-name"] = "SearchServiceStatistics";
 ```
 
@@ -304,7 +303,7 @@ directive:
 
 ``` yaml $(tag) == 'searchindex'
 directive:
-  - from: "searchindex.json"
+  - from: swagger-document
     where: $.definitions
     transform: >
       let param = $.SearchRequest.properties.answers;
@@ -357,7 +356,7 @@ directive:
 ### Rename client parameter names
 ``` yaml $(tag) == 'searchservice'
 directive:
-  - from: "searchservice.json"
+  - from: swagger-document
     where: $.definitions
     transform: >
       $.CommonGramTokenFilter.properties.ignoreCase["x-ms-client-name"] = "caseIgnored";
@@ -395,57 +394,4 @@ directive:
 - from: swagger-document
   where: $.definitions.VectorQuery.properties.k
   transform: $["x-ms-client-name"] = "KNearestNeighborsCount";
-```
-
-### Rename `AMLVectorizer` to `AzureMachineLearningVectorizer`
-
-```yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.AMLVectorizer
-  transform: $["x-ms-client-name"] = "AzureMachineLearningVectorizer";
-```
-
-### Rename `AMLParameters` to `AzureMachineLearningParameters`
-
-```yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.AMLParameters
-  transform: $["x-ms-client-name"] = "AzureMachineLearningParameters";
-```
-
-### Archboard feedback for 2024-07-01
-
-```yaml $(tag) == 'searchservice'
-directive:
-- from: "searchservice.json"
-  where: $.definitions
-  transform: >
-    $.AzureOpenAIParameters["x-ms-client-name"] = "AzureOpenAIVectorizerParameters";
-    $.AzureOpenAIParameters.properties.resourceUri["x-ms-client-name"] = "resourceUrl";
-
-    $.AzureOpenAIVectorizer.properties.azureOpenAIParameters["x-ms-client-name"] = "parameters";
-
-    $.SearchIndexerDataUserAssignedIdentity.properties.userAssignedIdentity["x-ms-client-name"] = "resourceId";
-
-    $.SearchIndexerIndexProjections["x-ms-client-name"] = "SearchIndexerIndexProjection";
-    $.SearchIndexerSkillset.properties.indexProjections["x-ms-client-name"] = "indexProjection";
-
-    $.VectorSearchCompressionConfiguration["x-ms-client-name"] = "VectorSearchCompression";
-    $.VectorSearchCompressionConfiguration.properties.name["x-ms-client-name"] = "compressionName";
-    $.ScalarQuantizationVectorSearchCompressionConfiguration["x-ms-client-name"] = "ScalarQuantizationCompression";
-    $.BinaryQuantizationVectorSearchCompressionConfiguration["x-ms-client-name"] = "BinaryQuantizationCompression";
-    $.VectorSearchProfile.properties.compression["x-ms-client-name"] = "compressionName";
-
-    $.VectorSearchVectorizer.properties.name["x-ms-client-name"] = "vectorizerName";
-
-    $.WebApiParameters["x-ms-client-name"] = "WebApiVectorizerParameters";
-    $.WebApiParameters.properties.uri["x-ms-client-name"] = "url";
-
-    $.VectorSearchCompressionTargetDataType["x-ms-client-name"] = "VectorSearchCompressionTarget";
-    $.VectorSearchCompressionTargetDataType["x-ms-enum"].name = "VectorSearchCompressionTarget";
-
-    $.OcrSkillLineEnding["x-ms-client-name"] = "OcrLineEnding";
-    $.OcrSkillLineEnding["x-ms-enum"].name = "OcrLineEnding";
 ```

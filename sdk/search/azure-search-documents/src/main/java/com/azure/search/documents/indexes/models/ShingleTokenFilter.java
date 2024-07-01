@@ -10,17 +10,12 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Creates combinations of tokens as a single token. This token filter is implemented using Apache Lucene.
- */
+/** Creates combinations of tokens as a single token. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class ShingleTokenFilter extends TokenFilter {
-
-    /*
-     * A URI fragment specifying the type of token filter.
-     */
-    private String odataType = "#Microsoft.Azure.Search.ShingleTokenFilter";
 
     /*
      * The maximum shingle size. Default and minimum value is 2.
@@ -39,8 +34,8 @@ public final class ShingleTokenFilter extends TokenFilter {
     private Boolean outputUnigrams;
 
     /*
-     * A value indicating whether to output unigrams for those times when no shingles are available. This property takes
-     * precedence when outputUnigrams is set to false. Default is false.
+     * A value indicating whether to output unigrams for those times when no shingles are available. This property
+     * takes precedence when outputUnigrams is set to false. Default is false.
      */
     private Boolean outputUnigramsIfNoShingles;
 
@@ -61,16 +56,6 @@ public final class ShingleTokenFilter extends TokenFilter {
      */
     public ShingleTokenFilter(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of token filter.
-     *
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -203,14 +188,11 @@ public final class ShingleTokenFilter extends TokenFilter {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.ShingleTokenFilter");
         jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeNumberField("maxShingleSize", this.maxShingleSize);
         jsonWriter.writeNumberField("minShingleSize", this.minShingleSize);
         jsonWriter.writeBooleanField("outputUnigrams", this.outputUnigrams);
@@ -225,57 +207,68 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ShingleTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the ShingleTokenFilter.
      */
     public static ShingleTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            String odataType = "#Microsoft.Azure.Search.ShingleTokenFilter";
-            Integer maxShingleSize = null;
-            Integer minShingleSize = null;
-            Boolean outputUnigrams = null;
-            Boolean outputUnigramsIfNoShingles = null;
-            String tokenSeparator = null;
-            String filterToken = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("@odata.type".equals(fieldName)) {
-                    odataType = reader.getString();
-                } else if ("maxShingleSize".equals(fieldName)) {
-                    maxShingleSize = reader.getNullable(JsonReader::getInt);
-                } else if ("minShingleSize".equals(fieldName)) {
-                    minShingleSize = reader.getNullable(JsonReader::getInt);
-                } else if ("outputUnigrams".equals(fieldName)) {
-                    outputUnigrams = reader.getNullable(JsonReader::getBoolean);
-                } else if ("outputUnigramsIfNoShingles".equals(fieldName)) {
-                    outputUnigramsIfNoShingles = reader.getNullable(JsonReader::getBoolean);
-                } else if ("tokenSeparator".equals(fieldName)) {
-                    tokenSeparator = reader.getString();
-                } else if ("filterToken".equals(fieldName)) {
-                    filterToken = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                ShingleTokenFilter deserializedShingleTokenFilter = new ShingleTokenFilter(name);
-                deserializedShingleTokenFilter.odataType = odataType;
-                deserializedShingleTokenFilter.maxShingleSize = maxShingleSize;
-                deserializedShingleTokenFilter.minShingleSize = minShingleSize;
-                deserializedShingleTokenFilter.outputUnigrams = outputUnigrams;
-                deserializedShingleTokenFilter.outputUnigramsIfNoShingles = outputUnigramsIfNoShingles;
-                deserializedShingleTokenFilter.tokenSeparator = tokenSeparator;
-                deserializedShingleTokenFilter.filterToken = filterToken;
-                return deserializedShingleTokenFilter;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    Integer maxShingleSize = null;
+                    Integer minShingleSize = null;
+                    Boolean outputUnigrams = null;
+                    Boolean outputUnigramsIfNoShingles = null;
+                    String tokenSeparator = null;
+                    String filterToken = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.ShingleTokenFilter".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.ShingleTokenFilter'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("maxShingleSize".equals(fieldName)) {
+                            maxShingleSize = reader.getNullable(JsonReader::getInt);
+                        } else if ("minShingleSize".equals(fieldName)) {
+                            minShingleSize = reader.getNullable(JsonReader::getInt);
+                        } else if ("outputUnigrams".equals(fieldName)) {
+                            outputUnigrams = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("outputUnigramsIfNoShingles".equals(fieldName)) {
+                            outputUnigramsIfNoShingles = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("tokenSeparator".equals(fieldName)) {
+                            tokenSeparator = reader.getString();
+                        } else if ("filterToken".equals(fieldName)) {
+                            filterToken = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        ShingleTokenFilter deserializedShingleTokenFilter = new ShingleTokenFilter(name);
+                        deserializedShingleTokenFilter.maxShingleSize = maxShingleSize;
+                        deserializedShingleTokenFilter.minShingleSize = minShingleSize;
+                        deserializedShingleTokenFilter.outputUnigrams = outputUnigrams;
+                        deserializedShingleTokenFilter.outputUnigramsIfNoShingles = outputUnigramsIfNoShingles;
+                        deserializedShingleTokenFilter.tokenSeparator = tokenSeparator;
+                        deserializedShingleTokenFilter.filterToken = filterToken;
+                        return deserializedShingleTokenFilter;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

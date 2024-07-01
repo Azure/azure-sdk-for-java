@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Allows you to take control over the process of converting text into indexable/searchable tokens. It's a user-defined
@@ -23,13 +23,8 @@ import java.util.Arrays;
 public final class CustomAnalyzer extends LexicalAnalyzer {
 
     /*
-     * A URI fragment specifying the type of analyzer.
-     */
-    private String odataType = "#Microsoft.Azure.Search.CustomAnalyzer";
-
-    /*
-     * The name of the tokenizer to use to divide continuous text into a sequence of tokens, such as breaking a sentence
-     * into words.
+     * The name of the tokenizer to use to divide continuous text into a sequence of tokens, such as breaking a
+     * sentence into words.
      */
     private final LexicalTokenizerName tokenizer;
 
@@ -55,16 +50,6 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
     public CustomAnalyzer(String name, LexicalTokenizerName tokenizer) {
         super(name);
         this.tokenizer = tokenizer;
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of analyzer.
-     *
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -125,19 +110,20 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.CustomAnalyzer");
         jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("tokenizer", this.tokenizer == null ? null : this.tokenizer.toString());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
-        jsonWriter.writeArrayField("tokenFilters", this.tokenFilters,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeArrayField("charFilters", this.charFilters,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("tokenizer", Objects.toString(this.tokenizer, null));
+        jsonWriter.writeArrayField(
+                "tokenFilters",
+                this.tokenFilters,
+                (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField(
+                "charFilters",
+                this.charFilters,
+                (writer, element) -> writer.writeString(Objects.toString(element, null)));
         return jsonWriter.writeEndObject();
     }
 
@@ -146,55 +132,61 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomAnalyzer if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the CustomAnalyzer.
      */
     public static CustomAnalyzer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            boolean tokenizerFound = false;
-            LexicalTokenizerName tokenizer = null;
-            String odataType = "#Microsoft.Azure.Search.CustomAnalyzer";
-            List<TokenFilterName> tokenFilters = null;
-            List<CharFilterName> charFilters = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("tokenizer".equals(fieldName)) {
-                    tokenizer = LexicalTokenizerName.fromString(reader.getString());
-                    tokenizerFound = true;
-                } else if ("@odata.type".equals(fieldName)) {
-                    odataType = reader.getString();
-                } else if ("tokenFilters".equals(fieldName)) {
-                    tokenFilters = reader.readArray(reader1 -> TokenFilterName.fromString(reader1.getString()));
-                } else if ("charFilters".equals(fieldName)) {
-                    charFilters = reader.readArray(reader1 -> CharFilterName.fromString(reader1.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound && tokenizerFound) {
-                CustomAnalyzer deserializedCustomAnalyzer = new CustomAnalyzer(name, tokenizer);
-                deserializedCustomAnalyzer.odataType = odataType;
-                deserializedCustomAnalyzer.tokenFilters = tokenFilters;
-                deserializedCustomAnalyzer.charFilters = charFilters;
-                return deserializedCustomAnalyzer;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!nameFound) {
-                missingProperties.add("name");
-            }
-            if (!tokenizerFound) {
-                missingProperties.add("tokenizer");
-            }
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    boolean tokenizerFound = false;
+                    LexicalTokenizerName tokenizer = null;
+                    List<TokenFilterName> tokenFilters = null;
+                    List<CharFilterName> charFilters = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.CustomAnalyzer".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.CustomAnalyzer'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("tokenizer".equals(fieldName)) {
+                            tokenizer = LexicalTokenizerName.fromString(reader.getString());
+                            tokenizerFound = true;
+                        } else if ("tokenFilters".equals(fieldName)) {
+                            tokenFilters = reader.readArray(reader1 -> TokenFilterName.fromString(reader1.getString()));
+                        } else if ("charFilters".equals(fieldName)) {
+                            charFilters = reader.readArray(reader1 -> CharFilterName.fromString(reader1.getString()));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound && tokenizerFound) {
+                        CustomAnalyzer deserializedCustomAnalyzer = new CustomAnalyzer(name, tokenizer);
+                        deserializedCustomAnalyzer.tokenFilters = tokenFilters;
+                        deserializedCustomAnalyzer.charFilters = charFilters;
+                        return deserializedCustomAnalyzer;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    if (!tokenizerFound) {
+                        missingProperties.add("tokenizer");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**
@@ -206,7 +198,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * @return the CustomAnalyzer object itself.
      */
     public CustomAnalyzer setTokenFilters(TokenFilterName... tokenFilters) {
-        this.tokenFilters = (tokenFilters == null) ? null : Arrays.asList(tokenFilters);
+        this.tokenFilters = (tokenFilters == null) ? null : java.util.Arrays.asList(tokenFilters);
         return this;
     }
 
@@ -219,7 +211,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * @return the CustomAnalyzer object itself.
      */
     public CustomAnalyzer setCharFilters(CharFilterName... charFilters) {
-        this.charFilters = (charFilters == null) ? null : Arrays.asList(charFilters);
+        this.charFilters = (charFilters == null) ? null : java.util.Arrays.asList(charFilters);
         return this;
     }
 }

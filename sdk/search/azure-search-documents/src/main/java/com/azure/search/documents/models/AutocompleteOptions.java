@@ -12,11 +12,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Arrays;
+import java.util.Objects;
 
-/**
- * Parameter group.
- */
+/** Parameter group. */
 @Fluent
 public final class AutocompleteOptions implements JsonSerializable<AutocompleteOptions> {
 
@@ -46,21 +44,21 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
     private String highlightPostTag;
 
     /*
-     * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting
-     * is disabled.
+     * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit
+     * highlighting is disabled.
      */
     private String highlightPreTag;
 
     /*
      * A number between 0 and 100 indicating the percentage of the index that must be covered by an autocomplete query
-     * in order for the query to be reported as a success. This parameter can be useful for ensuring search availability
-     * even for services with only one replica. The default is 80.
+     * in order for the query to be reported as a success. This parameter can be useful for ensuring search
+     * availability even for services with only one replica. The default is 80.
      */
     private Double minimumCoverage;
 
     /*
-     * The list of field names to consider when querying for auto-completed terms. Target fields must be included in the
-     * specified suggester.
+     * The list of field names to consider when querying for auto-completed terms. Target fields must be included in
+     * the specified suggester.
      */
     private List<String> searchFields;
 
@@ -69,11 +67,8 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
      */
     private Integer top;
 
-    /**
-     * Creates an instance of AutocompleteOptions class.
-     */
-    public AutocompleteOptions() {
-    }
+    /** Creates an instance of AutocompleteOptions class. */
+    public AutocompleteOptions() {}
 
     /**
      * Get the autocompleteMode property: Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms'
@@ -257,26 +252,10 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
         return this;
     }
 
-    /**
-     * Set the searchFields property: The list of field names to consider when querying for auto-completed terms. Target
-     * fields must be included in the specified suggester.
-     *
-     * @param searchFields the searchFields value to set.
-     * @return the AutocompleteOptions object itself.
-     */
-    public AutocompleteOptions setSearchFields(String... searchFields) {
-        this.searchFields = (searchFields == null) ? null : Arrays.asList(searchFields);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("autocompleteMode",
-            this.autocompleteMode == null ? null : this.autocompleteMode.toString());
+        jsonWriter.writeStringField("autocompleteMode", Objects.toString(this.autocompleteMode, null));
         jsonWriter.writeStringField("$filter", this.filter);
         jsonWriter.writeBooleanField("UseFuzzyMatching", this.useFuzzyMatching);
         jsonWriter.writeStringField("highlightPostTag", this.highlightPostTag);
@@ -292,37 +271,52 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AutocompleteOptions if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the AutocompleteOptions.
      */
     public static AutocompleteOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AutocompleteOptions deserializedAutocompleteOptions = new AutocompleteOptions();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("autocompleteMode".equals(fieldName)) {
-                    deserializedAutocompleteOptions.autocompleteMode = AutocompleteMode.fromString(reader.getString());
-                } else if ("$filter".equals(fieldName)) {
-                    deserializedAutocompleteOptions.filter = reader.getString();
-                } else if ("UseFuzzyMatching".equals(fieldName)) {
-                    deserializedAutocompleteOptions.useFuzzyMatching = reader.getNullable(JsonReader::getBoolean);
-                } else if ("highlightPostTag".equals(fieldName)) {
-                    deserializedAutocompleteOptions.highlightPostTag = reader.getString();
-                } else if ("highlightPreTag".equals(fieldName)) {
-                    deserializedAutocompleteOptions.highlightPreTag = reader.getString();
-                } else if ("minimumCoverage".equals(fieldName)) {
-                    deserializedAutocompleteOptions.minimumCoverage = reader.getNullable(JsonReader::getDouble);
-                } else if ("searchFields".equals(fieldName)) {
-                    List<String> searchFields = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAutocompleteOptions.searchFields = searchFields;
-                } else if ("$top".equals(fieldName)) {
-                    deserializedAutocompleteOptions.top = reader.getNullable(JsonReader::getInt);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedAutocompleteOptions;
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    AutocompleteOptions deserializedAutocompleteOptions = new AutocompleteOptions();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("autocompleteMode".equals(fieldName)) {
+                            deserializedAutocompleteOptions.autocompleteMode =
+                                    AutocompleteMode.fromString(reader.getString());
+                        } else if ("$filter".equals(fieldName)) {
+                            deserializedAutocompleteOptions.filter = reader.getString();
+                        } else if ("UseFuzzyMatching".equals(fieldName)) {
+                            deserializedAutocompleteOptions.useFuzzyMatching =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("highlightPostTag".equals(fieldName)) {
+                            deserializedAutocompleteOptions.highlightPostTag = reader.getString();
+                        } else if ("highlightPreTag".equals(fieldName)) {
+                            deserializedAutocompleteOptions.highlightPreTag = reader.getString();
+                        } else if ("minimumCoverage".equals(fieldName)) {
+                            deserializedAutocompleteOptions.minimumCoverage = reader.getNullable(JsonReader::getDouble);
+                        } else if ("searchFields".equals(fieldName)) {
+                            List<String> searchFields = reader.readArray(reader1 -> reader1.getString());
+                            deserializedAutocompleteOptions.searchFields = searchFields;
+                        } else if ("$top".equals(fieldName)) {
+                            deserializedAutocompleteOptions.top = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    return deserializedAutocompleteOptions;
+                });
+    }
+
+    /**
+     * Set the searchFields property: The list of field names to consider when querying for auto-completed terms. Target
+     * fields must be included in the specified suggester.
+     *
+     * @param searchFields the searchFields value to set.
+     * @return the AutocompleteOptions object itself.
+     */
+    public AutocompleteOptions setSearchFields(String... searchFields) {
+        this.searchFields = (searchFields == null) ? null : java.util.Arrays.asList(searchFields);
+        return this;
     }
 }

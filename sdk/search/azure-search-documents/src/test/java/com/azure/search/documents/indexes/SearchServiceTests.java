@@ -3,7 +3,6 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.SearchServiceCounters;
@@ -47,7 +46,6 @@ public class SearchServiceTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void getServiceStatsReturnsRequestIdSync() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
 
@@ -68,7 +66,6 @@ public class SearchServiceTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void getServiceStatsReturnsRequestIdAsync() {
         StepVerifier.create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse())
             .assertNext(response -> {
