@@ -492,6 +492,12 @@
           "old" : ".*? com\\.azure\\.communication\\.callautomation\\.models.*",
           "new" : ".*? com\\.azure\\.communication\\.callautomation\\.models.*",
           "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.compute\\.batch\\.models.*",
+          "justification": "Removing Jackson annotations from Azure Batch in transition to stream-style."
         }
       ]
     }
