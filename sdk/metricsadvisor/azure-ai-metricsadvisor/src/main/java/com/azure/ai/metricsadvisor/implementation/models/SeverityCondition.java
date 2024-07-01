@@ -5,36 +5,29 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SeverityCondition model.
- */
+/** The SeverityCondition model. */
 @Fluent
-public final class SeverityCondition implements JsonSerializable<SeverityCondition> {
+public final class SeverityCondition {
     /*
      * min alert severity
      */
+    @JsonProperty(value = "minAlertSeverity", required = true)
     private Severity minAlertSeverity;
 
     /*
      * max alert severity
      */
+    @JsonProperty(value = "maxAlertSeverity", required = true)
     private Severity maxAlertSeverity;
 
-    /**
-     * Creates an instance of SeverityCondition class.
-     */
-    public SeverityCondition() {
-    }
+    /** Creates an instance of SeverityCondition class. */
+    public SeverityCondition() {}
 
     /**
      * Get the minAlertSeverity property: min alert severity.
-     * 
+     *
      * @return the minAlertSeverity value.
      */
     public Severity getMinAlertSeverity() {
@@ -43,7 +36,7 @@ public final class SeverityCondition implements JsonSerializable<SeverityConditi
 
     /**
      * Set the minAlertSeverity property: min alert severity.
-     * 
+     *
      * @param minAlertSeverity the minAlertSeverity value to set.
      * @return the SeverityCondition object itself.
      */
@@ -54,7 +47,7 @@ public final class SeverityCondition implements JsonSerializable<SeverityConditi
 
     /**
      * Get the maxAlertSeverity property: max alert severity.
-     * 
+     *
      * @return the maxAlertSeverity value.
      */
     public Severity getMaxAlertSeverity() {
@@ -63,51 +56,12 @@ public final class SeverityCondition implements JsonSerializable<SeverityConditi
 
     /**
      * Set the maxAlertSeverity property: max alert severity.
-     * 
+     *
      * @param maxAlertSeverity the maxAlertSeverity value to set.
      * @return the SeverityCondition object itself.
      */
     public SeverityCondition setMaxAlertSeverity(Severity maxAlertSeverity) {
         this.maxAlertSeverity = maxAlertSeverity;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("minAlertSeverity",
-            this.minAlertSeverity == null ? null : this.minAlertSeverity.toString());
-        jsonWriter.writeStringField("maxAlertSeverity",
-            this.maxAlertSeverity == null ? null : this.maxAlertSeverity.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SeverityCondition from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SeverityCondition if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SeverityCondition.
-     */
-    public static SeverityCondition fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SeverityCondition deserializedSeverityCondition = new SeverityCondition();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("minAlertSeverity".equals(fieldName)) {
-                    deserializedSeverityCondition.minAlertSeverity = Severity.fromString(reader.getString());
-                } else if ("maxAlertSeverity".equals(fieldName)) {
-                    deserializedSeverityCondition.maxAlertSeverity = Severity.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSeverityCondition;
-        });
     }
 }
