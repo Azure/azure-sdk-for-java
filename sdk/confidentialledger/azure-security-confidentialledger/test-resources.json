@@ -33,12 +33,6 @@
 				"description": "Application object ID for the test application"
 			}
 		},
-    "testApplicationSecret": {
-      "type": "string",
-      "metadata": {
-        "description": "Application secret for the test application"
-      }
-    },
     "ConfidentialLedgerPrincipalPEM": {
       "type": "string",
       "metadata": {
@@ -83,10 +77,6 @@
 		"AZURE_CLIENT_ID": {
 			"type": "string",
 			"value": "[parameters('testApplicationId')]"
-		},
-		"AZURE_CLIENT_SECRET": {
-			"type": "string",
-			"value": "[parameters('testApplicationSecret')]"
 		},
 		"CONFIDENTIALLEDGER_NAME": {
 			"type": "string",
