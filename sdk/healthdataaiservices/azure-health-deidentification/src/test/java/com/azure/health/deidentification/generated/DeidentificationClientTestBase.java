@@ -19,42 +19,27 @@ import com.azure.health.deidentification.DeidentificationClient;
 import com.azure.health.deidentification.DeidentificationClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
-
-import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DeidentificationClientTestBase extends TestProxyTestBase {
     protected DeidentificationClient deidentificationClient;
 
     @Override
     protected void beforeTest() {
-        String deidServiceEndpoint = Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT");
-
         DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
-                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                .httpClient(HttpClient.createDefault())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            .httpClient(HttpClient.createDefault())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             deidentificationClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
             deidentificationClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             deidentificationClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         deidentificationClient = deidentificationClientbuilder.buildClient();
 
-    }
-
-    @Test
-    void testHelloWorld() {
-        assertEquals("Hello, World!", getHelloWorld());
-    }
-
-    String getHelloWorld() {
-        return "Hello, World!";
     }
 }
