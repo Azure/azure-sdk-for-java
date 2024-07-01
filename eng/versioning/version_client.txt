@@ -489,3 +489,5 @@ unreleased_com.azure:azure-core;1.50.0-beta.1
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
 beta_com.azure:azure-identity;1.13.0-beta.2
+
+# I'm just going to change this file and see if codeowners work
