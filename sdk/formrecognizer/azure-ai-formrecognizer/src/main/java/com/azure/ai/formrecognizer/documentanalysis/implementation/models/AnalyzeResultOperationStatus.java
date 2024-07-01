@@ -4,33 +4,24 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-/**
- * Operation status.
- */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Operation status. */
 public enum AnalyzeResultOperationStatus {
-    /**
-     * The operation has not started yet.
-     */
+    /** Enum value notStarted. */
     NOT_STARTED("notStarted"),
 
-    /**
-     * The operation is in progress.
-     */
+    /** Enum value running. */
     RUNNING("running"),
 
-    /**
-     * The operation has failed.
-     */
+    /** Enum value failed. */
     FAILED("failed"),
 
-    /**
-     * The operation has succeeded.
-     */
+    /** Enum value succeeded. */
     SUCCEEDED("succeeded");
 
-    /**
-     * The actual serialized value for a AnalyzeResultOperationStatus instance.
-     */
+    /** The actual serialized value for a AnalyzeResultOperationStatus instance. */
     private final String value;
 
     AnalyzeResultOperationStatus(String value) {
@@ -39,10 +30,11 @@ public enum AnalyzeResultOperationStatus {
 
     /**
      * Parses a serialized value to a AnalyzeResultOperationStatus instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed AnalyzeResultOperationStatus object, or null if unable to parse.
      */
+    @JsonCreator
     public static AnalyzeResultOperationStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -56,9 +48,8 @@ public enum AnalyzeResultOperationStatus {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;
