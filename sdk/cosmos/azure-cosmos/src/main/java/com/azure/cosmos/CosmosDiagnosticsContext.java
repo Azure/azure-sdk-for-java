@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.OverridableRequestOptions;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.collections.set.UnmodifiableSet;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
@@ -926,7 +927,7 @@ public final class CosmosDiagnosticsContext {
      * @return the custom ids.
      */
     public Set<String> getKeywordIdentifiers() {
-        return ImmutableSet.copyOf(this.requestOptions.getKeywordIdentifiers());
+        return UnmodifiableSet.unmodifiableSet(this.requestOptions.getKeywordIdentifiers());
     }
 
     OverridableRequestOptions getRequestOptions() {
