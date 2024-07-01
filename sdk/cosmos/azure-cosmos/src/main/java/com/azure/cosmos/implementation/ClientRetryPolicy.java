@@ -165,9 +165,11 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 clientException);
         }
 
-        if (clientException != null && Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.REQUEST_TIMEOUT)) {
+        if (clientException != null
+            && Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.REQUEST_TIMEOUT)
+            && Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT)) {
             logger.info(
-                "Request timeout - IsReadRequest {}, IsWebExceptionRetriable {}, NonIdempotentWriteRetriesEnabled {}",
+                "Request timeout  - IsReadRequest {}, IsWebExceptionRetriable {}, NonIdempotentWriteRetriesEnabled {}",
                 this.isReadRequest,
                 false,
                 this.request.getNonIdempotentWriteRetriesEnabled(),

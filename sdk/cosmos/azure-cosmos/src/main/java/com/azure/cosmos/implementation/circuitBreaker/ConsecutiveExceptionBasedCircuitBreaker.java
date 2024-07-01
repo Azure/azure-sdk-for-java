@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.circuitBreaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker {
+public class ConsecutiveExceptionBasedCircuitBreaker {
 
     private static final Logger logger = LoggerFactory.getLogger(ConsecutiveExceptionBasedCircuitBreaker.class);
     private final PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig;
@@ -18,7 +18,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
     public LocationSpecificHealthContext handleException(LocationSpecificHealthContext locationSpecificHealthContext, boolean isReadOnlyRequest) {
 
         int exceptionCountAfterHandling
-            = (isReadOnlyRequest) ? locationSpecificHealthContext.getExceptionCountForRead() : locationSpecificHealthContext.getExceptionCountForWrite();
+            = (isReadOnlyRequest) ? locationSpecificHealthContext.getExceptionCountForReadForCircuitBreaking() : locationSpecificHealthContext.getExceptionCountForWriteForCircuitBreaking();
 
         LocationHealthStatus locationHealthStatus = locationSpecificHealthContext.getLocationHealthStatus();
 
@@ -32,23 +32,27 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
                 int successCountAfterHandling = 0;
 
                 if (isReadOnlyRequest) {
-                    return new LocationSpecificHealthContext(
-                        locationSpecificHealthContext.getSuccessCountForWrite(),
-                        locationSpecificHealthContext.getExceptionCountForWrite(),
-                        successCountAfterHandling,
-                        exceptionCountAfterHandling,
-                        locationSpecificHealthContext.getUnavailableSince(),
-                        locationSpecificHealthContext.getLocationHealthStatus(),
-                        locationSpecificHealthContext.isExceptionThresholdBreached());
+
+                    return new LocationSpecificHealthContext.Builder()
+                        .withSuccessCountForWriteForRecovery(locationSpecificHealthContext.getSuccessCountForWriteForRecovery())
+                        .withExceptionCountForWriteForCircuitBreaking(locationSpecificHealthContext.getExceptionCountForWriteForCircuitBreaking())
+                        .withSuccessCountForReadForRecovery(successCountAfterHandling)
+                        .withExceptionCountForReadForCircuitBreaking(exceptionCountAfterHandling)
+                        .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
+                        .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
+                        .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached())
+                        .build();
                 } else {
-                    return new LocationSpecificHealthContext(
-                        successCountAfterHandling,
-                        exceptionCountAfterHandling,
-                        locationSpecificHealthContext.getSuccessCountForRead(),
-                        locationSpecificHealthContext.getExceptionCountForRead(),
-                        locationSpecificHealthContext.getUnavailableSince(),
-                        locationSpecificHealthContext.getLocationHealthStatus(),
-                        locationSpecificHealthContext.isExceptionThresholdBreached());
+
+                    return new LocationSpecificHealthContext.Builder()
+                        .withSuccessCountForWriteForRecovery(successCountAfterHandling)
+                        .withExceptionCountForWriteForCircuitBreaking(exceptionCountAfterHandling)
+                        .withSuccessCountForReadForRecovery(locationSpecificHealthContext.getSuccessCountForReadForRecovery())
+                        .withExceptionCountForReadForCircuitBreaking(locationSpecificHealthContext.getExceptionCountForReadForCircuitBreaking())
+                        .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
+                        .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
+                        .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached())
+                        .build();
                 }
             case Unavailable:
                 throw new IllegalStateException();
@@ -59,10 +63,10 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
 
     public LocationSpecificHealthContext handleSuccess(LocationSpecificHealthContext locationSpecificHealthContext, boolean isReadOnlyRequest) {
         int exceptionCountAfterHandling
-            = (isReadOnlyRequest) ? locationSpecificHealthContext.getExceptionCountForRead() : locationSpecificHealthContext.getExceptionCountForWrite();
+            = (isReadOnlyRequest) ? locationSpecificHealthContext.getExceptionCountForReadForCircuitBreaking() : locationSpecificHealthContext.getExceptionCountForWriteForCircuitBreaking();
 
         int successCountAfterHandling
-            = (isReadOnlyRequest) ? locationSpecificHealthContext.getSuccessCountForRead() : locationSpecificHealthContext.getSuccessCountForWrite();
+            = (isReadOnlyRequest) ? locationSpecificHealthContext.getSuccessCountForReadForRecovery() : locationSpecificHealthContext.getSuccessCountForWriteForRecovery();
 
         LocationHealthStatus locationHealthStatus = locationSpecificHealthContext.getLocationHealthStatus();
 
@@ -74,46 +78,57 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
                 exceptionCountAfterHandling = 0;
 
                 if (isReadOnlyRequest) {
-                    return new LocationSpecificHealthContext(
-                        locationSpecificHealthContext.getSuccessCountForWrite(),
-                        locationSpecificHealthContext.getExceptionCountForWrite(),
-                        locationSpecificHealthContext.getSuccessCountForRead(),
-                        exceptionCountAfterHandling,
-                        locationSpecificHealthContext.getUnavailableSince(),
-                        locationSpecificHealthContext.getLocationHealthStatus(),
-                        locationSpecificHealthContext.isExceptionThresholdBreached());
+
+                    return new LocationSpecificHealthContext.Builder()
+                        .withSuccessCountForWriteForRecovery(locationSpecificHealthContext.getSuccessCountForWriteForRecovery())
+                        .withExceptionCountForWriteForCircuitBreaking(locationSpecificHealthContext.getExceptionCountForWriteForCircuitBreaking())
+                        .withSuccessCountForReadForRecovery(locationSpecificHealthContext.getSuccessCountForReadForRecovery())
+                        .withExceptionCountForReadForCircuitBreaking(exceptionCountAfterHandling)
+                        .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
+                        .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
+                        .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached())
+                        .build();
+
                 } else {
-                    return new LocationSpecificHealthContext(
-                        locationSpecificHealthContext.getSuccessCountForWrite(),
-                        exceptionCountAfterHandling,
-                        locationSpecificHealthContext.getSuccessCountForRead(),
-                        locationSpecificHealthContext.getExceptionCountForRead(),
-                        locationSpecificHealthContext.getUnavailableSince(),
-                        locationSpecificHealthContext.getLocationHealthStatus(),
-                        locationSpecificHealthContext.isExceptionThresholdBreached());
+
+                    return new LocationSpecificHealthContext.Builder()
+                        .withSuccessCountForWriteForRecovery(locationSpecificHealthContext.getSuccessCountForWriteForRecovery())
+                        .withExceptionCountForWriteForCircuitBreaking(exceptionCountAfterHandling)
+                        .withSuccessCountForReadForRecovery(locationSpecificHealthContext.getSuccessCountForReadForRecovery())
+                        .withExceptionCountForReadForCircuitBreaking(locationSpecificHealthContext.getExceptionCountForReadForCircuitBreaking())
+                        .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
+                        .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
+                        .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached())
+                        .build();
                 }
             case HealthyTentative:
 
                 successCountAfterHandling++;
 
                 if (isReadOnlyRequest) {
-                    return new LocationSpecificHealthContext(
-                        locationSpecificHealthContext.getSuccessCountForWrite(),
-                        locationSpecificHealthContext.getExceptionCountForWrite(),
-                        successCountAfterHandling,
-                        exceptionCountAfterHandling,
-                        locationSpecificHealthContext.getUnavailableSince(),
-                        locationSpecificHealthContext.getLocationHealthStatus(),
-                        locationSpecificHealthContext.isExceptionThresholdBreached());
+
+                    return new LocationSpecificHealthContext.Builder()
+                        .withSuccessCountForWriteForRecovery(locationSpecificHealthContext.getSuccessCountForWriteForRecovery())
+                        .withExceptionCountForWriteForCircuitBreaking(locationSpecificHealthContext.getExceptionCountForWriteForCircuitBreaking())
+                        .withSuccessCountForReadForRecovery(successCountAfterHandling)
+                        .withExceptionCountForReadForCircuitBreaking(exceptionCountAfterHandling)
+                        .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
+                        .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
+                        .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached())
+                        .build();
+
                 } else {
-                    return new LocationSpecificHealthContext(
-                        successCountAfterHandling,
-                        exceptionCountAfterHandling,
-                        locationSpecificHealthContext.getSuccessCountForRead(),
-                        locationSpecificHealthContext.getExceptionCountForRead(),
-                        locationSpecificHealthContext.getUnavailableSince(),
-                        locationSpecificHealthContext.getLocationHealthStatus(),
-                        locationSpecificHealthContext.isExceptionThresholdBreached());
+
+                    return new LocationSpecificHealthContext.Builder()
+                        .withSuccessCountForWriteForRecovery(successCountAfterHandling)
+                        .withExceptionCountForWriteForCircuitBreaking(exceptionCountAfterHandling)
+                        .withSuccessCountForReadForRecovery(locationSpecificHealthContext.getSuccessCountForReadForRecovery())
+                        .withExceptionCountForReadForCircuitBreaking(locationSpecificHealthContext.getExceptionCountForReadForCircuitBreaking())
+                        .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
+                        .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
+                        .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached())
+                        .build();
+
                 }
             case Unavailable:
                 throw new IllegalStateException();
@@ -125,7 +140,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
     public boolean shouldHealthStatusBeDowngraded(LocationSpecificHealthContext locationSpecificHealthContext, boolean isReadOnlyRequest) {
 
         int exceptionCountActual
-            = isReadOnlyRequest ? locationSpecificHealthContext.getExceptionCountForRead() : locationSpecificHealthContext.getExceptionCountForWrite();
+            = isReadOnlyRequest ? locationSpecificHealthContext.getExceptionCountForReadForCircuitBreaking() : locationSpecificHealthContext.getExceptionCountForWriteForCircuitBreaking();
 
         return exceptionCountActual >= getAllowedExceptionCountToMaintainStatus(locationSpecificHealthContext.getLocationHealthStatus(), isReadOnlyRequest);
     }
@@ -133,7 +148,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
     public boolean canHealthStatusBeUpgraded(LocationSpecificHealthContext locationSpecificHealthContext, boolean isReadOnlyRequest) {
 
         int successCountActual
-            = isReadOnlyRequest ? locationSpecificHealthContext.getSuccessCountForRead() : locationSpecificHealthContext.getSuccessCountForWrite();
+            = isReadOnlyRequest ? locationSpecificHealthContext.getSuccessCountForReadForRecovery() : locationSpecificHealthContext.getSuccessCountForWriteForRecovery();
 
         LocationHealthStatus locationHealthStatus = locationSpecificHealthContext.getLocationHealthStatus();
 

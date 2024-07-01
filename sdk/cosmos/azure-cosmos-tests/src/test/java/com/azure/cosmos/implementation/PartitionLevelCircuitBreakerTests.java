@@ -2747,9 +2747,9 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         boolean failuresExist = false;
 
         for (LocationSpecificHealthContext locationSpecificHealthContext : locationEndpointToLocationSpecificContextForPartition.values()) {
-            count += locationSpecificHealthContext.getExceptionCountForRead() + locationSpecificHealthContext.getExceptionCountForWrite();
+            count += locationSpecificHealthContext.getExceptionCountForReadForCircuitBreaking() + locationSpecificHealthContext.getExceptionCountForWriteForCircuitBreaking();
 
-            if (locationSpecificHealthContext.getExceptionCountForRead() + locationSpecificHealthContext.getExceptionCountForWrite() > 0) {
+            if (locationSpecificHealthContext.getExceptionCountForReadForCircuitBreaking() + locationSpecificHealthContext.getExceptionCountForWriteForCircuitBreaking() > 0) {
                 failuresExist = true;
                 regionCountWithFailures++;
             }

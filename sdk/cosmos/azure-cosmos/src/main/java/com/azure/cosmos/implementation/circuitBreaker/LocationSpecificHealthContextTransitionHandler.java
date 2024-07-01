@@ -38,7 +38,7 @@ public class LocationSpecificHealthContextTransitionHandler {
         LocationHealthStatus currentLocationHealthStatusSnapshot = locationSpecificHealthContext.getLocationHealthStatus();
 
         int exceptionCountActual
-            = isReadOnlyRequest ? locationSpecificHealthContext.getExceptionCountForRead() : locationSpecificHealthContext.getExceptionCountForWrite();
+            = isReadOnlyRequest ? locationSpecificHealthContext.getExceptionCountForReadForCircuitBreaking() : locationSpecificHealthContext.getExceptionCountForWriteForCircuitBreaking();
 
         switch (currentLocationHealthStatusSnapshot) {
             case Healthy:
@@ -145,7 +145,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                             partitionKeyRangeWrapper.getResourceId(),
-                            isReadOnlyRequest ? locationSpecificHealthContextInner.getExceptionCountForRead() : locationSpecificHealthContextInner.getExceptionCountForWrite(),
+                            isReadOnlyRequest ? locationSpecificHealthContextInner.getExceptionCountForReadForCircuitBreaking() : locationSpecificHealthContextInner.getExceptionCountForWriteForCircuitBreaking(),
                             this.globalEndpointManager
                                 .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                     }
@@ -190,41 +190,53 @@ public class LocationSpecificHealthContextTransitionHandler {
 
         switch (newStatus) {
             case Healthy:
-                return new LocationSpecificHealthContext(
-                    0,
-                    0,
-                    0,
-                    0,
-                    Instant.MAX,
-                    LocationHealthStatus.Healthy,
-                    false);
+
+                return new LocationSpecificHealthContext.Builder()
+                    .withSuccessCountForWriteForRecovery(0)
+                    .withExceptionCountForWriteForCircuitBreaking(0)
+                    .withSuccessCountForReadForRecovery(0)
+                    .withExceptionCountForReadForCircuitBreaking(0)
+                    .withUnavailableSince(Instant.MAX)
+                    .withLocationHealthStatus(LocationHealthStatus.Healthy)
+                    .withExceptionThresholdBreached(false)
+                    .build();
+
             case HealthyWithFailures:
-                return new LocationSpecificHealthContext(
-                    0,
-                    0,
-                    0,
-                    0,
-                    Instant.MAX,
-                    LocationHealthStatus.HealthyWithFailures,
-                    false);
+
+                return new LocationSpecificHealthContext.Builder()
+                    .withSuccessCountForWriteForRecovery(0)
+                    .withExceptionCountForWriteForCircuitBreaking(0)
+                    .withSuccessCountForReadForRecovery(0)
+                    .withExceptionCountForReadForCircuitBreaking(0)
+                    .withUnavailableSince(Instant.MAX)
+                    .withLocationHealthStatus(LocationHealthStatus.HealthyWithFailures)
+                    .withExceptionThresholdBreached(false)
+                    .build();
+
             case Unavailable:
-                return new LocationSpecificHealthContext(
-                    0,
-                    0,
-                    0,
-                    0,
-                    Instant.now(),
-                    LocationHealthStatus.Unavailable,
-                    true);
+
+                return new LocationSpecificHealthContext.Builder()
+                    .withSuccessCountForWriteForRecovery(0)
+                    .withExceptionCountForWriteForCircuitBreaking(0)
+                    .withSuccessCountForReadForRecovery(0)
+                    .withExceptionCountForReadForCircuitBreaking(0)
+                    .withUnavailableSince(Instant.now())
+                    .withLocationHealthStatus(LocationHealthStatus.Unavailable)
+                    .withExceptionThresholdBreached(true)
+                    .build();
+
             case HealthyTentative:
-                return new LocationSpecificHealthContext(
-                    0,
-                    0,
-                    0,
-                    0,
-                    Instant.MAX,
-                    LocationHealthStatus.HealthyTentative,
-                    false);
+
+                return new LocationSpecificHealthContext.Builder()
+                    .withSuccessCountForWriteForRecovery(0)
+                    .withExceptionCountForWriteForCircuitBreaking(0)
+                    .withSuccessCountForReadForRecovery(0)
+                    .withExceptionCountForReadForCircuitBreaking(0)
+                    .withUnavailableSince(Instant.now())
+                    .withLocationHealthStatus(LocationHealthStatus.HealthyTentative)
+                    .withExceptionThresholdBreached(false)
+                    .build();
+
             default:
                 throw new IllegalStateException("Unsupported health status: " + newStatus);
         }

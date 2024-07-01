@@ -259,14 +259,16 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             this.locationEndpointToLocationSpecificContextForPartition.compute(locationWithException, (locationAsKey, locationSpecificContextAsVal) -> {
 
                 if (locationSpecificContextAsVal == null) {
-                    locationSpecificContextAsVal = new LocationSpecificHealthContext(
-                        0,
-                        0,
-                        0,
-                        0,
-                        Instant.MAX,
-                        LocationHealthStatus.HealthyWithFailures,
-                        false);
+
+                    locationSpecificContextAsVal = new LocationSpecificHealthContext.Builder()
+                        .withSuccessCountForWriteForRecovery(0)
+                        .withExceptionCountForWriteForCircuitBreaking(0)
+                        .withSuccessCountForReadForRecovery(0)
+                        .withExceptionCountForReadForCircuitBreaking(0)
+                        .withUnavailableSince(Instant.MAX)
+                        .withLocationHealthStatus(LocationHealthStatus.HealthyWithFailures)
+                        .withExceptionThresholdBreached(false)
+                        .build();
                 }
 
                 LocationSpecificHealthContext locationSpecificHealthContextAfterTransition = this.locationSpecificHealthContextTransitionHandler.handleException(
@@ -295,14 +297,16 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                 LocationSpecificHealthContext locationSpecificHealthContextAfterTransition;
 
                 if (locationSpecificContextAsVal == null) {
-                    locationSpecificContextAsVal = new LocationSpecificHealthContext(
-                        0,
-                        0,
-                        0,
-                        0,
-                        Instant.MAX,
-                        LocationHealthStatus.Healthy,
-                        false);
+
+                    locationSpecificContextAsVal = new LocationSpecificHealthContext.Builder()
+                        .withSuccessCountForWriteForRecovery(0)
+                        .withExceptionCountForWriteForCircuitBreaking(0)
+                        .withSuccessCountForReadForRecovery(0)
+                        .withExceptionCountForReadForCircuitBreaking(0)
+                        .withUnavailableSince(Instant.MAX)
+                        .withLocationHealthStatus(LocationHealthStatus.Healthy)
+                        .withExceptionThresholdBreached(false)
+                        .build();
                 }
 
                 locationSpecificHealthContextAfterTransition = this.locationSpecificHealthContextTransitionHandler.handleSuccess(
