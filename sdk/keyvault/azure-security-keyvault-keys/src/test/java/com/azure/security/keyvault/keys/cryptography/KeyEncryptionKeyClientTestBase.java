@@ -14,7 +14,8 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl;
@@ -104,18 +105,11 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
     }
 
     private TokenCredential getTokenCredentialAndSetMatchers() {
-        if (!interceptorManager.isPlaybackMode()) {
-            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
-            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
-            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
-
-            return new ClientSecretCredentialBuilder()
-                .clientSecret(Objects.requireNonNull(clientKey, "The client key cannot be null"))
-                .clientId(Objects.requireNonNull(clientId, "The client id cannot be null"))
-                .tenantId(Objects.requireNonNull(tenantId, "The tenant id cannot be null"))
-                .additionallyAllowedTenants("*")
-                .build();
-        } else {
+        if (interceptorManager.isLiveMode()) {
+            return new AzurePowerShellCredentialBuilder().additionallyAllowedTenants("*").build();
+        } else if (interceptorManager.isRecordMode()) {
+            return new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
+        } else  {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
             customMatchers.add(new BodilessMatcher());
             customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
