@@ -2,13 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosDiagnosticsContext;
-import com.azure.cosmos.CosmosDiagnosticsThresholds;
-import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OverridableRequestOptions;
-import com.azure.cosmos.models.CosmosOperationDetails;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 
 import java.util.List;
