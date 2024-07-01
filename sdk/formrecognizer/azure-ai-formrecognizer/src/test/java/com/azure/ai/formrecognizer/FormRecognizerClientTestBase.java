@@ -26,6 +26,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -147,7 +148,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isLiveMode()) {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new AzurePowerShellCredentialBuilder().build());
         }
         if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
             interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
@@ -175,7 +176,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isLiveMode()) {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new AzurePowerShellCredentialBuilder().build());
         }
 
         if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {

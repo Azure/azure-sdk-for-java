@@ -3,6 +3,7 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
+    UseFederatedAuth: true
     ServiceDirectory: formrecognizer
     timeoutInMinutes: 150 # how long to run the job before automatically cancelling
     Artifacts:
@@ -13,13 +14,6 @@ extends:
       Public:
         SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
         Location: 'centraluseuap'
-      Canary:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-        Location: 'centraluseuap'
-      UsGov:
-        SubscriptionConfiguration: $(sub-config-gov-test-resources)
-        Location: 'usgovvirginia'
-      China:
-        SubscriptionConfiguration: $(sub-config-cn-test-resources)
-        Location: 'chinaeast2'
-    SupportedClouds: 'Public,Canary,UsGov,China'
+        ServiceConnection: azure-sdk-tests
+        SubscriptionConfigurationFilePath: eng/common/TestResources/sub-config/AzurePublicMsft.json
+    SupportedClouds: 'Public'
