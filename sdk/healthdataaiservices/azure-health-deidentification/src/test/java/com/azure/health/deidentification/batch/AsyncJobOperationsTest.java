@@ -10,13 +10,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.health.deidentification.DeidentificationAsyncClient;
-import com.azure.health.deidentification.DeidentificationClient;
 import com.azure.health.deidentification.DeidentificationClientBuilder;
 import com.azure.health.deidentification.models.*;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -27,7 +25,6 @@ import com.azure.health.deidentification.testutils.Utils;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,7 +53,6 @@ class AsyncJobOperationsTest extends TestProxyTestBase {
     @Test
     void testCreateJobReturnsExpected() {
         String jobName = Utils.generateJobName("test01");
-        JobStatus statusToWait = JobStatus.RUNNING;
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
@@ -65,7 +61,6 @@ class AsyncJobOperationsTest extends TestProxyTestBase {
         DeidentificationJob job = new DeidentificationJob(new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions), new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER), OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
 
         DeidentificationJob result = deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitUntil(LongRunningOperationStatus.NOT_STARTED).getValue();
-
 
         assertNotNull(result);
         assertEquals(jobName, result.getName());
@@ -85,7 +80,6 @@ class AsyncJobOperationsTest extends TestProxyTestBase {
     @Test
     void testCreateThenListReturnsExpected() {
         String jobName = Utils.generateJobName("test02");
-        JobStatus statusToWait = JobStatus.RUNNING;
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
@@ -93,7 +87,7 @@ class AsyncJobOperationsTest extends TestProxyTestBase {
 
         DeidentificationJob job = new DeidentificationJob(new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions), new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER), OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
 
-        DeidentificationJob result = deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitUntil(LongRunningOperationStatus.NOT_STARTED).getValue();
+        deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitUntil(LongRunningOperationStatus.NOT_STARTED);
 
         PagedFlux<DeidentificationJob> jobs = deidentificationAsyncClient.listJobs();
         jobs.byPage() // Retrieves Flux<PagedResponse<T>>, where each PagedResponse<T> represents a page
@@ -114,66 +108,65 @@ class AsyncJobOperationsTest extends TestProxyTestBase {
             });
     }
 
-//    @Test
-//    void testJobE2EWaitUntilSuccess() {
-//        String jobName = Utils.generateJobName("test03");
-//        String inputPrefix = "example_patient_1";
-//        String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
-//        List<String> extensions = new ArrayList<>();
-//        extensions.add("*");
-//
-//        DeidentificationJob job = new DeidentificationJob(new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions), new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER), OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
-//
-//        DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job).waitForCompletion().getValue();
-//        assertEquals(JobStatus.SUCCEEDED, result.getStatus());
-//
-//        PagedIterable<HealthFileDetails> reports = deidentificationClient.listJobFiles(jobName);
-//        Iterator<HealthFileDetails> iterator = reports.iterator();
-//        int results = 0;
-//        while (iterator.hasNext()) {
-//            HealthFileDetails currentReport = iterator.next();
-//            assertEquals(currentReport.getStatus(), OperationState.SUCCEEDED);
-//            assertTrue(currentReport.getOutput().getPath().startsWith(OUTPUT_FOLDER));
-//            assertEquals(currentReport.getId().length(), 36);
-//            results++;
-//        }
-//        assertEquals(2, results);
-//    }
-//
-//    @Test
-//    void testJobE2ECancelJobThenDeleteJobDeletesJob() {
-//        String jobName = Utils.generateJobName("test04");
-//        String inputPrefix = "example_patient_1";
-//        String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
-//        List<String> extensions = new ArrayList<>();
-//        extensions.add("*");
-//
-//        DeidentificationJob job = new DeidentificationJob(new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions), new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER), OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
-//
-//        DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job).waitUntil(LongRunningOperationStatus.NOT_STARTED).getValue();
-//        assertEquals(JobStatus.NOT_STARTED, result.getStatus());
-//
-//        DeidentificationJob cancelledJob = deidentificationClient.cancelJob(jobName);
-//        assertEquals(JobStatus.CANCELED, cancelledJob.getStatus());
-//
-//        deidentificationClient.deleteJob(jobName);
-//
-//        assertThrows(ResourceNotFoundException.class, () -> {
-//            deidentificationClient.getJob(jobName);
-//        });
-//    }
-//
-//    @Test
-//    void testJobE2ECannotAccessStorageCreateJobFails() {
-//        String jobName = Utils.generateJobName("test05");
-//        String inputPrefix = "example_patient_1";
-//        String storageAccountSASUri = "FAKE_STORAGE_ACCOUNT";
-//        List<String> extensions = new ArrayList<>();
-//        extensions.add("*");
-//
-//        DeidentificationJob job = new DeidentificationJob(new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions), new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER), OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
-//
-//        assertThrows(HttpResponseException.class, () -> deidentificationClient.beginCreateJob(jobName, job).waitUntil(LongRunningOperationStatus.NOT_STARTED));
-//
-//    }
+    @Test
+    void testJobE2EWaitUntilSuccess() {
+        String jobName = Utils.generateJobName("test03");
+        String inputPrefix = "example_patient_1";
+        String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
+        List<String> extensions = new ArrayList<>();
+        extensions.add("*");
+
+        DeidentificationJob job = new DeidentificationJob(new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions), new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER), OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
+
+        DeidentificationJob result = deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitForCompletion().getValue();
+
+        assertEquals(JobStatus.SUCCEEDED, result.getStatus());
+
+        PagedFlux<HealthFileDetails> reports = deidentificationAsyncClient.listJobFiles(jobName);
+
+        reports.byPage() // Retrieves Flux<PagedResponse<T>>, where each PagedResponse<T> represents a page
+            .flatMap(page -> Flux.fromIterable(page.getElements())) // Converts each page into a Flux<T> of its items
+            .subscribe(item -> {
+                assertEquals(item.getStatus(), OperationState.SUCCEEDED);
+                assertTrue(item.getOutput().getPath().startsWith(OUTPUT_FOLDER));
+                assertEquals(item.getId().length(), 36);
+            });
+    }
+
+    @Test
+    void testJobE2ECancelJobThenDeleteJobDeletesJob() {
+        String jobName = Utils.generateJobName("test04");
+        String inputPrefix = "example_patient_1";
+        String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
+        List<String> extensions = new ArrayList<>();
+        extensions.add("*");
+
+        DeidentificationJob job = new DeidentificationJob(new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions), new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER), OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
+
+        DeidentificationJob result = deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitUntil(LongRunningOperationStatus.NOT_STARTED).getValue();
+
+
+        DeidentificationJob cancelledJob = deidentificationAsyncClient.cancelJob(jobName).block();
+
+        assertEquals(JobStatus.CANCELED, cancelledJob.getStatus());
+
+        deidentificationAsyncClient.deleteJob(jobName).block();
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            deidentificationAsyncClient.getJob(jobName).block();
+        });
+    }
+
+    @Test
+    void testJobE2ECannotAccessStorageCreateJobFails() {
+        String jobName = Utils.generateJobName("test05");
+        String inputPrefix = "example_patient_1";
+        String storageAccountSASUri = "FAKE_STORAGE_ACCOUNT";
+        List<String> extensions = new ArrayList<>();
+        extensions.add("*");
+
+        DeidentificationJob job = new DeidentificationJob(new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions), new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER), OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
+
+        assertThrows(HttpResponseException.class, () -> deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitUntil(LongRunningOperationStatus.NOT_STARTED));
+    }
 }
