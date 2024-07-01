@@ -5,27 +5,37 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** A date range starting at From and ending at To. */
+/**
+ * A date range starting at From and ending at To.
+ */
 @Immutable
-public class PersonalizerDateRange {
+public class PersonalizerDateRange implements JsonSerializable<PersonalizerDateRange> {
     /*
      * Start date for the range.
      */
-    @JsonProperty(value = "from", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime from;
 
     /*
      * End date for the range.
      */
-    @JsonProperty(value = "to", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime to;
 
     /**
+     * Creates an instance of PersonalizerDateRange class.
+     */
+    public PersonalizerDateRange() {
+    }
+
+    /**
      * Get the from property: Start date for the range.
-     *
+     * 
      * @return the from value.
      */
     public OffsetDateTime getFrom() {
@@ -33,11 +43,72 @@ public class PersonalizerDateRange {
     }
 
     /**
+     * Set the from property: Start date for the range.
+     * 
+     * @param from the from value to set.
+     * @return the PersonalizerDateRange object itself.
+     */
+    PersonalizerDateRange setFrom(OffsetDateTime from) {
+        this.from = from;
+        return this;
+    }
+
+    /**
      * Get the to property: End date for the range.
-     *
+     * 
      * @return the to value.
      */
     public OffsetDateTime getTo() {
         return this.to;
+    }
+
+    /**
+     * Set the to property: End date for the range.
+     * 
+     * @param to the to value to set.
+     * @return the PersonalizerDateRange object itself.
+     */
+    PersonalizerDateRange setTo(OffsetDateTime to) {
+        this.to = to;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PersonalizerDateRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PersonalizerDateRange if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PersonalizerDateRange.
+     */
+    public static PersonalizerDateRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerDateRange deserializedPersonalizerDateRange = new PersonalizerDateRange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("from".equals(fieldName)) {
+                    deserializedPersonalizerDateRange.from
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("to".equals(fieldName)) {
+                    deserializedPersonalizerDateRange.to
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPersonalizerDateRange;
+        });
     }
 }

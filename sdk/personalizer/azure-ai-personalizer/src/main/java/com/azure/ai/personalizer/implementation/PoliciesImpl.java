@@ -25,17 +25,23 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Policies. */
+/**
+ * An instance of this class provides access to all the operations defined in Policies.
+ */
 public final class PoliciesImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PersonalizerClientV1Preview3Impl client;
 
     /**
      * Initializes an instance of PoliciesImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PoliciesImpl(PersonalizerClientV1Preview3Impl client) {
@@ -47,82 +53,72 @@ public final class PoliciesImpl {
      * The interface defining all the services for PersonalizerClientV1Preview3Policies to be used by the proxy service
      * to perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/{ApiVersion}")
+    @Host("{Endpoint}/personalizer/v1.1-preview.3")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface PoliciesService {
         @Get("/configurations/policy")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PersonalizerPolicy>> get(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PersonalizerPolicy>> get(@HostParam("Endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/configurations/policy")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<PersonalizerPolicy>> update(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @BodyParam("application/json") PersonalizerPolicy policy,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PersonalizerPolicy>> update(@HostParam("Endpoint") String endpoint,
+            @BodyParam("application/json") PersonalizerPolicy policy, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Delete("/configurations/policy")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PersonalizerPolicy>> reset(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PersonalizerPolicy>> reset(@HostParam("Endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get Policy.
-     *
-     * <p>Get the Learning Settings currently used by the Personalizer service.
-     *
+     * 
+     * Get the Learning Settings currently used by the Personalizer service.
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Learning Settings currently used by the Personalizer service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerPolicy>> getWithResponseAsync() {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), accept, context));
     }
 
     /**
      * Get Policy.
-     *
-     * <p>Get the Learning Settings currently used by the Personalizer service.
-     *
+     * 
+     * Get the Learning Settings currently used by the Personalizer service.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Learning Settings currently used by the Personalizer service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerPolicy>> getWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return service.get(this.client.getEndpoint(), accept, context);
     }
 
     /**
      * Get Policy.
-     *
-     * <p>Get the Learning Settings currently used by the Personalizer service.
-     *
+     * 
+     * Get the Learning Settings currently used by the Personalizer service.
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Learning Settings currently used by the Personalizer service on successful completion of {@link
-     *     Mono}.
+     * @return the Learning Settings currently used by the Personalizer service on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PersonalizerPolicy> getAsync() {
@@ -131,15 +127,15 @@ public final class PoliciesImpl {
 
     /**
      * Get Policy.
-     *
-     * <p>Get the Learning Settings currently used by the Personalizer service.
-     *
+     * 
+     * Get the Learning Settings currently used by the Personalizer service.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Learning Settings currently used by the Personalizer service on successful completion of {@link
-     *     Mono}.
+     * @return the Learning Settings currently used by the Personalizer service on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PersonalizerPolicy> getAsync(Context context) {
@@ -148,23 +144,9 @@ public final class PoliciesImpl {
 
     /**
      * Get Policy.
-     *
-     * <p>Get the Learning Settings currently used by the Personalizer service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Learning Settings currently used by the Personalizer service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerPolicy get() {
-        return getAsync().block();
-    }
-
-    /**
-     * Get Policy.
-     *
-     * <p>Get the Learning Settings currently used by the Personalizer service.
-     *
+     * 
+     * Get the Learning Settings currently used by the Personalizer service.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -177,50 +159,61 @@ public final class PoliciesImpl {
     }
 
     /**
+     * Get Policy.
+     * 
+     * Get the Learning Settings currently used by the Personalizer service.
+     * 
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Learning Settings currently used by the Personalizer service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PersonalizerPolicy get() {
+        return getWithResponse(Context.NONE).getValue();
+    }
+
+    /**
      * Update Policy.
-     *
-     * <p>Update the Learning Settings that the Personalizer service will use to train models.
-     *
+     * 
+     * Update the Learning Settings that the Personalizer service will use to train models.
+     * 
      * @param policy The learning settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return learning settings specifying how to train the model along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerPolicy>> updateWithResponseAsync(PersonalizerPolicy policy) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.update(
-                                this.client.getEndpoint(), this.client.getApiVersion(), policy, accept, context));
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), policy, accept, context));
     }
 
     /**
      * Update Policy.
-     *
-     * <p>Update the Learning Settings that the Personalizer service will use to train models.
-     *
+     * 
+     * Update the Learning Settings that the Personalizer service will use to train models.
+     * 
      * @param policy The learning settings.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return learning settings specifying how to train the model along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerPolicy>> updateWithResponseAsync(PersonalizerPolicy policy, Context context) {
         final String accept = "application/json";
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), policy, accept, context);
+        return service.update(this.client.getEndpoint(), policy, accept, context);
     }
 
     /**
      * Update Policy.
-     *
-     * <p>Update the Learning Settings that the Personalizer service will use to train models.
-     *
+     * 
+     * Update the Learning Settings that the Personalizer service will use to train models.
+     * 
      * @param policy The learning settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -234,9 +227,9 @@ public final class PoliciesImpl {
 
     /**
      * Update Policy.
-     *
-     * <p>Update the Learning Settings that the Personalizer service will use to train models.
-     *
+     * 
+     * Update the Learning Settings that the Personalizer service will use to train models.
+     * 
      * @param policy The learning settings.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -251,25 +244,9 @@ public final class PoliciesImpl {
 
     /**
      * Update Policy.
-     *
-     * <p>Update the Learning Settings that the Personalizer service will use to train models.
-     *
-     * @param policy The learning settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return learning settings specifying how to train the model.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerPolicy update(PersonalizerPolicy policy) {
-        return updateAsync(policy).block();
-    }
-
-    /**
-     * Update Policy.
-     *
-     * <p>Update the Learning Settings that the Personalizer service will use to train models.
-     *
+     * 
+     * Update the Learning Settings that the Personalizer service will use to train models.
+     * 
      * @param policy The learning settings.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,45 +260,60 @@ public final class PoliciesImpl {
     }
 
     /**
-     * Reset Policy.
-     *
-     * <p>Resets the learning settings of the Personalizer service to default.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * Update Policy.
+     * 
+     * Update the Learning Settings that the Personalizer service will use to train models.
+     * 
+     * @param policy The learning settings.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return learning settings specifying how to train the model along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return learning settings specifying how to train the model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PersonalizerPolicy>> resetWithResponseAsync() {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.reset(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
+    public PersonalizerPolicy update(PersonalizerPolicy policy) {
+        return updateWithResponse(policy, Context.NONE).getValue();
     }
 
     /**
      * Reset Policy.
-     *
-     * <p>Resets the learning settings of the Personalizer service to default.
-     *
+     * 
+     * Resets the learning settings of the Personalizer service to default.
+     * 
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return learning settings specifying how to train the model along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PersonalizerPolicy>> resetWithResponseAsync() {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.reset(this.client.getEndpoint(), accept, context));
+    }
+
+    /**
+     * Reset Policy.
+     * 
+     * Resets the learning settings of the Personalizer service to default.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return learning settings specifying how to train the model along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerPolicy>> resetWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.reset(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return service.reset(this.client.getEndpoint(), accept, context);
     }
 
     /**
      * Reset Policy.
-     *
-     * <p>Resets the learning settings of the Personalizer service to default.
-     *
+     * 
+     * Resets the learning settings of the Personalizer service to default.
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return learning settings specifying how to train the model on successful completion of {@link Mono}.
@@ -333,9 +325,9 @@ public final class PoliciesImpl {
 
     /**
      * Reset Policy.
-     *
-     * <p>Resets the learning settings of the Personalizer service to default.
-     *
+     * 
+     * Resets the learning settings of the Personalizer service to default.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -349,23 +341,9 @@ public final class PoliciesImpl {
 
     /**
      * Reset Policy.
-     *
-     * <p>Resets the learning settings of the Personalizer service to default.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return learning settings specifying how to train the model.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerPolicy reset() {
-        return resetAsync().block();
-    }
-
-    /**
-     * Reset Policy.
-     *
-     * <p>Resets the learning settings of the Personalizer service to default.
-     *
+     * 
+     * Resets the learning settings of the Personalizer service to default.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -375,5 +353,19 @@ public final class PoliciesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PersonalizerPolicy> resetWithResponse(Context context) {
         return resetWithResponseAsync(context).block();
+    }
+
+    /**
+     * Reset Policy.
+     * 
+     * Resets the learning settings of the Personalizer service to default.
+     * 
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return learning settings specifying how to train the model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PersonalizerPolicy reset() {
+        return resetWithResponse(Context.NONE).getValue();
     }
 }

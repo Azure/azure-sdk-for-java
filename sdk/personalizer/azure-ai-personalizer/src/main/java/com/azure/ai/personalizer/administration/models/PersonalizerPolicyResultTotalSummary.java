@@ -5,8 +5,92 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.Duration;
+import java.time.OffsetDateTime;
 
-/** The aggregate total of the Offline Evaluation. */
+/**
+ * The aggregate total of the Offline Evaluation.
+ */
 @Fluent
 class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSummary {
+    /**
+     * Creates an instance of PersonalizerPolicyResultTotalSummary class.
+     */
+    public PersonalizerPolicyResultTotalSummary() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PersonalizerPolicyResultTotalSummary setNonZeroProbability(Float nonZeroProbability) {
+        super.setNonZeroProbability(nonZeroProbability);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("nonZeroProbability", getNonZeroProbability());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PersonalizerPolicyResultTotalSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PersonalizerPolicyResultTotalSummary if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PersonalizerPolicyResultTotalSummary.
+     */
+    public static PersonalizerPolicyResultTotalSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerPolicyResultTotalSummary deserializedPersonalizerPolicyResultTotalSummary
+                = new PersonalizerPolicyResultTotalSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeStamp".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary.setTimeStamp(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("ipsEstimatorNumerator".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary
+                        .setIpsEstimatorNumerator(reader.getNullable(JsonReader::getFloat));
+                } else if ("ipsEstimatorDenominator".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary
+                        .setIpsEstimatorDenominator(reader.getNullable(JsonReader::getFloat));
+                } else if ("snipsEstimatorDenominator".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary
+                        .setSnipsEstimatorDenominator(reader.getNullable(JsonReader::getFloat));
+                } else if ("aggregateTimeWindow".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary.setAggregateTimeWindow(
+                        reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                } else if ("nonZeroProbability".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary
+                        .setNonZeroProbability(reader.getNullable(JsonReader::getFloat));
+                } else if ("sumOfSquares".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary
+                        .setSumOfSquares(reader.getNullable(JsonReader::getFloat));
+                } else if ("confidenceInterval".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary
+                        .setConfidenceInterval(reader.getNullable(JsonReader::getFloat));
+                } else if ("averageReward".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary
+                        .setAverageReward(reader.getNullable(JsonReader::getFloat));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPersonalizerPolicyResultTotalSummary;
+        });
+    }
 }

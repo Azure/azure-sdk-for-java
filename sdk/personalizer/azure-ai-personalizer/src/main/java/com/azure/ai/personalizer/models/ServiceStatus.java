@@ -5,32 +5,41 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ServiceStatus model. */
+/**
+ * The ServiceStatus model.
+ */
 @Fluent
-class ServiceStatus {
+class ServiceStatus implements JsonSerializable<ServiceStatus> {
     /*
      * The service property.
      */
-    @JsonProperty(value = "service")
     private String service;
 
     /*
      * The apiStatus property.
      */
-    @JsonProperty(value = "apiStatus")
     private String apiStatus;
 
     /*
      * The apiStatusMessage property.
      */
-    @JsonProperty(value = "apiStatusMessage")
     private String apiStatusMessage;
 
     /**
+     * Creates an instance of ServiceStatus class.
+     */
+    public ServiceStatus() {
+    }
+
+    /**
      * Get the service property: The service property.
-     *
+     * 
      * @return the service value.
      */
     public String getService() {
@@ -39,7 +48,7 @@ class ServiceStatus {
 
     /**
      * Set the service property: The service property.
-     *
+     * 
      * @param service the service value to set.
      * @return the ServiceStatus object itself.
      */
@@ -50,7 +59,7 @@ class ServiceStatus {
 
     /**
      * Get the apiStatus property: The apiStatus property.
-     *
+     * 
      * @return the apiStatus value.
      */
     public String getApiStatus() {
@@ -59,7 +68,7 @@ class ServiceStatus {
 
     /**
      * Set the apiStatus property: The apiStatus property.
-     *
+     * 
      * @param apiStatus the apiStatus value to set.
      * @return the ServiceStatus object itself.
      */
@@ -70,7 +79,7 @@ class ServiceStatus {
 
     /**
      * Get the apiStatusMessage property: The apiStatusMessage property.
-     *
+     * 
      * @return the apiStatusMessage value.
      */
     public String getApiStatusMessage() {
@@ -79,12 +88,54 @@ class ServiceStatus {
 
     /**
      * Set the apiStatusMessage property: The apiStatusMessage property.
-     *
+     * 
      * @param apiStatusMessage the apiStatusMessage value to set.
      * @return the ServiceStatus object itself.
      */
     public ServiceStatus setApiStatusMessage(String apiStatusMessage) {
         this.apiStatusMessage = apiStatusMessage;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("service", this.service);
+        jsonWriter.writeStringField("apiStatus", this.apiStatus);
+        jsonWriter.writeStringField("apiStatusMessage", this.apiStatusMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceStatus.
+     */
+    public static ServiceStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceStatus deserializedServiceStatus = new ServiceStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("service".equals(fieldName)) {
+                    deserializedServiceStatus.service = reader.getString();
+                } else if ("apiStatus".equals(fieldName)) {
+                    deserializedServiceStatus.apiStatus = reader.getString();
+                } else if ("apiStatusMessage".equals(fieldName)) {
+                    deserializedServiceStatus.apiStatusMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceStatus;
+        });
     }
 }
