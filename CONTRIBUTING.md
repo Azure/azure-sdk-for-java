@@ -113,7 +113,7 @@ The dependency-version should be set to the most recent released version and the
 
 `com.azure:azure-identity;1.0.0-beta.4;1.0.0-beta.5`
 
-Note: In the case of a new artifact both versions will be the same. In the case of a released artifact, the dependecny version should be the latest released version.
+Note: In the case of a new artifact both versions will be the same. In the case of a released artifact, the dependency version should be the latest released version.
 
 ### Supported GroupIds and publishing
 
@@ -150,7 +150,7 @@ External Dependencies refer to dependencies for things that are not built and re
 
 **Dependency version** - This is the version we should be using when a given library is a dependency outside of a particular area. This should be the latest released version of the package whenever possible.
 
-**Unreleased Dependency version** – Whenever possible, libraries should be using the latest released version for dependencies but there is the case where active development in one library is going to be needed by another library or libraries that are built in separate pipelines. These types of changes are specifically additive and not breaking. Once a library has GA’d, nothing short of breaking changes should ever force the dependency versions across the repo to an unreleased version. The reason for this is that it would prevent other libraries, that don’t need this change, from releasing. Unreleased dependcies of scope test will not prevent a library from being released.
+**Unreleased Dependency version** – Whenever possible, libraries should be using the latest released version for dependencies but there is the case where active development in one library is going to be needed by another library or libraries that are built in separate pipelines. These types of changes are specifically additive and not breaking. Once a library has GA’d, nothing short of breaking changes should ever force the dependency versions across the repo to an unreleased version. The reason for this is that it would prevent other libraries, that don’t need this change, from releasing. Unreleased dependencies of scope test will not prevent a library from being released.
 
 **Released Beta Dependency version** – This is for when a library, which has already GA'd, is being released as a Beta version and we need to keep the dependency version to the latest GA. This particular tag will be used to allow other libraries to depend on the released Beta version. Libraries with released Beta dependencies can only be released as Beta, themselves, as a library cannot GA with Beta dependencies. An exception to the previous rule would be if the Beta dependency has a scope of test as this will not prevent a library from being released as GA.
 
