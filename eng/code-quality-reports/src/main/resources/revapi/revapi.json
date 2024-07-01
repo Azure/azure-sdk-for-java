@@ -633,6 +633,14 @@
           "old": "class com.azure.resourcemanager.sql.models.UserIdentity",
           "new": "class com.azure.resourcemanager.sql.models.UserIdentity",
           "justification": "Customer unlikely to subclass this class."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "old": "method com.azure.communication.rooms.models.ParticipantRole com.azure.communication.rooms.models.ParticipantRole::fromString(java.lang.String)",
+          "new": "method com.azure.communication.rooms.models.ParticipantRole com.azure.communication.rooms.models.ParticipantRole::fromString(java.lang.String)",
+          "annotation": "@com.fasterxml.jackson.annotation.JsonCreator",
+          "justification": "Migration to azure-json"
         }
       ]
     }
