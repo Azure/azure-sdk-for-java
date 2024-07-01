@@ -37,6 +37,9 @@ public final class BatchTaskListSubtasksResult implements JsonSerializable<Batch
         return this.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -45,7 +48,9 @@ public final class BatchTaskListSubtasksResult implements JsonSerializable<Batch
         return jsonWriter;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public static BatchTaskListSubtasksResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BatchTaskListSubtasksResult result = new BatchTaskListSubtasksResult();
