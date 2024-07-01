@@ -5,57 +5,50 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** The result of a Filter Blobs API call. */
-@JacksonXmlRootElement(localName = "EnumerationResults")
+/**
+ * The result of a Filter Blobs API call.
+ */
 @Fluent
-public final class FilterBlobSegment {
+public final class FilterBlobSegment implements XmlSerializable<FilterBlobSegment> {
     /*
      * The ServiceEndpoint property.
      */
-    @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
 
     /*
      * The Where property.
      */
-    @JsonProperty(value = "Where", required = true)
     private String where;
-
-    private static final class BlobsWrapper {
-        @JacksonXmlProperty(localName = "Blob")
-        private final List<FilterBlobItem> items;
-
-        @JsonCreator
-        private BlobsWrapper(@JacksonXmlProperty(localName = "Blob") List<FilterBlobItem> items) {
-            this.items = items;
-        }
-    }
 
     /*
      * The Blobs property.
      */
-    @JsonProperty(value = "Blobs", required = true)
-    private BlobsWrapper blobs;
+    private List<FilterBlobItem> blobs;
 
     /*
      * The NextMarker property.
      */
-    @JsonProperty(value = "NextMarker")
     private String nextMarker;
 
-    /** Creates an instance of FilterBlobSegment class. */
-    public FilterBlobSegment() {}
+    /**
+     * Creates an instance of FilterBlobSegment class.
+     */
+    public FilterBlobSegment() {
+    }
 
     /**
      * Get the serviceEndpoint property: The ServiceEndpoint property.
-     *
+     * 
      * @return the serviceEndpoint value.
      */
     public String getServiceEndpoint() {
@@ -64,7 +57,7 @@ public final class FilterBlobSegment {
 
     /**
      * Set the serviceEndpoint property: The ServiceEndpoint property.
-     *
+     * 
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the FilterBlobSegment object itself.
      */
@@ -75,7 +68,7 @@ public final class FilterBlobSegment {
 
     /**
      * Get the where property: The Where property.
-     *
+     * 
      * @return the where value.
      */
     public String getWhere() {
@@ -84,7 +77,7 @@ public final class FilterBlobSegment {
 
     /**
      * Set the where property: The Where property.
-     *
+     * 
      * @param where the where value to set.
      * @return the FilterBlobSegment object itself.
      */
@@ -95,30 +88,30 @@ public final class FilterBlobSegment {
 
     /**
      * Get the blobs property: The Blobs property.
-     *
+     * 
      * @return the blobs value.
      */
     public List<FilterBlobItem> getBlobs() {
         if (this.blobs == null) {
-            this.blobs = new BlobsWrapper(new ArrayList<FilterBlobItem>());
+            this.blobs = new ArrayList<>();
         }
-        return this.blobs.items;
+        return this.blobs;
     }
 
     /**
      * Set the blobs property: The Blobs property.
-     *
+     * 
      * @param blobs the blobs value to set.
      * @return the FilterBlobSegment object itself.
      */
     public FilterBlobSegment setBlobs(List<FilterBlobItem> blobs) {
-        this.blobs = new BlobsWrapper(blobs);
+        this.blobs = blobs;
         return this;
     }
 
     /**
      * Get the nextMarker property: The NextMarker property.
-     *
+     * 
      * @return the nextMarker value.
      */
     public String getNextMarker() {
@@ -127,12 +120,91 @@ public final class FilterBlobSegment {
 
     /**
      * Set the nextMarker property: The NextMarker property.
-     *
+     * 
      * @param nextMarker the nextMarker value to set.
      * @return the FilterBlobSegment object itself.
      */
     public FilterBlobSegment setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringAttribute("ServiceEndpoint", this.serviceEndpoint);
+        xmlWriter.writeStringElement("Where", this.where);
+        if (this.blobs != null) {
+            xmlWriter.writeStartElement("Blobs");
+            for (FilterBlobItem element : this.blobs) {
+                xmlWriter.writeXml(element, "Blob");
+            }
+            xmlWriter.writeEndElement();
+        }
+        xmlWriter.writeStringElement("NextMarker", this.nextMarker);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of FilterBlobSegment from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of FilterBlobSegment if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the FilterBlobSegment.
+     */
+    public static FilterBlobSegment fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of FilterBlobSegment from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of FilterBlobSegment if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the FilterBlobSegment.
+     */
+    public static FilterBlobSegment fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            FilterBlobSegment deserializedFilterBlobSegment = new FilterBlobSegment();
+            deserializedFilterBlobSegment.serviceEndpoint = reader.getStringAttribute(null, "ServiceEndpoint");
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Where".equals(elementName.getLocalPart())) {
+                    deserializedFilterBlobSegment.where = reader.getStringElement();
+                } else if ("Blobs".equals(elementName.getLocalPart())) {
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        elementName = reader.getElementName();
+                        if ("Blob".equals(elementName.getLocalPart())) {
+                            if (deserializedFilterBlobSegment.blobs == null) {
+                                deserializedFilterBlobSegment.blobs = new ArrayList<>();
+                            }
+                            deserializedFilterBlobSegment.blobs.add(FilterBlobItem.fromXml(reader, "Blob"));
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                } else if ("NextMarker".equals(elementName.getLocalPart())) {
+                    deserializedFilterBlobSegment.nextMarker = reader.getStringElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedFilterBlobSegment;
+        });
     }
 }

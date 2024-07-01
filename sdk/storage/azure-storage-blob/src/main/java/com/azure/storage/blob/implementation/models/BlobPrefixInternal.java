@@ -5,25 +5,33 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** The BlobPrefixInternal model. */
-@JacksonXmlRootElement(localName = "BlobPrefixInternal")
+/**
+ * The BlobPrefixInternal model.
+ */
 @Fluent
-public final class BlobPrefixInternal {
+public final class BlobPrefixInternal implements XmlSerializable<BlobPrefixInternal> {
     /*
      * The Name property.
      */
-    @JsonProperty(value = "Name", required = true)
     private BlobName name;
 
-    /** Creates an instance of BlobPrefixInternal class. */
-    public BlobPrefixInternal() {}
+    /**
+     * Creates an instance of BlobPrefixInternal class.
+     */
+    public BlobPrefixInternal() {
+    }
 
     /**
      * Get the name property: The Name property.
-     *
+     * 
      * @return the name value.
      */
     public BlobName getName() {
@@ -32,12 +40,67 @@ public final class BlobPrefixInternal {
 
     /**
      * Set the name property: The Name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the BlobPrefixInternal object itself.
      */
     public BlobPrefixInternal setName(BlobName name) {
         this.name = name;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobPrefix" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeXml(this.name, "Name");
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of BlobPrefixInternal from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of BlobPrefixInternal if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the BlobPrefixInternal.
+     */
+    public static BlobPrefixInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of BlobPrefixInternal from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of BlobPrefixInternal if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the BlobPrefixInternal.
+     */
+    public static BlobPrefixInternal fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobPrefix" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            BlobPrefixInternal deserializedBlobPrefixInternal = new BlobPrefixInternal();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Name".equals(elementName.getLocalPart())) {
+                    deserializedBlobPrefixInternal.name = BlobName.fromXml(reader, "Name");
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedBlobPrefixInternal;
+        });
     }
 }

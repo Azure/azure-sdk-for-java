@@ -11,9 +11,9 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
@@ -113,5 +113,28 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
     @Override
     public long getResourceLength() {
         return resourceLength;
+    }
+
+    private static final class ByteBufferBackedOutputStream extends OutputStream {
+        private final ByteBuffer dst;
+
+        ByteBufferBackedOutputStream(ByteBuffer dst) {
+            this.dst = dst;
+        }
+
+        @Override
+        public void write(int b) {
+            dst.put((byte) b);
+        }
+
+        @Override
+        public void write(byte[] b) {
+            dst.put(b);
+        }
+
+        @Override
+        public void write(byte[] b, int off, int len) {
+            dst.put(b, off, len);
+        }
     }
 }

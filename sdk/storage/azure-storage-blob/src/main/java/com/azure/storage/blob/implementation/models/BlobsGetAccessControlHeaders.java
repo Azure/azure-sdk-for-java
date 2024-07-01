@@ -6,66 +6,54 @@ package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
 /** The BlobsGetAccessControlHeaders model. */
-@JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class BlobsGetAccessControlHeaders {
     /*
      * The x-ms-group property.
      */
-    @JsonProperty(value = "x-ms-group")
     private String xMsGroup;
 
     /*
      * The x-ms-version property.
      */
-    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
-    @JsonProperty(value = "ETag")
     private String eTag;
 
     /*
      * The x-ms-acl property.
      */
-    @JsonProperty(value = "x-ms-acl")
     private String xMsAcl;
 
     /*
      * The Last-Modified property.
      */
-    @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-permissions property.
      */
-    @JsonProperty(value = "x-ms-permissions")
     private String xMsPermissions;
 
     /*
      * The x-ms-request-id property.
      */
-    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The Date property.
      */
-    @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
 
     /*
      * The x-ms-owner property.
      */
-    @JsonProperty(value = "x-ms-owner")
     private String xMsOwner;
 
     /**
