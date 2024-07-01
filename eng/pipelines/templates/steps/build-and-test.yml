@@ -107,8 +107,8 @@ steps:
           $account = (Get-AzContext).Account
           $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
           $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
-
-          mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}
+          Write-Host "parameters.TestGoals to '$parameters.TestGoals'"
+          mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} ${{ parameters.TestGoals }}
           exit $LASTEXITCODE
       env:
         JAVA_HOME: $(PowerShellJavaHome)
