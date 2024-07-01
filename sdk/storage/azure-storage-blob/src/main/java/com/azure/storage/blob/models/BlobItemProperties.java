@@ -6,19 +6,14 @@ package com.azure.storage.blob.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.implementation.accesshelpers.BlobItemPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.OffsetDateTime;
 
 /**
  * Properties of a blob.
  */
-@JacksonXmlRootElement(localName = "Properties")
 @Fluent
 public final class BlobItemProperties {
-    @JsonUnwrapped
     private final BlobItemPropertiesInternal internalProperties;
 
     static {
@@ -49,7 +44,6 @@ public final class BlobItemProperties {
         this.internalProperties = new BlobItemPropertiesInternal();
     }
 
-    @JsonIgnore
     private BlobImmutabilityPolicy convertedImmutabilityPolicy;
 
     /**

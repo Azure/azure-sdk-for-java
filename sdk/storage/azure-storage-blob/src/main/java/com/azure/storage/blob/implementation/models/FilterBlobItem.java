@@ -5,49 +5,53 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** Blob info from a Filter Blobs API call. */
-@JacksonXmlRootElement(localName = "Blob")
+/**
+ * Blob info from a Filter Blobs API call.
+ */
 @Fluent
-public final class FilterBlobItem {
+public final class FilterBlobItem implements XmlSerializable<FilterBlobItem> {
     /*
      * The Name property.
      */
-    @JsonProperty(value = "Name", required = true)
     private String name;
 
     /*
      * The ContainerName property.
      */
-    @JsonProperty(value = "ContainerName", required = true)
     private String containerName;
 
     /*
      * Blob tags
      */
-    @JsonProperty(value = "Tags")
     private BlobTags tags;
 
     /*
      * The VersionId property.
      */
-    @JsonProperty(value = "VersionId")
     private String versionId;
 
     /*
      * The IsCurrentVersion property.
      */
-    @JsonProperty(value = "IsCurrentVersion")
     private Boolean isCurrentVersion;
 
-    /** Creates an instance of FilterBlobItem class. */
-    public FilterBlobItem() {}
+    /**
+     * Creates an instance of FilterBlobItem class.
+     */
+    public FilterBlobItem() {
+    }
 
     /**
      * Get the name property: The Name property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -56,7 +60,7 @@ public final class FilterBlobItem {
 
     /**
      * Set the name property: The Name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the FilterBlobItem object itself.
      */
@@ -67,7 +71,7 @@ public final class FilterBlobItem {
 
     /**
      * Get the containerName property: The ContainerName property.
-     *
+     * 
      * @return the containerName value.
      */
     public String getContainerName() {
@@ -76,7 +80,7 @@ public final class FilterBlobItem {
 
     /**
      * Set the containerName property: The ContainerName property.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the FilterBlobItem object itself.
      */
@@ -87,7 +91,7 @@ public final class FilterBlobItem {
 
     /**
      * Get the tags property: Blob tags.
-     *
+     * 
      * @return the tags value.
      */
     public BlobTags getTags() {
@@ -96,7 +100,7 @@ public final class FilterBlobItem {
 
     /**
      * Set the tags property: Blob tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the FilterBlobItem object itself.
      */
@@ -107,7 +111,7 @@ public final class FilterBlobItem {
 
     /**
      * Get the versionId property: The VersionId property.
-     *
+     * 
      * @return the versionId value.
      */
     public String getVersionId() {
@@ -116,7 +120,7 @@ public final class FilterBlobItem {
 
     /**
      * Set the versionId property: The VersionId property.
-     *
+     * 
      * @param versionId the versionId value to set.
      * @return the FilterBlobItem object itself.
      */
@@ -127,7 +131,7 @@ public final class FilterBlobItem {
 
     /**
      * Get the isCurrentVersion property: The IsCurrentVersion property.
-     *
+     * 
      * @return the isCurrentVersion value.
      */
     public Boolean isCurrentVersion() {
@@ -136,12 +140,79 @@ public final class FilterBlobItem {
 
     /**
      * Set the isCurrentVersion property: The IsCurrentVersion property.
-     *
+     * 
      * @param isCurrentVersion the isCurrentVersion value to set.
      * @return the FilterBlobItem object itself.
      */
     public FilterBlobItem setIsCurrentVersion(Boolean isCurrentVersion) {
         this.isCurrentVersion = isCurrentVersion;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Blob" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("Name", this.name);
+        xmlWriter.writeStringElement("ContainerName", this.containerName);
+        xmlWriter.writeXml(this.tags, "Tags");
+        xmlWriter.writeStringElement("VersionId", this.versionId);
+        xmlWriter.writeBooleanElement("IsCurrentVersion", this.isCurrentVersion);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of FilterBlobItem from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of FilterBlobItem if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the FilterBlobItem.
+     */
+    public static FilterBlobItem fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of FilterBlobItem from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of FilterBlobItem if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the FilterBlobItem.
+     */
+    public static FilterBlobItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Blob" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            FilterBlobItem deserializedFilterBlobItem = new FilterBlobItem();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Name".equals(elementName.getLocalPart())) {
+                    deserializedFilterBlobItem.name = reader.getStringElement();
+                } else if ("ContainerName".equals(elementName.getLocalPart())) {
+                    deserializedFilterBlobItem.containerName = reader.getStringElement();
+                } else if ("Tags".equals(elementName.getLocalPart())) {
+                    deserializedFilterBlobItem.tags = BlobTags.fromXml(reader, "Tags");
+                } else if ("VersionId".equals(elementName.getLocalPart())) {
+                    deserializedFilterBlobItem.versionId = reader.getStringElement();
+                } else if ("IsCurrentVersion".equals(elementName.getLocalPart())) {
+                    deserializedFilterBlobItem.isCurrentVersion = reader.getNullableElement(Boolean::parseBoolean);
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedFilterBlobItem;
+        });
     }
 }

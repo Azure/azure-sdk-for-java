@@ -86,7 +86,9 @@ public final class BlobLeaseClientBuilder {
      * @return a {@link BlobLeaseClient} based on the configurations in this builder.
      */
     public BlobLeaseClient buildClient() {
-        return new BlobLeaseClient(buildAsyncClient());
+        BlobServiceVersion version = (serviceVersion == null) ? BlobServiceVersion.getLatest() : serviceVersion;
+        return new BlobLeaseClient(pipeline, url, containerName, blobName, getLeaseId(), isBlob, accountName,
+            version.getVersion());
     }
 
     /**
