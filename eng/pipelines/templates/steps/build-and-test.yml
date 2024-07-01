@@ -107,8 +107,16 @@ steps:
           $account = (Get-AzContext).Account
           $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
           $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
-          Write-Host "parameters.TestGoals to '$parameters.TestGoals'"
+          
+          Write-Host "envs: '$AZURESUBSCRIPTION_CLIENT_ID' '$AZURESUBSCRIPTION_TENANT_ID'"
+          Write-Host "parameters.TestGoals: $($parameters.TestGoals)"
+          
+          Write-Host "Maven command: $(mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} ${{ parameters.TestGoals }})"
+          
           mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} ${{ parameters.TestGoals }}
+          
+          Write-Host "Maven command executed."
+          
           exit $LASTEXITCODE
       env:
         JAVA_HOME: $(PowerShellJavaHome)
