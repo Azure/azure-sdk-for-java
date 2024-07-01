@@ -569,8 +569,8 @@
           "justification": "Service breaks but no customer onboard."
         },
         {
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.containerservice.models.OSOptionProperty",
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.containerservice.models.OSOptionProperty",
           "justification": "Removed non-functional API `getOsOptions` and related models `OSOptionProperty`"
         },
         {
@@ -582,6 +582,14 @@
           "code": "java.missing.oldSuperType",
           "old": "class com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters",
           "justification": "service bug fix."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "old": "method com.azure.communication.rooms.models.ParticipantRole com.azure.communication.rooms.models.ParticipantRole::fromString(java.lang.String)",
+          "new": "method com.azure.communication.rooms.models.ParticipantRole com.azure.communication.rooms.models.ParticipantRole::fromString(java.lang.String)",
+          "annotation": "@com.fasterxml.jackson.annotation.JsonCreator",
+          "justification": "Migration to azure-json"
         }
       ]
     }
