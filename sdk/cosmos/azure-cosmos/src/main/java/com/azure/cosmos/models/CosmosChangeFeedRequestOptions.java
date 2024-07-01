@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.CosmosChangeFeedRequestOptionsImpl;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.apachecommons.collections.set.UnmodifiableSet;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
@@ -537,7 +536,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return the custom ids.
      */
     public Set<String> getKeywordIdentifiers() {
-        return UnmodifiableSet.unmodifiableSet(this.actualRequestOptions.getKeywordIdentifiers());
+        return this.actualRequestOptions.getKeywordIdentifiers();
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {

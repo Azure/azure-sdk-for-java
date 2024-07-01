@@ -6,7 +6,6 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.apachecommons.collections.set.UnmodifiableSet;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -341,7 +340,7 @@ public final class CosmosBulkExecutionOptions {
      * @return set of custom ids.
      */
     public Set<String> getKeywordIdentifiers() {
-        return UnmodifiableSet.unmodifiableSet(this.actualRequestOptions.getKeywordIdentifiers());
+        return this.actualRequestOptions.getKeywordIdentifiers();
     }
 
     CosmosBulkExecutionOptionsImpl getImpl() {

@@ -13,10 +13,8 @@ import com.azure.cosmos.implementation.OverridableRequestOptions;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.collections.set.UnmodifiableSet;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -927,7 +925,7 @@ public final class CosmosDiagnosticsContext {
      * @return the custom ids.
      */
     public Set<String> getKeywordIdentifiers() {
-        return UnmodifiableSet.unmodifiableSet(this.requestOptions.getKeywordIdentifiers());
+        return this.requestOptions.getKeywordIdentifiers();
     }
 
     OverridableRequestOptions getRequestOptions() {

@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.apachecommons.collections.set.UnmodifiableSet;
 
 import java.time.Duration;
 import java.util.List;
@@ -548,7 +547,7 @@ public class CosmosQueryRequestOptions {
      * @return the custom ids.
      */
     public Set<String> getKeywordIdentifiers() {
-        return UnmodifiableSet.unmodifiableSet(this.actualRequestOptions.getKeywordIdentifiers());
+        return this.actualRequestOptions.getKeywordIdentifiers();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
