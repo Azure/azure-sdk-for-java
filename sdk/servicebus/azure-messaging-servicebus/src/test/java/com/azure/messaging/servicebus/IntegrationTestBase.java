@@ -220,6 +220,7 @@ public abstract class IntegrationTestBase extends TestBase {
             .scheduler(scheduler)
             .configuration(v1OrV2(true));
 
+        System.out.println("Getting Builder using credentials : " + useCredentials);
         logger.info("Getting Builder using credentials : [{}] ", useCredentials);
         if (useCredentials) {
             final String fullyQualifiedDomainName = getFullyQualifiedDomainName();
