@@ -5,15 +5,19 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * The configuration for Compute Nodes in a Pool based on the Azure Cloud Services
  * platform.
  */
 @Fluent
-public final class CloudServiceConfiguration {
+public final class CloudServiceConfiguration implements JsonSerializable<CloudServiceConfiguration> {
 
     /*
      * Possible values are:
@@ -29,7 +33,6 @@ public final class CloudServiceConfiguration {
      * (https://azure.microsoft.com/documentation/articles/cloud-services-guestos-update-matrix/#releases).
      */
     @Generated
-    @JsonProperty(value = "osFamily")
     private String osFamily;
 
     /*
@@ -37,7 +40,6 @@ public final class CloudServiceConfiguration {
      * specifies the latest operating system version for the specified OS family.
      */
     @Generated
-    @JsonProperty(value = "osVersion")
     private String osVersion;
 
     /**
@@ -93,5 +95,41 @@ public final class CloudServiceConfiguration {
     public CloudServiceConfiguration setOsVersion(String osVersion) {
         this.osVersion = osVersion;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("osFamily", osFamily);
+        jsonWriter.writeStringField("osVersion", osVersion);
+        jsonWriter.writeEndObject();
+
+        return jsonWriter;
+    }
+
+    public static CloudServiceConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String family = null;
+            String version = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osFamily".equals(fieldName)) {
+                    family = reader.getString();
+                } else if ("osVersion".equals(fieldName)) {
+                    version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            if (family != null) {
+                return new CloudServiceConfiguration(family).setOsVersion(version);
+            } else {
+                return null;
+            }
+        });
     }
 }
