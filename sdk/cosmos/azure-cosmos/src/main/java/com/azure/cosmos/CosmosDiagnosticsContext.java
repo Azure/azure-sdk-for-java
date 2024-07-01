@@ -920,6 +920,11 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
+    /**
+     * Gets the custom ids.
+     *
+     * @return the custom ids.
+     */
     public Set<String> getKeywordIdentifiers() {
         return ImmutableSet.copyOf(this.requestOptions.getKeywordIdentifiers());
     }
