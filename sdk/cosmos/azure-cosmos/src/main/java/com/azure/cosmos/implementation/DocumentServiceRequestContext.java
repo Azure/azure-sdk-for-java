@@ -170,7 +170,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     }
 
     public Set<String> getKeywordIdentifiers() {
-        return ImmutableSet.copyOf(keywordIdentifiers);
+        return keywordIdentifiers;
     }
 
     public long getApproximateBloomFilterInsertionCount() {

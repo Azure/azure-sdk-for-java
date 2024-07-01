@@ -7,10 +7,7 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 
 import java.util.List;
-<<<<<<< HEAD
 import java.util.Set;
-=======
->>>>>>> eb87ff16ae0d1467e3a676baa93b9efdc7472f6e
 
 /**
  * Getters for the common request options for operations in CosmosDB.
