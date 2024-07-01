@@ -10,8 +10,6 @@ import com.azure.communication.identity.models.IdentityError;
 import com.azure.communication.identity.models.IdentityErrorResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -100,12 +98,9 @@ public class IdentityErrorConverterUnitTests {
 
     private CommunicationErrorResponseException setUpCommunicationResponseExceptionWithAllProperties() {
         String value = "{\"code\":\"Error Code\",\"message\":\"Error Message\",\"target\":\"Error Target\",\"details\":[{\"code\":\"New Error Code\",\"message\":\"New Error Message\"}]}";
-        CommunicationError communicationError;
-        try {
-            communicationError = new ObjectMapper().readValue(value, CommunicationError.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        // Set up the response with all properties (no way to set Target?)
+        CommunicationError communicationError = new CommunicationError().setCode("Error Code").setMessage("Error Message");
+
         CommunicationErrorResponse errorResponse = new CommunicationErrorResponse().setError(communicationError);
         return new CommunicationErrorResponseException("Exception Message", httpResponse, errorResponse);
     }
