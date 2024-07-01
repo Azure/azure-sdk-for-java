@@ -1,0 +1,49 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "c0b9de62-bfa2-4223-a0d9-6d6fe172844a",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "541ms",
+      "MS-CV" : "R/hKjVdOT0iyvG2xlr/UNQ.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0EpEIZAAAAADnjAjFiWH0SKPS6LFPOjjYUFJHMDFFREdFMDkwNgBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "Content-Length" : "399",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{\"third.redacted.com\":{\"sipSignalingPort\":3456},\"first.redacted.com\":{\"sipSignalingPort\":1234},\"second.redacted.com\":{\"sipSignalingPort\":2345},\"set.redacted.com\":{\"sipSignalingPort\":4567}},\"routes\":[]}",
+      "Date" : "Wed, 08 Mar 2023 13:43:46 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "fee6795a-b778-4137-a8b5-6125104102a8",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "X-Processing-Time" : "14ms",
+      "MS-CV" : "U4zOLkRb3U6fc6EsWm5gSg.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0E5EIZAAAAAAmsojLOL2IQ5Dp5R+ZeTf6UFJHMDFFREdFMDkwNgBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"RouteWithDuplicatedTrunk\",\"message\":\"There is a duplicated trunk in a route.\"}}}",
+      "Date" : "Wed, 08 Mar 2023 13:43:46 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
