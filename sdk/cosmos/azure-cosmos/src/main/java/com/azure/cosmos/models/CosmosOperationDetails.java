@@ -33,7 +33,7 @@ public final class CosmosOperationDetails {
     /**
      * Gets the request context associated with an operation.
      *
-     * @return the internal request options.
+     * @return the request context.
      */
     public CosmosRequestContext getRequestContext() {
         return ImplementationBridgeHelpers.CosmosRequestContextHelper.getCosmosRequestContextAccessor().create(requestOptions);
