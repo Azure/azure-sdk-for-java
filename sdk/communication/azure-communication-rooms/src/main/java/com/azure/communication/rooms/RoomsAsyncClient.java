@@ -3,49 +3,50 @@
 
 package com.azure.communication.rooms;
 
-import com.azure.communication.rooms.implementation.AzureCommunicationRoomServiceImpl;
-
 import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.communication.rooms.implementation.RoomsImpl;
+import com.azure.communication.rooms.implementation.AzureCommunicationRoomServiceImpl;
 import com.azure.communication.rooms.implementation.ParticipantsImpl;
+import com.azure.communication.rooms.implementation.RoomsImpl;
 import com.azure.communication.rooms.implementation.converters.ParticipantRoleConverter;
 import com.azure.communication.rooms.implementation.converters.RoomModelConverter;
 import com.azure.communication.rooms.implementation.converters.RoomParticipantConverter;
-import com.azure.communication.rooms.implementation.models.RoomModel;
+import com.azure.communication.rooms.implementation.models.CreateRoomRequest;
 import com.azure.communication.rooms.implementation.models.ParticipantProperties;
+import com.azure.communication.rooms.implementation.models.RoomModel;
+import com.azure.communication.rooms.implementation.models.UpdateParticipantsRequest;
+import com.azure.communication.rooms.implementation.models.UpdateRoomRequest;
+import com.azure.communication.rooms.models.AddOrUpdateParticipantsResult;
 import com.azure.communication.rooms.models.CommunicationRoom;
 import com.azure.communication.rooms.models.CreateRoomOptions;
 import com.azure.communication.rooms.models.RemoveParticipantsResult;
 import com.azure.communication.rooms.models.RoomParticipant;
 import com.azure.communication.rooms.models.UpdateRoomOptions;
-import com.azure.communication.rooms.models.AddOrUpdateParticipantsResult;
-import com.azure.communication.rooms.implementation.models.UpdateParticipantsRequest;
-import com.azure.communication.rooms.implementation.models.UpdateRoomRequest;
-import com.azure.communication.rooms.implementation.models.CreateRoomRequest;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.PageRetriever;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.time.OffsetDateTime;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -339,9 +340,7 @@ public final class RoomsAsyncClient {
 
             Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
 
-            ObjectMapper mapper = new ObjectMapper();
-
-            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+            String updateRequest = serializeToString(new UpdateParticipantsRequest().setParticipants(participantMap));
 
 
             return this.participantsClient
@@ -350,8 +349,7 @@ public final class RoomsAsyncClient {
                         return Mono.just(new AddOrUpdateParticipantsResult());
                     });
 
-        } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
             return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -380,9 +378,7 @@ public final class RoomsAsyncClient {
 
             Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
 
-            ObjectMapper mapper = new ObjectMapper();
-
-            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+            String updateRequest = serializeToString(new UpdateParticipantsRequest().setParticipants(participantMap));
 
 
 
@@ -390,8 +386,7 @@ public final class RoomsAsyncClient {
                     .updateWithResponseAsync(roomId, updateRequest, context)
                     .map(result -> new SimpleResponse<AddOrUpdateParticipantsResult>(
                             result.getRequest(), result.getStatusCode(), result.getHeaders(), null));
-        } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
             return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -421,17 +416,14 @@ public final class RoomsAsyncClient {
             Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
                     participantsIdentifiers);
 
-            ObjectMapper mapper = new ObjectMapper();
-
-            String updateRequest =  mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+            String updateRequest =  serializeToString(new UpdateParticipantsRequest().setParticipants(participantMap));
 
             return this.participantsClient
                     .updateAsync(roomId, updateRequest, context)
                     .flatMap((response) -> {
                         return Mono.just(new RemoveParticipantsResult());
                     });
-        } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
             return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -461,16 +453,13 @@ public final class RoomsAsyncClient {
             Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
                     participantsIdentifiers);
 
-            ObjectMapper mapper = new ObjectMapper();
-
-            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+            String updateRequest = serializeToString(new UpdateParticipantsRequest().setParticipants(participantMap));
 
             return this.participantsClient
                     .updateWithResponseAsync(roomId, updateRequest, context)
                     .map(result -> new SimpleResponse<RemoveParticipantsResult>(
                             result.getRequest(), result.getStatusCode(), result.getHeaders(), null));
-        } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
             return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -626,4 +615,11 @@ public final class RoomsAsyncClient {
         return participantMap;
     }
 
+    private static <T extends JsonSerializable<T>> String serializeToString(T serializable) throws IOException {
+        StringWriter writer = new StringWriter();
+        JsonWriter jsonWriter = JsonProviders.createWriter(writer);
+        serializable.toJson(jsonWriter);
+        jsonWriter.flush();
+        return writer.toString();
+    }
 }
