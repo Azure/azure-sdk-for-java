@@ -1,17 +1,9 @@
 # Release History
 
-## 1.3.0 (2024-06-28)
+## 1.3.0-beta.1 (Unreleased)
 
 - Added a `clientEndpointType` option to `GenerateClientTokenOptions` to specify the type of client endpoint
   when generating token. This option can be used to generate token and client connection URL for a specific client endpoint type, such as `Default` or `MQTT`.
-
-#### Dependency Updates
-
-- Updated `api-version` to `2024-01-01`.
-
-
-## 1.3.0-beta.1 (Unreleased)
-
 - Migrated serialization to `azure-json` which offers implementation agnostic serialization, providing support for
   more serialization frameworks than just Jackson.
 
@@ -22,6 +14,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-01-01`.
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
 
 
 ## 1.2.14 (2024-04-23)
