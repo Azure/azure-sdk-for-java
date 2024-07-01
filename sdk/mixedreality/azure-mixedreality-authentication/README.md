@@ -61,7 +61,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-mixedreality-authentication</artifactId>
-    <version>1.2.15</version>
+    <version>1.2.25</version>
 </dependency>
 ```
 
@@ -183,7 +183,7 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [product_docs]: https://azure.microsoft.com/topic/mixed-reality/
-[package]: https://central.sonatype.com/artifact/com.azure/azure-mixedreality-authentication
+[package]: https://search.maven.org/artifact/com.azure/azure-mixedreality-authentication
 [api_documentation]: https://aka.ms/java-docs
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/mixedreality/azure-mixedreality-authentication
 

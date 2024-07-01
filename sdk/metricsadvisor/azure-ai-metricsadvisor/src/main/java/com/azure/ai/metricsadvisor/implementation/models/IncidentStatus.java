@@ -5,46 +5,43 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * incident status
- * 
- * only return for alerting incident result.
+ *
+ * <p>only return for alerting incident result.
  */
 public final class IncidentStatus extends ExpandableStringEnum<IncidentStatus> {
-    /**
-     * Static value Active for IncidentStatus.
-     */
+    /** Static value Active for IncidentStatus. */
     public static final IncidentStatus ACTIVE = fromString("Active");
 
-    /**
-     * Static value Resolved for IncidentStatus.
-     */
+    /** Static value Resolved for IncidentStatus. */
     public static final IncidentStatus RESOLVED = fromString("Resolved");
 
     /**
      * Creates a new instance of IncidentStatus value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public IncidentStatus() {
-    }
+    public IncidentStatus() {}
 
     /**
      * Creates or finds a IncidentStatus from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding IncidentStatus.
      */
+    @JsonCreator
     public static IncidentStatus fromString(String name) {
         return fromString(name, IncidentStatus.class);
     }
 
     /**
      * Gets known IncidentStatus values.
-     * 
+     *
      * @return known IncidentStatus values.
      */
     public static Collection<IncidentStatus> values() {

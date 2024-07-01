@@ -10,8 +10,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,13 +20,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.function.Function;
 
-public class DigitalTwinsTestBase extends TestProxyTestBase {
+public class DigitalTwinsTestBase extends TestBase {
     private static final String PLAYBACK_ENDPOINT = "https://playback.api.wus2.digitaltwins.azure.net";
     private static final int DEFAULT_WAIT_TIME_IN_SECONDS = 5;
-    private boolean sanitizersRemoved = false;
 
     protected static final String TENANT_ID = Configuration.getGlobalConfiguration()
         .get("DIGITALTWINS_TENANT_ID", "tenantId");
@@ -45,23 +43,18 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
 
         builder.serviceVersion(serviceVersion);
 
-        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
-            // Removes `name` and `id` sanitizer from the list of common sanitizers.
-            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
-            sanitizersRemoved = true;
-        }
-
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
             // Use fake credentials for playback mode.
             builder.credential(new FakeCredentials());
             // Connect to a special host when running tests in playback mode.
             builder.endpoint(PLAYBACK_ENDPOINT);
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Telemetry-Source-Time"))));
             return builder;
         }
 
-        if (interceptorManager.isRecordMode()) {
+        // If it is record mode, we add record mode policies to the builder.
+        // There is no isRecordMode method on interceptorManger.
+        if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -144,7 +137,9 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
     }
 
     void waitIfLive(int waitTimeInSeconds) throws InterruptedException {
-        sleepIfRunningAgainstService(waitTimeInSeconds * 1000L);
+        if (this.getTestMode() == TestMode.LIVE || this.getTestMode() == TestMode.RECORD) {
+            Thread.sleep(waitTimeInSeconds * 1000);
+        }
     }
 
     void waitIfLive() throws InterruptedException {

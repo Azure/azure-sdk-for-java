@@ -6,37 +6,27 @@ package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Represents a wrapper around a list of countries.
- */
+/** The PhoneNumberCountries model. */
 @Immutable
-public final class PhoneNumberCountries implements JsonSerializable<PhoneNumberCountries> {
+public final class PhoneNumberCountries {
     /*
      * Represents the underlying list of countries.
      */
+    @JsonProperty(value = "countries", access = JsonProperty.Access.WRITE_ONLY)
     private List<PhoneNumberCountry> countries;
 
     /*
      * Represents the URL link to the next page
      */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
-     * Creates an instance of PhoneNumberCountries class.
-     */
-    public PhoneNumberCountries() {
-    }
-
-    /**
      * Get the countries property: Represents the underlying list of countries.
-     * 
+     *
      * @return the countries value.
      */
     public List<PhoneNumberCountry> getCountries() {
@@ -45,49 +35,10 @@ public final class PhoneNumberCountries implements JsonSerializable<PhoneNumberC
 
     /**
      * Get the nextLink property: Represents the URL link to the next page.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PhoneNumberCountries from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PhoneNumberCountries if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PhoneNumberCountries.
-     */
-    public static PhoneNumberCountries fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PhoneNumberCountries deserializedPhoneNumberCountries = new PhoneNumberCountries();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("countries".equals(fieldName)) {
-                    List<PhoneNumberCountry> countries
-                        = reader.readArray(reader1 -> PhoneNumberCountry.fromJson(reader1));
-                    deserializedPhoneNumberCountries.countries = countries;
-                } else if ("nextLink".equals(fieldName)) {
-                    deserializedPhoneNumberCountries.nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedPhoneNumberCountries;
-        });
     }
 }

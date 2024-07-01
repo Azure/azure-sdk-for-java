@@ -1,17 +1,21 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-- Changed `attestTpm` to match `attestOpenEnclave` and `attestSgxEnclave`
-- Added `TpmAttestationResult.java` to make the attestTpm return type more consistency.
-- Changed `attestTpm` parameter from String to Binary Data
-
-### Bugs Fixed
+## 1.1.25 (2024-06-27)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+
+
+## 1.1.24 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 
 
 ## 1.1.23 (2024-04-23)
@@ -77,7 +81,7 @@
 
 - Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 
-## 1.1.16 (2023-08-18)
+## 1.1.16 (2023-08-22)
 
 ### Other Changes
 
@@ -99,7 +103,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
 
 
 ## 1.1.13 (2023-05-23)
@@ -108,7 +112,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 
 
 ## 1.1.12 (2023-04-21)

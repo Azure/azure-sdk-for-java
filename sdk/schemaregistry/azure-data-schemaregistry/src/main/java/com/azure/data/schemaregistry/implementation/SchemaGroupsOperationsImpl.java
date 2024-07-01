@@ -27,28 +27,22 @@ import com.azure.data.schemaregistry.implementation.models.ErrorException;
 import com.azure.data.schemaregistry.implementation.models.SchemaGroups;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in SchemaGroupsOperations.
- */
+/** An instance of this class provides access to all the operations defined in SchemaGroupsOperations. */
 public final class SchemaGroupsOperationsImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final SchemaGroupsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final AzureSchemaRegistryImpl client;
 
     /**
      * Initializes an instance of SchemaGroupsOperationsImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     SchemaGroupsOperationsImpl(AzureSchemaRegistryImpl client) {
-        this.service
-            = RestProxy.create(SchemaGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+                RestProxy.create(SchemaGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,75 +54,101 @@ public final class SchemaGroupsOperationsImpl {
     @ServiceInterface(name = "AzureSchemaRegistryS")
     public interface SchemaGroupsService {
         @Get("/$schemaGroups")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<SchemaGroups>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SchemaGroups>> list(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/$schemaGroups")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Response<SchemaGroups> listSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Response<SchemaGroups> listSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<SchemaGroups>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SchemaGroups>> listNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Response<SchemaGroups> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Response<SchemaGroups> listNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
      * Get list of schema groups.
-     * 
-     * Gets the list of schema groups user is authorized to access.
-     * 
+     *
+     * <p>Gets the list of schema groups user is authorized to access.
+     *
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of schema groups user is authorized to access along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> listSinglePageAsync() {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getGroups(), res.getValue().getNextLink(), null));
+        return FluxUtil.withContext(
+                        context ->
+                                service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getGroups(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get list of schema groups.
-     * 
-     * Gets the list of schema groups user is authorized to access.
-     * 
+     *
+     * <p>Gets the list of schema groups user is authorized to access.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of schema groups user is authorized to access along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> listSinglePageAsync(Context context) {
         final String accept = "application/json";
         return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getGroups(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getGroups(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get list of schema groups.
-     * 
-     * Gets the list of schema groups user is authorized to access.
-     * 
+     *
+     * <p>Gets the list of schema groups user is authorized to access.
+     *
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of schema groups user is authorized to access as paginated response with {@link PagedFlux}.
@@ -140,9 +160,9 @@ public final class SchemaGroupsOperationsImpl {
 
     /**
      * Get list of schema groups.
-     * 
-     * Gets the list of schema groups user is authorized to access.
-     * 
+     *
+     * <p>Gets the list of schema groups user is authorized to access.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -151,15 +171,15 @@ public final class SchemaGroupsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(
+                () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get list of schema groups.
-     * 
-     * Gets the list of schema groups user is authorized to access.
-     * 
+     *
+     * <p>Gets the list of schema groups user is authorized to access.
+     *
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of schema groups user is authorized to access along with {@link PagedResponse}.
@@ -167,17 +187,22 @@ public final class SchemaGroupsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> listSinglePage() {
         final String accept = "application/json";
-        Response<SchemaGroups> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getGroups(), res.getValue().getNextLink(), null);
+        Response<SchemaGroups> res =
+                service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getGroups(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * Get list of schema groups.
-     * 
-     * Gets the list of schema groups user is authorized to access.
-     * 
+     *
+     * <p>Gets the list of schema groups user is authorized to access.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -187,17 +212,22 @@ public final class SchemaGroupsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> listSinglePage(Context context) {
         final String accept = "application/json";
-        Response<SchemaGroups> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getGroups(), res.getValue().getNextLink(), null);
+        Response<SchemaGroups> res =
+                service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getGroups(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * Get list of schema groups.
-     * 
-     * Gets the list of schema groups user is authorized to access.
-     * 
+     *
+     * <p>Gets the list of schema groups user is authorized to access.
+     *
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of schema groups user is authorized to access as paginated response with {@link PagedIterable}.
@@ -209,9 +239,9 @@ public final class SchemaGroupsOperationsImpl {
 
     /**
      * Get list of schema groups.
-     * 
-     * Gets the list of schema groups user is authorized to access.
-     * 
+     *
+     * <p>Gets the list of schema groups user is authorized to access.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -225,83 +255,103 @@ public final class SchemaGroupsOperationsImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object received from the registry containing the list of schema groups and link to next batch page along
-     * with {@link PagedResponse} on successful completion of {@link Mono}.
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> listNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getGroups(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getGroups(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object received from the registry containing the list of schema groups and link to next batch page along
-     * with {@link PagedResponse} on successful completion of {@link Mono}.
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> listNextSinglePageAsync(String nextLink, Context context) {
         final String accept = "application/json";
         return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getGroups(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getGroups(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object received from the registry containing the list of schema groups and link to next batch page along
-     * with {@link PagedResponse}.
+     *     with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> listNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<SchemaGroups> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getGroups(), res.getValue().getNextLink(), null);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getGroups(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object received from the registry containing the list of schema groups and link to next batch page along
-     * with {@link PagedResponse}.
+     *     with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> listNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
         Response<SchemaGroups> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getGroups(), res.getValue().getNextLink(), null);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getGroups(),
+                res.getValue().getNextLink(),
+                null);
     }
 }

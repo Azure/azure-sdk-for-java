@@ -16,6 +16,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -101,6 +102,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canRepeatCreateThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canRepeatCreateThread");
@@ -144,6 +146,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canCreateNewThreadWithoutSettingRepeatabilityID(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canCreateNewThreadWithoutSettingRepeatabilityID");
@@ -220,6 +223,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canGetExistingChatThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canGetExistingChatThread");
@@ -243,6 +247,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canGetExistingChatThreadWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canGetExistingChatThreadWithResponse");
@@ -267,6 +272,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canDeleteChatThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canDeleteChatThread");
@@ -288,6 +294,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canDeleteChatThreadWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canDeleteChatThreadWithResponse");

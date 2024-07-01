@@ -9,9 +9,7 @@ package com.azure.search.documents.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * Allows the user to choose whether a semantic call should fail completely, or to return partial results.
- */
+/** Allows the user to choose whether a semantic call should fail completely, or to return partial results. */
 public final class SemanticErrorMode extends ExpandableStringEnum<SemanticErrorMode> {
     /**
      * If the semantic processing fails, partial results still return. The definition of partial results depends on what
@@ -27,16 +25,15 @@ public final class SemanticErrorMode extends ExpandableStringEnum<SemanticErrorM
 
     /**
      * Creates a new instance of SemanticErrorMode value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SemanticErrorMode() {
-    }
+    public SemanticErrorMode() {}
 
     /**
      * Creates or finds a SemanticErrorMode from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SemanticErrorMode.
      */
@@ -46,7 +43,7 @@ public final class SemanticErrorMode extends ExpandableStringEnum<SemanticErrorM
 
     /**
      * Gets known SemanticErrorMode values.
-     * 
+     *
      * @return known SemanticErrorMode values.
      */
     public static Collection<SemanticErrorMode> values() {

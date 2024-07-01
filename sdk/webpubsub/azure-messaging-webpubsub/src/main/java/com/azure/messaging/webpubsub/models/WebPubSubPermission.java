@@ -5,7 +5,7 @@
 package com.azure.messaging.webpubsub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for WebPubSubPermission. */
@@ -17,29 +17,17 @@ public final class WebPubSubPermission extends ExpandableStringEnum<WebPubSubPer
     public static final WebPubSubPermission JOIN_LEAVE_GROUP = fromString("joinLeaveGroup");
 
     /**
-     * Creates a new instance of WebPubSubPermission value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public WebPubSubPermission() {
-    }
-
-    /**
      * Creates or finds a WebPubSubPermission from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding WebPubSubPermission.
      */
+    @JsonCreator
     public static WebPubSubPermission fromString(String name) {
         return fromString(name, WebPubSubPermission.class);
     }
 
-    /**
-     * Gets known WebPubSubPermission values.
-     *
-     * @return known WebPubSubPermission values.
-     */
+    /** @return known WebPubSubPermission values. */
     public static Collection<WebPubSubPermission> values() {
         return values(WebPubSubPermission.class);
     }

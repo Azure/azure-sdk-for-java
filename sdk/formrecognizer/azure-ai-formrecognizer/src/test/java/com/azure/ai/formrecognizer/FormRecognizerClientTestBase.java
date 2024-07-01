@@ -18,6 +18,7 @@ import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.SelectionMarkState;
+import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -51,9 +52,9 @@ import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGN
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.TestUtils.FAKE_ENCODED_EMPTY_SPACE_URL;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
-import static com.azure.ai.formrecognizer.TestUtils.REMOVE_SANITIZER_ID;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.getAudience;
+import static com.azure.ai.formrecognizer.TestUtils.getTestProxySanitizers;
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -114,7 +115,6 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
     public static final String EXPECTED_MERCHANT_NAME = "Contoso";
 
     Duration durationTestMode;
-    private boolean sanitizersRemoved = false;
 
     /**
      * Use duration of nearly zero value for PLAYBACK test mode, otherwise, use default duration value for LIVE mode.
@@ -149,9 +149,8 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
         } else if (interceptorManager.isLiveMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
-            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
-            sanitizersRemoved = true;
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getTestProxySanitizers());
         }
         return builder;
     }
@@ -177,10 +176,8 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
         } else if (interceptorManager.isLiveMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
-
-        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
-            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
-            sanitizersRemoved = true;
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getTestProxySanitizers());
         }
         return builder;
     }
@@ -722,7 +719,8 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
 
             if (formLine.getAppearance() != null) {
                 Assertions.assertNotNull(formLine.getAppearance().getStyleName());
-                Assertions.assertNotNull(formLine.getAppearance().getStyleName());
+                Assertions.assertTrue(formLine.getAppearance().getStyleName() == TextStyleName.HANDWRITING
+                    || formLine.getAppearance().getStyleName() == TextStyleName.OTHER);
             }
 
             Assertions.assertNotNull(formLine.getWords());

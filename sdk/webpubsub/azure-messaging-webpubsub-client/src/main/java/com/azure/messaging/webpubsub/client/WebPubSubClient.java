@@ -93,28 +93,22 @@ public final class WebPubSubClient implements Closeable {
      * <p>
      * Event handler can be added before client start, via e.g. {@link #addOnGroupMessageEventHandler(Consumer)}.
      *
-     * @throws IllegalStateException thrown if client is not currently stopped.
-     * @throws ConnectFailedException thrown if failed to connect to server.
+     * @exception IllegalStateException thrown if client is not currently stopped.
+     * @exception ConnectFailedException thrown if failed to connect to server.
      */
     public synchronized void start() {
         asyncClient.start(() -> {
-            this.asyncClient.receiveGroupMessageEvents()
-                .publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveGroupMessageEvents().publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(GROUP_MESSAGE_EVENT, event));
-            this.asyncClient.receiveServerMessageEvents()
-                .publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveServerMessageEvents().publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(SERVER_MESSAGE_EVENT, event));
-            this.asyncClient.receiveConnectedEvents()
-                .publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveConnectedEvents().publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(CONNECT_EVENT, event));
-            this.asyncClient.receiveDisconnectedEvents()
-                .publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveDisconnectedEvents().publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(DISCONNECT_EVENT, event));
-            this.asyncClient.receiveStoppedEvents()
-                .publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveStoppedEvents().publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(STOPPED_EVENT, event));
-            this.asyncClient.receiveRejoinGroupFailedEvents()
-                .publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveRejoinGroupFailedEvents().publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(REJOIN_GROUP_FAILED_EVENT, event));
         }).block();
     }
@@ -124,16 +118,17 @@ public final class WebPubSubClient implements Closeable {
      * <p>
      * The WebSocket connection is closed.
      *
-     * @throws ConnectFailedException thrown if failed to disconnect from server, or other failure.
+     * @exception ConnectFailedException thrown if failed to disconnect from server, or other failure.
      */
     public synchronized void stop() {
         asyncClient.stop().block();
     }
 
+
     /**
      * {@inheritDoc}
      *
-     * @throws ConnectFailedException thrown if failed to disconnect from server, or other failure.
+     * @exception ConnectFailedException thrown if failed to disconnect from server, or other failure.
      */
     @Override
     public void close() {
@@ -260,7 +255,8 @@ public final class WebPubSubClient implements Closeable {
      *
      * @param onRejoinGroupFailedEventHandler the event handler for RejoinGroupFailedEvent.
      */
-    public void addOnRejoinGroupFailedEventHandler(Consumer<RejoinGroupFailedEvent> onRejoinGroupFailedEventHandler) {
+    public void addOnRejoinGroupFailedEventHandler(
+        Consumer<RejoinGroupFailedEvent> onRejoinGroupFailedEventHandler) {
         eventHandlerCollection.addEventHandler(REJOIN_GROUP_FAILED_EVENT, onRejoinGroupFailedEventHandler);
     }
 
@@ -289,8 +285,8 @@ public final class WebPubSubClient implements Closeable {
      * <!-- end com.azure.messaging.webpubsub.client.WebPubSubClient.joinGroup -->
      *
      * @param group the group name.
+     * @exception SendMessageFailedException thrown if client not connected, or join group message failed.
      * @return the result.
-     * @throws SendMessageFailedException thrown if client not connected, or join group message failed.
      */
     public WebPubSubResult joinGroup(String group) {
         return asyncClient.joinGroup(group).block();
@@ -303,8 +299,8 @@ public final class WebPubSubClient implements Closeable {
      *
      * @param group the group name.
      * @param ackId the ackId. Client will provide auto increment ID, if set to {@code null}.
+     * @exception SendMessageFailedException thrown if client not connected, or join group message failed.
      * @return the result.
-     * @throws SendMessageFailedException thrown if client not connected, or join group message failed.
      */
     public WebPubSubResult joinGroup(String group, Long ackId) {
         return asyncClient.joinGroup(group, ackId).block();
@@ -314,8 +310,8 @@ public final class WebPubSubClient implements Closeable {
      * Leaves a group.
      *
      * @param group the group name.
+     * @exception SendMessageFailedException thrown if client not connected, or leave group message failed.
      * @return the result.
-     * @throws SendMessageFailedException thrown if client not connected, or leave group message failed.
      */
     public WebPubSubResult leaveGroup(String group) {
         return asyncClient.leaveGroup(group).block();
@@ -326,8 +322,8 @@ public final class WebPubSubClient implements Closeable {
      *
      * @param group the group name.
      * @param ackId the ackId. Client will provide auto increment ID, if set to {@code null}.
+     * @exception SendMessageFailedException thrown if client not connected, or leave group message failed.
      * @return the result.
-     * @throws SendMessageFailedException thrown if client not connected, or leave group message failed.
      */
     public WebPubSubResult leaveGroup(String group, Long ackId) {
         return asyncClient.leaveGroup(group, ackId).block();
@@ -349,8 +345,8 @@ public final class WebPubSubClient implements Closeable {
      *
      * @param group the group name.
      * @param content the data as WebPubSubDataType.TEXT.
+     * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
-     * @throws SendMessageFailedException thrown if client not connected, or send group message failed.
      */
     public WebPubSubResult sendToGroup(String group, String content) {
         return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataFormat.TEXT);
@@ -364,8 +360,8 @@ public final class WebPubSubClient implements Closeable {
      * @param group the group name.
      * @param content the data as WebPubSubDataType.TEXT.
      * @param options the options.
+     * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
-     * @throws SendMessageFailedException thrown if client not connected, or send group message failed.
      */
     public WebPubSubResult sendToGroup(String group, String content, SendToGroupOptions options) {
         return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataFormat.TEXT, options);
@@ -391,8 +387,8 @@ public final class WebPubSubClient implements Closeable {
      * @param group the group name.
      * @param content the data.
      * @param dataFormat the data format.
+     * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
-     * @throws SendMessageFailedException thrown if client not connected, or send group message failed.
      */
     public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataFormat) {
         return asyncClient.sendToGroup(group, content, dataFormat).block();
@@ -407,11 +403,11 @@ public final class WebPubSubClient implements Closeable {
      * @param content the data.
      * @param dataFormat the data format.
      * @param options the options.
+     * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
-     * @throws SendMessageFailedException thrown if client not connected, or send group message failed.
      */
     public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataFormat,
-        SendToGroupOptions options) {
+                                       SendToGroupOptions options) {
         return asyncClient.sendToGroup(group, content, dataFormat, options).block();
     }
 
@@ -423,8 +419,8 @@ public final class WebPubSubClient implements Closeable {
      * @param eventName the event name.
      * @param content the data.
      * @param dataFormat the data format.
+     * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
-     * @throws SendMessageFailedException thrown if client not connected, or send group message failed.
      */
     public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat) {
         return asyncClient.sendEvent(eventName, content, dataFormat).block();
@@ -439,11 +435,11 @@ public final class WebPubSubClient implements Closeable {
      * @param content the data.
      * @param dataFormat the data format.
      * @param options the options.
+     * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
-     * @throws SendMessageFailedException thrown if client not connected, or send group message failed.
      */
     public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat,
-        SendEventOptions options) {
+                                     SendEventOptions options) {
         return asyncClient.sendEvent(eventName, content, dataFormat, options).block();
     }
 
@@ -451,7 +447,6 @@ public final class WebPubSubClient implements Closeable {
     WebPubSubClientState getClientState() {
         return this.asyncClient.getClientState();
     }
-
     WebSocketSession getWebsocketSession() {
         return this.asyncClient.getWebsocketSession();
     }

@@ -139,7 +139,7 @@ public final class StartRecordingOptions {
      *
      * @return pause on start.
      */
-    public Boolean getPauseOnStart() {
+    public Boolean isPauseOnStart() {
         return pauseOnStart;
     }
 
@@ -183,18 +183,18 @@ public final class StartRecordingOptions {
     }
 
     /**
-     * Get the externalStorage property: Used to specify external storage for call recording
+     * Get the recordingStorage property: Used to specify recording storage for call recording
      *
-     * @return the externalStorage value.
+     * @return the recordingStorage value.
      */
     public RecordingStorage getRecordingStorage() {
         return this.recordingStorage;
     }
 
     /**
-     * Set the externalStorage property: Used to specify external storage for call recording
+     * Set the recordingStorage property: Used to specify recording storage for call recording
      *
-     * @param recordingStorage the external storage for call recording
+     * @param recordingStorage the recording storage for call recording
      * @return the StartRecordingOptions object itself.
      */
     public StartRecordingOptions setRecordingStorage(RecordingStorage recordingStorage) {

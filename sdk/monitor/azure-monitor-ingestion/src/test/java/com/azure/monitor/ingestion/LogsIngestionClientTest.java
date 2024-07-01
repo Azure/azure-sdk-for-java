@@ -6,7 +6,6 @@ package com.azure.monitor.ingestion;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import com.azure.monitor.ingestion.models.LogsUploadException;
@@ -66,9 +65,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
     }
 
     @Test
-    @LiveOnly
     public void testUploadLogsPartialFailure() {
-        // Live Only, as it times out in CI playback mode.  TODO: Re-record and update test base to exclude any sanitizers as needed.
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
@@ -88,9 +85,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
     }
 
     @Test
-    @LiveOnly
     public void testUploadLogsPartialFailureWithErrorHandler() {
-        // Live Only, as it times out in CI playback mode.  TODO: Re-record and update test base to exclude any sanitizers as needed.
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
         AtomicLong failedLogsCount = new AtomicLong();
@@ -111,9 +106,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
     }
 
     @Test
-    @LiveOnly
     public void testUploadLogsStopOnFirstError() {
-        // Live Only, as it times out in CI playback mode.  TODO: Re-record and update test base to exclude any sanitizers as needed.
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
         LogsUploadOptions logsUploadOptions = new LogsUploadOptions()

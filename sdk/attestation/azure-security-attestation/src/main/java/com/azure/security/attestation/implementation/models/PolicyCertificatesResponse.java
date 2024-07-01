@@ -5,33 +5,23 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The response to an attestation policy management API.
- */
+/** The response to an attestation policy management API. */
 @Fluent
-public final class PolicyCertificatesResponse implements JsonSerializable<PolicyCertificatesResponse> {
+public final class PolicyCertificatesResponse {
     /*
-     * An RFC7519 JSON Web Token structure containing a PolicyCertificatesResults object which contains the
-     * certificates used to validate policy changes
+     * An RFC7519 JSON Web Token structure containing a
+     * PolicyCertificatesResults object which contains the certificates used to
+     * validate policy changes
      */
+    @JsonProperty(value = "token")
     private String token;
-
-    /**
-     * Creates an instance of PolicyCertificatesResponse class.
-     */
-    public PolicyCertificatesResponse() {
-    }
 
     /**
      * Get the token property: An RFC7519 JSON Web Token structure containing a PolicyCertificatesResults object which
      * contains the certificates used to validate policy changes.
-     * 
+     *
      * @return the token value.
      */
     public String getToken() {
@@ -41,7 +31,7 @@ public final class PolicyCertificatesResponse implements JsonSerializable<Policy
     /**
      * Set the token property: An RFC7519 JSON Web Token structure containing a PolicyCertificatesResults object which
      * contains the certificates used to validate policy changes.
-     * 
+     *
      * @param token the token value to set.
      * @return the PolicyCertificatesResponse object itself.
      */
@@ -52,42 +42,8 @@ public final class PolicyCertificatesResponse implements JsonSerializable<Policy
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("token", this.token);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PolicyCertificatesResponse from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PolicyCertificatesResponse if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PolicyCertificatesResponse.
-     */
-    public static PolicyCertificatesResponse fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PolicyCertificatesResponse deserializedPolicyCertificatesResponse = new PolicyCertificatesResponse();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("token".equals(fieldName)) {
-                    deserializedPolicyCertificatesResponse.token = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedPolicyCertificatesResponse;
-        });
-    }
+    public void validate() {}
 }

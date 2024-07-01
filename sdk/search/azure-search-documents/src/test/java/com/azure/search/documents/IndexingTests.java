@@ -6,7 +6,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
@@ -24,8 +23,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -58,7 +55,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Execution(ExecutionMode.CONCURRENT)
 public class IndexingTests extends SearchTestBase {
     private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
 
@@ -121,12 +117,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void indexDoesNotThrowWhenAllActionsSucceedSync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String expectedHotelId = getRandomDocumentKey();
@@ -137,12 +128,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void indexDoesNotThrowWhenAllActionsSucceedAsync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String expectedHotelId = getRandomDocumentKey();
@@ -154,12 +140,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void canIndexWithPascalCaseFieldsSync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchClient client = getClient(BOOKS_INDEX_NAME);
 
         String isbn = getRandomDocumentKey();
@@ -176,12 +157,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void canIndexWithPascalCaseFieldsAsync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchAsyncClient asyncClient = getAsyncClient(BOOKS_INDEX_NAME);
 
         String isbn = getRandomDocumentKey();
@@ -199,12 +175,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void canDeleteBatchByKeysSync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotel1Key = getRandomDocumentKey();
@@ -225,12 +196,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void canDeleteBatchByKeysAsync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotel1Key = getRandomDocumentKey();
@@ -254,12 +220,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void indexDoesNotThrowWhenDeletingDocumentWithExtraFieldsSync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
@@ -279,12 +240,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void indexDoesNotThrowWhenDeletingDocumentWithExtraFieldsAsync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
@@ -307,12 +263,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void indexDoesNotThrowWhenDeletingDynamicDocumentWithExtraFieldsSync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
@@ -333,12 +284,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void indexDoesNotThrowWhenDeletingDynamicDocumentWithExtraFieldsAsync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
@@ -361,12 +307,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void canIndexStaticallyTypedDocumentsSync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotel1Id = getRandomDocumentKey();
@@ -404,12 +345,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void canIndexStaticallyTypedDocumentsAsync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotel1Id = getRandomDocumentKey();
@@ -451,12 +387,7 @@ public class IndexingTests extends SearchTestBase {
 
 
     @Test
-    @LiveOnly
     public void canIndexDynamicDocumentsNotThrowSync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotel1Id = getRandomDocumentKey();
@@ -492,12 +423,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void canIndexDynamicDocumentsNotThrowAsync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotel1Id = getRandomDocumentKey();
@@ -536,12 +462,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void canIndexDynamicDocumentsThrowOnErrorSync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotel1Id = getRandomDocumentKey();
@@ -577,12 +498,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void canIndexDynamicDocumentsThrowOnErrorAsync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotel1Id = getRandomDocumentKey();
@@ -697,7 +613,7 @@ public class IndexingTests extends SearchTestBase {
         SearchDocument actualBook1 = client.getDocument(isbn1, SearchDocument.class);
         assertEquals(utcTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), actualBook1.get("PublishDate"));
 
-        // Azure AI Search normalizes to UTC, so we compare instants
+        // Azure Cognitive Search normalizes to UTC, so we compare instants
         SearchDocument actualBook2 = client.getDocument(isbn2, SearchDocument.class);
         assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC)
             .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), actualBook2.get("PublishDate"));
@@ -729,7 +645,7 @@ public class IndexingTests extends SearchTestBase {
             (expected, actual) -> assertEquals(utcTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
                 actual.get("PublishDate")));
 
-        // Azure AI Search normalizes to UTC, so we compare instants
+        // Azure Cognitive Search normalizes to UTC, so we compare instants
         getAndValidateDocumentAsync(asyncClient, isbn2, SearchDocument.class, book2,
             (expected, actual) -> assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC)
                 .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), actual.get("PublishDate")));
@@ -758,7 +674,7 @@ public class IndexingTests extends SearchTestBase {
         Book actualBook1 = client.getDocument(isbn1, Book.class);
         assertEquals(books.get(0).publishDate(), actualBook1.publishDate());
 
-        // Azure AI Search normalizes to UTC, so we compare instants
+        // Azure Cognitive Search normalizes to UTC, so we compare instants
         Book actualBook2 = client.getDocument(isbn2, Book.class);
         assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC),
             actualBook2.publishDate().withOffsetSameInstant(ZoneOffset.UTC));
@@ -787,7 +703,7 @@ public class IndexingTests extends SearchTestBase {
         getAndValidateDocumentAsync(asyncClient, isbn1, Book.class, null,
             (expected, actual) -> assertEquals(books.get(0).publishDate(), actual.publishDate()));
 
-        // Azure AI Search normalizes to UTC, so we compare instants
+        // Azure Cognitive Search normalizes to UTC, so we compare instants
         getAndValidateDocumentAsync(asyncClient, isbn2, Book.class, null,
             (expected, actual) -> assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC),
                 actual.publishDate().withOffsetSameInstant(ZoneOffset.UTC)));
@@ -848,12 +764,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void mergeDocumentWithoutExistingKeyThrowsIndexingExceptionSync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
@@ -866,12 +777,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void mergeDocumentWithoutExistingKeyThrowsIndexingExceptionAsync() {
-        // Disable `("$..key")` sanitizer
-        // if (!interceptorManager.isLiveMode()) {
-        //    interceptorManager.removeSanitizers("AZSDK3447"));
-        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();

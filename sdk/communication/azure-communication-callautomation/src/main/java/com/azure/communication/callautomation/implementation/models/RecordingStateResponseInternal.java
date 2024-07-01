@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RecordingStateResponseInternal model. */
+/**
+ * The RecordingStateResponseInternal model.
+ */
 @Fluent
 public final class RecordingStateResponseInternal {
     /*
@@ -26,11 +28,17 @@ public final class RecordingStateResponseInternal {
      * The recordingKind property.
      */
     @JsonProperty(value = "recordingKind")
-    private RecordingKind recordingKind;
+    private RecordingKindInternal recordingKind;
+
+    /**
+     * Creates an instance of RecordingStateResponseInternal class.
+     */
+    public RecordingStateResponseInternal() {
+    }
 
     /**
      * Get the recordingId property: The recordingId property.
-     *
+     * 
      * @return the recordingId value.
      */
     public String getRecordingId() {
@@ -39,7 +47,7 @@ public final class RecordingStateResponseInternal {
 
     /**
      * Set the recordingId property: The recordingId property.
-     *
+     * 
      * @param recordingId the recordingId value to set.
      * @return the RecordingStateResponseInternal object itself.
      */
@@ -50,7 +58,7 @@ public final class RecordingStateResponseInternal {
 
     /**
      * Get the recordingState property: The recordingState property.
-     *
+     * 
      * @return the recordingState value.
      */
     public RecordingStateInternal getRecordingState() {
@@ -59,7 +67,7 @@ public final class RecordingStateResponseInternal {
 
     /**
      * Set the recordingState property: The recordingState property.
-     *
+     * 
      * @param recordingState the recordingState value to set.
      * @return the RecordingStateResponseInternal object itself.
      */
@@ -70,20 +78,20 @@ public final class RecordingStateResponseInternal {
 
     /**
      * Get the recordingKind property: The recordingKind property.
-     *
+     * 
      * @return the recordingKind value.
      */
-    public RecordingKind getRecordingKind() {
+    public RecordingKindInternal getRecordingKind() {
         return this.recordingKind;
     }
 
     /**
      * Set the recordingKind property: The recordingKind property.
-     *
+     * 
      * @param recordingKind the recordingKind value to set.
      * @return the RecordingStateResponseInternal object itself.
      */
-    public RecordingStateResponseInternal setRecordingKind(RecordingKind recordingKind) {
+    public RecordingStateResponseInternal setRecordingKind(RecordingKindInternal recordingKind) {
         this.recordingKind = recordingKind;
         return this;
     }

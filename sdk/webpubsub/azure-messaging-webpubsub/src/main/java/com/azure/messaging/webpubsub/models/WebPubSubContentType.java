@@ -3,6 +3,9 @@
 
 package com.azure.messaging.webpubsub.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for ContentType.
  */
@@ -29,6 +32,7 @@ public enum WebPubSubContentType {
      * @param value the serialized value to parse.
      * @return the parsed ContentType object, or null if unable to parse.
      */
+    @JsonCreator
     public static WebPubSubContentType fromString(String value) {
         WebPubSubContentType[] items = WebPubSubContentType.values();
         for (WebPubSubContentType item : items) {
@@ -39,6 +43,7 @@ public enum WebPubSubContentType {
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

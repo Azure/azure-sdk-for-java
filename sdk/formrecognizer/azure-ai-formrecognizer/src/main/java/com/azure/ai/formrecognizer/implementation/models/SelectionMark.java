@@ -5,42 +5,36 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Information about the extracted selection mark.
- */
+/** Information about the extracted selection mark. */
 @Fluent
-public final class SelectionMark implements JsonSerializable<SelectionMark> {
+public final class SelectionMark {
     /*
      * Bounding box of the selection mark.
      */
+    @JsonProperty(value = "boundingBox", required = true)
     private List<Float> boundingBox;
 
     /*
      * Confidence value.
      */
+    @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
     /*
      * State of the selection mark.
      */
+    @JsonProperty(value = "state", required = true)
     private SelectionMarkState state;
 
-    /**
-     * Creates an instance of SelectionMark class.
-     */
-    public SelectionMark() {
-    }
+    /** Creates an instance of SelectionMark class. */
+    public SelectionMark() {}
 
     /**
      * Get the boundingBox property: Bounding box of the selection mark.
-     * 
+     *
      * @return the boundingBox value.
      */
     public List<Float> getBoundingBox() {
@@ -49,7 +43,7 @@ public final class SelectionMark implements JsonSerializable<SelectionMark> {
 
     /**
      * Set the boundingBox property: Bounding box of the selection mark.
-     * 
+     *
      * @param boundingBox the boundingBox value to set.
      * @return the SelectionMark object itself.
      */
@@ -60,7 +54,7 @@ public final class SelectionMark implements JsonSerializable<SelectionMark> {
 
     /**
      * Get the confidence property: Confidence value.
-     * 
+     *
      * @return the confidence value.
      */
     public float getConfidence() {
@@ -69,7 +63,7 @@ public final class SelectionMark implements JsonSerializable<SelectionMark> {
 
     /**
      * Set the confidence property: Confidence value.
-     * 
+     *
      * @param confidence the confidence value to set.
      * @return the SelectionMark object itself.
      */
@@ -80,7 +74,7 @@ public final class SelectionMark implements JsonSerializable<SelectionMark> {
 
     /**
      * Get the state property: State of the selection mark.
-     * 
+     *
      * @return the state value.
      */
     public SelectionMarkState getState() {
@@ -89,53 +83,12 @@ public final class SelectionMark implements JsonSerializable<SelectionMark> {
 
     /**
      * Set the state property: State of the selection mark.
-     * 
+     *
      * @param state the state value to set.
      * @return the SelectionMark object itself.
      */
     public SelectionMark setState(SelectionMarkState state) {
         this.state = state;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("boundingBox", this.boundingBox, (writer, element) -> writer.writeFloat(element));
-        jsonWriter.writeFloatField("confidence", this.confidence);
-        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SelectionMark from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SelectionMark if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SelectionMark.
-     */
-    public static SelectionMark fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SelectionMark deserializedSelectionMark = new SelectionMark();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("boundingBox".equals(fieldName)) {
-                    List<Float> boundingBox = reader.readArray(reader1 -> reader1.getFloat());
-                    deserializedSelectionMark.boundingBox = boundingBox;
-                } else if ("confidence".equals(fieldName)) {
-                    deserializedSelectionMark.confidence = reader.getFloat();
-                } else if ("state".equals(fieldName)) {
-                    deserializedSelectionMark.state = SelectionMarkState.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSelectionMark;
-        });
     }
 }

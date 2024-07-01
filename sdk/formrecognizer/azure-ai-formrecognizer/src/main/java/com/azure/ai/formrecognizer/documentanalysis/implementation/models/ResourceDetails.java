@@ -5,44 +5,43 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * General information regarding the current resource.
- */
+/** General information regarding the current resource. */
 @Immutable
-public final class ResourceDetails implements JsonSerializable<ResourceDetails> {
+public final class ResourceDetails {
     /*
      * Details regarding custom document models.
      */
-    private final CustomDocumentModelsDetails customDocumentModels;
+    @JsonProperty(value = "customDocumentModels", required = true)
+    private CustomDocumentModelsDetails customDocumentModels;
 
     /*
      * Quota used, limit, and next reset date/time.
      */
-    private final QuotaDetails customNeuralDocumentModelBuilds;
+    @JsonProperty(value = "customNeuralDocumentModelBuilds", required = true)
+    private QuotaDetails customNeuralDocumentModelBuilds;
 
     /**
      * Creates an instance of ResourceDetails class.
-     * 
+     *
      * @param customDocumentModels the customDocumentModels value to set.
      * @param customNeuralDocumentModelBuilds the customNeuralDocumentModelBuilds value to set.
      */
-    public ResourceDetails(CustomDocumentModelsDetails customDocumentModels,
-        QuotaDetails customNeuralDocumentModelBuilds) {
+    @JsonCreator
+    private ResourceDetails(
+            @JsonProperty(value = "customDocumentModels", required = true)
+                    CustomDocumentModelsDetails customDocumentModels,
+            @JsonProperty(value = "customNeuralDocumentModelBuilds", required = true)
+                    QuotaDetails customNeuralDocumentModelBuilds) {
         this.customDocumentModels = customDocumentModels;
         this.customNeuralDocumentModelBuilds = customNeuralDocumentModelBuilds;
     }
 
     /**
      * Get the customDocumentModels property: Details regarding custom document models.
-     * 
+     *
      * @return the customDocumentModels value.
      */
     public CustomDocumentModelsDetails getCustomDocumentModels() {
@@ -51,63 +50,10 @@ public final class ResourceDetails implements JsonSerializable<ResourceDetails> 
 
     /**
      * Get the customNeuralDocumentModelBuilds property: Quota used, limit, and next reset date/time.
-     * 
+     *
      * @return the customNeuralDocumentModelBuilds value.
      */
     public QuotaDetails getCustomNeuralDocumentModelBuilds() {
         return this.customNeuralDocumentModelBuilds;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("customDocumentModels", this.customDocumentModels);
-        jsonWriter.writeJsonField("customNeuralDocumentModelBuilds", this.customNeuralDocumentModelBuilds);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ResourceDetails from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ResourceDetails if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResourceDetails.
-     */
-    public static ResourceDetails fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean customDocumentModelsFound = false;
-            CustomDocumentModelsDetails customDocumentModels = null;
-            boolean customNeuralDocumentModelBuildsFound = false;
-            QuotaDetails customNeuralDocumentModelBuilds = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("customDocumentModels".equals(fieldName)) {
-                    customDocumentModels = CustomDocumentModelsDetails.fromJson(reader);
-                    customDocumentModelsFound = true;
-                } else if ("customNeuralDocumentModelBuilds".equals(fieldName)) {
-                    customNeuralDocumentModelBuilds = QuotaDetails.fromJson(reader);
-                    customNeuralDocumentModelBuildsFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (customDocumentModelsFound && customNeuralDocumentModelBuildsFound) {
-                return new ResourceDetails(customDocumentModels, customNeuralDocumentModelBuilds);
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!customDocumentModelsFound) {
-                missingProperties.add("customDocumentModels");
-            }
-            if (!customNeuralDocumentModelBuildsFound) {
-                missingProperties.add("customNeuralDocumentModelBuilds");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
     }
 }

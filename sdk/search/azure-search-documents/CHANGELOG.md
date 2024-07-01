@@ -1,36 +1,26 @@
 # Release History
 
-## 11.7.0-beta.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 11.6.6 (2024-06-27)
 
 ### Other Changes
-
-## 11.7.0-beta.3 (2024-05-07)
-
-### Features Added
-
-- Added support for `Byte[]` and `List<Byte>` in `FieldBuilder`
-- Added support for `HybridSearch`
-- Index models added: `AIServicesVisionParameters`, `AIServicesVisionVectorizer`, `AIStudioModelCatalogName`,
-  `AzureMachineLearningParameters`, `AzureMachineLearningVectorizer`, `AzureOpenAIModelName`, `VectorEncodingFormat`,
- `VisionVectorizeSkill`
-- Search models added: `HybridCountAndFacetMode`, `HybridSearch`, `SearchScoreThreshold`, `VectorSimilarityThreshold`, 
- `VectorThreshold`, `VectorThresholdKind`, `VectorizableImageBinaryQuery`, `VectorizableImageUrlQuery`
-
-### Other Changes
-
-- Sample added for creating a vector fields index with reduced dimensions.
 
 #### Dependency Updates
 
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.12` to version `1.4.13`.
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+
+
+## 11.6.5 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.11` to version `1.4.12`.
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
-- Upgraded `azure-core-serializer-json-jackson` from `1.4.11` to version `1.4.12`.
+
 
 ## 11.6.4 (2024-04-23)
 
@@ -54,27 +44,6 @@
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 
 
-## 11.7.0-beta.2 (2024-03-11)
-
-### Features Added
-
-- Added support for the java types `Byte` and `Short` to FieldBuilder.
-- Added support for "isStored" annotation to FieldBuilder.
-- Added `VectorSearchCompressionConfiguration` to `VectorSearch`
-
-### Breaking Changes
-
-- Replaced `SearchErrorException` with `ErrorResponseException`
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core-serializer-json-jackson` to version `1.4.10`.
-- Upgraded `azure-core-http-netty` to version `1.14.1`.
-- Upgraded `azure-core` to version `1.47.0`.
-
-
 ## 11.6.2 (2024-02-22)
 
 ### Other Changes
@@ -83,19 +52,6 @@
 
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
-
-
-## 11.7.0-beta.1 (2024-02-09)
-
-### Features Added
-
-- Exposing HttpPipeline within clients.
-
-### Other Changes
-
-- Rebranding Azure Cognitive Search to Azure AI Search within the SDK.
-- Updated JavaDoc to assist with developer experience.
-- Sample added to show how to maintain a consistent sessionId across multiple requests.
 
 ## 11.6.1 (2023-12-06)
 

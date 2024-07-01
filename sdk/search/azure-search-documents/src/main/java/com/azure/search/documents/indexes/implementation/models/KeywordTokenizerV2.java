@@ -12,10 +12,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.LexicalTokenizer;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Emits the entire input as a single token. This tokenizer is implemented using Apache Lucene.
- */
+/** Emits the entire input as a single token. This tokenizer is implemented using Apache Lucene. */
 @Fluent
 public final class KeywordTokenizerV2 extends LexicalTokenizer {
     /*
@@ -26,7 +26,7 @@ public final class KeywordTokenizerV2 extends LexicalTokenizer {
 
     /**
      * Creates an instance of KeywordTokenizerV2 class.
-     * 
+     *
      * @param name the name value to set.
      */
     public KeywordTokenizerV2(String name) {
@@ -36,7 +36,7 @@ public final class KeywordTokenizerV2 extends LexicalTokenizer {
     /**
      * Get the maxTokenLength property: The maximum token length. Default is 256. Tokens longer than the maximum length
      * are split. The maximum token length that can be used is 300 characters.
-     * 
+     *
      * @return the maxTokenLength value.
      */
     public Integer getMaxTokenLength() {
@@ -46,7 +46,7 @@ public final class KeywordTokenizerV2 extends LexicalTokenizer {
     /**
      * Set the maxTokenLength property: The maximum token length. Default is 256. Tokens longer than the maximum length
      * are split. The maximum token length that can be used is 300 characters.
-     * 
+     *
      * @param maxTokenLength the maxTokenLength value to set.
      * @return the KeywordTokenizerV2 object itself.
      */
@@ -66,46 +66,54 @@ public final class KeywordTokenizerV2 extends LexicalTokenizer {
 
     /**
      * Reads an instance of KeywordTokenizerV2 from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeywordTokenizerV2 if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the KeywordTokenizerV2.
      */
     public static KeywordTokenizerV2 fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            Integer maxTokenLength = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    Integer maxTokenLength = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.KeywordTokenizerV2".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.KeywordTokenizerV2'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.KeywordTokenizerV2".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.KeywordTokenizerV2'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("maxTokenLength".equals(fieldName)) {
+                            maxTokenLength = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("maxTokenLength".equals(fieldName)) {
-                    maxTokenLength = reader.getNullable(JsonReader::getInt);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                KeywordTokenizerV2 deserializedKeywordTokenizerV2 = new KeywordTokenizerV2(name);
-                deserializedKeywordTokenizerV2.maxTokenLength = maxTokenLength;
+                    if (nameFound) {
+                        KeywordTokenizerV2 deserializedKeywordTokenizerV2 = new KeywordTokenizerV2(name);
+                        deserializedKeywordTokenizerV2.maxTokenLength = maxTokenLength;
 
-                return deserializedKeywordTokenizerV2;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+                        return deserializedKeywordTokenizerV2;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }
