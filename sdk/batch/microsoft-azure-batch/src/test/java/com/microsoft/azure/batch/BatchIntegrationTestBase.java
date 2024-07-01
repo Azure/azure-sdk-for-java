@@ -87,6 +87,8 @@ public class BatchIntegrationTestBase {
                 testMode = TestBase.TestMode.RECORD;
             } else if (azureTestMode.equalsIgnoreCase("Playback")) {
                 testMode = TestBase.TestMode.PLAYBACK;
+            } else if (azureTestMode.equalsIgnoreCase("Live")) {
+                testMode = TestMode.RECORD;
             } else {
                 throw new IOException("Unknown AZURE_TEST_MODE: " + azureTestMode);
             }
