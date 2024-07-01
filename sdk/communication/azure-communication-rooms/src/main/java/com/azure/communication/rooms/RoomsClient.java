@@ -29,9 +29,12 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.HashMap;
@@ -229,13 +232,11 @@ public final class RoomsClient {
             Objects.requireNonNull(participants, "'participants' cannot be null.");
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
             Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
-            ObjectMapper mapper = new ObjectMapper();
-            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+            String updateRequest = serializeToString(new UpdateParticipantsRequest().setParticipants(participantMap));
 
             this.participantsClient.update(roomId, updateRequest);
             return new AddOrUpdateParticipantsResult();
-        } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
         }
     }
@@ -255,15 +256,13 @@ public final class RoomsClient {
             Objects.requireNonNull(participants, "'participants' cannot be null.");
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
             Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
-            ObjectMapper mapper = new ObjectMapper();
-            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+            String updateRequest = serializeToString(new UpdateParticipantsRequest().setParticipants(participantMap));
 
             Response<Object> response = this.participantsClient
                     .updateWithResponse(roomId, updateRequest, context);
             return new SimpleResponse<AddOrUpdateParticipantsResult>(
                 response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
         }
     }
@@ -282,13 +281,11 @@ public final class RoomsClient {
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
             Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
                 identifiers);
-            ObjectMapper mapper = new ObjectMapper();
-            String updateRequest =  mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+            String updateRequest =  serializeToString(new UpdateParticipantsRequest().setParticipants(participantMap));
 
             this.participantsClient.update(roomId, updateRequest);
             return new RemoveParticipantsResult();
-        } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
         }
     }
@@ -309,15 +306,13 @@ public final class RoomsClient {
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
             Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
                 identifiers);
-            ObjectMapper mapper = new ObjectMapper();
-            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+            String updateRequest = serializeToString(new UpdateParticipantsRequest().setParticipants(participantMap));
             Response<Object> response = this.participantsClient
                 .updateWithResponse(roomId, updateRequest, context);
 
             return new SimpleResponse<RemoveParticipantsResult>(
                 response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
         }
     }
@@ -456,5 +451,13 @@ public final class RoomsClient {
         }
 
         return participantMap;
+    }
+
+    private static <T extends JsonSerializable<T>> String serializeToString(T serializable) throws IOException {
+        StringWriter writer = new StringWriter();
+        JsonWriter jsonWriter = JsonProviders.createWriter(writer);
+        serializable.toJson(jsonWriter);
+        jsonWriter.flush();
+        return writer.toString();
     }
 }

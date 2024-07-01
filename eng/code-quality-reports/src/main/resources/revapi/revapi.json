@@ -492,6 +492,11 @@
           "old" : ".*? com\\.azure\\.communication\\.callautomation\\.models.*",
           "new" : ".*? com\\.azure\\.communication\\.callautomation\\.models.*",
           "justification": "Migration to azure-json"
+        },
+        {
+          "code": "java.annotation.removed",
+          "new": "com.azure.communication.rooms.models.ParticipantRole",
+          "justification": "Migration to azure-json"
         }
       ]
     }
