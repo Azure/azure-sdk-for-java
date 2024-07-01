@@ -312,13 +312,13 @@
     }
   ],
   "outputs": {
-    "AZURE_APPCONFIG_CONNECTION_STRING": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.AppConfiguration/configurationStores',variables('uniqueAzConfigName')), '2019-02-01-preview').value[0].connectionString]"
-    },
     "roleDefinitionId": {
       "type": "string",
       "value": "[variables('roleDefinitionId')]"
+    },
+    "AZURE_APPCONFIG_ENDPOINT": {
+      "type": "string",
+      "value": "[variables('endpointValue')]"
     },
     "APPLICATIONINSIGHTS_CONNECTION_STRING": {
       "value": "[reference(resourceId('Microsoft.Insights/components', variables('uniqueAppInsightsName')), '2020-02-02-preview').ConnectionString]",
