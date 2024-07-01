@@ -3,7 +3,7 @@
 
 package com.azure.messaging.webpubsub.client;
 
-import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.test.annotation.DoNotRecord;
 import org.junit.jupiter.api.Test;
 
 public class GroupTests extends TestBase {
@@ -11,7 +11,7 @@ public class GroupTests extends TestBase {
     private static final String GROUP = "group";
 
     @Test
-    @LiveOnly
+    @DoNotRecord(skipInPlayback = true)
     public void testJoinLeaveGroup() {
         WebPubSubClient client = getClient();
         try {
@@ -26,7 +26,7 @@ public class GroupTests extends TestBase {
     }
 
     @Test
-    @LiveOnly
+    @DoNotRecord(skipInPlayback = true)
     public void testLeaveGroupBeforeJoin() {
         WebPubSubClient client = getClient();
         try {
