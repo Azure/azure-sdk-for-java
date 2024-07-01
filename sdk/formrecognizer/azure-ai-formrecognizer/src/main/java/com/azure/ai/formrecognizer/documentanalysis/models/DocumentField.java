@@ -6,7 +6,6 @@ package com.azure.ai.formrecognizer.documentanalysis.models;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentFieldHelper;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.TypedDocumentFieldHelper;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -33,7 +32,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      * @return the value.
      */
 
-    @JsonIgnore
     public String getValueAsString() {
         return (String) super.getValue();
     }
@@ -43,7 +41,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    @JsonIgnore
     public LocalDate getValueAsDate() {
         return (LocalDate) super.getValue();
     }
@@ -53,7 +50,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    @JsonIgnore
     public LocalTime getValueAsTime() {
         return (LocalTime) super.getValue();
     }
@@ -63,7 +59,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    @JsonIgnore
     public String getValueAsPhoneNumber() {
         return (String) super.getValue();
     }
@@ -73,7 +68,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    @JsonIgnore
     public Double getValueAsDouble() {
         return (Double) super.getValue();
     }
@@ -83,7 +77,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    @JsonIgnore
     public Long getValueAsLong() {
         return (Long) super.getValue();
     }
@@ -93,7 +86,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    @JsonIgnore
     public DocumentSelectionMarkState getValueAsSelectionMark() {
         return (DocumentSelectionMarkState) super.getValue();
     }
@@ -103,7 +95,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    @JsonIgnore
     public DocumentSignatureType getValueAsSignature() {
         return (DocumentSignatureType) super.getValue();
     }
@@ -113,7 +104,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    @JsonIgnore
     public String getValueAsCountry() {
         return (String) super.getValue();
     }
@@ -123,7 +113,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    @JsonIgnore
     @SuppressWarnings("unchecked")
     public List<DocumentField> getValueAsList() {
         return (List<DocumentField>) super.getValue();
@@ -134,7 +123,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    @JsonIgnore
     @SuppressWarnings("unchecked")
     public Map<String, DocumentField> getValueAsMap() {
         return (Map<String, DocumentField>) super.getValue();
@@ -145,7 +133,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    @JsonIgnore
     public CurrencyValue getValueAsCurrency() {
         return (CurrencyValue) super.getValue();
     }
@@ -155,7 +142,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    @JsonIgnore
     public AddressValue getValueAsAddress() {
         return (AddressValue) super.getValue();
     }
@@ -165,7 +151,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    @JsonIgnore
     public Boolean getValueAsBoolean() {
         return (Boolean) super.getValue();
     }
