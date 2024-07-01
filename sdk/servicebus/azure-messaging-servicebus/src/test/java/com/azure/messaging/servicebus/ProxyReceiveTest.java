@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.messaging.servicebus.jproxy.ProxyServer;
 import com.azure.messaging.servicebus.jproxy.SimpleProxy;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
@@ -82,8 +83,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
-            .connectionString(getConnectionString())
-
+            .credential(new AzurePowerShellCredentialBuilder().build())
             .sender()
             .queueName(queueName)
             .buildAsyncClient();
@@ -93,7 +93,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
-            .connectionString(getConnectionString())
+            .credential(new AzurePowerShellCredentialBuilder().build())
             .receiver()
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .queueName(queueName)

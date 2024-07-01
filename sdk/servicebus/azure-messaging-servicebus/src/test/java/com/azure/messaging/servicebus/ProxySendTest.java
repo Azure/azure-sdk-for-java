@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.messaging.servicebus.jproxy.ProxyServer;
 import com.azure.messaging.servicebus.jproxy.SimpleProxy;
 import org.apache.qpid.proton.engine.SslDomain;
@@ -78,7 +79,7 @@ public class ProxySendTest extends IntegrationTestBase {
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageId);
         final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-            .connectionString(getConnectionString())
+            .credential(new AzurePowerShellCredentialBuilder().build())
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))

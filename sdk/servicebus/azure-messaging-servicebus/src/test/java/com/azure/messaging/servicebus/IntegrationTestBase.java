@@ -21,7 +21,7 @@ import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
@@ -59,6 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public abstract class IntegrationTestBase extends TestBase {
+    protected static final boolean USE_CREDENTIALS = true;
     protected static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     // Tests use timeouts of 20-60 seconds to verify something has happened
@@ -118,7 +119,9 @@ public abstract class IntegrationTestBase extends TestBase {
             return TestMode.PLAYBACK;
         }
 
-        return CoreUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
+        return TestMode.RECORD;
+        // TODO (anu): alternative for this approach?
+        // return CoreUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
     }
 
     public static String getConnectionString() {
@@ -205,14 +208,6 @@ public abstract class IntegrationTestBase extends TestBase {
 
     /**
      * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
-     * connection string to authenticate.
-     */
-    protected ServiceBusClientBuilder getBuilder() {
-        return getBuilder(false);
-    }
-
-    /**
-     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
      * connection string to authenticate if {@code useCredentials} is false. Otherwise, uses a service principal through
      * {@link com.azure.identity.ClientSecretCredential}.
      */
@@ -232,12 +227,33 @@ public abstract class IntegrationTestBase extends TestBase {
             assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
                 "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
 
-            final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+            final TokenCredential tokenCredential = new AzurePowerShellCredentialBuilder().build();
 
             return builder.credential(fullyQualifiedDomainName, tokenCredential);
         } else {
             return builder.connectionString(getConnectionString());
         }
+    }
+
+    /**
+     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
+     * token credentials to authenticate.
+     */
+    protected ServiceBusClientBuilder getBuilder() {
+        return getBuilder(USE_CREDENTIALS);
+    }
+
+    protected ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
+        ServiceBusClientBuilder builder;
+        if (sharedConnection && sharedBuilder == null) {
+            sharedBuilder = getBuilder(useCredentials);
+            builder = sharedBuilder;
+        } else if (sharedConnection) {
+            builder = sharedBuilder;
+        } else {
+            builder = getBuilder(useCredentials);
+        }
+        return builder;
     }
 
     protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
@@ -307,6 +323,54 @@ public abstract class IntegrationTestBase extends TestBase {
                     .retryOptions(retryOptions)
                     .sessionReceiver()
                     .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                    .topicName(topicName).subscriptionName(subscriptionName);
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+        }
+    }
+
+    protected ServiceBusClientBuilder.ServiceBusProcessorClientBuilder getProcessorBuilder(boolean useCredentials,
+        MessagingEntityType entityType, int entityIndex, boolean sharedConnection) {
+
+        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        switch (entityType) {
+            case QUEUE:
+                final String queueName = getQueueName(entityIndex);
+                assertNotNull(queueName, "'queueName' cannot be null.");
+
+                return builder.processor().queueName(queueName);
+            case SUBSCRIPTION:
+                final String topicName = getTopicName(entityIndex);
+                final String subscriptionName = getSubscriptionBaseName();
+                assertNotNull(topicName, "'topicName' cannot be null.");
+                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
+
+                return builder.processor().topicName(topicName).subscriptionName(subscriptionName);
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+        }
+    }
+
+    protected ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(boolean useCredentials,
+        MessagingEntityType entityType, int entityIndex, boolean sharedConnection, AmqpRetryOptions amqpRetryOptions) {
+
+        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        builder.retryOptions(amqpRetryOptions);
+
+        switch (entityType) {
+            case QUEUE:
+                final String queueName = getSessionQueueName(entityIndex);
+                assertNotNull(queueName, "'queueName' cannot be null.");
+                return builder
+                    .sessionProcessor()
+                    .queueName(queueName);
+
+            case SUBSCRIPTION:
+                final String topicName = getTopicName(entityIndex);
+                final String subscriptionName = getSessionSubscriptionBaseName();
+                assertNotNull(topicName, "'topicName' cannot be null.");
+                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
+                return builder.sessionProcessor()
                     .topicName(topicName).subscriptionName(subscriptionName);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
@@ -451,19 +515,6 @@ public abstract class IntegrationTestBase extends TestBase {
             // the queue or topic contains messages from previous test cases.
             // assertEquals(sessionId, message.getSessionId());
         }
-    }
-
-    protected ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
-        ServiceBusClientBuilder builder;
-        if (sharedConnection && sharedBuilder == null) {
-            sharedBuilder = getBuilder(useCredentials);
-            builder = sharedBuilder;
-        } else if (sharedConnection) {
-            builder = sharedBuilder;
-        } else {
-            builder = getBuilder(useCredentials);
-        }
-        return builder;
     }
 
     protected final Configuration v1OrV2(boolean isV2) {
