@@ -5,6 +5,7 @@ package com.azure.data.tables;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
@@ -13,6 +14,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,21 +34,26 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TableClientBuilderTest {
+
+
+    private static final String ENDPOINT = "https://myAccount.table.core.windows.net";
+    private static final String CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=myAccount;AccountKey=myKey;EndpointSuffix=core.windows.net";
+    private static final TokenCredential CREDENTIAL = new MockTokenCredential();
+
     private String tableName;
-    private String connectionString;
     private TableServiceVersion serviceVersion;
 
     @BeforeEach
     public void setUp() {
         tableName = "someTable";
-        connectionString = TestUtils.getConnectionString(true);
         serviceVersion = TableServiceVersion.V2019_02_02;
     }
 
     @Test
     public void buildSyncClientTest() {
         TableClient tableClient = new TableClientBuilder()
-            .connectionString(connectionString)
+            .endpoint(ENDPOINT)
+            .credential(CREDENTIAL)
             .tableName(tableName)
             .serviceVersion(serviceVersion)
             .buildClient();
@@ -58,7 +65,8 @@ public class TableClientBuilderTest {
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
         TableClient tableClient = new TableClientBuilder()
-            .connectionString(connectionString)
+            .endpoint(ENDPOINT)
+            .credential(CREDENTIAL)
             .tableName(tableName)
             .buildClient();
 
@@ -69,7 +77,8 @@ public class TableClientBuilderTest {
     @Test
     public void buildAsyncClientTest() {
         TableAsyncClient tableAsyncClient = new TableClientBuilder()
-            .connectionString(connectionString)
+            .endpoint(ENDPOINT)
+            .credential(CREDENTIAL)
             .tableName(tableName)
             .serviceVersion(serviceVersion)
             .buildAsyncClient();
@@ -81,7 +90,8 @@ public class TableClientBuilderTest {
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
         TableAsyncClient tableAsyncClient = new TableClientBuilder()
-            .connectionString(connectionString)
+            .endpoint(ENDPOINT)
+            .credential(CREDENTIAL)
             .tableName(tableName)
             .buildAsyncClient();
 
@@ -106,7 +116,8 @@ public class TableClientBuilderTest {
         new SecureRandom().nextBytes(randomData);
 
         TableAsyncClient tableAsyncClient = new TableClientBuilder()
-            .connectionString(connectionString)
+            .endpoint(ENDPOINT)
+            .credential(CREDENTIAL)
             .tableName(tableName)
             .httpClient(new TestUtils.FreshDateTestClient())
             .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
@@ -121,7 +132,8 @@ public class TableClientBuilderTest {
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
         TableClient tableClient = new TableClientBuilder()
-            .connectionString(connectionString)
+            .endpoint(ENDPOINT)
+            .credential(CREDENTIAL)
             .tableName(tableName)
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
@@ -137,7 +149,8 @@ public class TableClientBuilderTest {
     @Test
     public void applicationIdFallsBackToLogOptions() {
         TableClient tableClient = new TableClientBuilder()
-            .connectionString(connectionString)
+            .endpoint(ENDPOINT)
+            .credential(CREDENTIAL)
             .tableName(tableName)
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .httpClient(httpRequest -> {
@@ -152,7 +165,8 @@ public class TableClientBuilderTest {
     @Test
     public void clientOptionHeadersAreAddedLast() {
         TableClient tableClient = new TableClientBuilder()
-            .connectionString(connectionString)
+            .endpoint(ENDPOINT)
+            .credential(CREDENTIAL)
             .tableName(tableName)
             .clientOptions(new ClientOptions()
                 .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
@@ -170,7 +184,8 @@ public class TableClientBuilderTest {
     @Test
     public void addPerCallPolicy() {
         TableAsyncClient tableAsyncClient = new TableClientBuilder()
-            .connectionString(connectionString)
+            .endpoint(ENDPOINT)
+            .credential(CREDENTIAL)
             .tableName(tableName)
             .addPolicy(new TestUtils.PerCallPolicy())
             .addPolicy(new TestUtils.PerRetryPolicy())
@@ -269,7 +284,7 @@ public class TableClientBuilderTest {
     @Test
     public void bothRetryOptionsAndRetryPolicyPresent() {
         assertThrows(IllegalStateException.class, () -> new TableClientBuilder()
-            .connectionString(connectionString)
+            .connectionString(CONNECTION_STRING)
             .tableName(tableName)
             .serviceVersion(serviceVersion)
             .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))

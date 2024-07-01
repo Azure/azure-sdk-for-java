@@ -9,7 +9,6 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
@@ -70,8 +69,9 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
 
     @Override
     protected void beforeTest() {
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        serviceClient = getClientBuilder(connectionString).buildAsyncClient();
+        Assumptions.assumeFalse(IS_COSMOS_TEST && interceptorManager.isLiveMode(), "Tables CosmosDB live tests are currently disabled.");
+        final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
+        serviceClient = getClientBuilder(endpoint, false).buildAsyncClient();
     }
 
     @Test
@@ -90,7 +90,6 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
      * Tests that a table and entity can be created while having a different tenant ID than the one that will be
      * provided in the authentication challenge.
      */
-    @LiveOnly
     @Test
     public void serviceCreateTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.
@@ -115,7 +114,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         }
         final TableServiceAsyncClient tableServiceAsyncClient =
             getClientBuilder(Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
-                "https://tablestests.table.core.windows.com"), credential, true).buildAsyncClient();
+                "https://tablestests.table.core.windows.com"), true).buildAsyncClient();
 
         // Act & Assert
         // This request will use the tenant ID extracted from the previous request.
@@ -334,7 +333,6 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         TableAsyncClientTest.getEntityWithResponseAsyncImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
     }
 
-    @LiveOnly
     @Test
     public void generateAccountSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -348,7 +346,8 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        final String sas = serviceClient.generateAccountSas(sasSignatureValues);
+        TableServiceAsyncClient serviceClient2 = getClientBuilderWithConnectionString().buildAsyncClient();
+        final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
 
         assertTrue(
             sas.startsWith(
@@ -363,7 +362,6 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         );
     }
 
-    @LiveOnly
     @Test
     public void generateAccountSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -382,7 +380,8 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 .setStartTime(startTime)
                 .setSasIpRange(ipRange);
 
-        final String sas = serviceClient.generateAccountSas(sasSignatureValues);
+        TableServiceAsyncClient serviceClient2 = getClientBuilderWithConnectionString().buildAsyncClient();
+        final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
 
         assertTrue(
             sas.startsWith(
@@ -399,7 +398,6 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         );
     }
 
-    @LiveOnly
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
 
@@ -414,7 +412,8 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        final String sas = serviceClient.generateAccountSas(sasSignatureValues);
+        TableServiceAsyncClient serviceClient2 = getClientBuilderWithConnectionString().buildAsyncClient();
+        final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
         final String tableName = testResourceNamer.randomName("test", 20);
 
         serviceClient.createTable(tableName).block(DEFAULT_TIMEOUT);
