@@ -43,7 +43,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: agrifood
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-verticals-agrifood-farming
         groupId: com.azure

@@ -159,7 +159,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranscriptionAsPlainText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
             Context context);
 
@@ -172,7 +172,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranscriptionAsPlainTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
             Context context);
 
@@ -185,7 +185,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObject(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
             Context context);
 
@@ -198,7 +198,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranscriptionAsResponseObjectSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
             Context context);
 
@@ -211,7 +211,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranslationAsPlainText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranslationOptions, RequestOptions requestOptions,
             Context context);
 
@@ -224,7 +224,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranslationAsPlainTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranslationOptions, RequestOptions requestOptions,
             Context context);
 
@@ -237,7 +237,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranslationAsResponseObject(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranslationOptions, RequestOptions requestOptions,
             Context context);
 
@@ -250,7 +250,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranslationAsResponseObjectSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranslationOptions, RequestOptions requestOptions,
             Context context);
 
@@ -1090,6 +1090,22 @@ public final class OpenAIClientImpl {
      *                         }
      *                     ]
      *                     intent: String (Optional)
+     *                     all_retrieved_documents (Optional): [
+     *                          (Optional){
+     *                             content: String (Required)
+     *                             title: String (Optional)
+     *                             url: String (Optional)
+     *                             filepath: String (Optional)
+     *                             chunk_id: String (Optional)
+     *                             search_queries (Required): [
+     *                                 String (Required)
+     *                             ]
+     *                             data_source_index: int (Required)
+     *                             original_search_score: Double (Optional)
+     *                             rerank_score: Double (Optional)
+     *                             filter_reason: String(score/rerank) (Optional)
+     *                         }
+     *                     ]
      *                 }
      *             }
      *             logprobs (Required): {
@@ -1328,6 +1344,22 @@ public final class OpenAIClientImpl {
      *                         }
      *                     ]
      *                     intent: String (Optional)
+     *                     all_retrieved_documents (Optional): [
+     *                          (Optional){
+     *                             content: String (Required)
+     *                             title: String (Optional)
+     *                             url: String (Optional)
+     *                             filepath: String (Optional)
+     *                             chunk_id: String (Optional)
+     *                             search_queries (Required): [
+     *                                 String (Required)
+     *                             ]
+     *                             data_source_index: int (Required)
+     *                             original_search_score: Double (Optional)
+     *                             rerank_score: Double (Optional)
+     *                             filter_reason: String(score/rerank) (Optional)
+     *                         }
+     *                     ]
      *                 }
      *             }
      *             logprobs (Required): {
@@ -1515,6 +1547,15 @@ public final class OpenAIClientImpl {
      *                     detected: boolean (Required)
      *                 }
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *                 custom_blocklists (Optional): {
+     *                     filtered: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             filtered: boolean (Required)
+     *                             id: String (Required)
+     *                         }
+     *                     ]
+     *                 }
      *             }
      *         }
      *     ]
@@ -1587,6 +1628,15 @@ public final class OpenAIClientImpl {
      *                     detected: boolean (Required)
      *                 }
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *                 custom_blocklists (Optional): {
+     *                     filtered: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             filtered: boolean (Required)
+     *                             id: String (Required)
+     *                         }
+     *                     ]
+     *                 }
      *             }
      *         }
      *     ]

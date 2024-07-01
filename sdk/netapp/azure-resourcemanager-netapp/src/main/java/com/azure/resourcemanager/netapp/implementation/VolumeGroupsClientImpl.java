@@ -65,8 +65,8 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * The interface defining all the services for NetAppManagementClientVolumeGroups to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for NetAppManagementClientVolumeGroups to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")

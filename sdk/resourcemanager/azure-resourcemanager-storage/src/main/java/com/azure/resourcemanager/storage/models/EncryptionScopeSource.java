@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provider for the encryption scope. Possible values (case-insensitive): Microsoft.Storage, Microsoft.KeyVault. */
+/**
+ * The provider for the encryption scope. Possible values (case-insensitive): Microsoft.Storage, Microsoft.KeyVault.
+ */
 public final class EncryptionScopeSource extends ExpandableStringEnum<EncryptionScopeSource> {
-    /** Static value Microsoft.Storage for EncryptionScopeSource. */
+    /**
+     * Static value Microsoft.Storage for EncryptionScopeSource.
+     */
     public static final EncryptionScopeSource MICROSOFT_STORAGE = fromString("Microsoft.Storage");
 
-    /** Static value Microsoft.KeyVault for EncryptionScopeSource. */
+    /**
+     * Static value Microsoft.KeyVault for EncryptionScopeSource.
+     */
     public static final EncryptionScopeSource MICROSOFT_KEY_VAULT = fromString("Microsoft.KeyVault");
 
     /**
      * Creates a new instance of EncryptionScopeSource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class EncryptionScopeSource extends ExpandableStringEnum<Encryption
 
     /**
      * Creates or finds a EncryptionScopeSource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EncryptionScopeSource.
      */
@@ -38,7 +44,7 @@ public final class EncryptionScopeSource extends ExpandableStringEnum<Encryption
 
     /**
      * Gets known EncryptionScopeSource values.
-     *
+     * 
      * @return known EncryptionScopeSource values.
      */
     public static Collection<EncryptionScopeSource> values() {

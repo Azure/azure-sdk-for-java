@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class ProviderListOperationsSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListOperations.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListOperations.json
      */
     /**
      * Sample code: List operations.

@@ -132,8 +132,8 @@ public final class FlowLogProperties {
      */
     public void validate() {
         if (storageId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property storageId in model FlowLogProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property storageId in model FlowLogProperties"));
         }
         if (retentionPolicy() != null) {
             retentionPolicy().validate();

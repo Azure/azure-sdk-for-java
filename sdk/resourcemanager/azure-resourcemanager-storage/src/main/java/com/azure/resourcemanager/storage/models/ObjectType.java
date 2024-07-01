@@ -13,15 +13,19 @@ import java.util.Collection;
  * level.
  */
 public final class ObjectType extends ExpandableStringEnum<ObjectType> {
-    /** Static value Blob for ObjectType. */
+    /**
+     * Static value Blob for ObjectType.
+     */
     public static final ObjectType BLOB = fromString("Blob");
 
-    /** Static value Container for ObjectType. */
+    /**
+     * Static value Container for ObjectType.
+     */
     public static final ObjectType CONTAINER = fromString("Container");
 
     /**
      * Creates a new instance of ObjectType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class ObjectType extends ExpandableStringEnum<ObjectType> {
 
     /**
      * Creates or finds a ObjectType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ObjectType.
      */
@@ -41,7 +45,7 @@ public final class ObjectType extends ExpandableStringEnum<ObjectType> {
 
     /**
      * Gets known ObjectType values.
-     *
+     * 
      * @return known ObjectType values.
      */
     public static Collection<ObjectType> values() {

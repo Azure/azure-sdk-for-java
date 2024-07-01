@@ -95,6 +95,11 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
             imageAnalysisClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `operation-location`, `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493");
+        }
+
         if (sync) {
             client = imageAnalysisClientBuilder.buildClient();
         } else {

@@ -232,7 +232,6 @@
  *     private String hotelId;
  *     private String hotelName;
  *
- *     &#64;JsonProperty&#40;value = &quot;HotelId&quot;&#41;
  *     &#64;SimpleField&#40;isKey = true&#41;
  *     public String getHotelId&#40;&#41; &#123;
  *         return this.hotelId;

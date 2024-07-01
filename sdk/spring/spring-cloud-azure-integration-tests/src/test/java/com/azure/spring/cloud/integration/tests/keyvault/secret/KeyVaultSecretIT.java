@@ -24,10 +24,10 @@ public class KeyVaultSecretIT {
 
     @Test
     public void testKeyVaultSecretOperation() {
-        LOGGER.info("KeyVaultSecretIT begin.");
+        LOGGER.info("testKeyVaultSecretOperation begin.");
         client.setSecret(NAME, VALUE);
         KeyVaultSecret secret = client.getSecret(NAME);
         Assertions.assertEquals(VALUE, secret.getValue());
-        LOGGER.info("KeyVaultSecretIT end.");
+        LOGGER.info("testKeyVaultSecretOperation end.");
     }
 }

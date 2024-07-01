@@ -7,22 +7,26 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The resource group properties. */
+/**
+ * The resource group properties.
+ */
 @Immutable
 public final class ResourceGroupProperties {
     /*
-     * The provisioning state.
+     * The provisioning state. 
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
-    /** Creates an instance of ResourceGroupProperties class. */
+    /**
+     * Creates an instance of ResourceGroupProperties class.
+     */
     public ResourceGroupProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -31,7 +35,7 @@ public final class ResourceGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -22,14 +22,13 @@ public class ChatFinishDetails implements JsonSerializable<ChatFinishDetails> {
      */
     @Generated
     protected ChatFinishDetails() {
-        this.type = "ChatFinishDetails";
     }
 
     /*
      * The object type.
      */
     @Generated
-    private String type;
+    private String type = "ChatFinishDetails";
 
     /**
      * Get the type property: The object type.

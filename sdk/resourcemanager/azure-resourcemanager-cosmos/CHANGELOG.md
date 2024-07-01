@@ -1,6 +1,6 @@
 # Release History
 
-## 2.40.0-beta.1 (Unreleased)
+## 2.41.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,26 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.40.0 (2024-06-24)
+
+### Breaking Changes
+
+- Properties under `ServiceResourceCreateUpdateParameters` class is moved to `ServiceResourceCreateUpdateProperties` class of its "properties" property.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-05-15`.
+
+## 2.40.0-beta.1 (2024-06-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-05-15-preview`.
 
 ## 2.39.0 (2024-05-24)
 

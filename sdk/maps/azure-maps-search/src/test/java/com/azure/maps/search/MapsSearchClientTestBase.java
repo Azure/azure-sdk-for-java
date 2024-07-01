@@ -3,28 +3,22 @@
 
 package com.azure.maps.search;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
 import com.azure.maps.search.models.MapsPolygon;
@@ -46,13 +40,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MapsSearchClientTestBase extends TestProxyTestBase {
-    private static final String SDK_NAME = "client_name";
-    private static final String SDK_VERSION = "client_version";
-
-    static final String FAKE_API_KEY = "fakeKeyPlaceholder";
-
-    static InterceptorManager interceptorManagerTestBase;
-
     Duration durationTestMode;
 
     @Override
@@ -62,28 +49,29 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
         } else {
             durationTestMode = TestUtils.DEFAULT_POLL_INTERVAL;
         }
-        interceptorManagerTestBase = interceptorManager;
     }
 
     MapsSearchClientBuilder getMapsSearchAsyncClientBuilder(HttpClient httpClient,
-                                                            MapsSearchServiceVersion serviceVersion) {
-        MapsSearchClientBuilder builder = new MapsSearchClientBuilder()
-            .pipeline(getHttpPipeline(httpClient))
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion);
+        MapsSearchServiceVersion serviceVersion) {
+        MapsSearchClientBuilder builder = modifyBuilder(httpClient, new MapsSearchClientBuilder()).serviceVersion(
+            serviceVersion);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.endpoint("https://localhost:8080");
         }
 
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `id` and `name` sanitizer from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+        }
+
         return builder;
     }
 
-    HttpPipeline getHttpPipeline(HttpClient httpClient) {
+    MapsSearchClientBuilder modifyBuilder(HttpClient httpClient, MapsSearchClientBuilder builder) {
         if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
-            interceptorManager.addSanitizers(
-                Collections.singletonList(
-                    new TestProxySanitizer("subscription-key", ".+", "REDACTED", TestProxySanitizerType.HEADER)));
+            interceptorManager.addSanitizers(Collections.singletonList(
+                new TestProxySanitizer("subscription-key", ".+", "REDACTED", TestProxySanitizerType.HEADER)));
         }
 
         if (interceptorManager.isPlaybackMode()) {
@@ -94,32 +82,23 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
             interceptorManager.addMatchers(customMatchers);
         }
 
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(new UserAgentPolicy(null, SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone()));
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
-        policies.add(new RetryPolicy(new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16))));
-        policies.add(
-            new AzureKeyCredentialPolicy(
-                MapsSearchClientBuilder.MAPS_SUBSCRIPTION_KEY,
-                new AzureKeyCredential(interceptorManager.isPlaybackMode()
-                                       ? FAKE_API_KEY
-                                       : Configuration.getGlobalConfiguration().get("SUBSCRIPTION_KEY"))));
-
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
+        builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16))))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         if (interceptorManager.isRecordMode()) {
-            policies.add(interceptorManager.getRecordPolicy());
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .mapsClientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
+        } else if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new MockTokenCredential())
+                .mapsClientId("testSearchClient");
+        } else {
+            builder.credential(new AzurePowerShellCredentialBuilder().build())
+                .mapsClientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
         }
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .build();
+        return builder.httpClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
     }
 
     protected <T, U> SyncPoller<T, U> setPollInterval(SyncPoller<T, U> syncPoller) {
@@ -134,18 +113,17 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
         assertTrue(ids.contains(expected.get(0).getProviderId()));
     }
 
-    static void validateGetPolygonsWithResponse(List<MapsPolygon> expected, int expectedStatusCode,
-                                                Response<List<MapsPolygon>> response) {
+    static void validateGetPolygonsWithResponse(List<MapsPolygon> expected, Response<List<MapsPolygon>> response) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
         validateGetPolygons(expected, response.getValue());
     }
 
     static List<String> getStreetNameAndNumberList(List<SearchAddressResultItem> list) {
         List<String> streetNameAndNumberList = new ArrayList<>();
 
-        for (int i = 0; i < list.size(); i++) {
-            streetNameAndNumberList.add(list.get(i).getAddress().getStreetNameAndNumber());
+        for (SearchAddressResultItem searchAddressResultItem : list) {
+            streetNameAndNumberList.add(searchAddressResultItem.getAddress().getStreetNameAndNumber());
         }
 
         return streetNameAndNumberList;
@@ -162,10 +140,9 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
             streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateFuzzySearchWithResponse(SearchAddressResult expected, int expectedStatusCode,
-                                                Response<SearchAddressResult> response) {
+    static void validateFuzzySearchWithResponse(SearchAddressResult expected, Response<SearchAddressResult> response) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
         validateFuzzySearch(expected, response.getValue());
     }
 
@@ -180,10 +157,10 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
             streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateSearchPointOfInterestWithResponse(SearchAddressResult expected, int expectedStatusCode,
-                                                          Response<SearchAddressResult> response) {
+    static void validateSearchPointOfInterestWithResponse(SearchAddressResult expected,
+        Response<SearchAddressResult> response) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
         validateSearchPointOfInterest(expected, response.getValue());
     }
 
@@ -198,10 +175,10 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
             streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateSearchNearbyPointOfInterestWithResponse(SearchAddressResult expected, int expectedStatusCode,
-                                                                Response<SearchAddressResult> response) {
+    static void validateSearchNearbyPointOfInterestWithResponse(SearchAddressResult expected,
+        Response<SearchAddressResult> response) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
         validateSearchNearbyPointOfInterest(expected, response.getValue());
     }
 
@@ -216,30 +193,29 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
             streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateSearchPointOfInterestCategoryWithResponse(SearchAddressResult expected, int expectedStatusCode,
-                                                                  Response<SearchAddressResult> response) {
+    static void validateSearchPointOfInterestCategoryWithResponse(SearchAddressResult expected,
+        Response<SearchAddressResult> response) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
         validateSearchPointOfInterestCategory(expected, response.getValue());
     }
 
     static void validateSearchPointOfInterestCategoryTree(PointOfInterestCategoryTreeResult expected,
-                                                          PointOfInterestCategoryTreeResult actual) {
+        PointOfInterestCategoryTreeResult actual) {
         List<PointOfInterestCategory> pointOfInterestCategoryList = actual.getCategories();
         List<String> names = new ArrayList<>();
 
-        for (int i = 0; i < pointOfInterestCategoryList.size(); i++) {
-            names.add(pointOfInterestCategoryList.get(i).getName());
+        for (PointOfInterestCategory pointOfInterestCategory : pointOfInterestCategoryList) {
+            names.add(pointOfInterestCategory.getName());
         }
 
         assertTrue(names.contains(expected.getCategories().get(0).getName()));
     }
 
     static void validateSearchPointOfInterestCategoryTreeWithResponse(PointOfInterestCategoryTreeResult expected,
-                                                                      int expectedStatusCode,
-                                                                      Response<PointOfInterestCategoryTreeResult> response) {
+        Response<PointOfInterestCategoryTreeResult> response) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
         validateSearchPointOfInterestCategoryTree(expected, response.getValue());
     }
 
@@ -254,10 +230,10 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
             streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateSearchAddressWithResponse(SearchAddressResult expected, int expectedStatusCode,
-                                                  Response<SearchAddressResult> response) {
+    static void validateSearchAddressWithResponse(SearchAddressResult expected,
+        Response<SearchAddressResult> response) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
         validateSearchAddress(expected, response.getValue());
     }
 
@@ -267,25 +243,24 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
         assertEquals(expected.getAddresses().size(), actual.getAddresses().size());
     }
 
-    static void validateReverseSearchAddressWithResponse(ReverseSearchAddressResult expected, int expectedStatusCode,
-                                                         Response<ReverseSearchAddressResult> response) {
+    static void validateReverseSearchAddressWithResponse(ReverseSearchAddressResult expected,
+        Response<ReverseSearchAddressResult> response) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
         validateReverseSearchAddress(expected, response.getValue());
     }
 
     static void validateReverseSearchCrossStreetAddress(ReverseSearchCrossStreetAddressResult expected,
-                                                        ReverseSearchCrossStreetAddressResult actual) {
+        ReverseSearchCrossStreetAddressResult actual) {
         assertNotNull(actual.getSummary());
         assertNotNull(actual.getAddresses());
         assertEquals(expected.getAddresses().size(), actual.getAddresses().size());
     }
 
     static void validateReverseSearchCrossStreetAddressWithResponse(ReverseSearchCrossStreetAddressResult expected,
-                                                                    int expectedStatusCode,
-                                                                    Response<ReverseSearchCrossStreetAddressResult> response) {
+        Response<ReverseSearchCrossStreetAddressResult> response) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
         validateReverseSearchCrossStreetAddress(expected, response.getValue());
     }
 
@@ -300,10 +275,10 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
             streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateSearchStructuredAddressWithResponse(SearchAddressResult expected, int expectedStatusCode,
-                                                            Response<SearchAddressResult> response) {
+    static void validateSearchStructuredAddressWithResponse(SearchAddressResult expected,
+        Response<SearchAddressResult> response) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
         validateSearchStructuredAddress(expected, response.getValue());
     }
 
@@ -318,10 +293,10 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
             streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateSearchInsideGeometryWithResponse(SearchAddressResult expected, int expectedStatusCode,
-                                                         Response<SearchAddressResult> response) {
+    static void validateSearchInsideGeometryWithResponse(SearchAddressResult expected,
+        Response<SearchAddressResult> response) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
         validateSearchStructuredAddress(expected, response.getValue());
 
     }
@@ -337,10 +312,10 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
             streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateSearchAlongRouteWithResponse(SearchAddressResult expected, int expectedStatusCode,
-                                                     Response<SearchAddressResult> response) {
+    static void validateSearchAlongRouteWithResponse(SearchAddressResult expected,
+        Response<SearchAddressResult> response) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
         validateSearchStructuredAddress(expected, response.getValue());
     }
 
@@ -353,7 +328,7 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
     }
 
     static void validateBeginReverseSearchAddressBatch(BatchReverseSearchResult expected,
-                                                       BatchReverseSearchResult actual) {
+        BatchReverseSearchResult actual) {
         assertEquals(expected.getBatchItems().size(), actual.getBatchItems().size());
     }
 }

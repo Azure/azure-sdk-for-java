@@ -28,7 +28,7 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
      * The object type.
      */
     @Generated
-    private String type;
+    private String type = "ChatCompletionsToolCall";
 
     /**
      * Get the id property: The ID of the tool call.
@@ -129,7 +129,6 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
      */
     @Generated
     public ChatCompletionsToolCall(String id) {
-        this.type = "ChatCompletionsToolCall";
         this.id = id;
     }
 }

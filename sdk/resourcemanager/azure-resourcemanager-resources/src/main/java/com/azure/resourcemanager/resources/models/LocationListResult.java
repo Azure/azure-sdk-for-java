@@ -9,7 +9,9 @@ import com.azure.resourcemanager.resources.fluent.models.LocationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Location list operation response. */
+/**
+ * Location list operation response.
+ */
 @Fluent
 public final class LocationListResult {
     /*
@@ -18,13 +20,15 @@ public final class LocationListResult {
     @JsonProperty(value = "value")
     private List<LocationInner> value;
 
-    /** Creates an instance of LocationListResult class. */
+    /**
+     * Creates an instance of LocationListResult class.
+     */
     public LocationListResult() {
     }
 
     /**
      * Get the value property: An array of locations.
-     *
+     * 
      * @return the value value.
      */
     public List<LocationInner> value() {
@@ -33,7 +37,7 @@ public final class LocationListResult {
 
     /**
      * Set the value property: An array of locations.
-     *
+     * 
      * @param value the value value to set.
      * @return the LocationListResult object itself.
      */
@@ -44,7 +48,7 @@ public final class LocationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

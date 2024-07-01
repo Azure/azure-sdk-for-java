@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-vertx</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
+  <version>1.0.0-beta.20</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
 
   <name>Microsoft Azure Vert.x HTTP Client Library</name>
   <description>This package contains the Vert.x HTTP client plugin for azure-core.</description>
@@ -86,14 +86,14 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-codegen</artifactId>
-      <version>4.5.7</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
+      <version>4.5.8</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
-      <version>4.5.7</version> <!-- {x-version-update;io.vertx:vertx-core;external_dependency} -->
+      <version>4.5.8</version> <!-- {x-version-update;io.vertx:vertx-core;external_dependency} -->
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Vert.x Web Client -->
@@ -107,20 +107,20 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.36</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.38</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -175,9 +175,9 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.vertx:vertx-codegen:[4.5.7]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
-                <include>io.vertx:vertx-core:[4.5.7]</include> <!-- {x-include-update;io.vertx:vertx-core;external_dependency} -->
-                <include>io.vertx:vertx-reactive-streams:[4.5.7]</include> <!-- {x-include-update;io.vertx:vertx-reactive-streams;external_dependency} -->
+                <include>io.vertx:vertx-codegen:[4.5.8]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
+                <include>io.vertx:vertx-core:[4.5.8]</include> <!-- {x-include-update;io.vertx:vertx-core;external_dependency} -->
+                <include>io.vertx:vertx-reactive-streams:[4.5.8]</include> <!-- {x-include-update;io.vertx:vertx-reactive-streams;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

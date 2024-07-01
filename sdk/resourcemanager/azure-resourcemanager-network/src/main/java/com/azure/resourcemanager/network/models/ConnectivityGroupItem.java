@@ -130,12 +130,14 @@ public final class ConnectivityGroupItem {
      */
     public void validate() {
         if (networkGroupId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkGroupId in model ConnectivityGroupItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkGroupId in model ConnectivityGroupItem"));
         }
         if (groupConnectivity() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property groupConnectivity in model ConnectivityGroupItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property groupConnectivity in model ConnectivityGroupItem"));
         }
     }
 

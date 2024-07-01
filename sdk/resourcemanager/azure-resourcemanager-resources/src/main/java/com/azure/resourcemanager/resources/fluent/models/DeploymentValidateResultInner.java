@@ -9,12 +9,14 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.resources.models.DeploymentPropertiesExtended;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information from validate template deployment response. */
+/**
+ * Information from validate template deployment response.
+ */
 @Fluent
 public final class DeploymentValidateResultInner {
     /*
      * Error Response
-     *
+     * 
      * The deployment validation error.
      */
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
@@ -26,15 +28,17 @@ public final class DeploymentValidateResultInner {
     @JsonProperty(value = "properties")
     private DeploymentPropertiesExtended properties;
 
-    /** Creates an instance of DeploymentValidateResultInner class. */
+    /**
+     * Creates an instance of DeploymentValidateResultInner class.
+     */
     public DeploymentValidateResultInner() {
     }
 
     /**
      * Get the error property: Error Response
-     *
-     * <p>The deployment validation error.
-     *
+     * 
+     * The deployment validation error.
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -43,7 +47,7 @@ public final class DeploymentValidateResultInner {
 
     /**
      * Get the properties property: The template deployment properties.
-     *
+     * 
      * @return the properties value.
      */
     public DeploymentPropertiesExtended properties() {
@@ -52,7 +56,7 @@ public final class DeploymentValidateResultInner {
 
     /**
      * Set the properties property: The template deployment properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DeploymentValidateResultInner object itself.
      */
@@ -63,7 +67,7 @@ public final class DeploymentValidateResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

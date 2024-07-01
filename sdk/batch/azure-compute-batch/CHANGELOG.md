@@ -1,14 +1,10 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.0-beta.2 (2024-05-22)
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed a bug that caused `long` properties on models to be deserialized incorrectly.
 
 ## 1.0.0-beta.1 (2024-05-16)
 

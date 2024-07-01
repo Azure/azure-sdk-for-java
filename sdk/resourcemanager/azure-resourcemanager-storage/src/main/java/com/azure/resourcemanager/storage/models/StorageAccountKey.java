@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** An access key for the storage account. */
+/**
+ * An access key for the storage account.
+ */
 @Immutable
 public final class StorageAccountKey {
     /*
@@ -35,13 +37,15 @@ public final class StorageAccountKey {
     @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
-    /** Creates an instance of StorageAccountKey class. */
+    /**
+     * Creates an instance of StorageAccountKey class.
+     */
     public StorageAccountKey() {
     }
 
     /**
      * Get the keyName property: Name of the key.
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -50,7 +54,7 @@ public final class StorageAccountKey {
 
     /**
      * Get the value property: Base 64-encoded value of the key.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -59,7 +63,7 @@ public final class StorageAccountKey {
 
     /**
      * Get the permissions property: Permissions for the key -- read-only or full permissions.
-     *
+     * 
      * @return the permissions value.
      */
     public KeyPermission permissions() {
@@ -68,7 +72,7 @@ public final class StorageAccountKey {
 
     /**
      * Get the creationTime property: Creation time of the key, in round trip date format.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -77,7 +81,7 @@ public final class StorageAccountKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

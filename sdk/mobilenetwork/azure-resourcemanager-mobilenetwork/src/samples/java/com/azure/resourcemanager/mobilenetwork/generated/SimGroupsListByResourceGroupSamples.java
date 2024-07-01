@@ -9,9 +9,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
  */
 public final class SimGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/
-     * SimGroupListByResourceGroup.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGroupListByResourceGroup.json
      */
     /**
      * Sample code: List SIM groups in a resource group.

@@ -37,13 +37,15 @@ public final class StorageAccountInternetEndpoints {
     @JsonProperty(value = "dfs", access = JsonProperty.Access.WRITE_ONLY)
     private String dfs;
 
-    /** Creates an instance of StorageAccountInternetEndpoints class. */
+    /**
+     * Creates an instance of StorageAccountInternetEndpoints class.
+     */
     public StorageAccountInternetEndpoints() {
     }
 
     /**
      * Get the blob property: Gets the blob endpoint.
-     *
+     * 
      * @return the blob value.
      */
     public String blob() {
@@ -52,7 +54,7 @@ public final class StorageAccountInternetEndpoints {
 
     /**
      * Get the file property: Gets the file endpoint.
-     *
+     * 
      * @return the file value.
      */
     public String file() {
@@ -61,7 +63,7 @@ public final class StorageAccountInternetEndpoints {
 
     /**
      * Get the web property: Gets the web endpoint.
-     *
+     * 
      * @return the web value.
      */
     public String web() {
@@ -70,7 +72,7 @@ public final class StorageAccountInternetEndpoints {
 
     /**
      * Get the dfs property: Gets the dfs endpoint.
-     *
+     * 
      * @return the dfs value.
      */
     public String dfs() {
@@ -79,7 +81,7 @@ public final class StorageAccountInternetEndpoints {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

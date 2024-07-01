@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -44,8 +45,7 @@ public final class Ingress {
     private List<TrafficWeight> traffic;
 
     /*
-     * Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected
-     * to HTTPS connections
+     * Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS connections
      */
     @JsonProperty(value = "allowInsecure")
     private Boolean allowInsecure;
@@ -58,7 +58,7 @@ public final class Ingress {
 
     /**
      * Get the fqdn property: Hostname.
-     * 
+     *
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -67,7 +67,7 @@ public final class Ingress {
 
     /**
      * Get the external property: Bool indicating if app exposes an external http endpoint.
-     * 
+     *
      * @return the external value.
      */
     public Boolean external() {
@@ -76,7 +76,7 @@ public final class Ingress {
 
     /**
      * Set the external property: Bool indicating if app exposes an external http endpoint.
-     * 
+     *
      * @param external the external value to set.
      * @return the Ingress object itself.
      */
@@ -87,7 +87,7 @@ public final class Ingress {
 
     /**
      * Get the targetPort property: Target Port in containers for traffic from ingress.
-     * 
+     *
      * @return the targetPort value.
      */
     public Integer targetPort() {
@@ -96,7 +96,7 @@ public final class Ingress {
 
     /**
      * Set the targetPort property: Target Port in containers for traffic from ingress.
-     * 
+     *
      * @param targetPort the targetPort value to set.
      * @return the Ingress object itself.
      */
@@ -107,7 +107,7 @@ public final class Ingress {
 
     /**
      * Get the transport property: Ingress transport protocol.
-     * 
+     *
      * @return the transport value.
      */
     public IngressTransportMethod transport() {
@@ -116,7 +116,7 @@ public final class Ingress {
 
     /**
      * Set the transport property: Ingress transport protocol.
-     * 
+     *
      * @param transport the transport value to set.
      * @return the Ingress object itself.
      */
@@ -127,7 +127,7 @@ public final class Ingress {
 
     /**
      * Get the traffic property: The traffic property.
-     * 
+     *
      * @return the traffic value.
      */
     public List<TrafficWeight> traffic() {
@@ -136,7 +136,7 @@ public final class Ingress {
 
     /**
      * Set the traffic property: The traffic property.
-     * 
+     *
      * @param traffic the traffic value to set.
      * @return the Ingress object itself.
      */
@@ -148,7 +148,7 @@ public final class Ingress {
     /**
      * Get the allowInsecure property: Bool indicating if HTTP connections to is allowed. If set to false HTTP
      * connections are automatically redirected to HTTPS connections.
-     * 
+     *
      * @return the allowInsecure value.
      */
     public Boolean allowInsecure() {
@@ -158,7 +158,7 @@ public final class Ingress {
     /**
      * Set the allowInsecure property: Bool indicating if HTTP connections to is allowed. If set to false HTTP
      * connections are automatically redirected to HTTPS connections.
-     * 
+     *
      * @param allowInsecure the allowInsecure value to set.
      * @return the Ingress object itself.
      */
@@ -169,7 +169,7 @@ public final class Ingress {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -2,7 +2,7 @@
 # make sure the version is same to sdk/spring/scripts/spring_boot_2.7.18_managed_external_dependencies.txt
 # If your version is different from sdk/spring/scripts/spring_boot_2.7.18_managed_external_dependencies.txt,
 # please discuss with Spring Integration team members:
-# @chenrujun (rujche), @saragluna (xiada), @yiliuTo (yiliu6), @backwind1233 (zhihaoguo).
+# @rujche (rujche), @saragluna (xiada), @yiliuTo (yiliu6), @backwind1233 (zhihaoguo).
 # Thanks.
 
 # Format;
@@ -58,25 +58,25 @@ io.fabric8:kubernetes-client;6.12.1
 io.micrometer:micrometer-core;1.9.17
 io.micrometer:micrometer-registry-azure-monitor;1.9.17
 io.micrometer:micrometer-registry-graphite;1.9.17
-io.netty:netty-buffer;4.1.108.Final
-io.netty:netty-common;4.1.108.Final
-io.netty:netty-codec;4.1.108.Final
-io.netty:netty-codec-http;4.1.108.Final
-io.netty:netty-codec-http2;4.1.108.Final
-io.netty:netty-transport;4.1.108.Final
-io.netty:netty-handler;4.1.108.Final
-io.netty:netty-handler-proxy;4.1.108.Final
+io.netty:netty-buffer;4.1.110.Final
+io.netty:netty-common;4.1.110.Final
+io.netty:netty-codec;4.1.110.Final
+io.netty:netty-codec-http;4.1.110.Final
+io.netty:netty-codec-http2;4.1.110.Final
+io.netty:netty-transport;4.1.110.Final
+io.netty:netty-handler;4.1.110.Final
+io.netty:netty-handler-proxy;4.1.110.Final
 io.netty:netty-tcnative;2.0.65.Final
 io.netty:netty-tcnative-boringssl-static;2.0.65.Final
-io.netty:netty-transport-native-epoll;4.1.108.Final
-io.netty:netty-transport-native-unix-common;4.1.108.Final
-io.netty:netty-transport-native-kqueue;4.1.108.Final
-io.projectreactor.netty:reactor-netty;1.0.43
-io.projectreactor.netty:reactor-netty-http;1.0.43
-io.projectreactor:reactor-core;3.4.36
-io.vertx:vertx-codegen;4.5.7
-io.vertx:vertx-core;4.5.7
-io.vertx:vertx-reactive-streams;4.5.7
+io.netty:netty-transport-native-epoll;4.1.110.Final
+io.netty:netty-transport-native-unix-common;4.1.110.Final
+io.netty:netty-transport-native-kqueue;4.1.110.Final
+io.projectreactor.netty:reactor-netty;1.0.45
+io.projectreactor.netty:reactor-netty-http;1.0.45
+io.projectreactor:reactor-core;3.4.38
+io.vertx:vertx-codegen;4.5.8
+io.vertx:vertx-core;4.5.8
+io.vertx:vertx-reactive-streams;4.5.8
 jakarta.validation:jakarta.validation-api;2.0.2
 javax.annotation:javax.annotation-api;1.3.2
 javax.json:javax.json-api;1.1.4
@@ -201,7 +201,7 @@ com.microsoft.azure:azure-mgmt-resources;1.3.0
 com.microsoft.azure:azure-mgmt-search;1.24.1
 com.microsoft.azure:azure-mgmt-storage;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
-com.microsoft.azure:msal4j;1.15.0
+com.microsoft.azure:msal4j;1.15.1
 com.microsoft.azure:msal4j-brokers;1.0.0
 com.microsoft.azure:msal4j-persistence-extension;1.3.0
 com.sun.activation:jakarta.activation;1.2.2
@@ -220,17 +220,18 @@ io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.4.0-alp
 io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.4.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-jdbc;2.4.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.4.0-alpha
+io.opentelemetry.semconv:opentelemetry-semconv-incubating;1.25.0-alpha
 
-io.projectreactor:reactor-test;3.4.36
+io.projectreactor:reactor-test;3.4.38
 io.github.hakky54:logcaptor;2.9.0
 com.squareup.okio:okio;3.9.0
 com.squareup.okio:okio-jvm;3.9.0
 junit:junit;4.13.2
 commons-cli:commons-cli;1.3
 org.assertj:assertj-core;3.22.0
-org.bouncycastle:bcprov-jdk15to18;1.77
-org.bouncycastle:bcprov-jdk18on;1.77
-org.bouncycastle:bcpkix-lts8on;2.73.3
+org.bouncycastle:bcprov-jdk15to18;1.78.1
+org.bouncycastle:bcprov-jdk18on;1.78.1
+org.bouncycastle:bcpkix-lts8on;2.73.6
 org.eclipse.jetty:jetty-http;9.4.54.v20240208
 org.eclipse.jetty:jetty-server;9.4.54.v20240208
 org.eclipse.jetty:jetty-servlet;9.4.54.v20240208
@@ -265,7 +266,7 @@ com.google.truth:truth;1.1.3
 ## Maven Tools versions
 com.azure:sdk-build-tools;1.0.0
 com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.10
-com.beust:jcommander;1.78
+com.beust:jcommander;1.82
 # Spotless 2.30.0 is the last version supporting a Java 8 runtime
 com.diffplug.spotless:spotless-maven-plugin;2.30.0
 com.github.javaparser:javaparser-core;3.24.2
@@ -283,7 +284,6 @@ io.reactivex.rxjava2:rxjava;2.2.21
 net.java.dev.jna:jna-platform;5.6.0
 net.oneandone.reflections8:reflections8;0.11.7
 net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.6
-net.jonathangiles.tools:whitelistgenerator-maven-plugin;1.0.2
 org.apache.commons:commons-collections4;4.4
 org.apache.commons:commons-text;1.10.0
 org.apache.commons:commons-dbcp2;2.9.0

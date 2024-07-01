@@ -11,19 +11,19 @@ public final class EloquaSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EloquaSource model = BinaryData.fromString(
-            "{\"type\":\"kjithx\",\"query\":\"dataqrc\",\"queryTimeout\":\"dataovljtrmlxrqllug\",\"additionalColumns\":\"datambwdkziwwb\",\"sourceRetryCount\":\"datavpkvc\",\"sourceRetryWait\":\"datawcfshhck\",\"maxConcurrentConnections\":\"datafm\",\"disableMetricsCollection\":\"dataprtk\",\"\":{\"cugwkuhqbwgmznv\":\"datawuep\",\"qkieyqpubw\":\"datawcnj\",\"cjrbsq\":\"datazxetx\"}}")
+            "{\"type\":\"EloquaSource\",\"query\":\"dataxamxi\",\"queryTimeout\":\"datar\",\"additionalColumns\":\"datakglynbqpeoj\",\"sourceRetryCount\":\"databoggw\",\"sourceRetryWait\":\"datahtnywgtsodnxeir\",\"maxConcurrentConnections\":\"datawjimcfrhtzgduvoa\",\"disableMetricsCollection\":\"dataocalptfpbzyqb\",\"\":{\"xtbrqnyurxl\":\"datacyramvzu\",\"gx\":\"datauwxslzq\",\"urtnwbjjy\":\"databn\",\"aaoofltbsay\":\"dataupckhfbmdemohlsh\"}}")
             .toObject(EloquaSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EloquaSource model = new EloquaSource().withSourceRetryCount("datavpkvc")
-            .withSourceRetryWait("datawcfshhck")
-            .withMaxConcurrentConnections("datafm")
-            .withDisableMetricsCollection("dataprtk")
-            .withQueryTimeout("dataovljtrmlxrqllug")
-            .withAdditionalColumns("datambwdkziwwb")
-            .withQuery("dataqrc");
+        EloquaSource model = new EloquaSource().withSourceRetryCount("databoggw")
+            .withSourceRetryWait("datahtnywgtsodnxeir")
+            .withMaxConcurrentConnections("datawjimcfrhtzgduvoa")
+            .withDisableMetricsCollection("dataocalptfpbzyqb")
+            .withQueryTimeout("datar")
+            .withAdditionalColumns("datakglynbqpeoj")
+            .withQuery("dataxamxi");
         model = BinaryData.fromObject(model).toObject(EloquaSource.class);
     }
 }

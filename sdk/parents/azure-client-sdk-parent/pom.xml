@@ -208,10 +208,6 @@
     <graalvm.disable>true</graalvm.disable>
     <nativeImage.buildArgs></nativeImage.buildArgs>
 
-    <!-- The following properties configure the revapi-maven-plugin. -->
-    <!-- This property configures whether the revapi-maven-plugin should run. -->
-    <revapi.skip>false</revapi.skip>
-
     <!-- This property configures whether the revapi-maven-plugin should fail on errors. -->
     <revapi.failBuildOnProblemsFound>true</revapi.failBuildOnProblemsFound>
 
@@ -1007,13 +1003,13 @@
           <configuration>
             <skip>${revapi.skip}</skip>
             <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
-            <analysisConfigurationFiles combine.self="append" combine.children="append">
+            <analysisConfigurationFiles>
               <configurationFile>
                 <resource>revapi/revapi.json</resource>
               </configurationFile>
             </analysisConfigurationFiles>
             <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
-            <checkDependencies>true</checkDependencies>
+            <checkDependencies>false</checkDependencies>
             <failBuildOnProblemsFound>${revapi.failBuildOnProblemsFound}</failBuildOnProblemsFound>
             <!-- The following configures reporting to file in addition to CLI reporting. -->
             <analysisConfiguration>
@@ -1458,65 +1454,6 @@
       </build>
     </profile>
 
-    <!-- Runs the dependency checker. -->
-    <profile>
-      <id>dependency-checker</id>
-      <activation>
-        <property>
-          <name>dependency-checker</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>net.jonathangiles.tools</groupId>
-            <artifactId>dependencyChecker-maven-plugin</artifactId>
-            <version>1.0.6</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
-            <inherited>false</inherited>
-            <executions>
-              <execution>
-                <id>generateReport</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-                <configuration>
-                  <reporters>html</reporters>
-                  <showAll>true</showAll>
-                  <dependencyManagement>true</dependencyManagement>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>net.jonathangiles.tools</groupId>
-            <artifactId>whitelistgenerator-maven-plugin</artifactId>
-            <version>1.0.2</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>generateAllowlistReport</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>report</goal>
-                </goals>
-                <configuration>
-                  <baseDir>.</baseDir>
-                  <reportFile>target/dependency-allowlist.json</reportFile>
-                  <ignoredGA>
-                    <param>com.azure:azure-cosmos-benchmark</param>
-                    <param>com.azure:azure-core-test</param>
-                    <param>com.azure:azure-e2e</param>
-                    <param>com.azure:azure-storage-perf</param>
-                    <param>com.azure:perf-test-core</param>
-                  </ignoredGA>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
     <profile>
       <id>parallel-test-playback-no-azure-test-mode-env</id>
       <activation>
@@ -1814,32 +1751,6 @@
       <properties>
         <java.security.manager.configuration>-Djava.security.manager=allow</java.security.manager.configuration>
       </properties>
-    </profile>
-
-    <profile>
-      <id>standalone-revapi-suppressions</id>
-      <activation>
-        <file>
-          <exists>revapi-suppressions.json</exists>
-        </file>
-      </activation>
-
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.revapi</groupId>
-            <artifactId>revapi-maven-plugin</artifactId>
-            <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-            <configuration>
-              <analysisConfigurationFiles combine.self="append" combine.children="append">
-                <configurationFile>
-                  <path>revapi-suppressions.json</path>
-                </configurationFile>
-              </analysisConfigurationFiles>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
     </profile>
   </profiles>
 </project>

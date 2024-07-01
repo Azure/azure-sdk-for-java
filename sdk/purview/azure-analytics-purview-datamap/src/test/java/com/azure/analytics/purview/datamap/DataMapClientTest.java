@@ -17,11 +17,11 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.time.OffsetDateTime;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
 
 class DataMapClientTest extends TestProxyTestBase {
     protected EntityClient entityClient;
@@ -125,6 +125,11 @@ class DataMapClientTest extends TestProxyTestBase {
                 .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             typeDefinitionClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+
+        if (!interceptorManager.isLiveMode()) {
+            // Disable `$..name` sanitizer from list of common sanitizers
+            interceptorManager.removeSanitizers("AZSDK3493");
         }
         typeDefinitionClient = typeDefinitionClientbuilder.buildTypeDefinitionClient();
 

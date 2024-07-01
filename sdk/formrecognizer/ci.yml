@@ -40,7 +40,6 @@ extends:
   parameters:
     ServiceDirectory: formrecognizer
     JavadocSafeJavaBuildVersion: '1.21'
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-ai-formrecognizer
         groupId: com.azure

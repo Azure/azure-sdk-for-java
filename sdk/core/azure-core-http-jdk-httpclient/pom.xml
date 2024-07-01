@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-jdk-httpclient</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
+  <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
 
   <name>Microsoft Azure JDK HTTP Client Library</name>
   <description>This package contains the Azure HTTP client library using the JDK HttpClient API.</description>
@@ -92,20 +92,20 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.36</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.38</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

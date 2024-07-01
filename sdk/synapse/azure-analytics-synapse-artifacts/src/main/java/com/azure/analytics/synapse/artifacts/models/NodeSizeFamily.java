@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class NodeSizeFamily extends ExpandableStringEnum<NodeSizeFamily> {
      * @param name a name to look for.
      * @return the corresponding NodeSizeFamily.
      */
-    @JsonCreator
     public static NodeSizeFamily fromString(String name) {
         return fromString(name, NodeSizeFamily.class);
     }

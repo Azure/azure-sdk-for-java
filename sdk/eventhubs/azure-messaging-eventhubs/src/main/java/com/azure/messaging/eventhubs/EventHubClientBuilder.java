@@ -17,6 +17,8 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
+import com.azure.core.amqp.implementation.handler.ConnectionHandler;
+import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
@@ -47,7 +49,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
@@ -258,7 +261,9 @@ public class EventHubClientBuilder implements
     private Integer prefetchCount;
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
-    private URL customEndpointAddress;
+
+    private URI customEndpointAddress;
+    private ConnectionStringProperties connectionStringProperties;
 
     static {
         final Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
@@ -278,50 +283,6 @@ public class EventHubClientBuilder implements
      */
     public EventHubClientBuilder() {
         transport = AmqpTransportType.AMQP;
-    }
-
-    /**
-     * Sets the credential information given a connection string to the Event Hub instance or the Event Hubs namespace.
-     *
-     * <p>
-     * If the connection string is copied from the Event Hubs namespace, it will likely not contain the name to the
-     * desired Event Hub, which is needed. In this case, the name can be added manually by adding {@literal
-     * "EntityPath=EVENT_HUB_NAME"} to the end of the connection string. For example, "EntityPath=telemetry-hub".
-     * </p>
-     *
-     * <p>
-     * If you have defined a shared access policy directly on the Event Hub itself, then copying the connection string
-     * from that Event Hub will result in a connection string that contains the name.
-     * </p>
-     *
-     * @param connectionString The connection string to use for connecting to the Event Hub instance or Event Hubs
-     *     instance. It is expected that the Event Hub name and the shared access key properties are contained in this
-     *     connection string.
-     *
-     * @return The updated {@link EventHubClientBuilder} object.
-     * @throws IllegalArgumentException if {@code connectionString} is null or empty. If {@code fullyQualifiedNamespace}
-     *     in the connection string is null.
-     * @throws NullPointerException if a credential could not be extracted
-     * @throws AzureException If the shared access signature token credential could not be created using the
-     *     connection string.
-     */
-    @Override
-    public EventHubClientBuilder connectionString(String connectionString) {
-        final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-
-        this.fullyQualifiedNamespace = Objects.requireNonNull(properties.getEndpoint().getHost(),
-            "'fullyQualifiedNamespace' cannot be null.");
-        this.credentials = getTokenCredential(properties);
-
-        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
-        }
-
-        if (!CoreUtils.isNullOrEmpty(properties.getEntityPath())) {
-            this.eventHubName = properties.getEntityPath();
-        }
-
-        return this;
     }
 
     /**
@@ -362,6 +323,50 @@ public class EventHubClientBuilder implements
     }
 
     /**
+     * Sets the credential information given a connection string to the Event Hub instance or the Event Hubs namespace.
+     *
+     * <p>
+     * If the connection string is copied from the Event Hubs namespace, it will likely not contain the name to the
+     * desired Event Hub, which is needed. In this case, the name can be added manually by adding {@literal
+     * "EntityPath=EVENT_HUB_NAME"} to the end of the connection string. For example, "EntityPath=telemetry-hub".
+     * </p>
+     *
+     * <p>
+     * If you have defined a shared access policy directly on the Event Hub itself, then copying the connection string
+     * from that Event Hub will result in a connection string that contains the name.
+     * </p>
+     *
+     * @param connectionString The connection string to use for connecting to the Event Hub instance or Event Hubs
+     *     instance. It is expected that the Event Hub name and the shared access key properties are contained in this
+     *     connection string.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     * @throws IllegalArgumentException if {@code connectionString} is null or empty. If {@code fullyQualifiedNamespace}
+     *     in the connection string is null.
+     * @throws NullPointerException if a credential could not be extracted
+     * @throws AzureException If the shared access signature token credential could not be created using the
+     *     connection string.
+     */
+    @Override
+    public EventHubClientBuilder connectionString(String connectionString) {
+        this.connectionStringProperties = new ConnectionStringProperties(connectionString);
+
+        this.fullyQualifiedNamespace = Objects.requireNonNull(connectionStringProperties.getEndpoint().getHost(),
+            "'fullyQualifiedNamespace' cannot be null.");
+        this.credentials = getTokenCredential(connectionStringProperties);
+
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
+        }
+
+        if (!CoreUtils.isNullOrEmpty(connectionStringProperties.getEntityPath())) {
+            this.eventHubName = connectionStringProperties.getEntityPath();
+        }
+
+        return this;
+    }
+
+    /**
      * Sets the credential information given a connection string to the Event Hubs namespace and name to a specific
      * Event Hub instance.
      *
@@ -388,19 +393,19 @@ public class EventHubClientBuilder implements
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
 
-        final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-        TokenCredential tokenCredential = getTokenCredential(properties);
+        this.connectionStringProperties = new ConnectionStringProperties(connectionString);
+        TokenCredential tokenCredential = getTokenCredential(connectionStringProperties);
 
-        if (!CoreUtils.isNullOrEmpty(properties.getEntityPath())
-            && !eventHubName.equals(properties.getEntityPath())) {
+        if (!CoreUtils.isNullOrEmpty(connectionStringProperties.getEntityPath())
+            && !eventHubName.equals(connectionStringProperties.getEntityPath())) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 "'connectionString' contains an Event Hub name [%s] and it does not match the given "
                     + "'eventHubName' parameter [%s]. Please use the credentials(String connectionString) overload. "
                     + "Or supply a 'connectionString' without 'EntityPath' in it.",
-                properties.getEntityPath(), eventHubName)));
+                connectionStringProperties.getEntityPath(), eventHubName)));
         }
 
-        return credential(properties.getEndpoint().getHost(), eventHubName, tokenCredential);
+        return credential(connectionStringProperties.getEndpoint().getHost(), eventHubName, tokenCredential);
     }
 
     /**
@@ -445,8 +450,8 @@ public class EventHubClientBuilder implements
         }
 
         try {
-            this.customEndpointAddress = new URL(customEndpointAddress);
-        } catch (MalformedURLException e) {
+            this.customEndpointAddress = new URI(customEndpointAddress);
+        } catch (URISyntaxException e) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException(customEndpointAddress + " : is not a valid URL.", e));
         }
@@ -457,7 +462,7 @@ public class EventHubClientBuilder implements
     /**
      * Gets the custom endpoint address.
      */
-    URL getCustomEndpointAddress() {
+    URI getCustomEndpointAddress() {
         return this.customEndpointAddress;
     }
 
@@ -485,14 +490,6 @@ public class EventHubClientBuilder implements
      * Gets the fully qualified namespace.
      */
     String getFullyQualifiedNamespace() {
-        return fullyQualifiedNamespace;
-    }
-
-    private String getAndValidateFullyQualifiedNamespace() {
-        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
-        }
         return fullyQualifiedNamespace;
     }
 
@@ -1105,7 +1102,7 @@ public class EventHubClientBuilder implements
             connectionOptions.getFullyQualifiedNamespace(), getEventHubName.get(), connectionOptions.getRetry()));
     }
 
-    private ConnectionOptions getConnectionOptions() {
+    ConnectionOptions getConnectionOptions() {
         Configuration buildConfiguration = configuration == null
                 ? Configuration.getGlobalConfiguration().clone()
                 : configuration;
@@ -1136,25 +1133,67 @@ public class EventHubClientBuilder implements
                     + "Use the setter 'transportType(AmqpTransportType.AMQP_WEB_SOCKETS)' to enable Web Sockets mode."));
         }
 
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+        }
+
         final CbsAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        final SslDomain.VerifyMode verificationMode = verifyMode != null
+        SslDomain.VerifyMode verificationMode = verifyMode != null
             ? verifyMode
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
+        final boolean usingDevelopmentEmulator = connectionStringProperties != null
+            && connectionStringProperties.useDevelopmentEmulator();
+
+        if (usingDevelopmentEmulator) {
+            verificationMode = SslDomain.VerifyMode.ANONYMOUS_PEER;
+        }
+
         final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
 
-        if (customEndpointAddress == null) {
-            return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
-                ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-                options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION);
+        final String hostname;
+        final int port;
+
+        if (customEndpointAddress != null) {
+            hostname = customEndpointAddress.getHost();
+            port = customEndpointAddress.getPort();
+        } else if (connectionStringProperties != null) {
+            final URI endpoint = connectionStringProperties.getEndpoint();
+            hostname = endpoint.getHost();
+            port = endpoint.getPort();
         } else {
-            return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
-                ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-                options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, customEndpointAddress.getHost(),
-                customEndpointAddress.getPort());
+            hostname = fullyQualifiedNamespace;
+            port = -1;
+        }
+
+        // No explicit port was listed, so choose a default port.
+        final int portToUse = port != -1 ? port : getPort(transport, usingDevelopmentEmulator);
+        final boolean enableSsl = !usingDevelopmentEmulator;
+
+        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
+            ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
+            options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, hostname, portToUse, enableSsl);
+    }
+
+    private static int getPort(AmqpTransportType transport, boolean useDevelopmentEmulator) {
+        if (useDevelopmentEmulator) {
+            return ConnectionHandler.AMQP_PORT;
+        }
+
+        switch (transport) {
+            case AMQP:
+                return ConnectionHandler.AMQPS_PORT;
+
+            case AMQP_WEB_SOCKETS:
+                return WebSocketsConnectionHandler.HTTPS_PORT;
+
+            default:
+                throw LOGGER
+                    .logThrowableAsError(new IllegalArgumentException("Transport Type is not supported: " + transport));
         }
     }
 }

@@ -6,7 +6,6 @@ The Azure AI Face service provides AI algorithms that detect, recognize, and ana
 - Liveness detection
 - Face recognition
   - Face verification ("one-to-one" matching)
-  - Face identification ("one-to-many" matching)
 - Find similar faces
 - Group faces
 
@@ -24,13 +23,13 @@ The Azure AI Face service provides AI algorithms that detect, recognize, and ana
 - You need an [Azure subscription][azure_sub] to use this package and either
   Your Azure account must have a `Cognitive Services Contributor` role assigned in order for you to agree to the responsible AI terms and create a resource. To get this role assigned to your account, follow the steps in the [Assign roles][steps_assign_an_azure_role] documentation, or contact your administrator.
   * an [Azure Face account][azure_portal_list_face_account] or
-  * an [Azure Cognitive Service account][azure_portal_list_cognitive_service_account]
+  * an [Azure AI services multi-service account][azure_portal_list_cognitive_service_account]
 
-### Create a Face or a Cognitive Services resource
+### Create a Face or an Azure AI services multi-service account
 
-Azure AI Face supports both [multi-service][azure_cognitive_service_account] and single-service access. Create a Cognitive Services resource if you plan to access multiple cognitive services under a single endpoint/key. For Face access only, create a Face resource. Please note that you will need a single-service resource if you intend to use [Azure Active Directory authentication](#create-the-client-with-an-azure-active-directory-credential).
+Azure AI Face supports both [multi-service][azure_cognitive_service_account] and single-service access. Create an Azure AI services multi-service account if you plan to access multiple Azure AI services under a single endpoint/key. For Face access only, create a Face resource.
 
-* To create a new Face or Cognitive Services account, you can use [Azure Portal][azure_portal_create_face_account], [Azure PowerShell][quick_start_create_account_via_azure_powershell], or [Azure CLI][quick_start_create_account_via_azure_cli].
+* To create a new Face or Azure AI services multi-service account, you can use [Azure Portal][azure_portal_create_face_account], [Azure PowerShell][quick_start_create_account_via_azure_powershell], or [Azure CLI][quick_start_create_account_via_azure_cli].
 
 ### Adding the package to your product
 
@@ -68,7 +67,7 @@ Regional endpoint: https://<region>.api.cognitive.microsoft.com/
 Custom subdomain: https://<resource-name>.cognitiveservices.azure.com/
 ```
 
-A regional endpoint is the same for every resource in a region. A complete list of supported regional endpoints can be consulted [here][regional_endpoints]. Please note that regional endpoints do not support AAD authentication.
+A regional endpoint is the same for every resource in a region. A complete list of supported regional endpoints can be consulted [here][regional_endpoints]. Please note that regional endpoints do not support Microsoft Entra ID authentication. If you'd like migrate your resource to use custom subdomain, follow the instructions [here][migrate_to_custom_subdomain]
 
 A custom subdomain, on the other hand, is a name that is unique to the Face resource. They can only be used by [single-service resources][azure_portal_create_face_account].
 
@@ -76,7 +75,7 @@ A custom subdomain, on the other hand, is a name that is unique to the Face reso
 # Get the API keys for the Face resource
 az cognitiveservices account keys list --name "<resource-name>" --resource-group "<resource-group-name>"
 ```
-#### Create the client with an Azure Active Directory credential
+#### Create the client with a Microsoft Entra ID credential
 
 `AzureKeyCredential` authentication is used in the examples in this getting started guide because of its' simplicity, but we recommend to authenticate with Microsoft Entra ID using the [azure-identity][azure_sdk_java_default_azure_credential] library. Microsoft Entra ID is more secure and reliable.
 Note that regional endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] name for your resource in order to use this type of authentication.
@@ -88,7 +87,7 @@ To use the [DefaultAzureCredential][azure_sdk_java_default_azure_credential] typ
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.11.4</version>
+    <version>1.12.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -135,17 +134,6 @@ FaceClient client = new FaceClientBuilder()
  - Finding similar faces from a smaller set of faces that look similar to the target face.
  - Grouping faces into several smaller groups based on similarity.
 
-### FaceAdministrationClient
-
-`FaceAdministrationClient` is provided to interact with the following data structures that hold data on faces and
-persons for Face recognition:
-
- - PersonDirectory
- - FaceList
- - LargeFaceList
- - PersonGroup
- - LargePersonGroup
-
 ### FaceSessionClient
 
 `FaceSessionClient` is provided to interact with sessions which is used for Liveness detection.
@@ -154,28 +142,17 @@ persons for Face recognition:
  - Query the liveness and verification result.
  - Query the audit result.
 
-### Long-running operations
-
-Long-running operations are operations which consist of an initial request sent to the service to start an operation,
-followed by polling the service at intervals to determine whether the operation has completed or failed, and if it has
-succeeded, to get the result.
-
-Methods that train a group (LargeFaceList, PersonGroup or LargePersonGroup), create/delete a Person/DynamicPersonGroup, 
-add a face or delete a face from a Person are modeled as long-running operations.
-The client exposes a `begin<MethodName>` method that returns an `SyncPoller` or `PollerFlux`. Callers should wait
-for the operation to complete by calling `getFinalResult()` on the poller object returned from the `begin<MethodName>` method.
-Sample code snippets are provided to illustrate using long-running operations [below](#examples "Examples").
-
 ## Examples
 
 The following section provides several code snippets covering some of the most common Face tasks, including:
 
 * [Detecting faces in an image](#face-detection "Face Detection")
-* [Identifying the specific face from a LargePersonGroup](#face-recognition-from-largepersongroup "Face Recognition from LargePersonGroup")
 * [Determining if a face in an video is real (live) or fake (spoof)](#liveness-detection "Liveness Detection")
 
 ### Face Detection
-Detect faces and analyze them from an binary data.
+Detect faces and analyze them from an binary data. The latest model is the most accurate and recommended to be used. For the detailed differences between different versions of Detection and Recognition model, please refer to the following links.
+* [Detection model][evaluate_different_detection_models]
+* [Recognition model][recommended_recognition_model]
 
 ```java com.azure.ai.vision.face.readme.detectFace
 FaceClient client = new FaceClientBuilder()
@@ -206,7 +183,7 @@ Face Liveness detection can be used to determine if a face in an input video str
 The goal of liveness detection is to ensure that the system is interacting with a physically present live person at
 the time of authentication. The whole process of authentication is called a session.
 
-There're two different components in the authentication: a mobile application and an app server/orchestrator.
+There're two different components in the authentication: a frontend application and an app server/orchestrator.
 Before uploading the video stream, the app server has to create a session, and then the mobile client could upload
 the payload with a `session authorization token` to call the liveness detection. The app server can query for the
 liveness detection result and audit logs anytime until the session is deleted.
@@ -216,7 +193,7 @@ belongs to the expected person's face, which is called **liveness detection with
 information, please refer to the [tutorial][liveness_tutorial].
 
 We'll only demonstrates how to create, query, delete a session and get the audit logs here. For how to perform a
-liveness detection, please see the sample of [mobile applications][integrate_liveness_into_mobile_application].
+liveness detection, please see the sample of [frontend applications][integrate_liveness_into_mobile_application].
 
 Here is an example to create and get the liveness detection result of a session.
 ```java com.azure.ai.vision.face.readme.createLivenessSessionAndGetResult
@@ -315,6 +292,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_sub]: https://azure.microsoft.com/free/
 [steps_assign_an_azure_role]: https://learn.microsoft.com/azure/role-based-access-control/role-assignments-steps
 [azure_portal_list_face_account]: https://portal.azure.com/#blade/Microsoft_Azure_ProjectOxford/CognitiveServicesHub/Face
+[azure_cognitive_service_account]: https://learn.microsoft.com/azure/ai-services/multi-service-resource?tabs=windows&pivots=azportal#supported-services-with-a-multi-service-resource
 [azure_portal_list_cognitive_service_account]: https://portal.azure.com/#view/Microsoft_Azure_ProjectOxford/CognitiveServicesHub/~/AllInOne
 [azure_portal_create_face_account]: https://ms.portal.azure.com/#create/Microsoft.CognitiveServicesFace
 [quick_start_create_account_via_azure_cli]: https://learn.microsoft.com/azure/ai-services/multi-service-resource?tabs=windows&pivots=azcli
@@ -333,10 +311,12 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 [azure_sdk_java_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 [custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
+[migrate_to_custom_subdomain]: https://learn.microsoft.com/azure/ai-services/cognitive-services-custom-subdomains#how-does-this-impact-existing-resources
 [azure_sdk_java_default_azure_credential]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#defaultazurecredential
 [register_aad_app]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 
-
+[evaluate_different_detection_models]: https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model#evaluate-different-models
+[recommended_recognition_model]: https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-recognition-model#recommended-model
 [liveness_tutorial]: https://learn.microsoft.com/azure/ai-services/computer-vision/tutorials/liveness
 [integrate_liveness_into_mobile_application]: https://learn.microsoft.com/azure/ai-services/computer-vision/tutorials/liveness#integrate-liveness-into-mobile-application
 

@@ -7,39 +7,60 @@ package com.azure.security.attestation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 
-/** Defines the "initialization time data" used to provision the attestation target for use by the MAA. */
+/**
+ * Initialization time data are a conduit for any configuration information that is unknown when building the Trusted
+ * Execution Environment (TEE) and is defined at TEE launch time. This data can be used with confidential container or
+ * VM scenarios to capture configuration settings such as disk volume content, network configuration, etc.
+ */
 @Fluent
-public final class InitTimeData {
+public final class InitTimeData implements JsonSerializable<InitTimeData> {
     /*
-     * UTF-8 encoded Initialization Data passed into the trusted environment
-     * when it is created.
+     * Initialization time data are passed into the Trusted Execution Environment (TEE) when it is created. For an
+     * Icelake SGX quote, the SHA256 hash of the InitTimeData must match the lower 32 bytes of the quote's "config id"
+     * attribute. For a SEV-SNP quote, the SHA256 hash of the InitTimeData must match the quote's "host data"
+     * attribute.
      */
-    @JsonProperty(value = "data")
     private Base64Url data;
 
     /*
      * The type of data contained within the "data" field
      */
-    @JsonProperty(value = "dataType")
     private DataType dataType;
 
     /**
-     * Get the data property: UTF-8 encoded Initialization Data passed into the trusted environment when it is created.
-     *
+     * Creates an instance of InitTimeData class.
+     */
+    public InitTimeData() {
+    }
+
+    /**
+     * Get the data property: Initialization time data are passed into the Trusted Execution Environment (TEE) when it
+     * is created. For an Icelake SGX quote, the SHA256 hash of the InitTimeData must match the lower 32 bytes of the
+     * quote's "config id" attribute. For a SEV-SNP quote, the SHA256 hash of the InitTimeData must match the quote's
+     * "host data" attribute.
+     * 
      * @return the data value.
      */
     public byte[] getData() {
         if (this.data == null) {
-            return new byte[0];
+            return null;
         }
         return this.data.decodedBytes();
     }
 
     /**
-     * Set the data property: UTF-8 encoded Initialization Data passed into the trusted environment when it is created.
-     *
+     * Set the data property: Initialization time data are passed into the Trusted Execution Environment (TEE) when it
+     * is created. For an Icelake SGX quote, the SHA256 hash of the InitTimeData must match the lower 32 bytes of the
+     * quote's "config id" attribute. For a SEV-SNP quote, the SHA256 hash of the InitTimeData must match the quote's
+     * "host data" attribute.
+     * 
      * @param data the data value to set.
      * @return the InitTimeData object itself.
      */
@@ -54,7 +75,7 @@ public final class InitTimeData {
 
     /**
      * Get the dataType property: The type of data contained within the "data" field.
-     *
+     * 
      * @return the dataType value.
      */
     public DataType getDataType() {
@@ -63,7 +84,7 @@ public final class InitTimeData {
 
     /**
      * Set the dataType property: The type of data contained within the "data" field.
-     *
+     * 
      * @param dataType the dataType value to set.
      * @return the InitTimeData object itself.
      */
@@ -74,8 +95,46 @@ public final class InitTimeData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {}
+    public void validate() {
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("data", Objects.toString(this.data, null));
+        jsonWriter.writeStringField("dataType", this.dataType == null ? null : this.dataType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InitTimeData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InitTimeData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InitTimeData.
+     */
+    public static InitTimeData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InitTimeData deserializedInitTimeData = new InitTimeData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("data".equals(fieldName)) {
+                    deserializedInitTimeData.data
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedInitTimeData.dataType = DataType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInitTimeData;
+        });
+    }
 }

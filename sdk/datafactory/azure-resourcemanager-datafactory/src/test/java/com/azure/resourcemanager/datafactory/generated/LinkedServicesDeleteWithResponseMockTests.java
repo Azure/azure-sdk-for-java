@@ -27,7 +27,8 @@ public final class LinkedServicesDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.linkedServices().deleteWithResponse("udfikduw", "khma", "g", com.azure.core.util.Context.NONE);
+        manager.linkedServices()
+            .deleteWithResponse("lwcdc", "mlbzcikh", "pdohvwyitcgy", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -19,19 +19,19 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DistributionPolicyAsyncLiveTests extends JobRouterTestBase {
-    private JobRouterAdministrationAsyncClient administrationAsyncClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createDistributionPolicyBestWorkerDefaultScoringRule(HttpClient httpClient) {
         // Setup
-        administrationAsyncClient = getRouterAdministrationAsyncClient(httpClient);
+        JobRouterAdministrationAsyncClient administrationAsyncClient = getRouterAdministrationAsyncClient(httpClient);
         String bestWorkerModeDistributionPolicyId = String.format("%s-BestWorkerDefaultScoringRuleAsync-DistributionPolicy", JAVA_LIVE_TESTS);
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
 
@@ -45,14 +45,10 @@ public class DistributionPolicyAsyncLiveTests extends JobRouterTestBase {
                 .setBypassSelectors(true)
                 .setScoringRuleOptions(new ScoringRuleOptions()
                     .setBatchScoringEnabled(true)
-                    .setScoringParameters(new ArrayList<ScoringRuleParameterSelector>() {
-                        {
-                            add(ScoringRuleParameterSelector.JOB_LABELS);
-                        }
-                    })
+                    .setScoringParameters(Collections.singletonList(ScoringRuleParameterSelector.JOB_LABELS))
                     .setBatchSize(30)
-                    .setDescendingOrder(true))
-        ).setName(bestWorkerModeDistributionPolicyName);
+                    .setDescendingOrder(true)))
+            .setName(bestWorkerModeDistributionPolicyName);
 
         // Action
         DistributionPolicy result = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();

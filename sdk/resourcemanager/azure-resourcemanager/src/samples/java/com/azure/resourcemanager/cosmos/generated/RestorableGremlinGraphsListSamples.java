@@ -9,8 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class RestorableGremlinGraphsListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBRestorableGremlinGraphList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBRestorableGremlinGraphList.json
      */
     /**
      * Sample code: CosmosDBRestorableGremlinGraphList.
@@ -18,7 +17,11 @@ public final class RestorableGremlinGraphsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBRestorableGremlinGraphList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getRestorableGremlinGraphs().list("WestUS",
-            "98a570f2-63db-4117-91f0-366327b7b353", "PD5DALigDgw=", null, null, com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getRestorableGremlinGraphs()
+            .list("WestUS", "98a570f2-63db-4117-91f0-366327b7b353", "PD5DALigDgw=", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

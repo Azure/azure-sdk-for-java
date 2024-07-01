@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class HiveAuthenticationType extends ExpandableStringEnum<HiveAuthe
      * @param name a name to look for.
      * @return the corresponding HiveAuthenticationType.
      */
-    @JsonCreator
     public static HiveAuthenticationType fromString(String name) {
         return fromString(name, HiveAuthenticationType.class);
     }

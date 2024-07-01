@@ -82,7 +82,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 RedisURI redisURI = RedisURI.Builder.redis("<HOST_NAME>") // Host Name is Required
     .withPort(6380) // Port is Required
     .withSsl(true) // SSL Connections are required.
-    .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials("<USERNAME>", defaultAzureCredential))) // Username and Token Credential are required.
+    .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials(defaultAzureCredential))) // Username and Token Credential are required.
     .withClientName("LettuceClient")
     .build();
 
@@ -128,6 +128,16 @@ public static class AzureRedisCredentials implements RedisCredentials {
         this.tokenCredential = tokenCredential;
     }
 
+    /**
+     * Create instance of Azure Redis Credentials
+     * @param tokenCredential the token credential to be used to fetch requests.
+     */
+    public AzureRedisCredentials(TokenCredential tokenCredential) {
+        Objects.requireNonNull(tokenCredential, "Token Credential is required");
+        this.tokenCredential = tokenCredential;
+        this.username = extractUsernameFromToken(tokenCredential.getToken(tokenRequestContext).block().getToken());
+    }
+
     @Override
     public String getUsername() {
         return username;
@@ -150,6 +160,26 @@ public static class AzureRedisCredentials implements RedisCredentials {
         return tokenCredential != null;
     }
 }
+
+private static String extractUsernameFromToken(String token) {
+    String[] parts = token.split("\\.");
+    String base64 = parts[1];
+
+    switch (base64.length() % 4) {
+        case 2:
+            base64 += "==";
+            break;
+        case 3:
+            base64 += "=";
+            break;
+    }
+
+    byte[] jsonBytes = Base64.getDecoder().decode(base64);
+    String json = new String(jsonBytes, StandardCharsets.UTF_8);
+    JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+    return jwt.get("oid").getAsString();
+}
 ```
 
 ##### Version 6.1.8.RELEASE or less
@@ -170,12 +200,14 @@ String token = defaultAzureCredential
     .getToken(new TokenRequestContext()
         .addScopes("cca5fbb-b7e4-4009-81f1-37e38fd66d78/.default")).block().getToken();
 
+String username = extractUsernameFromToken(token);
+
 // Build Redis URI with host and authentication details.
 // TODO: Replace Host Name with Azure Cache for Redis Host Name.
 RedisURI redisURI = RedisURI.Builder.redis("<HOST_NAME>") // Host Name is Required.
     .withPort(6380) //Port is Required.
     .withSsl(true) // SSL Connection is Required.
-    .withAuthentication("<USERNAME>", token) // Username is Required.
+    .withAuthentication(username, token) // Username is Required.
     .withClientName("LettuceClient")
     .build();
 
@@ -196,6 +228,26 @@ StatefulRedisConnection<String, String> connection = client.connect(StringCodec.
 RedisStringCommands<String, String> sync = connection.sync();
 sync.set("Az:testKey", "testVal");
 System.out.println(sync.get("Az:testKey"));
+
+private static String extractUsernameFromToken(String token) {
+    String[] parts = token.split("\\.");
+    String base64 = parts[1];
+
+    switch (base64.length() % 4) {
+        case 2:
+            base64 += "==";
+            break;
+        case 3:
+            base64 += "=";
+            break;
+    }
+
+    byte[] jsonBytes = Base64.getDecoder().decode(base64);
+    String json = new String(jsonBytes, StandardCharsets.UTF_8);
+    JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+    return jwt.get("oid").getAsString();
+}
 ```
 
 ##### Supported Token Credentials for Microsoft Entra Authentication
@@ -229,9 +281,9 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-// Host Name, Port, Username, and Microsoft Entra token are required here.
+// Host Name, Port, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
-RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, "<USERNAME>", defaultAzureCredential);
+RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, defaultAzureCredential);
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
 int maxTries = 3;
@@ -261,13 +313,13 @@ while (i < maxTries) {
 }
 
 // Helper Code
-private static RedisClient createLettuceRedisClient(String hostName, int port, String username, TokenCredential tokenCredential) {
+private static RedisClient createLettuceRedisClient(String hostName, int port, TokenCredential tokenCredential) {
 
     // Build Redis URI with host and authentication details.
     RedisURI redisURI = RedisURI.Builder.redis(hostName)
         .withPort(port)
         .withSsl(true) // Targeting SSL Based 6380 port.
-        .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials(username, tokenCredential)))
+        .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials(tokenCredential)))
         .withClientName("LettuceClient")
         .build();
 
@@ -307,6 +359,16 @@ public static class AzureRedisCredentials implements RedisCredentials {
         this.tokenCredential = tokenCredential;
     }
 
+    /**
+     * Create instance of Azure Redis Credentials
+     * @param tokenCredential the token credential to be used to fetch requests.
+     */
+    public AzureRedisCredentials(TokenCredential tokenCredential) {
+        Objects.requireNonNull(tokenCredential, "Token Credential is required");
+        this.tokenCredential = tokenCredential;
+        this.username = extractUsernameFromToken(tokenCredential.getToken(tokenRequestContext).block().getToken());
+    }
+
     @Override
     public String getUsername() {
         return username;
@@ -329,6 +391,26 @@ public static class AzureRedisCredentials implements RedisCredentials {
         return tokenCredential != null;
     }
 }
+
+private static String extractUsernameFromToken(String token) {
+    String[] parts = token.split("\\.");
+    String base64 = parts[1];
+
+    switch (base64.length() % 4) {
+        case 2:
+            base64 += "==";
+            break;
+        case 3:
+            base64 += "=";
+            break;
+    }
+
+    byte[] jsonBytes = Base64.getDecoder().decode(base64);
+    String json = new String(jsonBytes, StandardCharsets.UTF_8);
+    JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+    return jwt.get("oid").getAsString();
+}
 ```
 
 ##### Version 6.1.8.RELEASE or less
@@ -349,9 +431,9 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
-// Host Name, Port, Username, and Microsoft Entra token are required here.
+// Host Name, Port, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
-RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, "<USERNAME>", accessToken);
+RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, accessToken);
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
 int maxTries = 3;
@@ -372,7 +454,7 @@ while (i < maxTries) {
 
         if (!connection.isOpen()) {
             // Recreate the client with a fresh token non-expired token as password for authentication.
-            client = createLettuceRedisClient("<HOST_NAME>", 6380, "<USERNAME>", getAccessToken(defaultAzureCredential, trc));
+            client = createLettuceRedisClient("<HOST_NAME>", 6380, getAccessToken(defaultAzureCredential, trc));
             connection = client.connect(StringCodec.UTF8);
             sync = connection.sync();
         }
@@ -384,13 +466,13 @@ while (i < maxTries) {
 }
         
 // Helper code
-private static RedisClient createLettuceRedisClient(String hostName, int port, String username, AccessToken accessToken) {
+private static RedisClient createLettuceRedisClient(String hostName, int port, AccessToken accessToken) {
 
     // Build Redis URI with host and authentication details.
     RedisURI redisURI = RedisURI.Builder.redis(hostName)
         .withPort(port)
         .withSsl(true) // Targeting SSL based port
-        .withAuthentication(username, accessToken.getToken())
+        .withAuthentication(extractUsernameFromToken(accessToken.getToken()), accessToken.getToken())
         .withClientName("LettuceClient")
         .build();
 
@@ -410,6 +492,27 @@ private static RedisClient createLettuceRedisClient(String hostName, int port, S
 
 private static AccessToken getAccessToken(TokenCredential tokenCredential, TokenRequestContext trc) {
     return tokenCredential.getToken(trc).block();
+}
+
+
+private static String extractUsernameFromToken(String token) {
+    String[] parts = token.split("\\.");
+    String base64 = parts[1];
+
+    switch (base64.length() % 4) {
+        case 2:
+            base64 += "==";
+            break;
+        case 3:
+            base64 += "=";
+            break;
+    }
+
+    byte[] jsonBytes = Base64.getDecoder().decode(base64);
+    String json = new String(jsonBytes, StandardCharsets.UTF_8);
+    JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+    return jwt.get("oid").getAsString();
 }
 
 ```
@@ -434,12 +537,11 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-// Host Name, Port, Username, and Microsoft Entra token are required here.
+// Host Name, Port, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
 String hostName = "<HOST_NAME>";
-String userName = "<USERNAME>";
 
-AzureRedisCredentials credentials = new AzureRedisCredentials(userName, defaultAzureCredential);
+AzureRedisCredentials credentials = new AzureRedisCredentials(defaultAzureCredential);
 RedisClient client = createLettuceRedisClient(hostName, 6380, RedisCredentialsProvider.from(() -> credentials));
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
@@ -447,8 +549,7 @@ StatefulRedisConnection<String, String> connection = client.connect(StringCodec.
 RedisCommands<String, String> sync = connection.sync();
 
 credentials.getTokenCache()
-    .setLettuceInstanceToAuthenticate(sync)
-    .setUsername(userName);
+    .setLettuceInstanceToAuthenticate(sync);
 
 int maxTries = 3;
 int i = 0;
@@ -470,8 +571,7 @@ while (i < maxTries) {
 
 
             credentials.getTokenCache()
-                .setLettuceInstanceToAuthenticate(sync)
-                .setUsername(userName);
+                .setLettuceInstanceToAuthenticate(sync);
         }
     } catch (Exception e) {
         // Handle the Exception as required in your application.
@@ -525,6 +625,17 @@ public static class AzureRedisCredentials implements RedisCredentials {
         Objects.requireNonNull(tokenCredential, "Token Credential is required");
         this.username = username;
         this.tokenCredential = tokenCredential;
+        this.refreshCache = new TokenRefreshCache(tokenCredential, tokenRequestContext);
+    }
+
+    /**
+     * Create instance of Azure Redis Credentials
+     * @param tokenCredential the token credential to be used to fetch requests.
+     */
+    public AzureRedisCredentials(TokenCredential tokenCredential) {
+        Objects.requireNonNull(tokenCredential, "Token Credential is required");
+        this.tokenCredential = tokenCredential;
+        this.username = extractUsernameFromToken(tokenCredential.getToken(tokenRequestContext).block().getToken());
         this.refreshCache = new TokenRefreshCache(tokenCredential, tokenRequestContext);
     }
 
@@ -597,6 +708,7 @@ public static class TokenRefreshCache {
         // Add your task here
         public void run() {
             accessToken = tokenCredential.getToken(tokenRequestContext).block();
+            username = extractUsernameFromToken(accessToken.getToken());
             System.out.println("Refreshed Token with Expiry: " + accessToken.getExpiresAt().toEpochSecond());
 
             if (lettuceInstanceToAuthenticate != null && !CoreUtils.isNullOrEmpty(username)) {
@@ -624,16 +736,26 @@ public static class TokenRefreshCache {
         this.lettuceInstanceToAuthenticate = lettuceInstanceToAuthenticate;
         return this;
     }
+}
 
-    /**
-     * Sets the username to authenticate jedis instance with.
-     * @param username the username to authenticate with
-     * @return the updated instance
-     */
-    public TokenRefreshCache setUsername(String username) {
-        this.username = username;
-        return this;
+private static String extractUsernameFromToken(String token) {
+    String[] parts = token.split("\\.");
+    String base64 = parts[1];
+
+    switch (base64.length() % 4) {
+        case 2:
+            base64 += "==";
+            break;
+        case 3:
+            base64 += "=";
+            break;
     }
+
+    byte[] jsonBytes = Base64.getDecoder().decode(base64);
+    String json = new String(jsonBytes, StandardCharsets.UTF_8);
+    JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+    return jwt.get("oid").getAsString();
 }
 ```
 
@@ -659,17 +781,21 @@ TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azu
 TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
 AccessToken accessToken = tokenRefreshCache.getAccessToken();
 
-// Host Name, Port, Username, and Microsoft Entra token are required here.
+// Host Name, Port, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
-RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, "USERNAME", accessToken);
+RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, accessToken);
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
+// Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
+RedisCommands<String, String> sync = connection.sync();
+    
+// Configure the lettuce instance for proactive authentication before token expires.
+tokenRefreshCache.setLettuceInstanceToAuthenticate(sync);
+    
 int maxTries = 3;
 int i = 0;
 
 while (i < maxTries) {
-    // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-    RedisStringCommands<String, String> sync = connection.sync();
     try {
         sync.set("Az:testKey", "testVal");
         System.out.println(sync.get("Az:testKey"));
@@ -682,9 +808,12 @@ while (i < maxTries) {
 
         if (!connection.isOpen()) {
             // Recreate the client with a fresh token non-expired token as password for authentication.
-            client = createLettuceRedisClient("<HOST_NAME>", 6380, "USERNAME", tokenRefreshCache.getAccessToken());
+            client = createLettuceRedisClient("<HOST_NAME>", 6380, tokenRefreshCache.getAccessToken());
             connection = client.connect(StringCodec.UTF8);
             sync = connection.sync();
+
+            // Configure the lettuce instance for proactive authentication before token expires.
+            tokenRefreshCache.setLettuceInstanceToAuthenticate(sync);
         }
     } catch (Exception e) {
         // Handle the Exception as required in your application.
@@ -694,13 +823,13 @@ while (i < maxTries) {
 }
 
 // Helper code
-private static RedisClient createLettuceRedisClient(String hostName, int port, String username, AccessToken accessToken) {
+private static RedisClient createLettuceRedisClient(String hostName, int port, AccessToken accessToken) {
 
     // Build Redis URI with host and authentication details.
     RedisURI redisURI = RedisURI.Builder.redis(hostName)
         .withPort(port)
         .withSsl(true) // Targeting SSL based port
-        .withAuthentication(username, accessToken.getToken())
+        .withAuthentication(extractUsernameFromToken(accessToken.getToken()), accessToken.getToken())
         .withClientName("LettuceClient")
         .build();
 
@@ -728,6 +857,8 @@ public static class TokenRefreshCache {
     private volatile AccessToken accessToken;
     private final Duration maxRefreshOffset = Duration.ofMinutes(5);
     private final Duration baseRefreshOffset = Duration.ofMinutes(2);
+    private RedisCommands<String, String> lettuceInstanceToAuthenticate;
+    private String username;
 
     /**
      * Creates an instance of TokenRefreshCache
@@ -737,12 +868,12 @@ public static class TokenRefreshCache {
     public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext) {
         this.tokenCredential = tokenCredential;
         this.tokenRequestContext = tokenRequestContext;
-        this.timer = new Timer();
+        this.timer = new Timer(true);
     }
 
     /**
      * Gets the cached access token.
-     * @return the AccessToken
+     * @return the {@link AccessToken}
      */
     public AccessToken getAccessToken() {
         if (accessToken != null) {
@@ -759,7 +890,15 @@ public static class TokenRefreshCache {
         // Add your task here
         public void run() {
             accessToken = tokenCredential.getToken(tokenRequestContext).block();
+            username = extractUsernameFromToken(accessToken.getToken());
             System.out.println("Refreshed Token with Expiry: " + accessToken.getExpiresAt().toEpochSecond());
+
+            if (lettuceInstanceToAuthenticate != null && !CoreUtils.isNullOrEmpty(username)) {
+                lettuceInstanceToAuthenticate.auth(username, accessToken.getToken());
+                System.out.println("Refreshed Lettuce Connection with fresh access token, token expires at : "
+                    + accessToken.getExpiresAt().toEpochSecond());
+            }
+
             timer.schedule(new TokenRefreshTask(), getTokenRefreshDelay());
         }
     }
@@ -769,6 +908,36 @@ public static class TokenRefreshCache {
             .minusSeconds(ThreadLocalRandom.current().nextLong(baseRefreshOffset.getSeconds(), maxRefreshOffset.getSeconds()))
             .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000);
     }
+
+    /**
+     * Sets the Lettuce instance to proactively authenticate before token expiry.
+     * @param lettuceInstanceToAuthenticate the instance to authenticate
+     * @return the updated instance
+     */
+    public TokenRefreshCache setLettuceInstanceToAuthenticate(RedisCommands<String, String> lettuceInstanceToAuthenticate) {
+        this.lettuceInstanceToAuthenticate = lettuceInstanceToAuthenticate;
+        return this;
+    }
+}
+
+private static String extractUsernameFromToken(String token) {
+    String[] parts = token.split("\\.");
+    String base64 = parts[1];
+
+    switch (base64.length() % 4) {
+        case 2:
+            base64 += "==";
+            break;
+        case 3:
+            base64 += "=";
+            break;
+    }
+
+    byte[] jsonBytes = Base64.getDecoder().decode(base64);
+    String json = new String(jsonBytes, StandardCharsets.UTF_8);
+    JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+    return jwt.get("oid").getAsString();
 }
 ```
 
@@ -785,3 +954,9 @@ In this error scenario, the authentication was successful, but your registered u
 To mitigate this error, navigate to your Azure Cache for Redis resource in the Azure portal. Confirm that:
 * In **Data Access Configuration**, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
 * In the event you're using a custom role, ensure the permissions granted under your custom role include the one required for your target action.
+
+##### Managed Identity not working from Local Development Machine
+Managed identity does not work from a local development machine. To use managed identity, your code must be running
+in an Azure VM (or another type of resource in Azure). To run locally with Entra ID authentication, you'll need to
+use a service principal or user account. This is a common source of confusion, so ensure that when developing locally,
+you configure your application to use a service principal or user credentials for authentication.

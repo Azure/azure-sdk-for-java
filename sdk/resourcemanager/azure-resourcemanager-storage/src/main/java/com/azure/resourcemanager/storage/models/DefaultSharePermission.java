@@ -8,26 +8,36 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Default share permission for users using Kerberos authentication if RBAC role is not assigned. */
+/**
+ * Default share permission for users using Kerberos authentication if RBAC role is not assigned.
+ */
 public final class DefaultSharePermission extends ExpandableStringEnum<DefaultSharePermission> {
-    /** Static value None for DefaultSharePermission. */
+    /**
+     * Static value None for DefaultSharePermission.
+     */
     public static final DefaultSharePermission NONE = fromString("None");
 
-    /** Static value StorageFileDataSmbShareReader for DefaultSharePermission. */
-    public static final DefaultSharePermission STORAGE_FILE_DATA_SMB_SHARE_READER =
-        fromString("StorageFileDataSmbShareReader");
+    /**
+     * Static value StorageFileDataSmbShareReader for DefaultSharePermission.
+     */
+    public static final DefaultSharePermission STORAGE_FILE_DATA_SMB_SHARE_READER
+        = fromString("StorageFileDataSmbShareReader");
 
-    /** Static value StorageFileDataSmbShareContributor for DefaultSharePermission. */
-    public static final DefaultSharePermission STORAGE_FILE_DATA_SMB_SHARE_CONTRIBUTOR =
-        fromString("StorageFileDataSmbShareContributor");
+    /**
+     * Static value StorageFileDataSmbShareContributor for DefaultSharePermission.
+     */
+    public static final DefaultSharePermission STORAGE_FILE_DATA_SMB_SHARE_CONTRIBUTOR
+        = fromString("StorageFileDataSmbShareContributor");
 
-    /** Static value StorageFileDataSmbShareElevatedContributor for DefaultSharePermission. */
-    public static final DefaultSharePermission STORAGE_FILE_DATA_SMB_SHARE_ELEVATED_CONTRIBUTOR =
-        fromString("StorageFileDataSmbShareElevatedContributor");
+    /**
+     * Static value StorageFileDataSmbShareElevatedContributor for DefaultSharePermission.
+     */
+    public static final DefaultSharePermission STORAGE_FILE_DATA_SMB_SHARE_ELEVATED_CONTRIBUTOR
+        = fromString("StorageFileDataSmbShareElevatedContributor");
 
     /**
      * Creates a new instance of DefaultSharePermission value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +46,7 @@ public final class DefaultSharePermission extends ExpandableStringEnum<DefaultSh
 
     /**
      * Creates or finds a DefaultSharePermission from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DefaultSharePermission.
      */
@@ -47,7 +57,7 @@ public final class DefaultSharePermission extends ExpandableStringEnum<DefaultSh
 
     /**
      * Gets known DefaultSharePermission values.
-     *
+     * 
      * @return known DefaultSharePermission values.
      */
     public static Collection<DefaultSharePermission> values() {

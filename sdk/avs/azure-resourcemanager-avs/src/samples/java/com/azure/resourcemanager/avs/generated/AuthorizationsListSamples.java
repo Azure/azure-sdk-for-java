@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-/** Samples for Authorizations List. */
+/**
+ * Samples for Authorizations List.
+ */
 public final class AuthorizationsListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Authorizations_List.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Authorizations_List.json
      */
     /**
      * Sample code: Authorizations_List.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void authorizationsList(com.azure.resourcemanager.avs.AvsManager manager) {

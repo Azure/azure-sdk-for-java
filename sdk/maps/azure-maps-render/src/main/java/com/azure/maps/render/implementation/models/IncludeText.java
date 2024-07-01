@@ -5,31 +5,44 @@
 package com.azure.maps.render.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IncludeText. */
+/**
+ * Defines values for IncludeText.
+ */
 public final class IncludeText extends ExpandableStringEnum<IncludeText> {
-    /** Static value yes for IncludeText. */
+    /**
+     * Include all textual data in response.
+     */
     public static final IncludeText YES = fromString("yes");
 
-    /** Static value no for IncludeText. */
+    /**
+     * Exclude textual data from response. Only images and country/region names will be in response.
+     */
     public static final IncludeText NO = fromString("no");
 
     /**
+     * Creates a new instance of IncludeText value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IncludeText() {
+    }
+
+    /**
      * Creates or finds a IncludeText from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IncludeText.
      */
-    @JsonCreator
     public static IncludeText fromString(String name) {
         return fromString(name, IncludeText.class);
     }
 
     /**
      * Gets known IncludeText values.
-     *
+     * 
      * @return known IncludeText values.
      */
     public static Collection<IncludeText> values() {

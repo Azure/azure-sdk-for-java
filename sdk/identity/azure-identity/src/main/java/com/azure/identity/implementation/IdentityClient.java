@@ -6,6 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -40,6 +41,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -51,6 +53,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -65,6 +68,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static com.azure.identity.implementation.util.ValidationUtil.validateSecretFile;
 
 /**
  * The identity client that contains APIs to retrieve access tokens
@@ -98,13 +103,22 @@ public class IdentityClient extends IdentityClientBase {
      * @param clientAssertionTimeout the timeout to use for the client assertion.
      * @param options the options configuring the client.
      */
-    IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
-        String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
-        byte[] certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
-        Duration clientAssertionTimeout, IdentityClientOptions options) {
+    IdentityClient(String tenantId,
+                   String clientId,
+                   String clientSecret,
+                   String certificatePath,
+                   String clientAssertionFilePath,
+                   String resourceId,
+                   Supplier<String> clientAssertionSupplier,
+                   Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline,
+                   byte[] certificate,
+                   String certificatePassword,
+                   boolean isSharedTokenCacheCredential,
+                   Duration clientAssertionTimeout,
+                   IdentityClientOptions options) {
         super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId,
-            clientAssertionSupplier, certificate, certificatePassword, isSharedTokenCacheCredential,
-            clientAssertionTimeout, options);
+            clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate, certificatePassword,
+            isSharedTokenCacheCredential, clientAssertionTimeout, options);
 
         this.publicClientApplicationAccessor = new SynchronizedAccessor<>(() ->
             getPublicClientApplication(isSharedTokenCacheCredential, false));
@@ -425,11 +439,10 @@ public class IdentityClient extends IdentityClientBase {
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
         List<CredentialUnavailableException> exceptions = new ArrayList<>(2);
 
-        PowershellManager defaultPowerShellManager = new PowershellManager(Platform.isWindows()
-            ? DEFAULT_WINDOWS_PS_EXECUTABLE : DEFAULT_LINUX_PS_EXECUTABLE);
+        PowershellManager defaultPowerShellManager = new PowershellManager(false);
 
         PowershellManager legacyPowerShellManager = Platform.isWindows()
-            ? new PowershellManager(LEGACY_WINDOWS_PS_EXECUTABLE) : null;
+            ? new PowershellManager(true) : null;
 
         List<PowershellManager> powershellManagers = new ArrayList<>(2);
         powershellManagers.add(defaultPowerShellManager);
@@ -486,9 +499,9 @@ public class IdentityClient extends IdentityClientBase {
         } catch (IllegalArgumentException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
-        return Mono.using(() -> powershellManager, manager -> manager.initSession().flatMap(m -> {
+        return Mono.defer(() -> {
             String azAccountsCommand = "Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru";
-            return m.runCommand(azAccountsCommand).flatMap(output -> {
+            return powershellManager.runCommand(azAccountsCommand).flatMap(output -> {
                 if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not loaded "
                                     + "because no valid module file")) {
                     return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
@@ -504,7 +517,7 @@ public class IdentityClient extends IdentityClientBase {
                 LOGGER.verbose("Azure Powershell Authentication => Executing the command `{}` in Azure "
                                + "Powershell to retrieve the Access Token.", command);
 
-                return m.runCommand(command).flatMap(out -> {
+                return powershellManager.runCommand(command).flatMap(out -> {
                     if (out.contains("Run Connect-AzAccount to login")) {
                         return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                             new CredentialUnavailableException(
@@ -527,7 +540,7 @@ public class IdentityClient extends IdentityClientBase {
                     }
                 });
             });
-        }), PowershellManager::close);
+        });
     }
 
     /**
@@ -557,6 +570,9 @@ public class IdentityClient extends IdentityClientBase {
         if (clientAssertionSupplier != null) {
             builder.clientCredential(ClientCredentialFactory
                 .createFromClientAssertion(clientAssertionSupplier.get()));
+        } else if (clientAssertionSupplierWithHttpPipeline != null) {
+            builder.clientCredential(ClientCredentialFactory
+                .createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(getPipeline())));
         }
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
@@ -994,8 +1010,10 @@ public class IdentityClient extends IdentityClientBase {
                         null));
                 }
 
-                String secretKeyPath = realm.substring(separatorIndex + 1);
-                secretKey = new String(Files.readAllBytes(Paths.get(secretKeyPath)), StandardCharsets.UTF_8);
+                String secretKeyPathHeaderValue = realm.substring(separatorIndex + 1);
+                Path secretKeyPath = validateSecretFile(new File(secretKeyPathHeaderValue), LOGGER);
+
+                secretKey = new String(Files.readAllBytes(secretKeyPath), StandardCharsets.UTF_8);
 
 
                 if (connection != null) {

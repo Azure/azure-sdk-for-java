@@ -11,8 +11,7 @@ import com.azure.resourcemanager.network.models.VpnClientParameters;
  */
 public final class VirtualNetworkGatewaysGeneratevpnclientpackageSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * VirtualNetworkGatewayGenerateVpnClientPackage.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkGatewayGenerateVpnClientPackage.json
      */
     /**
      * Sample code: GenerateVPNClientPackage.
@@ -20,7 +19,10 @@ public final class VirtualNetworkGatewaysGeneratevpnclientpackageSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void generateVPNClientPackage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGateways().generatevpnclientpackage("rg1", "vpngw",
-            new VpnClientParameters(), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGateways()
+            .generatevpnclientpackage("rg1", "vpngw", new VpnClientParameters(), com.azure.core.util.Context.NONE);
     }
 }

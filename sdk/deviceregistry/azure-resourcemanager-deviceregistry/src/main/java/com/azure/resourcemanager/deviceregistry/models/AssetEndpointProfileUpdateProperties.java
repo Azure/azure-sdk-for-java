@@ -5,37 +5,38 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The updatable properties of the AssetEndpointProfile.
  */
 @Fluent
-public final class AssetEndpointProfileUpdateProperties {
+public final class AssetEndpointProfileUpdateProperties
+    implements JsonSerializable<AssetEndpointProfileUpdateProperties> {
     /*
      * The local valid URI specifying the network address/DNS name of a southbound device. The scheme part of the
      * targetAddress URI specifies the type of the device. The additionalConfiguration field holds further connector
      * type specific configuration.
      */
-    @JsonProperty(value = "targetAddress")
     private String targetAddress;
 
     /*
      * Defines the client authentication mechanism to the server.
      */
-    @JsonProperty(value = "userAuthentication")
     private UserAuthentication userAuthentication;
 
     /*
      * Defines the authentication mechanism for the southbound connector connecting to the shop floor/OT device.
      */
-    @JsonProperty(value = "transportAuthentication")
     private TransportAuthentication transportAuthentication;
 
     /*
      * Contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
      */
-    @JsonProperty(value = "additionalConfiguration")
     private String additionalConfiguration;
 
     /**
@@ -145,5 +146,53 @@ public final class AssetEndpointProfileUpdateProperties {
         if (transportAuthentication() != null) {
             transportAuthentication().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetAddress", this.targetAddress);
+        jsonWriter.writeJsonField("userAuthentication", this.userAuthentication);
+        jsonWriter.writeJsonField("transportAuthentication", this.transportAuthentication);
+        jsonWriter.writeStringField("additionalConfiguration", this.additionalConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssetEndpointProfileUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssetEndpointProfileUpdateProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AssetEndpointProfileUpdateProperties.
+     */
+    public static AssetEndpointProfileUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssetEndpointProfileUpdateProperties deserializedAssetEndpointProfileUpdateProperties
+                = new AssetEndpointProfileUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetAddress".equals(fieldName)) {
+                    deserializedAssetEndpointProfileUpdateProperties.targetAddress = reader.getString();
+                } else if ("userAuthentication".equals(fieldName)) {
+                    deserializedAssetEndpointProfileUpdateProperties.userAuthentication
+                        = UserAuthentication.fromJson(reader);
+                } else if ("transportAuthentication".equals(fieldName)) {
+                    deserializedAssetEndpointProfileUpdateProperties.transportAuthentication
+                        = TransportAuthentication.fromJson(reader);
+                } else if ("additionalConfiguration".equals(fieldName)) {
+                    deserializedAssetEndpointProfileUpdateProperties.additionalConfiguration = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAssetEndpointProfileUpdateProperties;
+        });
     }
 }

@@ -21,7 +21,7 @@ public final class IntegrationRuntimesGetMonitoringDataWithResponseMockTests {
     @Test
     public void testGetMonitoringDataWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"biszyi\",\"nodes\":[{\"nodeName\":\"jrirg\",\"availableMemoryInMB\":2026881904,\"cpuUtilization\":748969341,\"concurrentJobsLimit\":1141664737,\"concurrentJobsRunning\":216624483,\"maxConcurrentJobs\":1622921552,\"sentBytes\":36.65986,\"receivedBytes\":54.669308,\"\":{\"znuyczlyl\":\"datard\",\"uhkhnzsrgi\":\"datadrziaxigeos\",\"rlyscnbrwhsqtzg\":\"datavzepgljtuzqreprn\",\"x\":\"datafybryexhdigmgszz\"}},{\"nodeName\":\"unuus\",\"availableMemoryInMB\":1333665930,\"cpuUtilization\":536516435,\"concurrentJobsLimit\":872194362,\"concurrentJobsRunning\":158792225,\"maxConcurrentJobs\":460583114,\"sentBytes\":94.75602,\"receivedBytes\":89.53062,\"\":{\"sbzu\":\"datat\",\"rtsnclzyun\":\"datafranngwldymuehvv\",\"pxfhixaagvkwe\":\"dataoogagtjcmly\"}}]}";
+            = "{\"name\":\"nisinpkcww\",\"nodes\":[{\"nodeName\":\"b\",\"availableMemoryInMB\":26795964,\"cpuUtilization\":2078169809,\"concurrentJobsLimit\":1586982490,\"concurrentJobsRunning\":597607505,\"maxConcurrentJobs\":1140443642,\"sentBytes\":0.19900799,\"receivedBytes\":92.48324,\"\":{\"zxotwralnl\":\"datauptnhuybtmtokohy\",\"sarfmjschcxud\":\"datazlnrellwfgyabg\",\"qlltoiud\":\"dataomhhsumzfvrak\",\"bsbhaqsu\":\"dataeoibehrholjjxi\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,10 @@ public final class IntegrationRuntimesGetMonitoringDataWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeMonitoringData response = manager.integrationRuntimes()
-            .getMonitoringDataWithResponse("uiiorbtfarb", "arxyh", "ukc", com.azure.core.util.Context.NONE)
+            .getMonitoringDataWithResponse("yuukhssretugorc", "kcsevq", "dwktogmcblwh",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("biszyi", response.name());
+        Assertions.assertEquals("nisinpkcww", response.name());
     }
 }

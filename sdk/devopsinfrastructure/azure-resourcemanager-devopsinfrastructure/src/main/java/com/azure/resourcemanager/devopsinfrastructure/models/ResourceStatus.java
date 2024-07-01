@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -82,7 +81,6 @@ public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
      * @param name a name to look for.
      * @return the corresponding ResourceStatus.
      */
-    @JsonCreator
     public static ResourceStatus fromString(String name) {
         return fromString(name, ResourceStatus.class);
     }

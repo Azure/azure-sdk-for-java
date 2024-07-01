@@ -5,43 +5,53 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * The Azure SQL Managed Instance dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureSqlMITable")
-@JsonFlatten
 @Fluent
 public class AzureSqlMITableDataset extends Dataset {
     /*
+     * Type of dataset.
+     */
+    private String type = "AzureSqlMITable";
+
+    /*
      * This property will be retired. Please consider using schema + table properties instead.
      */
-    @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
      * The schema name of the Azure SQL Managed Instance. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
     /*
      * The table name of the Azure SQL Managed Instance dataset. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.table")
     private Object table;
 
     /**
      * Creates an instance of AzureSqlMITableDataset class.
      */
     public AzureSqlMITableDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -171,5 +181,99 @@ public class AzureSqlMITableDataset extends Dataset {
     public AzureSqlMITableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeUntypedField("structure", getStructure());
+        jsonWriter.writeUntypedField("schema", getSchema());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", getFolder());
+        jsonWriter.writeStringField("type", this.type);
+        if (tableName != null || schemaTypePropertiesSchema != null || table != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("tableName", this.tableName);
+            jsonWriter.writeUntypedField("schema", this.schemaTypePropertiesSchema);
+            jsonWriter.writeUntypedField("table", this.table);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSqlMITableDataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSqlMITableDataset if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureSqlMITableDataset.
+     */
+    public static AzureSqlMITableDataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSqlMITableDataset deserializedAzureSqlMITableDataset = new AzureSqlMITableDataset();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedAzureSqlMITableDataset.setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureSqlMITableDataset.setDescription(reader.getString());
+                } else if ("structure".equals(fieldName)) {
+                    deserializedAzureSqlMITableDataset.setStructure(reader.readUntyped());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedAzureSqlMITableDataset.setSchema(reader.readUntyped());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedAzureSqlMITableDataset.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAzureSqlMITableDataset.setAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedAzureSqlMITableDataset.setFolder(DatasetFolder.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureSqlMITableDataset.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("tableName".equals(fieldName)) {
+                            deserializedAzureSqlMITableDataset.tableName = reader.readUntyped();
+                        } else if ("schema".equals(fieldName)) {
+                            deserializedAzureSqlMITableDataset.schemaTypePropertiesSchema = reader.readUntyped();
+                        } else if ("table".equals(fieldName)) {
+                            deserializedAzureSqlMITableDataset.table = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureSqlMITableDataset.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureSqlMITableDataset;
+        });
     }
 }

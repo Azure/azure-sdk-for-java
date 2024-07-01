@@ -13,126 +13,100 @@ import com.azure.resourcemanager.resources.models.TemplateLink;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Deployments CreateOrUpdate. */
+/**
+ * Samples for Deployments CreateOrUpdate.
+ */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutDeploymentResourceGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PutDeploymentResourceGroup.json
      */
     /**
      * Sample code: Create a deployment that will deploy a template with a uri and queryString.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createADeploymentThatWillDeployATemplateWithAUriAndQueryString(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .serviceClient()
             .getDeployments()
-            .createOrUpdate(
-                "my-resource-group",
-                "my-deployment",
-                new DeploymentInner()
-                    .withProperties(
-                        new DeploymentProperties()
-                            .withTemplateLink(
-                                new TemplateLink()
-                                    .withUri("https://example.com/exampleTemplate.json")
-                                    .withQueryString(
-                                        "sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=xxxxxxxx0xxxxxxxxxxxxx%2bxxxxxxxxxxxxxxxxxxxx%3d"))
-                            .withParameters(mapOf())
-                            .withMode(DeploymentMode.INCREMENTAL)),
+            .createOrUpdate("my-resource-group", "my-deployment",
+                new DeploymentInner().withProperties(new DeploymentProperties().withTemplateLink(new TemplateLink()
+                    .withUri("https://example.com/exampleTemplate.json")
+                    .withQueryString(
+                        "sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=xxxxxxxx0xxxxxxxxxxxxx%2bxxxxxxxxxxxxxxxxxxxx%3d"))
+                    .withParameters(mapOf())
+                    .withMode(DeploymentMode.INCREMENTAL)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutDeploymentResourceGroupTemplateSpecsWithId.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PutDeploymentResourceGroupTemplateSpecsWithId.json
      */
     /**
      * Sample code: Create a deployment that will deploy a templateSpec with the given resourceId.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createADeploymentThatWillDeployATemplateSpecWithTheGivenResourceId(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .serviceClient()
             .getDeployments()
-            .createOrUpdate(
-                "my-resource-group",
-                "my-deployment",
-                new DeploymentInner()
-                    .withProperties(
-                        new DeploymentProperties()
-                            .withTemplateLink(
-                                new TemplateLink()
-                                    .withId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"))
-                            .withParameters(mapOf())
-                            .withMode(DeploymentMode.INCREMENTAL)),
+            .createOrUpdate("my-resource-group", "my-deployment", new DeploymentInner()
+                .withProperties(new DeploymentProperties().withTemplateLink(new TemplateLink().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"))
+                    .withParameters(mapOf())
+                    .withMode(DeploymentMode.INCREMENTAL)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
      */
     /**
      * Sample code: Create a deployment that will redeploy another deployment on failure.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createADeploymentThatWillRedeployAnotherDeploymentOnFailure(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .serviceClient()
             .getDeployments()
-            .createOrUpdate(
-                "my-resource-group",
-                "my-deployment",
-                new DeploymentInner()
-                    .withProperties(
-                        new DeploymentProperties()
-                            .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                            .withParameters(mapOf())
-                            .withMode(DeploymentMode.COMPLETE)
-                            .withOnErrorDeployment(
-                                new OnErrorDeployment()
-                                    .withType(OnErrorDeploymentType.SPECIFIC_DEPLOYMENT)
-                                    .withDeploymentName("name-of-deployment-to-use"))),
+            .createOrUpdate("my-resource-group", "my-deployment",
+                new DeploymentInner().withProperties(new DeploymentProperties()
+                    .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
+                    .withParameters(mapOf())
+                    .withMode(DeploymentMode.COMPLETE)
+                    .withOnErrorDeployment(new OnErrorDeployment().withType(OnErrorDeploymentType.SPECIFIC_DEPLOYMENT)
+                        .withDeploymentName("name-of-deployment-to-use"))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
      */
     /**
      * Sample code: Create a deployment that will redeploy the last successful deployment on failure.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createADeploymentThatWillRedeployTheLastSuccessfulDeploymentOnFailure(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .serviceClient()
             .getDeployments()
-            .createOrUpdate(
-                "my-resource-group",
-                "my-deployment",
-                new DeploymentInner()
-                    .withProperties(
-                        new DeploymentProperties()
-                            .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                            .withParameters(mapOf())
-                            .withMode(DeploymentMode.COMPLETE)
-                            .withOnErrorDeployment(
-                                new OnErrorDeployment().withType(OnErrorDeploymentType.LAST_SUCCESSFUL))),
+            .createOrUpdate("my-resource-group", "my-deployment",
+                new DeploymentInner().withProperties(new DeploymentProperties()
+                    .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
+                    .withParameters(mapOf())
+                    .withMode(DeploymentMode.COMPLETE)
+                    .withOnErrorDeployment(new OnErrorDeployment().withType(OnErrorDeploymentType.LAST_SUCCESSFUL))),
                 com.azure.core.util.Context.NONE);
     }
 

@@ -60,8 +60,8 @@ public final class SparkJobDefinitionsImpl {
     }
 
     /**
-     * The interface defining all the services for ArtifactsClientSparkJobDefinitions to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for ArtifactsClientSparkJobDefinitions to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientSpark")

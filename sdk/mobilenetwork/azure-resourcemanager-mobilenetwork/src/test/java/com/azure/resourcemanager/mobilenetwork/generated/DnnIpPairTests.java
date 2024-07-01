@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DnnIpPairTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DnnIpPair model = BinaryData.fromString("{\"dnn\":\"poekrsgsgb\",\"ueIpAddress\":{\"ipV4Addr\":\"zq\"}}")
+        DnnIpPair model = BinaryData.fromString("{\"dnn\":\"bb\",\"ueIpAddress\":{\"ipV4Addr\":\"gdakchz\"}}")
             .toObject(DnnIpPair.class);
-        Assertions.assertEquals("poekrsgsgb", model.dnn());
-        Assertions.assertEquals("zq", model.ueIpAddress().ipV4Addr());
+        Assertions.assertEquals("bb", model.dnn());
+        Assertions.assertEquals("gdakchz", model.ueIpAddress().ipV4Addr());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DnnIpPair model = new DnnIpPair().withDnn("poekrsgsgb").withUeIpAddress(new UeIpAddress().withIpV4Addr("zq"));
+        DnnIpPair model = new DnnIpPair().withDnn("bb").withUeIpAddress(new UeIpAddress().withIpV4Addr("gdakchz"));
         model = BinaryData.fromObject(model).toObject(DnnIpPair.class);
-        Assertions.assertEquals("poekrsgsgb", model.dnn());
-        Assertions.assertEquals("zq", model.ueIpAddress().ipV4Addr());
+        Assertions.assertEquals("bb", model.dnn());
+        Assertions.assertEquals("gdakchz", model.ueIpAddress().ipV4Addr());
     }
 }

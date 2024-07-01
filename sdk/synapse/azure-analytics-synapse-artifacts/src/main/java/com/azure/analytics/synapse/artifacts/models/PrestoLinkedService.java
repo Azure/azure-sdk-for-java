@@ -5,115 +5,108 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Presto server linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Presto")
-@JsonFlatten
 @Fluent
 public class PrestoLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "Presto";
+
+    /*
      * The IP address or host name of the Presto server. (i.e. 192.168.222.160)
      */
-    @JsonProperty(value = "typeProperties.host", required = true)
     private Object host;
 
     /*
      * The version of the Presto server. (i.e. 0.148-t)
      */
-    @JsonProperty(value = "typeProperties.serverVersion", required = true)
     private Object serverVersion;
 
     /*
      * The catalog context for all request against the server.
      */
-    @JsonProperty(value = "typeProperties.catalog", required = true)
     private Object catalog;
 
     /*
      * The TCP port that the Presto server uses to listen for client connections. The default value is 8080.
      */
-    @JsonProperty(value = "typeProperties.port")
     private Object port;
 
     /*
      * The authentication mechanism used to connect to the Presto server.
      */
-    @JsonProperty(value = "typeProperties.authenticationType", required = true)
     private PrestoAuthenticationType authenticationType;
 
     /*
      * The user name used to connect to the Presto server.
      */
-    @JsonProperty(value = "typeProperties.username")
     private Object username;
 
     /*
      * The password corresponding to the user name.
      */
-    @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
     /*
      * Specifies whether the connections to the server are encrypted using SSL. The default value is false.
      */
-    @JsonProperty(value = "typeProperties.enableSsl")
     private Object enableSsl;
 
     /*
-     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
-     * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
-     * installed with the IR.
+     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file installed with the IR.
      */
-    @JsonProperty(value = "typeProperties.trustedCertPath")
     private Object trustedCertPath;
 
     /*
-     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
-     * value is false.
+     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default value is false.
      */
-    @JsonProperty(value = "typeProperties.useSystemTrustStore")
     private Object useSystemTrustStore;
 
     /*
-     * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
-     * connecting over SSL. The default value is false.
+     * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when connecting over SSL. The default value is false.
      */
-    @JsonProperty(value = "typeProperties.allowHostNameCNMismatch")
     private Object allowHostNameCNMismatch;
 
     /*
      * Specifies whether to allow self-signed certificates from the server. The default value is false.
      */
-    @JsonProperty(value = "typeProperties.allowSelfSignedServerCert")
     private Object allowSelfSignedServerCert;
 
     /*
-     * The local time zone used by the connection. Valid values for this option are specified in the IANA Time Zone
-     * Database. The default value is the system time zone.
+     * The local time zone used by the connection. Valid values for this option are specified in the IANA Time Zone Database. The default value is the system time zone.
      */
-    @JsonProperty(value = "typeProperties.timeZoneID")
     private Object timeZoneID;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /**
      * Creates an instance of PrestoLinkedService class.
      */
     public PrestoLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -281,9 +274,9 @@ public class PrestoLinkedService extends LinkedService {
     }
 
     /**
-     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
-     * The default value is the cacerts.pem file installed with the IR.
+     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR.
      * 
      * @return the trustedCertPath value.
      */
@@ -292,9 +285,9 @@ public class PrestoLinkedService extends LinkedService {
     }
 
     /**
-     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
-     * The default value is the cacerts.pem file installed with the IR.
+     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR.
      * 
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the PrestoLinkedService object itself.
@@ -393,8 +386,8 @@ public class PrestoLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
      * @return the encryptedCredential value.
      */
@@ -403,8 +396,8 @@ public class PrestoLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PrestoLinkedService object itself.
@@ -448,5 +441,138 @@ public class PrestoLinkedService extends LinkedService {
     public PrestoLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (host != null
+            || serverVersion != null
+            || catalog != null
+            || port != null
+            || authenticationType != null
+            || username != null
+            || password != null
+            || enableSsl != null
+            || trustedCertPath != null
+            || useSystemTrustStore != null
+            || allowHostNameCNMismatch != null
+            || allowSelfSignedServerCert != null
+            || timeZoneID != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("host", this.host);
+            jsonWriter.writeUntypedField("serverVersion", this.serverVersion);
+            jsonWriter.writeUntypedField("catalog", this.catalog);
+            jsonWriter.writeUntypedField("port", this.port);
+            jsonWriter.writeStringField("authenticationType",
+                this.authenticationType == null ? null : this.authenticationType.toString());
+            jsonWriter.writeUntypedField("username", this.username);
+            jsonWriter.writeJsonField("password", this.password);
+            jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+            jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
+            jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+            jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostNameCNMismatch);
+            jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+            jsonWriter.writeUntypedField("timeZoneID", this.timeZoneID);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrestoLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrestoLinkedService if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrestoLinkedService.
+     */
+    public static PrestoLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrestoLinkedService deserializedPrestoLinkedService = new PrestoLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedPrestoLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedPrestoLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedPrestoLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedPrestoLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrestoLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("host".equals(fieldName)) {
+                            deserializedPrestoLinkedService.host = reader.readUntyped();
+                        } else if ("serverVersion".equals(fieldName)) {
+                            deserializedPrestoLinkedService.serverVersion = reader.readUntyped();
+                        } else if ("catalog".equals(fieldName)) {
+                            deserializedPrestoLinkedService.catalog = reader.readUntyped();
+                        } else if ("port".equals(fieldName)) {
+                            deserializedPrestoLinkedService.port = reader.readUntyped();
+                        } else if ("authenticationType".equals(fieldName)) {
+                            deserializedPrestoLinkedService.authenticationType
+                                = PrestoAuthenticationType.fromString(reader.getString());
+                        } else if ("username".equals(fieldName)) {
+                            deserializedPrestoLinkedService.username = reader.readUntyped();
+                        } else if ("password".equals(fieldName)) {
+                            deserializedPrestoLinkedService.password = SecretBase.fromJson(reader);
+                        } else if ("enableSsl".equals(fieldName)) {
+                            deserializedPrestoLinkedService.enableSsl = reader.readUntyped();
+                        } else if ("trustedCertPath".equals(fieldName)) {
+                            deserializedPrestoLinkedService.trustedCertPath = reader.readUntyped();
+                        } else if ("useSystemTrustStore".equals(fieldName)) {
+                            deserializedPrestoLinkedService.useSystemTrustStore = reader.readUntyped();
+                        } else if ("allowHostNameCNMismatch".equals(fieldName)) {
+                            deserializedPrestoLinkedService.allowHostNameCNMismatch = reader.readUntyped();
+                        } else if ("allowSelfSignedServerCert".equals(fieldName)) {
+                            deserializedPrestoLinkedService.allowSelfSignedServerCert = reader.readUntyped();
+                        } else if ("timeZoneID".equals(fieldName)) {
+                            deserializedPrestoLinkedService.timeZoneID = reader.readUntyped();
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedPrestoLinkedService.encryptedCredential = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedPrestoLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedPrestoLinkedService;
+        });
     }
 }

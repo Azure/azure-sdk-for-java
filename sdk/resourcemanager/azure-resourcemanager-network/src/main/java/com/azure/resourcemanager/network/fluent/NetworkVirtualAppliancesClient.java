@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceInstanceIdsInner;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -347,6 +348,152 @@ public interface NetworkVirtualAppliancesClient extends InnerSupportsGet<Network
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkVirtualApplianceInner createOrUpdate(String resourceGroupName, String networkVirtualApplianceName,
         NetworkVirtualApplianceInner parameters, Context context);
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances along
+     * with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds);
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
+        beginRestartAsync(String resourceGroupName, String networkVirtualApplianceName,
+            NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds);
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
+        beginRestartAsync(String resourceGroupName, String networkVirtualApplianceName);
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
+        beginRestart(String resourceGroupName, String networkVirtualApplianceName);
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
+        beginRestart(String resourceGroupName, String networkVirtualApplianceName,
+            NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds, Context context);
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<NetworkVirtualApplianceInstanceIdsInner> restartAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds);
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<NetworkVirtualApplianceInstanceIdsInner> restartAsync(String resourceGroupName,
+        String networkVirtualApplianceName);
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkVirtualApplianceInstanceIdsInner restart(String resourceGroupName, String networkVirtualApplianceName);
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkVirtualApplianceInstanceIdsInner restart(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds, Context context);
 
     /**
      * Lists all Network Virtual Appliances in a resource group.

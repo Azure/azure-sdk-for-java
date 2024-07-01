@@ -52,7 +52,6 @@ extends:
   parameters:
     ServiceDirectory: appconfiguration
     JavadocSafeJavaBuildVersion: '1.21'
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-data-appconfiguration
         groupId: com.azure

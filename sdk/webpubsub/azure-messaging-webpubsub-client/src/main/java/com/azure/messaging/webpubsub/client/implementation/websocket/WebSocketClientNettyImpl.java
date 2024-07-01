@@ -12,12 +12,11 @@ import java.util.function.Consumer;
 public final class WebSocketClientNettyImpl implements WebSocketClient {
     @Override
     public WebSocketSession connectToServer(ClientEndpointConfiguration cec, String path,
-                                            AtomicReference<ClientLogger> loggerReference,
-                                            Consumer<Object> messageHandler,
-                                            Consumer<WebSocketSession> openHandler,
-                                            Consumer<CloseReason> closeHandler) {
+        AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
+        Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler) {
         try {
-            WebSocketSessionNettyImpl session = new WebSocketSessionNettyImpl(cec, path, loggerReference, messageHandler, openHandler, closeHandler);
+            WebSocketSessionNettyImpl session = new WebSocketSessionNettyImpl(cec, path, loggerReference,
+                messageHandler, openHandler, closeHandler);
             session.connect();
             return session;
         } catch (Exception e) {

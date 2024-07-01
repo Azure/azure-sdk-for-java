@@ -111,4 +111,13 @@ public final class IdentityUtil {
         }
         return outputStream.toByteArray();
     }
+
+
+    public static boolean isWindowsPlatform() {
+        return System.getProperty("os.name").contains("Windows");
+    }
+
+    public static boolean isLinuxPlatform() {
+        return System.getProperty("os.name").contains("Linux");
+    }
 }

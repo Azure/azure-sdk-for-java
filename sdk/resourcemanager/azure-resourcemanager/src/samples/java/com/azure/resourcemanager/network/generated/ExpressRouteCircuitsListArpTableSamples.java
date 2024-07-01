@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteCircuitsListArpTableSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * ExpressRouteCircuitARPTableList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ExpressRouteCircuitARPTableList.json
      */
     /**
      * Sample code: List ARP Table.
@@ -18,7 +17,10 @@ public final class ExpressRouteCircuitsListArpTableSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listARPTable(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRouteCircuits().listArpTable("rg1", "circuitName",
-            "peeringName", "devicePath", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRouteCircuits()
+            .listArpTable("rg1", "circuitName", "peeringName", "devicePath", com.azure.core.util.Context.NONE);
     }
 }

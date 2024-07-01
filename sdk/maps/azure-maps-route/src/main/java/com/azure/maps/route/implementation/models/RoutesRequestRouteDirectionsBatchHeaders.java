@@ -5,20 +5,32 @@
 package com.azure.maps.route.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The RoutesRequestRouteDirectionsBatchHeaders model. */
+/**
+ * The RoutesRequestRouteDirectionsBatchHeaders model.
+ */
 @Fluent
 public final class RoutesRequestRouteDirectionsBatchHeaders {
     /*
      * The Location property.
      */
-    @JsonProperty(value = "Location")
     private String location;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of RoutesRequestRouteDirectionsBatchHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public RoutesRequestRouteDirectionsBatchHeaders(HttpHeaders rawHeaders) {
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
+    }
 
     /**
      * Get the location property: The Location property.
-     *
+     * 
      * @return the location value.
      */
     public String getLocation() {
@@ -27,7 +39,7 @@ public final class RoutesRequestRouteDirectionsBatchHeaders {
 
     /**
      * Set the location property: The Location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the RoutesRequestRouteDirectionsBatchHeaders object itself.
      */

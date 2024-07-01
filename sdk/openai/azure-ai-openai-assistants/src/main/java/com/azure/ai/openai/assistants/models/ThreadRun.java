@@ -5,6 +5,7 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -81,12 +82,6 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      */
     @Generated
     private final List<ToolDefinition> tools;
-
-    /*
-     * A list of attached file IDs, ordered by creation date in ascending order.
-     */
-    @Generated
-    private final List<String> fileIds;
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
@@ -233,16 +228,6 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
     }
 
     /**
-     * Get the fileIds property: A list of attached file IDs, ordered by creation date in ascending order.
-     *
-     * @return the fileIds value.
-     */
-    @Generated
-    public List<String> getFileIds() {
-        return this.fileIds;
-    }
-
-    /**
      * Get the createdAt property: The Unix timestamp, in seconds, representing when this object was created.
      *
      * @return the createdAt value.
@@ -330,6 +315,244 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("thread_id", this.threadId);
+        jsonWriter.writeStringField("assistant_id", this.assistantId);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("last_error", this.lastError);
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeStringField("instructions", this.instructions);
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeLongField("created_at", this.createdAt);
+        jsonWriter.writeNumberField("expires_at", this.expiresAt);
+        jsonWriter.writeNumberField("started_at", this.startedAt);
+        jsonWriter.writeNumberField("completed_at", this.completedAt);
+        jsonWriter.writeNumberField("cancelled_at", this.cancelledAt);
+        jsonWriter.writeNumberField("failed_at", this.failedAt);
+        jsonWriter.writeStringField("incomplete_details",
+            this.incompleteDetails == null ? null : this.incompleteDetails.toString());
+        jsonWriter.writeJsonField("usage", this.usage);
+        jsonWriter.writeNumberField("max_prompt_tokens", this.maxPromptTokens);
+        jsonWriter.writeNumberField("max_completion_tokens", this.maxCompletionTokens);
+        jsonWriter.writeJsonField("truncation_strategy", this.truncationStrategy);
+        jsonWriter.writeUntypedField("tool_choice", this.toolChoice.toObject(Object.class));
+        jsonWriter.writeUntypedField("response_format", this.responseFormat.toObject(Object.class));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("required_action", this.requiredAction);
+        jsonWriter.writeNumberField("temperature", this.temperature);
+        jsonWriter.writeNumberField("top_p", this.topP);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThreadRun from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThreadRun if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ThreadRun.
+     */
+    @Generated
+    public static ThreadRun fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            String threadId = null;
+            String assistantId = null;
+            RunStatus status = null;
+            RunError lastError = null;
+            String model = null;
+            String instructions = null;
+            List<ToolDefinition> tools = null;
+            OffsetDateTime createdAt = null;
+            OffsetDateTime expiresAt = null;
+            OffsetDateTime startedAt = null;
+            OffsetDateTime completedAt = null;
+            OffsetDateTime cancelledAt = null;
+            OffsetDateTime failedAt = null;
+            IncompleteRunDetails incompleteDetails = null;
+            RunCompletionUsage usage = null;
+            Integer maxPromptTokens = null;
+            Integer maxCompletionTokens = null;
+            TruncationObject truncationStrategy = null;
+            BinaryData toolChoice = null;
+            BinaryData responseFormat = null;
+            Map<String, String> metadata = null;
+            RequiredAction requiredAction = null;
+            Double temperature = null;
+            Double topP = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("thread_id".equals(fieldName)) {
+                    threadId = reader.getString();
+                } else if ("assistant_id".equals(fieldName)) {
+                    assistantId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    status = RunStatus.fromString(reader.getString());
+                } else if ("last_error".equals(fieldName)) {
+                    lastError = RunError.fromJson(reader);
+                } else if ("model".equals(fieldName)) {
+                    model = reader.getString();
+                } else if ("instructions".equals(fieldName)) {
+                    instructions = reader.getString();
+                } else if ("tools".equals(fieldName)) {
+                    tools = reader.readArray(reader1 -> ToolDefinition.fromJson(reader1));
+                } else if ("created_at".equals(fieldName)) {
+                    createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
+                } else if ("expires_at".equals(fieldName)) {
+                    Long expiresAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (expiresAtHolder != null) {
+                        expiresAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(expiresAtHolder), ZoneOffset.UTC);
+                    }
+                } else if ("started_at".equals(fieldName)) {
+                    Long startedAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (startedAtHolder != null) {
+                        startedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(startedAtHolder), ZoneOffset.UTC);
+                    }
+                } else if ("completed_at".equals(fieldName)) {
+                    Long completedAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (completedAtHolder != null) {
+                        completedAt
+                            = OffsetDateTime.ofInstant(Instant.ofEpochSecond(completedAtHolder), ZoneOffset.UTC);
+                    }
+                } else if ("cancelled_at".equals(fieldName)) {
+                    Long cancelledAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (cancelledAtHolder != null) {
+                        cancelledAt
+                            = OffsetDateTime.ofInstant(Instant.ofEpochSecond(cancelledAtHolder), ZoneOffset.UTC);
+                    }
+                } else if ("failed_at".equals(fieldName)) {
+                    Long failedAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (failedAtHolder != null) {
+                        failedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(failedAtHolder), ZoneOffset.UTC);
+                    }
+                } else if ("incomplete_details".equals(fieldName)) {
+                    incompleteDetails = IncompleteRunDetails.fromString(reader.getString());
+                } else if ("usage".equals(fieldName)) {
+                    usage = RunCompletionUsage.fromJson(reader);
+                } else if ("max_prompt_tokens".equals(fieldName)) {
+                    maxPromptTokens = reader.getNullable(JsonReader::getInt);
+                } else if ("max_completion_tokens".equals(fieldName)) {
+                    maxCompletionTokens = reader.getNullable(JsonReader::getInt);
+                } else if ("truncation_strategy".equals(fieldName)) {
+                    truncationStrategy = TruncationObject.fromJson(reader);
+                } else if ("tool_choice".equals(fieldName)) {
+                    toolChoice
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("response_format".equals(fieldName)) {
+                    responseFormat
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("required_action".equals(fieldName)) {
+                    requiredAction = RequiredAction.fromJson(reader);
+                } else if ("temperature".equals(fieldName)) {
+                    temperature = reader.getNullable(JsonReader::getDouble);
+                } else if ("top_p".equals(fieldName)) {
+                    topP = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ThreadRun deserializedThreadRun
+                = new ThreadRun(id, threadId, assistantId, status, lastError, model, instructions, tools, createdAt,
+                    expiresAt, startedAt, completedAt, cancelledAt, failedAt, incompleteDetails, usage, maxPromptTokens,
+                    maxCompletionTokens, truncationStrategy, toolChoice, responseFormat, metadata);
+            deserializedThreadRun.requiredAction = requiredAction;
+            deserializedThreadRun.temperature = temperature;
+            deserializedThreadRun.topP = topP;
+            return deserializedThreadRun;
+        });
+    }
+
+    /*
+     * Usage statistics related to the run. This value will be `null` if the run is not in a terminal state (i.e.
+     * `in_progress`, `queued`, etc.).
+     */
+    @Generated
+    private final RunCompletionUsage usage;
+
+    /**
+     * Get the usage property: Usage statistics related to the run. This value will be `null` if the run is not in a
+     * terminal state (i.e. `in_progress`, `queued`, etc.).
+     *
+     * @return the usage value.
+     */
+    @Generated
+    public RunCompletionUsage getUsage() {
+        return this.usage;
+    }
+
+    /*
+     * Details on why the run is incomplete. Will be `null` if the run is not incomplete.
+     */
+    @Generated
+    private final IncompleteRunDetails incompleteDetails;
+
+    /**
+     * Get the incompleteDetails property: Details on why the run is incomplete. Will be `null` if the run is not
+     * incomplete.
+     *
+     * @return the incompleteDetails value.
+     */
+    @Generated
+    public IncompleteRunDetails getIncompleteDetails() {
+        return this.incompleteDetails;
+    }
+
+    /*
+     * The sampling temperature used for this run. If not set, defaults to 1.
+     */
+    @Generated
+    private Double temperature;
+
+    /*
+     * The nucleus sampling value used for this run. If not set, defaults to 1.
+     */
+    @Generated
+    private Double topP;
+
+    /*
+     * The maximum number of prompt tokens specified to have been used over the course of the run.
+     */
+    @Generated
+    private final Integer maxPromptTokens;
+
+    /*
+     * The maximum number of completion tokens specified to have been used over the course of the run.
+     */
+    @Generated
+    private final Integer maxCompletionTokens;
+
+    /*
+     * The strategy to use for dropping messages as the context windows moves forward.
+     */
+    @Generated
+    private final TruncationObject truncationStrategy;
+
+    /*
+     * Controls whether or not and which tool is called by the model.
+     */
+    @Generated
+    private final BinaryData toolChoice;
+
+    /*
+     * The response format of the tool calls used in this run.
+     */
+    @Generated
+    private final BinaryData responseFormat;
+
+    /**
      * Creates an instance of ThreadRun class.
      *
      * @param id the id value to set.
@@ -340,20 +563,28 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      * @param model the model value to set.
      * @param instructions the instructions value to set.
      * @param tools the tools value to set.
-     * @param fileIds the fileIds value to set.
      * @param createdAt the createdAt value to set.
      * @param expiresAt the expiresAt value to set.
      * @param startedAt the startedAt value to set.
      * @param completedAt the completedAt value to set.
      * @param cancelledAt the cancelledAt value to set.
      * @param failedAt the failedAt value to set.
+     * @param incompleteDetails the incompleteDetails value to set.
+     * @param usage the usage value to set.
+     * @param maxPromptTokens the maxPromptTokens value to set.
+     * @param maxCompletionTokens the maxCompletionTokens value to set.
+     * @param truncationStrategy the truncationStrategy value to set.
+     * @param toolChoice the toolChoice value to set.
+     * @param responseFormat the responseFormat value to set.
      * @param metadata the metadata value to set.
      */
     @Generated
     private ThreadRun(String id, String threadId, String assistantId, RunStatus status, RunError lastError,
-        String model, String instructions, List<ToolDefinition> tools, List<String> fileIds, OffsetDateTime createdAt,
+        String model, String instructions, List<ToolDefinition> tools, OffsetDateTime createdAt,
         OffsetDateTime expiresAt, OffsetDateTime startedAt, OffsetDateTime completedAt, OffsetDateTime cancelledAt,
-        OffsetDateTime failedAt, Map<String, String> metadata) {
+        OffsetDateTime failedAt, IncompleteRunDetails incompleteDetails, RunCompletionUsage usage,
+        Integer maxPromptTokens, Integer maxCompletionTokens, TruncationObject truncationStrategy,
+        BinaryData toolChoice, BinaryData responseFormat, Map<String, String> metadata) {
         this.id = id;
         this.threadId = threadId;
         this.assistantId = assistantId;
@@ -362,7 +593,6 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
         this.model = model;
         this.instructions = instructions;
         this.tools = tools;
-        this.fileIds = fileIds;
         if (createdAt == null) {
             this.createdAt = 0L;
         } else {
@@ -393,129 +623,84 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
         } else {
             this.failedAt = failedAt.toEpochSecond();
         }
+        this.incompleteDetails = incompleteDetails;
+        this.usage = usage;
+        this.maxPromptTokens = maxPromptTokens;
+        this.maxCompletionTokens = maxCompletionTokens;
+        this.truncationStrategy = truncationStrategy;
+        this.toolChoice = toolChoice;
+        this.responseFormat = responseFormat;
         this.metadata = metadata;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the temperature property: The sampling temperature used for this run. If not set, defaults to 1.
+     *
+     * @return the temperature value.
      */
     @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.object);
-        jsonWriter.writeStringField("thread_id", this.threadId);
-        jsonWriter.writeStringField("assistant_id", this.assistantId);
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeJsonField("last_error", this.lastError);
-        jsonWriter.writeStringField("model", this.model);
-        jsonWriter.writeStringField("instructions", this.instructions);
-        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeLongField("created_at", this.createdAt);
-        jsonWriter.writeNumberField("expires_at", this.expiresAt);
-        jsonWriter.writeNumberField("started_at", this.startedAt);
-        jsonWriter.writeNumberField("completed_at", this.completedAt);
-        jsonWriter.writeNumberField("cancelled_at", this.cancelledAt);
-        jsonWriter.writeNumberField("failed_at", this.failedAt);
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("required_action", this.requiredAction);
-        return jsonWriter.writeEndObject();
+    public Double getTemperature() {
+        return this.temperature;
     }
 
     /**
-     * Reads an instance of ThreadRun from the JsonReader.
+     * Get the topP property: The nucleus sampling value used for this run. If not set, defaults to 1.
      *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ThreadRun if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ThreadRun.
+     * @return the topP value.
      */
     @Generated
-    public static ThreadRun fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            String threadId = null;
-            String assistantId = null;
-            RunStatus status = null;
-            RunError lastError = null;
-            String model = null;
-            String instructions = null;
-            List<ToolDefinition> tools = null;
-            List<String> fileIds = null;
-            OffsetDateTime createdAt = null;
-            OffsetDateTime expiresAt = null;
-            OffsetDateTime startedAt = null;
-            OffsetDateTime completedAt = null;
-            OffsetDateTime cancelledAt = null;
-            OffsetDateTime failedAt = null;
-            Map<String, String> metadata = null;
-            RequiredAction requiredAction = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("thread_id".equals(fieldName)) {
-                    threadId = reader.getString();
-                } else if ("assistant_id".equals(fieldName)) {
-                    assistantId = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    status = RunStatus.fromString(reader.getString());
-                } else if ("last_error".equals(fieldName)) {
-                    lastError = RunError.fromJson(reader);
-                } else if ("model".equals(fieldName)) {
-                    model = reader.getString();
-                } else if ("instructions".equals(fieldName)) {
-                    instructions = reader.getString();
-                } else if ("tools".equals(fieldName)) {
-                    tools = reader.readArray(reader1 -> ToolDefinition.fromJson(reader1));
-                } else if ("file_ids".equals(fieldName)) {
-                    fileIds = reader.readArray(reader1 -> reader1.getString());
-                } else if ("created_at".equals(fieldName)) {
-                    createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
-                } else if ("expires_at".equals(fieldName)) {
-                    Long expiresAtHolder = reader.getNullable(JsonReader::getLong);
-                    if (expiresAtHolder != null) {
-                        expiresAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(expiresAtHolder), ZoneOffset.UTC);
-                    }
-                } else if ("started_at".equals(fieldName)) {
-                    Long startedAtHolder = reader.getNullable(JsonReader::getLong);
-                    if (startedAtHolder != null) {
-                        startedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(startedAtHolder), ZoneOffset.UTC);
-                    }
-                } else if ("completed_at".equals(fieldName)) {
-                    Long completedAtHolder = reader.getNullable(JsonReader::getLong);
-                    if (completedAtHolder != null) {
-                        completedAt
-                            = OffsetDateTime.ofInstant(Instant.ofEpochSecond(completedAtHolder), ZoneOffset.UTC);
-                    }
-                } else if ("cancelled_at".equals(fieldName)) {
-                    Long cancelledAtHolder = reader.getNullable(JsonReader::getLong);
-                    if (cancelledAtHolder != null) {
-                        cancelledAt
-                            = OffsetDateTime.ofInstant(Instant.ofEpochSecond(cancelledAtHolder), ZoneOffset.UTC);
-                    }
-                } else if ("failed_at".equals(fieldName)) {
-                    Long failedAtHolder = reader.getNullable(JsonReader::getLong);
-                    if (failedAtHolder != null) {
-                        failedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(failedAtHolder), ZoneOffset.UTC);
-                    }
-                } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readMap(reader1 -> reader1.getString());
-                } else if ("required_action".equals(fieldName)) {
-                    requiredAction = RequiredAction.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            ThreadRun deserializedThreadRun
-                = new ThreadRun(id, threadId, assistantId, status, lastError, model, instructions, tools, fileIds,
-                    createdAt, expiresAt, startedAt, completedAt, cancelledAt, failedAt, metadata);
-            deserializedThreadRun.requiredAction = requiredAction;
-            return deserializedThreadRun;
-        });
+    public Double getTopP() {
+        return this.topP;
+    }
+
+    /**
+     * Get the maxPromptTokens property: The maximum number of prompt tokens specified to have been used over the course
+     * of the run.
+     *
+     * @return the maxPromptTokens value.
+     */
+    @Generated
+    public Integer getMaxPromptTokens() {
+        return this.maxPromptTokens;
+    }
+
+    /**
+     * Get the maxCompletionTokens property: The maximum number of completion tokens specified to have been used over
+     * the course of the run.
+     *
+     * @return the maxCompletionTokens value.
+     */
+    @Generated
+    public Integer getMaxCompletionTokens() {
+        return this.maxCompletionTokens;
+    }
+
+    /**
+     * Get the truncationStrategy property: The strategy to use for dropping messages as the context windows moves
+     * forward.
+     *
+     * @return the truncationStrategy value.
+     */
+    @Generated
+    public TruncationObject getTruncationStrategy() {
+        return this.truncationStrategy;
+    }
+
+    /**
+     * Get the toolChoice property: Controls whether or not and which tool is called by the model.
+     *
+     * @return the toolChoice value.
+     */
+    public AssistantsApiToolChoiceOption getToolChoice() {
+        return AssistantsApiToolChoiceOption.fromBinaryData(this.toolChoice);
+    }
+
+    /**
+     * Get the responseFormat property: The response format of the tool calls used in this run.
+     *
+     * @return the responseFormat value.
+     */
+    public AssistantsApiResponseFormatOption getResponseFormat() {
+        return AssistantsApiResponseFormatOption.fromBinaryData(this.responseFormat);
     }
 }

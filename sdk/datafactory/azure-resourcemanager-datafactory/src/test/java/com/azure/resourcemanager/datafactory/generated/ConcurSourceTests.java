@@ -11,19 +11,19 @@ public final class ConcurSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConcurSource model = BinaryData.fromString(
-            "{\"type\":\"hdcilinbu\",\"query\":\"datajzknkffzdyozn\",\"queryTimeout\":\"datawe\",\"additionalColumns\":\"datawxmcsxidazslwhuy\",\"sourceRetryCount\":\"datapfperheipl\",\"sourceRetryWait\":\"dataswhqrdvqva\",\"maxConcurrentConnections\":\"dataauuw\",\"disableMetricsCollection\":\"datagofumbp\",\"\":{\"omavbotaoaixi\":\"datadmfjgklm\",\"mqwut\":\"datacwyinfywtqvjno\",\"xugd\":\"datayaeyyiwraowpdm\"}}")
+            "{\"type\":\"ConcurSource\",\"query\":\"datakrjolbaegha\",\"queryTimeout\":\"datascismr\",\"additionalColumns\":\"dataeklf\",\"sourceRetryCount\":\"datanys\",\"sourceRetryWait\":\"datalxt\",\"maxConcurrentConnections\":\"dataodwqzbiuk\",\"disableMetricsCollection\":\"datafyfvyzaofaiwlnfv\",\"\":{\"jluaywgcjqnfa\":\"datauuqafolseyxpgkml\",\"slwve\":\"datapyglnfw\",\"ekst\":\"datablucpmqwkfgmkp\",\"ajfers\":\"dataqzhdwr\"}}")
             .toObject(ConcurSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConcurSource model = new ConcurSource().withSourceRetryCount("datapfperheipl")
-            .withSourceRetryWait("dataswhqrdvqva")
-            .withMaxConcurrentConnections("dataauuw")
-            .withDisableMetricsCollection("datagofumbp")
-            .withQueryTimeout("datawe")
-            .withAdditionalColumns("datawxmcsxidazslwhuy")
-            .withQuery("datajzknkffzdyozn");
+        ConcurSource model = new ConcurSource().withSourceRetryCount("datanys")
+            .withSourceRetryWait("datalxt")
+            .withMaxConcurrentConnections("dataodwqzbiuk")
+            .withDisableMetricsCollection("datafyfvyzaofaiwlnfv")
+            .withQueryTimeout("datascismr")
+            .withAdditionalColumns("dataeklf")
+            .withQuery("datakrjolbaegha");
         model = BinaryData.fromObject(model).toObject(ConcurSource.class);
     }
 }

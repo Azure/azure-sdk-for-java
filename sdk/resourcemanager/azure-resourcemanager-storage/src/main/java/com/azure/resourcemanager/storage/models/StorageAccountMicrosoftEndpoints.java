@@ -49,13 +49,15 @@ public final class StorageAccountMicrosoftEndpoints {
     @JsonProperty(value = "dfs", access = JsonProperty.Access.WRITE_ONLY)
     private String dfs;
 
-    /** Creates an instance of StorageAccountMicrosoftEndpoints class. */
+    /**
+     * Creates an instance of StorageAccountMicrosoftEndpoints class.
+     */
     public StorageAccountMicrosoftEndpoints() {
     }
 
     /**
      * Get the blob property: Gets the blob endpoint.
-     *
+     * 
      * @return the blob value.
      */
     public String blob() {
@@ -64,7 +66,7 @@ public final class StorageAccountMicrosoftEndpoints {
 
     /**
      * Get the queue property: Gets the queue endpoint.
-     *
+     * 
      * @return the queue value.
      */
     public String queue() {
@@ -73,7 +75,7 @@ public final class StorageAccountMicrosoftEndpoints {
 
     /**
      * Get the table property: Gets the table endpoint.
-     *
+     * 
      * @return the table value.
      */
     public String table() {
@@ -82,7 +84,7 @@ public final class StorageAccountMicrosoftEndpoints {
 
     /**
      * Get the file property: Gets the file endpoint.
-     *
+     * 
      * @return the file value.
      */
     public String file() {
@@ -91,7 +93,7 @@ public final class StorageAccountMicrosoftEndpoints {
 
     /**
      * Get the web property: Gets the web endpoint.
-     *
+     * 
      * @return the web value.
      */
     public String web() {
@@ -100,7 +102,7 @@ public final class StorageAccountMicrosoftEndpoints {
 
     /**
      * Get the dfs property: Gets the dfs endpoint.
-     *
+     * 
      * @return the dfs value.
      */
     public String dfs() {
@@ -109,7 +111,7 @@ public final class StorageAccountMicrosoftEndpoints {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

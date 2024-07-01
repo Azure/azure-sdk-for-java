@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-/** Samples for FileShares List. */
+/**
+ * Samples for FileShares List.
+ */
 public final class FileSharesListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/FileSharesList.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesList.json
      */
     /**
      * Sample code: ListShares.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listShares(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getFileShares()
@@ -24,16 +26,16 @@ public final class FileSharesListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/DeletedFileSharesList.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/DeletedFileSharesList.json
      */
     /**
      * Sample code: ListDeletedShares.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listDeletedShares(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getFileShares()
@@ -41,16 +43,16 @@ public final class FileSharesListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/FileShareSnapshotsList.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileShareSnapshotsList.json
      */
     /**
      * Sample code: ListShareSnapshots.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listShareSnapshots(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getFileShares()

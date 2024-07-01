@@ -8,41 +8,63 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CorsRuleAllowedMethodsItem. */
+/**
+ * Defines values for CorsRuleAllowedMethodsItem.
+ */
 public final class CorsRuleAllowedMethodsItem extends ExpandableStringEnum<CorsRuleAllowedMethodsItem> {
-    /** Static value DELETE for CorsRuleAllowedMethodsItem. */
+    /**
+     * Static value DELETE for CorsRuleAllowedMethodsItem.
+     */
     public static final CorsRuleAllowedMethodsItem DELETE = fromString("DELETE");
 
-    /** Static value GET for CorsRuleAllowedMethodsItem. */
+    /**
+     * Static value GET for CorsRuleAllowedMethodsItem.
+     */
     public static final CorsRuleAllowedMethodsItem GET = fromString("GET");
 
-    /** Static value HEAD for CorsRuleAllowedMethodsItem. */
+    /**
+     * Static value HEAD for CorsRuleAllowedMethodsItem.
+     */
     public static final CorsRuleAllowedMethodsItem HEAD = fromString("HEAD");
 
-    /** Static value MERGE for CorsRuleAllowedMethodsItem. */
+    /**
+     * Static value MERGE for CorsRuleAllowedMethodsItem.
+     */
     public static final CorsRuleAllowedMethodsItem MERGE = fromString("MERGE");
 
-    /** Static value POST for CorsRuleAllowedMethodsItem. */
+    /**
+     * Static value POST for CorsRuleAllowedMethodsItem.
+     */
     public static final CorsRuleAllowedMethodsItem POST = fromString("POST");
 
-    /** Static value OPTIONS for CorsRuleAllowedMethodsItem. */
+    /**
+     * Static value OPTIONS for CorsRuleAllowedMethodsItem.
+     */
     public static final CorsRuleAllowedMethodsItem OPTIONS = fromString("OPTIONS");
 
-    /** Static value PUT for CorsRuleAllowedMethodsItem. */
+    /**
+     * Static value PUT for CorsRuleAllowedMethodsItem.
+     */
     public static final CorsRuleAllowedMethodsItem PUT = fromString("PUT");
 
-    /** Static value PATCH for CorsRuleAllowedMethodsItem. */
+    /**
+     * Static value PATCH for CorsRuleAllowedMethodsItem.
+     */
     public static final CorsRuleAllowedMethodsItem PATCH = fromString("PATCH");
 
-    /** Static value CONNECT for CorsRuleAllowedMethodsItem. */
+    /**
+     * Static value CONNECT for CorsRuleAllowedMethodsItem.
+     */
     public static final CorsRuleAllowedMethodsItem CONNECT = fromString("CONNECT");
 
-    /** Static value TRACE for CorsRuleAllowedMethodsItem. */
+    /**
+     * Static value TRACE for CorsRuleAllowedMethodsItem.
+     */
     public static final CorsRuleAllowedMethodsItem TRACE = fromString("TRACE");
 
     /**
      * Creates a new instance of CorsRuleAllowedMethodsItem value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,7 +73,7 @@ public final class CorsRuleAllowedMethodsItem extends ExpandableStringEnum<CorsR
 
     /**
      * Creates or finds a CorsRuleAllowedMethodsItem from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CorsRuleAllowedMethodsItem.
      */
@@ -62,7 +84,7 @@ public final class CorsRuleAllowedMethodsItem extends ExpandableStringEnum<CorsR
 
     /**
      * Gets known CorsRuleAllowedMethodsItem values.
-     *
+     * 
      * @return known CorsRuleAllowedMethodsItem values.
      */
     public static Collection<CorsRuleAllowedMethodsItem> values() {

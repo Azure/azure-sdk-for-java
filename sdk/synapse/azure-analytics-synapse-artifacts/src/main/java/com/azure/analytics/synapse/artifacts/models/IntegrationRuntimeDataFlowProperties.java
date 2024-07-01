@@ -5,48 +5,43 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Data flow properties for managed integration runtime.
  */
 @Fluent
-public final class IntegrationRuntimeDataFlowProperties {
+public final class IntegrationRuntimeDataFlowProperties
+    implements JsonSerializable<IntegrationRuntimeDataFlowProperties> {
     /*
      * Compute type of the cluster which will execute data flow job.
      */
-    @JsonProperty(value = "computeType")
     private DataFlowComputeType computeType;
 
     /*
-     * Core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and
-     * 272.
+     * Core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and 272.
      */
-    @JsonProperty(value = "coreCount")
     private Integer coreCount;
 
     /*
      * Time to live (in minutes) setting of the cluster which will execute data flow job.
      */
-    @JsonProperty(value = "timeToLive")
     private Integer timeToLive;
 
     /*
-     * Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is
-     * reached if this is set as false. Default is true.
+     * Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is reached if this is set as false. Default is true.
      */
-    @JsonProperty(value = "cleanup")
     private Boolean cleanup;
 
     /*
      * Data flow properties for managed integration runtime.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -144,7 +139,6 @@ public final class IntegrationRuntimeDataFlowProperties {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -160,11 +154,63 @@ public final class IntegrationRuntimeDataFlowProperties {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("computeType", this.computeType == null ? null : this.computeType.toString());
+        jsonWriter.writeNumberField("coreCount", this.coreCount);
+        jsonWriter.writeNumberField("timeToLive", this.timeToLive);
+        jsonWriter.writeBooleanField("cleanup", this.cleanup);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeDataFlowProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeDataFlowProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeDataFlowProperties.
+     */
+    public static IntegrationRuntimeDataFlowProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeDataFlowProperties deserializedIntegrationRuntimeDataFlowProperties
+                = new IntegrationRuntimeDataFlowProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computeType".equals(fieldName)) {
+                    deserializedIntegrationRuntimeDataFlowProperties.computeType
+                        = DataFlowComputeType.fromString(reader.getString());
+                } else if ("coreCount".equals(fieldName)) {
+                    deserializedIntegrationRuntimeDataFlowProperties.coreCount = reader.getNullable(JsonReader::getInt);
+                } else if ("timeToLive".equals(fieldName)) {
+                    deserializedIntegrationRuntimeDataFlowProperties.timeToLive
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("cleanup".equals(fieldName)) {
+                    deserializedIntegrationRuntimeDataFlowProperties.cleanup
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedIntegrationRuntimeDataFlowProperties.additionalProperties = additionalProperties;
+
+            return deserializedIntegrationRuntimeDataFlowProperties;
+        });
     }
 }

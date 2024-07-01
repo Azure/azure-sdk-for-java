@@ -1,14 +1,17 @@
 # Release History
 
-## 1.0.0-beta.24 (Unreleased)
+## 1.0.0-beta.25 (2024-06-28)
+
+### Other changes
+
+- [ResourceAttributes has been deprecated upstream](https://github.com/Azure/azure-sdk-for-java/pull/40504)
+- [Handle 206](https://github.com/Azure/azure-sdk-for-java/pull/40416)
+
+## 1.0.0-beta.24 (2024-05-29)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- [Support explicit fixed sampling rate of 100% without ingestion sampling](https://github.com/Azure/azure-sdk-for-java/pull/40338)
 
 ## 1.0.0-beta.23 (2024-05-23)
 

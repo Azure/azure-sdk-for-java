@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,94 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2024-06-17)
+
+- Azure Resource Manager MobileNetwork client library for Java. This package contains Microsoft Azure SDK for MobileNetwork Management SDK. The resources in this API specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2024-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.Ipv4Route` was added
+
+* `models.RoutingInfoModel` was added
+
+* `models.UserConsentConfiguration` was added
+
+* `models.SimMove` was added
+
+* `models.UserPlaneDataRoutesItem` was added
+
+* `models.Ipv4RouteNextHop` was added
+
+* `models.RoutingInfoListResult` was added
+
+* `models.SimGroupResourceId` was added
+
+* `models.NasEncryptionType` was added
+
+* `models.RoutingInfoes` was added
+
+* `models.SimClone` was added
+
+#### `models.ExtendedUeInfoProperties` was modified
+
+* `ratType()` was added
+
+#### `models.PacketCoreControlPlane` was modified
+
+* `userConsent()` was added
+
+#### `models.UeInfo4G` was modified
+
+* `ratType()` was added
+
+#### `models.Sims` was modified
+
+* `clone(java.lang.String,java.lang.String,models.SimClone)` was added
+* `move(java.lang.String,java.lang.String,models.SimMove,com.azure.core.util.Context)` was added
+* `move(java.lang.String,java.lang.String,models.SimMove)` was added
+* `clone(java.lang.String,java.lang.String,models.SimClone,com.azure.core.util.Context)` was added
+
+#### `models.Platform` was modified
+
+* `withHaUpgradesAvailable(java.util.List)` was added
+* `haUpgradesAvailable()` was added
+
+#### `models.UeInfo5G` was modified
+
+* `ratType()` was added
+
+#### `models.SignalingConfiguration` was modified
+
+* `nasEncryption()` was added
+* `withNasEncryption(java.util.List)` was added
+
+#### `models.MobileNetwork` was modified
+
+* `listSimGroups()` was added
+* `listSimGroups(com.azure.core.util.Context)` was added
+
+#### `models.MobileNetworks` was modified
+
+* `listSimGroups(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listSimGroups(java.lang.String,java.lang.String)` was added
+
+#### `MobileNetworkManager` was modified
+
+* `routingInfoes()` was added
+
+#### `models.PacketCoreControlPlane$Definition` was modified
+
+* `withUserConsent(models.UserConsentConfiguration)` was added
+
+#### `models.InterfaceProperties` was modified
+
+* `bfdIpv4Endpoints()` was added
+* `withIpv4AddressList(java.util.List)` was added
+* `withBfdIpv4Endpoints(java.util.List)` was added
+* `ipv4AddressList()` was added
+* `withVlanId(java.lang.Integer)` was added
+* `vlanId()` was added
 
 ## 1.1.0 (2024-03-19)
 

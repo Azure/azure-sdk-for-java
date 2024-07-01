@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.test;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -18,6 +17,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -28,7 +28,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.InvocationInterceptor;
 import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -53,7 +52,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -61,6 +59,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -73,6 +72,7 @@ import java.util.stream.Collectors;
  */
 public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase {
     private static final String ZERO_UUID = "00000000-0000-0000-0000-000000000000";
+    private static final String SUBSCRIPTION_ID_REGEX = "(?<=/subscriptions/)([^/?]+)";
     private static final String ZERO_SUBSCRIPTION = ZERO_UUID;
     private static final String ZERO_TENANT = ZERO_UUID;
     private static final String PLAYBACK_URI_BASE = "https://localhost:";
@@ -124,6 +124,13 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     final PlaybackTimeoutInterceptor playbackTimeoutInterceptor = new PlaybackTimeoutInterceptor(() -> Duration.ofSeconds(60));
 
     /**
+     * Initializes ResourceManagerTestProxyTestBase class.
+     */
+    protected ResourceManagerTestProxyTestBase() {
+
+    }
+
+    /**
      * Generates a random resource name.
      *
      * @param prefix Prefix for the resource name.
@@ -135,6 +142,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Generates a random UUID.
      * @return A randomly generated UUID.
      */
     protected String generateRandomUuid() {
@@ -142,6 +150,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Generates a random password.
      * @return random password
      */
     public static String password() {
@@ -154,6 +163,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     private static String sshPublicKey;
 
     /**
+     * Generates an SSH public key.
      * @return an SSH public key
      */
     public static String sshPublicKey() {
@@ -182,6 +192,20 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         return sshPublicKey;
     }
 
+    private static final Pattern SUBSCRIPTION_ID_PATTERN = Pattern.compile(SUBSCRIPTION_ID_REGEX);
+
+    /**
+     * Asserts that the resource ID is same.
+     *
+     * @param expected the expected resource ID.
+     * @param actual the actual resource ID.
+     */
+    protected void assertResourceIdEquals(String expected, String actual) {
+        String sanitizedExpected = SUBSCRIPTION_ID_PATTERN.matcher(expected).replaceAll(ZERO_UUID);
+        String sanitizedActual = SUBSCRIPTION_ID_PATTERN.matcher(actual).replaceAll(ZERO_UUID);
+        Assertions.assertTrue(sanitizedExpected.equalsIgnoreCase(sanitizedActual), String.format("expected: %s but was: %s", expected, actual));
+    }
+
     /**
      * Loads a client ID from file.
      *
@@ -193,6 +217,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Gets the test profile.
      * @return The test profile.
      */
     protected AzureProfile profile() {
@@ -200,6 +225,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Checks whether test mode is {@link TestMode#PLAYBACK}.
      * @return Whether the test mode is {@link TestMode#PLAYBACK}.
      */
     protected boolean isPlaybackMode() {
@@ -207,6 +233,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Checks whether test should be skipped in playback.
      * @return Whether the test should be skipped in playback.
      */
     protected boolean skipInPlayback() {
@@ -247,7 +274,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             testProfile = PLAYBACK_PROFILE;
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             httpPipeline = buildHttpPipeline(
-                request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new MockTokenCredential(),
                 testProfile,
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel),
                 policies,
@@ -256,6 +283,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 // don't match api-version when matching url
                 interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version")).setExcludedHeaders(Arrays.asList("If-Match"))));
                 addSanitizers();
+                removeSanitizers();
             }
         } else {
             Configuration configuration = Configuration.getGlobalConfiguration();
@@ -274,6 +302,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             if (interceptorManager.isRecordMode() && !testContextManager.doNotRecordTest()) {
                 policies.add(this.interceptorManager.getRecordPolicy());
                 addSanitizers();
+                removeSanitizers();
             }
             if (httpLogDetailLevel == HttpLogDetailLevel.BODY_AND_HEADERS) {
                 policies.add(new HttpDebugLoggingPolicy());
@@ -439,10 +468,12 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     private void addSanitizers() {
         List<TestProxySanitizer> sanitizers = new ArrayList<>(Arrays.asList(
             // subscription id
-            new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
+            new TestProxySanitizer(SUBSCRIPTION_ID_REGEX, ZERO_UUID, TestProxySanitizerType.URL),
             new TestProxySanitizer("(?<=%2Fsubscriptions%2F)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
             // Retry-After
             new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER),
+            // subscription id in body "id" property
+            new TestProxySanitizer("$..id", SUBSCRIPTION_ID_REGEX, ZERO_UUID, TestProxySanitizerType.BODY_KEY),
             // Microsoft Graph secret
             new TestProxySanitizer("$..secretText", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // Storage secret
@@ -474,9 +505,15 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             new TestProxySanitizer("(?:AccountKey=)(?<accountKey>.*?)(?:;)", REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("accountKey"),
             new TestProxySanitizer("$.properties.WEBSITE_AUTH_ENCRYPTION_KEY", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$.properties.DOCKER_REGISTRY_SERVER_PASSWORD", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
-            ));
+        ));
         sanitizers.addAll(this.sanitizers);
         interceptorManager.addSanitizers(sanitizers);
+    }
+
+    private void removeSanitizers() {
+        // Remove sanitizer Location, operation-location, `id` and `name` from the list of common sanitizers.
+        // See https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/Common/SanitizerDictionary.cs for "testProxySanitizersId"
+        interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493");
     }
 
     /**

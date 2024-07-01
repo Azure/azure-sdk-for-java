@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The provider registration definition. */
+/**
+ * The provider registration definition.
+ */
 @Fluent
 public final class ProviderRegistrationRequest {
     /*
@@ -16,13 +18,15 @@ public final class ProviderRegistrationRequest {
     @JsonProperty(value = "thirdPartyProviderConsent")
     private ProviderConsentDefinition thirdPartyProviderConsent;
 
-    /** Creates an instance of ProviderRegistrationRequest class. */
+    /**
+     * Creates an instance of ProviderRegistrationRequest class.
+     */
     public ProviderRegistrationRequest() {
     }
 
     /**
      * Get the thirdPartyProviderConsent property: The provider consent.
-     *
+     * 
      * @return the thirdPartyProviderConsent value.
      */
     public ProviderConsentDefinition thirdPartyProviderConsent() {
@@ -31,19 +35,19 @@ public final class ProviderRegistrationRequest {
 
     /**
      * Set the thirdPartyProviderConsent property: The provider consent.
-     *
+     * 
      * @param thirdPartyProviderConsent the thirdPartyProviderConsent value to set.
      * @return the ProviderRegistrationRequest object itself.
      */
-    public ProviderRegistrationRequest withThirdPartyProviderConsent(
-        ProviderConsentDefinition thirdPartyProviderConsent) {
+    public ProviderRegistrationRequest
+        withThirdPartyProviderConsent(ProviderConsentDefinition thirdPartyProviderConsent) {
         this.thirdPartyProviderConsent = thirdPartyProviderConsent;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

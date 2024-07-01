@@ -118,8 +118,6 @@ public class CustomAnalyzerTests extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        // Disabled `$..token` sanitizer for this test
-        interceptorManager.removeSanitizers(Arrays.asList("AZSDK3431"));
         searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
     }
@@ -652,10 +650,10 @@ public class CustomAnalyzerTests extends SearchTestBase {
     }
 
     SearchIndex prepareIndexWithAllAnalysisComponentNames() {
-        List<TokenFilterName> tokenFilters = TOKEN_FILTER_NAMES;
+        List<TokenFilterName> tokenFilters = new ArrayList<>(TOKEN_FILTER_NAMES);
         tokenFilters.sort(Comparator.comparing(TokenFilterName::toString));
 
-        List<CharFilterName> charFilters = CHAR_FILTER_NAMES;
+        List<CharFilterName> charFilters = new ArrayList<>(CHAR_FILTER_NAMES);
         charFilters.sort(Comparator.comparing(CharFilterName::toString));
 
         LexicalAnalyzer analyzerWithAllTokenFilterAndCharFilters =
