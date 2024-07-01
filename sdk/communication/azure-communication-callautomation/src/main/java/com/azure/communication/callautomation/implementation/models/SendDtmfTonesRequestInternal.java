@@ -5,37 +5,38 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * The SendDtmfTonesRequestInternal model.
  */
 @Fluent
-public final class SendDtmfTonesRequestInternal implements JsonSerializable<SendDtmfTonesRequestInternal> {
+public final class SendDtmfTonesRequestInternal {
     /*
      * List of tones to be sent to target participant.
      */
+    @JsonProperty(value = "tones", required = true)
     private List<DtmfToneInternal> tones;
 
     /*
      * Target participant of send Dtmf tones.
      */
+    @JsonProperty(value = "targetParticipant", required = true)
     private CommunicationIdentifierModel targetParticipant;
 
     /*
      * The value to identify context of the operation.
      */
+    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
+    @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
     /**
@@ -107,7 +108,8 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      * 
      * @return the operationCallbackUri value.
      */
@@ -118,7 +120,8 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the SendDtmfTonesRequestInternal object itself.
@@ -126,55 +129,5 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
     public SendDtmfTonesRequestInternal setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("tones", this.tones,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeJsonField("targetParticipant", this.targetParticipant);
-        jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SendDtmfTonesRequestInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SendDtmfTonesRequestInternal if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SendDtmfTonesRequestInternal.
-     */
-    public static SendDtmfTonesRequestInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SendDtmfTonesRequestInternal deserializedSendDtmfTonesRequestInternal = new SendDtmfTonesRequestInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("tones".equals(fieldName)) {
-                    List<DtmfToneInternal> tones
-                        = reader.readArray(reader1 -> DtmfToneInternal.fromString(reader1.getString()));
-                    deserializedSendDtmfTonesRequestInternal.tones = tones;
-                } else if ("targetParticipant".equals(fieldName)) {
-                    deserializedSendDtmfTonesRequestInternal.targetParticipant
-                        = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("operationContext".equals(fieldName)) {
-                    deserializedSendDtmfTonesRequestInternal.operationContext = reader.getString();
-                } else if ("operationCallbackUri".equals(fieldName)) {
-                    deserializedSendDtmfTonesRequestInternal.operationCallbackUri = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSendDtmfTonesRequestInternal;
-        });
     }
 }

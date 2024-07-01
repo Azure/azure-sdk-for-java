@@ -5,83 +5,74 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * Properties of a call connection.
  */
 @Fluent
-public final class CallConnectionPropertiesInternal implements JsonSerializable<CallConnectionPropertiesInternal> {
+public final class CallConnectionPropertiesInternal {
     /*
      * The call connection id.
      */
+    @JsonProperty(value = "callConnectionId")
     private String callConnectionId;
 
     /*
      * The server call id.
      */
+    @JsonProperty(value = "serverCallId")
     private String serverCallId;
 
     /*
      * The targets of the call.
      */
+    @JsonProperty(value = "targets")
     private List<CommunicationIdentifierModel> targets;
 
     /*
      * The state of the call connection.
      */
+    @JsonProperty(value = "callConnectionState")
     private CallConnectionStateModelInternal callConnectionState;
 
     /*
      * The callback URI.
      */
+    @JsonProperty(value = "callbackUri")
     private String callbackUri;
-
-    /*
-     * SubscriptionId for media streaming
-     */
-    private String mediaSubscriptionId;
-
-    /*
-     * SubscriptionId for transcription
-     */
-    private String dataSubscriptionId;
 
     /*
      * The source caller Id, a phone number, that's shown to the PSTN participant being invited.
      * Required only when calling a PSTN callee.
      */
+    @JsonProperty(value = "sourceCallerIdNumber")
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
 
     /*
      * Display name of the call if dialing out to a pstn number.
      */
+    @JsonProperty(value = "sourceDisplayName")
     private String sourceDisplayName;
 
     /*
      * Source identity.
      */
+    @JsonProperty(value = "source")
     private CommunicationIdentifierModel source;
 
     /*
      * The correlation ID.
      */
+    @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /*
      * Identity of the answering entity. Only populated when identity is provided in the request.
      */
+    @JsonProperty(value = "answeredBy")
     private CommunicationUserIdentifierModel answeredBy;
-
-    /*
-     * Identity of the original Pstn target of an incoming Call. Only populated when the original target is a Pstn number.
-     */
-    private PhoneNumberIdentifierModel answeredFor;
 
     /**
      * Creates an instance of CallConnectionPropertiesInternal class.
@@ -191,48 +182,8 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Get the mediaSubscriptionId property: SubscriptionId for media streaming.
-     * 
-     * @return the mediaSubscriptionId value.
-     */
-    public String getMediaSubscriptionId() {
-        return this.mediaSubscriptionId;
-    }
-
-    /**
-     * Set the mediaSubscriptionId property: SubscriptionId for media streaming.
-     * 
-     * @param mediaSubscriptionId the mediaSubscriptionId value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setMediaSubscriptionId(String mediaSubscriptionId) {
-        this.mediaSubscriptionId = mediaSubscriptionId;
-        return this;
-    }
-
-    /**
-     * Get the dataSubscriptionId property: SubscriptionId for transcription.
-     * 
-     * @return the dataSubscriptionId value.
-     */
-    public String getDataSubscriptionId() {
-        return this.dataSubscriptionId;
-    }
-
-    /**
-     * Set the dataSubscriptionId property: SubscriptionId for transcription.
-     * 
-     * @param dataSubscriptionId the dataSubscriptionId value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setDataSubscriptionId(String dataSubscriptionId) {
-        this.dataSubscriptionId = dataSubscriptionId;
-        return this;
-    }
-
-    /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
-     * being invited.
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
      * Required only when calling a PSTN callee.
      * 
      * @return the sourceCallerIdNumber value.
@@ -242,8 +193,8 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
-     * being invited.
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
      * Required only when calling a PSTN callee.
      * 
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
@@ -334,107 +285,5 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     public CallConnectionPropertiesInternal setAnsweredBy(CommunicationUserIdentifierModel answeredBy) {
         this.answeredBy = answeredBy;
         return this;
-    }
-
-    /**
-     * Get the answeredFor property: Identity of the original Pstn target of an incoming Call. Only populated when the
-     * original target is a Pstn number.
-     * 
-     * @return the answeredFor value.
-     */
-    public PhoneNumberIdentifierModel getAnsweredFor() {
-        return this.answeredFor;
-    }
-
-    /**
-     * Set the answeredFor property: Identity of the original Pstn target of an incoming Call. Only populated when the
-     * original target is a Pstn number.
-     * 
-     * @param answeredFor the answeredFor value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setAnsweredFor(PhoneNumberIdentifierModel answeredFor) {
-        this.answeredFor = answeredFor;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("callConnectionId", this.callConnectionId);
-        jsonWriter.writeStringField("serverCallId", this.serverCallId);
-        jsonWriter.writeArrayField("targets", this.targets, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("callConnectionState",
-            this.callConnectionState == null ? null : this.callConnectionState.toString());
-        jsonWriter.writeStringField("callbackUri", this.callbackUri);
-        jsonWriter.writeStringField("mediaSubscriptionId", this.mediaSubscriptionId);
-        jsonWriter.writeStringField("dataSubscriptionId", this.dataSubscriptionId);
-        jsonWriter.writeJsonField("sourceCallerIdNumber", this.sourceCallerIdNumber);
-        jsonWriter.writeStringField("sourceDisplayName", this.sourceDisplayName);
-        jsonWriter.writeJsonField("source", this.source);
-        jsonWriter.writeStringField("correlationId", this.correlationId);
-        jsonWriter.writeJsonField("answeredBy", this.answeredBy);
-        jsonWriter.writeJsonField("answeredFor", this.answeredFor);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CallConnectionPropertiesInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CallConnectionPropertiesInternal if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CallConnectionPropertiesInternal.
-     */
-    public static CallConnectionPropertiesInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CallConnectionPropertiesInternal deserializedCallConnectionPropertiesInternal
-                = new CallConnectionPropertiesInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("callConnectionId".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.callConnectionId = reader.getString();
-                } else if ("serverCallId".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.serverCallId = reader.getString();
-                } else if ("targets".equals(fieldName)) {
-                    List<CommunicationIdentifierModel> targets
-                        = reader.readArray(reader1 -> CommunicationIdentifierModel.fromJson(reader1));
-                    deserializedCallConnectionPropertiesInternal.targets = targets;
-                } else if ("callConnectionState".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.callConnectionState
-                        = CallConnectionStateModelInternal.fromString(reader.getString());
-                } else if ("callbackUri".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.callbackUri = reader.getString();
-                } else if ("mediaSubscriptionId".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.mediaSubscriptionId = reader.getString();
-                } else if ("dataSubscriptionId".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.dataSubscriptionId = reader.getString();
-                } else if ("sourceCallerIdNumber".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.sourceCallerIdNumber
-                        = PhoneNumberIdentifierModel.fromJson(reader);
-                } else if ("sourceDisplayName".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.sourceDisplayName = reader.getString();
-                } else if ("source".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.source = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("correlationId".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.correlationId = reader.getString();
-                } else if ("answeredBy".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.answeredBy
-                        = CommunicationUserIdentifierModel.fromJson(reader);
-                } else if ("answeredFor".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.answeredFor
-                        = PhoneNumberIdentifierModel.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCallConnectionPropertiesInternal;
-        });
     }
 }

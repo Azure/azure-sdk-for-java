@@ -5,20 +5,17 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The result payload for muting participants from the call.
  */
 @Fluent
-public final class MuteParticipantsResultInternal implements JsonSerializable<MuteParticipantsResultInternal> {
+public final class MuteParticipantsResultInternal {
     /*
      * The operation context provided by client.
      */
+    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
@@ -45,42 +42,5 @@ public final class MuteParticipantsResultInternal implements JsonSerializable<Mu
     public MuteParticipantsResultInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("operationContext", this.operationContext);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of MuteParticipantsResultInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MuteParticipantsResultInternal if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MuteParticipantsResultInternal.
-     */
-    public static MuteParticipantsResultInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MuteParticipantsResultInternal deserializedMuteParticipantsResultInternal
-                = new MuteParticipantsResultInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("operationContext".equals(fieldName)) {
-                    deserializedMuteParticipantsResultInternal.operationContext = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedMuteParticipantsResultInternal;
-        });
     }
 }

@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.communication.callautomation;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -17,22 +15,14 @@ import com.azure.communication.callautomation.implementation.models.CallConnecti
 import com.azure.communication.callautomation.implementation.models.CallConnectionStateModelInternal;
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
-import com.azure.communication.callautomation.implementation.models.DialogStateResponse;
-import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
-import com.azure.communication.callautomation.models.MediaStreamingOptions;
-import com.azure.communication.callautomation.models.MediaStreamingContent;
-import com.azure.communication.callautomation.models.MediaStreamingTransport;
-import com.azure.communication.callautomation.models.TranscriptionOptions;
-import com.azure.communication.callautomation.models.TranscriptionTransportType;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -49,26 +39,10 @@ public class CallAutomationUnitTestBase {
     static final String CALL_CONNECTION_STATE = "connected";
     static final String CALL_SUBJECT = "subject";
     static final String CALL_CALLBACK_URL = "https://REDACTED.com/events";
+    static final String OPERATION_CALLBACK_URL = "https://REDACTED.com/events";
     static final String CALL_INCOMING_CALL_CONTEXT = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.REDACTED";
     static final String CALL_OPERATION_CONTEXT = "operationContext";
     static final String MEDIA_SUBSCRIPTION_ID = "mediaSubscriptionId";
-    static final String DATA_SUBSCRIPTION_ID = "dataSubscriptionId";
-    static final String DIALOG_ID = "dialogId";
-    static final String BOT_APP_ID = "botAppId";
-
-    static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION = new MediaStreamingOptions(
-        "https://websocket.url.com",
-        MediaStreamingTransport.WEBSOCKET,
-        MediaStreamingContent.AUDIO,
-        MediaStreamingAudioChannel.MIXED
-    );
-
-    static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION = new TranscriptionOptions(
-        "https://websocket.url.com",
-        TranscriptionTransportType.WEBSOCKET,
-        "en-US",
-        true
-    );
 
     public static String generateDownloadResult(String content) {
         return content;
@@ -76,14 +50,12 @@ public class CallAutomationUnitTestBase {
 
     public static String generateCallProperties(String callConnectionId, String serverCallId, String callerId,
                                                 String callerDisplayName, String targetId, String connectionState,
-                                                String subject, String callbackUri, String mediaSubscriptionId, String dataSubscriptionId) {
+                                                String subject, String callbackUri, String mediaSubscriptionId) {
         CallConnectionPropertiesInternal result = new CallConnectionPropertiesInternal()
             .setCallConnectionId(callConnectionId)
             .setServerCallId(serverCallId)
             .setCallbackUri(callbackUri)
             .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
-            .setMediaSubscriptionId(mediaSubscriptionId)
-            .setDataSubscriptionId(dataSubscriptionId)
             .setSourceDisplayName(callerDisplayName)
             .setTargets(new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId)))
             );
@@ -91,16 +63,16 @@ public class CallAutomationUnitTestBase {
         return serializeObject(result);
     }
 
-    public static String generateGetParticipantResponse(String callerId, boolean isMuted, boolean isHold) {
-        CallParticipantInternal callParticipant = ModelGenerator.generateAcsCallParticipantInternal(callerId, isMuted, isHold);
+    public static String generateGetParticipantResponse(String callerId, boolean isMuted) {
+        CallParticipantInternal callParticipant = ModelGenerator.generateAcsCallParticipantInternal(callerId, isMuted);
         return serializeObject(callParticipant);
     }
 
     public static String generateListParticipantsResponse() {
         GetParticipantsResponseInternal getParticipantsResponseInternal = new GetParticipantsResponseInternal()
             .setValue(new ArrayList<>(Arrays.asList(
-                ModelGenerator.generateAcsCallParticipantInternal(CALL_CALLER_ID, false, false),
-                ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, true, true))))
+                ModelGenerator.generateAcsCallParticipantInternal(CALL_CALLER_ID, false),
+                ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, true))))
             .setNextLink("");
 
         return serializeObject(getParticipantsResponseInternal);
@@ -109,16 +81,9 @@ public class CallAutomationUnitTestBase {
     public static String generateAddParticipantsResponse() {
         AddParticipantResponseInternal addParticipantsResponseInternal = new AddParticipantResponseInternal()
             .setOperationContext(CALL_OPERATION_CONTEXT)
-            .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false, false));
+            .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false));
 
         return serializeObject(addParticipantsResponseInternal);
-    }
-
-    public static String generateDialogStateResponse() {
-        DialogStateResponse dialogStateResponse = new DialogStateResponse()
-            .setDialogId(DIALOG_ID);
-
-        return serializeObject(dialogStateResponse);
     }
 
     public static CallAutomationAsyncClient getCallAutomationAsyncClient(ArrayList<SimpleEntry<String, Integer>> responses) {
@@ -199,14 +164,14 @@ public class CallAutomationUnitTestBase {
         };
     }
 
-    static String serializeObject(JsonSerializable<?> o) {
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            o.toJson(writer);
-            writer.flush();
-            return outputStream.toString();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    static String serializeObject(Object o) {
+        ObjectMapper mapper = new ObjectMapper();
+        String body = null;
+        try {
+            body = mapper.writeValueAsString(o);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
+        return body;
     }
 }

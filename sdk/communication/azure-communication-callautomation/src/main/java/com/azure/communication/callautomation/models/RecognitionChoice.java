@@ -3,29 +3,28 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.IOException;
 import java.util.List;
 
 /** The RecognitionChoice model. */
-public final class RecognitionChoice implements JsonSerializable<RecognitionChoice> {
+public final class RecognitionChoice {
     /*
      * Identifier for a given choice
      */
+    @JsonProperty(value = "label", required = true)
     private String label;
 
     /*
      * List of phrases to recognize
      */
+    @JsonProperty(value = "phrases", required = true)
     private List<String> phrases;
 
     /*
      * The tone property.
      */
+    @JsonProperty(value = "tone")
     private DtmfTone tone;
 
     /**
@@ -86,42 +85,5 @@ public final class RecognitionChoice implements JsonSerializable<RecognitionChoi
     public RecognitionChoice setTone(DtmfTone tone) {
         this.tone = tone;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("label", this.label);
-        jsonWriter.writeArrayField("phrases", this.phrases, JsonWriter::writeString);
-        jsonWriter.writeStringField("tone", this.tone.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CallConnectionPropertiesInternal from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CallConnectionPropertiesInternal if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CallConnectionPropertiesInternal.
-     */
-    public static RecognitionChoice fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            final RecognitionChoice choice = new RecognitionChoice();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("label".equals(fieldName)) {
-                    choice.label = reader.getString();
-                } else if ("phrases".equals(fieldName)) {
-                    choice.phrases = reader.readArray(JsonReader::getString);
-                } else if ("tone".equals(fieldName)) {
-                    choice.tone = DtmfTone.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return choice;
-        });
     }
 }

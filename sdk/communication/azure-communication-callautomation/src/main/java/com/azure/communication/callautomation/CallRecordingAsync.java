@@ -14,7 +14,7 @@ import com.azure.communication.callautomation.implementation.models.RecordingCha
 import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingStorageInternal;
-import com.azure.communication.callautomation.implementation.models.RecordingStorageKind;
+import com.azure.communication.callautomation.implementation.models.RecordingStorageTypeInternal;
 import com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal;
 import com.azure.communication.callautomation.models.AzureBlobContainerRecordingStorage;
 import com.azure.communication.callautomation.models.CallLocator;
@@ -157,6 +157,15 @@ public final class CallRecordingAsync {
         if (options.getRecordingStateCallbackUrl() != null) {
             request.setRecordingStateCallbackUri(options.getRecordingStateCallbackUrl());
         }
+        if (options.getRecordingStorage() != null) {
+            if (options.getRecordingStorage() instanceof AzureBlobContainerRecordingStorage) {
+                AzureBlobContainerRecordingStorage blobStorage = (AzureBlobContainerRecordingStorage) options.getRecordingStorage();
+                RecordingStorageInternal recordingStorageInternal = new RecordingStorageInternal()
+                    .setRecordingDestinationContainerUrl(blobStorage.getRecordingDestinationContainerUrl())
+                    .setRecordingStorageKind(RecordingStorageTypeInternal.AZURE_BLOB_STORAGE);
+                request.setExternalStorage(recordingStorageInternal);
+            }
+        }
         if (options.getAudioChannelParticipantOrdering() != null) {
             List<CommunicationIdentifierModel> audioChannelParticipantOrdering = options.getAudioChannelParticipantOrdering()
                 .stream().map(CommunicationIdentifierConverter::convert)
@@ -169,17 +178,8 @@ public final class CallRecordingAsync {
                 .collect(Collectors.toList());
             request.setChannelAffinity(channelAffinityInternals);
         }
-        if (options.getRecordingStorage() != null) {
-            if (options.getRecordingStorage() instanceof AzureBlobContainerRecordingStorage) {
-                AzureBlobContainerRecordingStorage blobStorage = (AzureBlobContainerRecordingStorage) options.getRecordingStorage();
-                RecordingStorageInternal recordingStorageInternal = new RecordingStorageInternal()
-                    .setRecordingDestinationContainerUrl(blobStorage.getRecordingDestinationContainerUrl())
-                    .setRecordingStorageKind(RecordingStorageKind.AZURE_BLOB_STORAGE);
-                request.setExternalStorage(recordingStorageInternal);
-            }
-        }
-        if (options.getPauseOnStart() != null) {
-            request.setPauseOnStart(options.getPauseOnStart());
+        if (options.isPauseOnStart() != null) {
+            request.setPauseOnStart(options.isPauseOnStart());
         }
 
         return request;

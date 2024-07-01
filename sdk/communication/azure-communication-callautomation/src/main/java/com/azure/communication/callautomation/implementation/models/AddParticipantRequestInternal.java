@@ -5,55 +5,59 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The request payload for adding participant to the call.
  */
 @Fluent
-public final class AddParticipantRequestInternal implements JsonSerializable<AddParticipantRequestInternal> {
+public final class AddParticipantRequestInternal {
     /*
      * The source caller Id, a phone number, that's shown to the PSTN participant being invited.
      * Required only when inviting a PSTN participant.
      */
+    @JsonProperty(value = "sourceCallerIdNumber")
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
 
     /*
      * (Optional) The display name of the source that is associated with this invite operation when
-     * adding a PSTN participant or teams user.  Note: Will not update the display name in the roster.
+     * adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
      */
+    @JsonProperty(value = "sourceDisplayName")
     private String sourceDisplayName;
 
     /*
      * The participant to invite.
      */
+    @JsonProperty(value = "participantToAdd", required = true)
     private CommunicationIdentifierModel participantToAdd;
 
     /*
      * Gets or sets the timeout to wait for the invited participant to pickup.
      * The maximum value of this is 180 seconds
      */
+    @JsonProperty(value = "invitationTimeoutInSeconds")
     private Integer invitationTimeoutInSeconds;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
+    @JsonProperty(value = "operationContext")
     private String operationContext;
+
+    /*
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     */
+    @JsonProperty(value = "operationCallbackUri")
+    private String operationCallbackUri;
 
     /*
      * Used by customer to send custom calling context to targets
      */
+    @JsonProperty(value = "customCallingContext")
     private CustomCallingContext customCallingContext;
-
-    /*
-     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     */
-    private String operationCallbackUri;
 
     /**
      * Creates an instance of AddParticipantRequestInternal class.
@@ -62,8 +66,8 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
-     * being invited.
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
      * Required only when inviting a PSTN participant.
      * 
      * @return the sourceCallerIdNumber value.
@@ -73,8 +77,8 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
-     * being invited.
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
      * Required only when inviting a PSTN participant.
      * 
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
@@ -86,8 +90,8 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Get the sourceDisplayName property: (Optional) The display name of the source that is associated with this invite
-     * operation when
+     * Get the sourceDisplayName property: (Optional) The display name of the source that is associated with this
+     * invite operation when
      * adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
      * 
      * @return the sourceDisplayName value.
@@ -97,8 +101,8 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Set the sourceDisplayName property: (Optional) The display name of the source that is associated with this invite
-     * operation when
+     * Set the sourceDisplayName property: (Optional) The display name of the source that is associated with this
+     * invite operation when
      * adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
      * 
      * @param sourceDisplayName the sourceDisplayName value to set.
@@ -176,6 +180,32 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
+     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
+     * @return the operationCallbackUri value.
+     */
+    public String getOperationCallbackUri() {
+        return this.operationCallbackUri;
+    }
+
+    /**
+     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
+     * @param operationCallbackUri the operationCallbackUri value to set.
+     * @return the AddParticipantRequestInternal object itself.
+     */
+    public AddParticipantRequestInternal setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
+        return this;
+    }
+
+    /**
      * Get the customCallingContext property: Used by customer to send custom calling context to targets.
      * 
      * @return the customCallingContext value.
@@ -193,89 +223,5 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     public AddParticipantRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
         this.customCallingContext = customCallingContext;
         return this;
-    }
-
-    /**
-     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     * 
-     * @return the operationCallbackUri value.
-     */
-    public String getOperationCallbackUri() {
-        return this.operationCallbackUri;
-    }
-
-    /**
-     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     * 
-     * @param operationCallbackUri the operationCallbackUri value to set.
-     * @return the AddParticipantRequestInternal object itself.
-     */
-    public AddParticipantRequestInternal setOperationCallbackUri(String operationCallbackUri) {
-        this.operationCallbackUri = operationCallbackUri;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("participantToAdd", this.participantToAdd);
-        jsonWriter.writeJsonField("sourceCallerIdNumber", this.sourceCallerIdNumber);
-        jsonWriter.writeStringField("sourceDisplayName", this.sourceDisplayName);
-        jsonWriter.writeNumberField("invitationTimeoutInSeconds", this.invitationTimeoutInSeconds);
-        jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeJsonField("customCallingContext", this.customCallingContext);
-        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AddParticipantRequestInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AddParticipantRequestInternal if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AddParticipantRequestInternal.
-     */
-    public static AddParticipantRequestInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AddParticipantRequestInternal deserializedAddParticipantRequestInternal
-                = new AddParticipantRequestInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("participantToAdd".equals(fieldName)) {
-                    deserializedAddParticipantRequestInternal.participantToAdd
-                        = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("sourceCallerIdNumber".equals(fieldName)) {
-                    deserializedAddParticipantRequestInternal.sourceCallerIdNumber
-                        = PhoneNumberIdentifierModel.fromJson(reader);
-                } else if ("sourceDisplayName".equals(fieldName)) {
-                    deserializedAddParticipantRequestInternal.sourceDisplayName = reader.getString();
-                } else if ("invitationTimeoutInSeconds".equals(fieldName)) {
-                    deserializedAddParticipantRequestInternal.invitationTimeoutInSeconds
-                        = reader.getNullable(JsonReader::getInt);
-                } else if ("operationContext".equals(fieldName)) {
-                    deserializedAddParticipantRequestInternal.operationContext = reader.getString();
-                } else if ("customCallingContext".equals(fieldName)) {
-                    deserializedAddParticipantRequestInternal.customCallingContext
-                        = CustomCallingContext.fromJson(reader);
-                } else if ("operationCallbackUri".equals(fieldName)) {
-                    deserializedAddParticipantRequestInternal.operationCallbackUri = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAddParticipantRequestInternal;
-        });
     }
 }

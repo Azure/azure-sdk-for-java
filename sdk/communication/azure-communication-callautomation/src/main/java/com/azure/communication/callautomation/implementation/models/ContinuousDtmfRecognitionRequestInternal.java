@@ -5,32 +5,31 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ContinuousDtmfRecognitionRequestInternal model.
  */
 @Fluent
-public final class ContinuousDtmfRecognitionRequestInternal
-    implements JsonSerializable<ContinuousDtmfRecognitionRequestInternal> {
+public final class ContinuousDtmfRecognitionRequestInternal {
     /*
      * Defines options for recognition.
      */
+    @JsonProperty(value = "targetParticipant", required = true)
     private CommunicationIdentifierModel targetParticipant;
 
     /*
      * The value to identify context of the operation.
      */
+    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
+    @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
     /**
@@ -83,7 +82,8 @@ public final class ContinuousDtmfRecognitionRequestInternal
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      * 
      * @return the operationCallbackUri value.
      */
@@ -94,7 +94,8 @@ public final class ContinuousDtmfRecognitionRequestInternal
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the ContinuousDtmfRecognitionRequestInternal object itself.
@@ -102,50 +103,5 @@ public final class ContinuousDtmfRecognitionRequestInternal
     public ContinuousDtmfRecognitionRequestInternal setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("targetParticipant", this.targetParticipant);
-        jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ContinuousDtmfRecognitionRequestInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ContinuousDtmfRecognitionRequestInternal if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ContinuousDtmfRecognitionRequestInternal.
-     */
-    public static ContinuousDtmfRecognitionRequestInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ContinuousDtmfRecognitionRequestInternal deserializedContinuousDtmfRecognitionRequestInternal
-                = new ContinuousDtmfRecognitionRequestInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("targetParticipant".equals(fieldName)) {
-                    deserializedContinuousDtmfRecognitionRequestInternal.targetParticipant
-                        = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("operationContext".equals(fieldName)) {
-                    deserializedContinuousDtmfRecognitionRequestInternal.operationContext = reader.getString();
-                } else if ("operationCallbackUri".equals(fieldName)) {
-                    deserializedContinuousDtmfRecognitionRequestInternal.operationCallbackUri = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedContinuousDtmfRecognitionRequestInternal;
-        });
     }
 }

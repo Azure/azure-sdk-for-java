@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for RecognizeInputTypeInternal. */
@@ -26,6 +27,7 @@ public final class RecognizeInputType extends ExpandableStringEnum<RecognizeInpu
      * @param name a name to look for.
      * @return the corresponding RecognizeInputTypeInternal.
      */
+    @JsonCreator
     public static RecognizeInputType fromString(String name) {
         return fromString(name, RecognizeInputType.class);
     }

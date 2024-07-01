@@ -5,56 +5,60 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * The RecognizeOptionsInternal model.
  */
 @Fluent
-public final class RecognizeOptionsInternal implements JsonSerializable<RecognizeOptionsInternal> {
+public final class RecognizeOptionsInternal {
     /*
      * Determines if we interrupt the prompt and start recognizing.
      */
+    @JsonProperty(value = "interruptPrompt")
     private Boolean interruptPrompt;
 
     /*
      * Time to wait for first input after prompt (if any).
      */
+    @JsonProperty(value = "initialSilenceTimeoutInSeconds")
     private Integer initialSilenceTimeoutInSeconds;
 
     /*
      * Target participant of DTMF tone recognition.
      */
+    @JsonProperty(value = "targetParticipant", required = true)
     private CommunicationIdentifierModel targetParticipant;
 
     /*
      * Speech language to be recognized, If not set default is en-US
      */
+    @JsonProperty(value = "speechLanguage")
     private String speechLanguage;
 
     /*
      * Endpoint where the custom model was deployed.
      */
+    @JsonProperty(value = "speechRecognitionModelEndpointId")
     private String speechRecognitionModelEndpointId;
 
     /*
      * Defines configurations for DTMF.
      */
+    @JsonProperty(value = "dtmfOptions")
     private DtmfOptionsInternal dtmfOptions;
 
     /*
      * Defines Ivr choices for recognize.
      */
+    @JsonProperty(value = "choices")
     private List<RecognitionChoiceInternal> choices;
 
     /*
      * Defines continuous speech recognition option.
      */
+    @JsonProperty(value = "speechOptions")
     private SpeechOptionsInternal speechOptions;
 
     /**
@@ -221,67 +225,5 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     public RecognizeOptionsInternal setSpeechOptions(SpeechOptionsInternal speechOptions) {
         this.speechOptions = speechOptions;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("targetParticipant", this.targetParticipant);
-        jsonWriter.writeBooleanField("interruptPrompt", this.interruptPrompt);
-        jsonWriter.writeNumberField("initialSilenceTimeoutInSeconds", this.initialSilenceTimeoutInSeconds);
-        jsonWriter.writeStringField("speechLanguage", this.speechLanguage);
-        jsonWriter.writeStringField("speechRecognitionModelEndpointId", this.speechRecognitionModelEndpointId);
-        jsonWriter.writeJsonField("dtmfOptions", this.dtmfOptions);
-        jsonWriter.writeArrayField("choices", this.choices, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("speechOptions", this.speechOptions);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RecognizeOptionsInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RecognizeOptionsInternal if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RecognizeOptionsInternal.
-     */
-    public static RecognizeOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RecognizeOptionsInternal deserializedRecognizeOptionsInternal = new RecognizeOptionsInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("targetParticipant".equals(fieldName)) {
-                    deserializedRecognizeOptionsInternal.targetParticipant
-                        = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("interruptPrompt".equals(fieldName)) {
-                    deserializedRecognizeOptionsInternal.interruptPrompt = reader.getNullable(JsonReader::getBoolean);
-                } else if ("initialSilenceTimeoutInSeconds".equals(fieldName)) {
-                    deserializedRecognizeOptionsInternal.initialSilenceTimeoutInSeconds
-                        = reader.getNullable(JsonReader::getInt);
-                } else if ("speechLanguage".equals(fieldName)) {
-                    deserializedRecognizeOptionsInternal.speechLanguage = reader.getString();
-                } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
-                    deserializedRecognizeOptionsInternal.speechRecognitionModelEndpointId = reader.getString();
-                } else if ("dtmfOptions".equals(fieldName)) {
-                    deserializedRecognizeOptionsInternal.dtmfOptions = DtmfOptionsInternal.fromJson(reader);
-                } else if ("choices".equals(fieldName)) {
-                    List<RecognitionChoiceInternal> choices
-                        = reader.readArray(reader1 -> RecognitionChoiceInternal.fromJson(reader1));
-                    deserializedRecognizeOptionsInternal.choices = choices;
-                } else if ("speechOptions".equals(fieldName)) {
-                    deserializedRecognizeOptionsInternal.speechOptions = SpeechOptionsInternal.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedRecognizeOptionsInternal;
-        });
     }
 }

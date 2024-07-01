@@ -18,8 +18,6 @@ import com.azure.communication.callautomation.implementation.models.RemovePartic
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferToParticipantRequestInternal;
-import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsRequestInternal;
-import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsResponseInternal;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -145,16 +143,6 @@ public final class CallConnectionsImpl {
         Mono<Response<MuteParticipantsResultInternal>> mute(@HostParam("endpoint") String endpoint,
             @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") MuteParticipantsRequestInternal muteParticipantsRequest,
-            @HeaderParam("Accept") String accept,
-            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
-            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
-
-        @Post("/calling/callConnections/{callConnectionId}/participants:unmute")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<UnmuteParticipantsResponseInternal>> unmute(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") UnmuteParticipantsRequestInternal unmuteParticipantsRequest,
             @HeaderParam("Accept") String accept,
             @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
             @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
@@ -1044,118 +1032,6 @@ public final class CallConnectionsImpl {
     public MuteParticipantsResultInternal mute(String callConnectionId,
         MuteParticipantsRequestInternal muteParticipantsRequest) {
         return muteWithResponse(callConnectionId, muteParticipantsRequest, Context.NONE).getValue();
-    }
-
-    /**
-     * Unmute participants from the call using identifier.
-     * 
-     * @param callConnectionId The call connection id.
-     * @param unmuteParticipantsRequest The participants to be unmuted from the call.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for unmuting participants from the call along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnmuteParticipantsResponseInternal>> unmuteWithResponseAsync(String callConnectionId,
-        UnmuteParticipantsRequestInternal unmuteParticipantsRequest) {
-        final String accept = "application/json";
-        String repeatabilityRequestId = UUID.randomUUID().toString();
-        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return FluxUtil.withContext(
-            context -> service.unmute(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
-                unmuteParticipantsRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
-    }
-
-    /**
-     * Unmute participants from the call using identifier.
-     * 
-     * @param callConnectionId The call connection id.
-     * @param unmuteParticipantsRequest The participants to be unmuted from the call.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for unmuting participants from the call along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnmuteParticipantsResponseInternal>> unmuteWithResponseAsync(String callConnectionId,
-        UnmuteParticipantsRequestInternal unmuteParticipantsRequest, Context context) {
-        final String accept = "application/json";
-        String repeatabilityRequestId = UUID.randomUUID().toString();
-        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return service.unmute(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
-            unmuteParticipantsRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context);
-    }
-
-    /**
-     * Unmute participants from the call using identifier.
-     * 
-     * @param callConnectionId The call connection id.
-     * @param unmuteParticipantsRequest The participants to be unmuted from the call.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for unmuting participants from the call on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnmuteParticipantsResponseInternal> unmuteAsync(String callConnectionId,
-        UnmuteParticipantsRequestInternal unmuteParticipantsRequest) {
-        return unmuteWithResponseAsync(callConnectionId, unmuteParticipantsRequest)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Unmute participants from the call using identifier.
-     * 
-     * @param callConnectionId The call connection id.
-     * @param unmuteParticipantsRequest The participants to be unmuted from the call.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for unmuting participants from the call on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnmuteParticipantsResponseInternal> unmuteAsync(String callConnectionId,
-        UnmuteParticipantsRequestInternal unmuteParticipantsRequest, Context context) {
-        return unmuteWithResponseAsync(callConnectionId, unmuteParticipantsRequest, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Unmute participants from the call using identifier.
-     * 
-     * @param callConnectionId The call connection id.
-     * @param unmuteParticipantsRequest The participants to be unmuted from the call.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for unmuting participants from the call along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnmuteParticipantsResponseInternal> unmuteWithResponse(String callConnectionId,
-        UnmuteParticipantsRequestInternal unmuteParticipantsRequest, Context context) {
-        return unmuteWithResponseAsync(callConnectionId, unmuteParticipantsRequest, context).block();
-    }
-
-    /**
-     * Unmute participants from the call using identifier.
-     * 
-     * @param callConnectionId The call connection id.
-     * @param unmuteParticipantsRequest The participants to be unmuted from the call.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for unmuting participants from the call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnmuteParticipantsResponseInternal unmute(String callConnectionId,
-        UnmuteParticipantsRequestInternal unmuteParticipantsRequest) {
-        return unmuteWithResponse(callConnectionId, unmuteParticipantsRequest, Context.NONE).getValue();
     }
 
     /**

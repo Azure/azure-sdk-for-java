@@ -5,26 +5,24 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Channel affinity for a participant.
  */
 @Fluent
-public final class ChannelAffinityInternal implements JsonSerializable<ChannelAffinityInternal> {
+public final class ChannelAffinityInternal {
     /*
      * Channel number to which bitstream from a particular participant will be written.
      */
+    @JsonProperty(value = "channel")
     private Integer channel;
 
     /*
      * The identifier for the participant whose bitstream will be written to the channel
      * represented by the channel number.
      */
+    @JsonProperty(value = "participant", required = true)
     private CommunicationIdentifierModel participant;
 
     /**
@@ -73,45 +71,5 @@ public final class ChannelAffinityInternal implements JsonSerializable<ChannelAf
     public ChannelAffinityInternal setParticipant(CommunicationIdentifierModel participant) {
         this.participant = participant;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("participant", this.participant);
-        jsonWriter.writeNumberField("channel", this.channel);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ChannelAffinityInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ChannelAffinityInternal if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ChannelAffinityInternal.
-     */
-    public static ChannelAffinityInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ChannelAffinityInternal deserializedChannelAffinityInternal = new ChannelAffinityInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("participant".equals(fieldName)) {
-                    deserializedChannelAffinityInternal.participant = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("channel".equals(fieldName)) {
-                    deserializedChannelAffinityInternal.channel = reader.getNullable(JsonReader::getInt);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedChannelAffinityInternal;
-        });
     }
 }

@@ -5,48 +5,44 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The request payload for transferring call to a participant.
  */
 @Fluent
-public final class TransferToParticipantRequestInternal
-    implements JsonSerializable<TransferToParticipantRequestInternal> {
+public final class TransferToParticipantRequestInternal {
     /*
      * The identity of the target where call should be transferred to.
      */
+    @JsonProperty(value = "targetParticipant", required = true)
     private CommunicationIdentifierModel targetParticipant;
-
-    /*
-     * Used by customer to send custom calling context to targets
-     */
-    private CustomCallingContext customCallingContext;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
+    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
      * Transferee is the participant who is transferred away.
      */
+    @JsonProperty(value = "transferee")
     private CommunicationIdentifierModel transferee;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
+    @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
     /*
-     * The source caller Id, a phone number, that will be used as the transferor's caller Id when transferring a call to a Pstn target.
+     * Used by customer to send custom calling context to targets
      */
-    private PhoneNumberIdentifierModel sourceCallerIdNumber;
+    @JsonProperty(value = "customCallingContext")
+    private CustomCallingContext customCallingContext;
 
     /**
      * Creates an instance of TransferToParticipantRequestInternal class.
@@ -71,26 +67,6 @@ public final class TransferToParticipantRequestInternal
      */
     public TransferToParticipantRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
-        return this;
-    }
-
-    /**
-     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
-     * 
-     * @return the customCallingContext value.
-     */
-    public CustomCallingContext getCustomCallingContext() {
-        return this.customCallingContext;
-    }
-
-    /**
-     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
-     * 
-     * @param customCallingContext the customCallingContext value to set.
-     * @return the TransferToParticipantRequestInternal object itself.
-     */
-    public TransferToParticipantRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
-        this.customCallingContext = customCallingContext;
         return this;
     }
 
@@ -139,7 +115,8 @@ public final class TransferToParticipantRequestInternal
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      * 
      * @return the operationCallbackUri value.
      */
@@ -150,7 +127,8 @@ public final class TransferToParticipantRequestInternal
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the TransferToParticipantRequestInternal object itself.
@@ -161,82 +139,22 @@ public final class TransferToParticipantRequestInternal
     }
 
     /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that will be used as the
-     * transferor's caller Id when transferring a call to a Pstn target.
+     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
      * 
-     * @return the sourceCallerIdNumber value.
+     * @return the customCallingContext value.
      */
-    public PhoneNumberIdentifierModel getSourceCallerIdNumber() {
-        return this.sourceCallerIdNumber;
+    public CustomCallingContext getCustomCallingContext() {
+        return this.customCallingContext;
     }
 
     /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that will be used as the
-     * transferor's caller Id when transferring a call to a Pstn target.
+     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
      * 
-     * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
+     * @param customCallingContext the customCallingContext value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
-    public TransferToParticipantRequestInternal
-        setSourceCallerIdNumber(PhoneNumberIdentifierModel sourceCallerIdNumber) {
-        this.sourceCallerIdNumber = sourceCallerIdNumber;
+    public TransferToParticipantRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
+        this.customCallingContext = customCallingContext;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("targetParticipant", this.targetParticipant);
-        jsonWriter.writeJsonField("customCallingContext", this.customCallingContext);
-        jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeJsonField("transferee", this.transferee);
-        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
-        jsonWriter.writeJsonField("sourceCallerIdNumber", this.sourceCallerIdNumber);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TransferToParticipantRequestInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TransferToParticipantRequestInternal if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TransferToParticipantRequestInternal.
-     */
-    public static TransferToParticipantRequestInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            TransferToParticipantRequestInternal deserializedTransferToParticipantRequestInternal
-                = new TransferToParticipantRequestInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("targetParticipant".equals(fieldName)) {
-                    deserializedTransferToParticipantRequestInternal.targetParticipant
-                        = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("customCallingContext".equals(fieldName)) {
-                    deserializedTransferToParticipantRequestInternal.customCallingContext
-                        = CustomCallingContext.fromJson(reader);
-                } else if ("operationContext".equals(fieldName)) {
-                    deserializedTransferToParticipantRequestInternal.operationContext = reader.getString();
-                } else if ("transferee".equals(fieldName)) {
-                    deserializedTransferToParticipantRequestInternal.transferee
-                        = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("operationCallbackUri".equals(fieldName)) {
-                    deserializedTransferToParticipantRequestInternal.operationCallbackUri = reader.getString();
-                } else if ("sourceCallerIdNumber".equals(fieldName)) {
-                    deserializedTransferToParticipantRequestInternal.sourceCallerIdNumber
-                        = PhoneNumberIdentifierModel.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedTransferToParticipantRequestInternal;
-        });
     }
 }
