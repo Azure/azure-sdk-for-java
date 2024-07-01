@@ -103,30 +103,6 @@
       }
     },
     {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2018-01-01-preview",
-      "name": "[guid(concat('dataReceiverRoleId', parameters('baseName')))]",
-      "dependsOn": [
-        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
-      ],
-      "properties": {
-        "roleDefinitionId": "[variables('serviceBusDataReceiverRoleId')]",
-        "principalId": "[parameters('testApplicationOid')]"
-      }
-    },
-    {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2018-01-01-preview",
-      "name": "[guid(concat('dataSenderRoleId', parameters('baseName')))]",
-      "dependsOn": [
-        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
-      ],
-      "properties": {
-        "roleDefinitionId": "[variables('serviceBusDataSenderRoleId')]",
-        "principalId": "[parameters('testApplicationOid')]"
-      }
-    },
-    {
       "type": "Microsoft.ServiceBus/namespaces/topics",
       "apiVersion": "2021-01-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex())]",
