@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.CosmosChangeFeedRequestOptionsImpl;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.apachecommons.collections.set.UnmodifiableSet;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
@@ -17,7 +18,6 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -537,7 +537,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return the custom ids.
      */
     public Set<String> getKeywordIdentifiers() {
-        return ImmutableSet.copyOf(this.actualRequestOptions.getKeywordIdentifiers());
+        return UnmodifiableSet.unmodifiableSet(this.actualRequestOptions.getKeywordIdentifiers());
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {

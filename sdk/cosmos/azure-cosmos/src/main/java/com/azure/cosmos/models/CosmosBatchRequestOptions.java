@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.apachecommons.collections.set.UnmodifiableSet;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 
 import java.util.ArrayList;
@@ -217,7 +218,7 @@ public final class CosmosBatchRequestOptions {
      * @return the custom ids.
      */
     public Set<String> getKeywordIdentifiers() {
-        return ImmutableSet.copyOf(keywordIdentifiers);
+        return UnmodifiableSet.unmodifiableSet(keywordIdentifiers);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

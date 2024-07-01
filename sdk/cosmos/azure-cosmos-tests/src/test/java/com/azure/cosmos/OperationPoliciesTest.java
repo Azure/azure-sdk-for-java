@@ -17,12 +17,12 @@ import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
-import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -150,9 +150,9 @@ public class OperationPoliciesTest extends TestSuiteBase {
         }
     }
 
-    private static void createBulkOptions(String operationType, String spanName, CosmosRequestOptions cosmoRequestOptions) {
+    private static void createBulkOptions(String operationType, String spanName, CosmosRequestOptions cosmosRequestOptions) {
         if (operationType.equals("Batch") && spanName.contains("nonTransactionalBatch")) {
-                cosmoRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
+                cosmosRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
                     .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
                     .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(keywordIdentifiers).split(","))));
         }
