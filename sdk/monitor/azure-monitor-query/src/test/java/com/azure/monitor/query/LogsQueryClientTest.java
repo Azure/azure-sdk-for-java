@@ -72,18 +72,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         resourceId = getLogResourceId(interceptorManager.isPlaybackMode());
         credential = TestUtil.getTestTokenCredential(interceptorManager);
         LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
-            .credential(credential)
-            .retryPolicy(new RetryPolicy(new RetryStrategy() {
-                @Override
-                public int getMaxRetries() {
-                    return 0;
-                }
-
-                @Override
-                public Duration calculateRetryDelay(int i) {
-                    return null;
-                }
-            }));
+            .credential(credential);
         if (getTestMode() == TestMode.PLAYBACK) {
             clientBuilder
                     .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
@@ -342,7 +331,6 @@ public class LogsQueryClientTest extends TestProxyTestBase {
             .credential(credential);
         if (getTestMode() == TestMode.PLAYBACK) {
             clientBuilder
-                .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
                 .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
             clientBuilder
