@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.validationstests.models;
 
+import java.util.LinkedHashMap;
+
 public class ValidationTestCase {
     private String featureFlagName;
-    private Object inputs;
+    private LinkedHashMap<String, Object> inputs;
     private IsEnabled isEnabled;
     private Variant variant;
     private String description;
@@ -17,11 +19,11 @@ public class ValidationTestCase {
         this.featureFlagName = featureFlagName;
     }
 
-    public Object getInputs() {
+    public LinkedHashMap<String, Object> getInputs() {
         return inputs;
     }
 
-    public void setInputs(Object inputs) {
+    public void setInputs(LinkedHashMap<String, Object> inputs) {
         this.inputs = inputs;
     }
 
