@@ -17,6 +17,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderCl
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -267,6 +268,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     }
 
     @Test
+    @Disabled("Convert to use AzurePowerShellCredentials?")
     public void testBatchSendEventByAzureNameKeyCredential() {
         ConnectionStringProperties properties = getConnectionStringProperties();
         String fullyQualifiedNamespace = getFullyQualifiedDomainName();
@@ -291,6 +293,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     }
 
     @Test
+    @Disabled("Convert to use AzurePowerShellCredentials?")
     public void testBatchSendEventByAzureSasCredential() {
         ConnectionStringProperties properties = getConnectionStringProperties(true);
         String fullyQualifiedNamespace = getFullyQualifiedDomainName();

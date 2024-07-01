@@ -4,8 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -24,8 +22,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessage;
-import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
-import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -84,7 +80,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
             assertNotNull(sessionId, "'sessionId' should have been set.");
             AmqpRetryOptions amqpRetryOptions = new AmqpRetryOptions()
                 .setTryTimeout(Duration.ofSeconds(2 * lockTimeoutDurationSeconds));
-            processor = toClose(getSessionProcessorBuilder(false, entityType, entityIndex, false, amqpRetryOptions)
+            processor = toClose(getSessionProcessorBuilder(USE_CREDENTIALS, entityType, entityIndex, false, amqpRetryOptions)
                 .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
                 .disableAutoComplete()
                 .processMessage(context -> processMessage(context, countDownLatch, messageId, lastMessageReceivedTime, lockTimeoutDurationSeconds))
@@ -92,7 +88,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
                 .buildProcessorClient());
 
         } else {
-            processor = toClose(getProcessorBuilder(false, entityType, entityIndex, false)
+            processor = toClose(getProcessorBuilder(USE_CREDENTIALS, entityType, entityIndex, false)
                 .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
                 .disableAutoComplete()
                 .processMessage(context -> processMessage(context, countDownLatch, messageId, lastMessageReceivedTime, lockTimeoutDurationSeconds))
@@ -117,7 +113,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         ServiceBusSenderAsyncClient sender = createSender(entityType, entityIndex, true);
 
         ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder  processorBuilder =
-            getSessionProcessorBuilder(false, entityType, entityIndex, false, RETRY_OPTIONS)
+            getSessionProcessorBuilder(USE_CREDENTIALS, entityType, entityIndex, false, RETRY_OPTIONS)
                 .sessionIdleTimeout(sessionIdleTimeout)
                 .disableAutoComplete();
 
@@ -132,7 +128,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
 
         ServiceBusSenderAsyncClient sender = createSender(entityType, entityIndex, true);
         ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder  processorBuilder =
-            getSessionProcessorBuilder(false, entityType, entityIndex, false,
+            getSessionProcessorBuilder(USE_CREDENTIALS, entityType, entityIndex, false,
                     new AmqpRetryOptions().setTryTimeout(tryTimeout))
                 .disableAutoComplete();
 
@@ -198,68 +194,9 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
             context.getFullyQualifiedNamespace(), context.getEntityPath());
     }
 
-    private ServiceBusClientBuilder.ServiceBusProcessorClientBuilder getProcessorBuilder(boolean useCredentials,
-        MessagingEntityType entityType, int entityIndex, boolean sharedConnection) {
-
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
-        switch (entityType) {
-            case QUEUE:
-                final String queueName = getQueueName(entityIndex);
-                assertNotNull(queueName, "'queueName' cannot be null.");
-
-                return builder.processor().queueName(queueName);
-            case SUBSCRIPTION:
-                final String topicName = getTopicName(entityIndex);
-                final String subscriptionName = getSubscriptionBaseName();
-                assertNotNull(topicName, "'topicName' cannot be null.");
-                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-
-                return builder.processor().topicName(topicName).subscriptionName(subscriptionName);
-            default:
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
-        }
-    }
-
-    protected ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(boolean useCredentials,
-        MessagingEntityType entityType, int entityIndex, boolean sharedConnection, AmqpRetryOptions amqpRetryOptions) {
-
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
-        builder.retryOptions(amqpRetryOptions);
-
-        switch (entityType) {
-            case QUEUE:
-                final String queueName = getSessionQueueName(entityIndex);
-                assertNotNull(queueName, "'queueName' cannot be null.");
-                return builder
-                    .sessionProcessor()
-                    .queueName(queueName);
-
-            case SUBSCRIPTION:
-                final String topicName = getTopicName(entityIndex);
-                final String subscriptionName = getSessionSubscriptionBaseName();
-                assertNotNull(topicName, "'topicName' cannot be null.");
-                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-                return builder.sessionProcessor()
-                    .topicName(topicName).subscriptionName(subscriptionName);
-            default:
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
-        }
-    }
-
-    protected ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
-        return new ServiceBusClientBuilder()
-            .connectionString(getConnectionString())
-            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
-            .retryOptions(RETRY_OPTIONS)
-            .transportType(AmqpTransportType.AMQP)
-            .scheduler(scheduler)
-            .configuration(v1OrV2(true));
-    }
-
     private ServiceBusSenderAsyncClient createSender(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
         final boolean shareConnection = false;
-        final boolean useCredentials = false;
-        return toClose(getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
+        return toClose(getSenderBuilder(USE_CREDENTIALS, entityType, entityIndex, isSessionEnabled, shareConnection)
             .buildAsyncClient());
     }
 

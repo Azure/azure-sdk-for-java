@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.administration;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -14,11 +13,14 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -115,13 +117,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
     void azureIdentityCredentials(HttpClient httpClient) {
 
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
-        final TokenCredential tokenCredential;
-        if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = request -> Mono.fromCallable(() ->
-                new AccessToken("foo-bar", OffsetDateTime.now().plus(Duration.ofMinutes(5))));
-        } else {
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
-        }
+        final TokenCredential tokenCredential = getTestTokenCredential(interceptorManager);
 
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder();
 
@@ -1212,13 +1208,9 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
     }
 
     private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient) {
-        final String connectionString = interceptorManager.isPlaybackMode()
-            ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
-            : TestUtils.getConnectionString(false);
-
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .connectionString(connectionString);
+            .credential(getTestTokenCredential(interceptorManager));
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
@@ -1234,5 +1226,21 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         }
 
         return builder.buildAsyncClient();
+    }
+
+    /**
+     * Retrieve the appropriate TokenCredential based on the test mode.
+     *
+     * @param interceptorManager the interceptor manager
+     * @return The appropriate token credential
+     */
+    private static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isLiveMode()) {
+            return new AzurePowerShellCredentialBuilder().build();
+        } else if (interceptorManager.isRecordMode()) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new MockTokenCredential();
+        }
     }
 }

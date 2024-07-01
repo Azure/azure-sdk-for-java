@@ -106,7 +106,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         final Duration sessionIdleTimeout = Duration.ofSeconds(3);
         setSender(entityType, entityIndex);
 
-        this.receiver = toClose(getSessionReceiverBuilder(false,
+        this.receiver = toClose(getSessionReceiverBuilder(USE_CREDENTIALS,
             entityType, entityIndex, false, DEFAULT_RETRY_OPTIONS)
             .disableAutoComplete()
             .maxConcurrentSessions(1)
@@ -124,7 +124,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(tryTimeout);
         setSender(entityType, entityIndex);
 
-        this.receiver = toClose(getSessionReceiverBuilder(false,
+        this.receiver = toClose(getSessionReceiverBuilder(USE_CREDENTIALS,
             entityType, entityIndex, false, retryOptions)
             .disableAutoComplete()
             .maxConcurrentSessions(1)
@@ -165,7 +165,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         ServiceBusMessage message1 = getServiceBusMessage(contents, randomPrefix + "1").setSessionId(randomPrefix + "1");
 
         AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(tryTimeout);
-        this.receiver = toClose(getSessionReceiverBuilder(false,
+        this.receiver = toClose(getSessionReceiverBuilder(USE_CREDENTIALS,
             entityType, entityIndex, false, retryOptions)
             .disableAutoComplete()
             .sessionIdleTimeout(sessionIdleTimeout)
@@ -191,13 +191,13 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSender(MessagingEntityType entityType, int entityIndex) {
-        this.sender = toClose(getSenderBuilder(false, entityType, entityIndex, true, false)
+        this.sender = toClose(getSenderBuilder(USE_CREDENTIALS, entityType, entityIndex, true, false)
             .buildAsyncClient());
     }
 
     private void setReceiver(MessagingEntityType entityType, int entityIndex,
                              Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
-        ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false,
+        ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(USE_CREDENTIALS,
             entityType, entityIndex, false, DEFAULT_RETRY_OPTIONS).disableAutoComplete();
 
         this.sessionReceiver = toClose(onBuild.apply(sessionBuilder).buildAsyncClient());

@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.administration;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -15,8 +14,11 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -44,7 +46,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import reactor.core.publisher.Mono;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -58,7 +59,6 @@ import java.util.regex.Pattern;
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
 import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
-import static com.azure.messaging.servicebus.TestUtils.getFullyQualifiedDomainName;
 import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getRuleBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
@@ -89,13 +89,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     void azureIdentityCredentials() {
         // Arrange
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
-        final TokenCredential tokenCredential;
-        if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = request -> Mono.fromCallable(() ->
-                new AccessToken("foo-bar", OffsetDateTime.now().plus(Duration.ofMinutes(5))));
-        } else {
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
-        }
+        final TokenCredential tokenCredential = getTestTokenCredential(interceptorManager);
 
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder();
 
@@ -932,13 +926,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     //endregion
 
     private ServiceBusAdministrationClient getClient() {
-        final String connectionString = interceptorManager.isPlaybackMode()
-            ? "Endpoint=sb://" + getFullyQualifiedDomainName() + ";SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
-            : TestUtils.getConnectionString(false);
-
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .connectionString(connectionString)
+            .credential(getTestTokenCredential(interceptorManager))
             .retryOptions(new RetryOptions(new FixedDelayOptions(1, TIMEOUT)));
 
         if (interceptorManager.isPlaybackMode()) {
@@ -953,5 +943,21 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         }
 
         return builder.buildClient();
+    }
+
+    /**
+     * Retrieve the appropriate TokenCredential based on the test mode.
+     *
+     * @param interceptorManager the interceptor manager
+     * @return The appropriate token credential
+     */
+    private static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isLiveMode()) {
+            return new AzurePowerShellCredentialBuilder().build();
+        } else if (interceptorManager.isRecordMode()) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new MockTokenCredential();
+        }
     }
 }

@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -69,7 +70,7 @@ public class ProxySelectorTest extends IntegrationTestBase {
 
         final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromString("Hello"));
         final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-            .connectionString(getConnectionString())
+            .credential(new AzurePowerShellCredentialBuilder().build())
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
             .sender()
