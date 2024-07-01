@@ -48,8 +48,7 @@ public final class CloudServiceConfiguration implements JsonSerializable<CloudSe
      * @param osFamily the osFamily value to set.
      */
     @Generated
-    @JsonCreator
-    public CloudServiceConfiguration(@JsonProperty(value = "osFamily") String osFamily) {
+    public CloudServiceConfiguration(String osFamily) {
         this.osFamily = osFamily;
     }
 
