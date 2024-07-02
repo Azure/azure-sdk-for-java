@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
@@ -164,7 +165,7 @@ public class ClientSideRequestStatistics {
 
             this.approximateInsertionCountInBloomFilter = request.requestContext.getApproximateBloomFilterInsertionCount();
             storeResponseStatistics.sessionTokenEvaluationResults = request.requestContext.getSessionTokenEvaluationResults();
-            storeResponseStatistics.regionToHealthStatusesForPartitionKeyRange = request.requestContext.getRegionToHealthStatusesForPartitionKeyRange();
+            storeResponseStatistics.locationToLocationSpecificHealthContext = request.requestContext.getLocationToLocationSpecificHealthContext();
 
             if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
                 storeResponseStatistics.e2ePolicyCfg =
@@ -238,7 +239,7 @@ public class ClientSideRequestStatistics {
 
                 if (rxDocumentServiceRequest.requestContext != null) {
                     gatewayStatistics.sessionTokenEvaluationResults = rxDocumentServiceRequest.requestContext.getSessionTokenEvaluationResults();
-                    gatewayStatistics.regionToHealthStatusesForPartitionKeyRange = rxDocumentServiceRequest.requestContext.getRegionToHealthStatusesForPartitionKeyRange();
+                    gatewayStatistics.locationToLocationSpecificHealthContext = rxDocumentServiceRequest.requestContext.getLocationToLocationSpecificHealthContext();
                 }
             }
             gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
@@ -668,7 +669,7 @@ public class ClientSideRequestStatistics {
         private Set<String> sessionTokenEvaluationResults;
 
         @JsonSerialize
-        private Utils.ValueHolder<Map<String, String>> regionToHealthStatusesForPartitionKeyRange;
+        private Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> locationToLocationSpecificHealthContext;
 
         public String getExcludedRegions() { return this.excludedRegions; }
 
@@ -698,6 +699,10 @@ public class ClientSideRequestStatistics {
 
         public Set<String> getSessionTokenEvaluationResults() {
             return sessionTokenEvaluationResults;
+        }
+
+        public Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> getLocationToLocationSpecificHealthContext() {
+            return locationToLocationSpecificHealthContext;
         }
 
         @JsonIgnore
@@ -858,7 +863,7 @@ public class ClientSideRequestStatistics {
         private String faultInjectionRuleId;
         private List<String> faultInjectionEvaluationResults;
         private Set<String> sessionTokenEvaluationResults;
-        private Utils.ValueHolder<Map<String, String>> regionToHealthStatusesForPartitionKeyRange;
+        private Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> locationToLocationSpecificHealthContext;
 
         public String getSessionToken() {
             return sessionToken;
@@ -916,8 +921,8 @@ public class ClientSideRequestStatistics {
             return sessionTokenEvaluationResults;
         }
 
-        public Map<String, String> getRegionToHealthStatusesForPartitionKeyRange() {
-            return regionToHealthStatusesForPartitionKeyRange.v;
+        public Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> getLocationToLocationSpecificHealthContext() {
+            return locationToLocationSpecificHealthContext;
         }
 
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
@@ -953,7 +958,7 @@ public class ClientSideRequestStatistics {
                 }
 
                 this.writeNonEmptyStringSetField(jsonGenerator, "sessionTokenEvaluationResults", gatewayStatistics.getSessionTokenEvaluationResults());
-                this.writeNonNullObjectField(jsonGenerator, "regionHealthStatusesForPkRange", gatewayStatistics.getRegionToHealthStatusesForPartitionKeyRange());
+                this.writeNonNullObjectField(jsonGenerator, "locationToLocationSpecificHealthContext", gatewayStatistics.getLocationToLocationSpecificHealthContext());
                 jsonGenerator.writeEndObject();
             }
 

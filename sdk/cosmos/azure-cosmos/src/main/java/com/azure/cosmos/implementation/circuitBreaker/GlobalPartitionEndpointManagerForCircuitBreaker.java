@@ -89,7 +89,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     partitionLevelLocationUnavailabilityInfoAsVal.areLocationsAvailableForPartitionKeyRange(applicableEndpoints));
             }
 
-            request.requestContext.setRegionToHealthStatusesForPartitionKeyRange(partitionLevelLocationUnavailabilityInfoAsVal.getRegionToHealthStatus());
+            request.requestContext.setLocationToLocationSpecificHealthContext(partitionLevelLocationUnavailabilityInfoAsVal.regionToLocationSpecificHealthContext);
             return partitionLevelLocationUnavailabilityInfoAsVal;
         });
 
@@ -139,7 +139,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                 succeededLocation,
                 request.isReadOnlyRequest());
 
-            request.requestContext.setRegionToHealthStatusesForPartitionKeyRange(partitionKeyRangeToFailoverInfoAsVal.getRegionToHealthStatus());
+            request.requestContext.setLocationToLocationSpecificHealthContext(partitionKeyRangeToFailoverInfoAsVal.regionToLocationSpecificHealthContext);
             return partitionKeyRangeToFailoverInfoAsVal;
         });
     }
@@ -243,12 +243,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
     private class PartitionLevelLocationUnavailabilityInfo {
 
         private final ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition;
-        private final ConcurrentHashMap<String, String> regionToHealthStatus;
+        private final ConcurrentHashMap<String, LocationSpecificHealthContext> regionToLocationSpecificHealthContext;
         private final LocationSpecificHealthContextTransitionHandler locationSpecificHealthContextTransitionHandler;
 
         private PartitionLevelLocationUnavailabilityInfo() {
             this.locationEndpointToLocationSpecificContextForPartition = new ConcurrentHashMap<>();
-            this.regionToHealthStatus = new ConcurrentHashMap<>();
+            this.regionToLocationSpecificHealthContext = new ConcurrentHashMap<>();
             this.locationSpecificHealthContextTransitionHandler = GlobalPartitionEndpointManagerForCircuitBreaker.this.locationSpecificHealthContextTransitionHandler;
         }
 
@@ -278,11 +278,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     locationWithException,
                     isReadOnlyRequest);
 
-                this.regionToHealthStatus.put(
+                this.regionToLocationSpecificHealthContext.put(
                     GlobalPartitionEndpointManagerForCircuitBreaker
                         .this.globalEndpointManager
                         .getRegionName(locationAsKey, isReadOnlyRequest ? OperationType.Read : OperationType.Create),
-                    locationSpecificHealthContextAfterTransition.getLocationHealthStatus().getStringifiedLocationHealthStatus());
+                    locationSpecificHealthContextAfterTransition);
 
                 isExceptionThresholdBreached.set(locationSpecificHealthContextAfterTransition.isExceptionThresholdBreached());
                 return locationSpecificHealthContextAfterTransition;
@@ -316,11 +316,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     false,
                     isReadOnlyRequest);
 
-                this.regionToHealthStatus.put(
+                this.regionToLocationSpecificHealthContext.put(
                     GlobalPartitionEndpointManagerForCircuitBreaker
                         .this.globalEndpointManager
                         .getRegionName(locationAsKey, isReadOnlyRequest ? OperationType.Read : OperationType.Create),
-                    locationSpecificHealthContextAfterTransition.getLocationHealthStatus().getStringifiedLocationHealthStatus());
+                    locationSpecificHealthContextAfterTransition);
 
                 return locationSpecificHealthContextAfterTransition;
             });
@@ -341,10 +341,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             }
 
             return false;
-        }
-
-        public ConcurrentHashMap<String, String> getRegionToHealthStatus() {
-            return regionToHealthStatus;
         }
     }
 

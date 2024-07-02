@@ -7,6 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
@@ -61,7 +62,8 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     private FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
-    private volatile Utils.ValueHolder<Map<String, String>> regionToHealthStatusesForPartitionKeyRange = new Utils.ValueHolder<>();
+    private volatile Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> regionToLocationSpecificHealthContext
+        = new Utils.ValueHolder<>();
 
     public DocumentServiceRequestContext() {}
 
@@ -217,12 +219,12 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.clientRetryPolicySupplier = clientRetryPolicySupplier;
     }
 
-    public Utils.ValueHolder<Map<String, String>> getRegionToHealthStatusesForPartitionKeyRange() {
-        return regionToHealthStatusesForPartitionKeyRange;
+    public Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> getLocationToLocationSpecificHealthContext() {
+        return regionToLocationSpecificHealthContext;
     }
 
-    public void setRegionToHealthStatusesForPartitionKeyRange(Map<String, String> regionToHealthStatusesForPartitionKeyRange) {
-        this.regionToHealthStatusesForPartitionKeyRange.v = regionToHealthStatusesForPartitionKeyRange;
+    public void setLocationToLocationSpecificHealthContext(Map<String, LocationSpecificHealthContext> regionToLocationSpecificHealthContext) {
+        this.regionToLocationSpecificHealthContext.v = regionToLocationSpecificHealthContext;
     }
 }
 

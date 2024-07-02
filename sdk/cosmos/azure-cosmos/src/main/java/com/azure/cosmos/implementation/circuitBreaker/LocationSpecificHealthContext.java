@@ -3,9 +3,20 @@
 
 package com.azure.cosmos.implementation.circuitBreaker;
 
+import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.io.IOException;
+import java.io.Serializable;
 import java.time.Instant;
 
-public class LocationSpecificHealthContext {
+@JsonSerialize(using = LocationSpecificHealthContext.LocationSpecificHealthContextSerializer.class)
+public class LocationSpecificHealthContext implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private final int exceptionCountForWriteForCircuitBreaking;
     private final int successCountForWriteForRecovery;
     private final int exceptionCountForReadForCircuitBreaking;
@@ -125,6 +136,27 @@ public class LocationSpecificHealthContext {
                 this.isExceptionThresholdBreached);
 
             return locationSpecificHealthContext;
+        }
+    }
+
+    static class LocationSpecificHealthContextSerializer extends com.fasterxml.jackson.databind.JsonSerializer<LocationSpecificHealthContext> {
+
+        @Override
+        public void serialize(LocationSpecificHealthContext value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+            gen.writeStartObject();
+
+            gen.writeNumberField("exceptionCountForWriteForCircuitBreaking", value.exceptionCountForWriteForCircuitBreaking);
+            gen.writeNumberField("exceptionCountForReadForCircuitBreaking", value.exceptionCountForReadForCircuitBreaking);
+            gen.writeNumberField("successCountForWriteForRecovery", value.successCountForWriteForRecovery);
+            gen.writeNumberField("successCountForReadForRecovery", value.successCountForReadForRecovery);
+            gen.writePOJOField("locationHealthStatus", value.locationHealthStatus);
+            gen.writeStringField("unavailableSince", toInstantString(value.unavailableSince));
+
+            gen.writeEndObject();
+        }
+
+        private String toInstantString(Instant instant) {
+            return DiagnosticsInstantSerializer.fromInstant(instant);
         }
     }
 }
