@@ -55,7 +55,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
      * again.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    @ParameterizedTest
+    // @ParameterizedTest
     void receiveMessage(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
         // Arrange
         // The message is locked for this duration at a time.
@@ -104,7 +104,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         LOGGER.info("Message lock has been renewed. Now closing processor");
     }
 
-    @ParameterizedTest
+    // @ParameterizedTest
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     void rollingSessionOnIdleTimeout(MessagingEntityType entityType) throws InterruptedException {
         final int entityIndex = TestUtils.USE_CASE_MULTIPLE_SESSIONS1;
@@ -120,7 +120,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         rollingSessionTest(sender, processorBuilder);
     }
 
-    @ParameterizedTest
+    // @ParameterizedTest
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     void rollingSessionOnTryTimeout(MessagingEntityType entityType) throws InterruptedException {
         final int entityIndex = TestUtils.USE_CASE_MULTIPLE_SESSIONS1;

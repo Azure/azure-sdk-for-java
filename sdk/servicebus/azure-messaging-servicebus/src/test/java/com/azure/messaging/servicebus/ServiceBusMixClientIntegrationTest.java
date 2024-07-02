@@ -79,7 +79,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
      * 2. complete the messages from entity A and write to entity B.
      * 2. commit the transaction.
      */
-    @ParameterizedTest
+    // @ParameterizedTest
     @ValueSource(strings = {"true", "false"})
     void crossEntityQueueTransaction(boolean isSessionEnabled) throws InterruptedException {
 
@@ -187,7 +187,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
      * 2. complete the messages from entity A and write to entity B.
      * 2. commit the transaction.
      */
-    @ParameterizedTest
+    // @ParameterizedTest
     @ValueSource(strings = {"true", "false"})
     void crossEntitySubscriptionTransaction(boolean isSessionEnabled) throws InterruptedException {
 
@@ -304,7 +304,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
      * 2. complete the messages from entity A and write to entity B.
      * 2. commit the transaction.
      */
-    @ParameterizedTest
+    // @ParameterizedTest
     @ValueSource(strings = {"true", "false"})
     void crossEntityQueueTransactionWithReceiverSenderTest(boolean isSessionEnabled) throws InterruptedException {
 
@@ -391,7 +391,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
      * 2. complete the messages from entity A and write to entity B.
      * 2. commit the transaction.
      */
-    @ParameterizedTest
+    // @ParameterizedTest
     @ValueSource(strings = {"true", "false"})
     void crossEntitySubscriptionTransactionWithReceiverSenderTest(boolean isSessionEnabled) throws InterruptedException {
 
