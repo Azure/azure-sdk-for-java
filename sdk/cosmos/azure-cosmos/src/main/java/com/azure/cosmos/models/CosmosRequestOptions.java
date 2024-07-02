@@ -116,7 +116,7 @@ public final class CosmosRequestOptions {
      * @param thresholds the CosmosDiagnosticsThresholds.
      * @return current CosmosRequestOptions.
      */
-    public CosmosRequestOptions setDiagnosticThresholds(CosmosDiagnosticsThresholds thresholds) {
+    public CosmosRequestOptions setDiagnosticsThresholds(CosmosDiagnosticsThresholds thresholds) {
         this.thresholds = thresholds;
         return this;
     }
