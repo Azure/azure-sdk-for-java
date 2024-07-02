@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -202,6 +203,14 @@ public class Configs {
     //                + "\"applyDiagnosticThresholdsForTransportLevelMeters\":true}");
     public static final String METRICS_CONFIG = "COSMOS.METRICS_CONFIG";
     public static final String DEFAULT_METRICS_CONFIG = CosmosMicrometerMetricsConfig.DEFAULT.toJson();
+    private static final String DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG = PartitionLevelCircuitBreakerConfig.DEFAULT.toJson();
+    private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG";
+    private static final String STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT = "COSMOS.STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT";
+    private static final int DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT = 2;
+    private static final String STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS = "COSMOS.STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS";
+    private static final int DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS = 1;
+    private static final String STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS = "COSMOS.STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS";
+    private static final int DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS = 60;
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -599,5 +608,67 @@ public class Configs {
                     DEFAULT_METRICS_CONFIG));
 
         return CosmosMicrometerMetricsConfig.fromJsonString(metricsConfig);
+    }
+
+    public static PartitionLevelCircuitBreakerConfig getPartitionLevelCircuitBreakerConfig() {
+        String partitionLevelCircuitBreakerConfig =
+            System.getProperty(
+                PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG)),
+                    DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG));
+
+        return PartitionLevelCircuitBreakerConfig.fromJsonString(partitionLevelCircuitBreakerConfig);
+    }
+
+    public static int getStaleCollectionCacheRefreshRetryCount() {
+
+        String valueFromSystemProperty = System.getProperty(STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
+
+        if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
+
+        if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT;
+    }
+
+    public static int getStaleCollectionCacheRefreshRetryIntervalInSeconds() {
+
+        String valueFromSystemProperty = System.getProperty(STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS);
+
+        if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS);
+
+        if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS;
+    }
+
+    public static int getStalePartitionUnavailabilityRefreshIntervalInSeconds() {
+
+        String valueFromSystemProperty = System.getProperty(STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
+
+        if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
+
+        if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS;
     }
 }

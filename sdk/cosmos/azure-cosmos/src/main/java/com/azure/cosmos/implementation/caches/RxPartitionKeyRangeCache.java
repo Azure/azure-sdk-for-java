@@ -249,6 +249,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         ); //this request doesn't actually go to server
 
         request.requestContext.resolvedCollectionRid = collectionRid;
+        request.setResourceId(collectionRid);
         Mono<DocumentCollection> collectionObs = collectionCache.resolveCollectionAsync(metaDataDiagnosticsContext, request)
             .map(collectionValueHolder -> collectionValueHolder.v);
 

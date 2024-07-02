@@ -82,7 +82,6 @@ public class AddressResolver implements IAddressResolver {
             }
 
             request.requestContext.resolvedPartitionKeyRange = result.TargetPartitionKeyRange;
-
             return Mono.just(result.Addresses);
         });
     }

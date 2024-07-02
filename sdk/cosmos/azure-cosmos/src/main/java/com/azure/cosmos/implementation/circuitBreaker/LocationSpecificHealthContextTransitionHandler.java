@@ -1,0 +1,244 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos.implementation.circuitBreaker;
+
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.OperationType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URI;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class LocationSpecificHealthContextTransitionHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(LocationSpecificHealthContextTransitionHandler.class);
+
+    private final GlobalEndpointManager globalEndpointManager;
+    private final ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker;
+
+    public LocationSpecificHealthContextTransitionHandler(
+        GlobalEndpointManager globalEndpointManager,
+        ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker) {
+
+        this.globalEndpointManager = globalEndpointManager;
+        this.consecutiveExceptionBasedCircuitBreaker = consecutiveExceptionBasedCircuitBreaker;
+    }
+
+    public LocationSpecificHealthContext handleSuccess(
+        LocationSpecificHealthContext locationSpecificHealthContext,
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+        URI locationWithSuccess,
+        boolean forceStatusChange,
+        boolean isReadOnlyRequest) {
+
+        LocationHealthStatus currentLocationHealthStatusSnapshot = locationSpecificHealthContext.getLocationHealthStatus();
+
+        int exceptionCountActual
+            = isReadOnlyRequest ? locationSpecificHealthContext.getExceptionCountForReadForCircuitBreaking() : locationSpecificHealthContext.getExceptionCountForWriteForCircuitBreaking();
+
+        switch (currentLocationHealthStatusSnapshot) {
+            case Healthy:
+                break;
+            case HealthyWithFailures:
+                if (!forceStatusChange) {
+                    if (exceptionCountActual > 0) {
+                        return this.consecutiveExceptionBasedCircuitBreaker
+                            .handleSuccess(locationSpecificHealthContext, isReadOnlyRequest);
+                    }
+                }
+                break;
+
+            case HealthyTentative:
+                if (!forceStatusChange) {
+
+                    LocationSpecificHealthContext locationSpecificHealthContextInner
+                        = this.consecutiveExceptionBasedCircuitBreaker.handleSuccess(locationSpecificHealthContext, isReadOnlyRequest);
+
+                    if (this.consecutiveExceptionBasedCircuitBreaker.canHealthStatusBeUpgraded(locationSpecificHealthContextInner, isReadOnlyRequest)) {
+
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Partition {}-{} of collection : {} marked as Healthy from HealthyTentative for region : {}",
+                                partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
+                                partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
+                                partitionKeyRangeWrapper.getResourceId(),
+                                this.globalEndpointManager
+                                    .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
+                        }
+
+                        return this.transitionHealthStatus(LocationHealthStatus.Healthy);
+                    } else {
+                        return locationSpecificHealthContextInner;
+                    }
+                }
+                break;
+            case Unavailable:
+                Instant unavailableSinceActual = locationSpecificHealthContext.getUnavailableSince();
+                if (!forceStatusChange) {
+                    if (Duration.between(unavailableSinceActual, Instant.now()).compareTo(Duration.ofSeconds(30)) > 0) {
+
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Partition {}-{} of collection : {} marked as HealthyTentative from Unavailable for region : {}",
+                                partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
+                                partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
+                                partitionKeyRangeWrapper.getResourceId(),
+                                this.globalEndpointManager
+                                    .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
+                        }
+
+                        return this.transitionHealthStatus(LocationHealthStatus.HealthyTentative);
+                    }
+                } else {
+
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Partition {}-{} of collection : {} marked as HealthyTentative from Unavailable for region : {}",
+                            partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
+                            partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
+                            partitionKeyRangeWrapper.getResourceId(),
+                            this.globalEndpointManager
+                                .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
+                    }
+
+                    return this.transitionHealthStatus(LocationHealthStatus.HealthyTentative);
+                }
+                break;
+            default:
+                throw new IllegalStateException("Unsupported health status: " + currentLocationHealthStatusSnapshot);
+        }
+
+        return locationSpecificHealthContext;
+    }
+
+    public LocationSpecificHealthContext handleException(
+        LocationSpecificHealthContext locationSpecificHealthContext,
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+        ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionKeyRangeWrapper> partitionKeyRangesWithPossibleUnavailableRegions,
+        URI locationWithException,
+        boolean isReadOnlyRequest) {
+
+        LocationHealthStatus currentLocationHealthStatusSnapshot = locationSpecificHealthContext.getLocationHealthStatus();
+
+        switch (currentLocationHealthStatusSnapshot) {
+            case Healthy:
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Partition {}-{} of collection : {} marked as HealthyWithFailures from Healthy for region : {}",
+                        partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
+                        partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
+                        partitionKeyRangeWrapper.getResourceId(),
+                        this.globalEndpointManager
+                            .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
+                }
+
+                return this.transitionHealthStatus(LocationHealthStatus.HealthyWithFailures);
+            case HealthyWithFailures:
+                if (!this.consecutiveExceptionBasedCircuitBreaker.shouldHealthStatusBeDowngraded(locationSpecificHealthContext, isReadOnlyRequest)) {
+
+                    LocationSpecificHealthContext locationSpecificHealthContextInner
+                        = this.consecutiveExceptionBasedCircuitBreaker.handleException(locationSpecificHealthContext, isReadOnlyRequest);
+
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Partition {}-{} of collection : {} has exception count of {} for region : {}",
+                            partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
+                            partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
+                            partitionKeyRangeWrapper.getResourceId(),
+                            isReadOnlyRequest ? locationSpecificHealthContextInner.getExceptionCountForReadForCircuitBreaking() : locationSpecificHealthContextInner.getExceptionCountForWriteForCircuitBreaking(),
+                            this.globalEndpointManager
+                                .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
+                    }
+
+                    return locationSpecificHealthContextInner;
+                } else {
+                    partitionKeyRangesWithPossibleUnavailableRegions.put(partitionKeyRangeWrapper, partitionKeyRangeWrapper);
+
+                    if (logger.isDebugEnabled()) {
+                        logger.info("Partition {}-{} of collection : {} marked as Unavailable from HealthyWithFailures for region : {}",
+                            partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
+                            partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
+                            partitionKeyRangeWrapper.getPartitionKeyRange(),
+                            this.globalEndpointManager
+                                .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
+                    }
+
+                    return this.transitionHealthStatus(LocationHealthStatus.Unavailable);
+                }
+            case HealthyTentative:
+                if (!this.consecutiveExceptionBasedCircuitBreaker.shouldHealthStatusBeDowngraded(locationSpecificHealthContext, isReadOnlyRequest)) {
+                    return this.consecutiveExceptionBasedCircuitBreaker.handleException(locationSpecificHealthContext, isReadOnlyRequest);
+                } else {
+
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Partition {}-{} of collection : {} marked as Unavailable from HealthyTentative for region : {}",
+                            partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
+                            partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
+                            partitionKeyRangeWrapper.getResourceId(),
+                            this.globalEndpointManager
+                                .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
+                    }
+
+                    return this.transitionHealthStatus(LocationHealthStatus.Unavailable);
+                }
+            default:
+                throw new IllegalStateException("Unsupported health status: " + currentLocationHealthStatusSnapshot);
+        }
+    }
+
+    public LocationSpecificHealthContext transitionHealthStatus(LocationHealthStatus newStatus) {
+
+        switch (newStatus) {
+            case Healthy:
+
+                return new LocationSpecificHealthContext.Builder()
+                    .withSuccessCountForWriteForRecovery(0)
+                    .withExceptionCountForWriteForCircuitBreaking(0)
+                    .withSuccessCountForReadForRecovery(0)
+                    .withExceptionCountForReadForCircuitBreaking(0)
+                    .withUnavailableSince(Instant.MAX)
+                    .withLocationHealthStatus(LocationHealthStatus.Healthy)
+                    .withExceptionThresholdBreached(false)
+                    .build();
+
+            case HealthyWithFailures:
+
+                return new LocationSpecificHealthContext.Builder()
+                    .withSuccessCountForWriteForRecovery(0)
+                    .withExceptionCountForWriteForCircuitBreaking(0)
+                    .withSuccessCountForReadForRecovery(0)
+                    .withExceptionCountForReadForCircuitBreaking(0)
+                    .withUnavailableSince(Instant.MAX)
+                    .withLocationHealthStatus(LocationHealthStatus.HealthyWithFailures)
+                    .withExceptionThresholdBreached(false)
+                    .build();
+
+            case Unavailable:
+
+                return new LocationSpecificHealthContext.Builder()
+                    .withSuccessCountForWriteForRecovery(0)
+                    .withExceptionCountForWriteForCircuitBreaking(0)
+                    .withSuccessCountForReadForRecovery(0)
+                    .withExceptionCountForReadForCircuitBreaking(0)
+                    .withUnavailableSince(Instant.now())
+                    .withLocationHealthStatus(LocationHealthStatus.Unavailable)
+                    .withExceptionThresholdBreached(true)
+                    .build();
+
+            case HealthyTentative:
+
+                return new LocationSpecificHealthContext.Builder()
+                    .withSuccessCountForWriteForRecovery(0)
+                    .withExceptionCountForWriteForCircuitBreaking(0)
+                    .withSuccessCountForReadForRecovery(0)
+                    .withExceptionCountForReadForCircuitBreaking(0)
+                    .withUnavailableSince(Instant.now())
+                    .withLocationHealthStatus(LocationHealthStatus.HealthyTentative)
+                    .withExceptionThresholdBreached(false)
+                    .build();
+
+            default:
+                throw new IllegalStateException("Unsupported health status: " + newStatus);
+        }
+    }
+}

@@ -324,6 +324,14 @@ public final class CosmosDiagnostics {
         return this;
     }
 
+    String getFirstContactedRegion() {
+        return this.clientSideRequestStatistics.getFirstContactedRegion();
+    }
+
+    URI getFirstContactedLocationEndpoint() {
+        return this.clientSideRequestStatistics.getFirstContactedLocationEndpoint();
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -465,6 +473,16 @@ public final class CosmosDiagnostics {
                     }
 
                     cosmosDiagnostics.setDiagnosticsContext(ctx);
+                }
+
+                @Override
+                public URI getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics) {
+
+                    if (cosmosDiagnostics == null) {
+                        return null;
+                    }
+
+                    return cosmosDiagnostics.getFirstContactedLocationEndpoint();
                 }
             });
     }

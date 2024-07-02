@@ -203,12 +203,16 @@ public class RxDocumentClientImplTest {
         Mockito
             .when(this.collectionCacheMock.resolveCollectionAsync(Mockito.isNull(), Mockito.any(RxDocumentServiceRequest.class)))
             .thenReturn(Mono.just(dummyCollectionObs()));
+
+        Mockito
+            .when(this.collectionCacheMock.resolveByNameAsync(Mockito.isNull(), Mockito.anyString(), Mockito.isNull()))
+            .thenReturn(Mono.just(dummyCollectionObs().v));
+
         Mockito
             .when(this.partitionKeyRangeCacheMock.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
             .thenReturn(Mono.just(dummyCollectionRoutingMap(epksPartitionKeyRangeMap)));
 
         Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy(null)).thenReturn(dummyDocumentClientRetryPolicy());
-
 
         // initialize object to be tested
         RxDocumentClientImpl rxDocumentClient = new RxDocumentClientImpl(

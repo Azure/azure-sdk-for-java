@@ -313,6 +313,7 @@ public class DocumentQueryExecutionContextFactory {
         return collectionObs.single().flatMap(collectionValueHolder -> {
 
             queryRequestOptionsAccessor.setPartitionKeyDefinition(cosmosQueryRequestOptions, collectionValueHolder.v.getPartitionKey());
+            queryRequestOptionsAccessor.setCollectionRid(cosmosQueryRequestOptions, collectionValueHolder.v.getResourceId());
 
             Mono<Pair<List<Range<String>>, QueryInfo>> queryPlanTask =
                 getPartitionKeyRangesAndQueryInfo(diagnosticsClientContext,
@@ -460,7 +461,7 @@ public class DocumentQueryExecutionContextFactory {
     public static <T> Flux<? extends IDocumentQueryExecutionContext<T>> createReadManyQueryAsync(
         DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuery,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, CosmosQueryRequestOptions cosmosQueryRequestOptions,
-        String resourceId, String collectionLink, UUID activityId, Class<T> klass,
+        DocumentCollection collection, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum,
         final AtomicBoolean isQueryCancelledOnTimeout) {
 
@@ -470,7 +471,7 @@ public class DocumentQueryExecutionContextFactory {
             sqlQuery,
             rangeQueryMap,
             cosmosQueryRequestOptions,
-            resourceId,
+            collection,
             collectionLink,
             activityId,
             klass,

@@ -629,13 +629,22 @@ public class CosmosQueryRequestOptions {
 
                 @Override
                 public void setPartitionKeyDefinition(CosmosQueryRequestOptions options, PartitionKeyDefinition partitionKeyDefinition) {
-                    options.setPartitionKeyDefinition(partitionKeyDefinition);
+                    options.actualRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
                 }
 
                 @Override
                 public PartitionKeyDefinition getPartitionKeyDefinition(CosmosQueryRequestOptions options) {
-                    return options.getPartitionKeyDefinition();
+                    return options.actualRequestOptions.getPartitionKeyDefinition();
+                }
 
+                @Override
+                public void setCollectionRid(CosmosQueryRequestOptions options, String collectionRid) {
+                    options.actualRequestOptions.setCollectionRid(collectionRid);
+                }
+
+                @Override
+                public String getCollectionRid(CosmosQueryRequestOptions options) {
+                    return options.actualRequestOptions.getCollectionRid();
                 }
             });
     }

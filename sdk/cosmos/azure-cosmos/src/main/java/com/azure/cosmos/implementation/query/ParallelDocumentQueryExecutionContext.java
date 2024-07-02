@@ -128,7 +128,7 @@ public class ParallelDocumentQueryExecutionContext<T>
         IDocumentQueryClient queryClient,
         SqlQuerySpec sqlQuery,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
-        CosmosQueryRequestOptions cosmosQueryRequestOptions, String collectionRid, String collectionLink, UUID activityId, Class<T> klass,
+        CosmosQueryRequestOptions cosmosQueryRequestOptions, DocumentCollection collection, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum,
         final AtomicBoolean isQueryCancelledOnTimeout) {
 
@@ -145,7 +145,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                                                                                                         isQueryCancelledOnTimeout);
 
         context
-            .initializeReadMany(rangeQueryMap, cosmosQueryRequestOptions, collectionRid);
+            .initializeReadMany(rangeQueryMap, cosmosQueryRequestOptions, collection);
         return Flux.just(context);
     }
 

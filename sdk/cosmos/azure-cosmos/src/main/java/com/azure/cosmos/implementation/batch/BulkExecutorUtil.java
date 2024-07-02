@@ -110,7 +110,7 @@ final class BulkExecutorUtil {
         if (operation instanceof ItemBulkOperation<?, ?>) {
             final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) operation;
 
-            final Mono<String> pkRangeIdMono = Mono.defer(() ->
+            return Mono.defer(() ->
                 BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container, collectionBeforeRecreation.get())
                 .flatMap(collection -> {
                     final PartitionKeyDefinition definition = collection.getPartitionKey();
@@ -152,8 +152,6 @@ final class BulkExecutorUtil {
                             null)
                     )
                 );
-
-            return pkRangeIdMono;
         } else {
             throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
         }

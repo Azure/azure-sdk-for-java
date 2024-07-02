@@ -102,7 +102,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
     public static <T> Flux<PipelinedQueryExecutionContextBase<T>> createReadManyAsync(
         DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient queryClient, SqlQuerySpec sqlQuery,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, CosmosQueryRequestOptions cosmosQueryRequestOptions,
-        String resourceId, String collectionLink, UUID activityId, Class<T> klass,
+        DocumentCollection collection, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum,
         final AtomicBoolean isQueryCancelledOnTimeout) {
 
@@ -110,7 +110,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
             ParallelDocumentQueryExecutionContext.createReadManyQueryAsync(diagnosticsClientContext, queryClient,
                 sqlQuery,
                 rangeQueryMap,
-                cosmosQueryRequestOptions, resourceId,
+                cosmosQueryRequestOptions, collection,
                 collectionLink, activityId, klass,
                 resourceTypeEnum,
                 isQueryCancelledOnTimeout);

@@ -121,6 +121,10 @@ implements IDocumentQueryExecutionContext<T> {
                                                ? this.createQueryDocumentServiceRequest(requestHeaders, querySpec)
                                                : this.createReadFeedDocumentServiceRequest(requestHeaders);
         request.requestContext.resolvedCollectionRid = collectionRid;
+
+        qryOptAccessor.setCollectionRid(cosmosQueryRequestOptions, collectionRid);
+
+        request.setResourceId(collectionRid);
         request.throughputControlGroupName = throughputControlGroupName;
 
         if (partitionKeyInternal != null) {
