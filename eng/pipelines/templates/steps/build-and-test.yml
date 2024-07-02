@@ -109,7 +109,13 @@ steps:
           $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
           
           Write-Host "envs: '$($account.Id)' '$($account.Tenants)'"
-          Write-Host "parameters.TestGoals: $($parameters.TestGoals)"
+          Write-Host "parameters.ParallelTestPlayback: '$($parameters.ParallelTestPlayback)'"
+          Write-Host "parameters.TestOptions: '$($parameters.TestOptions)'"
+          Write-Host "parameters.TestParallelization: '$($parameters.TestParallelization)'"
+          Write-Host "parameters.TestGoals: '$($parameters.TestGoals)'"
+          Write-Host "Build.SourcesDirectory: '$($Build.SourcesDirectory)'"
+          Write-Host "DefaultTestOptions: '$DefaultTestOptions'"
+          Write-Host "IsDebug: '$IsDebug'"
           
           mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} verify
           
