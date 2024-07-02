@@ -8,6 +8,7 @@ import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.events.CallConnected;
@@ -27,9 +28,19 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.DoNotRecord;
 
 import src.main.java.com.azure.communication.callautomation.CallAutomationAsyncClient;
+import src.main.java.com.azure.communication.callautomation.CallAutomationClient;
 import src.main.java.com.azure.communication.callautomation.CallConnectionAsync;
 import src.main.java.com.azure.communication.callautomation.CallMediaAsync;
+import src.main.java.com.azure.communication.callautomation.implementation.models.RecognitionTypeInternal;
+import src.main.java.com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
+import src.main.java.com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
+import src.main.java.com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
+import src.main.java.com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
 import src.main.java.com.azure.communication.callautomation.models.CallParticipant;
+import src.main.java.com.azure.communication.callautomation.models.PlaySource;
+import src.main.java.com.azure.communication.callautomation.models.RecognitionChoice;
+import src.main.java.com.azure.communication.callautomation.models.RecognizeInputType;
+import src.main.java.com.azure.communication.callautomation.models.TextSource;
 
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,9 +53,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
+import com.azure.communication.callautomation.models.RecognitionChoice;
+import com.azure.communication.callautomation.models.events.RecognizeFailed;
 
 public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
 
@@ -252,7 +271,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires environment to be set up")
-    public void HoldUnholdParticipantInACallTest(HttpClient httpClient) {
+    public void holdUnholdParticipantInACallTest(HttpClient httpClient) {
         /* Test case: ACS to ACS call
          * 1. create a CallAutomationClient.
          * 2. create a call from source to one ACS target.
@@ -263,7 +282,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
          */
 
         CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("HoldUnholdParticipantInACallTest", next))
+            .addPolicy((context, next) -> logHeaders("holdUnholdParticipantInACallTest", next))
             .buildAsyncClient();
 
         List<CallConnectionAsync> callDestructors = new ArrayList<>();
@@ -274,13 +293,13 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             CommunicationIdentifier receiver = identityAsyncClient.createUser().block();
 
             CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("HoldUnholdParticipantInACallTest", next))
+                .addPolicy((context, next) -> logHeaders("holdUnholdParticipantInACallTest", next))
                 .sourceIdentity(caller)
                 .buildAsyncClient();
 
             // Create call automation client for receivers.
             CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("HoldUnholdParticipantInACallTest", next))
+                .addPolicy((context, next) -> logHeaders("holdUnholdParticipantInACallTest", next))
                 .buildAsyncClient();
 
             String uniqueId = serviceBusWithNewCall(caller, receiver);
@@ -337,5 +356,698 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             }
         }
     }
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
+    public void playMultipleSourcesWithPlayMediaTest(HttpClient httpClient) {
+        /* Test case: ACS to ACS call
+         * 1. create a CallAutomationClient.
+         * 2. create a call from source to one ACS target.
+         * 3. get updated call properties and check for the connected state.
+         * 4. play a media to all participants with mutiple prompts
+         * 5. play a media to target participant with mutiple prompts
+         * 6. hang up the call.
+         */
 
+        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+            .addPolicy((context, next) -> logHeaders("playMultipleSourcesWithPlayMediaTest", next))
+            .buildAsyncClient();
+
+        List<CallConnectionAsync> callDestructors = new ArrayList<>();
+
+        try {
+            // create caller and receiver
+            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationIdentifier receiver = identityAsyncClient.createUser().block();
+
+            CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("playMultipleSourcesWithPlayMediaTest", next))
+                .sourceIdentity(caller)
+                .buildAsyncClient();
+
+            // Create call automation client for receivers.
+            CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("playMultipleSourcesWithPlayMediaTest", next))
+                .buildAsyncClient();
+
+            String uniqueId = serviceBusWithNewCall(caller, receiver);
+
+            // create a call
+            List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnectionProperties());
+            String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
+            assertNotNull(callerConnectionId);
+
+            // wait for the incomingCallContext
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            assertNotNull(incomingCallContext);
+
+            // answer the call
+            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            assertNotNull(answerCallResult);
+            assertNotNull(answerCallResult.getCallConnectionAsync());
+            assertNotNull(answerCallResult.getCallConnectionProperties());
+            callDestructors.add(answerCallResult.getCallConnectionAsync());
+
+            // wait for callConnected
+            CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnected);
+
+            // Assert multiple Text Sources
+            List<PlaySource> playTextSources = new ArrayList<PlaySource>();
+            playTextSources.add(new TextSource().setText("Test prompt1").getSourceLocale(SpeechToTextVoice));
+            playTextSources.add(new TextSource().setText("Test prompt2").getSourceLocale(SpeechToTextVoice));
+             
+            // Assert multiple File Sources
+            List<PlaySource> playFileSources = new ArrayList<PlaySource>();
+            playFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+            playFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+             
+            // Assert multiple Text and File Sources
+            List<PlaySource> playTextAndFileSources = new ArrayList<PlaySource>();
+            playTextAndFileSources.add(new TextSource().setText("Test prompt1").getSourceLocale(SpeechToTextVoice));
+            playTextAndFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+             
+            // play Text media to all participants
+            CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
+            callMediaAsync.playToAll(playTextSources).block();
+            PlayCompleted playAllTextCompleted = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+            assertNotNull(playAllTextCompleted);
+
+            // play Text media to Target participant
+            callMediaAsync.play(playTextSources, targets).block();
+            PlayCompleted playTextCompleted = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+            assertNotNull(playTextCompleted);
+
+            // play File media to all participants
+            CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
+            callMediaAsync.playToAll(playFileSources).block();
+            PlayCompleted playAllFileCompleted = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+            assertNotNull(playAllFileCompleted);
+
+            // play File media to Target participant
+            callMediaAsync.play(playFileSources, targets).block();
+            PlayCompleted playFileCompleted = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+            assertNotNull(playFileCompleted);
+
+            // play Text and File media to all participants
+            CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
+            callMediaAsync.playToAll(playTextAndFileSources).block();
+            PlayCompleted playAllTextAndFileCompleted = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+            assertNotNull(playAllTextAndFileCompleted);
+ 
+            // play Text and File media to Target participant
+            callMediaAsync.play(playTextAndFileSources, targets).block();
+            PlayCompleted playTextAndFileCompleted = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+            assertNotNull(playTextAndFileCompleted);
+ 
+        } catch (Exception ex) {
+            fail("Unexpected exception received", ex);
+        } finally {
+            if (!callDestructors.isEmpty()) {
+                try {
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(true).block());
+                } catch (Exception ignored) {
+                    // Some call might have been terminated during the test, and it will cause exceptions here.
+                    // Do nothing and iterate to next call connection.
+                }
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
+    public void choiceRecognizeWithMultipleSourcesTest(HttpClient httpClient) {
+        /* Test case: ACS to ACS call
+         * 1. create a CallAutomationClient.
+         * 2. create a call from source to one ACS target.
+         * 3. get updated call properties and check for the connected state.
+         * 4. set up recognize chice options with choice.
+         * 5. play recognize prompt to target participant
+         * 6. recognize failed event need to hit
+         * 7. hang up the call.
+         */
+
+        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+            .addPolicy((context, next) -> logHeaders("choiceRecognizeWithMultipleSourcesTest", next))
+            .buildAsyncClient();
+
+        List<CallConnectionAsync> callDestructors = new ArrayList<>();
+
+        try {
+            // create caller and receiver
+            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationIdentifier receiver = identityAsyncClient.createUser().block();
+
+            CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("choiceRecognizeWithMultipleSourcesTest", next))
+                .sourceIdentity(caller)
+                .buildAsyncClient();
+
+            // Create call automation client for receivers.
+            CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("choiceRecognizeWithMultipleSourcesTest", next))
+                .buildAsyncClient();
+
+            String uniqueId = serviceBusWithNewCall(caller, receiver);
+
+            // create a call
+            List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnectionProperties());
+            String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
+            assertNotNull(callerConnectionId);
+
+            // wait for the incomingCallContext
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            assertNotNull(incomingCallContext);
+
+            // answer the call
+            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            assertNotNull(answerCallResult);
+            assertNotNull(answerCallResult.getCallConnectionAsync());
+            assertNotNull(answerCallResult.getCallConnectionProperties());
+            callDestructors.add(answerCallResult.getCallConnectionAsync());
+
+            // wait for callConnected
+            CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnected);
+
+            CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
+            String SpeechToTextVoice = "en-US-NancyNeural";
+
+            // Assert multiple File Sources
+            List<PlaySource> playFileSources = new ArrayList<PlaySource>();
+            playFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+            playFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+            
+             // Assert multiple Text and File Sources
+             List<PlaySource> playTextAndFileSources = new ArrayList<PlaySource>();
+             playTextAndFileSources.add(new TextSource().setText("Test prompt1").getSourceLocale(SpeechToTextVoice));
+             playTextAndFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+            
+              // Assert multiple Text Sources
+            List<PlaySource> playTextSources = new ArrayList<PlaySource>();
+            playTextSources.add(new TextSource().setText("Test prompt1").getSourceLocale(SpeechToTextVoice));
+            playTextSources.add(new TextSource().setText("Test prompt2").getSourceLocale(SpeechToTextVoice));
+            
+            //Assert text Recognize
+            CallMediaRecognizeChoiceOptions recognizeTextOptions = new CallMediaRecognizeChoiceOptions(receiver,  getChoices())
+            .setInterruptCallMediaOperation(false)
+            .setInterruptPrompt(false)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setPlayPrompts(playTextSources)
+            .setOperationContext("choiceContex");
+
+            callMediaAsync.startRecognizing(recognizeTextOptions).block();
+            RecognizeFailed recognizeTextFailed = waitForEvent(RecognizeFailed.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(recognizeTextFailed);
+
+             //Assert file Recognize
+             CallMediaRecognizeChoiceOptions recognizeFileOptions = new CallMediaRecognizeChoiceOptions(receiver,  getChoices())
+             .setInterruptCallMediaOperation(false)
+             .setInterruptPrompt(false)
+             .setInitialSilenceTimeout(Duration.ofSeconds(5))
+             .setPlayPrompts(playFileSources)
+             .setOperationContext("choiceContex");
+ 
+             callMediaAsync.startRecognizing(recognizeFileOptions).block();
+             RecognizeFailed recognizeFileFailed = waitForEvent(RecognizeFailed.class, callerConnectionId, Duration.ofSeconds(10));
+             assertNotNull(recognizeFileFailed);
+
+             //Assert file Recognize
+             CallMediaRecognizeChoiceOptions recognizeTextAndFileOptions = new CallMediaRecognizeChoiceOptions(receiver,  getChoices())
+             .setInterruptCallMediaOperation(false)
+             .setInterruptPrompt(false)
+             .setInitialSilenceTimeout(Duration.ofSeconds(5))
+             .setPlayPrompts(playTextAndFileSources)
+             .setOperationContext("choiceContex");
+ 
+             callMediaAsync.startRecognizing(recognizeTextAndFileOptions).block();
+             RecognizeFailed recognizeTextAndFileFailed = waitForEvent(RecognizeFailed.class, callerConnectionId, Duration.ofSeconds(10));
+             assertNotNull(recognizeTextAndFileFailed);
+            
+        } catch (Exception ex) {
+            fail("Unexpected exception received", ex);
+        } finally {
+            if (!callDestructors.isEmpty()) {
+                try {
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(true).block());
+                } catch (Exception ignored) {
+                    // Some call might have been terminated during the test, and it will cause exceptions here.
+                    // Do nothing and iterate to next call connection.
+                }
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
+    public void dtmfRecognizeWithMultipleSourcesTest(HttpClient httpClient) {
+        /* Test case: ACS to ACS call
+         * 1. create a CallAutomationClient.
+         * 2. create a call from source to one ACS target.
+         * 3. get updated call properties and check for the connected state.
+         * 4. set up recognize chice options with dtmf.
+         * 5. play recognize prompt to target participant
+         * 6. recognize failed event need to hit
+         * 7. hang up the call.
+         */
+
+        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+            .addPolicy((context, next) -> logHeaders("dtmfRecognizeWithMultipleSourcesTest", next))
+            .buildAsyncClient();
+
+        List<CallConnectionAsync> callDestructors = new ArrayList<>();
+
+        try {
+            // create caller and receiver
+            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationIdentifier receiver = identityAsyncClient.createUser().block();
+
+            CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("dtmfRecognizeWithMultipleSourcesTest", next))
+                .sourceIdentity(caller)
+                .buildAsyncClient();
+
+            // Create call automation client for receivers.
+            CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("dtmfRecognizeWithMultipleSourcesTest", next))
+                .buildAsyncClient();
+
+            String uniqueId = serviceBusWithNewCall(caller, receiver);
+
+            // create a call
+            List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnectionProperties());
+            String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
+            assertNotNull(callerConnectionId);
+
+            // wait for the incomingCallContext
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            assertNotNull(incomingCallContext);
+
+            // answer the call
+            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            assertNotNull(answerCallResult);
+            assertNotNull(answerCallResult.getCallConnectionAsync());
+            assertNotNull(answerCallResult.getCallConnectionProperties());
+            callDestructors.add(answerCallResult.getCallConnectionAsync());
+
+            // wait for callConnected
+            CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnected);
+
+            CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
+            String SpeechToTextVoice = "en-US-NancyNeural";
+
+            // Assert multiple Text Sources
+            List<PlaySource> playTextSources = new ArrayList<PlaySource>();
+            playTextSources.add(new TextSource().setText("Test prompt1").getSourceLocale(SpeechToTextVoice));
+            playTextSources.add(new TextSource().setText("Test prompt2").getSourceLocale(SpeechToTextVoice));
+             
+            // Assert multiple File Sources
+            List<PlaySource> playFileSources = new ArrayList<PlaySource>();
+            playFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+            playFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+             
+            // Assert multiple Text and File Sources
+            List<PlaySource> playTextAndFileSources = new ArrayList<PlaySource>();
+            playTextAndFileSources.add(new TextSource().setText("Test prompt1").getSourceLocale(SpeechToTextVoice));
+            playTextAndFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+             
+            //Assert Recognize Text
+            CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(receiver,  8)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setInterruptPrompt(false)
+            .setOperationContext("dtmfContex")
+            .setInterruptCallMediaOperation(false)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setPlayPrompts(playTextSources);
+
+            callMediaAsync.startRecognizing(recognizeOptions).block();
+            RecognizeFailed recognizeFailed = waitForEvent(RecognizeFailed.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(recognizeFailed);
+
+             //Assert Recognize File
+             CallMediaRecognizeDtmfOptions recognizeFileOptions = new CallMediaRecognizeDtmfOptions(receiver,  8)
+             .setInitialSilenceTimeout(Duration.ofSeconds(5))
+             .setInterruptPrompt(false)
+             .setOperationContext("dtmfContex")
+             .setInterruptCallMediaOperation(false)
+             .setInitialSilenceTimeout(Duration.ofSeconds(5))
+             .setPlayPrompts(playFileSources);
+ 
+             callMediaAsync.startRecognizing(recognizeFileOptions).block();
+             RecognizeFailed recognizeFileFailed = waitForEvent(RecognizeFailed.class, callerConnectionId, Duration.ofSeconds(10));
+             assertNotNull(recognizeFileFailed);
+
+            //Assert Recognize Text and File
+            CallMediaRecognizeDtmfOptions recognizeTextAndFileOptions = new CallMediaRecognizeDtmfOptions(receiver,  8)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setInterruptPrompt(false)
+            .setOperationContext("dtmfContex")
+            .setInterruptCallMediaOperation(false)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setPlayPrompts(playTextAndFileSources);
+
+            callMediaAsync.startRecognizing(recognizeTextAndFileOptions).block();
+            RecognizeFailed recognizeTextAndFileFailed = waitForEvent(RecognizeFailed.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(recognizeTextAndFileFailed);
+            
+        } catch (Exception ex) {
+            fail("Unexpected exception received", ex);
+        } finally {
+            if (!callDestructors.isEmpty()) {
+                try {
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(true).block());
+                } catch (Exception ignored) {
+                    // Some call might have been terminated during the test, and it will cause exceptions here.
+                    // Do nothing and iterate to next call connection.
+                }
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
+    public void speechRecognizeWithMultipleSourcesTest(HttpClient httpClient) {
+        /* Test case: ACS to ACS call
+         * 1. create a CallAutomationClient.
+         * 2. create a call from source to one ACS target.
+         * 3. get updated call properties and check for the connected state.
+         * 4. set up recognize chice options with speech.
+         * 5. play recognize prompt to target participant
+         * 6. recognize failed event need to hit
+         * 7. hang up the call.
+         */
+
+        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+            .addPolicy((context, next) -> logHeaders("speechRecognizeWithMultipleSourcesTest", next))
+            .buildAsyncClient();
+
+        List<CallConnectionAsync> callDestructors = new ArrayList<>();
+
+        try {
+            // create caller and receiver
+            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationIdentifier receiver = identityAsyncClient.createUser().block();
+
+            CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("speechRecognizeWithMultipleSourcesTest", next))
+                .sourceIdentity(caller)
+                .buildAsyncClient();
+
+            // Create call automation client for receivers.
+            CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("speechRecognizeWithMultipleSourcesTest", next))
+                .buildAsyncClient();
+
+            String uniqueId = serviceBusWithNewCall(caller, receiver);
+
+            // create a call
+            List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnectionProperties());
+            String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
+            assertNotNull(callerConnectionId);
+
+            // wait for the incomingCallContext
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            assertNotNull(incomingCallContext);
+
+            // answer the call
+            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            assertNotNull(answerCallResult);
+            assertNotNull(answerCallResult.getCallConnectionAsync());
+            assertNotNull(answerCallResult.getCallConnectionProperties());
+            callDestructors.add(answerCallResult.getCallConnectionAsync());
+
+            // wait for callConnected
+            CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnected);
+
+            CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
+            String SpeechToTextVoice = "en-US-NancyNeural";
+
+            // Assert multiple Text Sources
+            List<PlaySource> playTextSources = new ArrayList<PlaySource>();
+            playTextSources.add(new TextSource().setText("Test prompt1").getSourceLocale(SpeechToTextVoice));
+            playTextSources.add(new TextSource().setText("Test prompt2").getSourceLocale(SpeechToTextVoice));
+            
+            // Assert multiple File Sources
+            List<PlaySource> playFileSources = new ArrayList<PlaySource>();
+            playFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+            playFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+             
+            // Assert multiple Text and File Sources
+            List<PlaySource> playTextAndFileSources = new ArrayList<PlaySource>();
+            playTextAndFileSources.add(new TextSource().setText("Test prompt1").getSourceLocale(SpeechToTextVoice));
+            playTextAndFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+             
+            //Assert Recognize Text
+            CallMediaRecognizeSpeechOptions recognizeOptions = new CallMediaRecognizeSpeechOptions(receiver,  5)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setInterruptPrompt(false)
+            .setOperationContext("speechContex")
+            .setInterruptCallMediaOperation(false)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setPlayPrompts(playTextSources);
+
+            callMediaAsync.startRecognizing(recognizeOptions).block();
+            RecognizeFailed recognizeFailed = waitForEvent(RecognizeFailed.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(recognizeFailed);
+
+            //Assert Recognize File
+            CallMediaRecognizeSpeechOptions recognizeFileOptions = new CallMediaRecognizeSpeechOptions(receiver,  5)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setInterruptPrompt(false)
+            .setOperationContext("speechContex")
+            .setInterruptCallMediaOperation(false)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setPlayPrompts(playFileSources);
+
+            callMediaAsync.startRecognizing(recognizeFileOptions).block();
+            RecognizeFailed recognizeFileFailed = waitForEvent(RecognizeFailed.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(recognizeFileFailed);
+
+            //Assert Recognize Text and File
+            CallMediaRecognizeSpeechOptions recognizeTextAndFileOptions = new CallMediaRecognizeSpeechOptions(receiver,  5)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setInterruptPrompt(false)
+            .setOperationContext("speechContex")
+            .setInterruptCallMediaOperation(false)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setPlayPrompts(playTextAndFileSources);
+
+            callMediaAsync.startRecognizing(recognizeTextAndFileOptions).block();
+            RecognizeFailed recognizeTextAndFileFailed = waitForEvent(RecognizeFailed.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(recognizeTextAndFileFailed);
+            
+        } catch (Exception ex) {
+            fail("Unexpected exception received", ex);
+        } finally {
+            if (!callDestructors.isEmpty()) {
+                try {
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(true).block());
+                } catch (Exception ignored) {
+                    // Some call might have been terminated during the test, and it will cause exceptions here.
+                    // Do nothing and iterate to next call connection.
+                }
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
+    public void speechOrDtmfRecognizeWithMultipleSourcesTest(HttpClient httpClient) {
+        /* Test case: ACS to ACS call
+         * 1. create a CallAutomationClient.
+         * 2. create a call from source to one ACS target.
+         * 3. get updated call properties and check for the connected state.
+         * 4. set up recognize chice options with speech or dtmf.
+         * 5. play recognize prompt to target participant
+         * 6. recognize failed event need to hit
+         * 7. hang up the call.
+         */
+
+        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+            .addPolicy((context, next) -> logHeaders("speechOrDtmfRecognizeWithMultipleSourcesTest", next))
+            .buildAsyncClient();
+
+        List<CallConnectionAsync> callDestructors = new ArrayList<>();
+
+        try {
+            // create caller and receiver
+            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationIdentifier receiver = identityAsyncClient.createUser().block();
+
+            CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("speechOrDtmfRecognizeWithMultipleSourcesTest", next))
+                .sourceIdentity(caller)
+                .buildAsyncClient();
+
+            // Create call automation client for receivers.
+            CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("speechOrDtmfRecognizeWithMultipleSourcesTest", next))
+                .buildAsyncClient();
+
+            String uniqueId = serviceBusWithNewCall(caller, receiver);
+
+            // create a call
+            List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnectionProperties());
+            String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
+            assertNotNull(callerConnectionId);
+
+            // wait for the incomingCallContext
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            assertNotNull(incomingCallContext);
+
+            // answer the call
+            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            assertNotNull(answerCallResult);
+            assertNotNull(answerCallResult.getCallConnectionAsync());
+            assertNotNull(answerCallResult.getCallConnectionProperties());
+            callDestructors.add(answerCallResult.getCallConnectionAsync());
+
+            // wait for callConnected
+            CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnected);
+
+            CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
+            String SpeechToTextVoice = "en-US-NancyNeural";
+
+            // Assert multiple Text Sources
+            List<PlaySource> playTextSources = new ArrayList<PlaySource>();
+            playTextSources.add(new TextSource().setText("Test prompt1").getSourceLocale(SpeechToTextVoice));
+            playTextSources.add(new TextSource().setText("Test prompt2").getSourceLocale(SpeechToTextVoice));
+            
+            // Assert multiple File Sources
+            List<PlaySource> playFileSources = new ArrayList<PlaySource>();
+            playFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+            playFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+             
+            // Assert multiple Text and File Sources
+            List<PlaySource> playTextAndFileSources = new ArrayList<PlaySource>();
+            playTextAndFileSources.add(new TextSource().setText("Test prompt1").getSourceLocale(SpeechToTextVoice));
+            playTextAndFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
+
+            //Assert Recognize Text
+            CallMediaRecognizeSpeechOrDtmfOptions recognizeOptions = new CallMediaRecognizeSpeechOrDtmfOptions(receiver,  5)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setInterruptPrompt(false)
+            .setOperationContext("speechOrDtmfContex")
+            .setInterruptCallMediaOperation(false)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setPlayPrompts(playTextSources);
+
+            callMediaAsync.startRecognizing(recognizeOptions).block();
+            RecognizeFailed recognizeFailed = waitForEvent(RecognizeFailed.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(recognizeFailed);
+            
+            //Assert Recognize File
+            CallMediaRecognizeSpeechOrDtmfOptions recognizeFileOptions = new CallMediaRecognizeSpeechOrDtmfOptions(receiver,  5)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setInterruptPrompt(false)
+            .setOperationContext("speechOrDtmfContex")
+            .setInterruptCallMediaOperation(false)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setPlayPrompts(playFileSources);
+
+            callMediaAsync.startRecognizing(recognizeFileOptions).block();
+            RecognizeFailed recognizeFileFailed = waitForEvent(RecognizeFailed.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(recognizeFileFailed);
+
+            //Assert Recognize File and Text
+            CallMediaRecognizeSpeechOrDtmfOptions recognizeTextAndFileOptions = new CallMediaRecognizeSpeechOrDtmfOptions(receiver,  5)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setInterruptPrompt(false)
+            .setOperationContext("speechOrDtmfContex")
+            .setInterruptCallMediaOperation(false)
+            .setInitialSilenceTimeout(Duration.ofSeconds(5))
+            .setPlayPrompts(playTextAndFileSources);
+
+            callMediaAsync.startRecognizing(recognizeTextAndFileOptions).block();
+            RecognizeFailed recognizeTextAndFileFailed = waitForEvent(RecognizeFailed.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(recognizeTextAndFileFailed);
+            
+        } catch (Exception ex) {
+            fail("Unexpected exception received", ex);
+        } finally {
+            if (!callDestructors.isEmpty()) {
+                try {
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(true).block());
+                } catch (Exception ignored) {
+                    // Some call might have been terminated during the test, and it will cause exceptions here.
+                    // Do nothing and iterate to next call connection.
+                }
+            }
+        }
+    }
+
+    private List<RecognitionChoice> getChoices(){
+        List<RecognitionChoice> choices = Arrays.asList(
+            new RecognitionChoice().setLabel("Confirm").setPhrases(Arrays.asList("Confirm", "First", "One")).setTone(DtmfTone.ONE),
+            new RecognitionChoice().setLabel("Cancel").setPhrases(Arrays.asList("Cancel", "Second", "Two")).setTone(DtmfTone.TWO)
+            );
+            return choices;
+    }
 }
