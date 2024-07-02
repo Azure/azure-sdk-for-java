@@ -4,21 +4,33 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-/** Predicted sentiment for document (Negative, Neutral, Positive, or Mixed). */
+/**
+ * Predicted sentiment for document (Negative, Neutral, Positive, or Mixed).
+ */
 public enum DocumentSentimentValue {
-    /** Enum value positive. */
+    /**
+     * Enum value positive.
+     */
     POSITIVE("positive"),
 
-    /** Enum value neutral. */
+    /**
+     * Enum value neutral.
+     */
     NEUTRAL("neutral"),
 
-    /** Enum value negative. */
+    /**
+     * Enum value negative.
+     */
     NEGATIVE("negative"),
 
-    /** Enum value mixed. */
+    /**
+     * Enum value mixed.
+     */
     MIXED("mixed");
 
-    /** The actual serialized value for a DocumentSentimentValue instance. */
+    /**
+     * The actual serialized value for a DocumentSentimentValue instance.
+     */
     private final String value;
 
     DocumentSentimentValue(String value) {
@@ -27,7 +39,7 @@ public enum DocumentSentimentValue {
 
     /**
      * Parses a serialized value to a DocumentSentimentValue instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DocumentSentimentValue object, or null if unable to parse.
      */
@@ -44,7 +56,9 @@ public enum DocumentSentimentValue {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

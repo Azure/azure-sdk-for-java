@@ -4,8 +4,8 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobState;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobsInput;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobState;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsCancelJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsSubmitJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
@@ -30,22 +30,28 @@ import com.azure.core.util.FluxUtil;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AnalyzeTexts. */
+/**
+ * An instance of this class provides access to all the operations defined in AnalyzeTexts.
+ */
 public final class AnalyzeTextsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AnalyzeTextsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl client;
 
     /**
      * Initializes an instance of AnalyzeTextsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AnalyzeTextsImpl(MicrosoftCognitiveLanguageServiceTextAnalysisImpl client) {
-        this.service =
-                RestProxy.create(AnalyzeTextsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AnalyzeTextsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,78 +63,56 @@ public final class AnalyzeTextsImpl {
     @ServiceInterface(name = "MicrosoftCognitiveLa")
     public interface AnalyzeTextsService {
         @Post("/analyze-text/jobs")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<AnalyzeTextsSubmitJobHeaders, Void>> submitJob(
-                @HostParam("Endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") AnalyzeTextJobsInput body,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<AnalyzeTextsSubmitJobHeaders, Void>> submitJob(@HostParam("Endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AnalyzeTextJobsInput body,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/analyze-text/jobs")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> submitJobSync(
-                @HostParam("Endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") AnalyzeTextJobsInput body,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> submitJobSync(@HostParam("Endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AnalyzeTextJobsInput body,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/analyze-text/jobs/{jobId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<AnalyzeTextJobState>> jobStatus(
-                @HostParam("Endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("jobId") UUID jobId,
-                @QueryParam("showStats") Boolean showStats,
-                @QueryParam("top") Integer top,
-                @QueryParam("skip") Integer skip,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<AnalyzeTextJobState>> jobStatus(@HostParam("Endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") UUID jobId,
+            @QueryParam("showStats") Boolean showStats, @QueryParam("top") Integer top,
+            @QueryParam("skip") Integer skip, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/analyze-text/jobs/{jobId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<AnalyzeTextJobState> jobStatusSync(
-                @HostParam("Endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("jobId") UUID jobId,
-                @QueryParam("showStats") Boolean showStats,
-                @QueryParam("top") Integer top,
-                @QueryParam("skip") Integer skip,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<AnalyzeTextJobState> jobStatusSync(@HostParam("Endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") UUID jobId,
+            @QueryParam("showStats") Boolean showStats, @QueryParam("top") Integer top,
+            @QueryParam("skip") Integer skip, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/analyze-text/jobs/{jobId}:cancel")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelJob(
-                @HostParam("Endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("jobId") UUID jobId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelJob(@HostParam("Endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") UUID jobId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/analyze-text/jobs/{jobId}:cancel")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        ResponseBase<AnalyzeTextsCancelJobHeaders, Void> cancelJobSync(
-                @HostParam("Endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("jobId") UUID jobId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        ResponseBase<AnalyzeTextsCancelJobHeaders, Void> cancelJobSync(@HostParam("Endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") UUID jobId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Submit text analysis job
-     *
-     * <p>Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
+     * 
+     * Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
      * long-running operation.
-     *
+     * 
      * @param body Collection of documents to analyze and one or more tasks to execute.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -136,21 +120,19 @@ public final class AnalyzeTextsImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<AnalyzeTextsSubmitJobHeaders, Void>> submitJobWithResponseAsync(
-            AnalyzeTextJobsInput body) {
+    public Mono<ResponseBase<AnalyzeTextsSubmitJobHeaders, Void>>
+        submitJobWithResponseAsync(AnalyzeTextJobsInput body) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.submitJob(
-                                this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context));
+        return FluxUtil.withContext(context -> service.submitJob(this.client.getEndpoint(), this.client.getApiVersion(),
+            body, accept, context));
     }
 
     /**
      * Submit text analysis job
-     *
-     * <p>Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
+     * 
+     * Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
      * long-running operation.
-     *
+     * 
      * @param body Collection of documents to analyze and one or more tasks to execute.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -159,18 +141,18 @@ public final class AnalyzeTextsImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<AnalyzeTextsSubmitJobHeaders, Void>> submitJobWithResponseAsync(
-            AnalyzeTextJobsInput body, Context context) {
+    public Mono<ResponseBase<AnalyzeTextsSubmitJobHeaders, Void>> submitJobWithResponseAsync(AnalyzeTextJobsInput body,
+        Context context) {
         final String accept = "application/json";
         return service.submitJob(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Submit text analysis job
-     *
-     * <p>Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
+     * 
+     * Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
      * long-running operation.
-     *
+     * 
      * @param body Collection of documents to analyze and one or more tasks to execute.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -184,10 +166,10 @@ public final class AnalyzeTextsImpl {
 
     /**
      * Submit text analysis job
-     *
-     * <p>Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
+     * 
+     * Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
      * long-running operation.
-     *
+     * 
      * @param body Collection of documents to analyze and one or more tasks to execute.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,10 +184,10 @@ public final class AnalyzeTextsImpl {
 
     /**
      * Submit text analysis job
-     *
-     * <p>Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
+     * 
+     * Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
      * long-running operation.
-     *
+     * 
      * @param body Collection of documents to analyze and one or more tasks to execute.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,18 +196,18 @@ public final class AnalyzeTextsImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> submitJobWithResponse(
-            AnalyzeTextJobsInput body, Context context) {
+    public ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> submitJobWithResponse(AnalyzeTextJobsInput body,
+        Context context) {
         final String accept = "application/json";
         return service.submitJobSync(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Submit text analysis job
-     *
-     * <p>Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
+     * 
+     * Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
      * long-running operation.
-     *
+     * 
      * @param body Collection of documents to analyze and one or more tasks to execute.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -238,10 +220,10 @@ public final class AnalyzeTextsImpl {
 
     /**
      * Get analysis status and results
-     *
-     * <p>Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the
-     * job will transition to the succeeded state and results will be available for each task.
-     *
+     * 
+     * Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the job
+     * will transition to the succeeded state and results will be available for each task.
+     * 
      * @param jobId Job ID.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
      * @param top The maximum number of resources to return from the collection.
@@ -252,28 +234,19 @@ public final class AnalyzeTextsImpl {
      * @return the status of an analysis job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnalyzeTextJobState>> jobStatusWithResponseAsync(
-            UUID jobId, Boolean showStats, Integer top, Integer skip) {
+    public Mono<Response<AnalyzeTextJobState>> jobStatusWithResponseAsync(UUID jobId, Boolean showStats, Integer top,
+        Integer skip) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.jobStatus(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                jobId,
-                                showStats,
-                                top,
-                                skip,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.jobStatus(this.client.getEndpoint(), this.client.getApiVersion(),
+            jobId, showStats, top, skip, accept, context));
     }
 
     /**
      * Get analysis status and results
-     *
-     * <p>Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the
-     * job will transition to the succeeded state and results will be available for each task.
-     *
+     * 
+     * Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the job
+     * will transition to the succeeded state and results will be available for each task.
+     * 
      * @param jobId Job ID.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
      * @param top The maximum number of resources to return from the collection.
@@ -285,19 +258,19 @@ public final class AnalyzeTextsImpl {
      * @return the status of an analysis job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnalyzeTextJobState>> jobStatusWithResponseAsync(
-            UUID jobId, Boolean showStats, Integer top, Integer skip, Context context) {
+    public Mono<Response<AnalyzeTextJobState>> jobStatusWithResponseAsync(UUID jobId, Boolean showStats, Integer top,
+        Integer skip, Context context) {
         final String accept = "application/json";
-        return service.jobStatus(
-                this.client.getEndpoint(), this.client.getApiVersion(), jobId, showStats, top, skip, accept, context);
+        return service.jobStatus(this.client.getEndpoint(), this.client.getApiVersion(), jobId, showStats, top, skip,
+            accept, context);
     }
 
     /**
      * Get analysis status and results
-     *
-     * <p>Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the
-     * job will transition to the succeeded state and results will be available for each task.
-     *
+     * 
+     * Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the job
+     * will transition to the succeeded state and results will be available for each task.
+     * 
      * @param jobId Job ID.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
      * @param top The maximum number of resources to return from the collection.
@@ -314,10 +287,10 @@ public final class AnalyzeTextsImpl {
 
     /**
      * Get analysis status and results
-     *
-     * <p>Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the
-     * job will transition to the succeeded state and results will be available for each task.
-     *
+     * 
+     * Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the job
+     * will transition to the succeeded state and results will be available for each task.
+     * 
      * @param jobId Job ID.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
      * @param top The maximum number of resources to return from the collection.
@@ -329,18 +302,18 @@ public final class AnalyzeTextsImpl {
      * @return the status of an analysis job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeTextJobState> jobStatusAsync(
-            UUID jobId, Boolean showStats, Integer top, Integer skip, Context context) {
+    public Mono<AnalyzeTextJobState> jobStatusAsync(UUID jobId, Boolean showStats, Integer top, Integer skip,
+        Context context) {
         return jobStatusWithResponseAsync(jobId, showStats, top, skip, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get analysis status and results
-     *
-     * <p>Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the
-     * job will transition to the succeeded state and results will be available for each task.
-     *
+     * 
+     * Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the job
+     * will transition to the succeeded state and results will be available for each task.
+     * 
      * @param jobId Job ID.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
      * @param top The maximum number of resources to return from the collection.
@@ -352,19 +325,19 @@ public final class AnalyzeTextsImpl {
      * @return the status of an analysis job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeTextJobState> jobStatusWithResponse(
-            UUID jobId, Boolean showStats, Integer top, Integer skip, Context context) {
+    public Response<AnalyzeTextJobState> jobStatusWithResponse(UUID jobId, Boolean showStats, Integer top, Integer skip,
+        Context context) {
         final String accept = "application/json";
-        return service.jobStatusSync(
-                this.client.getEndpoint(), this.client.getApiVersion(), jobId, showStats, top, skip, accept, context);
+        return service.jobStatusSync(this.client.getEndpoint(), this.client.getApiVersion(), jobId, showStats, top,
+            skip, accept, context);
     }
 
     /**
      * Get analysis status and results
-     *
-     * <p>Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the
-     * job will transition to the succeeded state and results will be available for each task.
-     *
+     * 
+     * Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the job
+     * will transition to the succeeded state and results will be available for each task.
+     * 
      * @param jobId Job ID.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
      * @param top The maximum number of resources to return from the collection.
@@ -381,9 +354,9 @@ public final class AnalyzeTextsImpl {
 
     /**
      * Cancel a long-running Text Analysis job
-     *
-     * <p>Cancel a long-running Text Analysis job.
-     *
+     * 
+     * Cancel a long-running Text Analysis job.
+     * 
      * @param jobId Job ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -393,17 +366,15 @@ public final class AnalyzeTextsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelJobWithResponseAsync(UUID jobId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.cancelJob(
-                                this.client.getEndpoint(), this.client.getApiVersion(), jobId, accept, context));
+        return FluxUtil.withContext(context -> service.cancelJob(this.client.getEndpoint(), this.client.getApiVersion(),
+            jobId, accept, context));
     }
 
     /**
      * Cancel a long-running Text Analysis job
-     *
-     * <p>Cancel a long-running Text Analysis job.
-     *
+     * 
+     * Cancel a long-running Text Analysis job.
+     * 
      * @param jobId Job ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -412,17 +383,17 @@ public final class AnalyzeTextsImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelJobWithResponseAsync(
-            UUID jobId, Context context) {
+    public Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelJobWithResponseAsync(UUID jobId,
+        Context context) {
         final String accept = "application/json";
         return service.cancelJob(this.client.getEndpoint(), this.client.getApiVersion(), jobId, accept, context);
     }
 
     /**
      * Cancel a long-running Text Analysis job
-     *
-     * <p>Cancel a long-running Text Analysis job.
-     *
+     * 
+     * Cancel a long-running Text Analysis job.
+     * 
      * @param jobId Job ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -436,9 +407,9 @@ public final class AnalyzeTextsImpl {
 
     /**
      * Cancel a long-running Text Analysis job
-     *
-     * <p>Cancel a long-running Text Analysis job.
-     *
+     * 
+     * Cancel a long-running Text Analysis job.
+     * 
      * @param jobId Job ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -453,9 +424,9 @@ public final class AnalyzeTextsImpl {
 
     /**
      * Cancel a long-running Text Analysis job
-     *
-     * <p>Cancel a long-running Text Analysis job.
-     *
+     * 
+     * Cancel a long-running Text Analysis job.
+     * 
      * @param jobId Job ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -471,9 +442,9 @@ public final class AnalyzeTextsImpl {
 
     /**
      * Cancel a long-running Text Analysis job
-     *
-     * <p>Cancel a long-running Text Analysis job.
-     *
+     * 
+     * Cancel a long-running Text Analysis job.
+     * 
      * @param jobId Job ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.

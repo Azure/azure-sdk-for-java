@@ -9,22 +9,41 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
-/** An object representing the task definition for a PII Entities Recognition task. */
+/**
+ * An object representing the task definition for a PII Entities Recognition task.
+ */
 @Fluent
 public final class PiiLROTask extends AnalyzeTextLROTask {
+    /*
+     * Enumeration of supported long-running Text Analysis tasks.
+     */
+    private AnalyzeTextLROTaskKind kind = AnalyzeTextLROTaskKind.PII_ENTITY_RECOGNITION;
+
     /*
      * Supported parameters for a PII Entities Recognition task.
      */
     private PiiTaskParameters parameters;
 
-    /** Creates an instance of PiiLROTask class. */
-    public PiiLROTask() {}
+    /**
+     * Creates an instance of PiiLROTask class.
+     */
+    public PiiLROTask() {
+    }
+
+    /**
+     * Get the kind property: Enumeration of supported long-running Text Analysis tasks.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public AnalyzeTextLROTaskKind getKind() {
+        return this.kind;
+    }
 
     /**
      * Get the parameters property: Supported parameters for a PII Entities Recognition task.
-     *
+     * 
      * @return the parameters value.
      */
     public PiiTaskParameters getParameters() {
@@ -33,7 +52,7 @@ public final class PiiLROTask extends AnalyzeTextLROTask {
 
     /**
      * Set the parameters property: Supported parameters for a PII Entities Recognition task.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the PiiLROTask object itself.
      */
@@ -42,57 +61,54 @@ public final class PiiLROTask extends AnalyzeTextLROTask {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PiiLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(AnalyzeTextLROTaskKind.PII_ENTITY_RECOGNITION, null));
         jsonWriter.writeStringField("taskName", getTaskName());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("parameters", this.parameters);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of PiiLROTask from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of PiiLROTask if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
+     * to JSON null.
      * @throws IOException If an error occurs while reading the PiiLROTask.
      */
     public static PiiLROTask fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    PiiLROTask deserializedPiiLROTask = new PiiLROTask();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            PiiLROTask deserializedPiiLROTask = new PiiLROTask();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kind".equals(fieldName)) {
-                            String kind = reader.getString();
-                            if (!"PiiEntityRecognition".equals(kind)) {
-                                throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to 'PiiEntityRecognition'. The found 'kind' was '"
-                                                + kind
-                                                + "'.");
-                            }
-                        } else if ("taskName".equals(fieldName)) {
-                            deserializedPiiLROTask.setTaskName(reader.getString());
-                        } else if ("parameters".equals(fieldName)) {
-                            deserializedPiiLROTask.parameters = PiiTaskParameters.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("taskName".equals(fieldName)) {
+                    deserializedPiiLROTask.setTaskName(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    deserializedPiiLROTask.kind = AnalyzeTextLROTaskKind.fromString(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedPiiLROTask.parameters = PiiTaskParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedPiiLROTask;
-                });
+            return deserializedPiiLROTask;
+        });
     }
 }

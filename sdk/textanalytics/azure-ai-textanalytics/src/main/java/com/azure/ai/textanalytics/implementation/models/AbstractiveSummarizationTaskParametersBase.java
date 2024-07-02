@@ -10,29 +10,32 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
-/** Supported parameters for an Abstractive Summarization task. */
+/**
+ * Supported parameters for an Abstractive Summarization task.
+ */
 @Fluent
 public class AbstractiveSummarizationTaskParametersBase
-        implements JsonSerializable<AbstractiveSummarizationTaskParametersBase> {
+    implements JsonSerializable<AbstractiveSummarizationTaskParametersBase> {
     /*
      * It controls the approximate number of sentences in the output summaries.
      */
     private Integer sentenceCount;
 
     /*
-     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to
-     * Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
+     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
     private StringIndexType stringIndexType;
 
-    /** Creates an instance of AbstractiveSummarizationTaskParametersBase class. */
-    public AbstractiveSummarizationTaskParametersBase() {}
+    /**
+     * Creates an instance of AbstractiveSummarizationTaskParametersBase class.
+     */
+    public AbstractiveSummarizationTaskParametersBase() {
+    }
 
     /**
      * Get the sentenceCount property: It controls the approximate number of sentences in the output summaries.
-     *
+     * 
      * @return the sentenceCount value.
      */
     public Integer getSentenceCount() {
@@ -41,7 +44,7 @@ public class AbstractiveSummarizationTaskParametersBase
 
     /**
      * Set the sentenceCount property: It controls the approximate number of sentences in the output summaries.
-     *
+     * 
      * @param sentenceCount the sentenceCount value to set.
      * @return the AbstractiveSummarizationTaskParametersBase object itself.
      */
@@ -54,7 +57,7 @@ public class AbstractiveSummarizationTaskParametersBase
      * Get the stringIndexType property: Specifies the method used to interpret string offsets. Defaults to Text
      * Elements (Graphemes) according to Unicode v8.0.0. For additional information see
      * https://aka.ms/text-analytics-offsets.
-     *
+     * 
      * @return the stringIndexType value.
      */
     public StringIndexType getStringIndexType() {
@@ -65,7 +68,7 @@ public class AbstractiveSummarizationTaskParametersBase
      * Set the stringIndexType property: Specifies the method used to interpret string offsets. Defaults to Text
      * Elements (Graphemes) according to Unicode v8.0.0. For additional information see
      * https://aka.ms/text-analytics-offsets.
-     *
+     * 
      * @param stringIndexType the stringIndexType value to set.
      * @return the AbstractiveSummarizationTaskParametersBase object itself.
      */
@@ -74,43 +77,46 @@ public class AbstractiveSummarizationTaskParametersBase
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("sentenceCount", this.sentenceCount);
-        jsonWriter.writeStringField("stringIndexType", Objects.toString(this.stringIndexType, null));
+        jsonWriter.writeStringField("stringIndexType",
+            this.stringIndexType == null ? null : this.stringIndexType.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of AbstractiveSummarizationTaskParametersBase from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AbstractiveSummarizationTaskParametersBase if the JsonReader was pointing to an instance
-     *     of it, or null if it was pointing to JSON null.
+     * of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AbstractiveSummarizationTaskParametersBase.
      */
     public static AbstractiveSummarizationTaskParametersBase fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AbstractiveSummarizationTaskParametersBase deserializedAbstractiveSummarizationTaskParametersBase =
-                            new AbstractiveSummarizationTaskParametersBase();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            AbstractiveSummarizationTaskParametersBase deserializedAbstractiveSummarizationTaskParametersBase
+                = new AbstractiveSummarizationTaskParametersBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("sentenceCount".equals(fieldName)) {
-                            deserializedAbstractiveSummarizationTaskParametersBase.sentenceCount =
-                                    reader.getNullable(JsonReader::getInt);
-                        } else if ("stringIndexType".equals(fieldName)) {
-                            deserializedAbstractiveSummarizationTaskParametersBase.stringIndexType =
-                                    StringIndexType.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("sentenceCount".equals(fieldName)) {
+                    deserializedAbstractiveSummarizationTaskParametersBase.sentenceCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("stringIndexType".equals(fieldName)) {
+                    deserializedAbstractiveSummarizationTaskParametersBase.stringIndexType
+                        = StringIndexType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedAbstractiveSummarizationTaskParametersBase;
-                });
+            return deserializedAbstractiveSummarizationTaskParametersBase;
+        });
     }
 }

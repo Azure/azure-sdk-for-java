@@ -9,22 +9,41 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
-/** The HealthcareLROTask model. */
+/**
+ * The HealthcareLROTask model.
+ */
 @Fluent
 public final class HealthcareLROTask extends AnalyzeTextLROTask {
+    /*
+     * Enumeration of supported long-running Text Analysis tasks.
+     */
+    private AnalyzeTextLROTaskKind kind = AnalyzeTextLROTaskKind.HEALTHCARE;
+
     /*
      * Supported parameters for a Healthcare task.
      */
     private HealthcareTaskParameters parameters;
 
-    /** Creates an instance of HealthcareLROTask class. */
-    public HealthcareLROTask() {}
+    /**
+     * Creates an instance of HealthcareLROTask class.
+     */
+    public HealthcareLROTask() {
+    }
+
+    /**
+     * Get the kind property: Enumeration of supported long-running Text Analysis tasks.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public AnalyzeTextLROTaskKind getKind() {
+        return this.kind;
+    }
 
     /**
      * Get the parameters property: Supported parameters for a Healthcare task.
-     *
+     * 
      * @return the parameters value.
      */
     public HealthcareTaskParameters getParameters() {
@@ -33,7 +52,7 @@ public final class HealthcareLROTask extends AnalyzeTextLROTask {
 
     /**
      * Set the parameters property: Supported parameters for a Healthcare task.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the HealthcareLROTask object itself.
      */
@@ -42,57 +61,54 @@ public final class HealthcareLROTask extends AnalyzeTextLROTask {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthcareLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(AnalyzeTextLROTaskKind.HEALTHCARE, null));
         jsonWriter.writeStringField("taskName", getTaskName());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("parameters", this.parameters);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of HealthcareLROTask from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of HealthcareLROTask if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the HealthcareLROTask.
      */
     public static HealthcareLROTask fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    HealthcareLROTask deserializedHealthcareLROTask = new HealthcareLROTask();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            HealthcareLROTask deserializedHealthcareLROTask = new HealthcareLROTask();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kind".equals(fieldName)) {
-                            String kind = reader.getString();
-                            if (!"Healthcare".equals(kind)) {
-                                throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to 'Healthcare'. The found 'kind' was '"
-                                                + kind
-                                                + "'.");
-                            }
-                        } else if ("taskName".equals(fieldName)) {
-                            deserializedHealthcareLROTask.setTaskName(reader.getString());
-                        } else if ("parameters".equals(fieldName)) {
-                            deserializedHealthcareLROTask.parameters = HealthcareTaskParameters.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("taskName".equals(fieldName)) {
+                    deserializedHealthcareLROTask.setTaskName(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    deserializedHealthcareLROTask.kind = AnalyzeTextLROTaskKind.fromString(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedHealthcareLROTask.parameters = HealthcareTaskParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedHealthcareLROTask;
-                });
+            return deserializedHealthcareLROTask;
+        });
     }
 }

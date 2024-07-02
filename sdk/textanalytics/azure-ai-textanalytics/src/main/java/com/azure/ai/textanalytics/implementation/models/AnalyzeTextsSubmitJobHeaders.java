@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/** The AnalyzeTextsSubmitJobHeaders model. */
+/**
+ * The AnalyzeTextsSubmitJobHeaders model.
+ */
 @Fluent
 public final class AnalyzeTextsSubmitJobHeaders {
     /*
@@ -21,7 +23,7 @@ public final class AnalyzeTextsSubmitJobHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of AnalyzeTextsSubmitJobHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public AnalyzeTextsSubmitJobHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +32,7 @@ public final class AnalyzeTextsSubmitJobHeaders {
 
     /**
      * Get the operationLocation property: The Operation-Location property.
-     *
+     * 
      * @return the operationLocation value.
      */
     public String getOperationLocation() {
@@ -39,7 +41,7 @@ public final class AnalyzeTextsSubmitJobHeaders {
 
     /**
      * Set the operationLocation property: The Operation-Location property.
-     *
+     * 
      * @param operationLocation the operationLocation value to set.
      * @return the AnalyzeTextsSubmitJobHeaders object itself.
      */

@@ -10,22 +10,42 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.Objects;
+import java.time.format.DateTimeFormatter;
 
-/** The HealthcareLROResult model. */
+/**
+ * The HealthcareLROResult model.
+ */
 @Fluent
 public final class HealthcareLROResult extends AnalyzeTextLROResult {
+    /*
+     * Enumeration of supported Text Analysis long-running operation task results.
+     */
+    private AnalyzeTextLROResultsKind kind = AnalyzeTextLROResultsKind.HEALTHCARE_LRORESULTS;
+
     /*
      * The results property.
      */
     private HealthcareResult results;
 
-    /** Creates an instance of HealthcareLROResult class. */
-    public HealthcareLROResult() {}
+    /**
+     * Creates an instance of HealthcareLROResult class.
+     */
+    public HealthcareLROResult() {
+    }
+
+    /**
+     * Get the kind property: Enumeration of supported Text Analysis long-running operation task results.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public AnalyzeTextLROResultsKind getKind() {
+        return this.kind;
+    }
 
     /**
      * Get the results property: The results property.
-     *
+     * 
      * @return the results value.
      */
     public HealthcareResult getResults() {
@@ -34,7 +54,7 @@ public final class HealthcareLROResult extends AnalyzeTextLROResult {
 
     /**
      * Set the results property: The results property.
-     *
+     * 
      * @param results the results value to set.
      * @return the HealthcareLROResult object itself.
      */
@@ -43,80 +63,83 @@ public final class HealthcareLROResult extends AnalyzeTextLROResult {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthcareLROResult setTaskName(String taskName) {
         super.setTaskName(taskName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthcareLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
         super.setLastUpdateDateTime(lastUpdateDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthcareLROResult setStatus(State status) {
         super.setStatus(status);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(AnalyzeTextLROResultsKind.HEALTHCARE_LRORESULTS, null));
-        jsonWriter.writeStringField("lastUpdateDateTime", Objects.toString(getLastUpdateDateTime(), null));
-        jsonWriter.writeStringField("status", Objects.toString(getStatus(), null));
+        jsonWriter.writeStringField("lastUpdateDateTime",
+            getLastUpdateDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastUpdateDateTime()));
+        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
         jsonWriter.writeStringField("taskName", getTaskName());
         jsonWriter.writeJsonField("results", this.results);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of HealthcareLROResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of HealthcareLROResult if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HealthcareLROResult.
      */
     public static HealthcareLROResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    HealthcareLROResult deserializedHealthcareLROResult = new HealthcareLROResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            HealthcareLROResult deserializedHealthcareLROResult = new HealthcareLROResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kind".equals(fieldName)) {
-                            String kind = reader.getString();
-                            if (!"HealthcareLROResults".equals(kind)) {
-                                throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to 'HealthcareLROResults'. The found 'kind' was '"
-                                                + kind
-                                                + "'.");
-                            }
-                        } else if ("lastUpdateDateTime".equals(fieldName)) {
-                            deserializedHealthcareLROResult.setLastUpdateDateTime(
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                        } else if ("status".equals(fieldName)) {
-                            deserializedHealthcareLROResult.setStatus(State.fromString(reader.getString()));
-                        } else if ("taskName".equals(fieldName)) {
-                            deserializedHealthcareLROResult.setTaskName(reader.getString());
-                        } else if ("results".equals(fieldName)) {
-                            deserializedHealthcareLROResult.results = HealthcareResult.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("lastUpdateDateTime".equals(fieldName)) {
+                    deserializedHealthcareLROResult.setLastUpdateDateTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("status".equals(fieldName)) {
+                    deserializedHealthcareLROResult.setStatus(State.fromString(reader.getString()));
+                } else if ("taskName".equals(fieldName)) {
+                    deserializedHealthcareLROResult.setTaskName(reader.getString());
+                } else if ("results".equals(fieldName)) {
+                    deserializedHealthcareLROResult.results = HealthcareResult.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedHealthcareLROResult.kind = AnalyzeTextLROResultsKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedHealthcareLROResult;
-                });
+            return deserializedHealthcareLROResult;
+        });
     }
 }

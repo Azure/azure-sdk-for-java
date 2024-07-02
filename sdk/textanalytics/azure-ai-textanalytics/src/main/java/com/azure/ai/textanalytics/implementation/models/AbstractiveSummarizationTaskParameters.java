@@ -9,9 +9,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
-/** Supported parameters for the pre-build Abstractive Summarization task. */
+/**
+ * Supported parameters for the pre-build Abstractive Summarization task.
+ */
 @Fluent
 public final class AbstractiveSummarizationTaskParameters extends AbstractiveSummarizationTaskParametersBase {
     /*
@@ -24,12 +25,15 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
      */
     private Boolean loggingOptOut;
 
-    /** Creates an instance of AbstractiveSummarizationTaskParameters class. */
-    public AbstractiveSummarizationTaskParameters() {}
+    /**
+     * Creates an instance of AbstractiveSummarizationTaskParameters class.
+     */
+    public AbstractiveSummarizationTaskParameters() {
+    }
 
     /**
      * Get the modelVersion property: The modelVersion property.
-     *
+     * 
      * @return the modelVersion value.
      */
     public String getModelVersion() {
@@ -38,7 +42,7 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
 
     /**
      * Set the modelVersion property: The modelVersion property.
-     *
+     * 
      * @param modelVersion the modelVersion value to set.
      * @return the AbstractiveSummarizationTaskParameters object itself.
      */
@@ -49,7 +53,7 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
 
     /**
      * Get the loggingOptOut property: The loggingOptOut property.
-     *
+     * 
      * @return the loggingOptOut value.
      */
     public Boolean isLoggingOptOut() {
@@ -58,7 +62,7 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
 
     /**
      * Set the loggingOptOut property: The loggingOptOut property.
-     *
+     * 
      * @param loggingOptOut the loggingOptOut value to set.
      * @return the AbstractiveSummarizationTaskParameters object itself.
      */
@@ -67,25 +71,33 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbstractiveSummarizationTaskParameters setSentenceCount(Integer sentenceCount) {
         super.setSentenceCount(sentenceCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbstractiveSummarizationTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         super.setStringIndexType(stringIndexType);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("sentenceCount", getSentenceCount());
-        jsonWriter.writeStringField("stringIndexType", Objects.toString(getStringIndexType(), null));
+        jsonWriter.writeStringField("stringIndexType",
+            getStringIndexType() == null ? null : getStringIndexType().toString());
         jsonWriter.writeStringField("modelVersion", this.modelVersion);
         jsonWriter.writeBooleanField("loggingOptOut", this.loggingOptOut);
         return jsonWriter.writeEndObject();
@@ -93,38 +105,37 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
 
     /**
      * Reads an instance of AbstractiveSummarizationTaskParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AbstractiveSummarizationTaskParameters if the JsonReader was pointing to an instance of
-     *     it, or null if it was pointing to JSON null.
+     * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AbstractiveSummarizationTaskParameters.
      */
     public static AbstractiveSummarizationTaskParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AbstractiveSummarizationTaskParameters deserializedAbstractiveSummarizationTaskParameters =
-                            new AbstractiveSummarizationTaskParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            AbstractiveSummarizationTaskParameters deserializedAbstractiveSummarizationTaskParameters
+                = new AbstractiveSummarizationTaskParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("sentenceCount".equals(fieldName)) {
-                            deserializedAbstractiveSummarizationTaskParameters.setSentenceCount(
-                                    reader.getNullable(JsonReader::getInt));
-                        } else if ("stringIndexType".equals(fieldName)) {
-                            deserializedAbstractiveSummarizationTaskParameters.setStringIndexType(
-                                    StringIndexType.fromString(reader.getString()));
-                        } else if ("modelVersion".equals(fieldName)) {
-                            deserializedAbstractiveSummarizationTaskParameters.modelVersion = reader.getString();
-                        } else if ("loggingOptOut".equals(fieldName)) {
-                            deserializedAbstractiveSummarizationTaskParameters.loggingOptOut =
-                                    reader.getNullable(JsonReader::getBoolean);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("sentenceCount".equals(fieldName)) {
+                    deserializedAbstractiveSummarizationTaskParameters
+                        .setSentenceCount(reader.getNullable(JsonReader::getInt));
+                } else if ("stringIndexType".equals(fieldName)) {
+                    deserializedAbstractiveSummarizationTaskParameters
+                        .setStringIndexType(StringIndexType.fromString(reader.getString()));
+                } else if ("modelVersion".equals(fieldName)) {
+                    deserializedAbstractiveSummarizationTaskParameters.modelVersion = reader.getString();
+                } else if ("loggingOptOut".equals(fieldName)) {
+                    deserializedAbstractiveSummarizationTaskParameters.loggingOptOut
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedAbstractiveSummarizationTaskParameters;
-                });
+            return deserializedAbstractiveSummarizationTaskParameters;
+        });
     }
 }

@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The LanguageInput model. */
+/**
+ * The LanguageInput model.
+ */
 @Fluent
 public final class LanguageInput implements JsonSerializable<LanguageInput> {
     /*
@@ -29,12 +31,15 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
      */
     private String countryHint;
 
-    /** Creates an instance of LanguageInput class. */
-    public LanguageInput() {}
+    /**
+     * Creates an instance of LanguageInput class.
+     */
+    public LanguageInput() {
+    }
 
     /**
      * Get the id property: Unique, non-empty document identifier.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -43,7 +48,7 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
 
     /**
      * Set the id property: Unique, non-empty document identifier.
-     *
+     * 
      * @param id the id value to set.
      * @return the LanguageInput object itself.
      */
@@ -54,7 +59,7 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
 
     /**
      * Get the text property: The text property.
-     *
+     * 
      * @return the text value.
      */
     public String getText() {
@@ -63,7 +68,7 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
 
     /**
      * Set the text property: The text property.
-     *
+     * 
      * @param text the text value to set.
      * @return the LanguageInput object itself.
      */
@@ -74,7 +79,7 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
 
     /**
      * Get the countryHint property: The countryHint property.
-     *
+     * 
      * @return the countryHint value.
      */
     public String getCountryHint() {
@@ -83,7 +88,7 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
 
     /**
      * Set the countryHint property: The countryHint property.
-     *
+     * 
      * @param countryHint the countryHint value to set.
      * @return the LanguageInput object itself.
      */
@@ -92,6 +97,9 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -103,33 +111,32 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
 
     /**
      * Reads an instance of LanguageInput from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of LanguageInput if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LanguageInput.
      */
     public static LanguageInput fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    LanguageInput deserializedLanguageInput = new LanguageInput();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            LanguageInput deserializedLanguageInput = new LanguageInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedLanguageInput.id = reader.getString();
-                        } else if ("text".equals(fieldName)) {
-                            deserializedLanguageInput.text = reader.getString();
-                        } else if ("countryHint".equals(fieldName)) {
-                            deserializedLanguageInput.countryHint = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedLanguageInput.id = reader.getString();
+                } else if ("text".equals(fieldName)) {
+                    deserializedLanguageInput.text = reader.getString();
+                } else if ("countryHint".equals(fieldName)) {
+                    deserializedLanguageInput.countryHint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedLanguageInput;
-                });
+            return deserializedLanguageInput;
+        });
     }
 }

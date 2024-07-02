@@ -9,22 +9,41 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
-/** An object representing the task definition for an Extractive Summarization task. */
+/**
+ * An object representing the task definition for an Extractive Summarization task.
+ */
 @Fluent
 public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
+    /*
+     * Enumeration of supported long-running Text Analysis tasks.
+     */
+    private AnalyzeTextLROTaskKind kind = AnalyzeTextLROTaskKind.EXTRACTIVE_SUMMARIZATION;
+
     /*
      * Supported parameters for an Extractive Summarization task.
      */
     private ExtractiveSummarizationTaskParameters parameters;
 
-    /** Creates an instance of ExtractiveSummarizationLROTask class. */
-    public ExtractiveSummarizationLROTask() {}
+    /**
+     * Creates an instance of ExtractiveSummarizationLROTask class.
+     */
+    public ExtractiveSummarizationLROTask() {
+    }
+
+    /**
+     * Get the kind property: Enumeration of supported long-running Text Analysis tasks.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public AnalyzeTextLROTaskKind getKind() {
+        return this.kind;
+    }
 
     /**
      * Get the parameters property: Supported parameters for an Extractive Summarization task.
-     *
+     * 
      * @return the parameters value.
      */
     public ExtractiveSummarizationTaskParameters getParameters() {
@@ -33,7 +52,7 @@ public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
 
     /**
      * Set the parameters property: Supported parameters for an Extractive Summarization task.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ExtractiveSummarizationLROTask object itself.
      */
@@ -42,59 +61,57 @@ public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtractiveSummarizationLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(AnalyzeTextLROTaskKind.EXTRACTIVE_SUMMARIZATION, null));
         jsonWriter.writeStringField("taskName", getTaskName());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("parameters", this.parameters);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of ExtractiveSummarizationLROTask from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ExtractiveSummarizationLROTask if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
+     * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ExtractiveSummarizationLROTask.
      */
     public static ExtractiveSummarizationLROTask fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ExtractiveSummarizationLROTask deserializedExtractiveSummarizationLROTask =
-                            new ExtractiveSummarizationLROTask();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            ExtractiveSummarizationLROTask deserializedExtractiveSummarizationLROTask
+                = new ExtractiveSummarizationLROTask();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kind".equals(fieldName)) {
-                            String kind = reader.getString();
-                            if (!"ExtractiveSummarization".equals(kind)) {
-                                throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to 'ExtractiveSummarization'. The found 'kind' was '"
-                                                + kind
-                                                + "'.");
-                            }
-                        } else if ("taskName".equals(fieldName)) {
-                            deserializedExtractiveSummarizationLROTask.setTaskName(reader.getString());
-                        } else if ("parameters".equals(fieldName)) {
-                            deserializedExtractiveSummarizationLROTask.parameters =
-                                    ExtractiveSummarizationTaskParameters.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("taskName".equals(fieldName)) {
+                    deserializedExtractiveSummarizationLROTask.setTaskName(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    deserializedExtractiveSummarizationLROTask.kind
+                        = AnalyzeTextLROTaskKind.fromString(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedExtractiveSummarizationLROTask.parameters
+                        = ExtractiveSummarizationTaskParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedExtractiveSummarizationLROTask;
-                });
+            return deserializedExtractiveSummarizationLROTask;
+        });
     }
 }

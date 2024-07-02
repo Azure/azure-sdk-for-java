@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Contains an input document to be analyzed by the service. */
+/**
+ * Contains an input document to be analyzed by the service.
+ */
 @Fluent
 public final class MultiLanguageInput implements JsonSerializable<MultiLanguageInput> {
     /*
@@ -25,17 +27,19 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
     private String text;
 
     /*
-     * (Optional) This is the 2 letter ISO 639-1 representation of a language. For example, use "en" for English; "es"
-     * for Spanish etc. If not set, use "en" for English as default.
+     * (Optional) This is the 2 letter ISO 639-1 representation of a language. For example, use "en" for English; "es" for Spanish etc. If not set, use "en" for English as default.
      */
     private String language;
 
-    /** Creates an instance of MultiLanguageInput class. */
-    public MultiLanguageInput() {}
+    /**
+     * Creates an instance of MultiLanguageInput class.
+     */
+    public MultiLanguageInput() {
+    }
 
     /**
      * Get the id property: A unique, non-empty document identifier.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -44,7 +48,7 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
 
     /**
      * Set the id property: A unique, non-empty document identifier.
-     *
+     * 
      * @param id the id value to set.
      * @return the MultiLanguageInput object itself.
      */
@@ -55,7 +59,7 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
 
     /**
      * Get the text property: The input text to process.
-     *
+     * 
      * @return the text value.
      */
     public String getText() {
@@ -64,7 +68,7 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
 
     /**
      * Set the text property: The input text to process.
-     *
+     * 
      * @param text the text value to set.
      * @return the MultiLanguageInput object itself.
      */
@@ -76,7 +80,7 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
     /**
      * Get the language property: (Optional) This is the 2 letter ISO 639-1 representation of a language. For example,
      * use "en" for English; "es" for Spanish etc. If not set, use "en" for English as default.
-     *
+     * 
      * @return the language value.
      */
     public String getLanguage() {
@@ -86,7 +90,7 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
     /**
      * Set the language property: (Optional) This is the 2 letter ISO 639-1 representation of a language. For example,
      * use "en" for English; "es" for Spanish etc. If not set, use "en" for English as default.
-     *
+     * 
      * @param language the language value to set.
      * @return the MultiLanguageInput object itself.
      */
@@ -95,6 +99,9 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -106,33 +113,32 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
 
     /**
      * Reads an instance of MultiLanguageInput from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of MultiLanguageInput if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MultiLanguageInput.
      */
     public static MultiLanguageInput fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    MultiLanguageInput deserializedMultiLanguageInput = new MultiLanguageInput();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            MultiLanguageInput deserializedMultiLanguageInput = new MultiLanguageInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedMultiLanguageInput.id = reader.getString();
-                        } else if ("text".equals(fieldName)) {
-                            deserializedMultiLanguageInput.text = reader.getString();
-                        } else if ("language".equals(fieldName)) {
-                            deserializedMultiLanguageInput.language = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedMultiLanguageInput.id = reader.getString();
+                } else if ("text".equals(fieldName)) {
+                    deserializedMultiLanguageInput.text = reader.getString();
+                } else if ("language".equals(fieldName)) {
+                    deserializedMultiLanguageInput.language = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedMultiLanguageInput;
-                });
+            return deserializedMultiLanguageInput;
+        });
     }
 }

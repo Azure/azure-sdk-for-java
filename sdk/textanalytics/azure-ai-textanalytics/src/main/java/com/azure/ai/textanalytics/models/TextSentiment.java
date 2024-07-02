@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -49,7 +48,6 @@ public final class TextSentiment extends ExpandableStringEnum<TextSentiment> {
      * @param name A name to look for.
      * @return The corresponding {@code TextSentiment}.
      */
-    @JsonCreator
     public static TextSentiment fromString(String name) {
         return fromString(name, TextSentiment.class);
     }

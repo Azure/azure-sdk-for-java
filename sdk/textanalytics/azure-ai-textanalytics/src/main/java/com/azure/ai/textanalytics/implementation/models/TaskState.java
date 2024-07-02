@@ -11,9 +11,11 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.Objects;
+import java.time.format.DateTimeFormatter;
 
-/** The TaskState model. */
+/**
+ * The TaskState model.
+ */
 @Fluent
 public class TaskState implements JsonSerializable<TaskState> {
     /*
@@ -26,12 +28,15 @@ public class TaskState implements JsonSerializable<TaskState> {
      */
     private State status;
 
-    /** Creates an instance of TaskState class. */
-    public TaskState() {}
+    /**
+     * Creates an instance of TaskState class.
+     */
+    public TaskState() {
+    }
 
     /**
      * Get the lastUpdateDateTime property: The lastUpdateDateTime property.
-     *
+     * 
      * @return the lastUpdateDateTime value.
      */
     public OffsetDateTime getLastUpdateDateTime() {
@@ -40,7 +45,7 @@ public class TaskState implements JsonSerializable<TaskState> {
 
     /**
      * Set the lastUpdateDateTime property: The lastUpdateDateTime property.
-     *
+     * 
      * @param lastUpdateDateTime the lastUpdateDateTime value to set.
      * @return the TaskState object itself.
      */
@@ -51,7 +56,7 @@ public class TaskState implements JsonSerializable<TaskState> {
 
     /**
      * Get the status property: The status property.
-     *
+     * 
      * @return the status value.
      */
     public State getStatus() {
@@ -60,7 +65,7 @@ public class TaskState implements JsonSerializable<TaskState> {
 
     /**
      * Set the status property: The status property.
-     *
+     * 
      * @param status the status value to set.
      * @return the TaskState object itself.
      */
@@ -69,43 +74,47 @@ public class TaskState implements JsonSerializable<TaskState> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("lastUpdateDateTime", Objects.toString(this.lastUpdateDateTime, null));
-        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
+        jsonWriter.writeStringField("lastUpdateDateTime",
+            this.lastUpdateDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdateDateTime));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of TaskState from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of TaskState if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
+     * to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TaskState.
      */
     public static TaskState fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    TaskState deserializedTaskState = new TaskState();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            TaskState deserializedTaskState = new TaskState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("lastUpdateDateTime".equals(fieldName)) {
-                            deserializedTaskState.lastUpdateDateTime =
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                        } else if ("status".equals(fieldName)) {
-                            deserializedTaskState.status = State.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("lastUpdateDateTime".equals(fieldName)) {
+                    deserializedTaskState.lastUpdateDateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedTaskState.status = State.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedTaskState;
-                });
+            return deserializedTaskState;
+        });
     }
 }

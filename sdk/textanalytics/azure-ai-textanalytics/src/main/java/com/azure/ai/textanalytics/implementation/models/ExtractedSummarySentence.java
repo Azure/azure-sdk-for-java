@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The ExtractedSummarySentence model. */
+/**
+ * The ExtractedSummarySentence model.
+ */
 @Fluent
 public final class ExtractedSummarySentence implements JsonSerializable<ExtractedSummarySentence> {
     /*
@@ -20,8 +22,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
     private String text;
 
     /*
-     * A double value representing the relevance of the sentence within the summary. Higher values indicate higher
-     * importance.
+     * A double value representing the relevance of the sentence within the summary. Higher values indicate higher importance.
      */
     private double rankScore;
 
@@ -35,12 +36,15 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
      */
     private int length;
 
-    /** Creates an instance of ExtractedSummarySentence class. */
-    public ExtractedSummarySentence() {}
+    /**
+     * Creates an instance of ExtractedSummarySentence class.
+     */
+    public ExtractedSummarySentence() {
+    }
 
     /**
      * Get the text property: The extracted sentence text.
-     *
+     * 
      * @return the text value.
      */
     public String getText() {
@@ -49,7 +53,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
 
     /**
      * Set the text property: The extracted sentence text.
-     *
+     * 
      * @param text the text value to set.
      * @return the ExtractedSummarySentence object itself.
      */
@@ -61,7 +65,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
     /**
      * Get the rankScore property: A double value representing the relevance of the sentence within the summary. Higher
      * values indicate higher importance.
-     *
+     * 
      * @return the rankScore value.
      */
     public double getRankScore() {
@@ -71,7 +75,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
     /**
      * Set the rankScore property: A double value representing the relevance of the sentence within the summary. Higher
      * values indicate higher importance.
-     *
+     * 
      * @param rankScore the rankScore value to set.
      * @return the ExtractedSummarySentence object itself.
      */
@@ -83,7 +87,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
     /**
      * Get the offset property: The sentence offset from the start of the document, based on the value of the parameter
      * StringIndexType.
-     *
+     * 
      * @return the offset value.
      */
     public int getOffset() {
@@ -93,7 +97,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
     /**
      * Set the offset property: The sentence offset from the start of the document, based on the value of the parameter
      * StringIndexType.
-     *
+     * 
      * @param offset the offset value to set.
      * @return the ExtractedSummarySentence object itself.
      */
@@ -104,7 +108,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
 
     /**
      * Get the length property: The length of the sentence.
-     *
+     * 
      * @return the length value.
      */
     public int getLength() {
@@ -113,7 +117,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
 
     /**
      * Set the length property: The length of the sentence.
-     *
+     * 
      * @param length the length value to set.
      * @return the ExtractedSummarySentence object itself.
      */
@@ -122,6 +126,9 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -134,35 +141,34 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
 
     /**
      * Reads an instance of ExtractedSummarySentence from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ExtractedSummarySentence if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ExtractedSummarySentence.
      */
     public static ExtractedSummarySentence fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ExtractedSummarySentence deserializedExtractedSummarySentence = new ExtractedSummarySentence();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            ExtractedSummarySentence deserializedExtractedSummarySentence = new ExtractedSummarySentence();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("text".equals(fieldName)) {
-                            deserializedExtractedSummarySentence.text = reader.getString();
-                        } else if ("rankScore".equals(fieldName)) {
-                            deserializedExtractedSummarySentence.rankScore = reader.getDouble();
-                        } else if ("offset".equals(fieldName)) {
-                            deserializedExtractedSummarySentence.offset = reader.getInt();
-                        } else if ("length".equals(fieldName)) {
-                            deserializedExtractedSummarySentence.length = reader.getInt();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("text".equals(fieldName)) {
+                    deserializedExtractedSummarySentence.text = reader.getString();
+                } else if ("rankScore".equals(fieldName)) {
+                    deserializedExtractedSummarySentence.rankScore = reader.getDouble();
+                } else if ("offset".equals(fieldName)) {
+                    deserializedExtractedSummarySentence.offset = reader.getInt();
+                } else if ("length".equals(fieldName)) {
+                    deserializedExtractedSummarySentence.length = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedExtractedSummarySentence;
-                });
+            return deserializedExtractedSummarySentence;
+        });
     }
 }

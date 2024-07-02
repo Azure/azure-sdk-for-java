@@ -11,7 +11,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The EntityLinkingResult model. */
+/**
+ * The EntityLinkingResult model.
+ */
 @Fluent
 public final class EntityLinkingResult extends PreBuiltResult {
     /*
@@ -19,12 +21,15 @@ public final class EntityLinkingResult extends PreBuiltResult {
      */
     private List<EntityLinkingResultDocumentsItem> documents;
 
-    /** Creates an instance of EntityLinkingResult class. */
-    public EntityLinkingResult() {}
+    /**
+     * Creates an instance of EntityLinkingResult class.
+     */
+    public EntityLinkingResult() {
+    }
 
     /**
      * Get the documents property: Response by document.
-     *
+     * 
      * @return the documents value.
      */
     public List<EntityLinkingResultDocumentsItem> getDocuments() {
@@ -33,7 +38,7 @@ public final class EntityLinkingResult extends PreBuiltResult {
 
     /**
      * Set the documents property: Response by document.
-     *
+     * 
      * @param documents the documents value to set.
      * @return the EntityLinkingResult object itself.
      */
@@ -42,27 +47,36 @@ public final class EntityLinkingResult extends PreBuiltResult {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntityLinkingResult setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntityLinkingResult setStatistics(RequestStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntityLinkingResult setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,38 +89,37 @@ public final class EntityLinkingResult extends PreBuiltResult {
 
     /**
      * Reads an instance of EntityLinkingResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of EntityLinkingResult if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EntityLinkingResult.
      */
     public static EntityLinkingResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    EntityLinkingResult deserializedEntityLinkingResult = new EntityLinkingResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            EntityLinkingResult deserializedEntityLinkingResult = new EntityLinkingResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("errors".equals(fieldName)) {
-                            List<DocumentError> errors = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
-                            deserializedEntityLinkingResult.setErrors(errors);
-                        } else if ("modelVersion".equals(fieldName)) {
-                            deserializedEntityLinkingResult.setModelVersion(reader.getString());
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedEntityLinkingResult.setStatistics(RequestStatistics.fromJson(reader));
-                        } else if ("documents".equals(fieldName)) {
-                            List<EntityLinkingResultDocumentsItem> documents =
-                                    reader.readArray(reader1 -> EntityLinkingResultDocumentsItem.fromJson(reader1));
-                            deserializedEntityLinkingResult.documents = documents;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("errors".equals(fieldName)) {
+                    List<DocumentError> errors = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
+                    deserializedEntityLinkingResult.setErrors(errors);
+                } else if ("modelVersion".equals(fieldName)) {
+                    deserializedEntityLinkingResult.setModelVersion(reader.getString());
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedEntityLinkingResult.setStatistics(RequestStatistics.fromJson(reader));
+                } else if ("documents".equals(fieldName)) {
+                    List<EntityLinkingResultDocumentsItem> documents
+                        = reader.readArray(reader1 -> EntityLinkingResultDocumentsItem.fromJson(reader1));
+                    deserializedEntityLinkingResult.documents = documents;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedEntityLinkingResult;
-                });
+            return deserializedEntityLinkingResult;
+        });
     }
 }
