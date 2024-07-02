@@ -58,15 +58,15 @@ public class MockHttpResponse extends HttpResponse {
         this(request, statusCode, new HttpHeaders(), readAllBytes(stream));
     }
 
-    private static byte[] readAllBytes(InputStream stream) {
+    public static byte[] readAllBytes(InputStream stream) {
         try {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
-            int nRead;
+            int count;
             byte[] data = new byte[1024];
 
-            while ((nRead = stream.read(data, 0, data.length)) != -1) {
-                buffer.write(data, 0, nRead);
+            while ((count = stream.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, count);
             }
 
             return buffer.toByteArray();

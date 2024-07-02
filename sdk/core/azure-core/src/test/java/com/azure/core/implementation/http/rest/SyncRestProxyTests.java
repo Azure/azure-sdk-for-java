@@ -190,16 +190,8 @@ public class SyncRestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         Response<InputStream> inputStreamResponse = testInterface.testInputStreamResponse(Context.NONE);
         InputStream stream = inputStreamResponse.getValue();
-
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
-        int count;
-        byte[] data = new byte[1024];
-
-        while ((count = stream.read(data, 0, data.length)) != -1) {
-            buffer.write(data, 0, count);
-        }
-        assertEquals("hello", new String(buffer.toByteArray()));
+        byte[] bytes = MockHttpResponse.readAllBytes(stream);
+        assertEquals("hello", new String(bytes));
     }
 
     private static Stream<Arguments> mergeRequestOptionsContextSupplier() {
