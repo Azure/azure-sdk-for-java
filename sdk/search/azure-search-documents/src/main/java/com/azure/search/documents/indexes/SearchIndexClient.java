@@ -1137,7 +1137,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context -->
      * <pre>
-     * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;searchIndex&quot;&#41;;
+     * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;synonymMap&quot;&#41;;
      * synonymMap.setSynonyms&#40;&quot;United States, United States of America, USA, America&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
      * Response&lt;SynonymMap&gt; updatedSynonymMap =
      *     SEARCH_INDEX_CLIENT.createOrUpdateSynonymMapWithResponse&#40;synonymMap, true,

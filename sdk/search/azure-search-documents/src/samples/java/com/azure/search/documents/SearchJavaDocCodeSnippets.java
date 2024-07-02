@@ -1151,7 +1151,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateSynonymMapWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context
-        SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap("searchIndex");
+        SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap("synonymMap");
         synonymMap.setSynonyms("United States, United States of America, USA, America\nWashington, Wash. => WA");
         Response<SynonymMap> updatedSynonymMap =
             SEARCH_INDEX_CLIENT.createOrUpdateSynonymMapWithResponse(synonymMap, true,
