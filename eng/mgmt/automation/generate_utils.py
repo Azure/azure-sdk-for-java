@@ -16,7 +16,7 @@ from typespec_utils import validate_tspconfig
 pwd = os.getcwd()
 # os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
-from utils import update_service_ci_and_pom
+from utils import update_service_ci_and_pom_and_changelog
 from utils import update_root_pom
 from utils import update_version
 from utils import is_windows
@@ -97,7 +97,7 @@ def generate(
 
     group = GROUP_ID
     if require_sdk_integration:
-        update_service_ci_and_pom(sdk_root, service, group, module)
+        update_service_ci_and_pom_and_changelog(sdk_root, service, group, module)
         update_root_pom(sdk_root, service)
     update_version(sdk_root, output_folder)
 

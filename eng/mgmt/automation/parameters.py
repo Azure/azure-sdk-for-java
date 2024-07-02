@@ -73,7 +73,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: {0}
-    EnableBatchRelease: true
     Artifacts: []
 """
 
@@ -96,3 +95,9 @@ POM_FORMAT = """\
 """
 
 POM_MODULE_FORMAT = "<module>{0}</module>\n"
+
+CHANGELOG_INITIAL_SECTION_FORMAT = """\
+### Features Added
+
+- Initial release for the {artifact_id} Java SDK.
+"""
