@@ -21,7 +21,6 @@ import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -60,6 +59,7 @@ import java.util.List;
 //import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static com.azure.messaging.servicebus.IntegrationTestBase.PS_CREDENTIAL;
 import static com.azure.messaging.servicebus.IntegrationTestBase.USE_CREDENTIALS;
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
 //import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
@@ -114,7 +114,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 //     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
 //     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
 //     */
-//    // @ParameterizedTest
+//    @ParameterizedTest
 //    @MethodSource("createHttpClients")
 //    void azureIdentityCredentials(HttpClient httpClient) {
 //
@@ -191,7 +191,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     //region Create tests
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void createQueue(HttpClient httpClient) {
         // Arrange
@@ -230,7 +230,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void createQueueExistingName(HttpClient httpClient) {
         // Arrange
@@ -244,7 +244,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void createQueueWithForwarding(HttpClient httpClient) {
         // Arrange
@@ -273,7 +273,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void createQueueAuthorizationRules(HttpClient httpClient) {
         // Arrange
@@ -323,7 +323,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void createRule(HttpClient httpClient) {
         // Arrange
@@ -356,7 +356,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void createRuleDefaults(HttpClient httpClient) {
         // Arrange
@@ -377,7 +377,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void createRuleResponse(HttpClient httpClient) {
         // Arrange
@@ -417,7 +417,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void createSubscription(HttpClient httpClient) {
         // Arrange
@@ -446,7 +446,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void createSubscriptionWithRule(HttpClient httpClient) {
         // Arrange
@@ -472,7 +472,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void createSubscriptionExistingName(HttpClient httpClient) {
         // Arrange
@@ -486,7 +486,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void createSubscriptionWithForwarding(HttpClient httpClient) {
         // Arrange
@@ -514,7 +514,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void createTopicWithResponse(HttpClient httpClient) {
         // Arrange
@@ -551,7 +551,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void createTopicExistingName(HttpClient httpClient) {
         // Arrange
@@ -573,7 +573,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     //region Delete tests
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void deleteQueue(HttpClient httpClient) {
         // Arrange
@@ -590,7 +590,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void deleteQueueDoesNotExist(HttpClient httpClient) {
         // Arrange
@@ -603,7 +603,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void deleteRule(HttpClient httpClient) {
         // Arrange
@@ -620,7 +620,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void deleteRuleDoesNotExist(HttpClient httpClient) {
         // Arrange
@@ -635,7 +635,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void deleteSubscription(HttpClient httpClient) {
         // Arrange
@@ -652,7 +652,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void deleteSubscriptionDoesNotExist(HttpClient httpClient) {
         // Arrange
@@ -669,7 +669,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void deleteTopic(HttpClient httpClient) {
         // Arrange
@@ -684,7 +684,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void deleteTopicDoesNotExist(HttpClient httpClient) {
         // Arrange
@@ -701,7 +701,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     //region Get and exists tests
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getQueue(HttpClient httpClient) {
         // Arrange
@@ -727,7 +727,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getNamespace(HttpClient httpClient) {
         // Arrange
@@ -746,7 +746,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getQueueDoesNotExist(HttpClient httpClient) {
         // Arrange
@@ -759,7 +759,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getQueueExists(HttpClient httpClient) {
         // Arrange
@@ -773,7 +773,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getQueueExistsFalse(HttpClient httpClient) {
         // Arrange
@@ -787,7 +787,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getQueueRuntimeProperties(HttpClient httpClient) {
         // Arrange
@@ -808,7 +808,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getRule(HttpClient httpClient) {
         // Arrange
@@ -838,7 +838,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getRuleDoesNotExist(HttpClient httpClient) {
         // Arrange
@@ -854,7 +854,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getSubscription(HttpClient httpClient) {
         // Arrange
@@ -881,7 +881,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getSubscriptionDoesNotExist(HttpClient httpClient) {
         // Arrange
@@ -895,7 +895,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getSubscriptionExists(HttpClient httpClient) {
         // Arrange
@@ -910,7 +910,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getSubscriptionExistsFalse(HttpClient httpClient) {
         // Arrange
@@ -925,7 +925,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getSubscriptionRuntimeProperties(HttpClient httpClient) {
         // Arrange
@@ -954,7 +954,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getTopic(HttpClient httpClient) {
         // Arrange
@@ -982,7 +982,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getTopicDoesNotExist(HttpClient httpClient) {
         // Arrange
@@ -1005,7 +1005,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getTopicExists(HttpClient httpClient) {
         // Arrange
@@ -1019,7 +1019,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getTopicExistsFalse(HttpClient httpClient) {
         // Arrange
@@ -1033,7 +1033,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getTopicRuntimeProperties(HttpClient httpClient) {
         // Arrange
@@ -1059,7 +1059,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getSubscriptionRuntimePropertiesUnauthorizedClient(HttpClient httpClient) {
         // Arrange
@@ -1098,7 +1098,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     //region List tests
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void listRules(HttpClient httpClient) {
         // Arrange
@@ -1123,7 +1123,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void listQueues(HttpClient httpClient) {
         // Arrange
@@ -1142,7 +1142,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void listSubscriptions(HttpClient httpClient) {
         // Arrange
@@ -1160,7 +1160,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void listTopics(HttpClient httpClient) {
         // Arrange
@@ -1180,7 +1180,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     //endregion
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void updateRuleResponse(HttpClient httpClient) {
         // Arrange
@@ -1253,7 +1253,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
      */
     private static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
         if (interceptorManager.isLiveMode()) {
-            return new AzurePowerShellCredentialBuilder().build();
+            // return new AzurePowerShellCredentialBuilder().build();
+            return PS_CREDENTIAL;
         } else if (interceptorManager.isRecordMode()) {
             return new DefaultAzureCredentialBuilder().build();
         } else {

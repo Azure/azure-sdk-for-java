@@ -5,11 +5,9 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -99,8 +97,9 @@ public class ProxySelectorTest extends IntegrationTestBase {
             final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
             assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
                 "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
-            final TokenCredential tokenCredential = new AzurePowerShellCredentialBuilder().build();
-            return builder.credential(fullyQualifiedDomainName, tokenCredential);
+            // final TokenCredential tokenCredential = new AzurePowerShellCredentialBuilder().build();
+            // return builder.credential(fullyQualifiedDomainName, tokenCredential);
+            return builder.credential(fullyQualifiedDomainName, PS_CREDENTIAL);
         } else {
             return builder.connectionString(getConnectionString());
         }

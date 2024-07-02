@@ -9,6 +9,7 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestContextManager;
@@ -27,6 +28,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderCl
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +43,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,6 +62,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public abstract class IntegrationTestBase extends TestBase {
+    public static final SBPowerShellCachedCredentials PS_CREDENTIAL = new SBPowerShellCachedCredentials();
     public static final boolean USE_CREDENTIALS = true;
     protected static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
@@ -225,8 +229,9 @@ public abstract class IntegrationTestBase extends TestBase {
             final String fullyQualifiedDomainName = getFullyQualifiedDomainName();
             assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
                 "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
-            final TokenCredential tokenCredential = new AzurePowerShellCredentialBuilder().build();
-            return builder.credential(fullyQualifiedDomainName, tokenCredential);
+            // final TokenCredential tokenCredential = new AzurePowerShellCredentialBuilder().build();
+            // return builder.credential(fullyQualifiedDomainName, tokenCredential);
+            return builder.credential(fullyQualifiedDomainName, PS_CREDENTIAL);
         } else {
             return builder.connectionString(getConnectionString());
         }
@@ -533,5 +538,31 @@ public abstract class IntegrationTestBase extends TestBase {
         }
         return new ConfigurationBuilder(configSource)
             .build();
+    }
+
+    public static final class SBPowerShellCachedCredentials implements TokenCredential {
+        private final AzurePowerShellCredentialBuilder builder;
+        private final TokenRequestContext context;
+        private final Mono<com.azure.core.credential.AccessToken> cached;
+
+        public SBPowerShellCachedCredentials() {
+            this.builder = new AzurePowerShellCredentialBuilder();
+            this.context = new TokenRequestContext().addScopes(ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
+            this.cached = Mono.fromCallable(builder::build)
+                .flatMap(cred -> {
+                    return cred.getToken(context);
+                }).doOnNext(token -> {
+                    System.out.println(".....Got Token.....: now=" + OffsetDateTime.now() + " ExpireAt=" + token.getExpiresAt());
+                })
+                .doOnError(e -> {
+                    System.out.println(".....Fetching token failed.....:" + e);
+                })
+                .cache(t -> Duration.ofMinutes(5), e -> Duration.ZERO, () -> Duration.ZERO);
+        }
+
+        @Override
+        public Mono<com.azure.core.credential.AccessToken> getToken(TokenRequestContext context) {
+            return this.cached;
+        }
     }
 }
