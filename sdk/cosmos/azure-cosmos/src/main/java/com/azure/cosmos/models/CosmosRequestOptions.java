@@ -249,6 +249,7 @@ public final class CosmosRequestOptions {
 
     /**
      * Gets the query name.
+     * @param defaultQueryName the default query name.
      *
      * @return the query name.
      */
