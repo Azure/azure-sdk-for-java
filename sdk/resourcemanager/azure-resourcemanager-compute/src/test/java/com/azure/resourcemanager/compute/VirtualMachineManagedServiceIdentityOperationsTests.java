@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -37,7 +36,6 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     }
 
     @Test
-    @LiveOnly
     public void canSetMSIOnNewOrExistingVMWithoutRoleAssignment() throws Exception {
         // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
         // Create a virtual machine with just MSI enabled without role and scope.
@@ -73,17 +71,21 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
             authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments1);
         boolean found = false;
-        for (RoleAssignment roleAssignment : rgRoleAssignments1) {
-            if (roleAssignment.principalId() != null
-                && roleAssignment
+        if (!isPlaybackMode()) {
+            for (RoleAssignment roleAssignment : rgRoleAssignments1) {
+                System.out.println(roleAssignment.principalId());
+                if (roleAssignment.principalId() != null
+                    && roleAssignment
                     .principalId()
                     .equalsIgnoreCase(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId())) {
-                found = true;
-                break;
+                    found = true;
+                    break;
+                }
             }
+            Assertions
+                .assertFalse(found, "Resource group should not have a role assignment with virtual machine MSI principal");
         }
-        Assertions
-            .assertFalse(found, "Resource group should not have a role assignment with virtual machine MSI principal");
+
 
         virtualMachine = virtualMachine.update().withSystemAssignedManagedServiceIdentity().apply();
 
@@ -97,18 +99,20 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         //
         rgRoleAssignments1 = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments1);
-        found = false;
-        for (RoleAssignment roleAssignment : rgRoleAssignments1) {
-            if (roleAssignment.principalId() != null
-                && roleAssignment
+        if (!isPlaybackMode()) {
+            found = false;
+            for (RoleAssignment roleAssignment : rgRoleAssignments1) {
+                if (roleAssignment.principalId() != null
+                    && roleAssignment
                     .principalId()
                     .equalsIgnoreCase(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId())) {
-                found = true;
-                break;
+                    found = true;
+                    break;
+                }
             }
+            Assertions
+                .assertFalse(found, "Resource group should not have a role assignment with virtual machine MSI principal");
         }
-        Assertions
-            .assertFalse(found, "Resource group should not have a role assignment with virtual machine MSI principal");
     }
 
     @Test
@@ -247,7 +251,6 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     }
 
     @Test
-    @LiveOnly
     public void canSetMSIOnExistingVMWithRoleAssignments() throws Exception {
         // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
         VirtualMachine virtualMachine =
@@ -284,17 +287,19 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
             authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments1);
         boolean found = false;
-        for (RoleAssignment roleAssignment : rgRoleAssignments1) {
-            if (roleAssignment.principalId() != null
-                && roleAssignment
+        if (!isPlaybackMode()) {
+            for (RoleAssignment roleAssignment : rgRoleAssignments1) {
+                if (roleAssignment.principalId() != null
+                    && roleAssignment
                     .principalId()
                     .equalsIgnoreCase(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId())) {
-                found = true;
-                break;
+                    found = true;
+                    break;
+                }
             }
+            Assertions
+                .assertFalse(found, "Resource group should not have a role assignment with virtual machine MSI principal");
         }
-        Assertions
-            .assertFalse(found, "Resource group should not have a role assignment with virtual machine MSI principal");
 
         virtualMachine
             .update()
@@ -306,16 +311,18 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         //
         PagedIterable<RoleAssignment> roleAssignments2 = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(roleAssignments2);
-        for (RoleAssignment roleAssignment : roleAssignments2) {
-            if (roleAssignment.principalId() != null
-                && roleAssignment
+        if (!isPlaybackMode()) {
+            for (RoleAssignment roleAssignment : roleAssignments2) {
+                if (roleAssignment.principalId() != null
+                    && roleAssignment
                     .principalId()
                     .equalsIgnoreCase(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId())) {
-                found = true;
-                break;
+                    found = true;
+                    break;
+                }
             }
+            Assertions.assertTrue(found, "Resource group should have a role assignment with virtual machine MSI principal");
         }
-        Assertions.assertTrue(found, "Resource group should have a role assignment with virtual machine MSI principal");
     }
 
     private static Integer objectToInteger(Object obj) {

@@ -11,7 +11,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.msi.models.Identity;
@@ -126,7 +125,6 @@ public class MSIIdentityManagementTests extends ResourceManagerTestProxyTestBase
     }
 
     @Test
-    @LiveOnly
     public void canAssignCurrentResourceGroupAccessRoleToIdentity() throws Exception {
         rgName = generateRandomResourceName("javaismrg", 15);
         String identityName = generateRandomResourceName("msi-id", 15);
@@ -155,23 +153,25 @@ public class MSIIdentityManagementTests extends ResourceManagerTestProxyTestBase
         }
         Assertions.assertTrue(found, "Expected role assignment not found for the resource group that identity belongs to");
 
-        identity.update()
+        if (!isPlaybackMode()) {
+            identity.update()
                 .withoutAccessTo(resourceGroup.id(), BuiltInRole.READER)
                 .apply();
 
-        ResourceManagerUtils.sleep(Duration.ofSeconds(30));
+            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
 
-        // Ensure role assignment removed
-        //
-        roleAssignments = this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
-        boolean notFound = true;
-        for (RoleAssignment roleAssignment : roleAssignments) {
-            if (roleAssignment.principalId() != null && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
-                notFound = false;
-                break;
+            // Ensure role assignment removed
+            //
+            roleAssignments = this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
+            boolean notFound = true;
+            for (RoleAssignment roleAssignment : roleAssignments) {
+                if (roleAssignment.principalId() != null && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
+                    notFound = false;
+                    break;
+                }
             }
+            Assertions.assertTrue(notFound, "Role assignment to access resource group is not removed");
         }
-        Assertions.assertTrue(notFound, "Role assignment to access resource group is not removed");
 
         msiManager.identities()
                 .deleteById(identity.id());

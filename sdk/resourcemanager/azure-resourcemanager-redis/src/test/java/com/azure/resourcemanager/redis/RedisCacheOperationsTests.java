@@ -6,7 +6,6 @@ package com.azure.resourcemanager.redis;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.redis.models.DayOfWeek;
 import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redis.models.RebootType;
@@ -317,7 +316,6 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
     }
 
     @Test
-    @LiveOnly
     public void canCreateRedisWithRdbAof() {
         // LiveOnly because "connectionString cannot be stored in recordings."
         StorageAccount storageAccount =
@@ -368,7 +366,9 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .create();
         Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().aofBackupEnabled());
         Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString0());
-        Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString1());
+        if (!isPlaybackMode()) {
+            Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString1());
+        }
 
         assertSameVersion(RedisCache.RedisVersion.V6, redisCache.redisVersion());
     }

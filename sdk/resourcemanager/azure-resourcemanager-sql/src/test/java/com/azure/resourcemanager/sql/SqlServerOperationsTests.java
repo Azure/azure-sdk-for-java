@@ -7,7 +7,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -584,27 +583,28 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    @LiveOnly
     public void canGetSqlServerCapabilitiesAndCreateIdentity() throws Exception {
         // LiveOnly because "test timing out after latest test proxy update"
         String sqlServerAdminName = "sqladmin";
         String sqlServerAdminPassword = password();
         String databaseName = "db-from-sample";
 
-        RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST);
-        Assertions.assertNotNull(regionCapabilities);
-        Assertions.assertNotNull(regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0"));
-        Assertions
-            .assertTrue(
-                regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0").supportedEditions().size() > 0);
-        Assertions
-            .assertTrue(
-                regionCapabilities
+        if (!isPlaybackMode()) {
+            RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST);
+            Assertions.assertNotNull(regionCapabilities);
+            Assertions.assertNotNull(regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0"));
+            Assertions
+                .assertTrue(
+                    regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0").supportedEditions().size() > 0);
+            Assertions
+                .assertTrue(
+                    regionCapabilities
                         .supportedCapabilitiesByServerVersion()
                         .get("12.0")
                         .supportedElasticPoolEditions()
                         .size()
-                    > 0);
+                        > 0);
+        }
 
         // Create
         SqlServer sqlServer =
@@ -616,26 +616,19 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .withAdministratorLogin(sqlServerAdminName)
                 .withAdministratorPassword(sqlServerAdminPassword)
                 .withSystemAssignedManagedServiceIdentity()
-                .defineDatabase(databaseName)
-                .fromSample(SampleName.ADVENTURE_WORKS_LT)
-                .withBasicEdition()
-                .attach()
                 .create();
+        sqlServer.databases().define(databaseName).fromSample(SampleName.ADVENTURE_WORKS_LT).withBasicEdition().create();
         SqlDatabase dbFromSample = sqlServer.databases().get(databaseName);
         Assertions.assertNotNull(dbFromSample);
         Assertions.assertEquals(DatabaseEdition.BASIC, dbFromSample.edition());
 
         Assertions.assertTrue(sqlServer.isManagedServiceIdentityEnabled());
-        if (!isPlaybackMode()) {
-            Assertions.assertEquals(sqlServerManager.tenantId(), sqlServer.systemAssignedManagedServiceIdentityTenantId());
-        }
+        Assertions.assertEquals(sqlServerManager.tenantId(), sqlServer.systemAssignedManagedServiceIdentityTenantId());
         Assertions.assertNotNull(sqlServer.systemAssignedManagedServiceIdentityPrincipalId());
 
         sqlServer.update().withSystemAssignedManagedServiceIdentity().apply();
         Assertions.assertTrue(sqlServer.isManagedServiceIdentityEnabled());
-        if (!isPlaybackMode()) {
-            Assertions.assertEquals(sqlServerManager.tenantId(), sqlServer.systemAssignedManagedServiceIdentityTenantId());
-        }
+        Assertions.assertEquals(sqlServerManager.tenantId(), sqlServer.systemAssignedManagedServiceIdentityTenantId());
         Assertions.assertNotNull(sqlServer.systemAssignedManagedServiceIdentityPrincipalId());
 
         // cleanup
@@ -1654,7 +1647,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    @LiveOnly
     public void testRandomSku() {
         // LiveOnly because "test timing out after latest test proxy update"
         // "M" series is not supported in this region
@@ -1665,20 +1657,25 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
-                serverVersionCapability.supportedEditions().forEach(edition -> {
-                    edition.supportedServiceLevelObjectives().forEach(serviceObjective -> {
-                        if (serviceObjective.status() != CapabilityStatus.AVAILABLE && serviceObjective.status() != CapabilityStatus.DEFAULT || "M".equals(serviceObjective.sku().family())) {
-                            databaseSkus.remove(DatabaseSku.fromSku(serviceObjective.sku()));
-                        }
-                    });
-                });
-                serverVersionCapability.supportedElasticPoolEditions().forEach(edition -> {
-                    edition.supportedElasticPoolPerformanceLevels().forEach(performance -> {
-                        if (performance.status() != CapabilityStatus.AVAILABLE && performance.status() != CapabilityStatus.DEFAULT || "M".equals(performance.sku().family())) {
-                            elasticPoolSkus.remove(ElasticPoolSku.fromSku(performance.sku()));
-                        }
-                    });
-                });
+                serverVersionCapability.supportedEditions().forEach(edition ->
+                        edition.supportedServiceLevelObjectives()
+                            .stream().filter(serviceObjective ->
+                                (serviceObjective.status() != CapabilityStatus.AVAILABLE
+                                    && serviceObjective.status() != CapabilityStatus.DEFAULT)
+                                    || "M".equals(serviceObjective.sku().family()))
+                            .map(serviceObjective -> DatabaseSku.fromSku(serviceObjective.sku()))
+                            .forEach(fromSku -> databaseSkus.removeIf(databaseSku -> databaseSku.equals(fromSku)))
+                );
+
+                serverVersionCapability.supportedElasticPoolEditions().forEach(edition ->
+                        edition.supportedElasticPoolPerformanceLevels()
+                            .stream().filter(performance ->
+                                (performance.status() != CapabilityStatus.AVAILABLE
+                                    && performance.status() != CapabilityStatus.DEFAULT)
+                                    || "M".equals(performance.sku().family()))
+                            .map(performance -> ElasticPoolSku.fromSku(performance.sku()))
+                            .forEach(fromSku -> elasticPoolSkus.removeIf(elasticPoolSku -> elasticPoolSku.equals(fromSku)))
+                );
             });
 
         SqlServer sqlServer = sqlServerManager.sqlServers().define(sqlServerName)
@@ -1696,7 +1693,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             Flux.range(0, 3)
                 .flatMap(i -> sqlServer.elasticPools().define("elasticPool" + i).withSku(elasticPoolSkus.get(i)).createAsync().cast(Indexable.class))
         )
-            .blockLast();
+            .blockLast(Duration.ofMinutes(15));
     }
 
     @Test
@@ -1755,16 +1752,16 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .append("\n    ").append("/** ").append(edition).append(" Edition with ").append(detailName).append(" sku. */")
             .append("\n    ").append("public static final ").append(className).append(" ").append(String.format("%s_%s", edition.toUpperCase(Locale.ROOT), detailName.toUpperCase(Locale.ROOT))).append(" =")
             .append("\n        new ").append(className).append("(")
-                .append(sku.name() == null ? null : "\"" + sku.name() + "\"")
-                .append(", ")
-                .append(sku.tier() == null ? null : "\"" + sku.tier() + "\"")
-                .append(", ")
-                .append(sku.family() == null ? null : "\"" + sku.family() + "\"")
-                .append(", ")
-                .append(sku.capacity())
-                .append(", ")
-                .append(sku.size() == null ? null : "\"" + sku.size() + "\"")
-                .append(");");
+            .append(sku.name() == null ? null : "\"" + sku.name() + "\"")
+            .append(", ")
+            .append(sku.tier() == null ? null : "\"" + sku.tier() + "\"")
+            .append(", ")
+            .append(sku.family() == null ? null : "\"" + sku.family() + "\"")
+            .append(", ")
+            .append(sku.capacity())
+            .append(", ")
+            .append(sku.size() == null ? null : "\"" + sku.size() + "\"")
+            .append(");");
     }
 
     @Test
