@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.62.0 (2024-07-01)
+### 4.62.0 (2024-07-02)
 
 #### Features Added
 * Added support for changing some request options dynamically without the need of restarting the application. - See [PR 40061](https://github.com/Azure/azure-sdk-for-java/pull/40061)
