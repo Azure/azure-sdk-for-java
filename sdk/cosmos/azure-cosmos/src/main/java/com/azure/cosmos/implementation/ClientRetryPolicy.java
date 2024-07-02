@@ -168,12 +168,15 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         if (clientException != null
             && Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.REQUEST_TIMEOUT)
             && Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT)) {
-            logger.info(
-                "Request timeout  - IsReadRequest {}, IsWebExceptionRetriable {}, NonIdempotentWriteRetriesEnabled {}",
-                this.isReadRequest,
-                false,
-                this.request.getNonIdempotentWriteRetriesEnabled(),
-                e);
+
+            if (logger.isDebugEnabled()) {
+                logger.debug(
+                    "Request timeout  - IsReadRequest {}, IsWebExceptionRetriable {}, NonIdempotentWriteRetriesEnabled {}",
+                    this.isReadRequest,
+                    false,
+                    this.request.getNonIdempotentWriteRetriesEnabled(),
+                    e);
+            }
 
             return this.shouldRetryOnRequestTimeout(
                 this.isReadRequest,
@@ -181,11 +184,12 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             );
         }
 
-        if (clientException != null &&
-            Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR) &&
-            Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.UNKNOWN)) {
+        if (clientException != null && Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR)) {
 
-            logger.info("Internal server error - IsReadRequest {}", this.isReadRequest, e);
+            if (logger.isDebugEnabled()) {
+                logger.info("Internal server error - IsReadRequest {}", this.isReadRequest, e);
+            }
+
             return this.shouldRetryOnInternalServerError();
         }
 
