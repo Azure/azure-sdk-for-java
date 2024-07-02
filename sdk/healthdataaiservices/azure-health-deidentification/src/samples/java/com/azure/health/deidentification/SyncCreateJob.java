@@ -15,11 +15,6 @@ import java.util.List;
 
 public class SyncCreateJob {
     public static void main(String[] args) {
-        // BEGIN: com.azure.health.deidentification.sync.createjob
-        String jobName = "MyJob-" + Instant.now().toEpochMilli();
-        String outputFolder = "_output";
-        String inputPrefix = "example_patient_1";
-
         DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpClient(HttpClient.createDefault())
@@ -30,18 +25,23 @@ public class SyncCreateJob {
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
-
+        // BEGIN: com.azure.health.deidentification.sync.createjob.create
+        String jobName = "MyJob-" + Instant.now().toEpochMilli();
+        String outputFolder = "_output";
+        String inputPrefix = "example_patient_1";
         DeidentificationJob job = new DeidentificationJob(
             new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions),
             new TargetStorageLocation(storageAccountSASUri, outputFolder),
             OperationType.SURROGATE,
             DocumentDataType.PLAINTEXT);
-
+        // END: com.azure.health.deidentification.sync.createjob.create
+        // BEGIN: com.azure.health.deidentification.sync.createjob.process
         DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job)
             .waitForCompletion()
             .getValue();
         System.out.println(jobName + " - " + result.getStatus());
         // MyJob-1719953889301 - Succeeded
-        // END: com.azure.health.deidentification.sync.createjob
+        // END: com.azure.health.deidentification.sync.createjob.process
+
     }
 }

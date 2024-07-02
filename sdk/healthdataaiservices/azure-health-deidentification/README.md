@@ -58,26 +58,50 @@ The following sections provide several code snippets covering some of the most c
 
 Create a `DeidentificationClient` using the `DEID_SERVICE_ENDPOINT` environment variable.
 
-```java com.azure.health.deidentification.helloworld
+```java com.azure.health.deidentification.readme
+DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
+    .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
+    .httpClient(HttpClient.createDefault())
+    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+
+DeidentificationClient deidentificationClient = deidentificationClientbuilder.buildClient();
 ```
 
 ### Calling `Deidentification` endpoint
 
 Calling the realtime endpoint with an input.
 
-```java com.azure.health.deidentification.helloworld
+```java com.azure.health.deidentification.sync.helloworld
+String inputText = "Hello, my name is John Smith.";
+DeidentificationContent content = new DeidentificationContent(inputText, OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
+DeidentificationResult result = deidentificationClient.deidentify(content);
+System.out.println("Deidentified output: " + result.getOutputText());
+// Deidentified output: Hello, my name is Harley Billiard.
 ```
 ### Creating Deidentification Job
 
 Creating a Deidentification Job using `STORAGE_ACCOUNT_SAS_URI` environment variable.
 
-```java com.azure.health.deidentification.sync.createjob
+```java com.azure.health.deidentification.sync.createjob.create
+String jobName = "MyJob-" + Instant.now().toEpochMilli();
+String outputFolder = "_output";
+String inputPrefix = "example_patient_1";
+DeidentificationJob job = new DeidentificationJob(
+    new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions),
+    new TargetStorageLocation(storageAccountSASUri, outputFolder),
+    OperationType.SURROGATE,
+    DocumentDataType.PLAINTEXT);
 ```
 ### Process Deidentification Job
 
 Create and poll job until it is completed.
 
-```java com.azure.health.deidentification.sync.createjob
+```java com.azure.health.deidentification.sync.createjob.process
+DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job)
+    .waitForCompletion()
+    .getValue();
+System.out.println(jobName + " - " + result.getStatus());
+// MyJob-1719953889301 - Succeeded
 ```
 
 ### List Deidentification Jobs
@@ -85,6 +109,11 @@ Create and poll job until it is completed.
 List and process deidentification jobs
 
 ```java com.azure.health.deidentification.sync.listjobs
+PagedIterable<DeidentificationJob> jobs = deidentificationClient.listJobs();
+for (DeidentificationJob currentJob : jobs) {
+    System.out.println(currentJob.getName() + " - " + currentJob.getStatus());
+    // MyJob-1719953889301 - Succeeded
+}
 ```
 
 ### List completed files
@@ -92,6 +121,13 @@ List and process deidentification jobs
 List the files which are completed by a job.
 
 ```java com.azure.health.deidentification.sync.listcompletedfiles
+PagedIterable<HealthFileDetails> reports = deidentificationClient.listJobFiles(jobName);
+
+for (HealthFileDetails currentFile : reports) {
+    System.out.println(currentFile.getId() + " - " + currentFile.getOutput().getPath());
+    // c45dcd5e-e3ce-4ff2-80b6-a8bbeb47f878 - _output/MyJob-1719954393623/example_patient_1/visit_summary.txt
+    // e55a1aa2-8eba-4515-b070-1fd3d005008b - _output/MyJob-1719954393623/example_patient_1/doctor_dictation.txt
+}
 ```
 
 

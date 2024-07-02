@@ -16,7 +16,6 @@ import java.util.List;
 
 public class SyncListCompletedFiles {
     public static void main(String[] args) {
-        // BEGIN: com.azure.health.deidentification.sync.listcompletedfiles
         String jobName = "MyJob-" + Instant.now().toEpochMilli();
         String outputFolder = "_output";
         String inputPrefix = "example_patient_1";
@@ -41,6 +40,7 @@ public class SyncListCompletedFiles {
         DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job)
             .waitForCompletion()
             .getValue();
+        // BEGIN: com.azure.health.deidentification.sync.listcompletedfiles
         PagedIterable<HealthFileDetails> reports = deidentificationClient.listJobFiles(jobName);
 
         for (HealthFileDetails currentFile : reports) {
@@ -48,7 +48,6 @@ public class SyncListCompletedFiles {
             // c45dcd5e-e3ce-4ff2-80b6-a8bbeb47f878 - _output/MyJob-1719954393623/example_patient_1/visit_summary.txt
             // e55a1aa2-8eba-4515-b070-1fd3d005008b - _output/MyJob-1719954393623/example_patient_1/doctor_dictation.txt
         }
-
         // END: com.azure.health.deidentification.sync.listcompletedfiles
     }
 }

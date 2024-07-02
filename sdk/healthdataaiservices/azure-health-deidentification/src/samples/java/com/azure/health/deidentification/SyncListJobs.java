@@ -14,7 +14,6 @@ import java.time.Instant;
 
 public class SyncListJobs {
     public static void main(String[] args) {
-        // BEGIN: com.azure.health.deidentification.sync.listjobs
         String jobName = "MyJob-" + Instant.now().toEpochMilli();
 
         DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
@@ -24,12 +23,12 @@ public class SyncListJobs {
 
         DeidentificationClient deidentificationClient = deidentificationClientbuilder.buildClient();
 
+        // BEGIN: com.azure.health.deidentification.sync.listjobs
         PagedIterable<DeidentificationJob> jobs = deidentificationClient.listJobs();
         for (DeidentificationJob currentJob : jobs) {
             System.out.println(currentJob.getName() + " - " + currentJob.getStatus());
             // MyJob-1719953889301 - Succeeded
         }
-
         // END: com.azure.health.deidentification.sync.listjobs
     }
 }

@@ -22,10 +22,11 @@ public final class ReadmeSamples {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         DeidentificationClient deidentificationClient = deidentificationClientbuilder.buildClient();
+        // END: com.azure.health.deidentification.readme
+
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText, OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
         DeidentificationResult result = deidentificationClient.deidentify(content);
         System.out.println("Deidentified output: " + result.getOutputText());
-        // END: com.azure.health.deidentification.readme
     }
 }
