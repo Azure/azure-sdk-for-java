@@ -5,7 +5,6 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
-import com.azure.cosmos.implementation.ReadOnlyRequestOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
  *  to change request options without restarting the application.
  *
  */
-public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
+public final class CosmosRequestOptions {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
     private ConsistencyLevel consistencyLevel;
     private Boolean contentResponseOnWriteEnabled;
@@ -221,47 +220,38 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
         return this;
     }
 
-    @Override
     public Integer getMaxItemCount() {
         return this.maxItemCount;
     }
 
-    @Override
     public Boolean isQueryMetricsEnabled() {
         return this.queryMetricsEnabled;
     }
 
-    @Override
     public Boolean isIndexMetricsEnabled() {
         return this.indexMetricsEnabled;
     }
 
-    @Override
     public String getQueryNameOrDefault(String defaultQueryName) {
         return this.queryName;
     }
 
-    @Override
     public Integer getMaxPrefetchPageCount() {
         return this.maxPrefetchPageCount;
     }
 
-    @Override
     public Integer getResponseContinuationTokenLimitInKb() {
         return this.responseContinuationTokenLimitInKb;
     }
 
-    @Override
     public Integer getMaxBufferedItemCount() {
         return this.maxBufferedItemCount;
     }
 
-    @Override
     public Integer getMaxDegreeOfParallelism() {
         return this.maxDegreeOfParallelism;
     }
 
-    @Override
     public List<String> getExcludedRegions() {
          if (this.excludeRegions == null) {
             return null;
@@ -269,43 +259,35 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
         return UnmodifiableList.unmodifiableList(this.excludeRegions);
     }
 
-    @Override
     public Boolean isScanInQueryEnabled() {
         return this.scanInQueryEnabled;
     }
 
-    @Override
     public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
         return this.thresholds;
     }
 
-    @Override
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }
 
 
-    @Override
     public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
         return this.dedicatedGatewayRequestOptions;
     }
 
-    @Override
     public Boolean getNonIdempotentWriteRetriesEnabled() {
         return this.nonIdempotentWriteRetriesEnabled;
     }
 
-    @Override
     public Boolean isContentResponseOnWriteEnabled() {
         return this.contentResponseOnWriteEnabled;
     }
 
-    @Override
     public ConsistencyLevel getConsistencyLevel() {
         return this.consistencyLevel;
     }
 
-    @Override
     public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig(){
         return this.endToEndOperationLatencyConfig;
     }
