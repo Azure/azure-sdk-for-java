@@ -9,6 +9,7 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -31,6 +32,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +64,11 @@ public class SyncRestProxyTests {
         @Get("my/url/path")
         @ExpectedResponses({ 200 })
         void testVoidMethod(Context context);
+
+
+        @Put("my/url/path")
+        @ExpectedResponses({ 200 })
+        Response<InputStream> testInputStreamResponse(Context context);
     }
 
     @Test
@@ -135,8 +144,17 @@ public class SyncRestProxyTests {
             boolean success = request.getUrl().getPath().equals("/my/url/path");
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
                 success &= "application/json".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
-            } else {
+            } else if (request.getHttpMethod().equals(HttpMethod.GET)) {
                 success &= request.getHttpMethod().equals(HttpMethod.GET);
+            } else {
+                success &= request.getHttpMethod().equals(HttpMethod.PUT);
+                return new MockHttpResponse(request, success ? 200 : 400, (InputStream) new ByteArrayInputStream("hello".getBytes())) {
+                    @Override
+                    public void close() {
+                        lastResponseClosed = true;
+                        super.close();
+                    }
+                };
             }
 
             return new MockHttpResponse(request, success ? 200 : 400) {
@@ -162,6 +180,26 @@ public class SyncRestProxyTests {
                 () -> "Missing expected key '" + expectedKvp.getKey() + "'.");
             assertEquals(expectedKvp.getValue(), actualContextValues.get(expectedKvp.getKey()));
         }
+    }
+
+    @Test
+    public void testInputStream() throws IOException {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        Response<InputStream> inputStreamResponse = testInterface.testInputStreamResponse(Context.NONE);
+        InputStream stream = inputStreamResponse.getValue();
+
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+        int count;
+        byte[] data = new byte[1024];
+
+        while ((count = stream.read(data, 0, data.length)) != -1) {
+            buffer.write(data, 0, count);
+        }
+        assertEquals("hello", new String(buffer.toByteArray()));
     }
 
     private static Stream<Arguments> mergeRequestOptionsContextSupplier() {
