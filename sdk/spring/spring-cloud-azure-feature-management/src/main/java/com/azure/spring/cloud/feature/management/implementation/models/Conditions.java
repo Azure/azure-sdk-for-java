@@ -47,7 +47,7 @@ public class Conditions {
      */
     public Map<Integer, FeatureFilterEvaluationContext> getClientFiltersAsMap() {
         final Map<Integer, FeatureFilterEvaluationContext> clientFiltersMap = new HashMap<>();
-        for (int i=0; i< clientFilters.size(); i++) {
+        for (int i = 0; i < clientFilters.size(); i++) {
             clientFiltersMap.put(i, clientFilters.get(i));
         }
         return clientFiltersMap;
