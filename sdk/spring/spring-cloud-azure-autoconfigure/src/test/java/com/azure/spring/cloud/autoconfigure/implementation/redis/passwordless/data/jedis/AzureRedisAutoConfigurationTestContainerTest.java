@@ -76,7 +76,7 @@ public class AzureRedisAutoConfigurationTestContainerTest {
 
     @Test
     @Order(2)
-    void testGetVauleAfterSet() {
+    void testGetValueAfterSet() {
         String value = (String) redisTemplate.opsForValue().get("valueMap3");
         Assertions.assertEquals("map3", value);
     }
