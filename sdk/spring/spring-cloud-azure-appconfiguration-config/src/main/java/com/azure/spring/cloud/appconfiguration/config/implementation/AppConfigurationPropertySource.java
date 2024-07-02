@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.core.env.EnumerablePropertySource;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -55,5 +55,5 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
         return String.join(",", labelFilters);
     }
 
-    protected abstract void initProperties(List<String> trim) throws JsonProcessingException;
+    protected abstract void initProperties(List<String> trim) throws InvalidConfigurationPropertyValueException;
 }

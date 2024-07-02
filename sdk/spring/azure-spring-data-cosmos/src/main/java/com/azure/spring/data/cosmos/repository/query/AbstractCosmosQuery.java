@@ -93,21 +93,25 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
     protected abstract CosmosQuery createQuery(CosmosParameterAccessor accessor);
 
     /**
+     * Return whether this is a deletion query.
      * @return whether this is a deletion query.
      */
     protected abstract boolean isDeleteQuery();
 
     /**
+     * Return whether this is an exists query.
      * @return whether this is an exists query.
      */
     protected abstract boolean isExistsQuery();
 
     /**
+     * Return whether this is a count query.
      * @return whether this is a count query.
      */
     protected abstract boolean isCountQuery();
 
     /**
+     * Return whether this is a page query.
      * @return whether this is a page query.
      */
     protected boolean isPageQuery() {
@@ -115,6 +119,7 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
     }
 
     /**
+     * Return whether this is a collection query.
      * @return whether this is a collection query.
      */
     protected boolean isCollectionQuery() {
@@ -122,6 +127,7 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
     }
 
     /**
+     * Return whether this is a slice query.
      * @return whether this is a slice query.
      */
     protected boolean isSliceQuery() {

@@ -15,9 +15,12 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+import org.mockito.quality.Strictness;
 import org.springframework.context.ApplicationEventPublisher;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
+import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 
 import net.jcip.annotations.NotThreadSafe;
 
@@ -26,6 +29,9 @@ public class AppConfigurationPullRefreshTest {
 
     @Mock
     private ApplicationEventPublisher publisher;
+    
+    @Mock
+    private ReplicaLookUp replicaLookUpMock;
 
     private final Duration refreshInterval = Duration.ofMinutes(10);
 
@@ -33,16 +39,20 @@ public class AppConfigurationPullRefreshTest {
 
     @Mock
     private AppConfigurationReplicaClientFactory clientFactoryMock;
+    
+    private MockitoSession session;
 
     @BeforeEach
     public void setup() {
+        session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
         MockitoAnnotations.openMocks(this);
         eventData = new RefreshEventData();
     }
 
     @AfterEach
-    public void cleanupMethod() throws Exception {
+    public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
+        session.finishMocking();
     }
 
     @Test
@@ -55,7 +65,7 @@ public class AppConfigurationPullRefreshTest {
                 .thenReturn(eventData);
 
             AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
-                (long) 0);
+                (long) 0, replicaLookUpMock);
             assertFalse(refresh.refreshConfigurations().block());
         }
     }
@@ -71,7 +81,7 @@ public class AppConfigurationPullRefreshTest {
                 .thenReturn(eventData);
 
             AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
-                (long) 0);
+                (long) 0, replicaLookUpMock);
             refresh.setApplicationEventPublisher(publisher);
             assertTrue(refresh.refreshConfigurations().block());
         }

@@ -17,15 +17,15 @@ import com.azure.spring.integration.core.implementation.instrumentation.DefaultI
 import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.integration.eventhubs.implementation.health.EventHubsProcessorInstrumentation;
 import com.azure.spring.messaging.ListenerMode;
-import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.eventhubs.implementation.core.listener.adapter.BatchMessagingMessageListenerAdapter;
-import com.azure.spring.messaging.eventhubs.support.converter.EventHubsBatchMessageConverter;
-import com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter;
+import com.azure.spring.messaging.eventhubs.implementation.support.converter.EventHubsBatchMessageConverter;
+import com.azure.spring.messaging.eventhubs.implementation.support.converter.EventHubsMessageConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -116,7 +116,7 @@ class EventHubsInboundChannelAdapterTests {
 
     @Test
     void setMessageConverter() {
-        AbstractAzureMessageConverter<EventData, EventData> converter = mock(EventHubsMessageConverter.class);
+        AzureMessageConverter<EventData, EventData> converter = mock(EventHubsMessageConverter.class);
         this.adapter.setMessageConverter(converter);
         assertThat(this.adapter).extracting("recordListener").extracting("messageConverter").isEqualTo(converter);
         assertThat(this.adapter).extracting("batchListener").extracting("messageConverter").isNotEqualTo(converter);
@@ -124,7 +124,7 @@ class EventHubsInboundChannelAdapterTests {
 
     @Test
     void setBatchMessageConverter() {
-        AbstractAzureMessageConverter<EventBatchContext, EventData> converter = mock(EventHubsBatchMessageConverter.class);
+        AzureMessageConverter<EventBatchContext, EventData> converter = mock(EventHubsBatchMessageConverter.class);
         this.adapter.setBatchMessageConverter(converter);
         assertThat(this.adapter).extracting("batchListener").extracting("messageConverter").isEqualTo(converter);
         assertThat(this.adapter).extracting("recordListener").extracting("messageConverter").isNotEqualTo(converter);

@@ -5,7 +5,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.properties
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 /**
  * Properties for what needs to be requested from Azure App Configuration for Feature Flags.

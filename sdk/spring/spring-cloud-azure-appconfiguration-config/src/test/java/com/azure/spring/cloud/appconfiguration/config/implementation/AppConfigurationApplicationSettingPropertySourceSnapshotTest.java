@@ -21,6 +21,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItem;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -35,11 +36,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+import org.mockito.quality.Strictness;
 
-import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
-import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -88,6 +89,10 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
 
     @Mock
     private List<ConfigurationSetting> configurationListMock;
+    
+    FeatureFlagClient featureFlagLoader = new FeatureFlagClient();
+    
+    private MockitoSession session;
 
     @BeforeAll
     public static void setup() {
@@ -96,6 +101,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
 
     @BeforeEach
     public void init() {
+        session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
         MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
         MockitoAnnotations.openMocks(this);
@@ -110,32 +116,28 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         TRIM.add(KEY_FILTER);
 
         propertySource = new AppConfigurationSnapshotPropertySource(TEST_STORE_NAME, clientMock,
-            keyVaultClientFactoryMock, SNAPSHOT_NAME);
+            keyVaultClientFactoryMock, SNAPSHOT_NAME, featureFlagLoader);
     }
 
     @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
+        session.finishMocking();
     }
 
     @Test
     public void testPropCanBeInitAndQueried() throws IOException {
-        when(configurationListMock.iterator()).thenReturn(testItems.iterator());
+        when(configurationListMock.iterator()).thenReturn(testItems.iterator()).thenReturn(testItems.iterator());
         when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
-        when(clientMock.getTracingInfo())
-            .thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
 
         propertySource.initProperties(TRIM);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = testItems.stream().map(t -> {
-            if (t.getKey().startsWith(".appconfig.featureflag/")) {
-                return t.getKey().replace(".appconfig.featureflag/", "feature-management.");
-            }
             return t.getKey().replaceFirst("^" + KEY_FILTER, "").replace("/", ".");
 
-        }).toArray(String[]::new);
+        }).filter(key -> !key.startsWith(".appconfig")).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);
 
@@ -143,6 +145,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         assertThat(propertySource.getProperty(TEST_KEY_2)).isEqualTo(TEST_VALUE_2);
         assertThat(propertySource.getProperty(TEST_KEY_3)).isEqualTo(TEST_VALUE_3);
         assertThat(propertySource.getProperty(".bar.test_key_4")).isEqualTo("test_value_4");
+        assertEquals(1, featureFlagLoader.getProperties().size());
     }
 
     @Test

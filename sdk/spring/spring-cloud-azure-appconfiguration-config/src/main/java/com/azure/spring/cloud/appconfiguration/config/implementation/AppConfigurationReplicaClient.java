@@ -10,13 +10,20 @@ import java.util.List;
 import org.springframework.util.StringUtils;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
+
+import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
  * Client for connecting to App Configuration when multiple replicas are in use.
@@ -92,14 +99,7 @@ class AppConfigurationReplicaClient {
             this.failedAttempts = 0;
             return watchKey;
         } catch (HttpResponseException e) {
-            if (e.getResponse() != null) {
-                int statusCode = e.getResponse().getStatusCode();
-
-                if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
-                    throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
-                }
-            }
-            throw e;
+            throw hanndleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
@@ -116,18 +116,38 @@ class AppConfigurationReplicaClient {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);
+            settings.forEach(setting -> {
+                configurationSettings.add(NormalizeNull.normalizeNullLabel(setting));
+            });
+            // Needs to happen after or we don't know if the request succeeded or failed.
             this.failedAttempts = 0;
-            settings.forEach(setting -> configurationSettings.add(NormalizeNull.normalizeNullLabel(setting)));
             return configurationSettings;
         } catch (HttpResponseException e) {
-            if (e.getResponse() != null) {
-                int statusCode = e.getResponse().getStatusCode();
+            throw hanndleHttpResponseException(e);
+        } catch (UncheckedIOException e) {
+            throw new AppConfigurationStatusException(e.getMessage(), null, null);
+        }
+    }
 
-                if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
-                    throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
+    FeatureFlags listFeatureFlags(SettingSelector settingSelector) throws HttpResponseException {
+        List<ConfigurationSetting> configurationSettings = new ArrayList<>();
+        List<MatchConditions> checks = new ArrayList<>();
+        try {
+            client.listConfigurationSettings(settingSelector).streamByPage().forEach(pagedResponse -> {
+                checks.add(
+                    new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
+                for (ConfigurationSetting featureFlag : pagedResponse.getValue()) {
+                    configurationSettings
+                        .add((FeatureFlagConfigurationSetting) NormalizeNull.normalizeNullLabel(featureFlag));
                 }
-            }
-            throw e;
+            });
+
+            // Needs to happen after or we don't know if the request succeeded or failed.
+            this.failedAttempts = 0;
+            settingSelector.setMatchConditions(checks);
+            return new FeatureFlags(settingSelector, configurationSettings);
+        } catch (HttpResponseException e) {
+            throw hanndleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
@@ -146,17 +166,16 @@ class AppConfigurationReplicaClient {
             settings.forEach(setting -> configurationSettings.add(NormalizeNull.normalizeNullLabel(setting)));
             return configurationSettings;
         } catch (HttpResponseException e) {
-            if (e.getResponse() != null) {
-                int statusCode = e.getResponse().getStatusCode();
-
-                if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
-                    throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
-                }
-            }
-            throw e;
+            throw hanndleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
+    }
+
+    Boolean checkWatchKeys(SettingSelector settingSelector) {
+        List<PagedResponse<ConfigurationSetting>> results = client.listConfigurationSettings(settingSelector)
+            .streamByPage().filter(pagedResponse -> pagedResponse.getStatusCode() != 304).toList();
+        return results.size() > 0;
     }
 
     /**
@@ -167,6 +186,19 @@ class AppConfigurationReplicaClient {
         if (StringUtils.hasText(syncToken)) {
             client.updateSyncToken(syncToken);
         }
+    }
+
+    private HttpResponseException hanndleHttpResponseException(HttpResponseException e) {
+        if (e.getResponse() != null) {
+            int statusCode = e.getResponse().getStatusCode();
+
+            if (statusCode == HttpResponseStatus.TOO_MANY_REQUESTS.code()
+                || statusCode == HttpResponseStatus.REQUEST_TIMEOUT.code()
+                || statusCode >= HttpResponseStatus.INTERNAL_SERVER_ERROR.code()) {
+                return new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
+            }
+        }
+        return e;
     }
 
     TracingInfo getTracingInfo() {

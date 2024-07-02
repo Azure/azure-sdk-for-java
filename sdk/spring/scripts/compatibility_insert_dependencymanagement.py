@@ -139,16 +139,16 @@ def add_repo_path(file_path, repo_type):
 
 
 def update_spring_boot_starter_parent_for_file(file_path, spring_boot_dependencies_version):
-     with open(file_path, 'r', encoding = 'utf-8') as pom_file:
-         pom_file_content = pom_file.read()
-         if pom_file_content.find('<artifactId>spring-boot-starter-parent</artifactId>') == -1:
-             log.debug("No spring-boot-starter-parent found in " + file_path + ". Not updating it.")
-             return
-         with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
-             log.info("Found spring-boot-starter-parent found in " + file_path + ". Now updating it.")
-             new_content = pom_file_content.replace('<artifactId>spring-boot-starter-parent</artifactId>',
-                 '<artifactId>spring-boot-starter-parent</artifactId>\n<version>{}</version>'.format(spring_boot_dependencies_version))
-             updated_pom_file.writelines(new_content)
+    with open(file_path, 'r', encoding = 'utf-8') as pom_file:
+        pom_file_content = pom_file.read()
+        if pom_file_content.find('<artifactId>spring-boot-starter-parent</artifactId>') == -1:
+            log.debug("No spring-boot-starter-parent found in " + file_path + ". Not updating it.")
+            return
+        with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
+            log.info("Found spring-boot-starter-parent found in " + file_path + ". Now updating it.")
+            new_content = pom_file_content.replace('<artifactId>spring-boot-starter-parent</artifactId>',
+                '<artifactId>spring-boot-starter-parent</artifactId>\n<version>{}</version>'.format(spring_boot_dependencies_version))
+            updated_pom_file.writelines(new_content)
 
 
 def get_dependency_management_content():
@@ -171,7 +171,6 @@ def get_dependency_management_content():
       </dependency>
     </dependencies>
   </dependencyManagement>
-
 """
 
 
@@ -180,7 +179,7 @@ def get_properties_contend_with_tag(spring_boot_dependencies_version, spring_clo
   <properties>
     {}
   </properties>
-  
+
   """.format(get_properties_contend(spring_boot_dependencies_version, spring_cloud_dependencies_version))
 
 

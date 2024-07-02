@@ -6,6 +6,8 @@ import org.springframework.data.repository.core.EntityMetadata;
 
 /**
  * Metadata class to describe cosmos entity includes domain type and container information
+ *
+ * @param <T> domain type.
  */
 public interface CosmosEntityMetadata<T> extends EntityMetadata<T> {
 

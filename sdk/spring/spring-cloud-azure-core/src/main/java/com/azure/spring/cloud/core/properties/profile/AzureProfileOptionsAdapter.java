@@ -14,6 +14,12 @@ import org.springframework.beans.BeanUtils;
 public abstract class AzureProfileOptionsAdapter implements AzureProfileOptionsProvider.ProfileOptions {
 
     /**
+     * Creates an instance of {@link AzureProfileOptionsAdapter}.
+     */
+    public AzureProfileOptionsAdapter() {
+    }
+
+    /**
      * Change the environment according to the cloud type set.
      */
     protected void changeEnvironmentAccordingToCloud() {

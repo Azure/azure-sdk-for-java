@@ -8,7 +8,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties;
+import com.azure.spring.cloud.resourcemanager.implementation.provisioning.properties.ServiceBusTopicProperties;
 import org.springframework.lang.Nullable;
 import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
@@ -19,7 +19,7 @@ import reactor.util.function.Tuples;
 public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<ServiceBusSubscription,
     Tuple3<String, String, String>, ServiceBusTopicProperties> {
 
-    private final ServiceBusTopicCrud serviceBusTopicCrud;
+    private ServiceBusTopicCrud serviceBusTopicCrud;
     public ServiceBusTopicSubscriptionCrud(AzureResourceManager azureResourceManager,
                                            AzureResourceMetadata azureResourceMetadata) {
         this(azureResourceManager, azureResourceMetadata,

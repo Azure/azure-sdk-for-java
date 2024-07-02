@@ -15,6 +15,12 @@ import java.util.List;
 public final class HttpClientProperties extends ClientProperties implements ClientOptionsProvider.HttpClientOptions {
 
     /**
+     * Creates an instance of {@link HttpClientProperties}.
+     */
+    public HttpClientProperties() {
+    }
+
+    /**
      * Amount of time(Duration) each request being sent over the wire.
      */
     private Duration writeTimeout;

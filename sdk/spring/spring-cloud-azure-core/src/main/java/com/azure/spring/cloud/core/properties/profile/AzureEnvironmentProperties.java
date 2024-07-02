@@ -26,15 +26,6 @@ public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.A
         }};
 
     /**
-     * Provides the environment instance for Azure Germany.
-     * @deprecated AZURE_GERMANY is deprecated. Please use other environment instances.
-     */
-    @Deprecated
-    public static final AzureEnvironmentProperties AZURE_GERMANY = new AzureEnvironmentProperties(AzureEnvironment.AZURE_GERMANY) {{
-            setServiceBusDomainName("servicebus.cloudapi.de");
-        }};
-
-    /**
      * Provides the environment instance for Azure US Government.
      */
     public static final AzureEnvironmentProperties AZURE_US_GOVERNMENT = new AzureEnvironmentProperties(AzureEnvironment.AZURE_US_GOVERNMENT) {{

@@ -12,6 +12,12 @@ import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOption
 public final class TokenCredentialProperties implements TokenCredentialOptionsProvider.TokenCredentialOptions {
 
     /**
+     * Creates an instance of {@link TokenCredentialProperties}.
+     */
+    public TokenCredentialProperties() {
+    }
+
+    /**
      * Client id to use when performing service principal authentication with Azure.
      */
     private String clientId;

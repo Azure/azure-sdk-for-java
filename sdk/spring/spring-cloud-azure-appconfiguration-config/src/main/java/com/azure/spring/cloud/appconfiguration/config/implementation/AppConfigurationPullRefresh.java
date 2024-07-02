@@ -3,8 +3,6 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -12,14 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.endpoint.event.RefreshEvent;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
+import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
 
 import reactor.core.publisher.Mono;
@@ -28,7 +24,7 @@ import reactor.core.publisher.Mono;
  * Enables checking of Configuration updates.
  */
 @Component
-public class AppConfigurationPullRefresh implements AppConfigurationRefresh, EnvironmentAware {
+public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPullRefresh.class);
 
@@ -41,8 +37,8 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     private final AppConfigurationReplicaClientFactory clientFactory;
 
     private final Duration refreshInterval;
-
-    private List<String> profiles;
+    
+    private final ReplicaLookUp replicaLookUp;
 
     /**
      * Component used for checking for and triggering configuration refreshes.
@@ -52,10 +48,11 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
      * @param defaultMinBackoff minimum time between backoff retries minimum backoff time
      */
     public AppConfigurationPullRefresh(AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval,
-        Long defaultMinBackoff) {
+        Long defaultMinBackoff, ReplicaLookUp replicaLookUp) {
         this.defaultMinBackoff = defaultMinBackoff;
         this.refreshInterval = refreshInterval;
         this.clientFactory = clientFactory;
+        this.replicaLookUp = replicaLookUp;
 
     }
 
@@ -71,7 +68,6 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
      * @return Future with a boolean of if a RefreshEvent was published. If refreshConfigurations is currently being run
      * elsewhere this method will return right away as <b>false</b>.
      */
-    @Async
     public Mono<Boolean> refreshConfigurations() {
         return Mono.just(refreshStores());
     }
@@ -98,12 +94,12 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
      *
      * @return If a refresh event is called.
      */
-    private Boolean refreshStores() {
+    private boolean refreshStores() {
         if (running.compareAndSet(false, true)) {
             BaseAppConfigurationPolicy.setWatchRequests(true);
             try {
                 RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactory,
-                    refreshInterval, profiles, defaultMinBackoff);
+                    refreshInterval, defaultMinBackoff, replicaLookUp);
                 if (eventData.getDoRefresh()) {
                     publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
                     return true;
@@ -122,11 +118,6 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     @Override
     public Map<String, AppConfigurationStoreHealth> getAppConfigurationStoresHealth() {
         return clientFactory.getHealth();
-    }
-
-    @Override
-    public void setEnvironment(Environment environment) {
-        profiles = Arrays.asList(environment.getActiveProfiles());
     }
 
 }

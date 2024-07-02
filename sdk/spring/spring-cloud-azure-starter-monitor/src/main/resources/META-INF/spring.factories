@@ -1,2 +1,0 @@
-org.springframework.boot.env.EnvironmentPostProcessor=\
-  com.azure.monitor.applicationinsights.spring.PropertiesPostProcessor

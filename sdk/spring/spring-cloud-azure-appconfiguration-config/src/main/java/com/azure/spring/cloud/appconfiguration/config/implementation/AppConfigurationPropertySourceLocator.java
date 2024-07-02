@@ -22,10 +22,11 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
-import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
 
@@ -48,6 +49,10 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     private final AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
 
+    private final FeatureFlagClient featureFlagClient;
+
+    private final ReplicaLookUp replicaLookUp;
+
     private Duration refreshInterval;
 
     static final AtomicBoolean STARTUP = new AtomicBoolean(true);
@@ -59,15 +64,19 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @param appProperties Configurations for the library.
      * @param clientFactory factory for creating clients for connecting to Azure App Configuration.
      * @param keyVaultClientFactory factory for creating clients for connecting to Azure Key Vault
+     * @param featureFlagLoader service for loadingFeatureFlags.
      */
     public AppConfigurationPropertySourceLocator(AppConfigurationProviderProperties appProperties,
         AppConfigurationReplicaClientFactory clientFactory, AppConfigurationKeyVaultClientFactory keyVaultClientFactory,
-        Duration refreshInterval, List<ConfigStore> configStores) {
+        Duration refreshInterval, List<ConfigStore> configStores, ReplicaLookUp replicaLookUp,
+        FeatureFlagClient featureFlagLoader) {
         this.refreshInterval = refreshInterval;
         this.appProperties = appProperties;
         this.configStores = configStores;
         this.clientFactory = clientFactory;
         this.keyVaultClientFactory = keyVaultClientFactory;
+        this.replicaLookUp = replicaLookUp;
+        this.featureFlagClient = featureFlagLoader;
 
         BackoffTimeCalculator.setDefaults(appProperties.getDefaultMaxBackoff(), appProperties.getDefaultMinBackoff());
     }
@@ -77,10 +86,14 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         if (!(environment instanceof ConfigurableEnvironment)) {
             return null;
         }
+        replicaLookUp.updateAutoFailoverEndpoints();
 
         ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
         boolean currentlyLoaded = env.getPropertySources().stream().anyMatch(source -> {
             String storeName = configStores.get(0).getEndpoint();
+            if (configStores.get(0).getSelects().size() == 0) {
+                return false;
+            }
             AppConfigurationKeyValueSelector selectedKey = configStores.get(0).getSelects().get(0);
             return source.getName()
                 .startsWith(BOOTSTRAP_PROPERTY_SOURCE_NAME + "-" + selectedKey.getKeyFilter() + storeName + "/");
@@ -116,18 +129,19 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     sourceList = new ArrayList<>();
 
                     if (!STARTUP.get() && reloadFailed && !AppConfigurationRefreshUtil
-                        .checkStoreAfterRefreshFailed(client, clientFactory, configStore.getFeatureFlags(), profiles)) {
+                        .checkStoreAfterRefreshFailed(client, clientFactory, configStore.getFeatureFlags())) {
                         // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                         continue;
                     }
 
                     // Reverse in order to add Profile specific properties earlier, and last profile comes first
                     try {
-                        List<AppConfigurationPropertySource> sources = create(client, configStore, profiles);
+                        List<AppConfigurationPropertySource> sources = createSettings(client, configStore, profiles);
+                        List<FeatureFlags> featureFlags = createFeatureFlags(client, configStore, profiles);
                         sourceList.addAll(sources);
 
                         LOGGER.debug("PropertySource context.");
-                        setupMonitoring(configStore, client, sources, newState);
+                        setupMonitoring(configStore, client, sources, newState, featureFlags);
 
                         generatedPropertySources = true;
                     } catch (AppConfigurationStatusException e) {
@@ -154,6 +168,13 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     failedToGeneratePropertySource(configStore, newState, new RuntimeException(message));
                 }
 
+                if (featureFlagClient.getProperties().size() > 0) {
+                    // This can be true if feature flags are enabled or if a Snapshot contained feature flags
+                    AppConfigurationFeatureManagementPropertySource acfmps = new AppConfigurationFeatureManagementPropertySource(
+                        featureFlagClient);
+                    composite.addPropertySource(acfmps);
+                }
+
             } else if (!configStore.isEnabled() && loadNewPropertySources) {
                 LOGGER.info("Not loading configurations from {} as it is not enabled.", configStore.getEndpoint());
             } else {
@@ -168,52 +189,22 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
     }
 
     private void setupMonitoring(ConfigStore configStore, AppConfigurationReplicaClient client,
-        List<AppConfigurationPropertySource> sources, StateHolder newState) {
+        List<AppConfigurationPropertySource> sources, StateHolder newState, List<FeatureFlags> featureFlags) {
         AppConfigurationStoreMonitoring monitoring = configStore.getMonitoring();
 
         if (configStore.getFeatureFlags().getEnabled()) {
-            List<ConfigurationSetting> watchKeysFeatures = getFeatureFlagWatchKeys(configStore, sources);
-            newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
+            newState.setStateFeatureFlag(configStore.getEndpoint(), featureFlags,
                 monitoring.getFeatureFlagRefreshInterval());
         }
 
         if (monitoring.isEnabled()) {
             // Setting new ETag values for Watch
-            List<ConfigurationSetting> watchKeysSettings = getWatchKeys(client, monitoring.getTriggers());
+            List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
+                .map(trigger -> client.getWatchKey(trigger.getKey(), trigger.getLabel())).toList();
 
             newState.setState(configStore.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
         }
         newState.setLoadState(configStore.getEndpoint(), true, configStore.isFailFast());
-        newState.setLoadStateFeatureFlag(configStore.getEndpoint(), configStore.getFeatureFlags().getEnabled(),
-            configStore.isFailFast());
-    }
-
-    private List<ConfigurationSetting> getWatchKeys(AppConfigurationReplicaClient client,
-        List<AppConfigurationStoreTrigger> triggers) {
-        List<ConfigurationSetting> watchKeysSettings = new ArrayList<>();
-        for (AppConfigurationStoreTrigger trigger : triggers) {
-            ConfigurationSetting watchKey = client.getWatchKey(trigger.getKey(), trigger.getLabel());
-            if (watchKey != null) {
-                watchKeysSettings.add(watchKey);
-            } else {
-                watchKeysSettings.add(new ConfigurationSetting().setKey(trigger.getKey()).setLabel(trigger.getLabel()));
-            }
-        }
-        return watchKeysSettings;
-    }
-
-    private List<ConfigurationSetting> getFeatureFlagWatchKeys(ConfigStore configStore,
-        List<AppConfigurationPropertySource> sources) {
-        List<ConfigurationSetting> watchKeysFeatures = new ArrayList<>();
-        if (configStore.getFeatureFlags().getEnabled()) {
-            for (AppConfigurationPropertySource propertySource : sources) {
-                if (propertySource instanceof AppConfigurationFeatureManagementPropertySource) {
-                    watchKeysFeatures.addAll(
-                        ((AppConfigurationFeatureManagementPropertySource) propertySource).getFeatureFlagSettings());
-                }
-            }
-        }
-        return watchKeysFeatures;
     }
 
     private StateHolder failedToGeneratePropertySource(ConfigStore configStore, StateHolder newState, Exception e) {
@@ -237,7 +228,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             LOGGER.warn(
                 "Unable to load configuration from Azure AppConfiguration store " + configStore.getEndpoint() + ".", e);
             newState.setLoadState(configStore.getEndpoint(), false, configStore.isFailFast());
-            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), false, configStore.isFailFast());
         }
         return newState;
     }
@@ -251,21 +241,10 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @return a list of AppConfigurationPropertySources
      * @throws Exception creating a property source failed
      */
-    private List<AppConfigurationPropertySource> create(AppConfigurationReplicaClient client, ConfigStore store,
+    private List<AppConfigurationPropertySource> createSettings(AppConfigurationReplicaClient client, ConfigStore store,
         List<String> profiles) throws Exception {
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
         List<AppConfigurationKeyValueSelector> selects = store.getSelects();
-
-        if (store.getFeatureFlags().getEnabled()) {
-            for (FeatureFlagKeyValueSelector selectedKeys : store.getFeatureFlags().getSelects()) {
-                AppConfigurationFeatureManagementPropertySource propertySource = new AppConfigurationFeatureManagementPropertySource(
-                    store.getEndpoint(), client,
-                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
-
-                propertySource.initProperties(null);
-                sourceList.add(propertySource);
-            }
-        }
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
             AppConfigurationPropertySource propertySource = null;
@@ -273,7 +252,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
                 propertySource = new AppConfigurationSnapshotPropertySource(
                     selectedKeys.getSnapshotName() + "/" + store.getEndpoint(), client, keyVaultClientFactory,
-                    selectedKeys.getSnapshotName());
+                    selectedKeys.getSnapshotName(), featureFlagClient);
             } else {
                 propertySource = new AppConfigurationApplicationSettingPropertySource(
                     selectedKeys.getKeyFilter() + store.getEndpoint() + "/", client, keyVaultClientFactory,
@@ -285,6 +264,29 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         }
 
         return sourceList;
+    }
+
+    /**
+     * Creates a new set of AppConfigurationPropertySources, 1 per Label.
+     *
+     * @param client client for connecting to App Configuration
+     * @param store Config Store the PropertySource is being generated from
+     * @param profiles active profiles to be used as labels. it needs to be in the last one.
+     * @return a list of AppConfigurationPropertySources
+     * @throws Exception creating a property source failed
+     */
+    private List<FeatureFlags> createFeatureFlags(AppConfigurationReplicaClient client, ConfigStore store,
+        List<String> profiles) throws Exception {
+        List<FeatureFlags> featureFlagWatchKeys = new ArrayList<>();
+        if (store.getFeatureFlags().getEnabled()) {
+            for (FeatureFlagKeyValueSelector selectedKeys : store.getFeatureFlags().getSelects()) {
+                List<FeatureFlags> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
+                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+                storesFeatureFlags.forEach(featureFlags -> featureFlags.setConfigStore(store));
+                featureFlagWatchKeys.addAll(storesFeatureFlags);
+            }
+        }
+        return featureFlagWatchKeys;
     }
 
     private void delayException() {

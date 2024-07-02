@@ -7,6 +7,8 @@ import org.springframework.util.Assert;
 
 /**
  * Metadata class to describe simple cosmos entity includes domain type and cosmos entity information
+ *
+ * @param <T> domain type.
  */
 public class SimpleCosmosEntityMetadata<T> implements CosmosEntityMetadata<T> {
 

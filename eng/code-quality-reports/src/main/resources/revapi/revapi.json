@@ -50,6 +50,13 @@
         {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
+          "new": "(class|interface) org\\.apache\\.http\\.impl\\.conn\\.CPoolEntry",
+          "exampleUseChainInNewApi": ".*org\\.apache\\.http\\.HttpClientConnection.*",
+          "justification": "We allow this in org.apache.http.HttpClientConnection>"
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
           "new": "(class|interface) com\\.azure\\.keyvault\\.jca\\.(com|org)\\..*",
           "justification": "skip check for third party files."
         },
@@ -163,8 +170,84 @@
         {
           "regex": true,
           "code": "java\\.method\\.removed",
-          "old": "method void com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(setPassword|setRemoteUrl|setUsername)\\(java\\.lang\\.String\\)",
+          "old": "method void com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(setPassword|setRemoteUrl|setUsername)\\(java\\.lang\\.String\\)"
+        },
+        {
+          "code": "java.method.added",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer::<init>(org.springframework.security.web.authentication.logout.LogoutSuccessHandler, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver, org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient<org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest>, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "New method added to fix a bug."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getPassword()",
           "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getRemoteUrl()",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getUsername()",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setPassword(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setRemoteUrl(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setUsername(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "regex": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com\\.azure\\.spring\\.cloud\\.config\\.stores\\..*",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.spring.cloud.config.resource.ConnectionPool com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration::initConnectionString(com.azure.spring.cloud.config.properties.AppConfigurationProperties)",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.ConnectionPool",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.Connection",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.spring.cloud.config.stores.ClientStore",
+          "justification": "Not a public api"
+        },
+        {
+          "ignore": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "interface com.azure.spring.cloud.config.AppConfigurationRefresh",
+          "justification": "Thi isn't an external class"
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|class|enum) com\\.mysql\\.cj\\..*",
+          "justification": "Mysql driver classes are allowed to be exposed by dependencies using them."
         },
         {
           "code": "java.method.addedToInterface",
@@ -332,6 +415,17 @@
           "justification": "Element newly annotated with 'org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity"
         },
         {
+          "code": "java.method.addedToInterface",
+          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionQueue(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties)",
+          "justification": "New method added to support more properties."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.stream.binder.servicebus.core.properties.(ServiceBusProducerProperties|ServiceBusConsumerProperties)",
+          "justification": "Support new properties."
+        },
+        {
           "regex": true,
           "code": "java.field.enumConstantOrderChanged",
           "old": "field com.mysql.cj.conf.PropertyKey.*",
@@ -364,10 +458,60 @@
           "justification": "Modifies the type of changeFeedMetaData from ChangeFeedMetaData to JsonNode."
         },
         {
+          "code" : "java.field.removed",
+          "old" : "field com.mysql.cj.conf.PropertyKey.ociConfigProfile",
+          "justification" : "Fix field removed."
+        },
+        {
+          "code" : "java.method.addedToInterface",
+          "new" : "method int com.mysql.cj.protocol.ServerSession::getOldStatusFlags()",
+          "justification" : "Method was added to an interface."
+        },
+        {
+          "code" : "java.method.addedToInterface",
+          "new" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
+          "justification" : "Method was added to an interface."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method com.azure.core.credential.TokenRequestContext com.azure.core.credential.TokenRequestContext::setCaeEnabled(boolean)",
+          "justification" : "Method was removed."
+        },
+        {
+          "code" : "java.method.returnTypeTypeParametersChanged",
+          "old" : "method reactor.core.publisher.Mono<java.lang.String> com.azure.security.attestation.AttestationAsyncClient::attestTpm(java.lang.String)",
+          "new" : "method reactor.core.publisher.Mono<com.azure.security.attestation.models.TpmAttestationResult> com.azure.security.attestation.AttestationAsyncClient::attestTpm(com.azure.core.util.BinaryData)",
+          "justification" : "return type changed type parameter."
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter reactor.core.publisher.Mono<java.lang.String> com.azure.security.attestation.AttestationAsyncClient::attestTpm(===java.lang.String===)",
+          "new" : "parameter reactor.core.publisher.Mono<com.azure.security.attestation.models.TpmAttestationResult> com.azure.security.attestation.AttestationAsyncClient::attestTpm(===com.azure.core.util.BinaryData===)",
+          "justification" : "The type of the parameter changed from 'java.lang.String' to 'com.azure.core.util.BinaryData'."
+        },
+        {
           "code": "java.annotation.added",
           "old": "method com.azure.cosmos.CosmosDiagnosticsContext com.azure.cosmos.CosmosDiagnostics::getDiagnosticsContext()",
           "new": "method com.azure.cosmos.CosmosDiagnosticsContext com.azure.cosmos.CosmosDiagnostics::getDiagnosticsContext()",
           "justification": "Ignore CosmosDiagnosticsContext in CosmosDiagnostics to avoid stackoverflow error."
+        },
+        {
+          "code" : "java.method.returnTypeTypeParametersChanged",
+          "old" : "method reactor.core.publisher.Mono<com.azure.core.http.rest.Response<java.lang.String>> com.azure.security.attestation.AttestationAsyncClient::attestTpmWithResponse(java.lang.String)",
+          "new" : "method reactor.core.publisher.Mono<com.azure.core.http.rest.Response<com.azure.security.attestation.models.TpmAttestationResult>> com.azure.security.attestation.AttestationAsyncClient::attestTpmWithResponse(com.azure.core.util.BinaryData)",
+          "justification" : "return type changed type parameter."
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter reactor.core.publisher.Mono<com.azure.core.http.rest.Response<java.lang.String>> com.azure.security.attestation.AttestationAsyncClient::attestTpmWithResponse(===java.lang.String===)",
+          "new" : "parameter reactor.core.publisher.Mono<com.azure.core.http.rest.Response<com.azure.security.attestation.models.TpmAttestationResult>> com.azure.security.attestation.AttestationAsyncClient::attestTpmWithResponse(===com.azure.core.util.BinaryData===)",
+          "justification" : "The type of the parameter changed from 'java.lang.String' to 'com.azure.core.util.BinaryData'."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method java.lang.String com.azure.security.attestation.AttestationClient::attestTpm(java.lang.String)",
+          "new": "method com.azure.security.attestation.models.TpmAttestationResult com.azure.security.attestation.AttestationClient::attestTpm(com.azure.core.util.BinaryData)",
+          "justification": "The return type changed from 'java.lang.String' to  'com.azure.security.attestation.models.TpmAttestationResult'."
         },
         {
           "regex": true,
@@ -408,6 +552,24 @@
           "code": "java.field.addedStaticField",
           "new": "field com.azure.data.schemaregistry.SchemaRegistryVersion.V2022_10",
           "justification": "Another version of Schema Registry API released."
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter java.lang.String com.azure.security.attestation.AttestationClient::attestTpm(===java.lang.String===)",
+          "new" : "parameter com.azure.security.attestation.models.TpmAttestationResult com.azure.security.attestation.AttestationClient::attestTpm(===com.azure.core.util.BinaryData===)",
+          "justification" : "The type of the parameter changed from 'java.lang.String' to 'com.azure.core.util.BinaryData'."
+        },
+        {
+          "code" : "java.method.returnTypeTypeParametersChanged",
+          "old" : "method com.azure.core.http.rest.Response<java.lang.String> com.azure.security.attestation.AttestationClient::attestTpmWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.core.http.rest.Response<com.azure.security.attestation.models.TpmAttestationResult> com.azure.security.attestation.AttestationClient::attestTpmWithResponse(com.azure.core.util.BinaryData, com.azure.core.util.Context)",
+          "justification" : "return type changed type parameter."
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter com.azure.core.http.rest.Response<java.lang.String> com.azure.security.attestation.AttestationClient::attestTpmWithResponse(===java.lang.String===, com.azure.core.util.Context)",
+          "new" : "parameter com.azure.core.http.rest.Response<com.azure.security.attestation.models.TpmAttestationResult> com.azure.security.attestation.AttestationClient::attestTpmWithResponse(===com.azure.core.util.BinaryData===, com.azure.core.util.Context)",
+          "justification" : "The type of the parameter changed from 'java.lang.String' to 'com.azure.core.util.BinaryData'."
         },
         {
           "regex": true,

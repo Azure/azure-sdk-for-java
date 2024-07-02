@@ -26,6 +26,7 @@ import org.springframework.context.ApplicationContext;
 import com.azure.spring.cloud.feature.management.filters.FeatureFilter;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
+import com.azure.spring.cloud.feature.management.implementation.TestConfiguration;
 import com.azure.spring.cloud.feature.management.implementation.models.Feature;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
@@ -159,7 +160,7 @@ public class FeatureManagerTest {
 
         assertTrue(featureManager.isEnabledAsync("On").block());
     }
-    
+
     @Test
     public void oneOffAny() {
         HashMap<String, Feature> features = new HashMap<>();
@@ -180,7 +181,7 @@ public class FeatureManagerTest {
 
         assertTrue(featureManager.isEnabledAsync("On").block());
     }
-    
+
     @Test
     public void oneOffAll() {
         HashMap<String, Feature> features = new HashMap<>();

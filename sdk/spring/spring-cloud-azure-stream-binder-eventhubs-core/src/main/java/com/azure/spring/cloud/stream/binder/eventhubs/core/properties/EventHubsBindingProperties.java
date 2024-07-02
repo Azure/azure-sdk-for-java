@@ -6,9 +6,15 @@ package com.azure.spring.cloud.stream.binder.eventhubs.core.properties;
 import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 
 /**
- *
+ *  Event Hubs binding properties
  */
 public class EventHubsBindingProperties implements BinderSpecificPropertiesProvider {
+
+    /**
+     * Creates an instance of {@link EventHubsBindingProperties}.
+     */
+    public EventHubsBindingProperties() {
+    }
 
     private EventHubsConsumerProperties consumer = new EventHubsConsumerProperties();
     private EventHubsProducerProperties producer = new EventHubsProducerProperties();

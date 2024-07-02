@@ -18,6 +18,7 @@ import time
 import os
 import argparse
 from version_util import version_greater_than
+
 from log import log
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'

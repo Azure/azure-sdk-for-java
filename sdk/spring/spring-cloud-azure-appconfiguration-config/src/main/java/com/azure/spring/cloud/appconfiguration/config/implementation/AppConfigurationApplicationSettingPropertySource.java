@@ -4,7 +4,6 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.ReflectionUtils;
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -24,7 +23,6 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -58,11 +56,11 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * <p>
      * Gets settings from Azure/Cache to set as configurations. Updates the cache.
      * </p>
-     * 
+     *
      * @param keyPrefixTrimValues prefixs to trim from key values
-     * @throws JsonProcessingException thrown if fails to parse Json content type
+     * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> keyPrefixTrimValues) throws JsonProcessingException {
+    public void initProperties(List<String> keyPrefixTrimValues) throws InvalidConfigurationPropertyValueException {
 
         List<String> labels = Arrays.asList(labelFilters);
         // Reverse labels so they have the right priority order.
@@ -79,7 +77,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
 
     protected void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter,
         List<String> keyPrefixTrimValues)
-        throws JsonProcessingException {
+        throws InvalidConfigurationPropertyValueException {
         for (ConfigurationSetting setting : settings) {
             if (keyPrefixTrimValues == null && StringUtils.hasText(keyFilter)) {
                 keyPrefixTrimValues = new ArrayList<>();
@@ -100,51 +98,45 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             }
         }
     }
-    
+
     /**
      * Given a Setting's Key Vault Reference stored in the Settings value, it will get its entry in Key Vault.
      *
-     * @param key Application Setting name 
+     * @param key Application Setting name
      * @param secretReference {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
      * @return Key Vault Secret Value
+     * @throws InvalidConfigurationPropertyValueException
      */
-    protected void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting secretReference) {
+    protected void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting secretReference)
+        throws InvalidConfigurationPropertyValueException {
+        // Parsing Key Vault Reference for URI
         try {
-            KeyVaultSecret secret = null;
-
-            // Parsing Key Vault Reference for URI
-            try {
-                URI uri = new URI(secretReference.getSecretId());
-                secret = keyVaultClientFactory.getClient("https://" + uri.getHost()).getSecret(uri);
-            } catch (URISyntaxException e) {
-                LOGGER.error("Error Processing Key Vault Entry URI.");
-                ReflectionUtils.rethrowRuntimeException(e);
-            }
-
-            if (secret == null) {
-                throw new IOException("No Key Vault Secret found for Reference.");
-            }
+            URI uri = new URI(secretReference.getSecretId());
+            KeyVaultSecret secret = keyVaultClientFactory.getClient("https://" + uri.getHost()).getSecret(uri);
             properties.put(key, secret.getValue());
-        } catch (RuntimeException | IOException e) {
-            LOGGER.error("Error Retrieving Key Vault Entry");
-            ReflectionUtils.rethrowRuntimeException(e);
+        } catch (URISyntaxException e) {
+            LOGGER.error(String.format("Error Retrieving Key Vault Entry for key %s.", key));
+            throw new InvalidConfigurationPropertyValueException(key, "<Redacted>",
+                "Invalid URI found in JSON property field 'uri' unable to parse.");
+        } catch (RuntimeException e) {
+            LOGGER.error(String.format("Error Retrieving Key Vault Entry for key %s.", key));
+            throw e;
         }
     }
 
     void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
-        throws JsonProcessingException {
+        throws InvalidConfigurationPropertyValueException {
         handleJson(setting, trimStrings);
     }
 
     void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
-        throws JsonProcessingException {
+        throws InvalidConfigurationPropertyValueException {
         Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
         for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
             String key = trimKey(jsonSetting.getKey(), keyPrefixTrimValues);
             properties.put(key, jsonSetting.getValue());
         }
     }
-
 
     protected String trimKey(String key, List<String> trimStrings) {
         key = key.trim();

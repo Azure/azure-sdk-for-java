@@ -16,6 +16,12 @@ import java.util.function.Consumer;
  */
 public class EventHubsContainerProperties extends ProcessorProperties {
 
+    /**
+     * Creates an instance of {@link EventHubsContainerProperties}.
+     */
+    public EventHubsContainerProperties() {
+    }
+
     private MessageListener<?> messageListener;
 
     private EventHubsErrorHandler errorHandler;

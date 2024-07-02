@@ -20,7 +20,7 @@ public interface ReactiveTeacherRepository extends ReactiveCosmosRepository<Reac
 
     Mono<Boolean> existsByLastNameIsNull();
 
-    @Query(value = "SELECT * FROM a WHERE ARRAY_CONTAINS(@firstNames, a.firstName) order by a.id")
+    @Query(value = "SELECT * FROM a WHERE ARRAY_CONTAINS(@firstNames, a.firstName) order by a.id ")
     Flux<ReactiveTeacher> annotatedFindByFirstNames(@Param("firstNames") List<String> firstNames);
 
     @Query(value = "SELECT * FROM a WHERE ARRAY_CONTAINS(@firstNames, a.firstName) ")
