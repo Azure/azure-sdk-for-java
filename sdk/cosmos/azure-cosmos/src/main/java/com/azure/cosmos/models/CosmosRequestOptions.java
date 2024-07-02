@@ -220,38 +220,83 @@ public final class CosmosRequestOptions {
         return this;
     }
 
+    /**
+     * Gets the max item count.
+     *
+     * @return the max item count.
+     */
     public Integer getMaxItemCount() {
         return this.maxItemCount;
     }
 
+    /**
+     * Gets the query metrics enabled.
+     *
+     * @return the query metrics enabled.
+     */
     public Boolean isQueryMetricsEnabled() {
         return this.queryMetricsEnabled;
     }
 
+    /**
+     * Gets the index metrics enabled.
+     *
+     * @return the index metrics enabled.
+     */
     public Boolean isIndexMetricsEnabled() {
         return this.indexMetricsEnabled;
     }
 
+    /**
+     * Gets the query name.
+     *
+     * @return the query name.
+     */
     public String getQueryNameOrDefault(String defaultQueryName) {
         return this.queryName;
     }
 
+    /**
+     * Gets the max prefetch page count.
+     *
+     * @return the max prefetch page count.
+     */
     public Integer getMaxPrefetchPageCount() {
         return this.maxPrefetchPageCount;
     }
 
+    /**
+     * Gets the response continuation token limit in KB.
+     *
+     * @return the response continuation token limit in KB.
+     */
     public Integer getResponseContinuationTokenLimitInKb() {
         return this.responseContinuationTokenLimitInKb;
     }
 
+    /**
+     * Gets the max buffered item count.
+     *
+     * @return the max buffered item count.
+     */
     public Integer getMaxBufferedItemCount() {
         return this.maxBufferedItemCount;
     }
 
+    /**
+     * Gets the max degree of parallelism.
+     *
+     * @return the max degree of parallelism.
+     */
     public Integer getMaxDegreeOfParallelism() {
         return this.maxDegreeOfParallelism;
     }
 
+    /**
+     * Gets the exclude regions.
+     *
+     * @return the exclude regions.
+     */
     public List<String> getExcludedRegions() {
          if (this.excludeRegions == null) {
             return null;
@@ -259,35 +304,74 @@ public final class CosmosRequestOptions {
         return UnmodifiableList.unmodifiableList(this.excludeRegions);
     }
 
+    /**
+     * Gets the scan in query enabled.
+     *
+     * @return the scan in query enabled.
+     */
     public Boolean isScanInQueryEnabled() {
         return this.scanInQueryEnabled;
     }
 
+    /**
+     * Gets the diagnostics thresholds.
+     *
+     * @return the diagnostics thresholds.
+     */
     public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
         return this.thresholds;
     }
 
+    /**
+     * Gets the throughput control group name.
+     *
+     * @return the throughput control group name.
+     */
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }
 
-
+    /**
+     * Gets the dedicated gateway request options.
+     *
+     * @return the dedicated gateway request options.
+     */
     public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
         return this.dedicatedGatewayRequestOptions;
     }
 
+    /**
+     * Gets the non idempotent write retries enabled.
+     *
+     * @return the non idempotent write retries enabled.
+     */
     public Boolean getNonIdempotentWriteRetriesEnabled() {
         return this.nonIdempotentWriteRetriesEnabled;
     }
 
+    /**
+     * Gets the content response on write enabled.
+     *
+     * @return the content response on write enabled.
+     */
     public Boolean isContentResponseOnWriteEnabled() {
         return this.contentResponseOnWriteEnabled;
     }
 
+    /**
+     * Gets the consistency level.
+     *
+     * @return the consistency level.
+     */
     public ConsistencyLevel getConsistencyLevel() {
         return this.consistencyLevel;
     }
 
+    /**
+     * Gets the CosmosEndToEndLatencyPolicyConfig.
+     *
+     * @return the CosmosEndToEndLatencyPolicyConfig.
+     */
     public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig(){
         return this.endToEndOperationLatencyConfig;
     }
