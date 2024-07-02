@@ -5,9 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.messaging.servicebus.jproxy.ProxyServer;
 import com.azure.messaging.servicebus.jproxy.SimpleProxy;
 import org.apache.qpid.proton.engine.SslDomain;
@@ -71,7 +69,7 @@ public class ProxySendTest extends IntegrationTestBase {
     /**
      * Verifies that we can send some number of events.
      */
-    // @Test
+    @Test
     public void sendEvents() {
         // Arrange
         final String queueName = getQueueName(TestUtils.USE_CASE_PROXY);
@@ -109,8 +107,9 @@ public class ProxySendTest extends IntegrationTestBase {
             final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
             assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
                 "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
-            final TokenCredential tokenCredential = new AzurePowerShellCredentialBuilder().build();
-            return builder.credential(fullyQualifiedDomainName, tokenCredential);
+            // final TokenCredential tokenCredential = new AzurePowerShellCredentialBuilder().build();
+            // return builder.credential(fullyQualifiedDomainName, tokenCredential);
+            return builder.credential(fullyQualifiedDomainName, PS_CREDENTIAL);
         } else {
             return builder.connectionString(getConnectionString());
         }

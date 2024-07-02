@@ -58,7 +58,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     void singleUnnamedSession(MessagingEntityType entityType) {
         // Arrange
@@ -100,7 +100,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
             .verify(Duration.ofMinutes(2));
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     void rollingSessionOnIdleTimeout(MessagingEntityType entityType) throws InterruptedException {
         final int entityIndex = TestUtils.USE_CASE_MULTIPLE_SESSIONS1;
@@ -117,7 +117,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         rollingSessionTest();
     }
 
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     void rollingSessionOnTryTimeout(MessagingEntityType entityType) throws InterruptedException {
         final int entityIndex = TestUtils.USE_CASE_MULTIPLE_SESSIONS3;
@@ -153,7 +153,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
 
         assertTrue(latch.await(20, TimeUnit.SECONDS));
     }
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     void noRollingSessionWhenNoConcurrentSessions(MessagingEntityType entityType) {
         final int entityIndex = TestUtils.USE_CASE_MULTIPLE_SESSIONS2;

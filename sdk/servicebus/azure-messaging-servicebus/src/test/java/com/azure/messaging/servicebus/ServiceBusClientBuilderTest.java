@@ -67,7 +67,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         super(new ClientLogger(ServiceBusClientBuilderTest.class));
     }
 
-    // @Test
+    @Test
     void ensureIdentifierString() {
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
         final ServiceBusSenderAsyncClient client = toClose(builder
@@ -79,7 +79,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         Assertions.assertFalse(CoreUtils.isNullOrEmpty(client.getIdentifier()));
     }
 
-    // @Test
+    @Test
     void deadLetterQueueClient() {
         // Arrange
         final ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
@@ -96,7 +96,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         assertTrue(client.getEntityPath().endsWith(DEAD_LETTER_QUEUE_NAME_SUFFIX));
     }
 
-    // @Test
+    @Test
     void transferDeadLetterqueueClient() {
         // Arrange
         final ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
@@ -112,7 +112,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         assertTrue(client.getEntityPath().endsWith(TRANSFER_DEAD_LETTER_QUEUE_NAME_SUFFIX));
     }
 
-    // @Test
+    @Test
     void missingConnectionString() {
         assertThrows(IllegalArgumentException.class, () -> {
             final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
@@ -122,7 +122,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         });
     }
 
-    // @Test
+    @Test
     void defaultProxyConfigurationBuilder() {
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
         final ServiceBusSenderAsyncClient client = builder.connectionString(NAMESPACE_CONNECTION_STRING)
@@ -133,7 +133,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         assertNotNull(client);
     }
 
-    // @Test
+    @Test
     void customNoneProxyConfigurationBuilder() {
         // Arrange
         final ProxyOptions proxyConfig = new ProxyOptions(ProxyAuthenticationType.NONE, PROXY_ADDRESS,
@@ -150,7 +150,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         assertNotNull(builder.buildAsyncClient());
     }
 
-    // @Test
+    @Test
     void throwsWithProxyWhenTransportTypeNotChanged() {
         assertThrows(IllegalArgumentException.class, () -> {
             // Arrange
@@ -185,7 +185,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     /**
      * Tests different invalid entity path scenarios.
      */
-    // @ParameterizedTest
+    @ParameterizedTest
     @MethodSource
     void invalidEntityPathConfigurations(String connectionString, String topicName, String queueName,
         String subscriptionName) {
@@ -206,7 +206,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     /**
      * Throws when topic name is set for receiver, but no subscription name is set.
      */
-    // @Test
+    @Test
     void throwsWhenSubscriptionNameNotSet() {
         // Arrange
         final ServiceBusReceiverClientBuilder receiverBuilder = new ServiceBusClientBuilder()
@@ -221,7 +221,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     /**
      * Throws when the prefetch is less than 1.
      */
-    // @Test
+    @Test
     void invalidPrefetch() {
         // Arrange
         final ServiceBusReceiverClientBuilder receiverBuilder = new ServiceBusClientBuilder()
@@ -235,7 +235,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     }
 
     @MethodSource("getProxyConfigurations")
-    // @ParameterizedTest
+    @ParameterizedTest
     public void testProxyOptionsConfiguration(String proxyConfiguration) {
         Configuration configuration = TestUtils.getGlobalConfiguration().clone()
             .put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration)
@@ -251,7 +251,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
             .buildClient());
     }
 
-    // @Test
+    @Test
     public void testConnectionStringWithSas() {
         String connectionStringWithEntityPath = "Endpoint=sb://sb-name" + TestUtils.getEndpoint() + "/;"
             + "SharedAccessSignature=SharedAccessSignature test-value;EntityPath=sb-name";
@@ -267,7 +267,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
                 .connectionString("Endpoint=sb://sb-name" + TestUtils.getEndpoint() + "/;EntityPath=sb-name"));
     }
 
-    // @Test
+    @Test
     @Disabled("Convert to use AzurePowerShellCredentials?")
     public void testBatchSendEventByAzureNameKeyCredential() {
         ConnectionStringProperties properties = getConnectionStringProperties();
@@ -292,7 +292,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
             .verify(TIMEOUT);
     }
 
-    // @Test
+    @Test
     @Disabled("Convert to use AzurePowerShellCredentials?")
     public void testBatchSendEventByAzureSasCredential() {
         ConnectionStringProperties properties = getConnectionStringProperties(true);
@@ -318,7 +318,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
             .verify(TIMEOUT);
     }
 
-    // @Test
+    @Test
     public void testConnectionWithAzureNameKeyCredential() {
         String fullyQualifiedNamespace = "sb-name" + TestUtils.getEndpoint();
         String sharedAccessKeyName = "SharedAccessKeyName test-value";
@@ -353,7 +353,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
     }
 
-    // @Test
+    @Test
     public void testConnectionWithAzureSasCredential() {
         String fullyQualifiedNamespace = "sb-name" + TestUtils.getEndpoint();
         String sharedAccessSignature = "SharedAccessSignature test-value";

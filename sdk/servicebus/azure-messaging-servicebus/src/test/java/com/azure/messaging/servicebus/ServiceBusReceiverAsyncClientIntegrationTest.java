@@ -101,7 +101,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
     /**
      * Verifies that we can create multiple transaction using sender and receiver.
      */
-    // @Test
+    @Test
     void createMultipleTransactionTest() {
         // Arrange
         setSenderAndReceiver(MessagingEntityType.QUEUE, 0, isSessionEnabled);
@@ -122,7 +122,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that we can create transaction and complete.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    // @ParameterizedTest
+    @ParameterizedTest
     void createTransactionAndRollbackMessagesTest(MessagingEntityType entityType) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
@@ -164,7 +164,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that we can do following using shared connection and on non session entity. 1. create transaction 2.
      * receive and settle with transactionContext. 3. commit Rollback this transaction.
      */
-    // @ParameterizedTest
+    @ParameterizedTest
     @EnumSource(DispositionStatus.class)
     void transactionSendReceiveAndCommit(DispositionStatus dispositionStatus) {
 
@@ -237,7 +237,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * sender 2. receive and complete with transactionContext. 3. Commit this transaction using sender.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    // @ParameterizedTest
+    @ParameterizedTest
     @Disabled
     void transactionReceiveCompleteCommitMixClient(MessagingEntityType entityType) {
         // Arrange
@@ -281,7 +281,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that we can send and receive two messages.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveTwoMessagesAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         final int entityIndex = 0;
@@ -321,7 +321,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that we can send and receive a message.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveMessageAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         final int entityIndex = USE_CASE_AUTO_COMPLETE;
@@ -363,7 +363,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that we can send and peek a message.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     @Disabled("Investigate: Could not emit tick 0 due to lack of requests (interval doesn't support small downstream requests that replenish slower than the ticks)))")
     void peekMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
@@ -392,7 +392,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that an empty entity does not error when peeking.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void peekMessageEmptyEntity(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
@@ -410,7 +410,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that we can schedule and receive a message.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void sendScheduledMessageAndReceive(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_SEND_SCHEDULED, isSessionEnabled);
@@ -438,7 +438,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that we can cancel a scheduled message.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void cancelScheduledMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
@@ -473,7 +473,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that we can send and peek a message.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void peekFromSequenceNumberMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         final int entityIndex = 3;
@@ -527,7 +527,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that we can send and peek a batch of messages and the sequence number is tracked correctly.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     public void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
         // Arrange
         setSender(entityType, USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
@@ -592,7 +592,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that we can send and peek a batch of messages.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    // @ParameterizedTest
+    @ParameterizedTest
     void peekMessagesFromSequence(MessagingEntityType entityType) throws InterruptedException {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_MESSAGE_FROM_SEQUENCE, false);
@@ -650,7 +650,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that an empty entity does not error when peeking.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void peekMessagesFromSequenceEmptyEntity(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
@@ -668,7 +668,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that we can dead-letter a message.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void deadLetterMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         final int entityIndex = 0;
@@ -695,7 +695,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that we can send and receive a message AMQP Sequence andValue object.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveMessageAmqpTypes(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         final int entityIndex = TestUtils.USE_CASE_AMQP_TYPES;
@@ -762,7 +762,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveAndComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, USE_CASE_RECEIVE_AND_COMPLETE, isSessionEnabled);
@@ -788,7 +788,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that we can renew message lock on a non-session receiver.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveAndRenewLock(MessagingEntityType entityType) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, false);
@@ -831,7 +831,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * autoComplete is disabled.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveMessagesNoMessageSettlement(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         final int totalMessages = 5;
@@ -861,7 +861,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * This test takes longer time.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveMessagesLargeProcessingTime(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         final int totalMessages = 2;
@@ -894,7 +894,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that the lock can be automatically renewed.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void autoRenewLockOnReceiveMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         final AtomicInteger lockRenewCount = new AtomicInteger();
@@ -932,7 +932,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveAndAbandon(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
@@ -951,7 +951,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveAndDefer(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_PEEK_RECEIVE_AND_DEFER, isSessionEnabled);
@@ -986,7 +986,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Test we can receive a deferred message via sequence number and then perform abandon, suspend, or complete on it.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#receiveDeferredMessageBySequenceNumber")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveDeferredMessageBySequenceNumber(MessagingEntityType entityType, DispositionStatus dispositionStatus) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFERRED_MESSAGE_BY_SEQUENCE_NUMBER, false);
@@ -1033,7 +1033,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    // @ParameterizedTest
+    @ParameterizedTest
     void sendReceiveMessageWithVariousPropertyTypes(MessagingEntityType entityType) {
         // Arrange
         final boolean isSessionEnabled = true;
@@ -1085,7 +1085,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    // @ParameterizedTest
+    @ParameterizedTest
     void setAndGetSessionState(MessagingEntityType entityType) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, true);
@@ -1121,7 +1121,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * Verifies that we can receive a message from dead letter queue.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveFromDeadLetter(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         final Duration shortWait = Duration.ofSeconds(2);
@@ -1192,7 +1192,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    // @ParameterizedTest
+    @ParameterizedTest
     void manualRenewMessageLock(MessagingEntityType entityType) throws InterruptedException {
         testRenewLock(entityType, Duration.ZERO, (m) -> {
             toClose(receiver.renewMessageLock(m, Duration.ofSeconds(10)).subscribe());
@@ -1201,13 +1201,13 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    // @ParameterizedTest
+    @ParameterizedTest
     void autoRenewMessageLock(MessagingEntityType entityType) throws InterruptedException {
         testRenewLock(entityType, Duration.ofSeconds(10), (m) -> Mono.empty());
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    // @ParameterizedTest
+    @ParameterizedTest
     void autoAndManualRenewMessageLock(MessagingEntityType entityType) throws InterruptedException {
         testRenewLock(entityType, Duration.ofSeconds(10), (m) -> {
             toClose(receiver.renewMessageLock(m, Duration.ofSeconds(10)).subscribe());
@@ -1258,7 +1258,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
         assertTrue(latch.await(2, TimeUnit.MINUTES));
     }
 
-    // @Test
+    @Test
     @Disabled("V2 low level async-receiver impl is missing a check to error if reactive app subscribed more than once.")
     void receiveTwice() {
         setSenderAndReceiver(MessagingEntityType.QUEUE, TestUtils.USE_CASE_DEFAULT, false);
@@ -1281,7 +1281,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
             .verify(OPERATION_TIMEOUT);
     }
 
-    // @Test
+    @Test
     @Disabled("V2 low level async-receiver impl is missing a check to error if reactive app subscribed more than once.")
     void receiveActiveSubscription() {
         setSenderAndReceiver(MessagingEntityType.QUEUE, TestUtils.USE_CASE_DEFAULT, false);
@@ -1304,7 +1304,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * application properties etc).
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveAndValidateProperties(MessagingEntityType entityType) {
         // Arrange
         final boolean isSessionEnabled = false;
@@ -1422,7 +1422,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      * @param entityType Entity Type.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    // @ParameterizedTest
+    @ParameterizedTest
     void autoComplete(MessagingEntityType entityType) {
         // Arrange
         final Duration shortWait = Duration.ofSeconds(2);

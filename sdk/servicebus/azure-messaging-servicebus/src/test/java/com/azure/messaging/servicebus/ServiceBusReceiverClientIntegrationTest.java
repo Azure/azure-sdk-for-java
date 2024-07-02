@@ -13,7 +13,6 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -79,7 +78,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can only call receive() multiple times and with one of the receive does timeout.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void multipleReceiveByOneSubscriberMessageTimeout(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_MULTIPLE_RECEIVE_ONE_TIMEOUT, isSessionEnabled);
@@ -122,7 +121,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can only call receive() multiple times.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void multipleReceiveByOneSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
@@ -167,7 +166,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can only call receive() multiple times.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void parallelReceiveByOneSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
@@ -226,7 +225,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send and receive two messages.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveTwoMessagesAndComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_RECEIVE_MORE_AND_COMPLETE, isSessionEnabled);
@@ -265,8 +264,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we do not receive any message in given timeout.
      */
-    // @Test
-    @RepeatedTest(8000)
+    @Test
     void receiveNoMessage() {
         // Arrange
         boolean isSessionEnabled = false;
@@ -285,7 +283,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send, receive one message and settle on non session entity.
      */
-    // @ParameterizedTest
+    @ParameterizedTest
     @EnumSource(DispositionStatus.class)
     void transactionMessageAndSettle(DispositionStatus dispositionStatus) {
         // Arrange
@@ -348,7 +346,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send and receive one messages.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveMessageAndComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
@@ -380,7 +378,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send and peek a message.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void peekMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
@@ -404,7 +402,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Verifies that an empty entity does not error when peeked.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void peekMessageEmptyEntity(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
@@ -420,7 +418,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send and peek a message.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void peekFromSequenceNumberMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
@@ -458,7 +456,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send and peek a batch of messages.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
         // Arrange
         setSender(entityType, USE_CASE_PEEK_BATCH, isSessionEnabled);
@@ -515,7 +513,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Verifies that an empty entity does not error when a batch is peeked.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void peekMessagesEmptyEntity(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
@@ -535,7 +533,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send and peek a batch of messages.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    // @ParameterizedTest
+    @ParameterizedTest
     void peekMessagesFromSequence(MessagingEntityType entityType) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, false);
@@ -566,7 +564,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can dead-letter a message.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void deadLetterMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
@@ -594,7 +592,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveAndComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
@@ -625,7 +623,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can renew message lock.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveAndRenewLock(MessagingEntityType entityType) throws InterruptedException {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, false);
@@ -667,7 +665,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveAndAbandon(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
@@ -701,7 +699,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Test we can receive a deferred message via sequence number and then perform abandon, suspend, or complete on it.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#receiveDeferredMessageBySequenceNumber")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveDeferredMessageBySequenceNumber(MessagingEntityType entityType, DispositionStatus dispositionStatus) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, false);
@@ -756,7 +754,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void receiveAndDefer(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
@@ -789,7 +787,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    // @ParameterizedTest
+    @ParameterizedTest
     void sendReceiveMessageWithVariousPropertyTypes(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_SEND_RECEIVE_WITH_PROPERTIES, isSessionEnabled);
