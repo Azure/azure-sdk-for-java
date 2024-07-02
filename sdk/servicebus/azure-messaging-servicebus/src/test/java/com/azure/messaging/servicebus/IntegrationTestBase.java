@@ -59,7 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public abstract class IntegrationTestBase extends TestBase {
-    protected static final boolean USE_CREDENTIALS = false;
+    public static final boolean USE_CREDENTIALS = false;
     protected static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     // Tests use timeouts of 20-60 seconds to verify something has happened
