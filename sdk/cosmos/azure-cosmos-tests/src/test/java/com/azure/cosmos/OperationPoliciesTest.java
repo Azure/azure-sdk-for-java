@@ -94,7 +94,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             cosmosRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
                     Duration.ofSeconds(Long.parseLong(prop.getProperty(E2E_TIMEOUT))),
                     new ThresholdBasedAvailabilityStrategy()))
-                .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
+                .setDiagnosticThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
                 .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)))
                 .setContentResponseOnWriteEnabled(Boolean.parseBoolean(prop.getProperty(CONTENT_RESPONSE_ON_WRITE)))
                 .setNonIdempotentWriteRetriesEnabled(Boolean.parseBoolean(prop.getProperty(NON_IDEMPOTENT_WRITE_RETRIES)))
@@ -112,7 +112,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             cosmosRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
                     Duration.ofSeconds(Long.parseLong(prop.getProperty(E2E_TIMEOUT))),
                     new ThresholdBasedAvailabilityStrategy()))
-                .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
+                .setDiagnosticThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
                 .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
                 .setDedicatedGatewayRequestOptions(new DedicatedGatewayRequestOptions()
                     .setIntegratedCacheBypassed(Boolean.parseBoolean(prop.getProperty(BYPASS_CACHE))))
@@ -135,7 +135,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 cosmosRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
                         Duration.ofSeconds(Long.parseLong(prop.getProperty(E2E_TIMEOUT))),
                         new ThresholdBasedAvailabilityStrategy()))
-                    .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
+                    .setDiagnosticThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
                     .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
                     .setDedicatedGatewayRequestOptions(new DedicatedGatewayRequestOptions()
                         .setIntegratedCacheBypassed(Boolean.parseBoolean(prop.getProperty(BYPASS_CACHE))))
@@ -158,7 +158,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         if (spanName.contains("queryChangeFeed")) {
                 cosmosRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
                     .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
-                    .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
+                    .setDiagnosticThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
                     .setMaxPrefetchPageCount(Integer.parseInt(prop.getProperty(MAX_PREFETCH_PAGE_COUNT)))
                     .setMaxItemCount(Integer.parseInt(prop.getProperty(MAX_ITEM_COUNT)));
         }

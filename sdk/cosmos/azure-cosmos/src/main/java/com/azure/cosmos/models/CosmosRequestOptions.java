@@ -72,7 +72,7 @@ public final class CosmosRequestOptions {
      * @param nonIdempotentWriteRetriesEnabled the NonIdempotentWriteRetriesEnabled.
      * @return current CosmosRequestOptions.
      */
-    public CosmosRequestOptions setNonIdempotentWriteRetriesEnabled(boolean nonIdempotentWriteRetriesEnabled) {
+    public CosmosRequestOptions setNonIdempotentWriteRetriesEnabled(Boolean nonIdempotentWriteRetriesEnabled) {
         this.nonIdempotentWriteRetriesEnabled = nonIdempotentWriteRetriesEnabled;
         return this;
     }
@@ -116,7 +116,7 @@ public final class CosmosRequestOptions {
      * @param thresholds the CosmosDiagnosticsThresholds.
      * @return current CosmosRequestOptions.
      */
-    public CosmosRequestOptions setThresholds(CosmosDiagnosticsThresholds thresholds) {
+    public CosmosRequestOptions setDiagnosticThresholds(CosmosDiagnosticsThresholds thresholds) {
         this.thresholds = thresholds;
         return this;
     }
@@ -138,7 +138,7 @@ public final class CosmosRequestOptions {
      * @param maxDegreeOfParallelism the MaxDegreeOfParallelism.
      * @return current CosmosRequestOptions.
      */
-    public CosmosRequestOptions setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
+    public CosmosRequestOptions setMaxDegreeOfParallelism(Integer maxDegreeOfParallelism) {
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         return this;
     }
@@ -149,7 +149,7 @@ public final class CosmosRequestOptions {
      * @param maxBufferedItemCount the MaxBufferedItemCount.
      * @return current CosmosRequestOptions.
      */
-    public CosmosRequestOptions setMaxBufferedItemCount(int maxBufferedItemCount) {
+    public CosmosRequestOptions setMaxBufferedItemCount(Integer maxBufferedItemCount) {
         this.maxBufferedItemCount = maxBufferedItemCount;
         return this;
     }
@@ -160,7 +160,7 @@ public final class CosmosRequestOptions {
      * @param responseContinuationTokenLimitInKb the ResponseContinuationTokenLimitInKb.
      * @return current CosmosRequestOptions.
      */
-    public CosmosRequestOptions setResponseContinuationTokenLimitInKb(int responseContinuationTokenLimitInKb) {
+    public CosmosRequestOptions setResponseContinuationTokenLimitInKb(Integer responseContinuationTokenLimitInKb) {
         this.responseContinuationTokenLimitInKb = responseContinuationTokenLimitInKb;
         return this;
     }
@@ -171,7 +171,7 @@ public final class CosmosRequestOptions {
      * @param maxItemCount the MaxItemCount.
      * @return current CosmosRequestOptions.
      */
-    public CosmosRequestOptions setMaxItemCount(int maxItemCount) {
+    public CosmosRequestOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
     }
@@ -182,7 +182,7 @@ public final class CosmosRequestOptions {
      * @param queryMetricsEnabled the QueryMetricsEnabled.
      * @return current CosmosRequestOptions.
      */
-    public CosmosRequestOptions setQueryMetricsEnabled(boolean queryMetricsEnabled) {
+    public CosmosRequestOptions setQueryMetricsEnabled(Boolean queryMetricsEnabled) {
         this.queryMetricsEnabled = queryMetricsEnabled;
         return this;
     }
@@ -193,7 +193,7 @@ public final class CosmosRequestOptions {
      * @param indexMetricsEnabled the IndexMetricsEnabled.
      * @return current CosmosRequestOptions.
      */
-    public CosmosRequestOptions setIndexMetricsEnabled(boolean indexMetricsEnabled) {
+    public CosmosRequestOptions setIndexMetricsEnabled(Boolean indexMetricsEnabled) {
         this.indexMetricsEnabled = indexMetricsEnabled;
         return this;
     }
@@ -204,7 +204,7 @@ public final class CosmosRequestOptions {
      * @param maxPrefetchPageCount the MaxPrefetchPageCount.
      * @return current CosmosRequestOptions.
      */
-    public CosmosRequestOptions setMaxPrefetchPageCount(int maxPrefetchPageCount) {
+    public CosmosRequestOptions setMaxPrefetchPageCount(Integer maxPrefetchPageCount) {
         this.maxPrefetchPageCount = maxPrefetchPageCount;
         return this;
     }
@@ -249,11 +249,10 @@ public final class CosmosRequestOptions {
 
     /**
      * Gets the query name.
-     * @param defaultQueryName the default query name.
      *
      * @return the query name.
      */
-    public String getQueryNameOrDefault(String defaultQueryName) {
+    public String getQueryName() {
         return this.queryName;
     }
 
