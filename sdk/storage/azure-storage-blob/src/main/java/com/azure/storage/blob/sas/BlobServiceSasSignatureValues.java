@@ -45,6 +45,11 @@ public final class BlobServiceSasSignatureValues {
      */
     private static final String SAS_CONTAINER_CONSTANT = "c";
 
+    /**
+     * The SAS blob directory constant.
+     */
+    private static final String SAS_DIRECTORY_CONSTANT = "d";
+
     private static final ClientLogger LOGGER = new ClientLogger(BlobServiceSasSignatureValues.class);
 
     private static final String VERSION = Configuration.getGlobalConfiguration()
@@ -99,6 +104,8 @@ public final class BlobServiceSasSignatureValues {
     private String correlationId;
 
     private String encryptionScope;
+
+    private Integer directoryDepth;
 
     /**
      * Creates an object with empty values for all fields.
@@ -557,6 +564,26 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
+     * @return the directory depth value for the SAS.
+     */
+    public Integer getDirectoryDepth() {
+        return directoryDepth;
+    }
+
+    /**
+     * Sets the directory depth value for the SAS.
+     *
+     * <p>Note: This parameter sets resource type to directory-scoped. </p>
+     *
+     * @param directoryDepth the directory depth, which restricts access to a directory
+     * @return the updated BlobServiceSasSignatureValues object
+     */
+    public BlobServiceSasSignatureValues setDirectoryDepth(Integer directoryDepth) {
+        this.directoryDepth = directoryDepth;
+        return this;
+    }
+
+    /**
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
@@ -602,7 +629,7 @@ public final class BlobServiceSasSignatureValues {
         return new BlobServiceSasQueryParameters(VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN, this.protocol,
             this.startTime, this.expiryTime, this.sasIpRange, this.identifier, this.resource, this.permissions,
             signature, this.cacheControl, this.contentDisposition, this.contentEncoding, this.contentLanguage,
-            this.contentType, null /* delegate */);
+            this.contentType, null /* delegate */, this.directoryDepth);
     }
 
     /**
@@ -655,7 +682,7 @@ public final class BlobServiceSasSignatureValues {
         return new BlobServiceSasQueryParameters(VERSION_DEPRECATED_USER_DELEGATION_SAS_STRING_TO_SIGN, this.protocol,
             this.startTime, this.expiryTime, this.sasIpRange, null /* identifier */, this.resource, this.permissions,
             signature, this.cacheControl, this.contentDisposition, this.contentEncoding, this.contentLanguage,
-            this.contentType, delegationKey);
+            this.contentType, delegationKey, this.directoryDepth);
     }
 
     /**
@@ -665,7 +692,8 @@ public final class BlobServiceSasSignatureValues {
      * 2. Resource name is chosen by:
      *    a. If "BlobName" is _not_ set, it is a container resource.
      *    b. Otherwise, if "SnapshotId" is set, it is a blob snapshot resource.
-     *    c. Otherwise, it is a blob resource.
+     *    c. Otherwise, if "DirectoryDepth" is set, it is a blob directory resource.
+     *    d. Otherwise, it is a blob resource.
      * 3. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
      *
      * Taken from:
@@ -677,6 +705,8 @@ public final class BlobServiceSasSignatureValues {
             resource = SAS_CONTAINER_CONSTANT;
         } else if (snapshotId != null) {
             resource = SAS_BLOB_SNAPSHOT_CONSTANT;
+        } else if (directoryDepth != null) {
+            resource = SAS_DIRECTORY_CONSTANT;
         } else {
             resource = SAS_BLOB_CONSTANT;
         }
@@ -685,6 +715,7 @@ public final class BlobServiceSasSignatureValues {
             switch (resource) {
                 case SAS_BLOB_CONSTANT:
                 case SAS_BLOB_SNAPSHOT_CONSTANT:
+                case SAS_DIRECTORY_CONSTANT:
                     permissions = BlobSasPermission.parse(permissions).toString();
                     break;
                 case SAS_CONTAINER_CONSTANT:

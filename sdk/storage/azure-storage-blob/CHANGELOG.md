@@ -3,6 +3,7 @@
 ## 12.27.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support for directory-scoped access for sas tokens
 
 ### Breaking Changes
 

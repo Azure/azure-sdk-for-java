@@ -51,6 +51,11 @@ public class BlobSasImplUtil {
      */
     private static final String SAS_CONTAINER_CONSTANT = "c";
 
+    /**
+     * The SAS directory constant.
+     */
+    private static final String SAS_DIRECTORY_CONSTANT = "d";
+
     private static final ClientLogger LOGGER = new ClientLogger(BlobSasImplUtil.class);
 
     private static final String VERSION = Configuration.getGlobalConfiguration()
@@ -93,6 +98,8 @@ public class BlobSasImplUtil {
     private String correlationId;
 
     private String encryptionScope;
+
+    private Integer directoryDepth;
 
     /**
      * Creates a new {@link BlobSasImplUtil} with the specified parameters
@@ -139,6 +146,7 @@ public class BlobSasImplUtil {
         this.authorizedAadObjectId = sasValues.getPreauthorizedAgentObjectId();
         this.correlationId = sasValues.getCorrelationId();
         this.encryptionScope = encryptionScope;
+        this.directoryDepth = sasValues.getDirectoryDepth();
     }
 
     /**
@@ -225,6 +233,9 @@ public class BlobSasImplUtil {
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
         }
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
+        if (SAS_DIRECTORY_CONSTANT.equals(this.resource)) {
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DIRECTORY_DEPTH, this.directoryDepth);
+        }
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, signature);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
@@ -247,7 +258,8 @@ public class BlobSasImplUtil {
      *    a. If "BlobName" is _not_ set, it is a container resource.
      *    b. Otherwise, if "SnapshotId" is set, it is a blob snapshot resource.
      *    c. Otherwise, if "VersionId" is set, it is a blob version resource.
-     *    d. Otherwise, it is a blob resource.
+     *    d. Otherwise, if "DirectoryDepth" is set, it is a directory resource.
+     *    e. Otherwise, it is a blob resource.
      * 4. Reparse permissions depending on what the resource is. If it is an unrecognized resource, do nothing.
      *
      * Taken from:
@@ -268,6 +280,8 @@ public class BlobSasImplUtil {
             resource = SAS_BLOB_SNAPSHOT_CONSTANT;
         } else if (versionId != null) {
             resource = SAS_BLOB_VERSION_CONSTANT;
+        } else if (directoryDepth != null) {
+            resource = SAS_DIRECTORY_CONSTANT;
         } else {
             resource = SAS_BLOB_CONSTANT;
         }
@@ -277,6 +291,7 @@ public class BlobSasImplUtil {
                 case SAS_BLOB_CONSTANT:
                 case SAS_BLOB_SNAPSHOT_CONSTANT:
                 case SAS_BLOB_VERSION_CONSTANT:
+                case SAS_DIRECTORY_CONSTANT:
                     permissions = BlobSasPermission.parse(permissions).toString();
                     break;
                 case SAS_CONTAINER_CONSTANT:
