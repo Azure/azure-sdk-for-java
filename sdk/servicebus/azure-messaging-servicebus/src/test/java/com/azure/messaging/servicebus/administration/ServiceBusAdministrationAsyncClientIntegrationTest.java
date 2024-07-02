@@ -60,6 +60,7 @@ import java.util.List;
 //import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static com.azure.messaging.servicebus.IntegrationTestBase.USE_CREDENTIALS;
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
 //import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
@@ -1215,10 +1216,18 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
     }
 
     private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient) {
-        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .credential(fullyQualifiedDomainName, getTestTokenCredential(interceptorManager));
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        if (USE_CREDENTIALS) {
+            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+            builder.credential(fullyQualifiedDomainName, getTestTokenCredential(interceptorManager));
+        } else {
+            final String connectionString = interceptorManager.isPlaybackMode()
+                ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
+                : TestUtils.getConnectionString(false);
+            builder.connectionString(connectionString);
+        }
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
