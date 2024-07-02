@@ -37,7 +37,7 @@ public final class GetTokenForTeamsUserOptions implements JsonSerializable<GetTo
 
     /**
      * Constructor of {@link GetTokenForTeamsUserOptions}.
-     * 
+     *
      * @param teamsUserAadToken Azure AD access token of a Teams User.
      * @param clientId Client ID of an Azure AD application to be verified against the appId claim in the Azure AD
      * access token.
@@ -52,7 +52,7 @@ public final class GetTokenForTeamsUserOptions implements JsonSerializable<GetTo
 
     /**
      * Gets the Azure AD access token of a Teams User.
-     * 
+     *
      * @return the Azure AD access token of a Teams User.
      */
     public String getTeamsUserAadToken() {
@@ -61,7 +61,7 @@ public final class GetTokenForTeamsUserOptions implements JsonSerializable<GetTo
 
     /**
      * Gets the Client ID of an Azure AD application.
-     * 
+     *
      * @return the Client ID of an Azure AD application.
      */
     public String getClientId() {
@@ -70,7 +70,7 @@ public final class GetTokenForTeamsUserOptions implements JsonSerializable<GetTo
 
     /**
      * Gets the Object ID of an Azure AD user (Teams User).
-     * 
+     *
      * @return the Object ID of an Azure AD user (Teams User).
      */
     public String getUserObjectId() {
@@ -97,21 +97,23 @@ public final class GetTokenForTeamsUserOptions implements JsonSerializable<GetTo
      */
     public static GetTokenForTeamsUserOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            GetTokenForTeamsUserOptions deserializedTeamsUserExchangeTokenRequest = new GetTokenForTeamsUserOptions();
+            String teamsUserAadToken = null;
+            String clientId = null;
+            String userObjectId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("token".equals(fieldName)) {
-                    deserializedTeamsUserExchangeTokenRequest.teamsUserAadToken = reader.getString();
+                    teamsUserAadToken = reader.getString();
                 } else if ("appId".equals(fieldName)) {
-                    deserializedTeamsUserExchangeTokenRequest.clientId = reader.getString();
+                    clientId = reader.getString();
                 } else if ("userId".equals(fieldName)) {
-                    deserializedTeamsUserExchangeTokenRequest.userObjectId = reader.getString();
+                    userObjectId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedTeamsUserExchangeTokenRequest;
+            return new GetTokenForTeamsUserOptions(teamsUserAadToken, clientId, userObjectId);
         });
     }
 }
