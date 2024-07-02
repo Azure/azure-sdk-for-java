@@ -2,7 +2,7 @@
 
 Azure Deidentification client library for Java.
 
-This package contains Microsoft Azure Deidentification client library.
+This package contains Microsoft Azure Deidentification client library which is a managed service that enables users to tag, redact, or surrogate health data.
 
 ## Documentation
 
@@ -35,11 +35,66 @@ Various documentation is available to help you get started
 [Azure Identity][azure_identity] package provides the default implementation for authenticating the client.
 
 ## Key concepts
+### Operation Modes:
+
+- Tag: Will return a structure of offset and length with the PHI category of the related text spans.
+- Redact: Will return output text with placeholder stubbed text. ex. `[name]`
+- Surrogate: Will return output text with synthetic replacements.
+    - `My name is John Smith`
+    - `My name is Tom Jones`
 
 ## Examples
 
-```java com.azure.health.deidentification.readme
+The following sections provide several code snippets covering some of the most common Azure Deidentification client use cases, including:
+
+- [Create a `DeidentificationClient`](#create-a-deidentificationclient)
+- [Calling deidentification endpoint](#calling-deidentification-endpoint)
+- [Creating deidentification Job](#creating-deidentification-job)
+- [Process deidentification Job](#process-deidentification-job)
+- [List deidentification Jobs](#list-deidentification-jobs)
+- [List completed files](#list-completed-files)
+
+### Create a `DeidentificationClient`
+
+Create a `DeidentificationClient` using the `DEID_SERVICE_ENDPOINT` environment variable.
+
+```java com.azure.health.deidentification.helloworld
 ```
+
+### Calling `Deidentification` endpoint
+
+Calling the realtime endpoint with an input.
+
+```java com.azure.health.deidentification.helloworld
+```
+### Creating Deidentification Job
+
+Creating a Deidentification Job using `STORAGE_ACCOUNT_SAS_URI` environment variable.
+
+```java com.azure.health.deidentification.sync.createjob
+```
+### Process Deidentification Job
+
+Create and poll job until it is completed.
+
+```java com.azure.health.deidentification.sync.createjob
+```
+
+### List Deidentification Jobs
+
+List and process deidentification jobs
+
+```java com.azure.health.deidentification.sync.listjobs
+```
+
+### List completed files
+
+List the files which are completed by a job.
+
+```java com.azure.health.deidentification.sync.listcompletedfiles
+```
+
+
 
 ## Troubleshooting
 

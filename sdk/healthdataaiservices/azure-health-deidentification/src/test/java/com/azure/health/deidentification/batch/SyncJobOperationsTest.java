@@ -36,9 +36,6 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Override
     protected void beforeTest() {
-        // Todo Document this step
-        System.setProperty("javax.net.ssl.trustStore", "c:\\Users\\daszanis\\Downloads\\deidkeystore.jks");
-        System.setProperty("javax.net.ssl.trustStorePassword", "123456");
         DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpClient(HttpClient.createDefault())

@@ -36,9 +36,6 @@ class AsyncJobOperationsTest extends TestProxyTestBase {
 
     @Override
     protected void beforeTest() {
-        // Todo Document this step
-        System.setProperty("javax.net.ssl.trustStore", "c:\\Users\\daszanis\\Downloads\\deidkeystore.jks");
-        System.setProperty("javax.net.ssl.trustStorePassword", "123456");
         DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint")).httpClient(HttpClient.createDefault()).httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             deidentificationClientbuilder.httpClient(interceptorManager.getPlaybackClient()).credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
