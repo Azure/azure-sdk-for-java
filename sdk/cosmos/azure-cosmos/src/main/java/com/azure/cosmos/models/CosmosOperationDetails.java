@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosDiagnosticsContext;
+import com.azure.cosmos.CosmosRequestContext;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OverridableRequestOptions;
 
@@ -21,21 +22,21 @@ public final class CosmosOperationDetails {
     }
 
     /**
-     * Applies the options in ReadOnlyRequestOptions to the internal request options.
+     * Applies the options in CosmosRequestOptions to the internal request options.
      *
-     * @param readOnlyRequestOptions the common request options for overriding.
+     * @param cosmosRequestOptions the common request options for overriding.
      */
-    public void setRequestOptions(ReadOnlyRequestOptions readOnlyRequestOptions) {
-        requestOptions.override(readOnlyRequestOptions);
+    public void setRequestOptions(CosmosRequestOptions cosmosRequestOptions) {
+        requestOptions.override(cosmosRequestOptions);
     }
 
     /**
-     * Gets the internal request options associated with an operation.
+     * Gets the request context associated with an operation.
      *
-     * @return the internal request options.
+     * @return the request context.
      */
-    public ReadOnlyRequestOptions getRequestOptions() {
-        return requestOptions;
+    public CosmosRequestContext getRequestContext() {
+        return ImplementationBridgeHelpers.CosmosRequestContextHelper.getCosmosRequestContextAccessor().create(requestOptions);
     }
 
     /**

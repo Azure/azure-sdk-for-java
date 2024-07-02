@@ -6,7 +6,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.ReadOnlyRequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;

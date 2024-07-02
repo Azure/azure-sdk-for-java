@@ -614,6 +614,7 @@ public final class BridgeInternal {
         CosmosClientBuilder.initialize();
         CosmosDiagnostics.initialize();
         CosmosDiagnosticsContext.initialize();
+        CosmosRequestContext.initialize();
         CosmosException.initialize();
         DirectConnectionConfig.initialize();
         CosmosAsyncClient.initialize();
