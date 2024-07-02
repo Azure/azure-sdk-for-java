@@ -13,7 +13,6 @@ os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
 from utils import (
     set_or_increase_version,
-    set_or_default_version,
     update_service_files_for_new_lib,
     update_root_pom,
     update_version,
