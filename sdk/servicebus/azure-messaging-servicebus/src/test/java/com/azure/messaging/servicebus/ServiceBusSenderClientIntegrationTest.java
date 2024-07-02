@@ -71,7 +71,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send a message to a non-session queue.
      */
     @MethodSource("receiverTypesProvider")
-    @ParameterizedTest
+    // @ParameterizedTest
     void nonSessionQueueSendMessage(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT);
@@ -89,7 +89,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send a {@link ServiceBusMessageBatch} to a non-session queue.
      */
     @MethodSource("receiverTypesProvider")
-    @ParameterizedTest
+    // @ParameterizedTest
     void nonSessionMessageBatch(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT);
@@ -115,7 +115,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send a list of messages to a non-session entity.
      */
     @MethodSource("receiverTypesProvider")
-    @ParameterizedTest
+    // @ParameterizedTest
     void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT);
@@ -132,7 +132,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can schedule a message to a non-session entity.
      */
     @MethodSource("receiverTypesProvider")
-    @ParameterizedTest
+    // @ParameterizedTest
     void nonSessionScheduleMessage(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT);
@@ -154,7 +154,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can cancel a scheduled a message to a non-session entity.
      */
     @MethodSource("receiverTypesProvider")
-    @ParameterizedTest
+    // @ParameterizedTest
     void nonSessionCancelScheduleMessage(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT);

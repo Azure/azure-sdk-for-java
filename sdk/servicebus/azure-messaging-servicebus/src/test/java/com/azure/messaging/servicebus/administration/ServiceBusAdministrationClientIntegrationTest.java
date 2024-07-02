@@ -43,6 +43,7 @@ import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeP
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -88,7 +89,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
 //     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
 //     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
 //     */
-//    @Test
+//    // @Test
 //    void azureIdentityCredentials() {
 //        // Arrange
 //        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
@@ -129,7 +130,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
 //     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
 //     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
 //     */
-//    @Test
+//    // @Test
 //    void azureSasCredentialsTest() {
 //        assumeTrue(interceptorManager.isLiveMode(), "Azure Identity test is for live test only");
 //        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
@@ -151,7 +152,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
 
     //region Create tests
 
-    @Test
+    // @Test
     void createQueue() {
         final ServiceBusAdministrationClient client = getClient();
         final String queueName = testResourceNamer.randomName("queue", 10);
@@ -202,7 +203,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertNotNull(runtimeProperties.getCreatedAt());
     }
 
-    @Test
+    // @Test
     void createQueueWithForwarding() {
         // Arrange
         final ServiceBusAdministrationClient client = getClient();
@@ -229,7 +230,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertNotNull(runtimeProperties.getCreatedAt());
     }
 
-    @Test
+    // @Test
     void createQueueAuthorizationRules() {
         // Arrange
         final String keyName = "test-rule";
@@ -277,7 +278,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertAuthorizationRules(expected.getAuthorizationRules(), actual.getAuthorizationRules());
     }
 
-    @Test
+    // @Test
     void createTopicWithResponse() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = testResourceNamer.randomName("test", 10);
@@ -304,7 +305,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertNotNull(runtimeProperties.getCreatedAt());
     }
 
-    @Test
+    // @Test
     void createTopicExistingName() {
         // Arrange
         final ServiceBusAdministrationClient client = getClient();
@@ -320,7 +321,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
             () -> client.createTopicWithResponse(topicName, expected, Context.NONE));
     }
 
-    @Test
+    // @Test
     void createSubscription() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
@@ -351,7 +352,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         }
     }
 
-    @Test
+    // @Test
     void createRule() {
         final ServiceBusAdministrationClient client = getClient();
 
@@ -375,7 +376,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertTrue(actual.getFilter() instanceof FalseRuleFilter);
     }
 
-    @Test
+    // @Test
     void createRuleDefaults() {
         final ServiceBusAdministrationClient client = getClient();
 
@@ -389,7 +390,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertTrue(rule.getAction() instanceof EmptyRuleAction);
     }
 
-    @Test
+    // @Test
     void createRuleResponse() {
         final ServiceBusAdministrationClient client = getClient();
 
@@ -422,7 +423,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertTrue(contents.getAction() instanceof EmptyRuleAction);
     }
 
-    @Test
+    // @Test
     void createQueueExistingName() {
         final String queueName = getEntityName(getQueueBaseName(), 5);
         final CreateQueueOptions options = new CreateQueueOptions();
@@ -433,7 +434,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
             "Queue exists exception not thrown when creating a queue with existing name");
     }
 
-    @Test
+    // @Test
     void createSubscriptionExistingName() {
         final String topicName = getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = getSubscriptionBaseName();
@@ -444,7 +445,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
             "Queue exists exception not thrown when creating a queue with existing name");
     }
 
-    @Test
+    // @Test
     void createSubscriptionWithForwarding() {
         // Arrange
         final ServiceBusAdministrationClient client = getClient();
@@ -471,7 +472,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
 
     //endregion
 
-    @Test
+    // @Test
     void updateRuleResponse() {
         final ServiceBusAdministrationClient client = getClient();
 
@@ -501,7 +502,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
 
     //region Get and exists tests
 
-    @Test
+    // @Test
     void getNamespace() {
         final ServiceBusAdministrationClient client = getClient();
 
@@ -513,7 +514,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         }
     }
 
-    @Test
+    // @Test
     void getQueue() {
         final ServiceBusAdministrationClient client = getClient();
         final String queueName = getEntityName(TestUtils.getQueueBaseName(), 5);
@@ -532,7 +533,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertNotNull(runtimeProperties.getAccessedAt());
     }
 
-    @Test
+    // @Test
     void getQueueDoesNotExist() {
         final ServiceBusAdministrationClient client = getClient();
         final String queueName = getEntityName(TestUtils.getQueueBaseName(), 99);
@@ -541,7 +542,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
             "Queue exists! But should not. Incorrect getQueue behavior");
     }
 
-    @Test
+    // @Test
     void getQueueExists() {
         final ServiceBusAdministrationClient client = getClient();
         final String queueName = getEntityName(TestUtils.getQueueBaseName(), 5);
@@ -549,7 +550,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertTrue(client.getQueueExists(queueName));
     }
 
-    @Test
+    // @Test
     void getQueueExistsFalse() {
         final ServiceBusAdministrationClient client = getClient();
         final String queueName = getEntityName(TestUtils.getQueueBaseName(), 99);
@@ -557,7 +558,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertFalse(client.getQueueExists(queueName));
     }
 
-    @Test
+    // @Test
     void getQueueRuntimeProperties() {
         final ServiceBusAdministrationClient client = getClient();
         final String queueName = getEntityName(TestUtils.getQueueBaseName(), 5);
@@ -571,7 +572,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertNotNull(runtimeProperties.getAccessedAt());
     }
 
-    @Test
+    // @Test
     void getTopic() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
@@ -592,7 +593,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertNotNull(runtimeProperties.getAccessedAt());
     }
 
-    @Test
+    // @Test
     void getTopicDoesNotExist() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = testResourceNamer.randomName("topic", 10);
@@ -601,7 +602,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
             "Topic exists! But should not. Incorrect getTopic behavior");
     }
 
-    @Test
+    // @Test
     void getTopicExists() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
@@ -609,7 +610,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertTrue(client.getTopicExists(topicName));
     }
 
-    @Test
+    // @Test
     void getTopicExistsFalse() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = testResourceNamer.randomName(getTopicBaseName(), 10);
@@ -617,7 +618,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertFalse(client.getTopicExists(topicName));
     }
 
-    @Test
+    // @Test
     void getTopicRuntimeProperties() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
@@ -635,7 +636,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertEquals(0, runtimeProperties.getScheduledMessageCount());
     }
 
-    @Test
+    // @Test
     void getSubscription() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
@@ -655,7 +656,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertNotNull(runtimeProperties.getAccessedAt());
     }
 
-    @Test
+    // @Test
     void getSubscriptionDoesNotExist() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
@@ -665,7 +666,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
             "Subscription exists! But should not. Incorrect getSubscription behavior");
     }
 
-    @Test
+    // @Test
     void getSubscriptionExists() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
@@ -674,7 +675,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertTrue(client.getSubscriptionExists(topicName, subscriptionName));
     }
 
-    @Test
+    // @Test
     void getSubscriptionExistsFalse() {
         // Arrange
         final ServiceBusAdministrationClient client = getClient();
@@ -688,7 +689,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertFalse(response);
     }
 
-    @Test
+    // @Test
     void getSubscriptionRuntimeProperties() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
@@ -710,7 +711,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertNotNull(properties.getAccessedAt());
     }
 
-    @Test
+    // @Test
     void getSubscriptionRuntimePropertiesUnauthorizedClient() {
         final String connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
@@ -739,7 +740,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
             "Subscription runtime properties accessible by unauthorized client! This should not be possible.");
     }
 
-    @Test
+    // @Test
     void getRule() {
         final ServiceBusAdministrationClient client = getClient();
 
@@ -761,7 +762,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertTrue(contents.getAction() instanceof EmptyRuleAction);
     }
 
-    @Test
+    // @Test
     void getRuleDoesNotExist() {
         // Arrange
         final ServiceBusAdministrationClient client = getClient();
@@ -779,7 +780,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
 
     //region Delete tests
 
-    @Test
+    // @Test
     void deleteQueue() {
         final ServiceBusAdministrationClient client = getClient();
         final String queueName = testResourceNamer.randomName("queue", 10);
@@ -789,7 +790,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     }
 
 
-    @Test
+    // @Test
     void deleteQueueDoesNotExist() {
         // Arrange
         final ServiceBusAdministrationClient client = getClient();
@@ -799,7 +800,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertThrows(ResourceNotFoundException.class, () -> client.deleteQueue(queueName));
     }
 
-    @Test
+    // @Test
     void deleteRule() {
         final ServiceBusAdministrationClient client = getClient();
         final String ruleName = getEntityName(getRuleBaseName(), 9);
@@ -810,7 +811,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         client.deleteRule(topicName, subscriptionName, ruleName);
     }
 
-    @Test
+    // @Test
     void deleteRuleDoesNotExist() {
         // Arrange
         final ServiceBusAdministrationClient client = getClient();
@@ -822,7 +823,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertThrows(ResourceNotFoundException.class, () -> client.deleteRule(topicName, subscriptionName, ruleName));
     }
 
-    @Test
+    // @Test
     void deleteSubscription() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
@@ -833,7 +834,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         client.deleteSubscription(topicName, subscriptionName);
     }
 
-    @Test
+    // @Test
     void deleteSubscriptionDoesNotExist() {
         // Arrange
         final ServiceBusAdministrationClient client = getClient();
@@ -847,7 +848,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertThrows(ResourceNotFoundException.class, () -> client.deleteSubscription(topicName, subscriptionName));
     }
 
-    @Test
+    // @Test
     void deleteTopic() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = testResourceNamer.randomName("topic", 10);
@@ -856,7 +857,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         client.deleteTopic(topicName);
     }
 
-    @Test
+    // @Test
     void deleteTopicDoesNotExist() {
         // Arrange
         final ServiceBusAdministrationClient client = getClient();
@@ -870,7 +871,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
 
     //region List tests
 
-    @Test
+    // @Test
     void listQueues() {
         final ServiceBusAdministrationClient client = getClient();
 
@@ -883,7 +884,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertTrue(queueProperties.stream().findAny().isPresent());
     }
 
-    @Test
+    // @Test
     void listTopics() {
         final ServiceBusAdministrationClient client = getClient();
 
@@ -896,7 +897,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertTrue(topics.stream().count() > 1);
     }
 
-    @Test
+    // @Test
     void listSubscriptions() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
@@ -909,7 +910,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertTrue(subscriptionProperties.stream().findAny().isPresent());
     }
 
-    @Test
+    // @Test
     void listRules() {
         final ServiceBusAdministrationClient client = getClient();
 

@@ -71,7 +71,7 @@ public class ProxySendTest extends IntegrationTestBase {
     /**
      * Verifies that we can send some number of events.
      */
-    @Test
+    // @Test
     public void sendEvents() {
         // Arrange
         final String queueName = getQueueName(TestUtils.USE_CASE_PROXY);

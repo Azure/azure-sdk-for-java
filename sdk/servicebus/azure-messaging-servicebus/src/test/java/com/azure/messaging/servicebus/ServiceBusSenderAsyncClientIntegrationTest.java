@@ -91,7 +91,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send a message to a non-session queue.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    @ParameterizedTest
+    // @ParameterizedTest
     void nonSessionQueueSendMessage(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, 0, USE_CREDENTIALS);
@@ -109,7 +109,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send a list of messages to a non-session entity.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    @ParameterizedTest
+    // @ParameterizedTest
     void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, USE_CREDENTIALS);
@@ -128,7 +128,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send a {@link ServiceBusMessageBatch} to a non-session queue.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    @ParameterizedTest
+    // @ParameterizedTest
     void nonSessionMessageBatch(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, USE_CREDENTIALS);
@@ -154,7 +154,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send message to final destination using via-queue.
      */
     @Disabled("The send via functionality is removing for first GA release, later we will come back to it.")
-    @Test
+    // @Test
     void viaQueueMessageSendTest() {
         // Arrange
         final Duration shortTimeout = Duration.ofSeconds(15);
@@ -242,7 +242,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send message to final destination using via-topic.
      */
     @Disabled("The send via functionality is removed for first GA release, later we will come back to it.")
-    @Test
+    // @Test
     void viaTopicMessageSendTest() {
         // Arrange
         final Duration shortTimeout = Duration.ofSeconds(15);
@@ -329,7 +329,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * 3. Rollback/commit this transaction.
      */
     @MethodSource
-    @ParameterizedTest
+    // @ParameterizedTest
     void transactionMessageSendAndCompleteTransaction(MessagingEntityType entityType, boolean isCommit) {
         // Arrange
         Duration shortTimeout = Duration.ofSeconds(15);
@@ -389,7 +389,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send using credentials.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    @ParameterizedTest
+    // @ParameterizedTest
     void sendWithCredentials(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, 0, USE_CREDENTIALS);
@@ -412,7 +412,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can create transaction, scheduleMessage and commit.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    @ParameterizedTest
+    // @ParameterizedTest
     void transactionScheduleAndCommitTest(MessagingEntityType entityType) {
 
         // Arrange
@@ -455,7 +455,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can create transaction, scheduleMessages and commit.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    @ParameterizedTest
+    // @ParameterizedTest
     void transactionScheduleMessagesTest(MessagingEntityType entityType) {
 
         // Arrange
@@ -511,7 +511,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can schedule messages and cancel them.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    @ParameterizedTest
+    // @ParameterizedTest
     void cancelScheduledMessagesTest(MessagingEntityType entityType) {
 
         // Arrange

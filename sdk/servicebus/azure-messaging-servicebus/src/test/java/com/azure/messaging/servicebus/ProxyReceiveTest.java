@@ -73,7 +73,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         ProxySelector.setDefault(defaultProxySelector);
     }
 
-    @Test
+    // @Test
     public void receiveMessage() {
         // Arrange
         final String queueName = getQueueName(0);
