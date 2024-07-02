@@ -42,9 +42,13 @@ public class AzureRedisAutoConfigurationTestContainerTest {
 
     private static final String REDIS_PASSWORD = "fake-testcontainer-password";
 
+
+    /**
+     * Pulling Docker registry name from testcontainers.properties file as prefix.
+     */
     @Container
     private static GenericContainer<?> redis =
-        new GenericContainer<>(DockerImageName.parse("redis:5.0.3-alpine"))
+        new GenericContainer<>(DockerImageName.parse("redis:6"))
             .withCommand("--requirepass", REDIS_PASSWORD)
             .withExposedPorts(6379);
 
