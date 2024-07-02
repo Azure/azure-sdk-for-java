@@ -43,7 +43,7 @@ public class Conditions {
     }
 
     /**
-     * @return the clientFilters as Map<Integer, FeatureFilterEvaluationContext>
+     * @return the clientFilters in Map format using index of list as key
      */
     public Map<Integer, FeatureFilterEvaluationContext> getClientFiltersAsMap() {
         final Map<Integer, FeatureFilterEvaluationContext> clientFiltersMap = new HashMap<>();
