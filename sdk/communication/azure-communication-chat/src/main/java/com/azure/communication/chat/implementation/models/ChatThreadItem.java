@@ -5,37 +5,44 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Summary information of a chat thread. */
+/**
+ * Summary information of a chat thread.
+ */
 @Fluent
-public final class ChatThreadItem {
+public final class ChatThreadItem implements JsonSerializable<ChatThreadItem> {
     /*
      * Chat thread id.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Chat thread topic.
      */
-    @JsonProperty(value = "topic", required = true)
     private String topic;
 
     /*
-     * The timestamp when the chat thread was deleted. The timestamp is in
-     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "deletedOn")
     private OffsetDateTime deletedOn;
 
     /*
-     * The timestamp when the last message arrived at the server. The timestamp
-     * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp when the last message arrived at the server. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "lastMessageReceivedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastMessageReceivedOn;
+
+    /**
+     * Creates an instance of ChatThreadItem class.
+     */
+    public ChatThreadItem() {
+    }
 
     /**
      * Get the id property: Chat thread id.
@@ -107,5 +114,53 @@ public final class ChatThreadItem {
      */
     public OffsetDateTime getLastMessageReceivedOn() {
         return this.lastMessageReceivedOn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("topic", this.topic);
+        jsonWriter.writeStringField("deletedOn",
+            this.deletedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deletedOn));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatThreadItem from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatThreadItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatThreadItem.
+     */
+    public static ChatThreadItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChatThreadItem deserializedChatThreadItem = new ChatThreadItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedChatThreadItem.id = reader.getString();
+                } else if ("topic".equals(fieldName)) {
+                    deserializedChatThreadItem.topic = reader.getString();
+                } else if ("deletedOn".equals(fieldName)) {
+                    deserializedChatThreadItem.deletedOn
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("lastMessageReceivedOn".equals(fieldName)) {
+                    deserializedChatThreadItem.lastMessageReceivedOn
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChatThreadItem;
+        });
     }
 }

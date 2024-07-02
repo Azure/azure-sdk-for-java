@@ -30,8 +30,10 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -59,8 +61,8 @@ public final class ChatsImpl {
     }
 
     /**
-     * The interface defining all the services for AzureCommunicationChatServiceChats to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for AzureCommunicationChatServiceChats to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureCommunicationCh")
@@ -72,7 +74,6 @@ public final class ChatsImpl {
             code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CreateChatThreadResult>> createChatThread(@HostParam("endpoint") String endpoint,
-            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CreateChatThreadOptions createChatThreadRequest,
             @HeaderParam("Accept") String accept, Context context);
@@ -112,11 +113,6 @@ public final class ChatsImpl {
      * Creates a chat thread.
      * 
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
-     * client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     * response without the server executing the request multiple times. The value of the Repeatability-Request-Id is an
-     * opaque string representing a client-generated, globally unique for all time, identifier for the request. It is
-     * recommended to use version 4 (random) UUIDs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
@@ -126,22 +122,19 @@ public final class ChatsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateChatThreadResult>> createChatThreadWithResponseAsync(
-        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId) {
+    public Mono<Response<CreateChatThreadResult>>
+        createChatThreadWithResponseAsync(CreateChatThreadOptions createChatThreadRequest) {
         final String accept = "application/json";
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return FluxUtil.withContext(context -> service.createChatThread(this.client.getEndpoint(),
-            repeatabilityRequestId, this.client.getApiVersion(), createChatThreadRequest, accept, context));
+            this.client.getApiVersion(), createChatThreadRequest, accept, context));
     }
 
     /**
      * Creates a chat thread.
      * 
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
-     * client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     * response without the server executing the request multiple times. The value of the Repeatability-Request-Id is an
-     * opaque string representing a client-generated, globally unique for all time, identifier for the request. It is
-     * recommended to use version 4 (random) UUIDs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -152,34 +145,13 @@ public final class ChatsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateChatThreadResult>> createChatThreadWithResponseAsync(
-        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId, Context context) {
+    public Mono<Response<CreateChatThreadResult>>
+        createChatThreadWithResponseAsync(CreateChatThreadOptions createChatThreadRequest, Context context) {
         final String accept = "application/json";
-        return service.createChatThread(this.client.getEndpoint(), repeatabilityRequestId, this.client.getApiVersion(),
-            createChatThreadRequest, accept, context);
-    }
-
-    /**
-     * Creates a chat thread.
-     * 
-     * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
-     * client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     * response without the server executing the request multiple times. The value of the Repeatability-Request-Id is an
-     * opaque string representing a client-generated, globally unique for all time, identifier for the request. It is
-     * recommended to use version 4 (random) UUIDs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
-     * 429, 503.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the create chat thread operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateChatThreadResult> createChatThreadAsync(CreateChatThreadOptions createChatThreadRequest,
-        String repeatabilityRequestId) {
-        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
+        return service.createChatThread(this.client.getEndpoint(), this.client.getApiVersion(), createChatThreadRequest,
+            accept, context);
     }
 
     /**
@@ -195,8 +167,7 @@ public final class ChatsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateChatThreadResult> createChatThreadAsync(CreateChatThreadOptions createChatThreadRequest) {
-        final String repeatabilityRequestId = null;
-        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestId)
+        return createChatThreadWithResponseAsync(createChatThreadRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -204,11 +175,6 @@ public final class ChatsImpl {
      * Creates a chat thread.
      * 
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
-     * client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     * response without the server executing the request multiple times. The value of the Repeatability-Request-Id is an
-     * opaque string representing a client-generated, globally unique for all time, identifier for the request. It is
-     * recommended to use version 4 (random) UUIDs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -219,8 +185,8 @@ public final class ChatsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateChatThreadResult> createChatThreadAsync(CreateChatThreadOptions createChatThreadRequest,
-        String repeatabilityRequestId, Context context) {
-        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestId, context)
+        Context context) {
+        return createChatThreadWithResponseAsync(createChatThreadRequest, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -228,11 +194,6 @@ public final class ChatsImpl {
      * Creates a chat thread.
      * 
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
-     * client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     * response without the server executing the request multiple times. The value of the Repeatability-Request-Id is an
-     * opaque string representing a client-generated, globally unique for all time, identifier for the request. It is
-     * recommended to use version 4 (random) UUIDs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -242,31 +203,9 @@ public final class ChatsImpl {
      * @return result of the create chat thread operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateChatThreadResult> createChatThreadWithResponse(
-        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId, Context context) {
-        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestId, context).block();
-    }
-
-    /**
-     * Creates a chat thread.
-     * 
-     * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
-     * client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     * response without the server executing the request multiple times. The value of the Repeatability-Request-Id is an
-     * opaque string representing a client-generated, globally unique for all time, identifier for the request. It is
-     * recommended to use version 4 (random) UUIDs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
-     * 429, 503.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the create chat thread operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateChatThreadResult createChatThread(CreateChatThreadOptions createChatThreadRequest,
-        String repeatabilityRequestId) {
-        return createChatThreadWithResponse(createChatThreadRequest, repeatabilityRequestId, Context.NONE).getValue();
+    public Response<CreateChatThreadResult>
+        createChatThreadWithResponse(CreateChatThreadOptions createChatThreadRequest, Context context) {
+        return createChatThreadWithResponseAsync(createChatThreadRequest, context).block();
     }
 
     /**
@@ -282,8 +221,7 @@ public final class ChatsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateChatThreadResult createChatThread(CreateChatThreadOptions createChatThreadRequest) {
-        final String repeatabilityRequestId = null;
-        return createChatThreadWithResponse(createChatThreadRequest, repeatabilityRequestId, Context.NONE).getValue();
+        return createChatThreadWithResponse(createChatThreadRequest, Context.NONE).getValue();
     }
 
     /**
