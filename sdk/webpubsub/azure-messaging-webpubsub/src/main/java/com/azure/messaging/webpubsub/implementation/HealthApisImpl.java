@@ -63,7 +63,7 @@ public final class HealthApisImpl {
      * The interface defining all the services for AzureWebPubSubServiceRestApiHealthApis to be used by the proxy
      * service to perform REST calls.
      */
-    @Host("{Endpoint}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "AzureWebPubSubServic")
     public interface HealthApisService {
         @Head("/api/health")
@@ -72,7 +72,7 @@ public final class HealthApisImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> getServiceStatus(@HostParam("Endpoint") String endpoint,
+        Mono<Response<Void>> getServiceStatus(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Head("/api/health")
@@ -81,7 +81,7 @@ public final class HealthApisImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> getServiceStatusSync(@HostParam("Endpoint") String endpoint,
+        Response<Void> getServiceStatusSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
     }
 

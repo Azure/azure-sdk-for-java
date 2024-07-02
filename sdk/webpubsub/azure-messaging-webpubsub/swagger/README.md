@@ -29,7 +29,7 @@ autorest
 ## Generate autorest code
 
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/webpubsub/data-plane/WebPubSub/stable/2022-11-01/webpubsub.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/webpubsub/data-plane/WebPubSub/stable/2024-01-01/webpubsub.json
 java: true
 use: '@autorest/java@4.1.29'
 output-folder: ..
@@ -54,4 +54,5 @@ disable-client-builder: true
 service-versions:
   - '2021-10-01'
   - '2022-11-01'
+  - '2024-01-01'
 ```

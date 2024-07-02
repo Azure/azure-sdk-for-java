@@ -12,8 +12,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.messaging.webpubsub.models.ClientEndpointType;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 import com.azure.messaging.webpubsub.models.WebPubSubPermission;
@@ -37,7 +39,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
@@ -219,7 +220,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testGetAuthenticationToken() {
         StepVerifier.create(client.getClientAccessToken(new GetClientAccessTokenOptions()))
             .assertNext(token -> {
@@ -256,7 +257,48 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
             })
             .expectComplete()
             .verify(TIMEOUT);
+    }
 
+    @Test
+    @LiveOnly
+    public void testGetMqttAuthenticationToken() {
+        GetClientAccessTokenOptions options = new GetClientAccessTokenOptions();
+        options.setClientEndpointType(ClientEndpointType.MQTT);
+        StepVerifier.create(client.getClientAccessToken(options))
+            .assertNext(token -> {
+                Assertions.assertNotNull(token);
+                Assertions.assertNotNull(token.getToken());
+                Assertions.assertNotNull(token.getUrl());
+
+                assertTrue(token.getUrl().startsWith("wss://"));
+                assertTrue(token.getUrl().contains(".webpubsub.azure.com/clients/mqtt/hubs/"));
+
+                String authToken = token.getToken();
+                JWT jwt;
+                try {
+                    jwt = JWTParser.parse(authToken);
+                } catch (ParseException e) {
+                    fail("Unable to parse auth token: " + authToken + " exception: ", e);
+                    return;
+                }
+
+                JWTClaimsSet claimsSet;
+                try {
+                    claimsSet = jwt.getJWTClaimsSet();
+                } catch (ParseException e) {
+                    fail("Unable to parse claims: " + authToken + " exception: ", e);
+                    return;
+                }
+
+                assertNotNull(claimsSet);
+                assertNotNull(claimsSet.getAudience());
+                assertFalse(claimsSet.getAudience().isEmpty());
+
+                String aud = claimsSet.getAudience().iterator().next();
+                assertTrue(aud.contains(".webpubsub.azure.com/clients/mqtt/hubs/"));
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     @Test
@@ -271,6 +313,30 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
             BinaryData.fromString("Hello World!"),
             new RequestOptions().addRequestCallback(request -> request.getHeaders()
                 .set("Content-Type", "text/plain"))), 202);
+    }
+
+    @Test
+    public void testAddConnectionsToGroup() {
+        BinaryData groupsToAdd = BinaryData.fromString("{\"groups\": [\"group1\", \"group2\"], \"filter\": \"userId eq 'user 1'\"}");
+        StepVerifier.create(
+            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, groupsToAdd, new RequestOptions()),
+            200
+        );
+    }
+
+    @Test
+    public void testAddConnectionsToGroupsThrowErrorWhenHubIsNull() {
+        BinaryData groupsToAdd = BinaryData.fromString("{\"groups\": [\"group1\", \"group2\"], \"filter\": \"userId eq 'user 1'\"}");
+        StepVerifier.create(
+            client.addConnectionsToGroupsWithResponse(null, groupsToAdd, new RequestOptions())
+        ).expectError(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void testAddConnectionsToGroupsThrowErrorWhenGroupsToAddIsNull() {
+        StepVerifier.create(
+            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, null, new RequestOptions())
+        ).expectError(IllegalArgumentException.class);
     }
 
     @Test
@@ -298,15 +364,12 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     }
 
     @Test
+    @DoNotRecord
     public void testCheckPermission() {
-        assumeTrue(getTestMode() == TestMode.PLAYBACK, "This requires real "
-            + "connection id that is created when a client connects to Web PubSub service. So, run this in PLAYBACK "
-            + "mode only.");
-
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
 
-        StepVerifier.create(client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "71xtjgThROOJ6DsVY3xbBw2ef45fd11",
+        StepVerifier.create(client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "q6MY8-6w2oQ7GAa4ViNr4w-DPgpgK02",
             requestOptions))
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());
