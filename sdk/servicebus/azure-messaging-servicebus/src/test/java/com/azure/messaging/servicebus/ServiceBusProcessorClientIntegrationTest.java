@@ -22,6 +22,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessage;
+import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -192,6 +194,54 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
     private void processError(ServiceBusErrorContext context, CountDownLatch countdownLatch) {
         LOGGER.info("Error when receiving messages from namespace: {}. Entity: {}}",
             context.getFullyQualifiedNamespace(), context.getEntityPath());
+    }
+
+    private ServiceBusClientBuilder.ServiceBusProcessorClientBuilder getProcessorBuilder(boolean useCredentials,
+        MessagingEntityType entityType, int entityIndex, boolean sharedConnection) {
+
+        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        switch (entityType) {
+            case QUEUE:
+                final String queueName = getQueueName(entityIndex);
+                assertNotNull(queueName, "'queueName' cannot be null.");
+
+                return builder.processor().queueName(queueName);
+            case SUBSCRIPTION:
+                final String topicName = getTopicName(entityIndex);
+                final String subscriptionName = getSubscriptionBaseName();
+                assertNotNull(topicName, "'topicName' cannot be null.");
+                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
+
+                return builder.processor().topicName(topicName).subscriptionName(subscriptionName);
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+        }
+    }
+
+    private ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(boolean useCredentials,
+        MessagingEntityType entityType, int entityIndex, boolean sharedConnection, AmqpRetryOptions amqpRetryOptions) {
+
+        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        builder.retryOptions(amqpRetryOptions);
+
+        switch (entityType) {
+            case QUEUE:
+                final String queueName = getSessionQueueName(entityIndex);
+                assertNotNull(queueName, "'queueName' cannot be null.");
+                return builder
+                    .sessionProcessor()
+                    .queueName(queueName);
+
+            case SUBSCRIPTION:
+                final String topicName = getTopicName(entityIndex);
+                final String subscriptionName = getSessionSubscriptionBaseName();
+                assertNotNull(topicName, "'topicName' cannot be null.");
+                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
+                return builder.sessionProcessor()
+                    .topicName(topicName).subscriptionName(subscriptionName);
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+        }
     }
 
     private ServiceBusSenderAsyncClient createSender(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {

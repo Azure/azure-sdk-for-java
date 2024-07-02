@@ -25,8 +25,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-
 public class ProxySendTest extends IntegrationTestBase {
     private static final int PROXY_PORT = 9101;
     private static final int NUMBER_OF_EVENTS = 10;
@@ -79,7 +77,7 @@ public class ProxySendTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageId);
-        final ServiceBusSenderAsyncClient sender = getBuilder(USE_CREDENTIALS, logger)
+        final ServiceBusSenderAsyncClient sender = getAuthenticatedBuilder(USE_CREDENTIALS)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
@@ -98,20 +96,5 @@ public class ProxySendTest extends IntegrationTestBase {
             }))
             .expectComplete()
             .verify(Duration.ofSeconds(30));
-    }
-
-    private static ServiceBusClientBuilder getBuilder(boolean useCredentials, ClientLogger logger) {
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-        logger.info("Getting Builder using credentials : [{}] ", useCredentials);
-        if (useCredentials) {
-            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
-            assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
-                "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
-            // final TokenCredential tokenCredential = new AzurePowerShellCredentialBuilder().build();
-            // return builder.credential(fullyQualifiedDomainName, tokenCredential);
-            return builder.credential(fullyQualifiedDomainName, PS_CREDENTIAL);
-        } else {
-            return builder.connectionString(getConnectionString());
-        }
     }
 }

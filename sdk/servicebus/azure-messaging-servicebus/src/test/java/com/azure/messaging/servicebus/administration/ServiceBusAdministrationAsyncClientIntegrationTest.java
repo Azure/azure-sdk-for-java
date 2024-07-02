@@ -21,6 +21,7 @@ import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -57,12 +58,11 @@ import java.util.Collections;
 import java.util.List;
 //import java.util.regex.Matcher;
 //import java.util.regex.Pattern;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-import static com.azure.messaging.servicebus.IntegrationTestBase.PS_CREDENTIAL;
 import static com.azure.messaging.servicebus.IntegrationTestBase.USE_CREDENTIALS;
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
-//import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
@@ -103,6 +103,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
         TEST_PROXY_REQUEST_MATCHERS = Collections.singletonList(customMatcher);
     }
+
+    private final AtomicReference<AzurePipelinesCredential> pipelineCredential = new AtomicReference<>();
 
     public static Stream<Arguments> createHttpClients() {
         return Stream.of(Arguments.of(new NettyAsyncHttpClientBuilder().build()));
@@ -1251,10 +1253,9 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
      * @param interceptorManager the interceptor manager
      * @return The appropriate token credential
      */
-    private static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
+    private TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
         if (interceptorManager.isLiveMode()) {
-            // return new AzurePowerShellCredentialBuilder().build();
-            return PS_CREDENTIAL;
+            return TestUtils.getPipelineCredential(pipelineCredential);
         } else if (interceptorManager.isRecordMode()) {
             return new DefaultAzureCredentialBuilder().build();
         } else {

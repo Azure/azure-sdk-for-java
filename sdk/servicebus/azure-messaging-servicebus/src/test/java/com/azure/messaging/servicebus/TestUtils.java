@@ -10,6 +10,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.identity.AzurePipelinesCredential;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
 import org.apache.qpid.proton.Proton;
@@ -36,6 +38,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -46,6 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class TestUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
@@ -220,6 +224,47 @@ public class TestUtils {
      */
     public static String getSessionSubscriptionBaseName() {
         return getPropertyValue("AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME", "subscription-session");
+    }
+
+    /**
+     * Obtain a {@link com.azure.identity.AzurePowerShellCredentialBuilder} when running in Azure pipelines that is
+     * configured with service connections federated identity.
+     *
+     * @return A {@link com.azure.identity.AzurePowerShellCredentialBuilder} when running in Azure pipelines that is
+     *   configured with service connections federated identity, {@code null} otherwise.
+     */
+    public static AzurePipelinesCredentialBuilder getAzurePipelinesCredentialBuilder() {
+        final String serviceConnectionId  = getPropertyValue("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        final String clientId = getPropertyValue("AZURESUBSCRIPTION_CLIENT_ID");
+        final String tenantId = getPropertyValue("AZURESUBSCRIPTION_TENANT_ID");
+        final String systemAccessToken = getPropertyValue("SYSTEM_ACCESSTOKEN");
+        if (CoreUtils.isNullOrEmpty(serviceConnectionId) || CoreUtils.isNullOrEmpty(clientId)
+            || CoreUtils.isNullOrEmpty(tenantId) || CoreUtils.isNullOrEmpty(systemAccessToken)) {
+            return null;
+        }
+        return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+            .clientId(clientId)
+            .tenantId(tenantId)
+            .serviceConnectionId(serviceConnectionId);
+    }
+
+    /**
+     * Obtain the Azure Pipelines credential if running in Azure Pipelines configured with service connections federated identity.
+     *
+     * @return the Azure Pipelines credential.
+     */
+    public static AzurePipelinesCredential getPipelineCredential(AtomicReference<AzurePipelinesCredential> pipelineCredential) {
+        return pipelineCredential.updateAndGet(credential -> {
+            if (credential == null) {
+                final AzurePipelinesCredentialBuilder builder = TestUtils.getAzurePipelinesCredentialBuilder();
+                if (builder == null) {
+                    assumeTrue(false, "Test required to run on Azure Pipelines that is configured with service connections federated identity.");
+                    return null;
+                }
+                return builder.build();
+            }
+            return credential;
+        });
     }
 
     /**

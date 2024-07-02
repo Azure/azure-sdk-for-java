@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-
 /**
  * Verify we can use jproxy hosted locally to receive messages.
  */
@@ -81,7 +79,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         final String messageTracking = UUID.randomUUID().toString();
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageTracking);
-        final ServiceBusSenderAsyncClient sender = getBuilder(USE_CREDENTIALS, logger)
+        final ServiceBusSenderAsyncClient sender = getAuthenticatedBuilder(USE_CREDENTIALS)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .sender()
@@ -90,7 +88,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
         toClose(sender);
 
-        final ServiceBusReceiverAsyncClient receiver = getBuilder(USE_CREDENTIALS, logger)
+        final ServiceBusReceiverAsyncClient receiver = getAuthenticatedBuilder(USE_CREDENTIALS)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .receiver()
@@ -119,21 +117,6 @@ public class ProxyReceiveTest extends IntegrationTestBase {
                 .verify(TIMEOUT);
         } finally {
             dispose(sender, receiver);
-        }
-    }
-
-    private static ServiceBusClientBuilder getBuilder(boolean useCredentials, ClientLogger logger) {
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-        logger.info("Getting Builder using credentials : [{}] ", useCredentials);
-        if (useCredentials) {
-            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
-            assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
-                "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
-            // final TokenCredential tokenCredential = new AzurePowerShellCredentialBuilder().build();
-            // return builder.credential(fullyQualifiedDomainName, tokenCredential);
-            return builder.credential(fullyQualifiedDomainName, PS_CREDENTIAL);
-        } else {
-            return builder.connectionString(getConnectionString());
         }
     }
 }

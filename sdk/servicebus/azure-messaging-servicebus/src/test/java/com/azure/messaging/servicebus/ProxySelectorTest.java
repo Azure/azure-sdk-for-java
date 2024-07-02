@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-
 public class ProxySelectorTest extends IntegrationTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(ProxySelectorTest.class);
 
@@ -70,7 +68,7 @@ public class ProxySelectorTest extends IntegrationTestBase {
         });
 
         final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromString("Hello"));
-        final ServiceBusSenderAsyncClient sender = getBuilder(USE_CREDENTIALS, logger)
+        final ServiceBusSenderAsyncClient sender = getAuthenticatedBuilder(USE_CREDENTIALS)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
             .sender()
@@ -88,20 +86,5 @@ public class ProxySelectorTest extends IntegrationTestBase {
 
         final boolean awaited = countDownLatch.await(2, TimeUnit.SECONDS);
         Assertions.assertTrue(awaited);
-    }
-
-    private static ServiceBusClientBuilder getBuilder(boolean useCredentials, ClientLogger logger) {
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-        logger.info("Getting Builder using credentials : [{}] ", useCredentials);
-        if (useCredentials) {
-            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
-            assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
-                "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
-            // final TokenCredential tokenCredential = new AzurePowerShellCredentialBuilder().build();
-            // return builder.credential(fullyQualifiedDomainName, tokenCredential);
-            return builder.credential(fullyQualifiedDomainName, PS_CREDENTIAL);
-        } else {
-            return builder.connectionString(getConnectionString());
-        }
     }
 }

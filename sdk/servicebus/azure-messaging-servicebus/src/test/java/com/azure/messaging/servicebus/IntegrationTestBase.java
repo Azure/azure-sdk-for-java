@@ -22,6 +22,7 @@ import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
@@ -46,6 +47,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,7 +64,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public abstract class IntegrationTestBase extends TestBase {
-    public static final SBPowerShellCachedCredentials PS_CREDENTIAL = new SBPowerShellCachedCredentials();
     public static final boolean USE_CREDENTIALS = true;
     protected static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
@@ -77,6 +78,7 @@ public abstract class IntegrationTestBase extends TestBase {
     private List<AutoCloseable> toClose = new ArrayList<>();
     private String testName;
     private final Scheduler scheduler = Schedulers.parallel();
+    private final AtomicReference<AzurePipelinesCredential> pipelineCredential = new AtomicReference<>();
 
     protected static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     protected String sessionId;
@@ -210,31 +212,33 @@ public abstract class IntegrationTestBase extends TestBase {
         return new ProxyOptions(authenticationType, proxy, username, password);
     }
 
+    protected ServiceBusClientBuilder getAuthenticatedBuilder(boolean useCredentials) {
+        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
+        logger.info("Getting Builder using credentials : [{}] ", useCredentials);
+        if (useCredentials) {
+            final String fullyQualifiedDomainName = getFullyQualifiedDomainName();
+            assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
+                "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
+            final TokenCredential tokenCredential = TestUtils.getPipelineCredential(pipelineCredential);
+            return builder.credential(fullyQualifiedDomainName, tokenCredential);
+        } else {
+            return builder.connectionString(getConnectionString());
+        }
+    }
+
     /**
      * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
      * connection string to authenticate if {@code useCredentials} is false. Otherwise, uses a service principal through
      * {@link com.azure.identity.ClientSecretCredential}.
      */
     protected ServiceBusClientBuilder getBuilder(boolean useCredentials) {
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
+        return getAuthenticatedBuilder(useCredentials)
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retryOptions(RETRY_OPTIONS)
             .clientOptions(optionsWithTracing)
             .transportType(AmqpTransportType.AMQP)
             .scheduler(scheduler)
             .configuration(v1OrV2(true));
-
-        logger.info("Getting Builder using credentials : [{}] ", useCredentials);
-        if (useCredentials) {
-            final String fullyQualifiedDomainName = getFullyQualifiedDomainName();
-            assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
-                "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
-            // final TokenCredential tokenCredential = new AzurePowerShellCredentialBuilder().build();
-            // return builder.credential(fullyQualifiedDomainName, tokenCredential);
-            return builder.credential(fullyQualifiedDomainName, PS_CREDENTIAL);
-        } else {
-            return builder.connectionString(getConnectionString());
-        }
     }
 
     /**
@@ -325,54 +329,6 @@ public abstract class IntegrationTestBase extends TestBase {
                     .retryOptions(retryOptions)
                     .sessionReceiver()
                     .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                    .topicName(topicName).subscriptionName(subscriptionName);
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
-        }
-    }
-
-    protected ServiceBusClientBuilder.ServiceBusProcessorClientBuilder getProcessorBuilder(boolean useCredentials,
-        MessagingEntityType entityType, int entityIndex, boolean sharedConnection) {
-
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
-        switch (entityType) {
-            case QUEUE:
-                final String queueName = getQueueName(entityIndex);
-                assertNotNull(queueName, "'queueName' cannot be null.");
-
-                return builder.processor().queueName(queueName);
-            case SUBSCRIPTION:
-                final String topicName = getTopicName(entityIndex);
-                final String subscriptionName = getSubscriptionBaseName();
-                assertNotNull(topicName, "'topicName' cannot be null.");
-                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-
-                return builder.processor().topicName(topicName).subscriptionName(subscriptionName);
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
-        }
-    }
-
-    protected ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(boolean useCredentials,
-        MessagingEntityType entityType, int entityIndex, boolean sharedConnection, AmqpRetryOptions amqpRetryOptions) {
-
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
-        builder.retryOptions(amqpRetryOptions);
-
-        switch (entityType) {
-            case QUEUE:
-                final String queueName = getSessionQueueName(entityIndex);
-                assertNotNull(queueName, "'queueName' cannot be null.");
-                return builder
-                    .sessionProcessor()
-                    .queueName(queueName);
-
-            case SUBSCRIPTION:
-                final String topicName = getTopicName(entityIndex);
-                final String subscriptionName = getSessionSubscriptionBaseName();
-                assertNotNull(topicName, "'topicName' cannot be null.");
-                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-                return builder.sessionProcessor()
                     .topicName(topicName).subscriptionName(subscriptionName);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
@@ -546,6 +502,7 @@ public abstract class IntegrationTestBase extends TestBase {
         private final Mono<com.azure.core.credential.AccessToken> cached;
 
         public SBPowerShellCachedCredentials() {
+
             this.builder = new AzurePowerShellCredentialBuilder();
             this.context = new TokenRequestContext().addScopes(ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
             this.cached = Mono.fromCallable(builder::build)

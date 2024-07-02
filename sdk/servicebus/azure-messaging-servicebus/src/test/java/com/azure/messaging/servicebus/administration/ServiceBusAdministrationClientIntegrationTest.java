@@ -19,6 +19,7 @@ import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
+import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -54,10 +55,10 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 //import java.util.regex.Matcher;
 //import java.util.regex.Pattern;
 
-import static com.azure.messaging.servicebus.IntegrationTestBase.PS_CREDENTIAL;
 import static com.azure.messaging.servicebus.IntegrationTestBase.USE_CREDENTIALS;
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
 //import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
@@ -81,6 +82,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Execution(ExecutionMode.SAME_THREAD)
 public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
+    private final AtomicReference<AzurePipelinesCredential> pipelineCredential = new AtomicReference<>();
 
 //    /**
 //     * Test to connect to the service bus with an azure identity TokenCredential.
@@ -969,10 +971,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
      * @param interceptorManager the interceptor manager
      * @return The appropriate token credential
      */
-    private static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
+    private TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
         if (interceptorManager.isLiveMode()) {
-            // return new AzurePowerShellCredentialBuilder().build();
-            return PS_CREDENTIAL;
+            return TestUtils.getPipelineCredential(pipelineCredential);
         } else if (interceptorManager.isRecordMode()) {
             return new DefaultAzureCredentialBuilder().build();
         } else {
