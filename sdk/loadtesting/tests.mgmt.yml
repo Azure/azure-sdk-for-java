@@ -11,3 +11,4 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerloadtesting
     Clouds: 'Public'
+    UseFederatedAuth: true
