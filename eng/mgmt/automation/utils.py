@@ -14,6 +14,7 @@ from parameters import CI_FORMAT
 from parameters import POM_FORMAT
 from parameters import POM_MODULE_FORMAT
 from parameters import DEFAULT_VERSION
+from parameters import CHANGELOG_INITIAL_SECTION_FORMAT
 from parameters import MAVEN_HOST
 
 
@@ -95,10 +96,15 @@ def update_root_pom(sdk_root: str, service: str):
         logging.info("[POM][Success] Write to root pom")
 
 
-def update_service_ci_and_pom(sdk_root: str, service: str, group: str, module: str):
+def update_service_files_for_new_lib(sdk_root: str, service: str, group: str, module: str):
+    """
+    For new lib, update ci.yml, pom.xml and changelog.md accordingly.
+    """
     folder = os.path.join(sdk_root, "sdk/{0}".format(service))
     ci_yml_file = os.path.join(folder, "ci.yml")
     pom_xml_file = os.path.join(folder, "pom.xml")
+    module_folder = os.path.join(folder, module)
+    changelog_file = os.path.join(module_folder, "CHANGELOG.md")
 
     if os.path.exists(ci_yml_file):
         with open(ci_yml_file, "r") as fin:
@@ -177,6 +183,19 @@ def update_service_ci_and_pom(sdk_root: str, service: str, group: str, module: s
         with open(pom_xml_file, "w") as fout:
             fout.write(pom_xml)
         logging.info("[POM][Success] Write to pom.xml")
+
+    if os.path.exists(changelog_file):
+        with open(changelog_file, "r") as fin:
+            changelog_str = fin.read()
+    logging.info("[CHANGELOG][Process] Adding initial section to changelog.md.")
+    initial_section = CHANGELOG_INITIAL_SECTION_FORMAT.format(artifact_id=module)
+    if initial_section not in changelog_str:
+        changelog_str += initial_section
+        with open(changelog_file, "w") as fout:
+            fout.write(changelog_str)
+        logging.info("[CHANGLOG][Success] Write to changelog.md.")
+    else:
+        logging.warning("[CHANGELOG] changelog.md already contains necessary sections. Will not add initial sections.")
 
 
 def update_version(sdk_root: str, output_folder: str):
