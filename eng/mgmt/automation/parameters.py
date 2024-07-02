@@ -12,7 +12,8 @@ ARTIFACT_FORMAT = None
 OUTPUT_FOLDER_FORMAT = None
 
 # Constant parameters
-MAVEN_URL = "https://repo1.maven.org/maven2/{group_id}/{artifact_id}/{version}/{artifact_id}-{version}.jar"
+MAVEN_HOST = "https://repo1.maven.org/maven2"
+MAVEN_URL = MAVEN_HOST + "/{group_id}/{artifact_id}/{version}/{artifact_id}-{version}.jar"
 
 SDK_ROOT = "../../../"  # related to file dir
 AUTOREST_CORE_VERSION = "3.9.7"
