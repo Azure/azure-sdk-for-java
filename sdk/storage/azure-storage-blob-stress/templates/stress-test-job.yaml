@@ -29,7 +29,7 @@ spec:
       args:
         - |
           set -exa;
-          keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias HttpFaultInject -file /mnt/outputs/dev-cert.pfx -storepass changeit;
+          keytool -import -alias test -file /mnt/outputs/dev-cert.pfx -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -keypass changeit -storepass changeit;
           mkdir -p "$DEBUG_SHARE";
           . /mnt/outputs/.env;
           java \
