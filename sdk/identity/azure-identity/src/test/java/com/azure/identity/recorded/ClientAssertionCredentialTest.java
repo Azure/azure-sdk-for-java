@@ -8,11 +8,10 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.identity.ClientAssertionCredential;
 import com.azure.identity.ClientAssertionCredentialBuilder;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
-
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -32,7 +31,8 @@ public class ClientAssertionCredentialTest extends IdentityTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "PLAYBACK")
+
+    @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
     public void getToken(HttpClient httpClient) {
         // arrange
         initializeClient(httpClient);
@@ -48,7 +48,7 @@ public class ClientAssertionCredentialTest extends IdentityTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "PLAYBACK")
+    @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
     public void getTokenAsync(HttpClient httpClient) {
         // arrange
         initializeClient(httpClient);

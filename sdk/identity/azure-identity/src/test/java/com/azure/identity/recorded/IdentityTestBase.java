@@ -12,6 +12,7 @@ import com.azure.core.test.models.*;
 import com.azure.core.util.Configuration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class IdentityTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
             customMatchers.add(new BodilessMatcher());
-            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("X-MRC-CV")));
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Arrays.asList("X-MRC-CV", "x-client-CPU")));
             interceptorManager.addMatchers(customMatchers);
         }
 
