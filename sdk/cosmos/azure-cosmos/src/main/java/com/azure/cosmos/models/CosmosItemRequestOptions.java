@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Encapsulates options that can be specified for a request issued to cosmos Item.
@@ -45,6 +45,7 @@ public class CosmosItemRequestOptions {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
+    private Set<String> keywordIdentifiers;
 
     /**
      * copy constructor
@@ -452,6 +453,7 @@ public class CosmosItemRequestOptions {
         }
         requestOptions.setEffectiveItemSerializer(this.customSerializer);
         requestOptions.setUseTrackingIds(this.useTrackingIds);
+        requestOptions.setKeywordIdentifiers(keywordIdentifiers);
         return requestOptions;
     }
 
@@ -560,6 +562,25 @@ public class CosmosItemRequestOptions {
         return this;
     }
 
+    /**
+     * Sets the custom ids.
+     *
+     * @param keywordIdentifiers the custom ids.
+     * @return the current request options.
+     */
+    public CosmosItemRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
+        return this;
+    }
+
+    /**
+     * Gets the custom ids.
+     *
+     * @return the custom ids.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return keywordIdentifiers;
+    }
 
     /**
      * Gets the custom item request options

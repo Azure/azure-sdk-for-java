@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Getters for the common request options for operations in CosmosDB.
@@ -132,4 +133,11 @@ public interface ReadOnlyRequestOptions {
      * @return the query name. It could be null if not defined or called on an irrelevant operation.
      */
     String getQueryNameOrDefault(String defaultQueryName);
+
+    /**
+     * Gets the custom correlated ids.
+     *
+     * @return the custom correlated ids.
+     */
+    Set<String> getKeywordIdentifiers();
 }

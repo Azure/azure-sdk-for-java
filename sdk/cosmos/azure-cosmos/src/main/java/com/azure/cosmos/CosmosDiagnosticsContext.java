@@ -618,6 +618,10 @@ public final class CosmosDiagnosticsContext {
         ctxNode.put("maxRequestSizeInBytes", this.maxRequestSize);
         ctxNode.put("maxResponseSizeInBytes", this.maxResponseSize);
 
+        if (this.requestOptions.getKeywordIdentifiers() != null) {
+            ctxNode.put("keywordIdentifiers", String.join(",", this.requestOptions.getKeywordIdentifiers()));
+        }
+
         if (this.maxItemCount != null) {
             ctxNode.put("maxItems", this.maxItemCount);
         }
@@ -915,6 +919,15 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
+    /**
+     * Gets the custom ids.
+     *
+     * @return the custom ids.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return this.requestOptions.getKeywordIdentifiers();
+    }
+
     OverridableRequestOptions getRequestOptions() {
         return this.requestOptions;
     }
@@ -966,7 +979,6 @@ public final class CosmosDiagnosticsContext {
                             requestOptions
                             );
                     }
-
                     @Override
                     public OverridableRequestOptions getRequestOptions(CosmosDiagnosticsContext ctx) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");

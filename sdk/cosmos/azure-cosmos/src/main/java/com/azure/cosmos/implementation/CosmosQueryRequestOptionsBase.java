@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -42,6 +43,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
+    private Set<String> keywordIdentifiers;
 
     /**
      * Instantiates a new query request options.
@@ -73,6 +75,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         this.excludeRegions = options.excludeRegions;
         this.properties = options.properties;
         this.customSerializer = options.customSerializer;
+        this.keywordIdentifiers = options.keywordIdentifiers;
     }
 
     public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -456,17 +459,27 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         return (T)this;
     }
 
+    public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
+    }
+
+    @Override
+    public Set<String> getKeywordIdentifiers() {
+        return this.keywordIdentifiers;
+    }
+
     @Override
     public void override(ReadOnlyRequestOptions readOnlyRequestOptions) {
-        this.consistencyLevel = overrideOption(readOnlyRequestOptions.getConsistencyLevel(), this.consistencyLevel);
-        this.throughputControlGroupName = overrideOption(readOnlyRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
-        this.dedicatedGatewayRequestOptions = overrideOption(readOnlyRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
-        this.cosmosEndToEndOperationLatencyPolicyConfig = overrideOption(readOnlyRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.cosmosEndToEndOperationLatencyPolicyConfig);
-        this.excludeRegions = overrideOption(readOnlyRequestOptions.getExcludedRegions(), this.excludeRegions);
-        this.thresholds = overrideOption(readOnlyRequestOptions.getDiagnosticsThresholds(), this.thresholds);
-        this.indexMetricsEnabled = overrideOption(readOnlyRequestOptions.isIndexMetricsEnabled(), this.indexMetricsEnabled);
-        this.queryMetricsEnabled = overrideOption(readOnlyRequestOptions.isQueryMetricsEnabled(), this.queryMetricsEnabled);
-        this.responseContinuationTokenLimitInKb = overrideOption(readOnlyRequestOptions.getResponseContinuationTokenLimitInKb(), this.responseContinuationTokenLimitInKb);
+        this.consistencyLevel = overrideOption( readOnlyRequestOptions.getConsistencyLevel(), this.consistencyLevel);
+        this.throughputControlGroupName = overrideOption( readOnlyRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.dedicatedGatewayRequestOptions = overrideOption( readOnlyRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
+        this.cosmosEndToEndOperationLatencyPolicyConfig = overrideOption( readOnlyRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.cosmosEndToEndOperationLatencyPolicyConfig);
+        this.excludeRegions = overrideOption( readOnlyRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.thresholds = overrideOption( readOnlyRequestOptions.getDiagnosticsThresholds(), this.thresholds);
+        this.indexMetricsEnabled = overrideOption( readOnlyRequestOptions.isIndexMetricsEnabled(), this.indexMetricsEnabled);
+        this.queryMetricsEnabled = overrideOption( readOnlyRequestOptions.isQueryMetricsEnabled(), this.queryMetricsEnabled);
+        this.responseContinuationTokenLimitInKb = overrideOption( readOnlyRequestOptions.getResponseContinuationTokenLimitInKb(), this.responseContinuationTokenLimitInKb);
+        this.keywordIdentifiers = overrideOption( readOnlyRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
     }
 
     public RequestOptions applyToRequestOptions(RequestOptions requestOptions) {

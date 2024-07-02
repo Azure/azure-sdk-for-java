@@ -14,6 +14,7 @@ import reactor.core.scheduler.Scheduler;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -320,6 +321,26 @@ public final class CosmosBulkExecutionOptions {
 
     BulkExecutorDiagnosticsTracker getDiagnosticsTracker() {
         return this.actualRequestOptions.getDiagnosticsTracker();
+    }
+
+    /**
+     * Sets the custom ids.
+     *
+     * @param keywordIdentifiers the custom ids.
+     * @return the current request options.
+     */
+    public CosmosBulkExecutionOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.actualRequestOptions.setKeywordIdentifiers(keywordIdentifiers);
+        return this;
+    }
+
+    /**
+     * Gets the custom ids.
+     *
+     * @return set of custom ids.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return this.actualRequestOptions.getKeywordIdentifiers();
     }
 
     CosmosBulkExecutionOptionsImpl getImpl() {

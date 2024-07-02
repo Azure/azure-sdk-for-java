@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Encapsulates options that can be specified for a {@link CosmosBatch}.
@@ -26,6 +27,7 @@ public final class CosmosBatchRequestOptions {
     private List<String> excludeRegions;
 
     private CosmosItemSerializer customSerializer;
+    private Set<String> keywordIdentifiers;
 
     /**
      * Creates an instance of the CosmosBatchRequestOptions class
@@ -121,6 +123,7 @@ public final class CosmosBatchRequestOptions {
             }
         }
         requestOptions.setExcludedRegions(excludeRegions);
+        requestOptions.setKeywordIdentifiers(keywordIdentifiers);
 
         return requestOptions;
     }
@@ -194,6 +197,26 @@ public final class CosmosBatchRequestOptions {
      */
     Map<String, String> getHeaders() {
         return this.customOptions;
+    }
+
+    /**
+     * Sets the custom ids.
+     *
+     * @param keywordIdentifiers the custom ids.
+     * @return the current request options.
+     */
+    public CosmosBatchRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
+        return this;
+    }
+
+    /**
+     * Gets the custom ids.
+     *
+     * @return the custom ids.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return keywordIdentifiers;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

@@ -139,6 +139,7 @@ class ChangeFeedQueryImpl<T> {
 
         if (request.requestContext != null) {
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         return request;
