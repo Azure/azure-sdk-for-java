@@ -4,6 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelay;
@@ -16,6 +17,7 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
@@ -79,9 +81,6 @@ public abstract class SearchTestBase extends TestProxyTestBase {
 
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
-
-    protected static final String API_KEY = Configuration.getGlobalConfiguration()
-        .get("SEARCH_SERVICE_API_KEY", "apiKey");
 
     protected static final String STORAGE_CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");

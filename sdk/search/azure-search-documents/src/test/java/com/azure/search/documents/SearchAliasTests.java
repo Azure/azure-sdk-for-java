@@ -76,7 +76,7 @@ public class SearchAliasTests extends SearchTestBase {
 
         SearchIndexClient cleanupClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
+            .credential(getTestTokenCredential(interceptorManager))
             .buildClient();
 
         boolean aliasDeleted = false;

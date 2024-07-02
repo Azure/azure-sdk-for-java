@@ -30,6 +30,12 @@
         "description": "The location of the resource. By default, this is the same as the resource group."
       }
     },
+    "testApplicationOid": {
+      "type": "string",
+      "metadata": {
+        "description": "The principal to assign the role to. This is application object id."
+      }
+    },
     "searchSku": {
       "type": "string",
       "defaultValue": "basic",
@@ -45,9 +51,10 @@
   },
   "variables": {
     "searchServiceName": "[concat('azs-java-', parameters('baseName'))]",
-    "searchApiVersion": "2020-03-13",
+    "searchApiVersion": "2024-03-01-Preview",
     "storageAccountName": "[concat('search', parameters('baseName'))]",
-    "storageApiVersion": "2022-05-01"
+    "storageApiVersion": "2022-05-01",
+    "searchIndexDataContributorRoleId": "8ebe5a00-799e-43f5-93ac-243d3dce84a7"
   },
   "resources": [
     {
@@ -62,9 +69,17 @@
         "replicaCount": 1,
         "partitionCount": 1,
         "hostingMode": "Default",
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('searchIndexDataContributorRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]",
+        "scope": "[resourceGroup().id]",
         "publicNetworkAccess": "Enabled",
         "networkRuleSet": {
           "ipRules": []
+        },
+        "authOptions": {
+          "aadOrApiKey": {
+            "aadAuthFailureMode": "http401WithBearerChallenge"
+          }
         }
       }
     },
