@@ -14,7 +14,7 @@ from parameters import *
 from utils import (
     set_or_increase_version,
     set_or_default_version,
-    update_service_ci_and_pom_and_changelog,
+    update_service_files_for_new_lib,
     update_root_pom,
     update_version,
 )
@@ -245,7 +245,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         # TODO (weidxu): move to typespec-java
         if require_sdk_integration:
             set_or_default_version(sdk_root, GROUP_ID, module)
-            update_service_ci_and_pom_and_changelog(sdk_root, service, GROUP_ID, module)
+            update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
 
         # compile
@@ -303,7 +303,7 @@ def main():
         args["version"] = current_version
 
         if require_sdk_integration:
-            update_service_ci_and_pom_and_changelog(sdk_root, service, GROUP_ID, module)
+            update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
 
         update_parameters(None)

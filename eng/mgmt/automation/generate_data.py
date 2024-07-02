@@ -13,7 +13,7 @@ from typing import List, Tuple, Optional
 
 from parameters import *
 from utils import set_or_default_version
-from utils import update_service_ci_and_pom_and_changelog
+from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 from utils import ListIndentDumper
 
@@ -48,7 +48,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         # TODO (weidxu): move to typespec-java
         if require_sdk_integration:
             set_or_default_version(sdk_root, GROUP_ID, module)
-            update_service_ci_and_pom_and_changelog(sdk_root, service, GROUP_ID, module)
+            update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
 
         # compile
@@ -64,7 +64,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 )
                 if require_sdk_integration:
                     set_or_default_version(sdk_root, GROUP_ID, module)
-                    update_service_ci_and_pom_and_changelog(sdk_root, service, GROUP_ID, module)
+                    update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
                     update_root_pom(sdk_root, service)
                 # compile
                 succeeded = compile_package(sdk_root, GROUP_ID, module)
@@ -304,7 +304,7 @@ def generate(
 
         if require_sdk_integration:
             set_or_default_version(sdk_root, GROUP_ID, module)
-            update_service_ci_and_pom_and_changelog(sdk_root, service, GROUP_ID, module)
+            update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
     else:
         # no readme
@@ -344,7 +344,7 @@ def generate(
             return False
 
         set_or_default_version(sdk_root, GROUP_ID, module)
-        update_service_ci_and_pom_and_changelog(sdk_root, service, GROUP_ID, module)
+        update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
         update_root_pom(sdk_root, service)
         # update_version(sdk_root, output_dir)
 
