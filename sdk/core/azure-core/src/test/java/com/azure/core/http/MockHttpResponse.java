@@ -21,7 +21,6 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-
 public class MockHttpResponse extends HttpResponse {
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
@@ -74,7 +73,6 @@ public class MockHttpResponse extends HttpResponse {
             throw new RuntimeException(exception);
         }
     }
-
 
     private static byte[] serialize(Object serializable) {
         try {

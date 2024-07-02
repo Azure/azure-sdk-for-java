@@ -32,7 +32,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -64,7 +63,6 @@ public class SyncRestProxyTests {
         @Get("my/url/path")
         @ExpectedResponses({ 200 })
         void testVoidMethod(Context context);
-
 
         @Put("my/url/path")
         @ExpectedResponses({ 200 })
@@ -148,7 +146,8 @@ public class SyncRestProxyTests {
                 success &= request.getHttpMethod().equals(HttpMethod.GET);
             } else {
                 success &= request.getHttpMethod().equals(HttpMethod.PUT);
-                return new MockHttpResponse(request, success ? 200 : 400, (InputStream) new ByteArrayInputStream("hello".getBytes())) {
+                return new MockHttpResponse(request, success ? 200 : 400,
+                    (InputStream) new ByteArrayInputStream("hello".getBytes())) {
                     @Override
                     public void close() {
                         lastResponseClosed = true;
