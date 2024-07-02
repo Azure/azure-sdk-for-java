@@ -41,6 +41,8 @@ extends:
           TestName: Spring_IT
           TestGoals: "verify"
           TestOptions: "-DskipSpringITs=false"
+          EnvVars:
+            TESTCONTAINERS_RYUK_DISABLED: true
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           UseFederatedAuth: true
@@ -68,6 +70,8 @@ extends:
           ServiceDirectory: spring
           TestName: Spring_App_Config_IT
           TestGoals: 'verify'
+          EnvVars:
+            TESTCONTAINERS_RYUK_DISABLED: true
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           UseFederatedAuth: true
@@ -100,4 +104,5 @@ extends:
           TestName: 'Spring_Data_Cosmos_Integration'
           TestGoals: 'clean verify'
           TestOptions: '$(ProfileFlag)'
-
+          EnvVars:
+            TESTCONTAINERS_RYUK_DISABLED: true
