@@ -300,10 +300,15 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     }
 
     private Mono<ShouldRetryResult> shouldRetryOnGatewayTimeout() {
-        boolean canFailoverOnTimeout = canGatewayRequestFailoverOnTimeout(request);
+
+        boolean canFailoverOnTimeout = canGatewayRequestFailoverOnTimeout(this.request);
+
+        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
+            this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.locationEndpointToRoute);
+        }
 
         //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
-        if(canFailoverOnTimeout) {
+        if (canFailoverOnTimeout) {
             if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
                 logger.warn("shouldRetryOnHttpTimeout() Not retrying. Retry count = {}", this.failoverRetryCount);
                 return Mono.just(ShouldRetryResult.noRetry());
