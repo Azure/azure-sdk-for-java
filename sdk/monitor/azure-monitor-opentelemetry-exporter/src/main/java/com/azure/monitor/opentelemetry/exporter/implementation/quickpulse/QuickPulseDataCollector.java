@@ -122,6 +122,7 @@ final class QuickPulseDataCollector {
         } else if (data instanceof TelemetryExceptionData) {
             addException((TelemetryExceptionData) data, itemCount);
         }
+        System.out.println("Testing if this will show up on terminal");
     }
 
     boolean isEnabled() {
