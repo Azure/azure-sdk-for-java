@@ -87,7 +87,7 @@ public final class FaceSessionAsyncClient {
      * }
      * }</pre>
      *
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -98,9 +98,9 @@ public final class FaceSessionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createLivenessSessionWithResponse(BinaryData createLivenessSessionContent,
+    public Mono<Response<BinaryData>> createLivenessSessionWithResponse(BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.createLivenessSessionWithResponseAsync(createLivenessSessionContent, requestOptions);
+        return this.serviceClient.createLivenessSessionWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -383,7 +383,7 @@ public final class FaceSessionAsyncClient {
      * }
      * }</pre>
      *
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -394,10 +394,9 @@ public final class FaceSessionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createLivenessWithVerifySessionWithResponse(BinaryData createLivenessSessionContent,
+    Mono<Response<BinaryData>> createLivenessWithVerifySessionWithResponse(BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.createLivenessWithVerifySessionWithResponseAsync(createLivenessSessionContent,
-            requestOptions);
+        return this.serviceClient.createLivenessWithVerifySessionWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -703,7 +702,7 @@ public final class FaceSessionAsyncClient {
      * retrieve a result, use the Get Liveness Session. To audit the individual requests that a client has made to your
      * resource, use the List Liveness Session Audit Entries.
      *
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -714,12 +713,10 @@ public final class FaceSessionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateLivenessSessionResult>
-        createLivenessSession(CreateLivenessSessionContent createLivenessSessionContent) {
+    public Mono<CreateLivenessSessionResult> createLivenessSession(CreateLivenessSessionContent body) {
         // Generated convenience method for createLivenessSessionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createLivenessSessionWithResponse(BinaryData.fromObject(createLivenessSessionContent), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return createLivenessSessionWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(CreateLivenessSessionResult.class));
     }
 
@@ -903,7 +900,7 @@ public final class FaceSessionAsyncClient {
      * &gt; [!NOTE]
      * &gt; Extra measures should be taken to validate that the client is sending the expected VerifyImage.
      *
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -915,12 +912,11 @@ public final class FaceSessionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CreateLivenessWithVerifySessionResult>
-        createLivenessWithVerifySession(CreateLivenessSessionContent createLivenessSessionContent) {
+    Mono<CreateLivenessWithVerifySessionResult> createLivenessWithVerifySession(CreateLivenessSessionContent body) {
         // Generated convenience method for createLivenessWithVerifySessionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createLivenessWithVerifySessionWithResponse(BinaryData.fromObject(createLivenessSessionContent),
-            requestOptions).flatMap(FluxUtil::toMono)
+        return createLivenessWithVerifySessionWithResponse(BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(CreateLivenessWithVerifySessionResult.class));
     }
 
