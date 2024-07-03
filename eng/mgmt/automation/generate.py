@@ -13,10 +13,11 @@ os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
 from utils import (
     set_or_increase_version,
-    set_or_default_version,
-    update_service_ci_and_pom,
+    update_service_files_for_new_lib,
     update_root_pom,
     update_version,
+    get_latest_ga_version,
+    get_latest_release_version,
 )
 from generate_data import (
     sdk_automation as sdk_automation_data,
@@ -129,6 +130,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
     api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
 
     packages = []
+    breaking = False
     if "relatedReadmeMdFiles" not in config or not config["relatedReadmeMdFiles"]:
         return packages
 
@@ -178,7 +180,12 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                 tag=tag,
             )
             if succeeded:
-                compile_arm_package(sdk_root, module)
+                compile_succeeded = compile_arm_package(sdk_root, module)
+                if compile_succeeded:
+                    stable_version = get_latest_ga_version(GROUP_ID, module, stable_version)
+                    breaking, changelog = compare_with_maven_package(
+                        sdk_root, GROUP_ID, service, stable_version, current_version, module
+                    )
 
             packages.append(
                 {
@@ -196,6 +203,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                     "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(output_folder))), None),
                     "language": "Java",
                     "result": "succeeded" if succeeded else "failed",
+                    "changelog": {"content": changelog, "hasBreakingChange": breaking},
                 }
             )
 
@@ -236,6 +244,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     spec_root = os.path.abspath(config["specFolder"])
     head_sha: str = config["headSha"]
     repo_url: str = config["repoHttpsUrl"]
+    breaking: bool = False
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project, sdk_root, spec_root, head_sha, repo_url, remove_before_regen=True, group_id=GROUP_ID
@@ -244,12 +253,25 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     if succeeded:
         # TODO (weidxu): move to typespec-java
         if require_sdk_integration:
-            set_or_default_version(sdk_root, GROUP_ID, module)
-            update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+            update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
+
+        stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module)
+        update_parameters(None)
+        output_folder = OUTPUT_FOLDER_FORMAT.format(service)
+        update_version(sdk_root, output_folder)
 
         # compile
         succeeded = compile_arm_package(sdk_root, module)
+        if succeeded:
+            breaking, changelog = compare_with_maven_package(
+                sdk_root,
+                GROUP_ID,
+                service,
+                get_latest_ga_version(GROUP_ID, module, stable_version),
+                current_version,
+                module,
+            )
 
     # output
     if sdk_folder and module and service:
@@ -272,6 +294,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(sdk_folder))), None),
             "language": "Java",
             "result": result,
+            "changelog": {"content": changelog, "hasBreakingChange": breaking},
         }
     else:
         # no info about package, abort with result=failed
@@ -303,7 +326,7 @@ def main():
         args["version"] = current_version
 
         if require_sdk_integration:
-            update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+            update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
 
         update_parameters(None)
@@ -343,7 +366,8 @@ def main():
     if succeeded:
         succeeded = compile_arm_package(sdk_root, module)
         if succeeded:
-            compare_with_maven_package(sdk_root, service, stable_version, current_version, module)
+            latest_release_version = get_latest_release_version(stable_version, current_version)
+            compare_with_maven_package(sdk_root, GROUP_ID, service, latest_release_version, current_version, module)
 
             if args.get("auto_commit_external_change") and args.get("user_name") and args.get("user_email"):
                 pwd = os.getcwd()

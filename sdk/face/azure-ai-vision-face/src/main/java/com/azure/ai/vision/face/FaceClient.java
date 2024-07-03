@@ -359,9 +359,11 @@ public final class FaceClient {
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      *
      * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
+     * &gt; Microsoft has retired or limited facial recognition capabilities that can be used to try to infer emotional
+     * states and identity attributes which, if misused, can subject people to stereotyping, discrimination or unfair
+     * denial of services. The retired capabilities are emotion and gender. The limited capabilities are age, smile,
+     * facial hair, hair and makeup. Email Azure Face API &lt;azureface&#064;microsoft.com&gt; if you have a responsible
+     * use case that would benefit from the use of any of the limited capabilities. Read more about this decision
      * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
      *
      * *
@@ -542,9 +544,11 @@ public final class FaceClient {
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      *
      * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
+     * &gt; Microsoft has retired or limited facial recognition capabilities that can be used to try to infer emotional
+     * states and identity attributes which, if misused, can subject people to stereotyping, discrimination or unfair
+     * denial of services. The retired capabilities are emotion and gender. The limited capabilities are age, smile,
+     * facial hair, hair and makeup. Email Azure Face API &lt;azureface&#064;microsoft.com&gt; if you have a responsible
+     * use case that would benefit from the use of any of the limited capabilities. Read more about this decision
      * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
      *
      * *
@@ -723,9 +727,11 @@ public final class FaceClient {
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      *
      * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
+     * &gt; Microsoft has retired or limited facial recognition capabilities that can be used to try to infer emotional
+     * states and identity attributes which, if misused, can subject people to stereotyping, discrimination or unfair
+     * denial of services. The retired capabilities are emotion and gender. The limited capabilities are age, smile,
+     * facial hair, hair and makeup. Email Azure Face API &lt;azureface&#064;microsoft.com&gt; if you have a responsible
+     * use case that would benefit from the use of any of the limited capabilities. Read more about this decision
      * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
      *
      * *
@@ -809,9 +815,11 @@ public final class FaceClient {
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      *
      * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
+     * &gt; Microsoft has retired or limited facial recognition capabilities that can be used to try to infer emotional
+     * states and identity attributes which, if misused, can subject people to stereotyping, discrimination or unfair
+     * denial of services. The retired capabilities are emotion and gender. The limited capabilities are age, smile,
+     * facial hair, hair and makeup. Email Azure Face API &lt;azureface&#064;microsoft.com&gt; if you have a responsible
+     * use case that would benefit from the use of any of the limited capabilities. Read more about this decision
      * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
      *
      * *
@@ -903,9 +911,11 @@ public final class FaceClient {
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      *
      * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
+     * &gt; Microsoft has retired or limited facial recognition capabilities that can be used to try to infer emotional
+     * states and identity attributes which, if misused, can subject people to stereotyping, discrimination or unfair
+     * denial of services. The retired capabilities are emotion and gender. The limited capabilities are age, smile,
+     * facial hair, hair and makeup. Email Azure Face API &lt;azureface&#064;microsoft.com&gt; if you have a responsible
+     * use case that would benefit from the use of any of the limited capabilities. Read more about this decision
      * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
      *
      * *

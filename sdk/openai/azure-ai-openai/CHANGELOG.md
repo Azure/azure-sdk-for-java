@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.10 (Unreleased)
+## 1.0.0-beta.11 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,13 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.10 (2024-07-02)
+
+### Bugs Fixed
+
+- Fixed a bug during the serialization and deserialization of the `content` property in the `ChatRequestUserMessage`. ([#40687](https://github.com/Azure/azure-sdk-for-java/pull/40687))
+
 
 ## 1.0.0-beta.9 (2024-06-06)
 

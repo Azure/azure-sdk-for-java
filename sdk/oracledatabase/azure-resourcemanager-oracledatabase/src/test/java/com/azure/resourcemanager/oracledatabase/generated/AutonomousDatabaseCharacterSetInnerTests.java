@@ -12,7 +12,7 @@ public final class AutonomousDatabaseCharacterSetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseCharacterSetInner model = BinaryData.fromString(
-            "{\"properties\":{\"characterSet\":\"tazqugxywpmueefj\"},\"id\":\"fqkquj\",\"name\":\"dsuyonobgla\",\"type\":\"cq\"}")
+            "{\"properties\":{\"characterSet\":\"ujidsuyono\"},\"id\":\"laocqxtccmg\",\"name\":\"udxytlmoyrx\",\"type\":\"wfudwpzntxhdzhl\"}")
             .toObject(AutonomousDatabaseCharacterSetInner.class);
     }
 

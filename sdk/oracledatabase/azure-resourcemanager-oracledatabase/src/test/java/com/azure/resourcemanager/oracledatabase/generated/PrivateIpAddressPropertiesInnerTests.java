@@ -12,12 +12,12 @@ public final class PrivateIpAddressPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateIpAddressPropertiesInner model = BinaryData.fromString(
-            "{\"displayName\":\"zq\",\"hostnameLabel\":\"zh\",\"ocid\":\"tw\",\"ipAddress\":\"sgogczhonnxk\",\"subnetId\":\"lgnyhmo\"}")
+            "{\"displayName\":\"cbhernntiewdj\",\"hostnameLabel\":\"vbquwr\",\"ocid\":\"ehwagoh\",\"ipAddress\":\"uffkmrqemvvh\",\"subnetId\":\"xtdr\"}")
             .toObject(PrivateIpAddressPropertiesInner.class);
-        Assertions.assertEquals("zq", model.displayName());
-        Assertions.assertEquals("zh", model.hostnameLabel());
-        Assertions.assertEquals("tw", model.ocid());
-        Assertions.assertEquals("sgogczhonnxk", model.ipAddress());
-        Assertions.assertEquals("lgnyhmo", model.subnetId());
+        Assertions.assertEquals("cbhernntiewdj", model.displayName());
+        Assertions.assertEquals("vbquwr", model.hostnameLabel());
+        Assertions.assertEquals("ehwagoh", model.ocid());
+        Assertions.assertEquals("uffkmrqemvvh", model.ipAddress());
+        Assertions.assertEquals("xtdr", model.subnetId());
     }
 }

@@ -20,6 +20,11 @@ import java.util.List;
 public final class SynonymTokenFilter extends TokenFilter {
 
     /*
+     * A URI fragment specifying the type of token filter.
+     */
+    private String odataType = "#Microsoft.Azure.Search.SynonymTokenFilter";
+
+    /*
      * A list of synonyms in following one of two formats: 1. incredible, unbelievable, fabulous => amazing - all terms
      * on the left side of => symbol will be replaced with all terms on its right side; 2. incredible, unbelievable,
      * fabulous, amazing - comma separated list of equivalent words. Set the expand option to change how this list is
@@ -35,10 +40,10 @@ public final class SynonymTokenFilter extends TokenFilter {
     /*
      * A value indicating whether all words in the list of synonyms (if => notation is not used) will map to one
      * another. If true, all words in the list of synonyms (if => notation is not used) will map to one another. The
-     * following list: incredible, unbelievable, fabulous, amazing is equivalent to: incredible, unbelievable,
-     * fabulous, amazing => incredible, unbelievable, fabulous, amazing. If false, the following list: incredible,
-     * unbelievable, fabulous, amazing will be equivalent to: incredible, unbelievable, fabulous, amazing =>
-     * incredible. Default is true.
+     * following list: incredible, unbelievable, fabulous, amazing is equivalent to: incredible, unbelievable, fabulous,
+     * amazing => incredible, unbelievable, fabulous, amazing. If false, the following list: incredible, unbelievable,
+     * fabulous, amazing will be equivalent to: incredible, unbelievable, fabulous, amazing => incredible. Default is
+     * true.
      */
     private Boolean expand;
 
@@ -51,6 +56,16 @@ public final class SynonymTokenFilter extends TokenFilter {
     public SynonymTokenFilter(String name, List<String> synonyms) {
         super(name);
         this.synonyms = synonyms;
+    }
+
+    /**
+     * Get the odataType property: A URI fragment specifying the type of token filter.
+     *
+     * @return the odataType value.
+     */
+    @Override
+    public String getOdataType() {
+        return this.odataType;
     }
 
     /**
@@ -88,10 +103,10 @@ public final class SynonymTokenFilter extends TokenFilter {
     /**
      * Get the expand property: A value indicating whether all words in the list of synonyms (if =&gt; notation is not
      * used) will map to one another. If true, all words in the list of synonyms (if =&gt; notation is not used) will
-     * map to one another. The following list: incredible, unbelievable, fabulous, amazing is equivalent to:
-     * incredible, unbelievable, fabulous, amazing =&gt; incredible, unbelievable, fabulous, amazing. If false, the
-     * following list: incredible, unbelievable, fabulous, amazing will be equivalent to: incredible, unbelievable,
-     * fabulous, amazing =&gt; incredible. Default is true.
+     * map to one another. The following list: incredible, unbelievable, fabulous, amazing is equivalent to: incredible,
+     * unbelievable, fabulous, amazing =&gt; incredible, unbelievable, fabulous, amazing. If false, the following list:
+     * incredible, unbelievable, fabulous, amazing will be equivalent to: incredible, unbelievable, fabulous, amazing
+     * =&gt; incredible. Default is true.
      *
      * @return the expand value.
      */
@@ -102,10 +117,10 @@ public final class SynonymTokenFilter extends TokenFilter {
     /**
      * Set the expand property: A value indicating whether all words in the list of synonyms (if =&gt; notation is not
      * used) will map to one another. If true, all words in the list of synonyms (if =&gt; notation is not used) will
-     * map to one another. The following list: incredible, unbelievable, fabulous, amazing is equivalent to:
-     * incredible, unbelievable, fabulous, amazing =&gt; incredible, unbelievable, fabulous, amazing. If false, the
-     * following list: incredible, unbelievable, fabulous, amazing will be equivalent to: incredible, unbelievable,
-     * fabulous, amazing =&gt; incredible. Default is true.
+     * map to one another. The following list: incredible, unbelievable, fabulous, amazing is equivalent to: incredible,
+     * unbelievable, fabulous, amazing =&gt; incredible, unbelievable, fabulous, amazing. If false, the following list:
+     * incredible, unbelievable, fabulous, amazing will be equivalent to: incredible, unbelievable, fabulous, amazing
+     * =&gt; incredible. Default is true.
      *
      * @param expand the expand value to set.
      * @return the SynonymTokenFilter object itself.
@@ -115,12 +130,15 @@ public final class SynonymTokenFilter extends TokenFilter {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.SynonymTokenFilter");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeArrayField("synonyms", this.synonyms, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeBooleanField("ignoreCase", this.caseIgnored);
         jsonWriter.writeBooleanField("expand", this.expand);
         return jsonWriter.writeEndObject();
@@ -132,8 +150,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      * @param jsonReader The JsonReader being read.
      * @return An instance of SynonymTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SynonymTokenFilter.
      */
     public static SynonymTokenFilter fromJson(JsonReader jsonReader) throws IOException {
@@ -142,24 +159,20 @@ public final class SynonymTokenFilter extends TokenFilter {
             String name = null;
             boolean synonymsFound = false;
             List<String> synonyms = null;
+            String odataType = "#Microsoft.Azure.Search.SynonymTokenFilter";
             Boolean caseIgnored = null;
             Boolean expand = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.SynonymTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SynonymTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
-                    }
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     name = reader.getString();
                     nameFound = true;
                 } else if ("synonyms".equals(fieldName)) {
                     synonyms = reader.readArray(reader1 -> reader1.getString());
                     synonymsFound = true;
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
                 } else if ("ignoreCase".equals(fieldName)) {
                     caseIgnored = reader.getNullable(JsonReader::getBoolean);
                 } else if ("expand".equals(fieldName)) {
@@ -170,6 +183,7 @@ public final class SynonymTokenFilter extends TokenFilter {
             }
             if (nameFound && synonymsFound) {
                 SynonymTokenFilter deserializedSynonymTokenFilter = new SynonymTokenFilter(name, synonyms);
+                deserializedSynonymTokenFilter.odataType = odataType;
                 deserializedSynonymTokenFilter.caseIgnored = caseIgnored;
                 deserializedSynonymTokenFilter.expand = expand;
                 return deserializedSynonymTokenFilter;
