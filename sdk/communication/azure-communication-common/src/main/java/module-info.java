@@ -4,7 +4,6 @@
 module com.azure.communication.common {
 
     requires transitive com.azure.core;
-    requires com.azure.json;
 
     // public API surface area
     exports com.azure.communication.common;
