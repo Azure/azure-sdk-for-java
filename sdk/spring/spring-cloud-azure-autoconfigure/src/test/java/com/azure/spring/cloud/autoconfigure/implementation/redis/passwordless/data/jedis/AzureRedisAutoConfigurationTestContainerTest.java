@@ -49,25 +49,25 @@ public class AzureRedisAutoConfigurationTestContainerTest {
     /**
      * Pulling Docker registry name from testcontainers.properties file as prefix.
      */
-    private final static GenericContainer<?> redis =
+    private static final GenericContainer<?> REDIS =
         new GenericContainer<>(DockerImageName.parse("redis:6"))
             .withCommand("--requirepass", REDIS_PASSWORD)
             .withExposedPorts(6379);
 
     @BeforeAll
     public static void beforeAll() {
-        redis.start();
+        REDIS.start();
     }
 
     @AfterAll
     public static void afterAll() {
-        redis.stop();
+        REDIS.stop();
     }
 
     @DynamicPropertySource
     static void redisProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.redis.host", redis::getHost);
-        registry.add("spring.redis.port", redis::getFirstMappedPort);
+        registry.add("spring.redis.host", REDIS::getHost);
+        registry.add("spring.redis.port", REDIS::getFirstMappedPort);
         registry.add("spring.redis.ssl", () -> false);
         registry.add("spring.redis.azure.passwordless-enabled", () -> true);
     }
