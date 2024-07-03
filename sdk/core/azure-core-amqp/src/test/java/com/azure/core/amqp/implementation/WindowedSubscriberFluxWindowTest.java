@@ -402,7 +402,7 @@ public final class WindowedSubscriberFluxWindowTest {
         StepVerifier.create(windowFlux).verifyComplete();
 
         final WindowedSubscriber.WindowWork<Integer> work = r.getInnerWork();
-        Assertions.assertTrue(work.isCanceled());
+        Assertions.assertTrue(work.isCanceled());// reproducer: actual work.isCanceled() is false
         Assertions.assertFalse(work.hasTimedOut());
     }
 
