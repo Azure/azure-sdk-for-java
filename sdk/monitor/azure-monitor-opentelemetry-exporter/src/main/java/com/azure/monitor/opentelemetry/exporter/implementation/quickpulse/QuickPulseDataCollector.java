@@ -3,19 +3,13 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
-import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.StackFrame;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseDependencyDocument;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseDocument;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseExceptionDocument;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseRequestDocument;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.CpuPerformanceCounterCalculator;
+import io.opentelemetry.api.common.AttributeKey;
 import reactor.util.annotation.Nullable;
 
 import java.lang.management.ManagementFactory;
@@ -23,10 +17,7 @@ import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
 import java.lang.management.OperatingSystemMXBean;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -121,8 +112,20 @@ final class QuickPulseDataCollector {
             addDependency((RemoteDependencyData) data, itemCount);
         } else if (data instanceof TelemetryExceptionData) {
             addException((TelemetryExceptionData) data, itemCount);
+        }else {
+            if (Objects.equals(telemetryItem.getResource().getAttribute(AttributeKey.stringKey("telemetry.sdk.name")), "opentelemetry")) {
+                MonitorDomain data2 = telemetryItem.getData().getBaseData();
+                MetricsData metricsData = (MetricsData) data2;
+                MetricDataPoint point = metricsData.getMetrics().get(0);
+                System.out.println("SDK Metric Data Length: " + metricsData.getMetrics().size());
+                System.out.println("SDK Metric Name: " + point.getName());
+                System.out.println("SDK Metric Value: " + point.getValue());
+                System.out.println("SDK Metric attributes: " + metricsData.getProperties());
+                //System.out.println("SDK Metric Type: " + point.getType());
+            }
+
+
         }
-        System.out.println("Testing if this will show up on terminal");
     }
 
     boolean isEnabled() {
