@@ -69,7 +69,7 @@
       "name": "[variables('namespaceName')]",
       "location": "[parameters('location')]",
       "sku": {
-        "name": "Standard"
+        "name": "Premium"
       },
       "properties": {},
       "resources": [
