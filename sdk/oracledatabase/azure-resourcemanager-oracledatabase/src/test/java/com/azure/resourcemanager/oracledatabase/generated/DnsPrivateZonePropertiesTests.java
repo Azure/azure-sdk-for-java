@@ -11,7 +11,7 @@ public final class DnsPrivateZonePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateZoneProperties model = BinaryData.fromString(
-            "{\"ocid\":\"wgdrjervnaenqp\",\"isProtected\":false,\"lifecycleState\":\"Deleted\",\"self\":\"doy\",\"serial\":412409909,\"version\":\"ifthnz\",\"viewId\":\"dslgnayqigynduh\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-02-07T07:32:59Z\",\"provisioningState\":\"Failed\"}")
+            "{\"ocid\":\"dsjnka\",\"isProtected\":true,\"lifecycleState\":\"Updating\",\"self\":\"swacffgdkzz\",\"serial\":1258640156,\"version\":\"vhqcrail\",\"viewId\":\"n\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-10-20T12:14:16Z\",\"provisioningState\":\"Canceled\"}")
             .toObject(DnsPrivateZoneProperties.class);
     }
 

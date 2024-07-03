@@ -20,7 +20,7 @@ public final class GiVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"version\":\"q\"},\"id\":\"odawopqhewjptmcg\",\"name\":\"bostzel\",\"type\":\"dlat\"}";
+            = "{\"properties\":{\"version\":\"wcobie\"},\"id\":\"tmninw\",\"name\":\"izcil\",\"type\":\"ghgshejjtbxqmu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class GiVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GiVersion response = manager.giVersions()
-            .getWithResponse("pqxbkwvzgnzvdf", "zdix", com.azure.core.util.Context.NONE)
+            .getWithResponse("i", "xgvelfclduccbird", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

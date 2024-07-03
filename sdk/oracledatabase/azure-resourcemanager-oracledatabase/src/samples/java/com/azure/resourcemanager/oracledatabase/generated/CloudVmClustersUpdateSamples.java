@@ -12,7 +12,7 @@ import com.azure.resourcemanager.oracledatabase.models.CloudVmCluster;
 public final class CloudVmClustersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/vmClusters_patch.json
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/vmClusters_patch.json
      */
     /**
      * Sample code: Patch VM Cluster.
