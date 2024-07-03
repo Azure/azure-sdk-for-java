@@ -107,23 +107,9 @@ steps:
           $account = (Get-AzContext).Account
           $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
           $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
-          
-          Write-Host "envs: '$($account.Id)' '$($account.Tenants)'"
-          Write-Host "parameters.ParallelTestPlayback: '$($parameters.ParallelTestPlayback)'"
-          Write-Host "parameters.TestOptions: '$($parameters.TestOptions)'"
-          Write-Host "parameters.TestParallelization: '$($parameters.TestParallelization)'"
-          Write-Host "parameters.TestGoals: '$($parameters.TestGoals)'"
-          Write-Host "Build.SourcesDirectory: '$($Build.SourcesDirectory)'"
-          Write-Host "DefaultTestOptions: '$DefaultTestOptions'"
-          Write-Host "IsDebug: '$IsDebug'"
-          
+
           mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} ${{ parameters.TestGoals }}
-          
-          Write-Host "Maven command executed. LASTEXITCODE: '$LASTEXITCODE'"
-          
           exit $LASTEXITCODE
-          
-          Write-Host "The 'exit' command has been executed."
       env:
         JAVA_HOME: $(PowerShellJavaHome)
         MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
