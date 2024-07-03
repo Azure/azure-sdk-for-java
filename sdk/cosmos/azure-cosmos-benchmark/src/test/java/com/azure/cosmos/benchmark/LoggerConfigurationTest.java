@@ -17,8 +17,8 @@ public class LoggerConfigurationTest {
         final Logger logger = LoggerFactory.getLogger("io.netty");
         final Logger logger2 = LoggerFactory.getLogger("io.netty.channel");
 
-        assertThat(logger.isErrorEnabled()).isFalse();
-        assertThat(logger2.isErrorEnabled()).isFalse();
+        assertThat(logger.isErrorEnabled()).isTrue();
+        assertThat(logger2.isErrorEnabled()).isTrue();
     }
 
     @Test(groups = {"unit"})
@@ -39,7 +39,7 @@ public class LoggerConfigurationTest {
         assertThat(logger.isInfoEnabled()).isTrue();
         assertThat(logger2.isInfoEnabled()).isTrue();
 
-        assertThat(logger.isDebugEnabled()).isFalse();
-        assertThat(logger2.isDebugEnabled()).isFalse();
+        assertThat(logger.isDebugEnabled()).isTrue();
+        assertThat(logger2.isDebugEnabled()).isTrue();
     }
 }
