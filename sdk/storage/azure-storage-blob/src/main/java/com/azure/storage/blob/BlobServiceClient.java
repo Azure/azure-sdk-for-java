@@ -445,7 +445,7 @@ public final class BlobServiceClient {
 
             return listBlobContainersSegment(marker, finalOptions, timeout);
         };
-        return new PagedIterable<>(() -> pageRetriever.apply(null, null), marker -> pageRetriever.apply(marker, null));
+        return new PagedIterable<>(pageSize -> pageRetriever.apply(null, pageSize), pageRetriever);
 
     }
 

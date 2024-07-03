@@ -822,6 +822,11 @@ public class BlobClientBase {
 
         Function<PollingContext<BlobCopyInfo>, PollResponse<BlobCopyInfo>> syncActivationOperation =
             (pollingContext) -> {
+                try {
+                    new URL(options.getSourceUrl());
+                } catch (MalformedURLException ex) {
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
+                }
                 ResponseBase<BlobsStartCopyFromURLHeaders, Void> response =
                     azureBlobStorage.getBlobs().startCopyFromURLWithResponse(containerName, blobName,
                         options.getSourceUrl(), null, options.getMetadata(), options.getTier(),
@@ -838,10 +843,12 @@ public class BlobClientBase {
                 BlobsStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
                 copyId.set(headers.getXMsCopyId());
 
-                return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, new BlobCopyInfo(
-                    options.getSourceUrl(), headers.getXMsCopyId(), headers.getXMsCopyStatus(), headers.getETag(),
-                    headers.getLastModified(), ModelHelper.getErrorCode(response.getHeaders())));
-
+                return new PollResponse<>(
+                    LongRunningOperationStatus.IN_PROGRESS,
+                    new BlobCopyInfo(options.getSourceUrl(), headers.getXMsCopyId(), headers.getXMsCopyStatus(),
+                        headers.getETag(), headers.getLastModified(), ModelHelper.getErrorCode(response.getHeaders()),
+                        headers.getXMsVersionId())
+                );
         };
 
         Function<PollingContext<BlobCopyInfo>, PollResponse<BlobCopyInfo>> pollOperation = (pollingContext) ->
@@ -886,7 +893,7 @@ public class BlobClientBase {
             BlobProperties value = response.getValue();
             final CopyStatusType status = value.getCopyStatus();
             final BlobCopyInfo result = new BlobCopyInfo(value.getCopySource(), value.getCopyId(), status,
-                value.getETag(), value.getCopyCompletionTime(), value.getCopyStatusDescription());
+                value.getETag(), value.getCopyCompletionTime(), value.getCopyStatusDescription(), value.getVersionId());
 
             LongRunningOperationStatus operationStatus = ModelHelper.mapStatusToLongRunningOperationStatus(status);
             return new PollResponse<>(operationStatus, result);

@@ -916,10 +916,10 @@ public final class PageBlobClient extends BlobClientBase {
         Context finalContext = context == null ? Context.NONE : context;
 
         // Helper function to retrieve a page of items
-        Function<String, PagedResponse<PageRangeItem>> pageRetriever = continuationToken -> {
+        BiFunction<String, Integer, PagedResponse<PageRangeItem>> pageRetriever = (continuationToken, pageSize) -> {
             BlobRequestConditions requestConditions = options.getRequestConditions() == null
                 ? new BlobRequestConditions() : options.getRequestConditions();
-            Integer pageSize = options.getMaxResultsPerPage();
+            Integer finalPageSize = pageSize == null ? options.getMaxResultsPerPage() : pageSize;
 
             // Call the synchronous service method
             Callable<ResponseBase<PageBlobsGetPageRangesHeaders, PageList>> operation = () ->
@@ -927,7 +927,7 @@ public final class PageBlobClient extends BlobClientBase {
                     null, options.getRange().toHeaderValue(), requestConditions.getLeaseId(),
                     requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                     requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                    requestConditions.getTagsConditions(), null, continuationToken, pageSize, finalContext);
+                    requestConditions.getTagsConditions(), null, continuationToken, finalPageSize, finalContext);
 
             ResponseBase<PageBlobsGetPageRangesHeaders, PageList> response = sendRequest(operation, timeout,
                 BlobStorageException.class);
@@ -941,8 +941,8 @@ public final class PageBlobClient extends BlobClientBase {
                 PageListHelper.getNextMarker(response.getValue()),
                 response.getDeserializedHeaders());
         };
-
-        return new PagedIterable<>(() -> pageRetriever.apply(null), pageRetriever);
+        return new PagedIterable<>(pageSize -> pageRetriever.apply(null, pageSize), pageRetriever);
+        //return new PagedIterable<>(() -> pageRetriever.apply(null), pageRetriever);
     }
 
     private List<PageRangeItem> parsePageRangeItems(PageList pageList) {

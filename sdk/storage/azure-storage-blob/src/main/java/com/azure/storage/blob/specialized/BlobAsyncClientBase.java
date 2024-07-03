@@ -790,25 +790,7 @@ public class BlobAsyncClientBase {
                 response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription(),
                 response.getVersionId());
 
-            LongRunningOperationStatus operationStatus;
-            switch (status) {
-                case SUCCESS:
-                    operationStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                    break;
-                case FAILED:
-                    operationStatus = LongRunningOperationStatus.FAILED;
-                    break;
-                case ABORTED:
-                    operationStatus = LongRunningOperationStatus.USER_CANCELLED;
-                    break;
-                case PENDING:
-                    operationStatus = LongRunningOperationStatus.IN_PROGRESS;
-                    break;
-                default:
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "CopyStatusType is not supported. Status: " + status));
-            }
-
+            LongRunningOperationStatus operationStatus = ModelHelper.mapStatusToLongRunningOperationStatus(status);
             return new PollResponse<>(operationStatus, result);
         }).onErrorReturn(
             new PollResponse<>(LongRunningOperationStatus.fromString("POLLING_FAILED", true), lastInfo));

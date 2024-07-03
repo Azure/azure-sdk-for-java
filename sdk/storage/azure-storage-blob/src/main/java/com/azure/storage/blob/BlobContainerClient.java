@@ -1200,11 +1200,15 @@ public final class BlobContainerClient {
         BiFunction<String, Integer, PagedResponse<BlobItem>> func = (marker, pageSize) -> {
             ListBlobsOptions finalOptions;
             if (pageSize != null) {
-                finalOptions = options == null ? new ListBlobsOptions().setMaxResultsPerPage(pageSize) :
-                    new ListBlobsOptions()
+                if (options == null) {
+                    finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
+                } else {
+                    // Note that this prefers the value passed to .byPage(int) over the value on the options
+                    finalOptions = new ListBlobsOptions()
                         .setMaxResultsPerPage(pageSize)
                         .setPrefix(options.getPrefix())
                         .setDetails(options.getDetails());
+                }
             } else {
                 finalOptions = options;
             }
@@ -1215,6 +1219,10 @@ public final class BlobContainerClient {
 
     private PagedResponse<BlobItem> listBlobsHierarchySegment(String marker, String delimiter, ListBlobsOptions options,
         Duration timeout) {
+        if (options.getDetails().getRetrieveSnapshots()) {
+            throw LOGGER.logExceptionAsError(
+                new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported."));
+        }
         ArrayList<ListBlobsIncludeItem> include = options.getDetails().toList().isEmpty() ? null
             : options.getDetails().toList();
 
