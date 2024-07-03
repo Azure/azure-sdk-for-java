@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.63.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.62.0 (2024-07-02)
 
 #### Features Added
