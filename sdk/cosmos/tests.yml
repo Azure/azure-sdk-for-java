@@ -17,8 +17,6 @@ extends:
               Path: sdk/cosmos/live-platform-matrix.json
               Selection: all
               GenerateVMJobs: true
-          MatrixReplace:
-            - .*Version=1.21/1.17
           ServiceDirectory: cosmos
           Artifacts:
             - name: azure-cosmos
