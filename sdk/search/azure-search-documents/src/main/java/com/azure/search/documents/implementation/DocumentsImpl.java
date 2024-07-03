@@ -66,8 +66,8 @@ public final class DocumentsImpl {
     }
 
     /**
-     * The interface defining all the services for SearchIndexClientDocuments to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for SearchIndexClientDocuments to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}/indexes('{indexName}')")
     @ServiceInterface(name = "SearchIndexClientDoc")
@@ -422,8 +422,11 @@ public final class DocumentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        String selectedFieldsConverted = (selectedFields == null) ? null : selectedFields.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String selectedFieldsConverted = (selectedFields == null)
+            ? null
+            : selectedFields.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getIndexName(), key,
             selectedFieldsConverted, this.client.getApiVersion(), xMsClientRequestId, accept, context));
     }
@@ -451,8 +454,11 @@ public final class DocumentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        String selectedFieldsConverted = (selectedFields == null) ? null : selectedFields.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String selectedFieldsConverted = (selectedFields == null)
+            ? null
+            : selectedFields.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.get(this.client.getEndpoint(), this.client.getIndexName(), key, selectedFieldsConverted,
             this.client.getApiVersion(), xMsClientRequestId, accept, context);
     }
@@ -517,8 +523,11 @@ public final class DocumentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        String selectedFieldsConverted = (selectedFields == null) ? null : selectedFields.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String selectedFieldsConverted = (selectedFields == null)
+            ? null
+            : selectedFields.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.getSync(this.client.getEndpoint(), this.client.getIndexName(), key, selectedFieldsConverted,
             this.client.getApiVersion(), xMsClientRequestId, accept, context);
     }

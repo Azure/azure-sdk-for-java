@@ -21,41 +21,38 @@ public final class StorageMoversImpl implements StorageMovers {
 
     private final com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager;
 
-    public StorageMoversImpl(
-        StorageMoversClient innerClient, com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
+    public StorageMoversImpl(StorageMoversClient innerClient,
+        com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<StorageMover> list() {
         PagedIterable<StorageMoverInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new StorageMoverImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageMoverImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StorageMover> list(Context context) {
         PagedIterable<StorageMoverInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new StorageMoverImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageMoverImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StorageMover> listByResourceGroup(String resourceGroupName) {
         PagedIterable<StorageMoverInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new StorageMoverImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageMoverImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StorageMover> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<StorageMoverInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new StorageMoverImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageMoverImpl(inner1, this.manager()));
     }
 
-    public Response<StorageMover> getByResourceGroupWithResponse(
-        String resourceGroupName, String storageMoverName, Context context) {
-        Response<StorageMoverInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, storageMoverName, context);
+    public Response<StorageMover> getByResourceGroupWithResponse(String resourceGroupName, String storageMoverName,
+        Context context) {
+        Response<StorageMoverInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, storageMoverName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new StorageMoverImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -80,77 +77,57 @@ public final class StorageMoversImpl implements StorageMovers {
     }
 
     public StorageMover getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String storageMoverName = Utils.getValueFromIdByName(id, "storageMovers");
+        String storageMoverName = ResourceManagerUtils.getValueFromIdByName(id, "storageMovers");
         if (storageMoverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'storageMovers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'storageMovers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, storageMoverName, Context.NONE).getValue();
     }
 
     public Response<StorageMover> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String storageMoverName = Utils.getValueFromIdByName(id, "storageMovers");
+        String storageMoverName = ResourceManagerUtils.getValueFromIdByName(id, "storageMovers");
         if (storageMoverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'storageMovers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'storageMovers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, storageMoverName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String storageMoverName = Utils.getValueFromIdByName(id, "storageMovers");
+        String storageMoverName = ResourceManagerUtils.getValueFromIdByName(id, "storageMovers");
         if (storageMoverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'storageMovers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'storageMovers'.", id)));
         }
         this.delete(resourceGroupName, storageMoverName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String storageMoverName = Utils.getValueFromIdByName(id, "storageMovers");
+        String storageMoverName = ResourceManagerUtils.getValueFromIdByName(id, "storageMovers");
         if (storageMoverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'storageMovers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'storageMovers'.", id)));
         }
         this.delete(resourceGroupName, storageMoverName, context);
     }

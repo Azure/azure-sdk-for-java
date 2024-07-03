@@ -38,23 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GlobalReachConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GlobalReachConnectionsClient.
+ */
 public final class GlobalReachConnectionsClientImpl implements GlobalReachConnectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GlobalReachConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AvsClientImpl client;
 
     /**
      * Initializes an instance of GlobalReachConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GlobalReachConnectionsClientImpl(AvsClientImpl client) {
-        this.service =
-            RestProxy
-                .create(GlobalReachConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(GlobalReachConnectionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,102 +70,80 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientGlobalReach")
     public interface GlobalReachConnectionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GlobalReachConnectionList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<GlobalReachConnectionList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateCloudName") String privateCloudName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GlobalReachConnectionInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<GlobalReachConnectionInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
             @PathParam("globalReachConnectionName") String globalReachConnectionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
             @PathParam("globalReachConnectionName") String globalReachConnectionName,
-            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GlobalReachConnectionInner globalReachConnection,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
             @PathParam("globalReachConnectionName") String globalReachConnectionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GlobalReachConnectionList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * List global reach connections in a private cloud.
-     *
+     * List GlobalReachConnection resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of global reach connections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return the response of a GlobalReachConnection list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GlobalReachConnectionInner>> listSinglePageAsync(
-        String resourceGroupName, String privateCloudName) {
+    private Mono<PagedResponse<GlobalReachConnectionInner>> listSinglePageAsync(String resourceGroupName,
+        String privateCloudName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -172,55 +155,35 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            privateCloudName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<GlobalReachConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context))
+            .<PagedResponse<GlobalReachConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * List global reach connections in a private cloud.
-     *
+     * List GlobalReachConnection resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of global reach connections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return the response of a GlobalReachConnection list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GlobalReachConnectionInner>> listSinglePageAsync(
-        String resourceGroupName, String privateCloudName, Context context) {
+    private Mono<PagedResponse<GlobalReachConnectionInner>> listSinglePageAsync(String resourceGroupName,
+        String privateCloudName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -233,70 +196,55 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                privateCloudName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, privateCloudName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * List global reach connections in a private cloud.
-     *
+     * List GlobalReachConnection resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of global reach connections as paginated response with {@link PagedFlux}.
+     * @return the response of a GlobalReachConnection list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GlobalReachConnectionInner> listAsync(String resourceGroupName, String privateCloudName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, privateCloudName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, privateCloudName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * List global reach connections in a private cloud.
-     *
+     * List GlobalReachConnection resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of global reach connections as paginated response with {@link PagedFlux}.
+     * @return the response of a GlobalReachConnection list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GlobalReachConnectionInner> listAsync(
-        String resourceGroupName, String privateCloudName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, privateCloudName, context),
+    private PagedFlux<GlobalReachConnectionInner> listAsync(String resourceGroupName, String privateCloudName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, privateCloudName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * List global reach connections in a private cloud.
-     *
+     * List GlobalReachConnection resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of global reach connections as paginated response with {@link PagedIterable}.
+     * @return the response of a GlobalReachConnection list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GlobalReachConnectionInner> list(String resourceGroupName, String privateCloudName) {
@@ -304,48 +252,43 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
     }
 
     /**
-     * List global reach connections in a private cloud.
-     *
+     * List GlobalReachConnection resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of global reach connections as paginated response with {@link PagedIterable}.
+     * @return the response of a GlobalReachConnection list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GlobalReachConnectionInner> list(
-        String resourceGroupName, String privateCloudName, Context context) {
+    public PagedIterable<GlobalReachConnectionInner> list(String resourceGroupName, String privateCloudName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, privateCloudName, context));
     }
 
     /**
-     * Get a global reach connection by name in a private cloud.
-     *
+     * Get a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a global reach connection by name in a private cloud along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return a GlobalReachConnection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GlobalReachConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String privateCloudName, String globalReachConnectionName) {
+    private Mono<Response<GlobalReachConnectionInner>> getWithResponseAsync(String resourceGroupName,
+        String privateCloudName, String globalReachConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -356,55 +299,39 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
         if (globalReachConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter globalReachConnectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter globalReachConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            privateCloudName,
-                            globalReachConnectionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, globalReachConnectionName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get a global reach connection by name in a private cloud.
-     *
+     * Get a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a global reach connection by name in a private cloud along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return a GlobalReachConnection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GlobalReachConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String privateCloudName, String globalReachConnectionName, Context context) {
+    private Mono<Response<GlobalReachConnectionInner>> getWithResponseAsync(String resourceGroupName,
+        String privateCloudName, String globalReachConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -415,107 +342,90 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
         if (globalReachConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter globalReachConnectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter globalReachConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                privateCloudName,
-                globalReachConnectionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, privateCloudName, globalReachConnectionName, accept, context);
     }
 
     /**
-     * Get a global reach connection by name in a private cloud.
-     *
+     * Get a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a global reach connection by name in a private cloud on successful completion of {@link Mono}.
+     * @return a GlobalReachConnection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GlobalReachConnectionInner> getAsync(
-        String resourceGroupName, String privateCloudName, String globalReachConnectionName) {
+    private Mono<GlobalReachConnectionInner> getAsync(String resourceGroupName, String privateCloudName,
+        String globalReachConnectionName) {
         return getWithResponseAsync(resourceGroupName, privateCloudName, globalReachConnectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get a global reach connection by name in a private cloud.
-     *
+     * Get a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a global reach connection by name in a private cloud along with {@link Response}.
+     * @return a GlobalReachConnection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GlobalReachConnectionInner> getWithResponse(
-        String resourceGroupName, String privateCloudName, String globalReachConnectionName, Context context) {
+    public Response<GlobalReachConnectionInner> getWithResponse(String resourceGroupName, String privateCloudName,
+        String globalReachConnectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, privateCloudName, globalReachConnectionName, context).block();
     }
 
     /**
-     * Get a global reach connection by name in a private cloud.
-     *
+     * Get a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a global reach connection by name in a private cloud.
+     * @return a GlobalReachConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GlobalReachConnectionInner get(
-        String resourceGroupName, String privateCloudName, String globalReachConnectionName) {
+    public GlobalReachConnectionInner get(String resourceGroupName, String privateCloudName,
+        String globalReachConnectionName) {
         return getWithResponse(resourceGroupName, privateCloudName, globalReachConnectionName, Context.NONE).getValue();
     }
 
     /**
-     * Create or update a global reach connection in a private cloud.
-     *
+     * Create a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
-     * @param globalReachConnection A global reach connection in the private cloud.
+     * @param privateCloudName Name of the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
+     * @param globalReachConnection Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a global reach connection resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String privateCloudName,
-        String globalReachConnectionName,
-        GlobalReachConnectionInner globalReachConnection) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String privateCloudName, String globalReachConnectionName, GlobalReachConnectionInner globalReachConnection) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -526,10 +436,8 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
         if (globalReachConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter globalReachConnectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter globalReachConnectionName is required and cannot be null."));
         }
         if (globalReachConnection == null) {
             return Mono
@@ -539,29 +447,19 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            privateCloudName,
-                            globalReachConnectionName,
-                            this.client.getApiVersion(),
-                            globalReachConnection,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, globalReachConnectionName,
+                globalReachConnection, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Create or update a global reach connection in a private cloud.
-     *
+     * Create a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
-     * @param globalReachConnection A global reach connection in the private cloud.
+     * @param privateCloudName Name of the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
+     * @param globalReachConnection Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -569,23 +467,16 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      * @return a global reach connection resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String privateCloudName,
-        String globalReachConnectionName,
-        GlobalReachConnectionInner globalReachConnection,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String privateCloudName, String globalReachConnectionName, GlobalReachConnectionInner globalReachConnection,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -596,10 +487,8 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
         if (globalReachConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter globalReachConnectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter globalReachConnectionName is required and cannot be null."));
         }
         if (globalReachConnection == null) {
             return Mono
@@ -609,257 +498,202 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                privateCloudName,
-                globalReachConnectionName,
-                this.client.getApiVersion(),
-                globalReachConnection,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, globalReachConnectionName,
+            globalReachConnection, accept, context);
     }
 
     /**
-     * Create or update a global reach connection in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
-     * @param globalReachConnection A global reach connection in the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a global reach connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GlobalReachConnectionInner>, GlobalReachConnectionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String privateCloudName,
-        String globalReachConnectionName,
-        GlobalReachConnectionInner globalReachConnection) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, privateCloudName, globalReachConnectionName, globalReachConnection);
-        return this
-            .client
-            .<GlobalReachConnectionInner, GlobalReachConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GlobalReachConnectionInner.class,
-                GlobalReachConnectionInner.class,
-                this.client.getContext());
-    }
-
-    /**
-     * Create or update a global reach connection in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
-     * @param globalReachConnection A global reach connection in the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a global reach connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GlobalReachConnectionInner>, GlobalReachConnectionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String privateCloudName,
-        String globalReachConnectionName,
-        GlobalReachConnectionInner globalReachConnection,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, privateCloudName, globalReachConnectionName, globalReachConnection, context);
-        return this
-            .client
-            .<GlobalReachConnectionInner, GlobalReachConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GlobalReachConnectionInner.class,
-                GlobalReachConnectionInner.class,
-                context);
-    }
-
-    /**
-     * Create or update a global reach connection in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
-     * @param globalReachConnection A global reach connection in the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a global reach connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GlobalReachConnectionInner>, GlobalReachConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String globalReachConnectionName,
-        GlobalReachConnectionInner globalReachConnection) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, privateCloudName, globalReachConnectionName, globalReachConnection)
-            .getSyncPoller();
-    }
-
-    /**
-     * Create or update a global reach connection in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
-     * @param globalReachConnection A global reach connection in the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a global reach connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GlobalReachConnectionInner>, GlobalReachConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String globalReachConnectionName,
-        GlobalReachConnectionInner globalReachConnection,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, privateCloudName, globalReachConnectionName, globalReachConnection, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Create or update a global reach connection in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
-     * @param globalReachConnection A global reach connection in the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a global reach connection resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GlobalReachConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String privateCloudName,
-        String globalReachConnectionName,
-        GlobalReachConnectionInner globalReachConnection) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, privateCloudName, globalReachConnectionName, globalReachConnection)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update a global reach connection in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
-     * @param globalReachConnection A global reach connection in the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a global reach connection resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GlobalReachConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String privateCloudName,
-        String globalReachConnectionName,
-        GlobalReachConnectionInner globalReachConnection,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, privateCloudName, globalReachConnectionName, globalReachConnection, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update a global reach connection in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
-     * @param globalReachConnection A global reach connection in the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a global reach connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GlobalReachConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String globalReachConnectionName,
-        GlobalReachConnectionInner globalReachConnection) {
-        return createOrUpdateAsync(
-                resourceGroupName, privateCloudName, globalReachConnectionName, globalReachConnection)
-            .block();
-    }
-
-    /**
-     * Create or update a global reach connection in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
-     * @param globalReachConnection A global reach connection in the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a global reach connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GlobalReachConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String globalReachConnectionName,
-        GlobalReachConnectionInner globalReachConnection,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, privateCloudName, globalReachConnectionName, globalReachConnection, context)
-            .block();
-    }
-
-    /**
-     * Delete a global reach connection in a private cloud.
-     *
+     * Create a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
+     * @param globalReachConnection Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a global reach connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<GlobalReachConnectionInner>, GlobalReachConnectionInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String privateCloudName, String globalReachConnectionName,
+        GlobalReachConnectionInner globalReachConnection) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, privateCloudName,
+            globalReachConnectionName, globalReachConnection);
+        return this.client.<GlobalReachConnectionInner, GlobalReachConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GlobalReachConnectionInner.class, GlobalReachConnectionInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Create a GlobalReachConnection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
+     * @param globalReachConnection Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a global reach connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<GlobalReachConnectionInner>, GlobalReachConnectionInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String privateCloudName, String globalReachConnectionName,
+        GlobalReachConnectionInner globalReachConnection, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, privateCloudName,
+            globalReachConnectionName, globalReachConnection, context);
+        return this.client.<GlobalReachConnectionInner, GlobalReachConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GlobalReachConnectionInner.class, GlobalReachConnectionInner.class, context);
+    }
+
+    /**
+     * Create a GlobalReachConnection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
+     * @param globalReachConnection Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a global reach connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<GlobalReachConnectionInner>, GlobalReachConnectionInner> beginCreateOrUpdate(
+        String resourceGroupName, String privateCloudName, String globalReachConnectionName,
+        GlobalReachConnectionInner globalReachConnection) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, globalReachConnectionName,
+                globalReachConnection)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create a GlobalReachConnection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
+     * @param globalReachConnection Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a global reach connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<GlobalReachConnectionInner>, GlobalReachConnectionInner> beginCreateOrUpdate(
+        String resourceGroupName, String privateCloudName, String globalReachConnectionName,
+        GlobalReachConnectionInner globalReachConnection, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, globalReachConnectionName,
+                globalReachConnection, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create a GlobalReachConnection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
+     * @param globalReachConnection Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a global reach connection resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GlobalReachConnectionInner> createOrUpdateAsync(String resourceGroupName, String privateCloudName,
+        String globalReachConnectionName, GlobalReachConnectionInner globalReachConnection) {
+        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, globalReachConnectionName,
+            globalReachConnection).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a GlobalReachConnection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
+     * @param globalReachConnection Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a global reach connection resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GlobalReachConnectionInner> createOrUpdateAsync(String resourceGroupName, String privateCloudName,
+        String globalReachConnectionName, GlobalReachConnectionInner globalReachConnection, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, globalReachConnectionName,
+            globalReachConnection, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a GlobalReachConnection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
+     * @param globalReachConnection Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a global reach connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GlobalReachConnectionInner createOrUpdate(String resourceGroupName, String privateCloudName,
+        String globalReachConnectionName, GlobalReachConnectionInner globalReachConnection) {
+        return createOrUpdateAsync(resourceGroupName, privateCloudName, globalReachConnectionName,
+            globalReachConnection).block();
+    }
+
+    /**
+     * Create a GlobalReachConnection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
+     * @param globalReachConnection Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a global reach connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GlobalReachConnectionInner createOrUpdate(String resourceGroupName, String privateCloudName,
+        String globalReachConnectionName, GlobalReachConnectionInner globalReachConnection, Context context) {
+        return createOrUpdateAsync(resourceGroupName, privateCloudName, globalReachConnectionName,
+            globalReachConnection, context).block();
+    }
+
+    /**
+     * Delete a GlobalReachConnection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String privateCloudName, String globalReachConnectionName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String privateCloudName,
+        String globalReachConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -870,34 +704,23 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
         if (globalReachConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter globalReachConnectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter globalReachConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            privateCloudName,
-                            globalReachConnectionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, globalReachConnectionName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Delete a global reach connection in a private cloud.
-     *
+     * Delete a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -905,19 +728,15 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String privateCloudName, String globalReachConnectionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String privateCloudName,
+        String globalReachConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -928,53 +747,41 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
         if (globalReachConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter globalReachConnectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter globalReachConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                privateCloudName,
-                globalReachConnectionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, privateCloudName, globalReachConnectionName, accept, context);
     }
 
     /**
-     * Delete a global reach connection in a private cloud.
-     *
+     * Delete a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String privateCloudName, String globalReachConnectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, privateCloudName, globalReachConnectionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateCloudName,
+        String globalReachConnectionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, privateCloudName, globalReachConnectionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Delete a global reach connection in a private cloud.
-     *
+     * Delete a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -982,39 +789,38 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String privateCloudName, String globalReachConnectionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateCloudName,
+        String globalReachConnectionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, privateCloudName, globalReachConnectionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, privateCloudName, globalReachConnectionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
-     * Delete a global reach connection in a private cloud.
-     *
+     * Delete a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateCloudName, String globalReachConnectionName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
+        String globalReachConnectionName) {
         return this.beginDeleteAsync(resourceGroupName, privateCloudName, globalReachConnectionName).getSyncPoller();
     }
 
     /**
-     * Delete a global reach connection in a private cloud.
-     *
+     * Delete a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1022,38 +828,36 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateCloudName, String globalReachConnectionName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, privateCloudName, globalReachConnectionName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
+        String globalReachConnectionName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, globalReachConnectionName, context)
             .getSyncPoller();
     }
 
     /**
-     * Delete a global reach connection in a private cloud.
-     *
+     * Delete a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String privateCloudName, String globalReachConnectionName) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, globalReachConnectionName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String privateCloudName,
+        String globalReachConnectionName) {
+        return beginDeleteAsync(resourceGroupName, privateCloudName, globalReachConnectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Delete a global reach connection in a private cloud.
-     *
+     * Delete a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1061,19 +865,18 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String privateCloudName, String globalReachConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, globalReachConnectionName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String privateCloudName, String globalReachConnectionName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, privateCloudName, globalReachConnectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Delete a global reach connection in a private cloud.
-     *
+     * Delete a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1084,32 +887,31 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
     }
 
     /**
-     * Delete a global reach connection in a private cloud.
-     *
+     * Delete a GlobalReachConnection.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param globalReachConnectionName Name of the global reach connection in the private cloud.
+     * @param globalReachConnectionName Name of the global reach connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String privateCloudName, String globalReachConnectionName, Context context) {
+    public void delete(String resourceGroupName, String privateCloudName, String globalReachConnectionName,
+        Context context) {
         deleteAsync(resourceGroupName, privateCloudName, globalReachConnectionName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of global reach connections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return the response of a GlobalReachConnection list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GlobalReachConnectionInner>> listNextSinglePageAsync(String nextLink) {
@@ -1117,37 +919,26 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<GlobalReachConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<GlobalReachConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of global reach connections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return the response of a GlobalReachConnection list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GlobalReachConnectionInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1155,23 +946,13 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

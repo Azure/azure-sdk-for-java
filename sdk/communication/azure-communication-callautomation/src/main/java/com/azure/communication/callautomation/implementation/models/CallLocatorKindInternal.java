@@ -5,29 +5,46 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CallLocatorKindInternal. */
+/**
+ * The call locator kind.
+ */
 public final class CallLocatorKindInternal extends ExpandableStringEnum<CallLocatorKindInternal> {
-    /** Static value groupCallLocator for CallLocatorKindInternal. */
+    /**
+     * Static value groupCallLocator for CallLocatorKindInternal.
+     */
     public static final CallLocatorKindInternal GROUP_CALL_LOCATOR = fromString("groupCallLocator");
 
-    /** Static value serverCallLocator for CallLocatorKindInternal. */
+    /**
+     * Static value serverCallLocator for CallLocatorKindInternal.
+     */
     public static final CallLocatorKindInternal SERVER_CALL_LOCATOR = fromString("serverCallLocator");
 
     /**
+     * Creates a new instance of CallLocatorKindInternal value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CallLocatorKindInternal() {
+    }
+
+    /**
      * Creates or finds a CallLocatorKindInternal from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CallLocatorKindInternal.
      */
-    @JsonCreator
     public static CallLocatorKindInternal fromString(String name) {
         return fromString(name, CallLocatorKindInternal.class);
     }
 
-    /** @return known CallLocatorKindInternal values. */
+    /**
+     * Gets known CallLocatorKindInternal values.
+     * 
+     * @return known CallLocatorKindInternal values.
+     */
     public static Collection<CallLocatorKindInternal> values() {
         return values(CallLocatorKindInternal.class);
     }

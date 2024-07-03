@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices;
 
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.AllocationPolicy;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropertiesDescription;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AllocationPolicyTests extends DeviceProvisioningTestBase {
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void get() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
@@ -38,7 +38,7 @@ public class AllocationPolicyTests extends DeviceProvisioningTestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void update() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();

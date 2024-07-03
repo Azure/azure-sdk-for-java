@@ -5,21 +5,32 @@
 package com.azure.maps.route.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The GeoJsonLineStringData model. */
+/**
+ * The GeoJsonLineStringData model.
+ */
 @Fluent
-public class GeoJsonLineStringData {
+public class GeoJsonLineStringData implements JsonSerializable<GeoJsonLineStringData> {
     /*
      * Coordinates for the `GeoJson LineString` geometry.
      */
-    @JsonProperty(value = "coordinates", required = true)
     private List<List<Double>> coordinates;
 
     /**
+     * Creates an instance of GeoJsonLineStringData class.
+     */
+    public GeoJsonLineStringData() {
+    }
+
+    /**
      * Get the coordinates property: Coordinates for the `GeoJson LineString` geometry.
-     *
+     * 
      * @return the coordinates value.
      */
     public List<List<Double>> getCoordinates() {
@@ -28,12 +39,52 @@ public class GeoJsonLineStringData {
 
     /**
      * Set the coordinates property: Coordinates for the `GeoJson LineString` geometry.
-     *
+     * 
      * @param coordinates the coordinates value to set.
      * @return the GeoJsonLineStringData object itself.
      */
     public GeoJsonLineStringData setCoordinates(List<List<Double>> coordinates) {
         this.coordinates = coordinates;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("coordinates", this.coordinates,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeDouble(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GeoJsonLineStringData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GeoJsonLineStringData if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GeoJsonLineStringData.
+     */
+    public static GeoJsonLineStringData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GeoJsonLineStringData deserializedGeoJsonLineStringData = new GeoJsonLineStringData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("coordinates".equals(fieldName)) {
+                    List<List<Double>> coordinates
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getDouble()));
+                    deserializedGeoJsonLineStringData.coordinates = coordinates;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGeoJsonLineStringData;
+        });
     }
 }

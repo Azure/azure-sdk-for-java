@@ -32,10 +32,10 @@ def main():
     if args.get("compile"):
         compile_arm_package(sdk_root, service)
 
-    versions = get_version(sdk_root, service).split(";")
+    versions = get_version(sdk_root, GROUP_ID, service).split(";")
     stable_version = versions[1]
     current_version = versions[2]
-    compare_with_maven_package(sdk_root, service, stable_version, current_version)
+    compare_with_maven_package(sdk_root, GROUP_ID, service, stable_version, current_version)
 
 
 if __name__ == "__main__":
