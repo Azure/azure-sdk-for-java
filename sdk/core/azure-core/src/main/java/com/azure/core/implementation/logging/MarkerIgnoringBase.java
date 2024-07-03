@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
 import java.io.ObjectStreamException;
-import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -19,7 +18,6 @@ import java.io.Serializable;
  */
 public abstract class MarkerIgnoringBase implements Serializable, Logger {
 
-    @Serial
     private static final long serialVersionUID = 9044267456635152283L;
 
     protected String name;
