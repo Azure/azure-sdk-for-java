@@ -7,7 +7,6 @@ import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.LogLevel;
 import org.slf4j.helpers.FormattingTuple;
-import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.io.PrintStream;
@@ -21,7 +20,6 @@ import java.time.temporal.ChronoField;
 /**
  * This class is an internal implementation of slf4j logger.
  */
-@SuppressWarnings("deprecation")
 public final class DefaultLogger extends MarkerIgnoringBase {
     private static final long serialVersionUID = -144261058636441630L;
 
