@@ -5,9 +5,14 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.InterceptorManager;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.ArrayList;
@@ -181,6 +186,21 @@ final class TestUtils {
         String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+    }
+
+    /**
+     * Gets a token credential for use in tests.
+     * @param interceptorManager the interceptor manager
+     * @return the TokenCredential
+     */
+    public static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isLiveMode()) {
+            return new AzurePowerShellCredentialBuilder().build();
+        } else if (interceptorManager.isRecordMode()) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new MockTokenCredential();
+        }
     }
 
     private TestUtils() {
