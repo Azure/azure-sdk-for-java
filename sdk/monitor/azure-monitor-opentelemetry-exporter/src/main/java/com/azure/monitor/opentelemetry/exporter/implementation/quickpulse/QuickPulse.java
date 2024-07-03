@@ -5,13 +5,18 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.HostName;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ThreadPoolUtils;
+import io.opentelemetry.api.common.AttributeKey;
 import reactor.util.annotation.Nullable;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -74,6 +79,19 @@ public class QuickPulse {
     public void add(TelemetryItem telemetryItem) {
         if (collector != null) {
             collector.add(telemetryItem);
+        }
+    }
+
+    public void addTest(TelemetryItem telemetryItem) {
+        if (Objects.equals(telemetryItem.getResource().getAttribute(AttributeKey.stringKey("telemetry.sdk.name")), "opentelemetry")) {
+            MonitorDomain data2 = telemetryItem.getData().getBaseData();
+            MetricsData metricsData = (MetricsData) data2;
+            MetricDataPoint point = metricsData.getMetrics().get(0);
+            System.out.println("SDK Metric Data Length: " + metricsData.getMetrics().size());
+            System.out.println("SDK Metric Name: " + point.getName());
+            System.out.println("SDK Metric Value: " + point.getValue());
+            System.out.println("SDK Metric attributes: " + metricsData.getProperties());
+            //System.out.println("SDK Metric Type: " + point.getType());
         }
     }
 

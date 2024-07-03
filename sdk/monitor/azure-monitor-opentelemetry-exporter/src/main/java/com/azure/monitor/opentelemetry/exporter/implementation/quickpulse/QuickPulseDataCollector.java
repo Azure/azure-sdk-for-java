@@ -112,20 +112,21 @@ final class QuickPulseDataCollector {
             addDependency((RemoteDependencyData) data, itemCount);
         } else if (data instanceof TelemetryExceptionData) {
             addException((TelemetryExceptionData) data, itemCount);
-        }else {
-            if (Objects.equals(telemetryItem.getResource().getAttribute(AttributeKey.stringKey("telemetry.sdk.name")), "opentelemetry")) {
-                MonitorDomain data2 = telemetryItem.getData().getBaseData();
-                MetricsData metricsData = (MetricsData) data2;
-                MetricDataPoint point = metricsData.getMetrics().get(0);
-                System.out.println("SDK Metric Data Length: " + metricsData.getMetrics().size());
-                System.out.println("SDK Metric Name: " + point.getName());
-                System.out.println("SDK Metric Value: " + point.getValue());
-                System.out.println("SDK Metric attributes: " + metricsData.getProperties());
-                //System.out.println("SDK Metric Type: " + point.getType());
-            }
-
-
         }
+//        else {
+//            if (Objects.equals(telemetryItem.getResource().getAttribute(AttributeKey.stringKey("telemetry.sdk.name")), "opentelemetry")) {
+//                MonitorDomain data2 = telemetryItem.getData().getBaseData();
+//                MetricsData metricsData = (MetricsData) data2;
+//                MetricDataPoint point = metricsData.getMetrics().get(0);
+//                System.out.println("SDK Metric Data Length: " + metricsData.getMetrics().size());
+//                System.out.println("SDK Metric Name: " + point.getName());
+//                System.out.println("SDK Metric Value: " + point.getValue());
+//                System.out.println("SDK Metric attributes: " + metricsData.getProperties());
+//                //System.out.println("SDK Metric Type: " + point.getType());
+//            }
+//
+//
+//        }
     }
 
     boolean isEnabled() {
