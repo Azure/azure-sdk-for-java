@@ -40,7 +40,7 @@ extends:
           ServiceDirectory: spring
           TestName: Spring_IT
           TestGoals: "verify"
-          TestOptions: -DskipSpringITs=false -Dcompiler.failondeprecatedstatus=-"
+          TestOptions: -DskipSpringITs=false -Dcompiler.failondeprecatedstatus=-
           MatrixFilters:
             - JavaTestVersion=^(?!1.8|1.11).*
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml

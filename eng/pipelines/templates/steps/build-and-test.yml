@@ -117,7 +117,7 @@ steps:
           Write-Host "DefaultTestOptions: '$DefaultTestOptions'"
           Write-Host "IsDebug: '$IsDebug'"
           
-          mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} verify
+          mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} ${{ parameters.TestGoals }}
           
           Write-Host "Maven command executed. LASTEXITCODE: '$LASTEXITCODE'"
           
