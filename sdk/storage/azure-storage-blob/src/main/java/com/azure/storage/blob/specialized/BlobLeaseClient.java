@@ -214,6 +214,7 @@ public final class BlobLeaseClient {
                     requestConditions.getTagsConditions(), null, finalContext);
             ResponseBase<BlobsAcquireLeaseHeaders, Void> response = sendRequest(operation, timeout,
                 BlobStorageException.class);
+            this.leaseId = response.getDeserializedHeaders().getXMsLeaseId();
             return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsLeaseId());
         } else {
             Callable<ResponseBase<ContainersAcquireLeaseHeaders, Void>> operation = () ->
@@ -222,6 +223,7 @@ public final class BlobLeaseClient {
                     null, finalContext);
             ResponseBase<ContainersAcquireLeaseHeaders, Void> response = sendRequest(operation, timeout,
                 BlobStorageException.class);
+            this.leaseId = response.getDeserializedHeaders().getXMsLeaseId();
             return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsLeaseId());
         }
     }
@@ -621,6 +623,7 @@ public final class BlobLeaseClient {
                         requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, finalContext);
             ResponseBase<BlobsChangeLeaseHeaders, Void> response = sendRequest(operation, timeout,
                 BlobStorageException.class);
+            this.leaseId = response.getDeserializedHeaders().getXMsLeaseId();
             return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsLeaseId());
         } else {
             Callable<ResponseBase<ContainersChangeLeaseHeaders, Void>> operation = () ->
@@ -629,6 +632,7 @@ public final class BlobLeaseClient {
                     finalContext);
             ResponseBase<ContainersChangeLeaseHeaders, Void> response = sendRequest(operation, timeout,
                 BlobStorageException.class);
+            this.leaseId = response.getDeserializedHeaders().getXMsLeaseId();
             return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsLeaseId());
         }
     }
