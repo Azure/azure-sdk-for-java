@@ -142,7 +142,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      *
      * @return The Azure Key Vault URI.
      */
-    public String getKeyVaultUri() {
+    public String getUri() {
         return keyVaultUri;
     }
 
