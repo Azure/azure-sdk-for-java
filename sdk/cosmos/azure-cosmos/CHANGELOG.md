@@ -3,6 +3,7 @@
 ### 4.63.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for specifying a set of custom ids in the request options. - See [PR 40835](https://github.com/Azure/azure-sdk-for-java/pull/40835)
 
 #### Breaking Changes
 
@@ -13,7 +14,6 @@
 ### 4.62.0 (2024-07-02)
 
 #### Features Added
-* Added support for specifying a set of custom ids in the request options. - See [PR 40835](https://github.com/Azure/azure-sdk-for-java/pull/40835)
 * Added support for changing some request options dynamically without the need of restarting the application. -See [PR 40061](https://github.com/Azure/azure-sdk-for-java/pull/40061)
 
 #### Bugs Fixed
