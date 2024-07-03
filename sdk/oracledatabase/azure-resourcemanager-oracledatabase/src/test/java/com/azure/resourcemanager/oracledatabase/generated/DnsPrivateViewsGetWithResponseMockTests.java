@@ -20,7 +20,7 @@ public final class DnsPrivateViewsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ocid\":\"z\",\"displayName\":\"q\",\"isProtected\":true,\"lifecycleState\":\"Deleting\",\"self\":\"rnwxacevehjkuyxo\",\"timeCreated\":\"2021-01-24T22:21:10Z\",\"timeUpdated\":\"2021-11-28T02:33:01Z\",\"provisioningState\":\"Failed\"},\"id\":\"lt\",\"name\":\"aeylinm\",\"type\":\"gv\"}";
+            = "{\"properties\":{\"ocid\":\"ihebwtsw\",\"displayName\":\"uwfmduragegizvc\",\"isProtected\":false,\"lifecycleState\":\"Deleted\",\"self\":\"djub\",\"timeCreated\":\"2021-08-20T01:19:46Z\",\"timeUpdated\":\"2021-06-04T17:20:40Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"kbsazgak\",\"name\":\"acy\",\"type\":\"cmjdmspof\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class DnsPrivateViewsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DnsPrivateView response = manager.dnsPrivateViews()
-            .getWithResponse("etnluankrrfx", "eebtijvacvb", com.azure.core.util.Context.NONE)
+            .getWithResponse("pofvwb", "blembnkbwvqvxkd", com.azure.core.util.Context.NONE)
             .getValue();
 
     }
