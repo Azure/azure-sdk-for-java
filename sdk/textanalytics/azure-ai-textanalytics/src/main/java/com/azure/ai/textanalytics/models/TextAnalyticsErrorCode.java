@@ -6,13 +6,15 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
  * Defines values for TextAnalyticsErrorCode.
  */
 @Immutable
-public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnalyticsErrorCode> {
+public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnalyticsErrorCode> implements Serializable {
+    private static final long serialVersionUID = 21436310107606058L;
     /**
      * Enum value InvalidRequest.
      */
