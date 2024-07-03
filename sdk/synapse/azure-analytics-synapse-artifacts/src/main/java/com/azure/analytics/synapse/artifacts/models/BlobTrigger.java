@@ -5,42 +5,58 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Trigger that runs every time the selected Blob container changes. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("BlobTrigger")
-@JsonFlatten
+/**
+ * Trigger that runs every time the selected Blob container changes.
+ */
 @Fluent
 public class BlobTrigger extends MultiplePipelineTrigger {
     /*
+     * Trigger type.
+     */
+    private String type = "BlobTrigger";
+
+    /*
      * The path of the container/folder that will trigger the pipeline.
      */
-    @JsonProperty(value = "typeProperties.folderPath", required = true)
     private String folderPath;
 
     /*
      * The max number of parallel files to handle when it is triggered.
      */
-    @JsonProperty(value = "typeProperties.maxConcurrency", required = true)
     private int maxConcurrency;
 
     /*
      * The Azure Storage linked service reference.
      */
-    @JsonProperty(value = "typeProperties.linkedService", required = true)
     private LinkedServiceReference linkedService;
 
-    /** Creates an instance of BlobTrigger class. */
-    public BlobTrigger() {}
+    /**
+     * Creates an instance of BlobTrigger class.
+     */
+    public BlobTrigger() {
+    }
+
+    /**
+     * Get the type property: Trigger type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the folderPath property: The path of the container/folder that will trigger the pipeline.
-     *
+     * 
      * @return the folderPath value.
      */
     public String getFolderPath() {
@@ -49,7 +65,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the folderPath property: The path of the container/folder that will trigger the pipeline.
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the BlobTrigger object itself.
      */
@@ -60,7 +76,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the maxConcurrency property: The max number of parallel files to handle when it is triggered.
-     *
+     * 
      * @return the maxConcurrency value.
      */
     public int getMaxConcurrency() {
@@ -69,7 +85,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the maxConcurrency property: The max number of parallel files to handle when it is triggered.
-     *
+     * 
      * @param maxConcurrency the maxConcurrency value to set.
      * @return the BlobTrigger object itself.
      */
@@ -80,7 +96,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the linkedService property: The Azure Storage linked service reference.
-     *
+     * 
      * @return the linkedService value.
      */
     public LinkedServiceReference getLinkedService() {
@@ -89,7 +105,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the linkedService property: The Azure Storage linked service reference.
-     *
+     * 
      * @param linkedService the linkedService value to set.
      * @return the BlobTrigger object itself.
      */
@@ -98,24 +114,112 @@ public class BlobTrigger extends MultiplePipelineTrigger {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobTrigger setPipelines(List<TriggerPipelineReference> pipelines) {
         super.setPipelines(pipelines);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobTrigger setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeArrayField("pipelines", getPipelines(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStartObject("typeProperties");
+        jsonWriter.writeStringField("folderPath", this.folderPath);
+        jsonWriter.writeIntField("maxConcurrency", this.maxConcurrency);
+        jsonWriter.writeJsonField("linkedService", this.linkedService);
+        jsonWriter.writeEndObject();
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobTrigger if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BlobTrigger.
+     */
+    public static BlobTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobTrigger deserializedBlobTrigger = new BlobTrigger();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedBlobTrigger.setDescription(reader.getString());
+                } else if ("runtimeState".equals(fieldName)) {
+                    deserializedBlobTrigger.setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedBlobTrigger.setAnnotations(annotations);
+                } else if ("pipelines".equals(fieldName)) {
+                    List<TriggerPipelineReference> pipelines
+                        = reader.readArray(reader1 -> TriggerPipelineReference.fromJson(reader1));
+                    deserializedBlobTrigger.setPipelines(pipelines);
+                } else if ("type".equals(fieldName)) {
+                    deserializedBlobTrigger.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("folderPath".equals(fieldName)) {
+                            deserializedBlobTrigger.folderPath = reader.getString();
+                        } else if ("maxConcurrency".equals(fieldName)) {
+                            deserializedBlobTrigger.maxConcurrency = reader.getInt();
+                        } else if ("linkedService".equals(fieldName)) {
+                            deserializedBlobTrigger.linkedService = LinkedServiceReference.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedBlobTrigger.setAdditionalProperties(additionalProperties);
+
+            return deserializedBlobTrigger;
+        });
     }
 }

@@ -12,15 +12,15 @@ public final class ImageTemplateManagedImageSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageTemplateManagedImageSource model
-            = BinaryData.fromString("{\"type\":\"ManagedImage\",\"imageId\":\"dcsi\"}")
+            = BinaryData.fromString("{\"type\":\"ManagedImage\",\"imageId\":\"yvxyqjp\"}")
                 .toObject(ImageTemplateManagedImageSource.class);
-        Assertions.assertEquals("dcsi", model.imageId());
+        Assertions.assertEquals("yvxyqjp", model.imageId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateManagedImageSource model = new ImageTemplateManagedImageSource().withImageId("dcsi");
+        ImageTemplateManagedImageSource model = new ImageTemplateManagedImageSource().withImageId("yvxyqjp");
         model = BinaryData.fromObject(model).toObject(ImageTemplateManagedImageSource.class);
-        Assertions.assertEquals("dcsi", model.imageId());
+        Assertions.assertEquals("yvxyqjp", model.imageId());
     }
 }

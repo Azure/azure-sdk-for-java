@@ -5,131 +5,116 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * DbSystemShape resource model.
  */
 @Immutable
-public final class DbSystemShapeProperties {
+public final class DbSystemShapeProperties implements JsonSerializable<DbSystemShapeProperties> {
     /*
      * The family of the shape used for the DB system.
      */
-    @JsonProperty(value = "shapeFamily", access = JsonProperty.Access.WRITE_ONLY)
     private String shapeFamily;
 
     /*
      * The maximum number of CPU cores that can be enabled on the DB system for this shape.
      */
-    @JsonProperty(value = "availableCoreCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private int availableCoreCount;
+    private Integer availableCoreCount;
 
     /*
      * The minimum number of CPU cores that can be enabled on the DB system for this shape.
      */
-    @JsonProperty(value = "minimumCoreCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer minimumCoreCount;
 
     /*
      * The runtime minimum number of CPU cores that can be enabled on the DB system for this shape.
      */
-    @JsonProperty(value = "runtimeMinimumCoreCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer runtimeMinimumCoreCount;
 
     /*
      * The discrete number by which the CPU core count for this shape can be increased or decreased.
      */
-    @JsonProperty(value = "coreCountIncrement", access = JsonProperty.Access.WRITE_ONLY)
     private Integer coreCountIncrement;
 
     /*
      * The minimum number of Exadata storage servers available for the Exadata infrastructure.
      */
-    @JsonProperty(value = "minStorageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer minStorageCount;
 
     /*
      * The maximum number of Exadata storage servers available for the Exadata infrastructure.
      */
-    @JsonProperty(value = "maxStorageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxStorageCount;
 
     /*
      * The maximum data storage available per storage server for this shape. Only applicable to ExaCC Elastic shapes.
      */
-    @JsonProperty(value = "availableDataStoragePerServerInTbs", access = JsonProperty.Access.WRITE_ONLY)
     private Double availableDataStoragePerServerInTbs;
 
     /*
      * The maximum memory available per database node for this shape. Only applicable to ExaCC Elastic shapes.
      */
-    @JsonProperty(value = "availableMemoryPerNodeInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer availableMemoryPerNodeInGbs;
 
     /*
      * The maximum Db Node storage available per database node for this shape. Only applicable to ExaCC Elastic shapes.
      */
-    @JsonProperty(value = "availableDbNodePerNodeInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer availableDbNodePerNodeInGbs;
 
     /*
      * The minimum number of CPU cores that can be enabled per node for this shape.
      */
-    @JsonProperty(value = "minCoreCountPerNode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer minCoreCountPerNode;
 
     /*
      * The maximum memory that can be enabled for this shape.
      */
-    @JsonProperty(value = "availableMemoryInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer availableMemoryInGbs;
 
     /*
      * The minimum memory that need be allocated per node for this shape.
      */
-    @JsonProperty(value = "minMemoryPerNodeInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer minMemoryPerNodeInGbs;
 
     /*
      * The maximum Db Node storage that can be enabled for this shape.
      */
-    @JsonProperty(value = "availableDbNodeStorageInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer availableDbNodeStorageInGbs;
 
     /*
      * The minimum Db Node storage that need be allocated per node for this shape.
      */
-    @JsonProperty(value = "minDbNodeStoragePerNodeInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer minDbNodeStoragePerNodeInGbs;
 
     /*
      * The maximum DATA storage that can be enabled for this shape.
      */
-    @JsonProperty(value = "availableDataStorageInTbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer availableDataStorageInTbs;
 
     /*
      * The minimum data storage that need be allocated for this shape.
      */
-    @JsonProperty(value = "minDataStorageInTbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer minDataStorageInTbs;
 
     /*
      * The minimum number of database nodes available for this shape.
      */
-    @JsonProperty(value = "minimumNodeCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer minimumNodeCount;
 
     /*
      * The maximum number of database nodes available for this shape.
      */
-    @JsonProperty(value = "maximumNodeCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maximumNodeCount;
 
     /*
-     * The maximum number of CPU cores per database node that can be enabled for this shape. Only applicable to the flex Exadata shape and ExaCC Elastic shapes.
+     * The maximum number of CPU cores per database node that can be enabled for this shape. Only applicable to the flex
+     * Exadata shape and ExaCC Elastic shapes.
      */
-    @JsonProperty(value = "availableCoreCountPerNode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer availableCoreCountPerNode;
 
     /**
@@ -153,7 +138,7 @@ public final class DbSystemShapeProperties {
      * 
      * @return the availableCoreCount value.
      */
-    public int availableCoreCount() {
+    public Integer availableCoreCount() {
         return this.availableCoreCount;
     }
 
@@ -336,5 +321,86 @@ public final class DbSystemShapeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DbSystemShapeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DbSystemShapeProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DbSystemShapeProperties.
+     */
+    public static DbSystemShapeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DbSystemShapeProperties deserializedDbSystemShapeProperties = new DbSystemShapeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("shapeFamily".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.shapeFamily = reader.getString();
+                } else if ("availableCoreCount".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.availableCoreCount = reader.getNullable(JsonReader::getInt);
+                } else if ("minimumCoreCount".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.minimumCoreCount = reader.getNullable(JsonReader::getInt);
+                } else if ("runtimeMinimumCoreCount".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.runtimeMinimumCoreCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("coreCountIncrement".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.coreCountIncrement = reader.getNullable(JsonReader::getInt);
+                } else if ("minStorageCount".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.minStorageCount = reader.getNullable(JsonReader::getInt);
+                } else if ("maxStorageCount".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.maxStorageCount = reader.getNullable(JsonReader::getInt);
+                } else if ("availableDataStoragePerServerInTbs".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.availableDataStoragePerServerInTbs
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("availableMemoryPerNodeInGbs".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.availableMemoryPerNodeInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("availableDbNodePerNodeInGbs".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.availableDbNodePerNodeInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("minCoreCountPerNode".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.minCoreCountPerNode = reader.getNullable(JsonReader::getInt);
+                } else if ("availableMemoryInGbs".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.availableMemoryInGbs = reader.getNullable(JsonReader::getInt);
+                } else if ("minMemoryPerNodeInGbs".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.minMemoryPerNodeInGbs = reader.getNullable(JsonReader::getInt);
+                } else if ("availableDbNodeStorageInGbs".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.availableDbNodeStorageInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("minDbNodeStoragePerNodeInGbs".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.minDbNodeStoragePerNodeInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("availableDataStorageInTbs".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.availableDataStorageInTbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("minDataStorageInTbs".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.minDataStorageInTbs = reader.getNullable(JsonReader::getInt);
+                } else if ("minimumNodeCount".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.minimumNodeCount = reader.getNullable(JsonReader::getInt);
+                } else if ("maximumNodeCount".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.maximumNodeCount = reader.getNullable(JsonReader::getInt);
+                } else if ("availableCoreCountPerNode".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.availableCoreCountPerNode
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDbSystemShapeProperties;
+        });
     }
 }

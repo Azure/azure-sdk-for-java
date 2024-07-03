@@ -247,6 +247,22 @@ public class RequestRetryPolicyTest {
         assertEquals(shouldBeRetried, RequestRetryPolicy.shouldErrorBeRetried(throwable, 0, 1).canBeRetried);
     }
 
+    /*@ParameterizedTest
+    @MethodSource("retryPolicyRetriesStatusCodeSupplier")
+    public void retryPolicyRetriesStatusCode(int statusCode, boolean isPrimary, boolean shouldBeRetried) {
+        assertEquals(shouldBeRetried, RequestRetryPolicy.shouldResponseBeRetried(statusCode, isPrimary, null));
+    }
+
+    @ParameterizedTest
+    @MethodSource("retryPolicyRetriesStatusCodeSupplier")
+    public void retryPolicyRetriesResponse(int statusCode, boolean isPrimary, boolean shouldBeRetried) {
+        MockHttpResponse response = new MockHttpResponse(null, 404,
+            new HttpHeaders().set(HttpHeaderName.fromString("x-ms-copy-source-error-code"), "" + statusCode));
+
+        assertEquals(shouldBeRetried, RequestRetryPolicy.shouldResponseBeRetried(0, isPrimary, response));
+
+    }*/
+
     @ParameterizedTest
     @MethodSource("retryPolicyRetriesStatusCodeSupplier")
     public void retryPolicyRetriesStatusCode(int statusCode, boolean isPrimary, boolean shouldBeRetried) {

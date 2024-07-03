@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class PeerDbDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeerDbDetails model = BinaryData.fromString("{\"peerDbId\":\"u\"}").toObject(PeerDbDetails.class);
-        Assertions.assertEquals("u", model.peerDbId());
+        PeerDbDetails model = BinaryData.fromString("{\"peerDbId\":\"squyfxrxxlep\"}").toObject(PeerDbDetails.class);
+        Assertions.assertEquals("squyfxrxxlep", model.peerDbId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeerDbDetails model = new PeerDbDetails().withPeerDbId("u");
+        PeerDbDetails model = new PeerDbDetails().withPeerDbId("squyfxrxxlep");
         model = BinaryData.fromObject(model).toObject(PeerDbDetails.class);
-        Assertions.assertEquals("u", model.peerDbId());
+        Assertions.assertEquals("squyfxrxxlep", model.peerDbId());
     }
 }

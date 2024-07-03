@@ -1,10 +1,12 @@
-import math
 import os
 import sys
 import yaml
 import logging
 import re
 import subprocess
+import platform
+import requests
+from functools import cmp_to_key
 from typing import Tuple
 
 from parameters import CI_HEADER
@@ -12,6 +14,8 @@ from parameters import CI_FORMAT
 from parameters import POM_FORMAT
 from parameters import POM_MODULE_FORMAT
 from parameters import DEFAULT_VERSION
+from parameters import CHANGELOG_INITIAL_SECTION_FORMAT
+from parameters import MAVEN_HOST
 
 
 # Add two more indent for list in yaml dump
@@ -92,10 +96,15 @@ def update_root_pom(sdk_root: str, service: str):
         logging.info("[POM][Success] Write to root pom")
 
 
-def update_service_ci_and_pom(sdk_root: str, service: str, group: str, module: str):
+def update_service_files_for_new_lib(sdk_root: str, service: str, group: str, module: str):
+    """
+    For new lib, update ci.yml, pom.xml and changelog.md accordingly.
+    """
     folder = os.path.join(sdk_root, "sdk/{0}".format(service))
     ci_yml_file = os.path.join(folder, "ci.yml")
     pom_xml_file = os.path.join(folder, "pom.xml")
+    module_folder = os.path.join(folder, module)
+    changelog_file = os.path.join(module_folder, "CHANGELOG.md")
 
     if os.path.exists(ci_yml_file):
         with open(ci_yml_file, "r") as fin:
@@ -175,16 +184,29 @@ def update_service_ci_and_pom(sdk_root: str, service: str, group: str, module: s
             fout.write(pom_xml)
         logging.info("[POM][Success] Write to pom.xml")
 
+    if os.path.exists(changelog_file):
+        with open(changelog_file, "r") as fin:
+            changelog_str = fin.read()
+    logging.info("[CHANGELOG][Process] Adding initial section to changelog.md.")
+    initial_section = CHANGELOG_INITIAL_SECTION_FORMAT.format(artifact_id=module)
+    if initial_section not in changelog_str:
+        changelog_str += initial_section
+        with open(changelog_file, "w") as fout:
+            fout.write(changelog_str)
+        logging.info("[CHANGLOG][Success] Write to changelog.md.")
+    else:
+        logging.warning("[CHANGELOG] changelog.md already contains necessary sections. Will not add initial sections.")
+
 
 def update_version(sdk_root: str, output_folder: str):
     # find the python command
     python_cmd = "python"
     try:
-        subprocess.check_call([python_cmd, "--version"], shell=True)
+        subprocess.check_call([python_cmd, "--version"])
     except subprocess.CalledProcessError:
         python_cmd = "python3"
         try:
-            subprocess.check_call([python_cmd, "--version"], shell=True)
+            subprocess.check_call([python_cmd, "--version"])
         except subprocess.CalledProcessError:
             raise Exception("python or python3 not found")
 
@@ -193,18 +215,23 @@ def update_version(sdk_root: str, output_folder: str):
         os.chdir(sdk_root)
         print(os.getcwd())
         subprocess.run(
-            "{0} eng/versioning/update_versions.py --ut library --bt client --sr".format(python_cmd),
+            [python_cmd, "eng/versioning/update_versions.py", "--ut", "library", "--bt", "client", "--sr"],
             stdout=subprocess.DEVNULL,
             stderr=sys.stderr,
-            shell=True,
         )
         subprocess.run(
-            "{0} eng/versioning/update_versions.py --ut library --bt client --tf {1}/README.md".format(
-                python_cmd, output_folder
-            ),
+            [
+                python_cmd,
+                "eng/versioning/update_versions.py",
+                "--ut",
+                "library",
+                "--bt",
+                "client",
+                "--tf",
+                "{0}/README.md".format(output_folder),
+            ],
             stdout=subprocess.DEVNULL,
             stderr=sys.stderr,
-            shell=True,
         )
     finally:
         os.chdir(pwd)
@@ -341,3 +368,86 @@ def set_or_increase_version(
         write_version(version_file, lines, version_index, project, stable_version, current_version)
 
     return stable_version, current_version
+
+
+def is_windows():
+    return platform.system().lower() == "windows"
+
+
+def get_latest_release_version(previous_version: str, current_version: str) -> str:
+    if "-beta." in current_version and "-beta." not in previous_version:
+        # if current version is preview, try compare it with a previous preview release
+
+        version_pattern = r"\d+\.\d+\.\d+-beta\.(\d+)?"
+        beta_version_int = int(re.match(version_pattern, current_version).group(1))
+        if beta_version_int > 1:
+            previous_beta_version_int = beta_version_int - 1
+            previous_beta_version = current_version.replace(
+                "-beta." + str(beta_version_int),
+                "-beta." + str(previous_beta_version_int),
+            )
+            previous_version = previous_beta_version
+    return previous_version
+
+
+def get_latest_ga_version(group_id: str, module: str, previous_version: str) -> str:
+    """
+    If previous_version is GA, return previous_version,
+    Otherwise, return previous GA version before previous beta.
+    None if no previous GA version.
+    """
+    if "-beta." not in previous_version:
+        return previous_version
+
+    # No previous GA version
+    if previous_version.startswith("1.0.0-beta."):
+        return None
+
+    group_path = group_id.replace(".", "/")
+
+    response = requests.get(f"{MAVEN_HOST}/{group_path}/{module}")
+
+    response.raise_for_status()
+
+    ga_version_pattern = r"<a href=\"(\d+\.\d+\.\d+)\/?"
+    ga_versions = [v.group(1) for v in re.finditer(ga_version_pattern, response.text, re.S)]
+    previous_ga_versions = sorted(
+        [v for v in ga_versions if compare_version(v, previous_version) < 0],
+        key=cmp_to_key(compare_version),
+        reverse=True,
+    )
+
+    if len(previous_ga_versions) > 0:
+        return previous_ga_versions[0]
+
+    return None
+
+
+def compare_version(v1: str, v2: str) -> int:
+    """
+    If v1 < v2, return -1;
+    Else if v1 > v2, return 1;
+    Else return 0;
+    """
+    ga_version_pattern = r"(\d+)\.(\d)+\.(\d+)?"
+    v1_major_version = int(re.match(ga_version_pattern, v1).group(1))
+    v1_minor_version = int(re.match(ga_version_pattern, v1).group(2))
+    v1_patch_version = int(re.match(ga_version_pattern, v1).group(3))
+
+    v2_major_version = int(re.match(ga_version_pattern, v2).group(1))
+    v2_minor_version = int(re.match(ga_version_pattern, v2).group(2))
+    v2_patch_version = int(re.match(ga_version_pattern, v2).group(3))
+
+    if v1_major_version < v2_major_version:
+        return -1
+    if v1_major_version > v2_major_version:
+        return 1
+    if v1_minor_version < v2_minor_version:
+        return -1
+    if v1_minor_version > v2_minor_version:
+        return 1
+    if v1_patch_version < v2_patch_version:
+        return -1
+    if v1_patch_version > v2_patch_version:
+        return 1
+    return 0

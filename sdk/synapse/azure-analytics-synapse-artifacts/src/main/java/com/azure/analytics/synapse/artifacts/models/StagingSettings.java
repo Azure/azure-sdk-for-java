@@ -5,46 +5,48 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Staging settings. */
+/**
+ * Staging settings.
+ */
 @Fluent
-public final class StagingSettings {
+public final class StagingSettings implements JsonSerializable<StagingSettings> {
     /*
      * Staging linked service reference.
      */
-    @JsonProperty(value = "linkedServiceName", required = true)
     private LinkedServiceReference linkedServiceName;
 
     /*
      * The path to storage for storing the interim data. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "path")
     private Object path;
 
     /*
-     * Specifies whether to use compression when copying data via an interim staging. Default value is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * Specifies whether to use compression when copying data via an interim staging. Default value is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "enableCompression")
     private Object enableCompression;
 
     /*
      * Staging settings.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of StagingSettings class. */
-    public StagingSettings() {}
+    /**
+     * Creates an instance of StagingSettings class.
+     */
+    public StagingSettings() {
+    }
 
     /**
      * Get the linkedServiceName property: Staging linked service reference.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference getLinkedServiceName() {
@@ -53,7 +55,7 @@ public final class StagingSettings {
 
     /**
      * Set the linkedServiceName property: Staging linked service reference.
-     *
+     * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the StagingSettings object itself.
      */
@@ -65,7 +67,7 @@ public final class StagingSettings {
     /**
      * Get the path property: The path to storage for storing the interim data. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the path value.
      */
     public Object getPath() {
@@ -75,7 +77,7 @@ public final class StagingSettings {
     /**
      * Set the path property: The path to storage for storing the interim data. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param path the path value to set.
      * @return the StagingSettings object itself.
      */
@@ -87,7 +89,7 @@ public final class StagingSettings {
     /**
      * Get the enableCompression property: Specifies whether to use compression when copying data via an interim
      * staging. Default value is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the enableCompression value.
      */
     public Object getEnableCompression() {
@@ -97,7 +99,7 @@ public final class StagingSettings {
     /**
      * Set the enableCompression property: Specifies whether to use compression when copying data via an interim
      * staging. Default value is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param enableCompression the enableCompression value to set.
      * @return the StagingSettings object itself.
      */
@@ -108,17 +110,16 @@ public final class StagingSettings {
 
     /**
      * Get the additionalProperties property: Staging settings.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Staging settings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the StagingSettings object itself.
      */
@@ -127,11 +128,57 @@ public final class StagingSettings {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
+        jsonWriter.writeUntypedField("path", this.path);
+        jsonWriter.writeUntypedField("enableCompression", this.enableCompression);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StagingSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StagingSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StagingSettings.
+     */
+    public static StagingSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StagingSettings deserializedStagingSettings = new StagingSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedStagingSettings.linkedServiceName = LinkedServiceReference.fromJson(reader);
+                } else if ("path".equals(fieldName)) {
+                    deserializedStagingSettings.path = reader.readUntyped();
+                } else if ("enableCompression".equals(fieldName)) {
+                    deserializedStagingSettings.enableCompression = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedStagingSettings.additionalProperties = additionalProperties;
+
+            return deserializedStagingSettings;
+        });
     }
 }

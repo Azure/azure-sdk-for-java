@@ -10,10 +10,8 @@ import com.azure.resourcemanager.avs.fluent.models.QuotaInner;
 public final class QuotaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaInner model =
-            BinaryData
-                .fromString(
-                    "{\"hostsRemaining\":{\"de\":229483686,\"jzicwifsjt\":856772857},\"quotaEnabled\":\"Disabled\"}")
+        QuotaInner model
+            = BinaryData.fromString("{\"hostsRemaining\":{\"ithxqhabifpi\":758913948},\"quotaEnabled\":\"Enabled\"}")
                 .toObject(QuotaInner.class);
     }
 

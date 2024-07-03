@@ -9,7 +9,8 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class AutonomousDatabaseNationalCharacterSetsListByLocationSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseNationalCharacterSet_listByLocation.json
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/
+     * autonomousDatabaseNationalCharacterSet_listByLocation.json
      */
     /**
      * Sample code: List autonomous db national character sets by location.

@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkloadNetworkGatewayInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadNetworkGatewayInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"yxxrwlycoduh\",\"path\":\"xkgymareqnajxqu\"},\"id\":\"jhkycub\",\"name\":\"ddg\",\"type\":\"sofwqmzqalkrmnji\"}")
-                .toObject(WorkloadNetworkGatewayInner.class);
-        Assertions.assertEquals("yxxrwlycoduh", model.displayName());
+        WorkloadNetworkGatewayInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"fajpjorwk\",\"path\":\"yhgbijtjivfx\"},\"id\":\"jabibsystawf\",\"name\":\"djpvkvpbjxbkz\",\"type\":\"zkdvncja\"}")
+            .toObject(WorkloadNetworkGatewayInner.class);
+        Assertions.assertEquals("fajpjorwk", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkGatewayInner model = new WorkloadNetworkGatewayInner().withDisplayName("yxxrwlycoduh");
+        WorkloadNetworkGatewayInner model = new WorkloadNetworkGatewayInner().withDisplayName("fajpjorwk");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkGatewayInner.class);
-        Assertions.assertEquals("yxxrwlycoduh", model.displayName());
+        Assertions.assertEquals("fajpjorwk", model.displayName());
     }
 }

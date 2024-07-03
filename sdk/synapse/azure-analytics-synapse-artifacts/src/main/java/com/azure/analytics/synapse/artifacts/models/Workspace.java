@@ -5,127 +5,113 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/** A workspace. */
-@JsonFlatten
+/**
+ * A workspace.
+ */
 @Fluent
 public class Workspace extends TrackedResource {
     /*
      * Identity of the workspace
      */
-    @JsonProperty(value = "identity")
     private ManagedIdentity identity;
 
     /*
      * Workspace default data lake storage account details
      */
-    @JsonProperty(value = "properties.defaultDataLakeStorage")
     private DataLakeStorageAccountDetails defaultDataLakeStorage;
 
     /*
      * SQL administrator login password
      */
-    @JsonProperty(value = "properties.sqlAdministratorLoginPassword")
     private String sqlAdministratorLoginPassword;
 
     /*
-     * Workspace managed resource group. The resource group name uniquely identifies the resource group within the user
-     * subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric
-     * characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.'
+     * Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.'
      */
-    @JsonProperty(value = "properties.managedResourceGroupName")
     private String managedResourceGroupName;
 
     /*
      * Resource provisioning state
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Login for workspace SQL active directory administrator
      */
-    @JsonProperty(value = "properties.sqlAdministratorLogin")
     private String sqlAdministratorLogin;
 
     /*
      * Virtual Network profile
      */
-    @JsonProperty(value = "properties.virtualNetworkProfile")
     private VirtualNetworkProfile virtualNetworkProfile;
 
     /*
      * Connectivity endpoints
      */
-    @JsonProperty(value = "properties.connectivityEndpoints")
     private Map<String, String> connectivityEndpoints;
 
     /*
-     * Setting this to 'default' will ensure that all compute for this workspace is in a virtual network managed on
-     * behalf of the user.
+     * Setting this to 'default' will ensure that all compute for this workspace is in a virtual network managed on behalf of the user.
      */
-    @JsonProperty(value = "properties.managedVirtualNetwork")
     private String managedVirtualNetwork;
 
     /*
      * Private endpoint connections to the workspace
      */
-    @JsonProperty(value = "properties.privateEndpointConnections")
     private List<PrivateEndpointConnection> privateEndpointConnections;
 
     /*
      * The encryption details of the workspace
      */
-    @JsonProperty(value = "properties.encryption")
     private EncryptionDetails encryption;
 
     /*
      * The workspace unique identifier
      */
-    @JsonProperty(value = "properties.workspaceUID", access = JsonProperty.Access.WRITE_ONLY)
     private UUID workspaceUID;
 
     /*
      * Workspace level configs and feature flags
      */
-    @JsonProperty(value = "properties.extraProperties", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, Object> extraProperties;
 
     /*
      * Managed Virtual Network Settings
      */
-    @JsonProperty(value = "properties.managedVirtualNetworkSettings")
     private ManagedVirtualNetworkSettings managedVirtualNetworkSettings;
 
     /*
      * Git integration settings
      */
-    @JsonProperty(value = "properties.workspaceRepositoryConfiguration")
     private WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration;
 
     /*
      * Purview Configuration
      */
-    @JsonProperty(value = "properties.purviewConfiguration")
     private PurviewConfiguration purviewConfiguration;
 
     /*
      * The ADLA resource ID.
      */
-    @JsonProperty(value = "properties.adlaResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String adlaResourceId;
 
-    /** Creates an instance of Workspace class. */
-    public Workspace() {}
+    /**
+     * Creates an instance of Workspace class.
+     */
+    public Workspace() {
+    }
 
     /**
      * Get the identity property: Identity of the workspace.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedIdentity getIdentity() {
@@ -134,7 +120,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the identity property: Identity of the workspace.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the Workspace object itself.
      */
@@ -145,7 +131,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the defaultDataLakeStorage property: Workspace default data lake storage account details.
-     *
+     * 
      * @return the defaultDataLakeStorage value.
      */
     public DataLakeStorageAccountDetails getDefaultDataLakeStorage() {
@@ -154,7 +140,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the defaultDataLakeStorage property: Workspace default data lake storage account details.
-     *
+     * 
      * @param defaultDataLakeStorage the defaultDataLakeStorage value to set.
      * @return the Workspace object itself.
      */
@@ -165,7 +151,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the sqlAdministratorLoginPassword property: SQL administrator login password.
-     *
+     * 
      * @return the sqlAdministratorLoginPassword value.
      */
     public String getSqlAdministratorLoginPassword() {
@@ -174,7 +160,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the sqlAdministratorLoginPassword property: SQL administrator login password.
-     *
+     * 
      * @param sqlAdministratorLoginPassword the sqlAdministratorLoginPassword value to set.
      * @return the Workspace object itself.
      */
@@ -188,7 +174,7 @@ public class Workspace extends TrackedResource {
      * identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90
      * characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note
      * that the name cannot end with '.'.
-     *
+     * 
      * @return the managedResourceGroupName value.
      */
     public String getManagedResourceGroupName() {
@@ -200,7 +186,7 @@ public class Workspace extends TrackedResource {
      * identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90
      * characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note
      * that the name cannot end with '.'.
-     *
+     * 
      * @param managedResourceGroupName the managedResourceGroupName value to set.
      * @return the Workspace object itself.
      */
@@ -211,7 +197,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the provisioningState property: Resource provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String getProvisioningState() {
@@ -220,7 +206,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the sqlAdministratorLogin property: Login for workspace SQL active directory administrator.
-     *
+     * 
      * @return the sqlAdministratorLogin value.
      */
     public String getSqlAdministratorLogin() {
@@ -229,7 +215,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the sqlAdministratorLogin property: Login for workspace SQL active directory administrator.
-     *
+     * 
      * @param sqlAdministratorLogin the sqlAdministratorLogin value to set.
      * @return the Workspace object itself.
      */
@@ -240,7 +226,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the virtualNetworkProfile property: Virtual Network profile.
-     *
+     * 
      * @return the virtualNetworkProfile value.
      */
     public VirtualNetworkProfile getVirtualNetworkProfile() {
@@ -249,7 +235,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the virtualNetworkProfile property: Virtual Network profile.
-     *
+     * 
      * @param virtualNetworkProfile the virtualNetworkProfile value to set.
      * @return the Workspace object itself.
      */
@@ -260,7 +246,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the connectivityEndpoints property: Connectivity endpoints.
-     *
+     * 
      * @return the connectivityEndpoints value.
      */
     public Map<String, String> getConnectivityEndpoints() {
@@ -269,7 +255,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the connectivityEndpoints property: Connectivity endpoints.
-     *
+     * 
      * @param connectivityEndpoints the connectivityEndpoints value to set.
      * @return the Workspace object itself.
      */
@@ -281,7 +267,7 @@ public class Workspace extends TrackedResource {
     /**
      * Get the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this workspace
      * is in a virtual network managed on behalf of the user.
-     *
+     * 
      * @return the managedVirtualNetwork value.
      */
     public String getManagedVirtualNetwork() {
@@ -291,7 +277,7 @@ public class Workspace extends TrackedResource {
     /**
      * Set the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this workspace
      * is in a virtual network managed on behalf of the user.
-     *
+     * 
      * @param managedVirtualNetwork the managedVirtualNetwork value to set.
      * @return the Workspace object itself.
      */
@@ -302,7 +288,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the privateEndpointConnections property: Private endpoint connections to the workspace.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnection> getPrivateEndpointConnections() {
@@ -311,7 +297,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the privateEndpointConnections property: Private endpoint connections to the workspace.
-     *
+     * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the Workspace object itself.
      */
@@ -322,7 +308,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the encryption property: The encryption details of the workspace.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionDetails getEncryption() {
@@ -331,7 +317,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the encryption property: The encryption details of the workspace.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the Workspace object itself.
      */
@@ -342,7 +328,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the workspaceUID property: The workspace unique identifier.
-     *
+     * 
      * @return the workspaceUID value.
      */
     public UUID getWorkspaceUID() {
@@ -351,7 +337,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the extraProperties property: Workspace level configs and feature flags.
-     *
+     * 
      * @return the extraProperties value.
      */
     public Map<String, Object> getExtraProperties() {
@@ -360,7 +346,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
-     *
+     * 
      * @return the managedVirtualNetworkSettings value.
      */
     public ManagedVirtualNetworkSettings getManagedVirtualNetworkSettings() {
@@ -369,7 +355,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
-     *
+     * 
      * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set.
      * @return the Workspace object itself.
      */
@@ -380,7 +366,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the workspaceRepositoryConfiguration property: Git integration settings.
-     *
+     * 
      * @return the workspaceRepositoryConfiguration value.
      */
     public WorkspaceRepositoryConfiguration getWorkspaceRepositoryConfiguration() {
@@ -389,19 +375,19 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the workspaceRepositoryConfiguration property: Git integration settings.
-     *
+     * 
      * @param workspaceRepositoryConfiguration the workspaceRepositoryConfiguration value to set.
      * @return the Workspace object itself.
      */
-    public Workspace setWorkspaceRepositoryConfiguration(
-            WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
+    public Workspace
+        setWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
         this.workspaceRepositoryConfiguration = workspaceRepositoryConfiguration;
         return this;
     }
 
     /**
      * Get the purviewConfiguration property: Purview Configuration.
-     *
+     * 
      * @return the purviewConfiguration value.
      */
     public PurviewConfiguration getPurviewConfiguration() {
@@ -410,7 +396,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the purviewConfiguration property: Purview Configuration.
-     *
+     * 
      * @param purviewConfiguration the purviewConfiguration value to set.
      * @return the Workspace object itself.
      */
@@ -421,24 +407,160 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the adlaResourceId property: The ADLA resource ID.
-     *
+     * 
      * @return the adlaResourceId value.
      */
     public String getAdlaResourceId() {
         return this.adlaResourceId;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Workspace setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Workspace setLocation(String location) {
         super.setLocation(location);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", getLocation());
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        if (defaultDataLakeStorage != null
+            || sqlAdministratorLoginPassword != null
+            || managedResourceGroupName != null
+            || provisioningState != null
+            || sqlAdministratorLogin != null
+            || virtualNetworkProfile != null
+            || connectivityEndpoints != null
+            || managedVirtualNetwork != null
+            || privateEndpointConnections != null
+            || encryption != null
+            || workspaceUID != null
+            || extraProperties != null
+            || managedVirtualNetworkSettings != null
+            || workspaceRepositoryConfiguration != null
+            || purviewConfiguration != null
+            || adlaResourceId != null) {
+            jsonWriter.writeStartObject("properties");
+            jsonWriter.writeJsonField("defaultDataLakeStorage", this.defaultDataLakeStorage);
+            jsonWriter.writeStringField("sqlAdministratorLoginPassword", this.sqlAdministratorLoginPassword);
+            jsonWriter.writeStringField("managedResourceGroupName", this.managedResourceGroupName);
+            jsonWriter.writeStringField("sqlAdministratorLogin", this.sqlAdministratorLogin);
+            jsonWriter.writeJsonField("virtualNetworkProfile", this.virtualNetworkProfile);
+            jsonWriter.writeMapField("connectivityEndpoints", this.connectivityEndpoints,
+                (writer, element) -> writer.writeString(element));
+            jsonWriter.writeStringField("managedVirtualNetwork", this.managedVirtualNetwork);
+            jsonWriter.writeArrayField("privateEndpointConnections", this.privateEndpointConnections,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeJsonField("encryption", this.encryption);
+            jsonWriter.writeJsonField("managedVirtualNetworkSettings", this.managedVirtualNetworkSettings);
+            jsonWriter.writeJsonField("workspaceRepositoryConfiguration", this.workspaceRepositoryConfiguration);
+            jsonWriter.writeJsonField("purviewConfiguration", this.purviewConfiguration);
+            jsonWriter.writeEndObject();
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Workspace from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Workspace if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Workspace.
+     */
+    public static Workspace fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Workspace deserializedWorkspace = new Workspace();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedWorkspace.setLocation(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedWorkspace.setId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkspace.setName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkspace.setType(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWorkspace.setTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedWorkspace.identity = ManagedIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("defaultDataLakeStorage".equals(fieldName)) {
+                            deserializedWorkspace.defaultDataLakeStorage
+                                = DataLakeStorageAccountDetails.fromJson(reader);
+                        } else if ("sqlAdministratorLoginPassword".equals(fieldName)) {
+                            deserializedWorkspace.sqlAdministratorLoginPassword = reader.getString();
+                        } else if ("managedResourceGroupName".equals(fieldName)) {
+                            deserializedWorkspace.managedResourceGroupName = reader.getString();
+                        } else if ("provisioningState".equals(fieldName)) {
+                            deserializedWorkspace.provisioningState = reader.getString();
+                        } else if ("sqlAdministratorLogin".equals(fieldName)) {
+                            deserializedWorkspace.sqlAdministratorLogin = reader.getString();
+                        } else if ("virtualNetworkProfile".equals(fieldName)) {
+                            deserializedWorkspace.virtualNetworkProfile = VirtualNetworkProfile.fromJson(reader);
+                        } else if ("connectivityEndpoints".equals(fieldName)) {
+                            Map<String, String> connectivityEndpoints = reader.readMap(reader1 -> reader1.getString());
+                            deserializedWorkspace.connectivityEndpoints = connectivityEndpoints;
+                        } else if ("managedVirtualNetwork".equals(fieldName)) {
+                            deserializedWorkspace.managedVirtualNetwork = reader.getString();
+                        } else if ("privateEndpointConnections".equals(fieldName)) {
+                            List<PrivateEndpointConnection> privateEndpointConnections
+                                = reader.readArray(reader1 -> PrivateEndpointConnection.fromJson(reader1));
+                            deserializedWorkspace.privateEndpointConnections = privateEndpointConnections;
+                        } else if ("encryption".equals(fieldName)) {
+                            deserializedWorkspace.encryption = EncryptionDetails.fromJson(reader);
+                        } else if ("workspaceUID".equals(fieldName)) {
+                            deserializedWorkspace.workspaceUID
+                                = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                        } else if ("extraProperties".equals(fieldName)) {
+                            Map<String, Object> extraProperties = reader.readMap(reader1 -> reader1.readUntyped());
+                            deserializedWorkspace.extraProperties = extraProperties;
+                        } else if ("managedVirtualNetworkSettings".equals(fieldName)) {
+                            deserializedWorkspace.managedVirtualNetworkSettings
+                                = ManagedVirtualNetworkSettings.fromJson(reader);
+                        } else if ("workspaceRepositoryConfiguration".equals(fieldName)) {
+                            deserializedWorkspace.workspaceRepositoryConfiguration
+                                = WorkspaceRepositoryConfiguration.fromJson(reader);
+                        } else if ("purviewConfiguration".equals(fieldName)) {
+                            deserializedWorkspace.purviewConfiguration = PurviewConfiguration.fromJson(reader);
+                        } else if ("adlaResourceId".equals(fieldName)) {
+                            deserializedWorkspace.adlaResourceId = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspace;
+        });
     }
 }

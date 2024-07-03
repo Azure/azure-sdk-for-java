@@ -25,22 +25,28 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TriggerRuns. */
+/**
+ * An instance of this class provides access to all the operations defined in TriggerRuns.
+ */
 public final class TriggerRunsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TriggerRunsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ArtifactsClientImpl client;
 
     /**
      * Initializes an instance of TriggerRunsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TriggerRunsImpl(ArtifactsClientImpl client) {
-        this.service =
-                RestProxy.create(TriggerRunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(TriggerRunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,41 +58,31 @@ public final class TriggerRunsImpl {
     @ServiceInterface(name = "ArtifactsClientTrigg")
     public interface TriggerRunsService {
         @Post("/triggers/{triggerName}/triggerRuns/{runId}/rerun")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> rerunTriggerInstance(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("triggerName") String triggerName,
-                @PathParam("runId") String runId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> rerunTriggerInstance(@HostParam("endpoint") String endpoint,
+            @PathParam("triggerName") String triggerName, @PathParam("runId") String runId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/triggers/{triggerName}/triggerRuns/{runId}/cancel")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> cancelTriggerInstance(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("triggerName") String triggerName,
-                @PathParam("runId") String runId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> cancelTriggerInstance(@HostParam("endpoint") String endpoint,
+            @PathParam("triggerName") String triggerName, @PathParam("runId") String runId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/queryTriggerRuns")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<TriggerRunsQueryResponse>> queryTriggerRunsByWorkspace(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") RunFilterParameters filterParameters,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<TriggerRunsQueryResponse>> queryTriggerRunsByWorkspace(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RunFilterParameters filterParameters, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Rerun single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,15 +94,13 @@ public final class TriggerRunsImpl {
     public Mono<Response<Void>> rerunTriggerInstanceWithResponseAsync(String triggerName, String runId) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.rerunTriggerInstance(
-                                this.client.getEndpoint(), triggerName, runId, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> service.rerunTriggerInstance(this.client.getEndpoint(), triggerName,
+            runId, apiVersion, accept, context));
     }
 
     /**
      * Rerun single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @param context The context to associate with this operation.
@@ -116,8 +110,8 @@ public final class TriggerRunsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rerunTriggerInstanceWithResponseAsync(
-            String triggerName, String runId, Context context) {
+    public Mono<Response<Void>> rerunTriggerInstanceWithResponseAsync(String triggerName, String runId,
+        Context context) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return service.rerunTriggerInstance(this.client.getEndpoint(), triggerName, runId, apiVersion, accept, context);
@@ -125,7 +119,7 @@ public final class TriggerRunsImpl {
 
     /**
      * Rerun single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +134,7 @@ public final class TriggerRunsImpl {
 
     /**
      * Rerun single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @param context The context to associate with this operation.
@@ -156,7 +150,7 @@ public final class TriggerRunsImpl {
 
     /**
      * Rerun single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @param context The context to associate with this operation.
@@ -172,7 +166,7 @@ public final class TriggerRunsImpl {
 
     /**
      * Rerun single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -186,7 +180,7 @@ public final class TriggerRunsImpl {
 
     /**
      * Cancel single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -198,15 +192,13 @@ public final class TriggerRunsImpl {
     public Mono<Response<Void>> cancelTriggerInstanceWithResponseAsync(String triggerName, String runId) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.cancelTriggerInstance(
-                                this.client.getEndpoint(), triggerName, runId, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> service.cancelTriggerInstance(this.client.getEndpoint(), triggerName,
+            runId, apiVersion, accept, context));
     }
 
     /**
      * Cancel single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @param context The context to associate with this operation.
@@ -216,17 +208,17 @@ public final class TriggerRunsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelTriggerInstanceWithResponseAsync(
-            String triggerName, String runId, Context context) {
+    public Mono<Response<Void>> cancelTriggerInstanceWithResponseAsync(String triggerName, String runId,
+        Context context) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.cancelTriggerInstance(
-                this.client.getEndpoint(), triggerName, runId, apiVersion, accept, context);
+        return service.cancelTriggerInstance(this.client.getEndpoint(), triggerName, runId, apiVersion, accept,
+            context);
     }
 
     /**
      * Cancel single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +233,7 @@ public final class TriggerRunsImpl {
 
     /**
      * Cancel single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @param context The context to associate with this operation.
@@ -257,7 +249,7 @@ public final class TriggerRunsImpl {
 
     /**
      * Cancel single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @param context The context to associate with this operation.
@@ -273,7 +265,7 @@ public final class TriggerRunsImpl {
 
     /**
      * Cancel single trigger instance by runId.
-     *
+     * 
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -287,7 +279,7 @@ public final class TriggerRunsImpl {
 
     /**
      * Query trigger runs.
-     *
+     * 
      * @param filterParameters Parameters to filter the pipeline run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -295,19 +287,17 @@ public final class TriggerRunsImpl {
      * @return a list of trigger runs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerRunsQueryResponse>> queryTriggerRunsByWorkspaceWithResponseAsync(
-            RunFilterParameters filterParameters) {
+    public Mono<Response<TriggerRunsQueryResponse>>
+        queryTriggerRunsByWorkspaceWithResponseAsync(RunFilterParameters filterParameters) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.queryTriggerRunsByWorkspace(
-                                this.client.getEndpoint(), apiVersion, filterParameters, accept, context));
+        return FluxUtil.withContext(context -> service.queryTriggerRunsByWorkspace(this.client.getEndpoint(),
+            apiVersion, filterParameters, accept, context));
     }
 
     /**
      * Query trigger runs.
-     *
+     * 
      * @param filterParameters Parameters to filter the pipeline run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,17 +306,17 @@ public final class TriggerRunsImpl {
      * @return a list of trigger runs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerRunsQueryResponse>> queryTriggerRunsByWorkspaceWithResponseAsync(
-            RunFilterParameters filterParameters, Context context) {
+    public Mono<Response<TriggerRunsQueryResponse>>
+        queryTriggerRunsByWorkspaceWithResponseAsync(RunFilterParameters filterParameters, Context context) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.queryTriggerRunsByWorkspace(
-                this.client.getEndpoint(), apiVersion, filterParameters, accept, context);
+        return service.queryTriggerRunsByWorkspace(this.client.getEndpoint(), apiVersion, filterParameters, accept,
+            context);
     }
 
     /**
      * Query trigger runs.
-     *
+     * 
      * @param filterParameters Parameters to filter the pipeline run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -336,12 +326,12 @@ public final class TriggerRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerRunsQueryResponse> queryTriggerRunsByWorkspaceAsync(RunFilterParameters filterParameters) {
         return queryTriggerRunsByWorkspaceWithResponseAsync(filterParameters)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Query trigger runs.
-     *
+     * 
      * @param filterParameters Parameters to filter the pipeline run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -350,15 +340,15 @@ public final class TriggerRunsImpl {
      * @return a list of trigger runs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TriggerRunsQueryResponse> queryTriggerRunsByWorkspaceAsync(
-            RunFilterParameters filterParameters, Context context) {
+    public Mono<TriggerRunsQueryResponse> queryTriggerRunsByWorkspaceAsync(RunFilterParameters filterParameters,
+        Context context) {
         return queryTriggerRunsByWorkspaceWithResponseAsync(filterParameters, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Query trigger runs.
-     *
+     * 
      * @param filterParameters Parameters to filter the pipeline run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -367,14 +357,14 @@ public final class TriggerRunsImpl {
      * @return a list of trigger runs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TriggerRunsQueryResponse> queryTriggerRunsByWorkspaceWithResponse(
-            RunFilterParameters filterParameters, Context context) {
+    public Response<TriggerRunsQueryResponse>
+        queryTriggerRunsByWorkspaceWithResponse(RunFilterParameters filterParameters, Context context) {
         return queryTriggerRunsByWorkspaceWithResponseAsync(filterParameters, context).block();
     }
 
     /**
      * Query trigger runs.
-     *
+     * 
      * @param filterParameters Parameters to filter the pipeline run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

@@ -13,18 +13,20 @@ public final class RestResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestResourceDatasetTypeProperties model = BinaryData.fromString(
-            "{\"relativeUrl\":\"datauqirh\",\"requestMethod\":\"dataxpaowkgvnlfueyx\",\"requestBody\":\"dataibrlrjugcfeb\",\"additionalHeaders\":{\"bvr\":\"datace\",\"lsxr\":\"datalldfknbdzw\"},\"paginationRules\":{\"lwrduxntpfxxgja\":\"dataj\",\"eyfbkqynlzx\":\"datayxfwfctq\",\"vfoy\":\"datamelupjckiehd\"}}")
+            "{\"relativeUrl\":\"datayxxhwrlqom\",\"requestMethod\":\"datasyilpzzbrwnrzoz\",\"requestBody\":\"dataagysokl\",\"additionalHeaders\":{\"bvrrbnh\":\"datas\",\"bhujcydyl\":\"datal\",\"izsyq\":\"datamxvps\",\"llcbrva\":\"datag\"},\"paginationRules\":{\"jjrnogykugdlavsa\":\"datalkyhtrrqwfyybpt\",\"fkbzbfbxjblajy\":\"datagthkslgeu\",\"dj\":\"datadnbycsbtoisa\",\"zxgnywxu\":\"dataofsv\"}}")
             .toObject(RestResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestResourceDatasetTypeProperties model = new RestResourceDatasetTypeProperties().withRelativeUrl("datauqirh")
-            .withRequestMethod("dataxpaowkgvnlfueyx")
-            .withRequestBody("dataibrlrjugcfeb")
-            .withAdditionalHeaders(mapOf("bvr", "datace", "lsxr", "datalldfknbdzw"))
-            .withPaginationRules(
-                mapOf("lwrduxntpfxxgja", "dataj", "eyfbkqynlzx", "datayxfwfctq", "vfoy", "datamelupjckiehd"));
+        RestResourceDatasetTypeProperties model
+            = new RestResourceDatasetTypeProperties().withRelativeUrl("datayxxhwrlqom")
+                .withRequestMethod("datasyilpzzbrwnrzoz")
+                .withRequestBody("dataagysokl")
+                .withAdditionalHeaders(
+                    mapOf("bvrrbnh", "datas", "bhujcydyl", "datal", "izsyq", "datamxvps", "llcbrva", "datag"))
+                .withPaginationRules(mapOf("jjrnogykugdlavsa", "datalkyhtrrqwfyybpt", "fkbzbfbxjblajy", "datagthkslgeu",
+                    "dj", "datadnbycsbtoisa", "zxgnywxu", "dataofsv"));
         model = BinaryData.fromObject(model).toObject(RestResourceDatasetTypeProperties.class);
     }
 

@@ -5,23 +5,30 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Transformation for data flow source. */
+/**
+ * Transformation for data flow source.
+ */
 @Fluent
 public final class DataFlowSource extends Transformation {
     /*
      * Schema linked service reference.
      */
-    @JsonProperty(value = "schemaLinkedService")
     private LinkedServiceReference schemaLinkedService;
 
-    /** Creates an instance of DataFlowSource class. */
-    public DataFlowSource() {}
+    /**
+     * Creates an instance of DataFlowSource class.
+     */
+    public DataFlowSource() {
+    }
 
     /**
      * Get the schemaLinkedService property: Schema linked service reference.
-     *
+     * 
      * @return the schemaLinkedService value.
      */
     public LinkedServiceReference getSchemaLinkedService() {
@@ -30,7 +37,7 @@ public final class DataFlowSource extends Transformation {
 
     /**
      * Set the schemaLinkedService property: Schema linked service reference.
-     *
+     * 
      * @param schemaLinkedService the schemaLinkedService value to set.
      * @return the DataFlowSource object itself.
      */
@@ -39,38 +46,100 @@ public final class DataFlowSource extends Transformation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource setDataset(DatasetReference dataset) {
         super.setDataset(dataset);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource setLinkedService(LinkedServiceReference linkedService) {
         super.setLinkedService(linkedService);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource setFlowlet(DataFlowReference flowlet) {
         super.setFlowlet(flowlet);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeJsonField("dataset", getDataset());
+        jsonWriter.writeJsonField("linkedService", getLinkedService());
+        jsonWriter.writeJsonField("flowlet", getFlowlet());
+        jsonWriter.writeJsonField("schemaLinkedService", this.schemaLinkedService);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataFlowSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataFlowSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataFlowSource.
+     */
+    public static DataFlowSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFlowSource deserializedDataFlowSource = new DataFlowSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDataFlowSource.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedDataFlowSource.setDescription(reader.getString());
+                } else if ("dataset".equals(fieldName)) {
+                    deserializedDataFlowSource.setDataset(DatasetReference.fromJson(reader));
+                } else if ("linkedService".equals(fieldName)) {
+                    deserializedDataFlowSource.setLinkedService(LinkedServiceReference.fromJson(reader));
+                } else if ("flowlet".equals(fieldName)) {
+                    deserializedDataFlowSource.setFlowlet(DataFlowReference.fromJson(reader));
+                } else if ("schemaLinkedService".equals(fieldName)) {
+                    deserializedDataFlowSource.schemaLinkedService = LinkedServiceReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataFlowSource;
+        });
     }
 }

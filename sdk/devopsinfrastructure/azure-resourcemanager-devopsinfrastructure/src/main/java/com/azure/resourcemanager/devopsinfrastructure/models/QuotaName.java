@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Quota Names.
  */
 @Immutable
-public final class QuotaName {
+public final class QuotaName implements JsonSerializable<QuotaName> {
     /*
      * The name of the resource.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * The localized name of the resource.
      */
-    @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
     /**
@@ -54,5 +56,44 @@ public final class QuotaName {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("localizedValue", this.localizedValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaName if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaName.
+     */
+    public static QuotaName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaName deserializedQuotaName = new QuotaName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedQuotaName.value = reader.getString();
+                } else if ("localizedValue".equals(fieldName)) {
+                    deserializedQuotaName.localizedValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaName;
+        });
     }
 }

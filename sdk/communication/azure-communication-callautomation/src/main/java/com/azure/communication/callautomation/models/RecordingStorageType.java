@@ -4,7 +4,6 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -23,7 +22,6 @@ public final class RecordingStorageType extends ExpandableStringEnum<RecordingSt
      * @param name a name to look for.
      * @return the corresponding RecordingStorageTypeInternal.
      */
-    @JsonCreator
     public static RecordingStorageType fromString(String name) {
         return fromString(name, RecordingStorageType.class);
     }

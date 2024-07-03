@@ -72,7 +72,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("storageTaskAssignmentName") String storageTaskAssignmentName,
-            @QueryParam("$maxpagesize") String maxpagesize, @QueryParam("$filter") String filter,
+            @QueryParam("$maxpagesize") Integer maxpagesize, @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -107,7 +107,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageTaskReportInstanceInner>> listSinglePageAsync(String resourceGroupName,
-        String accountName, String storageTaskAssignmentName, String maxpagesize, String filter) {
+        String accountName, String storageTaskAssignmentName, Integer maxpagesize, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -161,7 +161,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageTaskReportInstanceInner>> listSinglePageAsync(String resourceGroupName,
-        String accountName, String storageTaskAssignmentName, String maxpagesize, String filter, Context context) {
+        String accountName, String storageTaskAssignmentName, Integer maxpagesize, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -212,7 +212,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StorageTaskReportInstanceInner> listAsync(String resourceGroupName, String accountName,
-        String storageTaskAssignmentName, String maxpagesize, String filter) {
+        String storageTaskAssignmentName, Integer maxpagesize, String filter) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, storageTaskAssignmentName, maxpagesize, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -235,7 +235,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StorageTaskReportInstanceInner> listAsync(String resourceGroupName, String accountName,
         String storageTaskAssignmentName) {
-        final String maxpagesize = null;
+        final Integer maxpagesize = null;
         final String filter = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, storageTaskAssignmentName, maxpagesize, filter),
@@ -265,7 +265,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageTaskReportInstanceInner> listAsync(String resourceGroupName, String accountName,
-        String storageTaskAssignmentName, String maxpagesize, String filter, Context context) {
+        String storageTaskAssignmentName, Integer maxpagesize, String filter, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, storageTaskAssignmentName,
             maxpagesize, filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
@@ -287,7 +287,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskReportInstanceInner> list(String resourceGroupName, String accountName,
         String storageTaskAssignmentName) {
-        final String maxpagesize = null;
+        final Integer maxpagesize = null;
         final String filter = null;
         return new PagedIterable<>(
             listAsync(resourceGroupName, accountName, storageTaskAssignmentName, maxpagesize, filter));
@@ -316,7 +316,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskReportInstanceInner> list(String resourceGroupName, String accountName,
-        String storageTaskAssignmentName, String maxpagesize, String filter, Context context) {
+        String storageTaskAssignmentName, Integer maxpagesize, String filter, Context context) {
         return new PagedIterable<>(
             listAsync(resourceGroupName, accountName, storageTaskAssignmentName, maxpagesize, filter, context));
     }
@@ -324,9 +324,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -352,9 +350,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

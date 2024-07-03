@@ -28,13 +28,12 @@ public class DependencyReference {
      */
     @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "DependencyReference";
 
     /**
      * Creates an instance of DependencyReference class.
      */
     public DependencyReference() {
-        this.type = "DependencyReference";
     }
 
     /**

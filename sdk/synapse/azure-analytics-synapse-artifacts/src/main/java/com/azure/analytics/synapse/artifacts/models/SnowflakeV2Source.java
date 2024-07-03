@@ -5,33 +5,52 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity snowflake source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SnowflakeV2Source")
+/**
+ * A copy activity snowflake source.
+ */
 @Fluent
 public final class SnowflakeV2Source extends CopySource {
     /*
+     * Copy source type.
+     */
+    private String type = "SnowflakeV2Source";
+
+    /*
      * Snowflake Sql query. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "query")
     private Object query;
 
     /*
      * Snowflake export settings.
      */
-    @JsonProperty(value = "exportSettings", required = true)
     private SnowflakeExportCopyCommand exportSettings;
 
-    /** Creates an instance of SnowflakeV2Source class. */
-    public SnowflakeV2Source() {}
+    /**
+     * Creates an instance of SnowflakeV2Source class.
+     */
+    public SnowflakeV2Source() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the query property: Snowflake Sql query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object getQuery() {
@@ -40,7 +59,7 @@ public final class SnowflakeV2Source extends CopySource {
 
     /**
      * Set the query property: Snowflake Sql query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the SnowflakeV2Source object itself.
      */
@@ -51,7 +70,7 @@ public final class SnowflakeV2Source extends CopySource {
 
     /**
      * Get the exportSettings property: Snowflake export settings.
-     *
+     * 
      * @return the exportSettings value.
      */
     public SnowflakeExportCopyCommand getExportSettings() {
@@ -60,7 +79,7 @@ public final class SnowflakeV2Source extends CopySource {
 
     /**
      * Set the exportSettings property: Snowflake export settings.
-     *
+     * 
      * @param exportSettings the exportSettings value to set.
      * @return the SnowflakeV2Source object itself.
      */
@@ -69,24 +88,93 @@ public final class SnowflakeV2Source extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeV2Source setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeV2Source setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeV2Source setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeJsonField("exportSettings", this.exportSettings);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("query", this.query);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnowflakeV2Source from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnowflakeV2Source if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SnowflakeV2Source.
+     */
+    public static SnowflakeV2Source fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnowflakeV2Source deserializedSnowflakeV2Source = new SnowflakeV2Source();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedSnowflakeV2Source.setSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedSnowflakeV2Source.setSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSnowflakeV2Source.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("exportSettings".equals(fieldName)) {
+                    deserializedSnowflakeV2Source.exportSettings = SnowflakeExportCopyCommand.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSnowflakeV2Source.type = reader.getString();
+                } else if ("query".equals(fieldName)) {
+                    deserializedSnowflakeV2Source.query = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSnowflakeV2Source.setAdditionalProperties(additionalProperties);
+
+            return deserializedSnowflakeV2Source;
+        });
     }
 }

@@ -5,69 +5,78 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Google BigQuery service linked service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("GoogleBigQueryV2")
-@JsonFlatten
+/**
+ * Google BigQuery service linked service.
+ */
 @Fluent
 public class GoogleBigQueryV2LinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "GoogleBigQueryV2";
+
+    /*
      * The default BigQuery project id to query against.
      */
-    @JsonProperty(value = "typeProperties.projectId", required = true)
     private Object projectId;
 
     /*
      * The OAuth 2.0 authentication mechanism used for authentication.
      */
-    @JsonProperty(value = "typeProperties.authenticationType", required = true)
     private GoogleBigQueryV2AuthenticationType authenticationType;
 
     /*
-     * The client id of the google application used to acquire the refresh token. Type: string (or Expression with
-     * resultType string).
+     * The client id of the google application used to acquire the refresh token. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.clientId")
     private Object clientId;
 
     /*
      * The client secret of the google application used to acquire the refresh token.
      */
-    @JsonProperty(value = "typeProperties.clientSecret")
     private SecretBase clientSecret;
 
     /*
      * The refresh token obtained from Google for authorizing access to BigQuery for UserAuthentication.
      */
-    @JsonProperty(value = "typeProperties.refreshToken")
     private SecretBase refreshToken;
 
     /*
      * The content of the .json key file that is used to authenticate the service account.
      */
-    @JsonProperty(value = "typeProperties.keyFileContent")
     private SecretBase keyFileContent;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;
 
-    /** Creates an instance of GoogleBigQueryV2LinkedService class. */
-    public GoogleBigQueryV2LinkedService() {}
+    /**
+     * Creates an instance of GoogleBigQueryV2LinkedService class.
+     */
+    public GoogleBigQueryV2LinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the projectId property: The default BigQuery project id to query against.
-     *
+     * 
      * @return the projectId value.
      */
     public Object getProjectId() {
@@ -76,7 +85,7 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
 
     /**
      * Set the projectId property: The default BigQuery project id to query against.
-     *
+     * 
      * @param projectId the projectId value to set.
      * @return the GoogleBigQueryV2LinkedService object itself.
      */
@@ -87,7 +96,7 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
 
     /**
      * Get the authenticationType property: The OAuth 2.0 authentication mechanism used for authentication.
-     *
+     * 
      * @return the authenticationType value.
      */
     public GoogleBigQueryV2AuthenticationType getAuthenticationType() {
@@ -96,7 +105,7 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
 
     /**
      * Set the authenticationType property: The OAuth 2.0 authentication mechanism used for authentication.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the GoogleBigQueryV2LinkedService object itself.
      */
@@ -108,7 +117,7 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
     /**
      * Get the clientId property: The client id of the google application used to acquire the refresh token. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the clientId value.
      */
     public Object getClientId() {
@@ -118,7 +127,7 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
     /**
      * Set the clientId property: The client id of the google application used to acquire the refresh token. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the GoogleBigQueryV2LinkedService object itself.
      */
@@ -129,7 +138,7 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
 
     /**
      * Get the clientSecret property: The client secret of the google application used to acquire the refresh token.
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase getClientSecret() {
@@ -138,7 +147,7 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
 
     /**
      * Set the clientSecret property: The client secret of the google application used to acquire the refresh token.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the GoogleBigQueryV2LinkedService object itself.
      */
@@ -150,7 +159,7 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
     /**
      * Get the refreshToken property: The refresh token obtained from Google for authorizing access to BigQuery for
      * UserAuthentication.
-     *
+     * 
      * @return the refreshToken value.
      */
     public SecretBase getRefreshToken() {
@@ -160,7 +169,7 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
     /**
      * Set the refreshToken property: The refresh token obtained from Google for authorizing access to BigQuery for
      * UserAuthentication.
-     *
+     * 
      * @param refreshToken the refreshToken value to set.
      * @return the GoogleBigQueryV2LinkedService object itself.
      */
@@ -172,7 +181,7 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
     /**
      * Get the keyFileContent property: The content of the .json key file that is used to authenticate the service
      * account.
-     *
+     * 
      * @return the keyFileContent value.
      */
     public SecretBase getKeyFileContent() {
@@ -182,7 +191,7 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
     /**
      * Set the keyFileContent property: The content of the .json key file that is used to authenticate the service
      * account.
-     *
+     * 
      * @param keyFileContent the keyFileContent value to set.
      * @return the GoogleBigQueryV2LinkedService object itself.
      */
@@ -194,7 +203,7 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the encryptedCredential value.
      */
     public String getEncryptedCredential() {
@@ -204,7 +213,7 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleBigQueryV2LinkedService object itself.
      */
@@ -213,31 +222,146 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryV2LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryV2LinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryV2LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryV2LinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (projectId != null
+            || authenticationType != null
+            || clientId != null
+            || clientSecret != null
+            || refreshToken != null
+            || keyFileContent != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("projectId", this.projectId);
+            jsonWriter.writeStringField("authenticationType",
+                this.authenticationType == null ? null : this.authenticationType.toString());
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+            jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+            jsonWriter.writeJsonField("refreshToken", this.refreshToken);
+            jsonWriter.writeJsonField("keyFileContent", this.keyFileContent);
+            jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GoogleBigQueryV2LinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GoogleBigQueryV2LinkedService if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GoogleBigQueryV2LinkedService.
+     */
+    public static GoogleBigQueryV2LinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GoogleBigQueryV2LinkedService deserializedGoogleBigQueryV2LinkedService
+                = new GoogleBigQueryV2LinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2LinkedService
+                        .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2LinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedGoogleBigQueryV2LinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedGoogleBigQueryV2LinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2LinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("projectId".equals(fieldName)) {
+                            deserializedGoogleBigQueryV2LinkedService.projectId = reader.readUntyped();
+                        } else if ("authenticationType".equals(fieldName)) {
+                            deserializedGoogleBigQueryV2LinkedService.authenticationType
+                                = GoogleBigQueryV2AuthenticationType.fromString(reader.getString());
+                        } else if ("clientId".equals(fieldName)) {
+                            deserializedGoogleBigQueryV2LinkedService.clientId = reader.readUntyped();
+                        } else if ("clientSecret".equals(fieldName)) {
+                            deserializedGoogleBigQueryV2LinkedService.clientSecret = SecretBase.fromJson(reader);
+                        } else if ("refreshToken".equals(fieldName)) {
+                            deserializedGoogleBigQueryV2LinkedService.refreshToken = SecretBase.fromJson(reader);
+                        } else if ("keyFileContent".equals(fieldName)) {
+                            deserializedGoogleBigQueryV2LinkedService.keyFileContent = SecretBase.fromJson(reader);
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedGoogleBigQueryV2LinkedService.encryptedCredential = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedGoogleBigQueryV2LinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedGoogleBigQueryV2LinkedService;
+        });
     }
 }

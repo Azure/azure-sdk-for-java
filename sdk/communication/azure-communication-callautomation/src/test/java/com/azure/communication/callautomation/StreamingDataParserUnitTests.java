@@ -8,11 +8,12 @@ import com.azure.communication.callautomation.models.streaming.media.AudioData;
 import com.azure.communication.callautomation.models.streaming.media.AudioMetadata;
 import com.azure.communication.callautomation.models.streaming.transcription.*;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -119,39 +120,43 @@ public class StreamingDataParserUnitTests {
     }
 
     private String createAudioMetadataJson() {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            ObjectNode audioMetadata = objectMapper.createObjectNode();
-            audioMetadata.put("kind", "AudioMetadata");
-            audioMetadata.put("subscriptionId", "subscriptionId");
-            audioMetadata.put("encoding", "PCM");
-            audioMetadata.put("sampleRate", 8);
-            audioMetadata.put("channels", 2);
-            audioMetadata.put("length", 100);
-            ObjectNode root = objectMapper.createObjectNode();
-            root.put("kind", "AudioMetadata");
-            root.set("audioMetadata", audioMetadata);
-            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
-        } catch (Exception e) {
-            throw new RuntimeException();
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            writer.writeStartObject();
+            writer.writeStringField("kind", "AudioMetadata");
+            writer.writeStartObject("audioMetadata");
+            writer.writeStringField("kind", "AudioMetadata");
+            writer.writeStringField("subscriptionId", "subscriptionId");
+            writer.writeStringField("encoding", "PCM");
+            writer.writeIntField("sampleRate", 8);
+            writer.writeIntField("channels", 2);
+            writer.writeIntField("length", 100);
+            writer.writeEndObject();
+            writer.writeEndObject();
+            writer.flush();
+            return outputStream.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     private String createAudioDataJson() {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            ObjectNode audioData = objectMapper.createObjectNode();
-            audioData.put("kind", "AudioData");
-            audioData.put("timestamp", "2022-10-03T19:16:12.925Z");
-            audioData.put("participantRawID", "participantId");
-            audioData.put("data", "AQIDBAU=");
-            audioData.put("silent", false);
-            ObjectNode root = objectMapper.createObjectNode();
-            root.put("kind", "AudioData");
-            root.set("audioData", audioData);
-            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
-        } catch (Exception e) {
-            throw new RuntimeException();
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            writer.writeStartObject();
+            writer.writeStringField("kind", "AudioData");
+            writer.writeStartObject("audioData");
+            writer.writeStringField("kind", "AudioData");
+            writer.writeStringField("timestamp", "2022-10-03T19:16:12.925Z");
+            writer.writeStringField("participantRawID", "participantId");
+            writer.writeStringField("data", "AQIDBAU=");
+            writer.writeBooleanField("silent", false);
+            writer.writeEndObject();
+            writer.writeEndObject();
+            writer.flush();
+            return outputStream.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     //endregion
@@ -168,7 +173,7 @@ public class StreamingDataParserUnitTests {
                     + "\"format\":\"display\","
                     + "\"confidence\":0.98,"
                     + "\"offset\":1,"
-                    + "\"duration\":2," 
+                    + "\"duration\":2,"
                     + "\"words\":"
                     + "["
                         + "{"
@@ -268,58 +273,56 @@ public class StreamingDataParserUnitTests {
         assertEquals("correlationId", transcriptionMetadata.getCorrelationId());
     }
 
-
     private String createTranscriptionMetadataJson() {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            ObjectNode jsonData = objectMapper.createObjectNode();
-            jsonData.put("kind", "TranscriptionMetadata");
-            ObjectNode transcriptionMetaData = objectMapper.createObjectNode();
-            jsonData.set("transcriptionMetadata", transcriptionMetaData);
-            transcriptionMetaData.put("subscriptionId", "subscriptionId");
-            transcriptionMetaData.put("locale", "en-US");
-            transcriptionMetaData.put("callConnectionId", "callConnectionId");
-            transcriptionMetaData.put("correlationId", "correlationId");
-            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonData);
-        } catch (Exception e) {
-            throw new RuntimeException();
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            writer.writeStartObject();
+            writer.writeStringField("kind", "TranscriptionMetadata");
+            writer.writeStartObject("transcriptionMetadata");
+            writer.writeStringField("subscriptionId", "subscriptionId");
+            writer.writeStringField("locale", "en-US");
+            writer.writeStringField("callConnectionId", "callConnectionId");
+            writer.writeStringField("correlationId", "correlationId");
+            writer.writeEndObject();
+            writer.writeEndObject();
+            writer.flush();
+            return outputStream.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     private String createTranscriptionDataJson() {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            ObjectNode jsonData = objectMapper.createObjectNode();
-            jsonData.put("kind", "TranscriptionData");
-            ObjectNode transcriptionData = objectMapper.createObjectNode();
-            jsonData.set("transcriptionData", transcriptionData);
-            transcriptionData.put("text", "Hello World!");
-            transcriptionData.put("format", "Display");
-            transcriptionData.put("confidence", 0.98d);
-            transcriptionData.put("offset", 1);
-            transcriptionData.put("duration", 2);
-
-            ArrayNode words = objectMapper.createArrayNode();
-            transcriptionData.set("words", words);
-
-            ObjectNode word0 = objectMapper.createObjectNode();
-            word0.put("text", "Hello");
-            word0.put("offset", 1);
-            word0.put("duration", 1);
-            words.add(word0);
-
-            ObjectNode word1 = objectMapper.createObjectNode();
-            word1.put("text", "World");
-            word1.put("offset", 6);
-            word1.put("duration", 1);
-            words.add(word1);
-
-            transcriptionData.put("participantRawID", "abc12345");
-            transcriptionData.put("resultStatus", "final");
-
-            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonData);
-        } catch (Exception e) {
-            throw new RuntimeException();
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            writer.writeStartObject();
+            writer.writeStringField("kind", "TranscriptionData");
+            writer.writeStartObject("transcriptionData");
+            writer.writeStringField("text", "Hello World!");
+            writer.writeStringField("format", "Display");
+            writer.writeDoubleField("confidence", 0.98);
+            writer.writeIntField("offset", 1);
+            writer.writeIntField("duration", 2);
+            writer.writeStartArray("words");
+            writer.writeStartObject();
+            writer.writeStringField("text", "Hello");
+            writer.writeIntField("offset", 1);
+            writer.writeIntField("duration", 1);
+            writer.writeEndObject();
+            writer.writeStartObject();
+            writer.writeStringField("text", "World");
+            writer.writeIntField("offset", 6);
+            writer.writeIntField("duration", 1);
+            writer.writeEndObject();
+            writer.writeEndArray();
+            writer.writeStringField("participantRawID", "abc12345");
+            writer.writeStringField("resultStatus", "final");
+            writer.writeEndObject();
+            writer.writeEndObject();
+            writer.flush();
+            return outputStream.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     //endregion

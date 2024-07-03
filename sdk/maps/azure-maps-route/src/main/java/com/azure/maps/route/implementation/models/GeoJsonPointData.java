@@ -5,26 +5,34 @@
 package com.azure.maps.route.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Data contained by a `GeoJson Point`. */
+/**
+ * Data contained by a `GeoJson Point`.
+ */
 @Fluent
-public class GeoJsonPointData {
+public class GeoJsonPointData implements JsonSerializable<GeoJsonPointData> {
     /*
-     * A `Position` is an array of numbers with two or more elements. The first
-     * two elements are _longitude_ and _latitude_, precisely in that order.
-     * _Altitude/Elevation_ is an optional third element. Please refer to [RFC
-     * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.1) for details.
+     * A `Position` is an array of numbers with two or more elements. The first two elements are _longitude_ and _latitude_, precisely in that order. _Altitude/Elevation_ is an optional third element. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.1) for details.
      */
-    @JsonProperty(value = "coordinates", required = true)
     private List<Double> coordinates;
+
+    /**
+     * Creates an instance of GeoJsonPointData class.
+     */
+    public GeoJsonPointData() {
+    }
 
     /**
      * Get the coordinates property: A `Position` is an array of numbers with two or more elements. The first two
      * elements are _longitude_ and _latitude_, precisely in that order. _Altitude/Elevation_ is an optional third
      * element. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.1) for details.
-     *
+     * 
      * @return the coordinates value.
      */
     public List<Double> getCoordinates() {
@@ -35,12 +43,50 @@ public class GeoJsonPointData {
      * Set the coordinates property: A `Position` is an array of numbers with two or more elements. The first two
      * elements are _longitude_ and _latitude_, precisely in that order. _Altitude/Elevation_ is an optional third
      * element. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.1) for details.
-     *
+     * 
      * @param coordinates the coordinates value to set.
      * @return the GeoJsonPointData object itself.
      */
     public GeoJsonPointData setCoordinates(List<Double> coordinates) {
         this.coordinates = coordinates;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("coordinates", this.coordinates, (writer, element) -> writer.writeDouble(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GeoJsonPointData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GeoJsonPointData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GeoJsonPointData.
+     */
+    public static GeoJsonPointData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GeoJsonPointData deserializedGeoJsonPointData = new GeoJsonPointData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("coordinates".equals(fieldName)) {
+                    List<Double> coordinates = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedGeoJsonPointData.coordinates = coordinates;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGeoJsonPointData;
+        });
     }
 }

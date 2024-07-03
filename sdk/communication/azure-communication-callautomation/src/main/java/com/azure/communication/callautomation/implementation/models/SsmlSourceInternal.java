@@ -5,26 +5,36 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SsmlSourceInternal model. */
+/**
+ * The SsmlSourceInternal model.
+ */
 @Fluent
-public final class SsmlSourceInternal {
+public final class SsmlSourceInternal implements JsonSerializable<SsmlSourceInternal> {
     /*
      * Ssml string for the cognitive service to be played
      */
-    @JsonProperty(value = "ssmlText", required = true)
     private String ssmlText;
 
     /*
      * Endpoint where the custom voice was deployed.
      */
-    @JsonProperty(value = "customVoiceEndpointId")
     private String customVoiceEndpointId;
 
     /**
+     * Creates an instance of SsmlSourceInternal class.
+     */
+    public SsmlSourceInternal() {
+    }
+
+    /**
      * Get the ssmlText property: Ssml string for the cognitive service to be played.
-     *
+     * 
      * @return the ssmlText value.
      */
     public String getSsmlText() {
@@ -33,7 +43,7 @@ public final class SsmlSourceInternal {
 
     /**
      * Set the ssmlText property: Ssml string for the cognitive service to be played.
-     *
+     * 
      * @param ssmlText the ssmlText value to set.
      * @return the SsmlSourceInternal object itself.
      */
@@ -44,7 +54,7 @@ public final class SsmlSourceInternal {
 
     /**
      * Get the customVoiceEndpointId property: Endpoint where the custom voice was deployed.
-     *
+     * 
      * @return the customVoiceEndpointId value.
      */
     public String getCustomVoiceEndpointId() {
@@ -53,12 +63,52 @@ public final class SsmlSourceInternal {
 
     /**
      * Set the customVoiceEndpointId property: Endpoint where the custom voice was deployed.
-     *
+     * 
      * @param customVoiceEndpointId the customVoiceEndpointId value to set.
      * @return the SsmlSourceInternal object itself.
      */
     public SsmlSourceInternal setCustomVoiceEndpointId(String customVoiceEndpointId) {
         this.customVoiceEndpointId = customVoiceEndpointId;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ssmlText", this.ssmlText);
+        jsonWriter.writeStringField("customVoiceEndpointId", this.customVoiceEndpointId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsmlSourceInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsmlSourceInternal if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SsmlSourceInternal.
+     */
+    public static SsmlSourceInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsmlSourceInternal deserializedSsmlSourceInternal = new SsmlSourceInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ssmlText".equals(fieldName)) {
+                    deserializedSsmlSourceInternal.ssmlText = reader.getString();
+                } else if ("customVoiceEndpointId".equals(fieldName)) {
+                    deserializedSsmlSourceInternal.customVoiceEndpointId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsmlSourceInternal;
+        });
     }
 }

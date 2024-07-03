@@ -5,29 +5,37 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The LinkConnectionSourceDatabaseTypeProperties model. */
+/**
+ * The LinkConnectionSourceDatabaseTypeProperties model.
+ */
 @Fluent
-public final class LinkConnectionSourceDatabaseTypeProperties {
+public final class LinkConnectionSourceDatabaseTypeProperties
+    implements JsonSerializable<LinkConnectionSourceDatabaseTypeProperties> {
     /*
      * Link connection source database server's resource id
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * Link connection source database server's principal id
      */
-    @JsonProperty(value = "principalId")
     private String principalId;
 
-    /** Creates an instance of LinkConnectionSourceDatabaseTypeProperties class. */
-    public LinkConnectionSourceDatabaseTypeProperties() {}
+    /**
+     * Creates an instance of LinkConnectionSourceDatabaseTypeProperties class.
+     */
+    public LinkConnectionSourceDatabaseTypeProperties() {
+    }
 
     /**
      * Get the resourceId property: Link connection source database server's resource id.
-     *
+     * 
      * @return the resourceId value.
      */
     public String getResourceId() {
@@ -36,7 +44,7 @@ public final class LinkConnectionSourceDatabaseTypeProperties {
 
     /**
      * Set the resourceId property: Link connection source database server's resource id.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the LinkConnectionSourceDatabaseTypeProperties object itself.
      */
@@ -47,7 +55,7 @@ public final class LinkConnectionSourceDatabaseTypeProperties {
 
     /**
      * Get the principalId property: Link connection source database server's principal id.
-     *
+     * 
      * @return the principalId value.
      */
     public String getPrincipalId() {
@@ -56,12 +64,52 @@ public final class LinkConnectionSourceDatabaseTypeProperties {
 
     /**
      * Set the principalId property: Link connection source database server's principal id.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the LinkConnectionSourceDatabaseTypeProperties object itself.
      */
     public LinkConnectionSourceDatabaseTypeProperties setPrincipalId(String principalId) {
         this.principalId = principalId;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("principalId", this.principalId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkConnectionSourceDatabaseTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkConnectionSourceDatabaseTypeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkConnectionSourceDatabaseTypeProperties.
+     */
+    public static LinkConnectionSourceDatabaseTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkConnectionSourceDatabaseTypeProperties deserializedLinkConnectionSourceDatabaseTypeProperties
+                = new LinkConnectionSourceDatabaseTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedLinkConnectionSourceDatabaseTypeProperties.resourceId = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedLinkConnectionSourceDatabaseTypeProperties.principalId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkConnectionSourceDatabaseTypeProperties;
+        });
     }
 }

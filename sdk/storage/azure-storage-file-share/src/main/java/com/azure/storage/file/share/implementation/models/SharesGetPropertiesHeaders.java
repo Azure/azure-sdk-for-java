@@ -58,6 +58,11 @@ public final class SharesGetPropertiesHeaders {
     private DateTimeRfc1123 xMsAccessTierChangeTime;
 
     /*
+     * The x-ms-enable-snapshot-virtual-directory-access property.
+     */
+    private Boolean xMsEnableSnapshotVirtualDirectoryAccess;
+
+    /*
      * The x-ms-meta- property.
      */
     private Map<String, String> xMsMeta;
@@ -136,6 +141,9 @@ public final class SharesGetPropertiesHeaders {
     private static final HttpHeaderName X_MS_ACCESS_TIER_CHANGE_TIME
         = HttpHeaderName.fromString("x-ms-access-tier-change-time");
 
+    private static final HttpHeaderName X_MS_ENABLE_SNAPSHOT_VIRTUAL_DIRECTORY_ACCESS
+        = HttpHeaderName.fromString("x-ms-enable-snapshot-virtual-directory-access");
+
     private static final HttpHeaderName X_MS_SHARE_PROVISIONED_INGRESS_MBPS
         = HttpHeaderName.fromString("x-ms-share-provisioned-ingress-mbps");
 
@@ -190,6 +198,12 @@ public final class SharesGetPropertiesHeaders {
         String xMsAccessTierChangeTime = rawHeaders.getValue(X_MS_ACCESS_TIER_CHANGE_TIME);
         if (xMsAccessTierChangeTime != null) {
             this.xMsAccessTierChangeTime = new DateTimeRfc1123(xMsAccessTierChangeTime);
+        }
+        String xMsEnableSnapshotVirtualDirectoryAccess
+            = rawHeaders.getValue(X_MS_ENABLE_SNAPSHOT_VIRTUAL_DIRECTORY_ACCESS);
+        if (xMsEnableSnapshotVirtualDirectoryAccess != null) {
+            this.xMsEnableSnapshotVirtualDirectoryAccess
+                = Boolean.parseBoolean(xMsEnableSnapshotVirtualDirectoryAccess);
         }
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
@@ -388,6 +402,29 @@ public final class SharesGetPropertiesHeaders {
         } else {
             this.xMsAccessTierChangeTime = new DateTimeRfc1123(xMsAccessTierChangeTime);
         }
+        return this;
+    }
+
+    /**
+     * Get the xMsEnableSnapshotVirtualDirectoryAccess property: The x-ms-enable-snapshot-virtual-directory-access
+     * property.
+     * 
+     * @return the xMsEnableSnapshotVirtualDirectoryAccess value.
+     */
+    public Boolean isXMsEnableSnapshotVirtualDirectoryAccess() {
+        return this.xMsEnableSnapshotVirtualDirectoryAccess;
+    }
+
+    /**
+     * Set the xMsEnableSnapshotVirtualDirectoryAccess property: The x-ms-enable-snapshot-virtual-directory-access
+     * property.
+     * 
+     * @param xMsEnableSnapshotVirtualDirectoryAccess the xMsEnableSnapshotVirtualDirectoryAccess value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders
+        setXMsEnableSnapshotVirtualDirectoryAccess(Boolean xMsEnableSnapshotVirtualDirectoryAccess) {
+        this.xMsEnableSnapshotVirtualDirectoryAccess = xMsEnableSnapshotVirtualDirectoryAccess;
         return this;
     }
 

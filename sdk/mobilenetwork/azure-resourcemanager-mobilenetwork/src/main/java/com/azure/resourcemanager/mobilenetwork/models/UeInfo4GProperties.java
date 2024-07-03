@@ -183,12 +183,12 @@ public final class UeInfo4GProperties {
      */
     public void validate() {
         if (imsi() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property imsi in model UeInfo4GProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property imsi in model UeInfo4GProperties"));
         }
         if (guti() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property guti in model UeInfo4GProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property guti in model UeInfo4GProperties"));
         } else {
             guti().validate();
         }

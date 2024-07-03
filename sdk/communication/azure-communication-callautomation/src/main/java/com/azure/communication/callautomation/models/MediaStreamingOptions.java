@@ -4,33 +4,34 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The MediaStreamingConfigurationInternal model. */
 @Fluent
-public final class MediaStreamingOptions {
+public final class MediaStreamingOptions implements JsonSerializable<MediaStreamingOptions> {
     /*
      * Transport URL for media streaming
      */
-    @JsonProperty(value = "transportUrl")
     private final String transportUrl;
 
     /*
      * The type of transport to be used for media streaming, eg. Websocket
      */
-    @JsonProperty(value = "transportType")
     private final MediaStreamingTransport transportType;
 
     /*
      * Content type to stream, eg. audio, audio/video
      */
-    @JsonProperty(value = "contentType")
     private final MediaStreamingContent contentType;
 
     /*
      * Audio channel type to stream, eg. unmixed audio, mixed audio
      */
-    @JsonProperty(value = "audioChannelType")
     private final MediaStreamingAudioChannel audioChannelType;
 
     /**
@@ -81,5 +82,48 @@ public final class MediaStreamingOptions {
      */
     public MediaStreamingAudioChannel getAudioChannelType() {
         return this.audioChannelType;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("transportUrl", transportUrl);
+        jsonWriter.writeStringField("transportType", transportType != null ? transportType.toString() : null);
+        jsonWriter.writeStringField("contentType", contentType != null ? contentType.toString() : null);
+        jsonWriter.writeStringField("audioChannelType", audioChannelType != null ? audioChannelType.toString() : null);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaStreamingOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaStreamingOptions if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaStreamingOptions.
+     */
+    public static MediaStreamingOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String transportUrl = null;
+            MediaStreamingTransport transportType = null;
+            MediaStreamingContent contentType = null;
+            MediaStreamingAudioChannel audioChannelType = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("transportUrl".equals(fieldName)) {
+                    transportUrl = reader.getString();
+                } else if ("transportType".equals(fieldName)) {
+                    transportType = MediaStreamingTransport.fromString(reader.getString());
+                } else if ("contentType".equals(fieldName)) {
+                    contentType = MediaStreamingContent.fromString(reader.getString());
+                } else if ("audioChannelType".equals(fieldName)) {
+                    audioChannelType = MediaStreamingAudioChannel.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new MediaStreamingOptions(transportUrl, transportType, contentType, audioChannelType);
+        });
     }
 }

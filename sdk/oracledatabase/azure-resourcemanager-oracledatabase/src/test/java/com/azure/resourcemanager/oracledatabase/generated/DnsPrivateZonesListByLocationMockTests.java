@@ -21,7 +21,7 @@ public final class DnsPrivateZonesListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ocid\":\"nc\",\"isProtected\":false,\"lifecycleState\":\"Creating\",\"self\":\"spkcdqzh\",\"serial\":1409257587,\"version\":\"tddunqnd\",\"viewId\":\"pchrqbn\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-10-20T23:39:39Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"gydcw\",\"name\":\"oxjumvqqo\",\"type\":\"ihrraiouaub\"}]}";
+            = "{\"value\":[{\"properties\":{\"ocid\":\"ylnio\",\"isProtected\":false,\"lifecycleState\":\"Deleting\",\"self\":\"jed\",\"serial\":1946171356,\"version\":\"vnlvxbcuiiznktwf\",\"viewId\":\"snvpdibmi\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-01-17T12:38:03Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"iwbuqny\",\"name\":\"phzfylsgcrp\",\"type\":\"bcunezzceze\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class DnsPrivateZonesListByLocationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DnsPrivateZone> response
-            = manager.dnsPrivateZones().listByLocation("qpwcyyufmh", com.azure.core.util.Context.NONE);
+            = manager.dnsPrivateZones().listByLocation("pv", com.azure.core.util.Context.NONE);
 
     }
 }

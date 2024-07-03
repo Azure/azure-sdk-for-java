@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.storage.fluent.models.BlobInventoryPolicyInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public final class ListBlobInventoryPolicy {
 
     /**
      * Get the value property: List of blob inventory policies.
-     *
+     * 
      * @return the value value.
      */
     public List<BlobInventoryPolicyInner> value() {
@@ -38,7 +37,7 @@ public final class ListBlobInventoryPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

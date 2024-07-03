@@ -11,7 +11,9 @@ import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseBackup;
  */
 public final class AutonomousDatabaseBackupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_patch.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabaseBackup_patch.
+     * json
      */
     /**
      * Sample code: Patch Autonomous Database Backup.
@@ -20,6 +22,24 @@ public final class AutonomousDatabaseBackupsUpdateSamples {
      */
     public static void
         patchAutonomousDatabaseBackup(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        AutonomousDatabaseBackup resource = manager.autonomousDatabaseBackups()
+            .getWithResponse("rg000", "databasedb1", "1711644130", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabaseBackup_patch.
+     * json
+     */
+    /**
+     * Sample code: AutonomousDatabaseBackups_Update.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        autonomousDatabaseBackupsUpdate(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         AutonomousDatabaseBackup resource = manager.autonomousDatabaseBackups()
             .getWithResponse("rg000", "databasedb1", "1711644130", com.azure.core.util.Context.NONE)
             .getValue();
