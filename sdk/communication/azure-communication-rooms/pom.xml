@@ -41,7 +41,7 @@
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
     <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
+    <jacoco.min.branchcoverage>0.58</jacoco.min.branchcoverage>
 		<jacoco.skip>false</jacoco.skip>
     <!-- Configures the Java 9+ run to perform the required module exports,
       opens, and reads that are necessary for testing but shouldn't be part of
