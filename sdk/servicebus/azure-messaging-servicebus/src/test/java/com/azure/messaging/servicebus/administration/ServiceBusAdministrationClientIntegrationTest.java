@@ -19,7 +19,6 @@ import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
-import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -82,7 +81,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Execution(ExecutionMode.SAME_THREAD)
 public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
-    private final AtomicReference<AzurePipelinesCredential> pipelineCredential = new AtomicReference<>();
+    private final AtomicReference<TokenCredential> pipelineCredential = new AtomicReference<>();
 
 //    /**
 //     * Test to connect to the service bus with an azure identity TokenCredential.

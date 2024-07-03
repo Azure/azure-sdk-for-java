@@ -5,6 +5,9 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -21,6 +24,8 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -253,7 +258,7 @@ public class TestUtils {
      *
      * @return the Azure Pipelines credential.
      */
-    public static AzurePipelinesCredential getPipelineCredential(AtomicReference<AzurePipelinesCredential> pipelineCredential) {
+    public static TokenCredential getPipelineCredential(AtomicReference<TokenCredential> pipelineCredential) {
         return pipelineCredential.updateAndGet(credential -> {
             if (credential == null) {
                 final AzurePipelinesCredentialBuilder builder = TestUtils.getAzurePipelinesCredentialBuilder();
@@ -261,7 +266,15 @@ public class TestUtils {
                     assumeTrue(false, "Test required to run on Azure Pipelines that is configured with service connections federated identity.");
                     return null;
                 }
-                return builder.build();
+                final AzurePipelinesCredential pipelinesCredential = builder.build();
+                return new TokenCredential() {
+                    @Override
+                    public Mono<AccessToken> getToken(TokenRequestContext request) {
+                        return Mono.defer(() -> {
+                            return pipelinesCredential.getToken(request);
+                        }).subscribeOn(Schedulers.boundedElastic());
+                    }
+                };
             }
             return credential;
         });

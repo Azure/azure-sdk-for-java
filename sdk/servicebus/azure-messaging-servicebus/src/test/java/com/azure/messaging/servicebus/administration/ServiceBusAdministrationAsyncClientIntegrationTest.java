@@ -21,7 +21,6 @@ import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -104,7 +103,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         TEST_PROXY_REQUEST_MATCHERS = Collections.singletonList(customMatcher);
     }
 
-    private final AtomicReference<AzurePipelinesCredential> pipelineCredential = new AtomicReference<>();
+    private final AtomicReference<TokenCredential> pipelineCredential = new AtomicReference<>();
 
     public static Stream<Arguments> createHttpClients() {
         return Stream.of(Arguments.of(new NettyAsyncHttpClientBuilder().build()));

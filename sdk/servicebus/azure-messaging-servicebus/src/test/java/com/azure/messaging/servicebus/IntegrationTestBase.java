@@ -22,7 +22,6 @@ import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
@@ -78,7 +77,7 @@ public abstract class IntegrationTestBase extends TestBase {
     private List<AutoCloseable> toClose = new ArrayList<>();
     private String testName;
     private final Scheduler scheduler = Schedulers.parallel();
-    private final AtomicReference<AzurePipelinesCredential> pipelineCredential = new AtomicReference<>();
+    private final AtomicReference<TokenCredential> pipelineCredential = new AtomicReference<>();
 
     protected static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     protected String sessionId;
