@@ -12,18 +12,18 @@ public final class VirtualNetworkAddressPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualNetworkAddressProperties model = BinaryData.fromString(
-            "{\"ipAddress\":\"xmrhu\",\"vmOcid\":\"wp\",\"ocid\":\"sutrgjup\",\"domain\":\"utpwoqhihejqgw\",\"lifecycleDetails\":\"nfqn\",\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2021-05-01T05:05:25Z\"}")
+            "{\"ipAddress\":\"pjui\",\"vmOcid\":\"vokqdzfv\",\"ocid\":\"ivjlfrqttbajlka\",\"domain\":\"wxyiopidkqq\",\"lifecycleDetails\":\"uvscxkdmligov\",\"provisioningState\":\"Provisioning\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2021-12-03T21:08:29Z\"}")
             .toObject(VirtualNetworkAddressProperties.class);
-        Assertions.assertEquals("xmrhu", model.ipAddress());
-        Assertions.assertEquals("wp", model.vmOcid());
+        Assertions.assertEquals("pjui", model.ipAddress());
+        Assertions.assertEquals("vokqdzfv", model.vmOcid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualNetworkAddressProperties model
-            = new VirtualNetworkAddressProperties().withIpAddress("xmrhu").withVmOcid("wp");
+            = new VirtualNetworkAddressProperties().withIpAddress("pjui").withVmOcid("vokqdzfv");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkAddressProperties.class);
-        Assertions.assertEquals("xmrhu", model.ipAddress());
-        Assertions.assertEquals("wp", model.vmOcid());
+        Assertions.assertEquals("pjui", model.ipAddress());
+        Assertions.assertEquals("vokqdzfv", model.vmOcid());
     }
 }

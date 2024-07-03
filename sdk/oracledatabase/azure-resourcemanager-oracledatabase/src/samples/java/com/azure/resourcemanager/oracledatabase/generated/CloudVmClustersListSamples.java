@@ -9,8 +9,9 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class CloudVmClustersListSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/
-     * vmClusters_listBySubscription.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/vmClusters_listBySubscription.
+     * json
      */
     /**
      * Sample code: List VM Clusters by subscription.

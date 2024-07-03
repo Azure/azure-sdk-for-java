@@ -85,7 +85,7 @@ public final class FaceSessionClient {
      * }
      * }</pre>
      *
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -95,9 +95,8 @@ public final class FaceSessionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createLivenessSessionWithResponse(BinaryData createLivenessSessionContent,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createLivenessSessionWithResponse(createLivenessSessionContent, requestOptions);
+    public Response<BinaryData> createLivenessSessionWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createLivenessSessionWithResponse(body, requestOptions);
     }
 
     /**
@@ -377,7 +376,7 @@ public final class FaceSessionClient {
      * }
      * }</pre>
      *
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -387,10 +386,8 @@ public final class FaceSessionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createLivenessWithVerifySessionWithResponse(BinaryData createLivenessSessionContent,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createLivenessWithVerifySessionWithResponse(createLivenessSessionContent,
-            requestOptions);
+    Response<BinaryData> createLivenessWithVerifySessionWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createLivenessWithVerifySessionWithResponse(body, requestOptions);
     }
 
     /**
@@ -692,7 +689,7 @@ public final class FaceSessionClient {
      * retrieve a result, use the Get Liveness Session. To audit the individual requests that a client has made to your
      * resource, use the List Liveness Session Audit Entries.
      *
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -703,12 +700,10 @@ public final class FaceSessionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateLivenessSessionResult
-        createLivenessSession(CreateLivenessSessionContent createLivenessSessionContent) {
+    public CreateLivenessSessionResult createLivenessSession(CreateLivenessSessionContent body) {
         // Generated convenience method for createLivenessSessionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createLivenessSessionWithResponse(BinaryData.fromObject(createLivenessSessionContent), requestOptions)
-            .getValue()
+        return createLivenessSessionWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(CreateLivenessSessionResult.class);
     }
 
@@ -890,7 +885,7 @@ public final class FaceSessionClient {
      * &gt; [!NOTE]
      * &gt; Extra measures should be taken to validate that the client is sending the expected VerifyImage.
      *
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -901,12 +896,11 @@ public final class FaceSessionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CreateLivenessWithVerifySessionResult
-        createLivenessWithVerifySession(CreateLivenessSessionContent createLivenessSessionContent) {
+    CreateLivenessWithVerifySessionResult createLivenessWithVerifySession(CreateLivenessSessionContent body) {
         // Generated convenience method for createLivenessWithVerifySessionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createLivenessWithVerifySessionWithResponse(BinaryData.fromObject(createLivenessSessionContent),
-            requestOptions).getValue().toObject(CreateLivenessWithVerifySessionResult.class);
+        return createLivenessWithVerifySessionWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+            .toObject(CreateLivenessWithVerifySessionResult.class);
     }
 
     /**

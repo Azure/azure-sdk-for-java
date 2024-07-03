@@ -12,8 +12,8 @@ public final class SystemVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SystemVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"systemVersion\":\"xndlkzgxhu\"},\"id\":\"plbpodxun\",\"name\":\"bebxmubyyntwl\",\"type\":\"bqtkoievseotgqr\"},{\"properties\":{\"systemVersion\":\"tmuwlauwzi\"},\"id\":\"bm\",\"name\":\"gcj\",\"type\":\"fuzmuvpbtt\"},{\"properties\":{\"systemVersion\":\"morppxebmnzbtbh\"},\"id\":\"glkfg\",\"name\":\"hdneuelfph\",\"type\":\"dyhtozfikdowwquu\"},{\"properties\":{\"systemVersion\":\"zx\"},\"id\":\"vithh\",\"name\":\"zonosgg\",\"type\":\"hcohfwdsjnk\"}],\"nextLink\":\"jutiiswacff\"}")
+            "{\"value\":[{\"properties\":{\"systemVersion\":\"smond\"},\"id\":\"quxvypomgkop\",\"name\":\"whojvp\",\"type\":\"jqg\"}],\"nextLink\":\"smocmbq\"}")
             .toObject(SystemVersionListResult.class);
-        Assertions.assertEquals("jutiiswacff", model.nextLink());
+        Assertions.assertEquals("smocmbq", model.nextLink());
     }
 }

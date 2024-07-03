@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.63.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.62.0 (2024-07-02)
 
 #### Features Added
@@ -14,6 +24,7 @@
 * Added diagnostic fields for `quorumAckedLSN` and `currentReplicaSetSize`. Changed `replicaStatusList` to include all replicas and more information. - See [PR 39844](https://github.com/Azure/azure-sdk-for-java/pull/39844)
 * Ensured that exceptions thrown in custom serializers are being wrapped as a CosmosException with StatusCode 400. - See [PR 40797](https://github.com/Azure/azure-sdk-for-java/pull/40797) and [PR 40913](https://github.com/Azure/azure-sdk-for-java/pull/40913)
 * Reduced number of logs emitted in the success case for cross partition queries. - See [PR 40932](https://github.com/Azure/azure-sdk-for-java/pull/40932)
+* Reduced noisy logs about the value of the ` AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY` environment variable. - See [PR 40714](https://github.com/Azure/azure-sdk-for-java/pull/40714)
 
 ### 4.61.1 (2024-05-31)
 
