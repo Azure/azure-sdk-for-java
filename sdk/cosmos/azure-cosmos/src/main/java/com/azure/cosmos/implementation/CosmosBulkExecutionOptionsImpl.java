@@ -12,8 +12,8 @@ import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
+import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
-import com.azure.cosmos.models.ReadOnlyRequestOptions;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
@@ -327,10 +327,10 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
     }
 
     @Override
-    public void override(ReadOnlyRequestOptions readOnlyRequestOptions) {
-        this.excludeRegions = overrideOption(readOnlyRequestOptions.getExcludedRegions(), this.excludeRegions);
-        this.throughputControlGroupName = overrideOption(readOnlyRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
-        this.keywordIdentifiers = overrideOption(readOnlyRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
+    public void override(CosmosRequestOptions cosmosRequestOptions) {
+        this.excludeRegions = overrideOption(cosmosRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.throughputControlGroupName = overrideOption(cosmosRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.keywordIdentifiers = overrideOption(cosmosRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
     }
 
 }
