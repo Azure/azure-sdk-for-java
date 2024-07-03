@@ -21,7 +21,7 @@ import java.time.temporal.ChronoField;
 /**
  * This class is an internal implementation of slf4j logger.
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({ "unchecked", "deprecation" })
 public final class DefaultLogger extends MarkerIgnoringBase {
     private static final long serialVersionUID = -144261058636441630L;
 
