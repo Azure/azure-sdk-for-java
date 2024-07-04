@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.fluent.models.RedisLinkedServerCreateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameter required for creating a linked server to redis cache. */
+/**
+ * Parameter required for creating a linked server to redis cache.
+ */
 @Fluent
 public final class RedisLinkedServerCreateParameters {
     /*
@@ -18,13 +20,15 @@ public final class RedisLinkedServerCreateParameters {
     @JsonProperty(value = "properties", required = true)
     private RedisLinkedServerCreateProperties innerProperties = new RedisLinkedServerCreateProperties();
 
-    /** Creates an instance of RedisLinkedServerCreateParameters class. */
+    /**
+     * Creates an instance of RedisLinkedServerCreateParameters class.
+     */
     public RedisLinkedServerCreateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties required to create a linked server.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RedisLinkedServerCreateProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class RedisLinkedServerCreateParameters {
 
     /**
      * Get the linkedRedisCacheId property: Fully qualified resourceId of the linked redis cache.
-     *
+     * 
      * @return the linkedRedisCacheId value.
      */
     public String linkedRedisCacheId() {
@@ -42,7 +46,7 @@ public final class RedisLinkedServerCreateParameters {
 
     /**
      * Set the linkedRedisCacheId property: Fully qualified resourceId of the linked redis cache.
-     *
+     * 
      * @param linkedRedisCacheId the linkedRedisCacheId value to set.
      * @return the RedisLinkedServerCreateParameters object itself.
      */
@@ -56,7 +60,7 @@ public final class RedisLinkedServerCreateParameters {
 
     /**
      * Get the linkedRedisCacheLocation property: Location of the linked redis cache.
-     *
+     * 
      * @return the linkedRedisCacheLocation value.
      */
     public String linkedRedisCacheLocation() {
@@ -65,7 +69,7 @@ public final class RedisLinkedServerCreateParameters {
 
     /**
      * Set the linkedRedisCacheLocation property: Location of the linked redis cache.
-     *
+     * 
      * @param linkedRedisCacheLocation the linkedRedisCacheLocation value to set.
      * @return the RedisLinkedServerCreateParameters object itself.
      */
@@ -79,7 +83,7 @@ public final class RedisLinkedServerCreateParameters {
 
     /**
      * Get the serverRole property: Role of the linked server.
-     *
+     * 
      * @return the serverRole value.
      */
     public ReplicationRole serverRole() {
@@ -88,7 +92,7 @@ public final class RedisLinkedServerCreateParameters {
 
     /**
      * Set the serverRole property: Role of the linked server.
-     *
+     * 
      * @param serverRole the serverRole value to set.
      * @return the RedisLinkedServerCreateParameters object itself.
      */
@@ -103,7 +107,7 @@ public final class RedisLinkedServerCreateParameters {
     /**
      * Get the geoReplicatedPrimaryHostname property: The unchanging DNS name which will always point to current
      * geo-primary cache among the linked redis caches for seamless Geo Failover experience.
-     *
+     * 
      * @return the geoReplicatedPrimaryHostname value.
      */
     public String geoReplicatedPrimaryHostname() {
@@ -113,7 +117,7 @@ public final class RedisLinkedServerCreateParameters {
     /**
      * Get the primaryHostname property: The changing DNS name that resolves to the current geo-primary cache among the
      * linked redis caches before or after the Geo Failover.
-     *
+     * 
      * @return the primaryHostname value.
      */
     public String primaryHostname() {
@@ -122,15 +126,14 @@ public final class RedisLinkedServerCreateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model RedisLinkedServerCreateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model RedisLinkedServerCreateParameters"));
         } else {
             innerProperties().validate();
         }

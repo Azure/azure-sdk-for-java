@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Which Redis node(s) to reboot. Depending on this value data loss is possible. */
+/**
+ * Which Redis node(s) to reboot. Depending on this value data loss is possible.
+ */
 public final class RebootType extends ExpandableStringEnum<RebootType> {
-    /** Static value PrimaryNode for RebootType. */
+    /**
+     * Static value PrimaryNode for RebootType.
+     */
     public static final RebootType PRIMARY_NODE = fromString("PrimaryNode");
 
-    /** Static value SecondaryNode for RebootType. */
+    /**
+     * Static value SecondaryNode for RebootType.
+     */
     public static final RebootType SECONDARY_NODE = fromString("SecondaryNode");
 
-    /** Static value AllNodes for RebootType. */
+    /**
+     * Static value AllNodes for RebootType.
+     */
     public static final RebootType ALL_NODES = fromString("AllNodes");
 
     /**
      * Creates a new instance of RebootType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class RebootType extends ExpandableStringEnum<RebootType> {
 
     /**
      * Creates or finds a RebootType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RebootType.
      */
@@ -41,7 +49,7 @@ public final class RebootType extends ExpandableStringEnum<RebootType> {
 
     /**
      * Gets known RebootType values.
-     *
+     * 
      * @return known RebootType values.
      */
     public static Collection<RebootType> values() {

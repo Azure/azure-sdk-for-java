@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.AccessPolicyAssignmentProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties for an access policy assignment. */
+/**
+ * Properties for an access policy assignment.
+ */
 @Fluent
 public final class RedisCacheAccessPolicyAssignmentProperties {
     /*
@@ -36,13 +38,15 @@ public final class RedisCacheAccessPolicyAssignmentProperties {
     @JsonProperty(value = "accessPolicyName", required = true)
     private String accessPolicyName;
 
-    /** Creates an instance of RedisCacheAccessPolicyAssignmentProperties class. */
+    /**
+     * Creates an instance of RedisCacheAccessPolicyAssignmentProperties class.
+     */
     public RedisCacheAccessPolicyAssignmentProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of an access policy assignment set.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AccessPolicyAssignmentProvisioningState provisioningState() {
@@ -51,7 +55,7 @@ public final class RedisCacheAccessPolicyAssignmentProperties {
 
     /**
      * Get the objectId property: Object Id to assign access policy to.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -60,7 +64,7 @@ public final class RedisCacheAccessPolicyAssignmentProperties {
 
     /**
      * Set the objectId property: Object Id to assign access policy to.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the RedisCacheAccessPolicyAssignmentProperties object itself.
      */
@@ -72,7 +76,7 @@ public final class RedisCacheAccessPolicyAssignmentProperties {
     /**
      * Get the objectIdAlias property: User friendly name for object id. Also represents username for token based
      * authentication.
-     *
+     * 
      * @return the objectIdAlias value.
      */
     public String objectIdAlias() {
@@ -82,7 +86,7 @@ public final class RedisCacheAccessPolicyAssignmentProperties {
     /**
      * Set the objectIdAlias property: User friendly name for object id. Also represents username for token based
      * authentication.
-     *
+     * 
      * @param objectIdAlias the objectIdAlias value to set.
      * @return the RedisCacheAccessPolicyAssignmentProperties object itself.
      */
@@ -93,7 +97,7 @@ public final class RedisCacheAccessPolicyAssignmentProperties {
 
     /**
      * Get the accessPolicyName property: The name of the access policy that is being assigned.
-     *
+     * 
      * @return the accessPolicyName value.
      */
     public String accessPolicyName() {
@@ -102,7 +106,7 @@ public final class RedisCacheAccessPolicyAssignmentProperties {
 
     /**
      * Set the accessPolicyName property: The name of the access policy that is being assigned.
-     *
+     * 
      * @param accessPolicyName the accessPolicyName value to set.
      * @return the RedisCacheAccessPolicyAssignmentProperties object itself.
      */
@@ -113,28 +117,24 @@ public final class RedisCacheAccessPolicyAssignmentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (objectId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property objectId in model RedisCacheAccessPolicyAssignmentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property objectId in model RedisCacheAccessPolicyAssignmentProperties"));
         }
         if (objectIdAlias() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property objectIdAlias in model RedisCacheAccessPolicyAssignmentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property objectIdAlias in model RedisCacheAccessPolicyAssignmentProperties"));
         }
         if (accessPolicyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property accessPolicyName in model"
-                            + " RedisCacheAccessPolicyAssignmentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property accessPolicyName in model RedisCacheAccessPolicyAssignmentProperties"));
         }
     }
 

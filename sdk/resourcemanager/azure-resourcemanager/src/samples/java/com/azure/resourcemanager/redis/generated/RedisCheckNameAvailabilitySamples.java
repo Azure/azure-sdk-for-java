@@ -6,19 +6,22 @@ package com.azure.resourcemanager.redis.generated;
 
 import com.azure.resourcemanager.redis.models.CheckNameAvailabilityParameters;
 
-/** Samples for Redis CheckNameAvailability. */
+/**
+ * Samples for Redis CheckNameAvailability.
+ */
 public final class RedisCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCacheCheckNameAvailability.json
+     * x-ms-original-file:
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheCheckNameAvailability.
+     * json
      */
     /**
      * Sample code: RedisCacheCheckNameAvailability.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void redisCacheCheckNameAvailability(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .redisCaches()
+        azure.redisCaches()
             .manager()
             .serviceClient()
             .getRedis()

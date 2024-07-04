@@ -10,7 +10,9 @@ import com.azure.resourcemanager.redis.models.AccessPolicyProvisioningState;
 import com.azure.resourcemanager.redis.models.AccessPolicyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** All properties of an access policy. */
+/**
+ * All properties of an access policy.
+ */
 @Fluent
 public final class RedisCacheAccessPolicyProperties {
     /*
@@ -31,13 +33,15 @@ public final class RedisCacheAccessPolicyProperties {
     @JsonProperty(value = "permissions", required = true)
     private String permissions;
 
-    /** Creates an instance of RedisCacheAccessPolicyProperties class. */
+    /**
+     * Creates an instance of RedisCacheAccessPolicyProperties class.
+     */
     public RedisCacheAccessPolicyProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of access policy.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AccessPolicyProvisioningState provisioningState() {
@@ -46,7 +50,7 @@ public final class RedisCacheAccessPolicyProperties {
 
     /**
      * Get the type property: Built-In or Custom access policy.
-     *
+     * 
      * @return the type value.
      */
     public AccessPolicyType type() {
@@ -56,7 +60,7 @@ public final class RedisCacheAccessPolicyProperties {
     /**
      * Get the permissions property: Permissions for the access policy. Learn how to configure permissions at
      * https://aka.ms/redis/AADPreRequisites.
-     *
+     * 
      * @return the permissions value.
      */
     public String permissions() {
@@ -66,7 +70,7 @@ public final class RedisCacheAccessPolicyProperties {
     /**
      * Set the permissions property: Permissions for the access policy. Learn how to configure permissions at
      * https://aka.ms/redis/AADPreRequisites.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the RedisCacheAccessPolicyProperties object itself.
      */
@@ -77,15 +81,14 @@ public final class RedisCacheAccessPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (permissions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property permissions in model RedisCacheAccessPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property permissions in model RedisCacheAccessPolicyProperties"));
         }
     }
 

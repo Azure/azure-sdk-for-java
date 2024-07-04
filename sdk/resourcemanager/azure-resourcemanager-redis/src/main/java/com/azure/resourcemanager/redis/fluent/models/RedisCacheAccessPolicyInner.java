@@ -10,7 +10,9 @@ import com.azure.resourcemanager.redis.models.AccessPolicyProvisioningState;
 import com.azure.resourcemanager.redis.models.AccessPolicyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response to get/put access policy. */
+/**
+ * Response to get/put access policy.
+ */
 @Fluent
 public final class RedisCacheAccessPolicyInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class RedisCacheAccessPolicyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RedisCacheAccessPolicyProperties innerProperties;
 
-    /** Creates an instance of RedisCacheAccessPolicyInner class. */
+    /**
+     * Creates an instance of RedisCacheAccessPolicyInner class.
+     */
     public RedisCacheAccessPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of an access policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RedisCacheAccessPolicyProperties innerProperties() {
@@ -34,7 +38,7 @@ public final class RedisCacheAccessPolicyInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of access policy.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AccessPolicyProvisioningState provisioningState() {
@@ -43,7 +47,7 @@ public final class RedisCacheAccessPolicyInner extends ProxyResource {
 
     /**
      * Get the type property: Built-In or Custom access policy.
-     *
+     * 
      * @return the type value.
      */
     public AccessPolicyType typePropertiesType() {
@@ -53,7 +57,7 @@ public final class RedisCacheAccessPolicyInner extends ProxyResource {
     /**
      * Get the permissions property: Permissions for the access policy. Learn how to configure permissions at
      * https://aka.ms/redis/AADPreRequisites.
-     *
+     * 
      * @return the permissions value.
      */
     public String permissions() {
@@ -63,7 +67,7 @@ public final class RedisCacheAccessPolicyInner extends ProxyResource {
     /**
      * Set the permissions property: Permissions for the access policy. Learn how to configure permissions at
      * https://aka.ms/redis/AADPreRequisites.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the RedisCacheAccessPolicyInner object itself.
      */
@@ -77,7 +81,7 @@ public final class RedisCacheAccessPolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
