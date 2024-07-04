@@ -10,7 +10,7 @@ import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseCharact
 public final class AutonomousDatabaseCharacterSetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutonomousDatabaseCharacterSetProperties model = BinaryData.fromString("{\"characterSet\":\"tcc\"}")
+        AutonomousDatabaseCharacterSetProperties model = BinaryData.fromString("{\"characterSet\":\"jbhckfrlhr\"}")
             .toObject(AutonomousDatabaseCharacterSetProperties.class);
     }
 

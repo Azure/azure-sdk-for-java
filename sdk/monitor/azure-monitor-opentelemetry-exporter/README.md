@@ -16,17 +16,9 @@ This client library provides support for exporting OpenTelemetry data to Azure M
 
 For more information, please read [introduction to Application Insights][application_insights_intro].
 
-### Include the Package
+### Include the dependency
 
-[//]: # ({x-version-update-start;com.azure:azure-monitor-opentelemetry-exporter;current})
-```xml
-<dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-  <version>1.0.0-beta.24</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
+Add the [Azure Monitor OpenTelemetry Exporter](https://central.sonatype.com/artifact/com.azure/azure-monitor-opentelemetry-exporter) dependency.
 
 ### Authentication
 

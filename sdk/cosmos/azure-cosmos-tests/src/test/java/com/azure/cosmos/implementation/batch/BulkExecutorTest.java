@@ -10,13 +10,13 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
@@ -120,7 +120,7 @@ public class BulkExecutorTest extends BatchTestBase {
         CosmosItemOperation[] itemOperationsArray =
             new CosmosItemOperation[cosmosItemOperations.size()];
         cosmosItemOperations.toArray(itemOperationsArray);
-        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+        CosmosBulkExecutionOptionsImpl cosmosBulkExecutionOptions = new CosmosBulkExecutionOptionsImpl();
         Flux<CosmosItemOperation> inputFlux = Flux
             .fromArray(itemOperationsArray)
             .delayElements(Duration.ofMillis(100));
@@ -205,7 +205,7 @@ public class BulkExecutorTest extends BatchTestBase {
         final BulkExecutor<BulkExecutorTest> executor = new BulkExecutor<>(
             this.container,
             Flux.fromIterable(cosmosItemOperations),
-            new CosmosBulkExecutionOptions());
+            new CosmosBulkExecutionOptionsImpl());
 
         try {
             CosmosFaultInjectionHelper
@@ -231,7 +231,7 @@ public class BulkExecutorTest extends BatchTestBase {
             serverResponseDelayRule.disable();
         }
     }
-    
+
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void executeBulk_complete() throws InterruptedException {
         int totalRequest = 10;
@@ -254,7 +254,7 @@ public class BulkExecutorTest extends BatchTestBase {
         CosmosItemOperation[] itemOperationsArray =
             new CosmosItemOperation[cosmosItemOperations.size()];
         cosmosItemOperations.toArray(itemOperationsArray);
-        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+        CosmosBulkExecutionOptionsImpl cosmosBulkExecutionOptions = new CosmosBulkExecutionOptionsImpl();
         final BulkExecutor<BulkExecutorTest> executor = new BulkExecutor<>(
             container,
             Flux.fromArray(itemOperationsArray),

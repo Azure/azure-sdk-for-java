@@ -11,8 +11,8 @@ import com.azure.resourcemanager.oracledatabase.models.OracleSubscriptionUpdate;
  */
 public final class OracleSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/
-     * oracleSubscriptions_patch.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/oracleSubscriptions_patch.json
      */
     /**
      * Sample code: Patch Oracle Subscription.

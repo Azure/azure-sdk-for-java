@@ -5,35 +5,42 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The StartDialogRequestInternal model. */
+/**
+ * The StartDialogRequestInternal model.
+ */
 @Fluent
-public final class StartDialogRequestInternal {
+public final class StartDialogRequestInternal implements JsonSerializable<StartDialogRequestInternal> {
     /*
      * Defines the dialog.
      */
-    @JsonProperty(value = "dialog", required = true)
     private BaseDialog dialog;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
-    @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
     /*
      * The value to identify context of the operation.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
+     * Creates an instance of StartDialogRequestInternal class.
+     */
+    public StartDialogRequestInternal() {
+    }
+
+    /**
      * Get the dialog property: Defines the dialog.
-     *
+     * 
      * @return the dialog value.
      */
     public BaseDialog getDialog() {
@@ -42,7 +49,7 @@ public final class StartDialogRequestInternal {
 
     /**
      * Set the dialog property: Defines the dialog.
-     *
+     * 
      * @param dialog the dialog value to set.
      * @return the StartDialogRequestInternal object itself.
      */
@@ -53,9 +60,9 @@ public final class StartDialogRequestInternal {
 
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
-     *
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * 
      * @return the operationCallbackUri value.
      */
     public String getOperationCallbackUri() {
@@ -64,9 +71,9 @@ public final class StartDialogRequestInternal {
 
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
-     *
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the StartDialogRequestInternal object itself.
      */
@@ -77,7 +84,7 @@ public final class StartDialogRequestInternal {
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -86,12 +93,55 @@ public final class StartDialogRequestInternal {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the StartDialogRequestInternal object itself.
      */
     public StartDialogRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dialog", this.dialog);
+        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StartDialogRequestInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StartDialogRequestInternal if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StartDialogRequestInternal.
+     */
+    public static StartDialogRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StartDialogRequestInternal deserializedStartDialogRequestInternal = new StartDialogRequestInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dialog".equals(fieldName)) {
+                    deserializedStartDialogRequestInternal.dialog = BaseDialog.fromJson(reader);
+                } else if ("operationCallbackUri".equals(fieldName)) {
+                    deserializedStartDialogRequestInternal.operationCallbackUri = reader.getString();
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedStartDialogRequestInternal.operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStartDialogRequestInternal;
+        });
     }
 }

@@ -12,10 +12,10 @@ public final class VirtualNetworkAddressListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualNetworkAddressListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ipAddress\":\"kgthrrghxjbd\",\"vmOcid\":\"xvcxgfrpdsofbshr\",\"ocid\":\"vbuswd\",\"domain\":\"yybyc\",\"lifecycleDetails\":\"nvjsrtkfa\",\"provisioningState\":\"Provisioning\",\"lifecycleState\":\"Failed\",\"timeAssigned\":\"2021-07-10T01:21:20Z\"},\"id\":\"yzirtxdyuxzejn\",\"name\":\"psew\",\"type\":\"ioilqukrydxtq\"},{\"properties\":{\"ipAddress\":\"ox\",\"vmOcid\":\"ggufhyaomtb\",\"ocid\":\"havgrvk\",\"domain\":\"ovjzhpjbibgjmfx\",\"lifecycleDetails\":\"vfcluyovwxnbkfe\",\"provisioningState\":\"Provisioning\",\"lifecycleState\":\"Available\",\"timeAssigned\":\"2021-11-22T00:46:56Z\"},\"id\":\"zdgiruj\",\"name\":\"zbomvzzbtdcqvpni\",\"type\":\"ujviylwdshfs\"}],\"nextLink\":\"rbgyefry\"}")
+            "{\"value\":[{\"properties\":{\"ipAddress\":\"acoebj\",\"vmOcid\":\"wzcjznmwcpmgua\",\"ocid\":\"raufactkahzova\",\"domain\":\"ziuxxpshnee\",\"lifecycleDetails\":\"lfg\",\"provisioningState\":\"Failed\",\"lifecycleState\":\"Terminated\",\"timeAssigned\":\"2021-07-12T23:03:26Z\"},\"id\":\"lenrd\",\"name\":\"utujba\",\"type\":\"pjuohminyfl\"},{\"properties\":{\"ipAddress\":\"wmd\",\"vmOcid\":\"wpklvxw\",\"ocid\":\"gdxpg\",\"domain\":\"chisze\",\"lifecycleDetails\":\"nb\",\"provisioningState\":\"Failed\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2021-06-04T19:59:32Z\"},\"id\":\"daxconfozauorsuk\",\"name\":\"kwbqplhlvnuu\",\"type\":\"pzlrphw\"},{\"properties\":{\"ipAddress\":\"l\",\"vmOcid\":\"eyuqdunvmnnrwr\",\"ocid\":\"ork\",\"domain\":\"lywjhh\",\"lifecycleDetails\":\"nhxmsi\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2021-11-09T14:46:05Z\"},\"id\":\"ggdufiqndieu\",\"name\":\"ao\",\"type\":\"jchvcyy\"},{\"properties\":{\"ipAddress\":\"gdotcubiipuipwo\",\"vmOcid\":\"nmacj\",\"ocid\":\"nizshqvcim\",\"domain\":\"vfgmblrrilby\",\"lifecycleDetails\":\"xsmiccwrwfscjf\",\"provisioningState\":\"Failed\",\"lifecycleState\":\"Failed\",\"timeAssigned\":\"2021-01-29T04:31:10Z\"},\"id\":\"i\",\"name\":\"dvoqyt\",\"type\":\"byowbblgyavutp\"}],\"nextLink\":\"joxoism\"}")
             .toObject(VirtualNetworkAddressListResult.class);
-        Assertions.assertEquals("kgthrrghxjbd", model.value().get(0).properties().ipAddress());
-        Assertions.assertEquals("xvcxgfrpdsofbshr", model.value().get(0).properties().vmOcid());
-        Assertions.assertEquals("rbgyefry", model.nextLink());
+        Assertions.assertEquals("acoebj", model.value().get(0).properties().ipAddress());
+        Assertions.assertEquals("wzcjznmwcpmgua", model.value().get(0).properties().vmOcid());
+        Assertions.assertEquals("joxoism", model.nextLink());
     }
 }

@@ -16,7 +16,7 @@ from typespec_utils import validate_tspconfig
 pwd = os.getcwd()
 # os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
-from utils import update_service_ci_and_pom
+from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 from utils import update_version
 from utils import is_windows
@@ -97,7 +97,7 @@ def generate(
 
     group = GROUP_ID
     if require_sdk_integration:
-        update_service_ci_and_pom(sdk_root, service, group, module)
+        update_service_files_for_new_lib(sdk_root, service, group, module)
         update_root_pom(sdk_root, service)
     update_version(sdk_root, output_folder)
 
@@ -189,33 +189,22 @@ def update_changelog(changelog_file, changelog):
     logging.info("[Changelog][Success] Write to changelog")
 
 
-def compare_with_maven_package(sdk_root: str, service: str, stable_version: str, current_version: str, module: str):
-    if stable_version == current_version:
+def compare_with_maven_package(
+    sdk_root: str, group_id: str, service: str, previous_version: str, current_version: str, module: str
+):
+    if previous_version == current_version or previous_version is None:
         logging.info("[Changelog][Skip] no previous version")
-        return
-
-    if "-beta." in current_version and "-beta." not in stable_version:
-        # if current version is preview, try compare it with a previous preview release
-
-        version_pattern = r"\d+\.\d+\.\d+-beta\.(\d+)?"
-        beta_version_int = int(re.match(version_pattern, current_version).group(1))
-        if beta_version_int > 1:
-            previous_beta_version_int = beta_version_int - 1
-            previous_beta_version = current_version.replace(
-                "-beta." + str(beta_version_int),
-                "-beta." + str(previous_beta_version_int),
-            )
-            stable_version = previous_beta_version
+        return False, ""
 
     logging.info(
-        "[Changelog] Compare stable version {0} with current version {1}".format(stable_version, current_version)
+        "[Changelog] Compare stable version {0} with current version {1}".format(previous_version, current_version)
     )
 
     r = requests.get(
         MAVEN_URL.format(
-            group_id=GROUP_ID.replace(".", "/"),
+            group_id=group_id.replace(".", "/"),
             artifact_id=module,
-            version=stable_version,
+            version=previous_version,
         )
     )
     r.raise_for_status()
@@ -237,14 +226,16 @@ def compare_with_maven_package(sdk_root: str, service: str, stable_version: str,
             logging.error("[Changelog][Skip] Cannot get changelog")
     finally:
         os.remove(old_jar)
+    return breaking, changelog
 
 
 def get_version(
     sdk_root: str,
+    group_id: str,
     module: str,
 ) -> Union[str, None]:
     version_file = os.path.join(sdk_root, "eng/versioning/version_client.txt")
-    project = "{0}:{1}".format(GROUP_ID, module)
+    project = "{0}:{1}".format(group_id, module)
 
     with open(version_file, "r") as fin:
         for line in fin.readlines():
