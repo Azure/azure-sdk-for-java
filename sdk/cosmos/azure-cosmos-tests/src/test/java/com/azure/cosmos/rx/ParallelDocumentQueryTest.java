@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.CosmosItemSerializerNoExceptionWrapping;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -753,7 +754,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 .getCosmosReadManyRequestOptionsAccessor()
                 .getImpl(queryRequestOptions)
                 .setCustomItemSerializer(
-                    new CosmosItemSerializer() {
+                    new CosmosItemSerializerNoExceptionWrapping() {
                         @Override
                         public <T> Map<String, Object> serialize(T item) {
                             throw new NotImplementedException("Not supported");
@@ -765,13 +766,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                                 return (T)jsonNodeMap.get("id");
                             }
 
-                            return ImplementationBridgeHelpers
-                                .CosmosItemSerializerHelper
-                                .getCosmosItemSerializerAccessor()
-                                .deserializeSafe(
-                                    CosmosItemSerializer.DEFAULT_SERIALIZER,
-                                    jsonNodeMap,
-                                    classType);
+                            return CosmosItemSerializer.DEFAULT_SERIALIZER.deserialize(jsonNodeMap, classType);
                         }
                     });
 

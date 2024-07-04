@@ -10,10 +10,10 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.models.CrossSubscriptionRestoreSettings;
 import com.azure.resourcemanager.recoveryservices.models.CrossSubscriptionRestoreState;
@@ -66,7 +66,7 @@ public class RecoveryServicesBackupManagerTests extends TestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         recoveryServicesManager = RecoveryServicesManager
@@ -106,7 +106,7 @@ public class RecoveryServicesBackupManagerTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCreateProtectionPolicy() {
         Vault vault = null;
         ProtectionPolicyResource protectionPolicyResource = null;

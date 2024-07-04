@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollec
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.OverridableRequestOptions;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
@@ -86,6 +87,7 @@ public final class CosmosDiagnosticsContext {
     private final Integer sequenceNumber;
 
     private String queryStatement;
+    private OverridableRequestOptions requestOptions;
 
     CosmosDiagnosticsContext(
         String spanName,
@@ -103,7 +105,8 @@ public final class CosmosDiagnosticsContext {
         String connectionMode,
         String userAgent,
         Integer sequenceNumber,
-        String queryStatement) {
+        String queryStatement,
+        OverridableRequestOptions requestOptions) {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(accountName, "Argument 'accountName' must not be null.");
@@ -135,6 +138,7 @@ public final class CosmosDiagnosticsContext {
         this.sequenceNumber = sequenceNumber;
         this.isSampledOut = false;
         this.queryStatement = queryStatement;
+        this.requestOptions = requestOptions;
     }
 
     /**
@@ -259,9 +263,9 @@ public final class CosmosDiagnosticsContext {
     String getSpanName() {
         return this.spanName;
     }
-    
+
     /**
-     * The query statement send by client 
+     * The query statement send by client
      * @return the query statement
      */
     public String getQueryStatement() {
@@ -621,11 +625,11 @@ public final class CosmosDiagnosticsContext {
         if (this.actualItemCount.get() >= 0) {
             ctxNode.put("actualItems", this.actualItemCount.get());
         }
-        
+
         if (this.queryStatement != null && queryStatement.length() > 0) {
             ctxNode.put("queryStatement", this.queryStatement);
         }
-        
+
         if (this.finalError != null) {
             if (this.finalError instanceof CosmosException) {
                 ctxNode.put("exception", ((CosmosException)this.finalError).toString(false));
@@ -911,6 +915,14 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
+    OverridableRequestOptions getRequestOptions() {
+        return this.requestOptions;
+    }
+
+    void setRequestOptions(OverridableRequestOptions requestOptions) {
+        this.requestOptions = requestOptions;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -931,7 +943,8 @@ public final class CosmosDiagnosticsContext {
                                                            CosmosDiagnosticsThresholds thresholds, String trackingId,
                                                            String connectionMode, String userAgent,
                                                            Integer sequenceNumber,
-                                                           String queryStatement) {
+                                                           String queryStatement,
+                                                           OverridableRequestOptions requestOptions) {
 
                         return new CosmosDiagnosticsContext(
                             spanName,
@@ -949,8 +962,21 @@ public final class CosmosDiagnosticsContext {
                             connectionMode,
                             userAgent,
                             sequenceNumber,
-                            queryStatement
+                            queryStatement,
+                            requestOptions
                             );
+                    }
+
+                    @Override
+                    public OverridableRequestOptions getRequestOptions(CosmosDiagnosticsContext ctx) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        return ctx.getRequestOptions();
+                    }
+
+                    @Override
+                    public void setRequestOptions(CosmosDiagnosticsContext ctx, OverridableRequestOptions requestOptions) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        ctx.setRequestOptions(requestOptions);
                     }
 
                     @Override

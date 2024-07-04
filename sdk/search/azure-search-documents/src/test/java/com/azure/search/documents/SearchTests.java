@@ -758,7 +758,7 @@ public class SearchTests extends SearchTestBase {
     @LiveOnly
     public void canSearchWithRangeFacetsAsync() {
         // Disable sanitizer `$.to` for this test
-        interceptorManager.removeSanitizers("AZSDK3424");
+        // interceptorManager.removeSanitizers("AZSDK3424");
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         List<Map<String, Object>> hotels = readJsonFileToList(HOTELS_DATA_JSON);
