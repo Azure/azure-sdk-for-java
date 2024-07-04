@@ -21,7 +21,7 @@ public final class DnsPrivateViewsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ocid\":\"zihgrkyu\",\"displayName\":\"absnmfpp\",\"isProtected\":false,\"lifecycleState\":\"Active\",\"self\":\"evy\",\"timeCreated\":\"2021-01-01T12:47:11Z\",\"timeUpdated\":\"2021-01-30T15:37:24Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"fczbgom\",\"name\":\"gbeglqgleo\",\"type\":\"i\"}]}";
+            = "{\"value\":[{\"properties\":{\"ocid\":\"yxonsupe\",\"displayName\":\"lzqnhcvs\",\"isProtected\":true,\"lifecycleState\":\"Deleted\",\"self\":\"ibg\",\"timeCreated\":\"2021-02-11T13:30:21Z\",\"timeUpdated\":\"2021-03-11T11:00:33Z\",\"provisioningState\":\"Canceled\"},\"id\":\"onmpqoxwdof\",\"name\":\"bxiqxeiiqbimht\",\"type\":\"wwinhehf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class DnsPrivateViewsListByLocationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DnsPrivateView> response
-            = manager.dnsPrivateViews().listByLocation("dgug", com.azure.core.util.Context.NONE);
+            = manager.dnsPrivateViews().listByLocation("vwf", com.azure.core.util.Context.NONE);
 
     }
 }
