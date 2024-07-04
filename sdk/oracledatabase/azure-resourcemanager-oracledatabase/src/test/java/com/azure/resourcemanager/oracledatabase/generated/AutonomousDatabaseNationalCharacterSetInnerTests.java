@@ -11,9 +11,8 @@ import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseNationa
 public final class AutonomousDatabaseNationalCharacterSetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutonomousDatabaseNationalCharacterSetInner model = BinaryData
-            .fromString(
-                "{\"properties\":{\"characterSet\":\"ca\"},\"id\":\"z\",\"name\":\"p\",\"type\":\"kafkuwbcrnwbm\"}")
+        AutonomousDatabaseNationalCharacterSetInner model = BinaryData.fromString(
+            "{\"properties\":{\"characterSet\":\"vo\"},\"id\":\"vmeueci\",\"name\":\"yhz\",\"type\":\"euojgjrwju\"}")
             .toObject(AutonomousDatabaseNationalCharacterSetInner.class);
     }
 

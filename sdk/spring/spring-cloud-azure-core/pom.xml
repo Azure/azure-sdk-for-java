@@ -46,7 +46,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -62,7 +62,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-extensions</artifactId>
-      <version>1.1.16</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
+      <version>1.1.17</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
       <optional>true</optional>
     </dependency>
 

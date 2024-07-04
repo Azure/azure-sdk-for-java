@@ -30,7 +30,6 @@ public class MessageTemplateBindings {
      */
     @Generated
     public MessageTemplateBindings() {
-        this.kind = MessageTemplateBindingsKind.fromString("MessageTemplateBindings");
     }
 
     /*
@@ -39,7 +38,7 @@ public class MessageTemplateBindings {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private MessageTemplateBindingsKind kind;
+    private MessageTemplateBindingsKind kind = MessageTemplateBindingsKind.fromString("MessageTemplateBindings");
 
     /**
      * Get the kind property: The type discriminator describing a template bindings type.

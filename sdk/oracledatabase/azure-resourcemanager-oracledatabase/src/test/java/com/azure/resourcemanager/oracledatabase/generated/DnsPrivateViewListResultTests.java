@@ -5,31 +5,15 @@
 package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.oracledatabase.fluent.models.DnsPrivateViewInner;
 import com.azure.resourcemanager.oracledatabase.models.DnsPrivateViewListResult;
-import com.azure.resourcemanager.oracledatabase.models.DnsPrivateViewProperties;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class DnsPrivateViewListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateViewListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ocid\":\"iuhprwmdyvxqta\",\"displayName\":\"iwwroyqbexrmc\",\"isProtected\":false,\"lifecycleState\":\"Updating\",\"self\":\"cnojvknmefqsg\",\"timeCreated\":\"2021-12-10T03:23:19Z\",\"timeUpdated\":\"2021-11-18T15:54:51Z\",\"provisioningState\":\"Failed\"},\"id\":\"jyzhpvgq\",\"name\":\"cjrvxdjzlmwlxkv\",\"type\":\"gfhzovawjvzunlut\"},{\"properties\":{\"ocid\":\"n\",\"displayName\":\"nxipeil\",\"isProtected\":true,\"lifecycleState\":\"Deleting\",\"self\":\"aejxd\",\"timeCreated\":\"2021-11-03T21:00:46Z\",\"timeUpdated\":\"2021-01-14T03:20:45Z\",\"provisioningState\":\"Canceled\"},\"id\":\"bbtdzumvee\",\"name\":\"gpw\",\"type\":\"zuhkfpbsjyof\"},{\"properties\":{\"ocid\":\"luu\",\"displayName\":\"ttouwaboekqvkel\",\"isProtected\":false,\"lifecycleState\":\"Deleting\",\"self\":\"bxwyjsflhhcaa\",\"timeCreated\":\"2021-02-06T03:40:59Z\",\"timeUpdated\":\"2021-08-06T05:51:03Z\",\"provisioningState\":\"Canceled\"},\"id\":\"sxyawjoyaqcs\",\"name\":\"yjpkiidzyexz\",\"type\":\"eli\"},{\"properties\":{\"ocid\":\"nr\",\"displayName\":\"folhbnxknal\",\"isProtected\":true,\"lifecycleState\":\"Active\",\"self\":\"p\",\"timeCreated\":\"2021-01-13T16:40:06Z\",\"timeUpdated\":\"2021-11-09T14:51:24Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"apnyiropuhpig\",\"name\":\"pgylg\",\"type\":\"git\"}],\"nextLink\":\"edjvcslynqw\"}")
+            "{\"value\":[{\"properties\":{\"ocid\":\"ulppggdtpnapnyir\",\"displayName\":\"uhpigvp\",\"isProtected\":false,\"lifecycleState\":\"Deleted\",\"self\":\"itxmedjvcslynqww\",\"timeCreated\":\"2021-09-17T17:00:46Z\",\"timeUpdated\":\"2021-06-21T03:07:03Z\",\"provisioningState\":\"Failed\"},\"id\":\"ktrmgucnapkt\",\"name\":\"oellwp\",\"type\":\"fdygpfqbuaceopz\"},{\"properties\":{\"ocid\":\"hhuao\",\"displayName\":\"pcqeqx\",\"isProtected\":false,\"lifecycleState\":\"Deleting\",\"self\":\"zxctobgb\",\"timeCreated\":\"2021-08-02T23:16:03Z\",\"timeUpdated\":\"2021-01-09T02:06:20Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"stmgrcfbunrmfqjh\",\"name\":\"kxbpvj\",\"type\":\"mjh\"},{\"properties\":{\"ocid\":\"yngudivk\",\"displayName\":\"swbxqz\",\"isProtected\":false,\"lifecycleState\":\"Deleting\",\"self\":\"uvjfdxxive\",\"timeCreated\":\"2021-08-28T01:45:57Z\",\"timeUpdated\":\"2021-02-03T22:58:32Z\",\"provisioningState\":\"Failed\"},\"id\":\"doqmcbxvwvxys\",\"name\":\"qbhsfxobl\",\"type\":\"tkblmpewww\"},{\"properties\":{\"ocid\":\"rvrnsvshqjohxc\",\"displayName\":\"bfovasrruvwbhsq\",\"isProtected\":true,\"lifecycleState\":\"Deleting\",\"self\":\"jbi\",\"timeCreated\":\"2021-07-08T11:15:33Z\",\"timeUpdated\":\"2021-09-14T01:07:05Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"fbjfdtwssotftpvj\",\"name\":\"bexilzznfqqnv\",\"type\":\"pmqtaru\"}],\"nextLink\":\"jmkcjhwqytj\"}")
             .toObject(DnsPrivateViewListResult.class);
-        Assertions.assertEquals("edjvcslynqw", model.nextLink());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        DnsPrivateViewListResult model
-            = new DnsPrivateViewListResult()
-                .withValue(Arrays.asList(new DnsPrivateViewInner().withProperties(new DnsPrivateViewProperties()),
-                    new DnsPrivateViewInner().withProperties(new DnsPrivateViewProperties()),
-                    new DnsPrivateViewInner().withProperties(new DnsPrivateViewProperties()),
-                    new DnsPrivateViewInner().withProperties(new DnsPrivateViewProperties())))
-                .withNextLink("edjvcslynqw");
-        model = BinaryData.fromObject(model).toObject(DnsPrivateViewListResult.class);
-        Assertions.assertEquals("edjvcslynqw", model.nextLink());
+        Assertions.assertEquals("jmkcjhwqytj", model.nextLink());
     }
 }

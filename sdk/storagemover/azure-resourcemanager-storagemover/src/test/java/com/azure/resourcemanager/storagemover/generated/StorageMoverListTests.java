@@ -10,11 +10,9 @@ import com.azure.resourcemanager.storagemover.models.StorageMoverList;
 public final class StorageMoverListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageMoverList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"th\",\"provisioningState\":\"Succeeded\"},\"location\":\"bifpikxwczb\",\"tags\":{\"vyq\":\"npqxuh\",\"tfwvukxgaudc\":\"iwbybrkxvdumjg\",\"napczwlokjy\":\"snhsjcnyejhkryh\",\"oxzjnchgejspod\":\"mkkvnip\"},\"id\":\"ailzydehojwyahu\",\"name\":\"inpm\",\"type\":\"njaqwixjspro\"}],\"nextLink\":\"cputegjvwmfdats\"}")
-                .toObject(StorageMoverList.class);
+        StorageMoverList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"th\",\"provisioningState\":\"Succeeded\"},\"location\":\"bifpikxwczb\",\"tags\":{\"vyq\":\"npqxuh\",\"tfwvukxgaudc\":\"iwbybrkxvdumjg\",\"napczwlokjy\":\"snhsjcnyejhkryh\",\"oxzjnchgejspod\":\"mkkvnip\"},\"id\":\"ailzydehojwyahu\",\"name\":\"inpm\",\"type\":\"njaqwixjspro\"}],\"nextLink\":\"cputegjvwmfdats\"}")
+            .toObject(StorageMoverList.class);
     }
 
     @org.junit.jupiter.api.Test

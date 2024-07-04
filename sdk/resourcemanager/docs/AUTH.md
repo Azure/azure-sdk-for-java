@@ -30,15 +30,12 @@ If you want to authenticate as simple as possible, you need to prepare `TokenCre
   * The `TokenCredential` is an interface in the `azure-core` package for credentials that can provide a token. 
   * Azure Identity offers multiple implementations of the `TokenCredential` class in the `azure-identity` package. To learn more, see [credentials in Azure Identity](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials).
 
-Sample code to create a simple `ClientSecretCredential`:
+Sample code to create a simple `ManagedIdentityCredential`:
 
-```java readme-sample-buildClientSecretCredential
-ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
+```java readme-sample-buildManagedIdentityCredential
+ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+    // client ID is optional
     .clientId("<YOUR_CLIENT_ID>")
-    .clientSecret("<YOUR_CLIENT_SECRET>")
-    .tenantId("<YOUR_TENANT_ID>")
-    // authority host is optional
-    .authorityHost("<AZURE_AUTHORITY_HOST>")
     .build();
 ```
 
@@ -64,7 +61,7 @@ The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` var
 
 Sample code for Azure Germany, with `EnvironmentCredential`:
 
-```java readme-sample-init
+```java readme-sample-buildEnvironmentCredential
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE_GERMANY);
 EnvironmentCredential credential = new EnvironmentCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
