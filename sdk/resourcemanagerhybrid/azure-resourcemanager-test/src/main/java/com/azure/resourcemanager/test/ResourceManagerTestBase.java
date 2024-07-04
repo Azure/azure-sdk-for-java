@@ -13,7 +13,6 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
@@ -25,17 +24,15 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
 import com.azure.resourcemanager.test.policy.TextReplacementPolicy;
-import com.azure.resourcemanager.test.utils.AuthFile;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -57,21 +54,25 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivilegedAction;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Test base for resource manager SDK.
+ * <p>
+ * For LIVE/RECORD test, dev should
+ * 1. Sign-in Azure with CLI ("az login").
+ * 2. AZURE_TENANT_ID environment variable is set.
+ * 3. AZURE_SUBSCRIPTION_ID environment variable is set.
  */
 public abstract class ResourceManagerTestBase extends TestBase {
     private static final String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
     private static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
-    private static final String AZURE_AUTH_LOCATION = "AZURE_AUTH_LOCATION";
     private static final String AZURE_TEST_LOG_LEVEL = "AZURE_TEST_LOG_LEVEL";
     private static final String AZURE_ARM_ENDPOINT = "AZURE_ARM_ENDPOINT";
     private static final String AZURE_LOCATION = "AZURE_LOCATION";
@@ -105,7 +106,6 @@ public abstract class ResourceManagerTestBase extends TestBase {
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceManagerTestBase.class);
     private AzureProfile testProfile;
-    private AuthFile testAuthFile;
     private boolean isSkipInPlayback;
 
     /**
@@ -196,21 +196,13 @@ public abstract class ResourceManagerTestBase extends TestBase {
     }
 
     /**
-     * Loads a credential from file.
-     *
-     * @return A credential loaded from a file.
-     */
-    protected TokenCredential credentialFromFile() {
-        return testAuthFile.getCredential();
-    }
-
-    /**
      * Loads a client ID from file.
      *
      * @return A client ID loaded from a file.
      */
     protected String clientIdFromFile() {
-        return testAuthFile.getClientId();
+        String clientId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        return testResourceNamer.recordValueFromConfig(clientId);
     }
 
     /**
@@ -315,36 +307,18 @@ public abstract class ResourceManagerTestBase extends TestBase {
                     new IllegalArgumentException("Unsupported AZURE_CLOUD given: " + cloud));
             }
 
-            if (System.getenv(AZURE_AUTH_LOCATION) != null) { // Record mode
-                final File credFile = new File(System.getenv(AZURE_AUTH_LOCATION));
-                try {
-                    testAuthFile = AuthFile.parse(credFile);
-                } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Cannot parse auth file. Please check file format.", e));
-                }
-                credential = testAuthFile.getCredential();
-                testProfile = new AzureProfile(testAuthFile.getTenantId(), testAuthFile.getSubscriptionId(), testAuthFile.getEnvironment());
-            } else {
-                String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
-                String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
-                String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
-                String subscriptionId = configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
-                if (clientId == null || tenantId == null || clientSecret == null || subscriptionId == null) {
-                    throw LOGGER.logExceptionAsError(
-                        new IllegalArgumentException("When running tests in record mode either 'AZURE_AUTH_LOCATION' or 'AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET and AZURE_SUBSCRIPTION_ID' needs to be set"));
-                }
-
-                credential = new ClientSecretCredentialBuilder()
-                    .tenantId(tenantId)
-                    .clientId(clientId)
-                    .clientSecret(clientSecret)
-                    .authorityHost(environment.getActiveDirectoryEndpoint())
-                    .build();
-                testProfile = new AzureProfile(tenantId, subscriptionId, environment);
-            }
+            String tenantId = Objects.requireNonNull(
+                configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID),
+                "'AZURE_TENANT_ID' environment variable cannot be null.");
+            String subscriptionId = Objects.requireNonNull(
+                configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID),
+                "'AZURE_SUBSCRIPTION_ID' environment variable cannot be null.");
+            credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
+                .build();
+            testProfile = new AzureProfile(tenantId, subscriptionId, AzureEnvironment.AZURE);
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
-            policies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
             if (!interceptorManager.isLiveMode() && !testContextManager.doNotRecordTest()) {
                 policies.add(new TextReplacementPolicy(interceptorManager.getRecordedData(), textReplacementRules));
             }
