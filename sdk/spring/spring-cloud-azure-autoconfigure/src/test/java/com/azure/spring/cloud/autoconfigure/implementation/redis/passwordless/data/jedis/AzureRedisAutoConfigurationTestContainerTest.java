@@ -49,10 +49,16 @@ public class AzureRedisAutoConfigurationTestContainerTest {
     /**
      * Pulling Docker registry name from testcontainers.properties file as prefix.
      */
-    private static final GenericContainer<?> REDIS =
-        new GenericContainer<>(DockerImageName.parse("redis:6"))
-            .withCommand("--requirepass", REDIS_PASSWORD)
-            .withExposedPorts(6379);
+    private static final GenericContainer<?> REDIS;
+
+    static {
+        System.out.println("TESTCONTAINERS_RYUK_DISABLED value: [" + System.getenv("TESTCONTAINERS_RYUK_DISABLED") + "]");
+
+        REDIS =
+            new GenericContainer<>(DockerImageName.parse("redis:6"))
+                .withCommand("--requirepass", REDIS_PASSWORD)
+                .withExposedPorts(6379);
+    }
 
     @BeforeAll
     public static void beforeAll() {
