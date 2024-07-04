@@ -6,6 +6,8 @@ extends:
     stages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          EnvVars:
+            TESTCONTAINERS_RYUK_DISABLED: true
           UseFederatedAuth: true
           SupportedClouds: "Public,UsGov,China"
           Clouds: "Public"
@@ -41,10 +43,10 @@ extends:
           TestName: Spring_IT
           TestGoals: "verify"
           TestOptions: "-DskipSpringITs=false"
-          EnvVars:
-            TESTCONTAINERS_RYUK_DISABLED: true
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          EnvVars:
+            TESTCONTAINERS_RYUK_DISABLED: true
           UseFederatedAuth: true
           SupportedClouds: 'Public,UsGov,China'
           Clouds: 'Public'
@@ -70,10 +72,10 @@ extends:
           ServiceDirectory: spring
           TestName: Spring_App_Config_IT
           TestGoals: 'verify'
-          EnvVars:
-            TESTCONTAINERS_RYUK_DISABLED: true
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          EnvVars:
+            TESTCONTAINERS_RYUK_DISABLED: true
           UseFederatedAuth: true
           SupportedClouds: 'Public,UsGov'
           Clouds: 'Public'
@@ -104,5 +106,3 @@ extends:
           TestName: 'Spring_Data_Cosmos_Integration'
           TestGoals: 'clean verify'
           TestOptions: '$(ProfileFlag)'
-          EnvVars:
-            TESTCONTAINERS_RYUK_DISABLED: true
