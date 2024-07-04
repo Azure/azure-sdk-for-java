@@ -87,9 +87,9 @@ def generate(
     if os.system(command) != 0:
         error_message = (
             "[GENERATE][Error] Code generation failed.\n"
-            "Please first check if the failure happens only to Java automation, or for all SDK automations.\n"
-            "If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff.\n"
-            "If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
+            "[GENERATE][Error] Please first check if the failure happens only to Java automation, or for all SDK automations.\n"
+            "[GENERATE][Error] If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff.\n"
+            "[GENERATE][Error] If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
         )
         logging.error(error_message)
         print(error_message, file=sys.stderr)
@@ -129,7 +129,7 @@ def compile_arm_package(sdk_root: str, module: str) -> bool:
         != 0
     ):
         error_message = (
-            "[COMPILE] Maven build fail.\n"
+            "[COMPILE] Maven build fail."
             'You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.'
         )
         logging.error(error_message)
@@ -418,7 +418,7 @@ def generate_typespec_project(
     except subprocess.CalledProcessError as error:
         error_message = (
             f"[GENERATE][Error] Code generation failed. tsp-client init fails: {error}\n"
-            "If TypeSpec Validation passes, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
+            "[GENERATE][Error] If TypeSpec Validation passes, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
         )
         logging.error(error_message)
         print(error_message, file=sys.stderr)
