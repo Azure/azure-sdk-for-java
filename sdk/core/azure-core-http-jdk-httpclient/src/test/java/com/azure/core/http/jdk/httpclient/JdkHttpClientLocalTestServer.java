@@ -3,9 +3,9 @@
 package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.test.http.LocalTestServer;
+import jakarta.servlet.ServletException;
 import org.eclipse.jetty.util.Callback;
 
-import javax.servlet.ServletException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;

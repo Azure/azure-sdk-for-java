@@ -4,9 +4,9 @@ package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.test.http.LocalTestServer;
+import jakarta.servlet.ServletException;
 import org.eclipse.jetty.util.Callback;
 
-import javax.servlet.ServletException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;

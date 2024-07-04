@@ -11,15 +11,15 @@ module com.azure.core.test {
     requires reactor.test;
     requires java.management;
     requires java.net.http;
-    requires javax.servlet.api;
+    requires jakarta.servlet;
     requires reactor.netty.http;
     requires reactor.netty.core;
     requires io.netty.codec.http;
     requires org.apache.commons.compress;
     requires org.eclipse.jetty.server;
-    requires org.eclipse.jetty.servlet;
+    requires org.eclipse.jetty.ee10.servlet;
+    requires org.eclipse.jetty.ee10.websocket.jetty.server;
     requires org.eclipse.jetty.util;
-    requires org.eclipse.jetty.security;
 
     exports com.azure.core.test;
     exports com.azure.core.test.annotation;
