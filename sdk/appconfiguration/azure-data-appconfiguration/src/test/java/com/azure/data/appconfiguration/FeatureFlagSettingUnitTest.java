@@ -112,6 +112,13 @@ public class FeatureFlagSettingUnitTest {
         assertEquals(1, setting.getClientFilters().size());
     }
 
+    @Test
+    public void setKeyShowFeatureFlagPrefix() {
+        FeatureFlagConfigurationSetting setting = new FeatureFlagConfigurationSetting("featureID", true);
+        setting.setKey("key");
+        assertEquals(KEY_PREFIX + "key", setting.getKey());
+    }
+
     private FeatureFlagConfigurationSetting createFeatureFlagConfigurationSetting() {
         // Create a new feature flag configuration setting,
         final List<FeatureFlagFilter> featureFlagFilters = Arrays.asList(

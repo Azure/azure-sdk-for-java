@@ -63,7 +63,7 @@ public class ConfigurationSettingDeserializerTest {
     public <T extends ConfigurationSetting> void deserialize(String json, T expectedGeo) {
         if (expectedGeo instanceof FeatureFlagConfigurationSetting) {
             final KeyValue mockFeatureFlagSetting = new KeyValue()
-                .setKey(".appconfig.featureflag/hello")
+                .setKey("hello")
                 .setValue(FEATURE_FLAG_VALUE_JSON)
                 .setContentType(FEATURE_FLAG_CONTENT_TYPE);
             assertFeatureFlagConfigurationSetting(
