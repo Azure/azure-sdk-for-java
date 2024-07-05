@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -342,7 +341,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     public void testAddConnectionsToGroupsThrowErrorWhenGroupsToAddIsNull() {
         String filter = "userId eq 'user 1'";
         StepVerifier.create(
-            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, null, filter , new RequestOptions())
+            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, null, filter, new RequestOptions())
         ).expectError(HttpResponseException.class);
     }
 
