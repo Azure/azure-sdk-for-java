@@ -29,7 +29,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -223,13 +228,18 @@ public final class RoomsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddOrUpdateParticipantsResult addOrUpdateParticipants(String roomId, Iterable<RoomParticipant> participants) {
-        Objects.requireNonNull(participants, "'participants' cannot be null.");
-        Objects.requireNonNull(roomId, "'roomId' cannot be null.");
-        Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
-        String updateRequest = new UpdateParticipantsRequest().setParticipants(participantMap).toString();
+        try {
+            Objects.requireNonNull(participants, "'participants' cannot be null.");
+            Objects.requireNonNull(roomId, "'roomId' cannot be null.");
+            Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
+            String updateRequest = getUpdateRequest(participantMap);
 
-        this.participantsClient.update(roomId, updateRequest);
-        return new AddOrUpdateParticipantsResult();
+            this.participantsClient.update(roomId, updateRequest);
+            return new AddOrUpdateParticipantsResult();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
+        }
     }
 
     /**
@@ -242,17 +252,21 @@ public final class RoomsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddOrUpdateParticipantsResult> addOrUpdateParticipantsWithResponse(String roomId, Iterable<RoomParticipant> participants, Context context) {
-        context = context == null ? Context.NONE : context;
-        Objects.requireNonNull(participants, "'participants' cannot be null.");
-        Objects.requireNonNull(roomId, "'roomId' cannot be null.");
-        Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
-        String updateRequest = new UpdateParticipantsRequest().setParticipants(participantMap).toString();
+        try {
+            context = context == null ? Context.NONE : context;
+            Objects.requireNonNull(participants, "'participants' cannot be null.");
+            Objects.requireNonNull(roomId, "'roomId' cannot be null.");
+            Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
+            String updateRequest = getUpdateRequest(participantMap);
 
-        Response<Object> response = this.participantsClient
+            Response<Object> response = this.participantsClient
                 .updateWithResponse(roomId, updateRequest, context);
-        return new SimpleResponse<AddOrUpdateParticipantsResult>(
+            return new SimpleResponse<AddOrUpdateParticipantsResult>(
                 response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
+        }
     }
 
     /**
@@ -264,14 +278,19 @@ public final class RoomsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemoveParticipantsResult removeParticipants(String roomId, Iterable<CommunicationIdentifier> identifiers) {
-        Objects.requireNonNull(identifiers, "'identifiers' cannot be null.");
-        Objects.requireNonNull(roomId, "'roomId' cannot be null.");
-        Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
-            identifiers);
-        String updateRequest = new UpdateParticipantsRequest().setParticipants(participantMap).toString();
+        try {
+            Objects.requireNonNull(identifiers, "'identifiers' cannot be null.");
+            Objects.requireNonNull(roomId, "'roomId' cannot be null.");
+            Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
+                identifiers);
+            String updateRequest = getUpdateRequest(participantMap);
 
-        this.participantsClient.update(roomId, updateRequest);
-        return new RemoveParticipantsResult();
+            this.participantsClient.update(roomId, updateRequest);
+            return new RemoveParticipantsResult();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
+        }
     }
 
     /**
@@ -284,17 +303,23 @@ public final class RoomsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RemoveParticipantsResult> removeParticipantsWithResponse(String roomId, Iterable<CommunicationIdentifier> identifiers, Context context) {
-        context = context == null ? Context.NONE : context;
-        Objects.requireNonNull(identifiers, "'identifiers' cannot be null.");
-        Objects.requireNonNull(roomId, "'roomId' cannot be null.");
-        Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
-            identifiers);
-        String updateRequest = new UpdateParticipantsRequest().setParticipants(participantMap).toString();
-        Response<Object> response = this.participantsClient
-            .updateWithResponse(roomId, updateRequest, context);
+        try {
+            context = context == null ? Context.NONE : context;
+            Objects.requireNonNull(identifiers, "'identifiers' cannot be null.");
+            Objects.requireNonNull(roomId, "'roomId' cannot be null.");
+            Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
+                identifiers);
+            String updateRequest = getUpdateRequest(participantMap);
 
-        return new SimpleResponse<RemoveParticipantsResult>(
-            response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+            Response<Object> response = this.participantsClient
+                .updateWithResponse(roomId, updateRequest, context);
+
+            return new SimpleResponse<RemoveParticipantsResult>(
+                response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
+        }
     }
 
 
@@ -431,5 +456,13 @@ public final class RoomsClient {
         }
 
         return participantMap;
+    }
+
+    private static String getUpdateRequest(Map<String, ParticipantProperties> participantMap) throws IOException {
+        Writer json = new StringWriter();
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(json)) {
+            new UpdateParticipantsRequest().setParticipants(participantMap).toJson(jsonWriter);
+        }
+        return json.toString();
     }
 }
