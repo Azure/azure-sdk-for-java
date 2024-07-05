@@ -36,6 +36,7 @@ import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
@@ -150,8 +151,8 @@ abstract class AsyncBenchmark<T> {
 
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
         CosmosClient syncClient = cosmosClientBuilder
-            .endpoint(configuration.getServiceEndpointForRunResultsUploadAccount())
-            .key(configuration.getMasterKeyForRunResultsUploadAccount())
+            .endpoint(StringUtils.isNotEmpty(configuration.getServiceEndpointForRunResultsUploadAccount()) ? configuration.getServiceEndpointForRunResultsUploadAccount() : configuration.getServiceEndpoint())
+            .key(StringUtils.isNotEmpty(configuration.getMasterKeyForRunResultsUploadAccount()) ? configuration.getMasterKeyForRunResultsUploadAccount() : configuration.getMasterKey())
             .buildClient();
 
         try {

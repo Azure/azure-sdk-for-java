@@ -1863,6 +1863,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
         }
 
+        if (requestRetryPolicy != null) {
+            requestRetryPolicy.onBeforeSendRequest(request);
+        }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
         if (serializationDiagnosticsContext != null) {
@@ -2234,9 +2237,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 pointOperationContextForCircuitBreaker,
                 collectionRoutingMap),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled(),
-            collectionLink,
-            StringUtils.EMPTY);
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink
+        );
     }
 
     private Mono<ResourceResponse<Document>> createDocumentCore(
@@ -2508,9 +2511,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, collectionRoutingMap) -> upsertDocumentCore(
                 collectionLink, document, opt, disableAutomaticIdGeneration, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, collectionRoutingMap),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled(),
-            collectionLink,
-            StringUtils.EMPTY);
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink
+        );
     }
 
     private Mono<ResourceResponse<Document>> upsertDocumentCore(
@@ -2615,9 +2618,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 pointOperationContextForCircuitBreaker,
                 collectionRoutingMap),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled(),
-            collectionLink,
-            documentLink);
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink
+        );
     }
 
     private Mono<ResourceResponse<Document>> replaceDocumentCore(
@@ -2713,9 +2716,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 pointOperationContextForCircuitBreaker,
                 collectionRoutingMap),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled(),
-            collectionLink,
-            StringUtils.EMPTY);
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink
+        );
     }
 
     private Mono<ResourceResponse<Document>> replaceDocumentCore(
@@ -2909,9 +2912,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 pointOperationContextForCircuitBreaker,
                 collectionRoutingMap),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled(),
-            collectionLink,
-            documentLink);
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink
+        );
     }
 
     private Mono<ResourceResponse<Document>> patchDocumentCore(
@@ -3048,9 +3051,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 pointOperationContextForCircuitBreaker,
                 collectionRoutingMap),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled(),
-            collectionLink,
-            documentLink);
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink
+        );
     }
 
     @Override
@@ -3070,9 +3073,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 pointOperationContextForCircuitBreaker,
                 collectionRoutingMap),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled(),
-            collectionLink,
-            documentLink);
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink
+        );
     }
 
     private Mono<ResourceResponse<Document>> deleteDocumentCore(
@@ -3226,8 +3229,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             false,
             innerDiagnosticsFactory,
-            collectionLink,
-            documentLink);
+            collectionLink
+        );
     }
 
     private Mono<ResourceResponse<Document>> readDocumentCore(
@@ -5921,8 +5924,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentPointOperation callback,
         RequestOptions initialRequestOptions,
         boolean idempotentWriteRetriesEnabled,
-        String collectionLink,
-        String documentLink) {
+        String collectionLink) {
 
         return wrapPointOperationWithAvailabilityStrategy(
             resourceType,
@@ -5931,8 +5933,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             initialRequestOptions,
             idempotentWriteRetriesEnabled,
             this,
-            collectionLink,
-            documentLink);
+            collectionLink
+        );
     }
 
     private Mono<ResourceResponse<Document>> wrapPointOperationWithAvailabilityStrategy(
@@ -5942,8 +5944,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions initialRequestOptions,
         boolean idempotentWriteRetriesEnabled,
         DiagnosticsClientContext innerDiagnosticsFactory,
-        String collectionLink,
-        String documentLink) {
+        String collectionLink) {
 
         return Mono.defer(() -> this.collectionCache.resolveByNameAsync(null, collectionLink, null)
             .flatMap(collection -> this.partitionKeyRangeCache.tryLookupAsync(null, collection.getResourceId(), null, null)
