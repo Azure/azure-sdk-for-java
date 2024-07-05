@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PointOperationContextForCircuitBreaker;
@@ -956,7 +957,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange(partitionKeyRangeId, minInclusive, maxExclusive);
         request.requestContext.locationEndpointToRoute = locationEndpointToRoute;
         request.requestContext.setExcludeRegions(Collections.emptyList());
-        request.requestContext.setPointOperationContext(new PointOperationContextForCircuitBreaker(new AtomicBoolean(false), false, collectionLink));
+        request.requestContext.setPointOperationContext(new PointOperationContextForCircuitBreaker(new AtomicBoolean(false), false, collectionLink, new MetadataDiagnosticsContext()));
 
         return request;
     }

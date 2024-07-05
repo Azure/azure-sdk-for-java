@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.util.Beta;
@@ -483,6 +484,20 @@ public final class CosmosDiagnostics {
                     }
 
                     return cosmosDiagnostics.getFirstContactedLocationEndpoint();
+                }
+
+                @Override
+                public void mergeMetadataDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, MetadataDiagnosticsContext otherMetadataDiagnosticsContext) {
+
+                    if (cosmosDiagnostics == null) {
+                        return;
+                    }
+
+                    ClientSideRequestStatistics clientSideRequestStatistics = cosmosDiagnostics.clientSideRequestStatistics;
+
+                    if (clientSideRequestStatistics != null) {
+                        clientSideRequestStatistics.mergeMetadataDiagnosticsContext(otherMetadataDiagnosticsContext);
+                    }
                 }
             });
     }

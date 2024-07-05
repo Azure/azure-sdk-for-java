@@ -770,11 +770,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
         assertThat(diagnostics).contains("gatewayStatisticsList");
         assertThat(diagnostics).contains("addressResolutionStatistics");
-        // todo: Container and partition key range look up are preempted before RxDocumentServiceRequest and it diagnostic instantiation
-        // todo: for partition-level circuit breaker - may not always appear in diagnostics
-        // and may not be part of diagnostics
-//        assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
-//        assertThat(diagnostics).contains("\"metaDataName\":\"PARTITION_KEY_RANGE_LOOK_UP\"");
+        assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
+        assertThat(diagnostics).contains("\"metaDataName\":\"PARTITION_KEY_RANGE_LOOK_UP\"");
         assertThat(diagnostics).contains("\"metaDataName\":\"SERVER_ADDRESS_LOOKUP\"");
         assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
         assertThat(diagnostics).contains("\"userAgent\":\"" + userAgent + "\"");

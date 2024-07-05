@@ -265,6 +265,16 @@ public class ClientSideRequestStatistics {
         return this.requestPayloadSizeInBytes;
     }
 
+    public void mergeMetadataDiagnosticsContext(MetadataDiagnosticsContext other) {
+        if (other == null || other.metadataDiagnosticList == null || other.metadataDiagnosticList.isEmpty()) {
+            return;
+        }
+
+        for (MetadataDiagnosticsContext.MetadataDiagnostics metadataDiagnostics : other.metadataDiagnosticList) {
+            this.metadataDiagnosticsContext.addMetaDataDiagnostic(metadataDiagnostics);
+        }
+    }
+
     public String recordAddressResolutionStart(
         URI targetEndpoint,
         boolean forceRefresh,
