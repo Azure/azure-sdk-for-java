@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +20,6 @@ public final class AzureBackupFindRestorableTimeRangesRequestResource extends Dp
     /*
      * AzureBackupFindRestorableTimeRangesRequestResource content
      */
-    @JsonProperty(value = "content")
     private AzureBackupFindRestorableTimeRangesRequest content;
 
     /**
@@ -122,5 +124,73 @@ public final class AzureBackupFindRestorableTimeRangesRequestResource extends Dp
         if (content() != null) {
             content().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subscriptionId", subscriptionId());
+        jsonWriter.writeStringField("uri", uri());
+        jsonWriter.writeMapField("headers", headers(),
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeArrayField("supportedGroupVersions", supportedGroupVersions(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("cultureInfo", cultureInfo());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("httpMethod", httpMethod());
+        jsonWriter.writeJsonField("content", this.content);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBackupFindRestorableTimeRangesRequestResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBackupFindRestorableTimeRangesRequestResource if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBackupFindRestorableTimeRangesRequestResource.
+     */
+    public static AzureBackupFindRestorableTimeRangesRequestResource fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBackupFindRestorableTimeRangesRequestResource deserializedAzureBackupFindRestorableTimeRangesRequestResource
+                = new AzureBackupFindRestorableTimeRangesRequestResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionId".equals(fieldName)) {
+                    deserializedAzureBackupFindRestorableTimeRangesRequestResource
+                        .withSubscriptionId(reader.getString());
+                } else if ("uri".equals(fieldName)) {
+                    deserializedAzureBackupFindRestorableTimeRangesRequestResource.withUri(reader.getString());
+                } else if ("headers".equals(fieldName)) {
+                    Map<String, List<String>> headers
+                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedAzureBackupFindRestorableTimeRangesRequestResource.withHeaders(headers);
+                } else if ("supportedGroupVersions".equals(fieldName)) {
+                    List<String> supportedGroupVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureBackupFindRestorableTimeRangesRequestResource
+                        .withSupportedGroupVersions(supportedGroupVersions);
+                } else if ("cultureInfo".equals(fieldName)) {
+                    deserializedAzureBackupFindRestorableTimeRangesRequestResource.withCultureInfo(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAzureBackupFindRestorableTimeRangesRequestResource.withParameters(parameters);
+                } else if ("httpMethod".equals(fieldName)) {
+                    deserializedAzureBackupFindRestorableTimeRangesRequestResource.withHttpMethod(reader.getString());
+                } else if ("content".equals(fieldName)) {
+                    deserializedAzureBackupFindRestorableTimeRangesRequestResource.content
+                        = AzureBackupFindRestorableTimeRangesRequest.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBackupFindRestorableTimeRangesRequestResource;
+        });
     }
 }

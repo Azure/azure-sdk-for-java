@@ -6,15 +6,12 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuard;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -22,47 +19,35 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ResourceGuardsPutWithResponseMockTests {
     @Test
     public void testPutWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Unknown\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"otoihiqa\",\"requestResourceType\":\"diw\"}],\"vaultCriticalOperationExclusionList\":[\"kwpzdqtvh\",\"spodaqax\",\"ipietgbe\",\"jfulbmoic\"],\"description\":\"lpnfpubntnb\"},\"eTag\":\"zviqsowsaae\",\"location\":\"attcju\",\"tags\":{\"kyylizr\":\"rvkmjcwmjvlgfggc\",\"agb\":\"bjpsfxsfuztlvtm\"},\"id\":\"idqlvhu\",\"name\":\"oveofizrvjfnmj\",\"type\":\"vlwyzg\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"nchrszizoyu\",\"requestResourceType\":\"yetnd\"}],\"vaultCriticalOperationExclusionList\":[\"qyggagfl\",\"lgmtrwahzjmucf\",\"byrplrohkpig\",\"fusuckzmkwklsno\"],\"description\":\"xmqeqalh\"},\"eTag\":\"nhg\",\"location\":\"dyynfsvkhgb\",\"tags\":{\"zjcpeogk\":\"anarfdlpukhpyrne\"},\"id\":\"nmg\",\"name\":\"ro\",\"type\":\"xddbhfhpfpaz\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataProtectionManager manager = DataProtectionManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataProtectionManager manager = DataProtectionManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ResourceGuardResource response = manager.resourceGuards()
+            .define("gtuwkff")
+            .withRegion("qekewvnqvcd")
+            .withExistingResourceGroup("jurbuhhlkyqltqsr")
+            .withTags(mapOf("cmfdjwnlax", "a", "qikczvvita", "un"))
+            .withEtag("wkpqhjpenuygbq")
+            .withProperties(
+                new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("ayiansharujtji")))
+            .create();
 
-        ResourceGuardResource response
-            = manager.resourceGuards().define("ydsx").withRegion("memhooclutnpq").withExistingResourceGroup("mzgwe")
-                .withTags(mapOf("mmyky", "czj", "rye", "jxsglhsr")).withEtag("uyzlw")
-                .withProperties(
-                    new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("rrmhwrbfdp", "f")))
-                .create();
-
-        Assertions.assertEquals("attcju", response.location());
-        Assertions.assertEquals("rvkmjcwmjvlgfggc", response.tags().get("kyylizr"));
-        Assertions.assertEquals("zviqsowsaae", response.etag());
-        Assertions.assertEquals("kwpzdqtvh", response.properties().vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("dyynfsvkhgb", response.location());
+        Assertions.assertEquals("anarfdlpukhpyrne", response.tags().get("zjcpeogk"));
+        Assertions.assertEquals("nhg", response.etag());
+        Assertions.assertEquals("qyggagfl", response.properties().vaultCriticalOperationExclusionList().get(0));
     }
 
     // Use "Map.of" if available

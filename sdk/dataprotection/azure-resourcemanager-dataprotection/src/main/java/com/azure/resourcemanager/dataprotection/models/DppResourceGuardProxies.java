@@ -100,6 +100,7 @@ public interface DppResourceGuardProxies {
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,7 +108,8 @@ public interface DppResourceGuardProxies {
      * @return response of Unlock Delete API along with {@link Response}.
      */
     Response<UnlockDeleteResponse> unlockDeleteWithResponse(String resourceGroupName, String vaultName,
-        String resourceGuardProxyName, UnlockDeleteRequest parameters, Context context);
+        String resourceGuardProxyName, UnlockDeleteRequest parameters, String xMsAuthorizationAuxiliary,
+        Context context);
 
     /**
      * UnlockDelete call for ResourceGuardProxy, executed before one can delete it.

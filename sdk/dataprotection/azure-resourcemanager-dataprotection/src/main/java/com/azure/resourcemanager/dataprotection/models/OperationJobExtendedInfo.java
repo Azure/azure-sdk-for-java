@@ -11,6 +11,14 @@ import com.azure.resourcemanager.dataprotection.fluent.models.OperationJobExtend
  */
 public interface OperationJobExtendedInfo {
     /**
+     * Gets the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    String objectType();
+
+    /**
      * Gets the jobId property: Name or Arm Id of the job created for this operation.
      * 
      * @return the jobId value.

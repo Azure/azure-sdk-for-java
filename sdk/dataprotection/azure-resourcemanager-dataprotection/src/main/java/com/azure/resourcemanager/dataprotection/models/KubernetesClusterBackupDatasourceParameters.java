@@ -5,74 +5,80 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters for Kubernetes Cluster Backup Datasource.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("KubernetesClusterBackupDatasourceParameters")
 @Fluent
 public final class KubernetesClusterBackupDatasourceParameters extends BackupDatasourceParameters {
     /*
+     * Type of the specific object - used for deserializing
+     */
+    private String objectType = "KubernetesClusterBackupDatasourceParameters";
+
+    /*
      * Gets or sets the volume snapshot property. This property if enabled will take volume snapshots during backup.
      */
-    @JsonProperty(value = "snapshotVolumes", required = true)
     private boolean snapshotVolumes;
 
     /*
      * Gets or sets the include cluster resources property. This property if enabled will include cluster scope
      * resources during backup.
      */
-    @JsonProperty(value = "includeClusterScopeResources", required = true)
     private boolean includeClusterScopeResources;
 
     /*
      * Gets or sets the include namespaces property. This property sets the namespaces to be included during backup.
      */
-    @JsonProperty(value = "includedNamespaces")
     private List<String> includedNamespaces;
 
     /*
      * Gets or sets the exclude namespaces property. This property sets the namespaces to be excluded during backup.
      */
-    @JsonProperty(value = "excludedNamespaces")
     private List<String> excludedNamespaces;
 
     /*
      * Gets or sets the include resource types property. This property sets the resource types to be included during
      * backup.
      */
-    @JsonProperty(value = "includedResourceTypes")
     private List<String> includedResourceTypes;
 
     /*
      * Gets or sets the exclude resource types property. This property sets the resource types to be excluded during
      * backup.
      */
-    @JsonProperty(value = "excludedResourceTypes")
     private List<String> excludedResourceTypes;
 
     /*
      * Gets or sets the LabelSelectors property. This property sets the resource with such label selectors to be
      * included during backup.
      */
-    @JsonProperty(value = "labelSelectors")
     private List<String> labelSelectors;
 
     /*
      * Gets or sets the backup hook references. This property sets the hook reference to be executed during backup.
      */
-    @JsonProperty(value = "backupHookReferences")
     private List<NamespacedNameResource> backupHookReferences;
 
     /**
      * Creates an instance of KubernetesClusterBackupDatasourceParameters class.
      */
     public KubernetesClusterBackupDatasourceParameters() {
+    }
+
+    /**
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -98,8 +104,8 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
     }
 
     /**
-     * Get the includeClusterScopeResources property: Gets or sets the include cluster resources property. This
-     * property if enabled will include cluster scope resources during backup.
+     * Get the includeClusterScopeResources property: Gets or sets the include cluster resources property. This property
+     * if enabled will include cluster scope resources during backup.
      * 
      * @return the includeClusterScopeResources value.
      */
@@ -108,8 +114,8 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
     }
 
     /**
-     * Set the includeClusterScopeResources property: Gets or sets the include cluster resources property. This
-     * property if enabled will include cluster scope resources during backup.
+     * Set the includeClusterScopeResources property: Gets or sets the include cluster resources property. This property
+     * if enabled will include cluster scope resources during backup.
      * 
      * @param includeClusterScopeResources the includeClusterScopeResources value to set.
      * @return the KubernetesClusterBackupDatasourceParameters object itself.
@@ -264,5 +270,83 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
         if (backupHookReferences() != null) {
             backupHookReferences().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("snapshotVolumes", this.snapshotVolumes);
+        jsonWriter.writeBooleanField("includeClusterScopeResources", this.includeClusterScopeResources);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeArrayField("includedNamespaces", this.includedNamespaces,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("excludedNamespaces", this.excludedNamespaces,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("includedResourceTypes", this.includedResourceTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("excludedResourceTypes", this.excludedResourceTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("labelSelectors", this.labelSelectors,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("backupHookReferences", this.backupHookReferences,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesClusterBackupDatasourceParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesClusterBackupDatasourceParameters if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KubernetesClusterBackupDatasourceParameters.
+     */
+    public static KubernetesClusterBackupDatasourceParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesClusterBackupDatasourceParameters deserializedKubernetesClusterBackupDatasourceParameters
+                = new KubernetesClusterBackupDatasourceParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("snapshotVolumes".equals(fieldName)) {
+                    deserializedKubernetesClusterBackupDatasourceParameters.snapshotVolumes = reader.getBoolean();
+                } else if ("includeClusterScopeResources".equals(fieldName)) {
+                    deserializedKubernetesClusterBackupDatasourceParameters.includeClusterScopeResources
+                        = reader.getBoolean();
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedKubernetesClusterBackupDatasourceParameters.objectType = reader.getString();
+                } else if ("includedNamespaces".equals(fieldName)) {
+                    List<String> includedNamespaces = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKubernetesClusterBackupDatasourceParameters.includedNamespaces = includedNamespaces;
+                } else if ("excludedNamespaces".equals(fieldName)) {
+                    List<String> excludedNamespaces = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKubernetesClusterBackupDatasourceParameters.excludedNamespaces = excludedNamespaces;
+                } else if ("includedResourceTypes".equals(fieldName)) {
+                    List<String> includedResourceTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKubernetesClusterBackupDatasourceParameters.includedResourceTypes
+                        = includedResourceTypes;
+                } else if ("excludedResourceTypes".equals(fieldName)) {
+                    List<String> excludedResourceTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKubernetesClusterBackupDatasourceParameters.excludedResourceTypes
+                        = excludedResourceTypes;
+                } else if ("labelSelectors".equals(fieldName)) {
+                    List<String> labelSelectors = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKubernetesClusterBackupDatasourceParameters.labelSelectors = labelSelectors;
+                } else if ("backupHookReferences".equals(fieldName)) {
+                    List<NamespacedNameResource> backupHookReferences
+                        = reader.readArray(reader1 -> NamespacedNameResource.fromJson(reader1));
+                    deserializedKubernetesClusterBackupDatasourceParameters.backupHookReferences = backupHookReferences;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesClusterBackupDatasourceParameters;
+        });
     }
 }

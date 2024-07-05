@@ -192,13 +192,15 @@ public interface ResourceGuardProxyBaseResource {
      * UnlockDelete call for ResourceGuardProxy, executed before one can delete it.
      * 
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of Unlock Delete API along with {@link Response}.
      */
-    Response<UnlockDeleteResponse> unlockDeleteWithResponse(UnlockDeleteRequest parameters, Context context);
+    Response<UnlockDeleteResponse> unlockDeleteWithResponse(UnlockDeleteRequest parameters,
+        String xMsAuthorizationAuxiliary, Context context);
 
     /**
      * UnlockDelete call for ResourceGuardProxy, executed before one can delete it.

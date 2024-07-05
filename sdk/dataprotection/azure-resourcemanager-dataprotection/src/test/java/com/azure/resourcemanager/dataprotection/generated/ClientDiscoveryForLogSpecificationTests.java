@@ -11,21 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientDiscoveryForLogSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientDiscoveryForLogSpecification model = BinaryData
-            .fromString("{\"blobDuration\":\"ddystkiiuxhqy\",\"displayName\":\"xorrqnb\",\"name\":\"czvyifq\"}")
-            .toObject(ClientDiscoveryForLogSpecification.class);
-        Assertions.assertEquals("ddystkiiuxhqy", model.blobDuration());
-        Assertions.assertEquals("xorrqnb", model.displayName());
-        Assertions.assertEquals("czvyifq", model.name());
+        ClientDiscoveryForLogSpecification model
+            = BinaryData.fromString("{\"blobDuration\":\"aodxo\",\"displayName\":\"bdxkqpxokaj\",\"name\":\"npime\"}")
+                .toObject(ClientDiscoveryForLogSpecification.class);
+        Assertions.assertEquals("aodxo", model.blobDuration());
+        Assertions.assertEquals("bdxkqpxokaj", model.displayName());
+        Assertions.assertEquals("npime", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientDiscoveryForLogSpecification model = new ClientDiscoveryForLogSpecification()
-            .withBlobDuration("ddystkiiuxhqy").withDisplayName("xorrqnb").withName("czvyifq");
+        ClientDiscoveryForLogSpecification model = new ClientDiscoveryForLogSpecification().withBlobDuration("aodxo")
+            .withDisplayName("bdxkqpxokaj")
+            .withName("npime");
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryForLogSpecification.class);
-        Assertions.assertEquals("ddystkiiuxhqy", model.blobDuration());
-        Assertions.assertEquals("xorrqnb", model.displayName());
-        Assertions.assertEquals("czvyifq", model.name());
+        Assertions.assertEquals("aodxo", model.blobDuration());
+        Assertions.assertEquals("bdxkqpxokaj", model.displayName());
+        Assertions.assertEquals("npime", model.name());
     }
 }

@@ -13,30 +13,34 @@ public final class RecoveryPointDataStoreDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPointDataStoreDetails model = BinaryData.fromString(
-            "{\"creationTime\":\"2021-07-13T15:08:06Z\",\"expiryTime\":\"2021-02-06T22:33:53Z\",\"id\":\"bopgxedkowepbqp\",\"metaData\":\"fkbw\",\"state\":\"snjvcdwxlpqekftn\",\"type\":\"tjsyin\",\"visible\":false,\"rehydrationExpiryTime\":\"2021-02-20T13:18:06Z\",\"rehydrationStatus\":\"COMPLETED\"}")
+            "{\"creationTime\":\"2021-11-04T08:30:12Z\",\"expiryTime\":\"2021-01-09T07:06:25Z\",\"id\":\"h\",\"metaData\":\"sx\",\"state\":\"pelol\",\"type\":\"vk\",\"visible\":true,\"rehydrationExpiryTime\":\"2021-02-05T20:48:24Z\",\"rehydrationStatus\":\"CREATE_IN_PROGRESS\"}")
             .toObject(RecoveryPointDataStoreDetails.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T15:08:06Z"), model.creationTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T22:33:53Z"), model.expiryTime());
-        Assertions.assertEquals("bopgxedkowepbqp", model.id());
-        Assertions.assertEquals("fkbw", model.metadata());
-        Assertions.assertEquals("snjvcdwxlpqekftn", model.state());
-        Assertions.assertEquals("tjsyin", model.type());
-        Assertions.assertEquals(false, model.visible());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T08:30:12Z"), model.creationTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-09T07:06:25Z"), model.expiryTime());
+        Assertions.assertEquals("h", model.id());
+        Assertions.assertEquals("sx", model.metadata());
+        Assertions.assertEquals("pelol", model.state());
+        Assertions.assertEquals("vk", model.type());
+        Assertions.assertEquals(true, model.visible());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPointDataStoreDetails model
-            = new RecoveryPointDataStoreDetails().withCreationTime(OffsetDateTime.parse("2021-07-13T15:08:06Z"))
-                .withExpiryTime(OffsetDateTime.parse("2021-02-06T22:33:53Z")).withId("bopgxedkowepbqp")
-                .withMetadata("fkbw").withState("snjvcdwxlpqekftn").withType("tjsyin").withVisible(false);
+            = new RecoveryPointDataStoreDetails().withCreationTime(OffsetDateTime.parse("2021-11-04T08:30:12Z"))
+                .withExpiryTime(OffsetDateTime.parse("2021-01-09T07:06:25Z"))
+                .withId("h")
+                .withMetadata("sx")
+                .withState("pelol")
+                .withType("vk")
+                .withVisible(true);
         model = BinaryData.fromObject(model).toObject(RecoveryPointDataStoreDetails.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T15:08:06Z"), model.creationTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T22:33:53Z"), model.expiryTime());
-        Assertions.assertEquals("bopgxedkowepbqp", model.id());
-        Assertions.assertEquals("fkbw", model.metadata());
-        Assertions.assertEquals("snjvcdwxlpqekftn", model.state());
-        Assertions.assertEquals("tjsyin", model.type());
-        Assertions.assertEquals(false, model.visible());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T08:30:12Z"), model.creationTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-09T07:06:25Z"), model.expiryTime());
+        Assertions.assertEquals("h", model.id());
+        Assertions.assertEquals("sx", model.metadata());
+        Assertions.assertEquals("pelol", model.state());
+        Assertions.assertEquals("vk", model.type());
+        Assertions.assertEquals(true, model.visible());
     }
 }

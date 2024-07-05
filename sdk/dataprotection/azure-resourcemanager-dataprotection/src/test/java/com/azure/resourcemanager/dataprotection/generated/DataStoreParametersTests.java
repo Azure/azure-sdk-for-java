@@ -13,15 +13,15 @@ public final class DataStoreParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataStoreParameters model
-            = BinaryData.fromString("{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"ArchiveStore\"}")
+            = BinaryData.fromString("{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"VaultStore\"}")
                 .toObject(DataStoreParameters.class);
-        Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.dataStoreType());
+        Assertions.assertEquals(DataStoreTypes.VAULT_STORE, model.dataStoreType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataStoreParameters model = new DataStoreParameters().withDataStoreType(DataStoreTypes.ARCHIVE_STORE);
+        DataStoreParameters model = new DataStoreParameters().withDataStoreType(DataStoreTypes.VAULT_STORE);
         model = BinaryData.fromObject(model).toObject(DataStoreParameters.class);
-        Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.dataStoreType());
+        Assertions.assertEquals(DataStoreTypes.VAULT_STORE, model.dataStoreType());
     }
 }

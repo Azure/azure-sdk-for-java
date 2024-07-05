@@ -5,86 +5,83 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 /**
  * kubernetes Cluster Backup target info for restore operation.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("KubernetesClusterRestoreCriteria")
 @Fluent
 public final class KubernetesClusterRestoreCriteria extends ItemLevelRestoreCriteria {
+    /*
+     * Type of the specific object - used for deserializing
+     */
+    private String objectType = "KubernetesClusterRestoreCriteria";
+
     /*
      * Gets or sets the include cluster resources property. This property if enabled will include cluster scope
      * resources during restore.
      */
-    @JsonProperty(value = "includeClusterScopeResources", required = true)
     private boolean includeClusterScopeResources;
 
     /*
      * Gets or sets the include namespaces property. This property sets the namespaces to be included during restore.
      */
-    @JsonProperty(value = "includedNamespaces")
     private List<String> includedNamespaces;
 
     /*
      * Gets or sets the exclude namespaces property. This property sets the namespaces to be excluded during restore.
      */
-    @JsonProperty(value = "excludedNamespaces")
     private List<String> excludedNamespaces;
 
     /*
      * Gets or sets the include resource types property. This property sets the resource types to be included during
      * restore.
      */
-    @JsonProperty(value = "includedResourceTypes")
     private List<String> includedResourceTypes;
 
     /*
      * Gets or sets the exclude resource types property. This property sets the resource types to be excluded during
      * restore.
      */
-    @JsonProperty(value = "excludedResourceTypes")
     private List<String> excludedResourceTypes;
 
     /*
      * Gets or sets the LabelSelectors property. This property sets the resource with such label selectors to be
      * included during restore.
      */
-    @JsonProperty(value = "labelSelectors")
     private List<String> labelSelectors;
 
     /*
      * Gets or sets the PV (Persistent Volume) Restore Mode property. This property sets whether volumes needs to be
      * restored.
      */
-    @JsonProperty(value = "persistentVolumeRestoreMode")
     private PersistentVolumeRestoreMode persistentVolumeRestoreMode;
 
     /*
-     * Gets or sets the Conflict Policy property. This property sets policy during conflict of resources during
-     * restore.
+     * Gets or sets the Conflict Policy property. This property sets policy during conflict of resources during restore.
      */
-    @JsonProperty(value = "conflictPolicy")
     private ExistingResourcePolicy conflictPolicy;
 
     /*
      * Gets or sets the Namespace Mappings property. This property sets if namespace needs to be change during restore.
      */
-    @JsonProperty(value = "namespaceMappings")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> namespaceMappings;
 
     /*
      * Gets or sets the restore hook references. This property sets the hook reference to be executed during restore.
      */
-    @JsonProperty(value = "restoreHookReferences")
     private List<NamespacedNameResource> restoreHookReferences;
+
+    /*
+     * Gets or sets the resource modifier reference. This property sets the reference for resource modifier during
+     * restore.
+     */
+    private NamespacedNameResource resourceModifierReference;
 
     /**
      * Creates an instance of KubernetesClusterRestoreCriteria class.
@@ -93,8 +90,18 @@ public final class KubernetesClusterRestoreCriteria extends ItemLevelRestoreCrit
     }
 
     /**
-     * Get the includeClusterScopeResources property: Gets or sets the include cluster resources property. This
-     * property if enabled will include cluster scope resources during restore.
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
+     * Get the includeClusterScopeResources property: Gets or sets the include cluster resources property. This property
+     * if enabled will include cluster scope resources during restore.
      * 
      * @return the includeClusterScopeResources value.
      */
@@ -103,8 +110,8 @@ public final class KubernetesClusterRestoreCriteria extends ItemLevelRestoreCrit
     }
 
     /**
-     * Set the includeClusterScopeResources property: Gets or sets the include cluster resources property. This
-     * property if enabled will include cluster scope resources during restore.
+     * Set the includeClusterScopeResources property: Gets or sets the include cluster resources property. This property
+     * if enabled will include cluster scope resources during restore.
      * 
      * @param includeClusterScopeResources the includeClusterScopeResources value to set.
      * @return the KubernetesClusterRestoreCriteria object itself.
@@ -225,8 +232,8 @@ public final class KubernetesClusterRestoreCriteria extends ItemLevelRestoreCrit
     }
 
     /**
-     * Get the persistentVolumeRestoreMode property: Gets or sets the PV (Persistent Volume) Restore Mode property.
-     * This property sets whether volumes needs to be restored.
+     * Get the persistentVolumeRestoreMode property: Gets or sets the PV (Persistent Volume) Restore Mode property. This
+     * property sets whether volumes needs to be restored.
      * 
      * @return the persistentVolumeRestoreMode value.
      */
@@ -235,8 +242,8 @@ public final class KubernetesClusterRestoreCriteria extends ItemLevelRestoreCrit
     }
 
     /**
-     * Set the persistentVolumeRestoreMode property: Gets or sets the PV (Persistent Volume) Restore Mode property.
-     * This property sets whether volumes needs to be restored.
+     * Set the persistentVolumeRestoreMode property: Gets or sets the PV (Persistent Volume) Restore Mode property. This
+     * property sets whether volumes needs to be restored.
      * 
      * @param persistentVolumeRestoreMode the persistentVolumeRestoreMode value to set.
      * @return the KubernetesClusterRestoreCriteria object itself.
@@ -270,8 +277,8 @@ public final class KubernetesClusterRestoreCriteria extends ItemLevelRestoreCrit
     }
 
     /**
-     * Get the namespaceMappings property: Gets or sets the Namespace Mappings property. This property sets if
-     * namespace needs to be change during restore.
+     * Get the namespaceMappings property: Gets or sets the Namespace Mappings property. This property sets if namespace
+     * needs to be change during restore.
      * 
      * @return the namespaceMappings value.
      */
@@ -280,8 +287,8 @@ public final class KubernetesClusterRestoreCriteria extends ItemLevelRestoreCrit
     }
 
     /**
-     * Set the namespaceMappings property: Gets or sets the Namespace Mappings property. This property sets if
-     * namespace needs to be change during restore.
+     * Set the namespaceMappings property: Gets or sets the Namespace Mappings property. This property sets if namespace
+     * needs to be change during restore.
      * 
      * @param namespaceMappings the namespaceMappings value to set.
      * @return the KubernetesClusterRestoreCriteria object itself.
@@ -315,6 +322,29 @@ public final class KubernetesClusterRestoreCriteria extends ItemLevelRestoreCrit
     }
 
     /**
+     * Get the resourceModifierReference property: Gets or sets the resource modifier reference. This property sets the
+     * reference for resource modifier during restore.
+     * 
+     * @return the resourceModifierReference value.
+     */
+    public NamespacedNameResource resourceModifierReference() {
+        return this.resourceModifierReference;
+    }
+
+    /**
+     * Set the resourceModifierReference property: Gets or sets the resource modifier reference. This property sets the
+     * reference for resource modifier during restore.
+     * 
+     * @param resourceModifierReference the resourceModifierReference value to set.
+     * @return the KubernetesClusterRestoreCriteria object itself.
+     */
+    public KubernetesClusterRestoreCriteria
+        withResourceModifierReference(NamespacedNameResource resourceModifierReference) {
+        this.resourceModifierReference = resourceModifierReference;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -325,5 +355,99 @@ public final class KubernetesClusterRestoreCriteria extends ItemLevelRestoreCrit
         if (restoreHookReferences() != null) {
             restoreHookReferences().forEach(e -> e.validate());
         }
+        if (resourceModifierReference() != null) {
+            resourceModifierReference().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("includeClusterScopeResources", this.includeClusterScopeResources);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeArrayField("includedNamespaces", this.includedNamespaces,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("excludedNamespaces", this.excludedNamespaces,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("includedResourceTypes", this.includedResourceTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("excludedResourceTypes", this.excludedResourceTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("labelSelectors", this.labelSelectors,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("persistentVolumeRestoreMode",
+            this.persistentVolumeRestoreMode == null ? null : this.persistentVolumeRestoreMode.toString());
+        jsonWriter.writeStringField("conflictPolicy",
+            this.conflictPolicy == null ? null : this.conflictPolicy.toString());
+        jsonWriter.writeMapField("namespaceMappings", this.namespaceMappings,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("restoreHookReferences", this.restoreHookReferences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("resourceModifierReference", this.resourceModifierReference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesClusterRestoreCriteria from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesClusterRestoreCriteria if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KubernetesClusterRestoreCriteria.
+     */
+    public static KubernetesClusterRestoreCriteria fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesClusterRestoreCriteria deserializedKubernetesClusterRestoreCriteria
+                = new KubernetesClusterRestoreCriteria();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("includeClusterScopeResources".equals(fieldName)) {
+                    deserializedKubernetesClusterRestoreCriteria.includeClusterScopeResources = reader.getBoolean();
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedKubernetesClusterRestoreCriteria.objectType = reader.getString();
+                } else if ("includedNamespaces".equals(fieldName)) {
+                    List<String> includedNamespaces = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKubernetesClusterRestoreCriteria.includedNamespaces = includedNamespaces;
+                } else if ("excludedNamespaces".equals(fieldName)) {
+                    List<String> excludedNamespaces = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKubernetesClusterRestoreCriteria.excludedNamespaces = excludedNamespaces;
+                } else if ("includedResourceTypes".equals(fieldName)) {
+                    List<String> includedResourceTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKubernetesClusterRestoreCriteria.includedResourceTypes = includedResourceTypes;
+                } else if ("excludedResourceTypes".equals(fieldName)) {
+                    List<String> excludedResourceTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKubernetesClusterRestoreCriteria.excludedResourceTypes = excludedResourceTypes;
+                } else if ("labelSelectors".equals(fieldName)) {
+                    List<String> labelSelectors = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKubernetesClusterRestoreCriteria.labelSelectors = labelSelectors;
+                } else if ("persistentVolumeRestoreMode".equals(fieldName)) {
+                    deserializedKubernetesClusterRestoreCriteria.persistentVolumeRestoreMode
+                        = PersistentVolumeRestoreMode.fromString(reader.getString());
+                } else if ("conflictPolicy".equals(fieldName)) {
+                    deserializedKubernetesClusterRestoreCriteria.conflictPolicy
+                        = ExistingResourcePolicy.fromString(reader.getString());
+                } else if ("namespaceMappings".equals(fieldName)) {
+                    Map<String, String> namespaceMappings = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKubernetesClusterRestoreCriteria.namespaceMappings = namespaceMappings;
+                } else if ("restoreHookReferences".equals(fieldName)) {
+                    List<NamespacedNameResource> restoreHookReferences
+                        = reader.readArray(reader1 -> NamespacedNameResource.fromJson(reader1));
+                    deserializedKubernetesClusterRestoreCriteria.restoreHookReferences = restoreHookReferences;
+                } else if ("resourceModifierReference".equals(fieldName)) {
+                    deserializedKubernetesClusterRestoreCriteria.resourceModifierReference
+                        = NamespacedNameResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesClusterRestoreCriteria;
+        });
     }
 }

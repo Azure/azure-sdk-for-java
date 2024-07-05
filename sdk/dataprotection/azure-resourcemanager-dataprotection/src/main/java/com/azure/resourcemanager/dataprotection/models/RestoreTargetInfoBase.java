@@ -6,42 +6,45 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Base class common to RestoreTargetInfo and RestoreFilesTargetInfo.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "objectType",
-    defaultImpl = RestoreTargetInfoBase.class)
-@JsonTypeName("RestoreTargetInfoBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "ItemLevelRestoreTargetInfo", value = ItemLevelRestoreTargetInfo.class),
-    @JsonSubTypes.Type(name = "RestoreFilesTargetInfo", value = RestoreFilesTargetInfo.class),
-    @JsonSubTypes.Type(name = "RestoreTargetInfo", value = RestoreTargetInfo.class) })
 @Fluent
-public class RestoreTargetInfoBase {
+public class RestoreTargetInfoBase implements JsonSerializable<RestoreTargetInfoBase> {
+    /*
+     * Type of Datasource object, used to initialize the right inherited type
+     */
+    private String objectType = "RestoreTargetInfoBase";
+
     /*
      * Recovery Option
      */
-    @JsonProperty(value = "recoveryOption", required = true)
     private RecoveryOption recoveryOption;
 
     /*
      * Target Restore region
      */
-    @JsonProperty(value = "restoreLocation")
     private String restoreLocation;
 
     /**
      * Creates an instance of RestoreTargetInfoBase class.
      */
     public RestoreTargetInfoBase() {
+    }
+
+    /**
+     * Get the objectType property: Type of Datasource object, used to initialize the right inherited type.
+     * 
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -91,10 +94,84 @@ public class RestoreTargetInfoBase {
      */
     public void validate() {
         if (recoveryOption() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property recoveryOption in model RestoreTargetInfoBase"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryOption in model RestoreTargetInfoBase"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RestoreTargetInfoBase.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryOption",
+            this.recoveryOption == null ? null : this.recoveryOption.toString());
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("restoreLocation", this.restoreLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestoreTargetInfoBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestoreTargetInfoBase if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RestoreTargetInfoBase.
+     */
+    public static RestoreTargetInfoBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("ItemLevelRestoreTargetInfo".equals(discriminatorValue)) {
+                    return ItemLevelRestoreTargetInfo.fromJson(readerToUse.reset());
+                } else if ("RestoreFilesTargetInfo".equals(discriminatorValue)) {
+                    return RestoreFilesTargetInfo.fromJson(readerToUse.reset());
+                } else if ("RestoreTargetInfo".equals(discriminatorValue)) {
+                    return RestoreTargetInfo.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static RestoreTargetInfoBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestoreTargetInfoBase deserializedRestoreTargetInfoBase = new RestoreTargetInfoBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryOption".equals(fieldName)) {
+                    deserializedRestoreTargetInfoBase.recoveryOption = RecoveryOption.fromString(reader.getString());
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedRestoreTargetInfoBase.objectType = reader.getString();
+                } else if ("restoreLocation".equals(fieldName)) {
+                    deserializedRestoreTargetInfoBase.restoreLocation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestoreTargetInfoBase;
+        });
+    }
 }

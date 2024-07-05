@@ -12,19 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class RestoreJobRecoveryPointDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestoreJobRecoveryPointDetails model
-            = BinaryData.fromString("{\"recoveryPointID\":\"fovasr\",\"recoveryPointTime\":\"2021-11-24T07:21:32Z\"}")
-                .toObject(RestoreJobRecoveryPointDetails.class);
-        Assertions.assertEquals("fovasr", model.recoveryPointId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-24T07:21:32Z"), model.recoveryPointTime());
+        RestoreJobRecoveryPointDetails model = BinaryData
+            .fromString("{\"recoveryPointID\":\"qlveualupjmkh\",\"recoveryPointTime\":\"2021-08-19T13:39:55Z\"}")
+            .toObject(RestoreJobRecoveryPointDetails.class);
+        Assertions.assertEquals("qlveualupjmkh", model.recoveryPointId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T13:39:55Z"), model.recoveryPointTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestoreJobRecoveryPointDetails model = new RestoreJobRecoveryPointDetails().withRecoveryPointId("fovasr")
-            .withRecoveryPointTime(OffsetDateTime.parse("2021-11-24T07:21:32Z"));
+        RestoreJobRecoveryPointDetails model = new RestoreJobRecoveryPointDetails().withRecoveryPointId("qlveualupjmkh")
+            .withRecoveryPointTime(OffsetDateTime.parse("2021-08-19T13:39:55Z"));
         model = BinaryData.fromObject(model).toObject(RestoreJobRecoveryPointDetails.class);
-        Assertions.assertEquals("fovasr", model.recoveryPointId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-24T07:21:32Z"), model.recoveryPointTime());
+        Assertions.assertEquals("qlveualupjmkh", model.recoveryPointId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T13:39:55Z"), model.recoveryPointTime());
     }
 }

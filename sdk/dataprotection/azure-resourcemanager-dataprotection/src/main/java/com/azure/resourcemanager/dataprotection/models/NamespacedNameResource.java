@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * NamespacedNameResource
@@ -13,17 +17,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Class to refer resources which contains namespace and name.
  */
 @Fluent
-public final class NamespacedNameResource {
+public final class NamespacedNameResource implements JsonSerializable<NamespacedNameResource> {
     /*
      * Name of the resource
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Namespace in which the resource exists
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /**
@@ -78,5 +80,44 @@ public final class NamespacedNameResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("namespace", this.namespace);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NamespacedNameResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NamespacedNameResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NamespacedNameResource.
+     */
+    public static NamespacedNameResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NamespacedNameResource deserializedNamespacedNameResource = new NamespacedNameResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNamespacedNameResource.name = reader.getString();
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedNamespacedNameResource.namespace = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNamespacedNameResource;
+        });
     }
 }
