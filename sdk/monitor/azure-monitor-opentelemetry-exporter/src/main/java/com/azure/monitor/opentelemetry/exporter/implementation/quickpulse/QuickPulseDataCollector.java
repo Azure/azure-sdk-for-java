@@ -87,6 +87,37 @@ final class QuickPulseDataCollector {
         return null;
     }
 
+
+    void addOtelMetric(TelemetryItem telemetryItem){
+        if (!isEnabled()) {
+            // quick pulse is not enabled or quick pulse data sender is not enabled
+            return;
+        }
+
+        if (!telemetryItem.getInstrumentationKey().equals(instrumentationKeySupplier.get())) {
+            return;
+        }
+
+        Float sampleRate = telemetryItem.getSampleRate();
+        if (sampleRate != null && sampleRate == 0) {
+            // sampleRate should never be zero (how could it be captured if sampling set to zero percent?)
+            return;
+        }
+        int itemCount = sampleRate == null ? 1 : Math.round(100 / sampleRate);
+
+        if (Objects.equals(telemetryItem.getResource().getAttribute(AttributeKey.stringKey("telemetry.sdk.name")), "opentelemetry")) {
+            MonitorDomain data2 = telemetryItem.getData().getBaseData();
+            MetricsData metricsData = (MetricsData) data2;
+            MetricDataPoint point = metricsData.getMetrics().get(0);
+            System.out.println("SDK Metric Data Length: " + metricsData.getMetrics().size());
+            System.out.println("SDK Metric Name: " + point.getName());
+            System.out.println("SDK Metric Value: " + point.getValue());
+            System.out.println("SDK Metric attributes: " + metricsData.getProperties());
+            //System.out.println("SDK Metric Type: " + point.getType());
+        }
+
+    }
+
     void add(TelemetryItem telemetryItem) {
         if (!isEnabled()) {
             // quick pulse is not enabled or quick pulse data sender is not enabled

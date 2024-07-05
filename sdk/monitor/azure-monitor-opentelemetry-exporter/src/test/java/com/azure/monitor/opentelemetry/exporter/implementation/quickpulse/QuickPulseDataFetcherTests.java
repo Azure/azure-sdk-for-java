@@ -89,6 +89,7 @@ class QuickPulseDataFetcherTests {
         headers.put("x-ms-qps-service-polling-interval-hint", "1000");
         headers.put("x-ms-qps-service-endpoint-redirect-v2", "https://new.endpoint.com");
         headers.put("x-ms-qps-subscribed", "true");
+        headers.put("x-ms-qps-configuration-etag", "sample");
         HttpHeaders httpHeaders = new HttpHeaders(headers);
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
         HttpPipeline httpPipeline =

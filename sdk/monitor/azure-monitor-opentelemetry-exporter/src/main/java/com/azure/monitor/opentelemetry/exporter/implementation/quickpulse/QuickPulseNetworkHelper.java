@@ -26,11 +26,13 @@ final class QuickPulseNetworkHelper {
     private static final String QPS_MACHINE_NAME_HEADER = "x-ms-qps-machine-name";
     private static final String QPS_ROLE_NAME_HEADER = "x-ms-qps-role-name";
     private static final String QPS_INVARIANT_VERSION_HEADER = "x-ms-qps-invariant-version";
+    private static final String QPS_CONFIGURATION_ETAG_HEADER = "x-ms-qps-configuration-etag";
     private static final HttpHeaderName QPS_ROLE_NAME_HEADER_NAME = HttpHeaderName.fromString(QPS_ROLE_NAME_HEADER);
     private static final HttpHeaderName QPS_MACHINE_NAME_HEADER_NAME = HttpHeaderName.fromString(QPS_MACHINE_NAME_HEADER);
     private static final HttpHeaderName QPS_STREAM_ID_HEADER_NAME = HttpHeaderName.fromString(QPS_STREAM_ID_HEADER);
     private static final HttpHeaderName QPS_INSTANCE_NAME_HEADER_NAME = HttpHeaderName.fromString(QPS_INSTANCE_NAME_HEADER);
     private static final HttpHeaderName QPS_INVARIANT_VERSION_HEADER_NAME = HttpHeaderName.fromString(QPS_INVARIANT_VERSION_HEADER);
+    private static final HttpHeaderName QPS_CONFIGURATION_ETAG_HEADER_NAME = HttpHeaderName.fromString(QPS_CONFIGURATION_ETAG_HEADER);
 
     HttpRequest buildPingRequest(
         Date currentDate,
@@ -46,6 +48,7 @@ final class QuickPulseNetworkHelper {
         request.setHeader(QPS_STREAM_ID_HEADER_NAME, quickPulseId);
         request.setHeader(QPS_INSTANCE_NAME_HEADER_NAME, instanceName);
         request.setHeader(QPS_INVARIANT_VERSION_HEADER_NAME, Integer.toString(QuickPulse.QP_INVARIANT_VERSION));
+        request.setHeader(QPS_CONFIGURATION_ETAG_HEADER_NAME, "");
         return request;
     }
 
@@ -54,6 +57,7 @@ final class QuickPulseNetworkHelper {
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, address);
         request.setHeader(HttpHeaderName.fromString(HEADER_TRANSMISSION_TIME), String.valueOf(ticks));
+        request.setHeader(QPS_CONFIGURATION_ETAG_HEADER_NAME, "");
         return request;
     }
 
@@ -72,6 +76,11 @@ final class QuickPulseNetworkHelper {
                 String qpStatus = header.getValue();
                 if ("true".equalsIgnoreCase(qpStatus)) {
                     status = QuickPulseStatus.QP_IS_ON;
+                    String headName = headers.get(QPS_CONFIGURATION_ETAG_HEADER_NAME).getName();
+                    String headValue = headers.get(QPS_CONFIGURATION_ETAG_HEADER_NAME).getValue();
+                    System.out.println("************************");
+                    System.out.println(headName + ": "  + headValue);
+                    System.out.println("************************");
                 } else {
                     status = QuickPulseStatus.QP_IS_OFF;
                 }
