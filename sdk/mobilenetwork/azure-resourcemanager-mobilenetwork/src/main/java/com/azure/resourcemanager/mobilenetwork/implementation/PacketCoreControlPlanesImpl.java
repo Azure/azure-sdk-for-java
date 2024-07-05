@@ -133,8 +133,8 @@ public final class PacketCoreControlPlanesImpl implements PacketCoreControlPlane
 
     public AsyncOperationStatus collectDiagnosticsPackage(String resourceGroupName, String packetCoreControlPlaneName,
         PacketCoreControlPlaneCollectDiagnosticsPackage parameters, Context context) {
-        AsyncOperationStatusInner inner = this.serviceClient().collectDiagnosticsPackage(resourceGroupName,
-            packetCoreControlPlaneName, parameters, context);
+        AsyncOperationStatusInner inner = this.serviceClient()
+            .collectDiagnosticsPackage(resourceGroupName, packetCoreControlPlaneName, parameters, context);
         if (inner != null) {
             return new AsyncOperationStatusImpl(inner, this.manager());
         } else {

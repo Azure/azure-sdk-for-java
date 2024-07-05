@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EndpointsClient.
+ */
 public final class EndpointsClientImpl implements EndpointsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EndpointsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final StorageMoverClientImpl client;
 
     /**
      * Initializes an instance of EndpointsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EndpointsClientImpl(StorageMoverClientImpl client) {
-        this.service =
-            RestProxy.create(EndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(EndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,96 +72,70 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @Host("{$host}")
     @ServiceInterface(name = "StorageMoverClientEn")
     public interface EndpointsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EndpointList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageMoverName") String storageMoverName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EndpointInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName,
-            @PathParam("endpointName") String endpointName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageMoverName") String storageMoverName, @PathParam("endpointName") String endpointName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EndpointInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName,
-            @PathParam("endpointName") String endpointName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") EndpointInner endpointParam,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageMoverName") String storageMoverName, @PathParam("endpointName") String endpointName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") EndpointInner endpointParam,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EndpointInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName,
-            @PathParam("endpointName") String endpointName,
+            @PathParam("storageMoverName") String storageMoverName, @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EndpointBaseUpdateParameters endpointParam,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName,
-            @PathParam("endpointName") String endpointName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageMoverName") String storageMoverName, @PathParam("endpointName") String endpointName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EndpointList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all Endpoints in a Storage Mover.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,16 +146,12 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EndpointInner>> listSinglePageAsync(String resourceGroupName, String storageMoverName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -187,32 +163,16 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageMoverName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<EndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, storageMoverName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<EndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all Endpoints in a Storage Mover.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param context The context to associate with this operation.
@@ -222,19 +182,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return list of Endpoints along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EndpointInner>> listSinglePageAsync(
-        String resourceGroupName, String storageMoverName, Context context) {
+    private Mono<PagedResponse<EndpointInner>> listSinglePageAsync(String resourceGroupName, String storageMoverName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -247,28 +203,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageMoverName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, storageMoverName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all Endpoints in a Storage Mover.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -278,14 +221,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EndpointInner> listAsync(String resourceGroupName, String storageMoverName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, storageMoverName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, storageMoverName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all Endpoints in a Storage Mover.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param context The context to associate with this operation.
@@ -296,14 +238,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EndpointInner> listAsync(String resourceGroupName, String storageMoverName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, storageMoverName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, storageMoverName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all Endpoints in a Storage Mover.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -318,7 +259,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Lists all Endpoints in a Storage Mover.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param context The context to associate with this operation.
@@ -334,7 +275,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -344,19 +285,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return an Endpoint resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointInner>> getWithResponseAsync(
-        String resourceGroupName, String storageMoverName, String endpointName) {
+    private Mono<Response<EndpointInner>> getWithResponseAsync(String resourceGroupName, String storageMoverName,
+        String endpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -371,24 +308,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageMoverName,
-                            endpointName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, storageMoverName, endpointName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -399,19 +326,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return an Endpoint resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointInner>> getWithResponseAsync(
-        String resourceGroupName, String storageMoverName, String endpointName, Context context) {
+    private Mono<Response<EndpointInner>> getWithResponseAsync(String resourceGroupName, String storageMoverName,
+        String endpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -426,21 +349,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageMoverName,
-                endpointName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            storageMoverName, endpointName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -457,7 +372,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -468,14 +383,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return an Endpoint resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EndpointInner> getWithResponse(
-        String resourceGroupName, String storageMoverName, String endpointName, Context context) {
+    public Response<EndpointInner> getWithResponse(String resourceGroupName, String storageMoverName,
+        String endpointName, Context context) {
         return getWithResponseAsync(resourceGroupName, storageMoverName, endpointName, context).block();
     }
 
     /**
      * Gets an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -491,31 +406,27 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Creates or updates an Endpoint resource, which represents a data transfer source or destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
-     * @param endpointParam The Endpoint resource, which contains information about file sources and targets.
+     * @param endpointParam The endpointParam parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Endpoint resource, which contains information about file sources and targets along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the Endpoint resource, which contains information about file sources and targets along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String storageMoverName, String endpointName, EndpointInner endpointParam) {
+    private Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String storageMoverName, String endpointName, EndpointInner endpointParam) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -535,54 +446,36 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageMoverName,
-                            endpointName,
-                            this.client.getApiVersion(),
-                            endpointParam,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, storageMoverName, endpointName, this.client.getApiVersion(), endpointParam, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an Endpoint resource, which represents a data transfer source or destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
-     * @param endpointParam The Endpoint resource, which contains information about file sources and targets.
+     * @param endpointParam The endpointParam parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Endpoint resource, which contains information about file sources and targets along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the Endpoint resource, which contains information about file sources and targets along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String storageMoverName,
-        String endpointName,
-        EndpointInner endpointParam,
-        Context context) {
+    private Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String storageMoverName, String endpointName, EndpointInner endpointParam, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -602,115 +495,93 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageMoverName,
-                endpointName,
-                this.client.getApiVersion(),
-                endpointParam,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            storageMoverName, endpointName, this.client.getApiVersion(), endpointParam, accept, context);
     }
 
     /**
      * Creates or updates an Endpoint resource, which represents a data transfer source or destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
-     * @param endpointParam The Endpoint resource, which contains information about file sources and targets.
+     * @param endpointParam The endpointParam parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Endpoint resource, which contains information about file sources and targets on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EndpointInner> createOrUpdateAsync(
-        String resourceGroupName, String storageMoverName, String endpointName, EndpointInner endpointParam) {
+    private Mono<EndpointInner> createOrUpdateAsync(String resourceGroupName, String storageMoverName,
+        String endpointName, EndpointInner endpointParam) {
         return createOrUpdateWithResponseAsync(resourceGroupName, storageMoverName, endpointName, endpointParam)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates an Endpoint resource, which represents a data transfer source or destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
-     * @param endpointParam The Endpoint resource, which contains information about file sources and targets.
+     * @param endpointParam The endpointParam parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Endpoint resource, which contains information about file sources and targets along with {@link
-     *     Response}.
+     * @return the Endpoint resource, which contains information about file sources and targets along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EndpointInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String storageMoverName,
-        String endpointName,
-        EndpointInner endpointParam,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, storageMoverName, endpointName, endpointParam, context)
-            .block();
+    public Response<EndpointInner> createOrUpdateWithResponse(String resourceGroupName, String storageMoverName,
+        String endpointName, EndpointInner endpointParam, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, storageMoverName, endpointName, endpointParam,
+            context).block();
     }
 
     /**
      * Creates or updates an Endpoint resource, which represents a data transfer source or destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
-     * @param endpointParam The Endpoint resource, which contains information about file sources and targets.
+     * @param endpointParam The endpointParam parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Endpoint resource, which contains information about file sources and targets.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EndpointInner createOrUpdate(
-        String resourceGroupName, String storageMoverName, String endpointName, EndpointInner endpointParam) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, storageMoverName, endpointName, endpointParam, Context.NONE)
-            .getValue();
+    public EndpointInner createOrUpdate(String resourceGroupName, String storageMoverName, String endpointName,
+        EndpointInner endpointParam) {
+        return createOrUpdateWithResponse(resourceGroupName, storageMoverName, endpointName, endpointParam,
+            Context.NONE).getValue();
     }
 
     /**
      * Updates properties for an Endpoint resource. Properties not specified in the request body will be unchanged.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
-     * @param endpointParam The Endpoint resource.
+     * @param endpointParam The endpointParam parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Endpoint resource, which contains information about file sources and targets along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the Endpoint resource, which contains information about file sources and targets along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String storageMoverName,
-        String endpointName,
-        EndpointBaseUpdateParameters endpointParam) {
+    private Mono<Response<EndpointInner>> updateWithResponseAsync(String resourceGroupName, String storageMoverName,
+        String endpointName, EndpointBaseUpdateParameters endpointParam) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -731,53 +602,35 @@ public final class EndpointsClientImpl implements EndpointsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageMoverName,
-                            endpointName,
-                            this.client.getApiVersion(),
-                            endpointParam,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    storageMoverName, endpointName, this.client.getApiVersion(), endpointParam, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates properties for an Endpoint resource. Properties not specified in the request body will be unchanged.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
-     * @param endpointParam The Endpoint resource.
+     * @param endpointParam The endpointParam parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Endpoint resource, which contains information about file sources and targets along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the Endpoint resource, which contains information about file sources and targets along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String storageMoverName,
-        String endpointName,
-        EndpointBaseUpdateParameters endpointParam,
-        Context context) {
+    private Mono<Response<EndpointInner>> updateWithResponseAsync(String resourceGroupName, String storageMoverName,
+        String endpointName, EndpointBaseUpdateParameters endpointParam, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -797,37 +650,25 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageMoverName,
-                endpointName,
-                this.client.getApiVersion(),
-                endpointParam,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            storageMoverName, endpointName, this.client.getApiVersion(), endpointParam, accept, context);
     }
 
     /**
      * Updates properties for an Endpoint resource. Properties not specified in the request body will be unchanged.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
-     * @param endpointParam The Endpoint resource.
+     * @param endpointParam The endpointParam parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Endpoint resource, which contains information about file sources and targets on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EndpointInner> updateAsync(
-        String resourceGroupName,
-        String storageMoverName,
-        String endpointName,
+    private Mono<EndpointInner> updateAsync(String resourceGroupName, String storageMoverName, String endpointName,
         EndpointBaseUpdateParameters endpointParam) {
         return updateWithResponseAsync(resourceGroupName, storageMoverName, endpointName, endpointParam)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -835,46 +676,39 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Updates properties for an Endpoint resource. Properties not specified in the request body will be unchanged.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
-     * @param endpointParam The Endpoint resource.
+     * @param endpointParam The endpointParam parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Endpoint resource, which contains information about file sources and targets along with {@link
-     *     Response}.
+     * @return the Endpoint resource, which contains information about file sources and targets along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EndpointInner> updateWithResponse(
-        String resourceGroupName,
-        String storageMoverName,
-        String endpointName,
-        EndpointBaseUpdateParameters endpointParam,
-        Context context) {
+    public Response<EndpointInner> updateWithResponse(String resourceGroupName, String storageMoverName,
+        String endpointName, EndpointBaseUpdateParameters endpointParam, Context context) {
         return updateWithResponseAsync(resourceGroupName, storageMoverName, endpointName, endpointParam, context)
             .block();
     }
 
     /**
      * Updates properties for an Endpoint resource. Properties not specified in the request body will be unchanged.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
-     * @param endpointParam The Endpoint resource.
+     * @param endpointParam The endpointParam parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Endpoint resource, which contains information about file sources and targets.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EndpointInner update(
-        String resourceGroupName,
-        String storageMoverName,
-        String endpointName,
+    public EndpointInner update(String resourceGroupName, String storageMoverName, String endpointName,
         EndpointBaseUpdateParameters endpointParam) {
         return updateWithResponse(resourceGroupName, storageMoverName, endpointName, endpointParam, Context.NONE)
             .getValue();
@@ -882,7 +716,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Deletes an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -892,19 +726,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String storageMoverName, String endpointName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String storageMoverName,
+        String endpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -919,24 +749,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageMoverName,
-                            endpointName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, storageMoverName, endpointName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -947,19 +767,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String storageMoverName, String endpointName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String storageMoverName,
+        String endpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -974,21 +790,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageMoverName,
-                endpointName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            storageMoverName, endpointName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -998,19 +806,17 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String storageMoverName, String endpointName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, storageMoverName, endpointName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String storageMoverName,
+        String endpointName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, storageMoverName, endpointName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -1021,19 +827,18 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String storageMoverName, String endpointName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String storageMoverName,
+        String endpointName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, storageMoverName, endpointName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, storageMoverName, endpointName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -1043,14 +848,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String storageMoverName, String endpointName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
+        String endpointName) {
         return this.beginDeleteAsync(resourceGroupName, storageMoverName, endpointName).getSyncPoller();
     }
 
     /**
      * Deletes an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -1061,14 +866,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String storageMoverName, String endpointName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
+        String endpointName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, storageMoverName, endpointName, context).getSyncPoller();
     }
 
     /**
      * Deletes an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -1079,14 +884,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String storageMoverName, String endpointName) {
-        return beginDeleteAsync(resourceGroupName, storageMoverName, endpointName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, storageMoverName, endpointName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -1097,16 +901,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String storageMoverName, String endpointName, Context context) {
-        return beginDeleteAsync(resourceGroupName, storageMoverName, endpointName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String storageMoverName, String endpointName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, storageMoverName, endpointName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -1121,7 +924,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Deletes an Endpoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param endpointName The name of the Endpoint resource.
@@ -1137,9 +940,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1151,31 +953,20 @@ public final class EndpointsClientImpl implements EndpointsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<EndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1188,23 +979,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

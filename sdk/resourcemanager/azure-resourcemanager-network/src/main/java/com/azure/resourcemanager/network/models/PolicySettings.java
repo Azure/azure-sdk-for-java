@@ -67,8 +67,7 @@ public final class PolicySettings {
     private Integer customBlockResponseStatusCode;
 
     /*
-     * If the action type is block, customer can override the response body. The body must be specified in base64
-     * encoding.
+     * If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
      */
     @JsonProperty(value = "customBlockResponseBody")
     private String customBlockResponseBody;
@@ -78,6 +77,12 @@ public final class PolicySettings {
      */
     @JsonProperty(value = "logScrubbing")
     private PolicySettingsLogScrubbing logScrubbing;
+
+    /*
+     * Web Application Firewall JavaScript Challenge Cookie Expiration time in minutes.
+     */
+    @JsonProperty(value = "jsChallengeCookieExpirationInMins")
+    private Integer jsChallengeCookieExpirationInMins;
 
     /**
      * Creates an instance of PolicySettings class.
@@ -306,6 +311,28 @@ public final class PolicySettings {
      */
     public PolicySettings withLogScrubbing(PolicySettingsLogScrubbing logScrubbing) {
         this.logScrubbing = logScrubbing;
+        return this;
+    }
+
+    /**
+     * Get the jsChallengeCookieExpirationInMins property: Web Application Firewall JavaScript Challenge Cookie
+     * Expiration time in minutes.
+     * 
+     * @return the jsChallengeCookieExpirationInMins value.
+     */
+    public Integer jsChallengeCookieExpirationInMins() {
+        return this.jsChallengeCookieExpirationInMins;
+    }
+
+    /**
+     * Set the jsChallengeCookieExpirationInMins property: Web Application Firewall JavaScript Challenge Cookie
+     * Expiration time in minutes.
+     * 
+     * @param jsChallengeCookieExpirationInMins the jsChallengeCookieExpirationInMins value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withJsChallengeCookieExpirationInMins(Integer jsChallengeCookieExpirationInMins) {
+        this.jsChallengeCookieExpirationInMins = jsChallengeCookieExpirationInMins;
         return this;
     }
 

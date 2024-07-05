@@ -35,8 +35,7 @@ public final class VolumeQuotaRulesProperties {
     private Type quotaType;
 
     /*
-     * UserID/GroupID/SID based on the quota target type. UserID and groupID can be found by running ‘id’ or ‘getent’
-     * command for the user or group and SID can be found by running <wmic useraccount where name='user-name' get sid>
+     * UserID/GroupID/SID based on the quota target type. UserID and groupID can be found by running ‘id’ or ‘getent’ command for the user or group and SID can be found by running <wmic useraccount where name='user-name' get sid>
      */
     @JsonProperty(value = "quotaTarget")
     private String quotaTarget;

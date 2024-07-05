@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class AzureRedisPasswordlessProperties implements PasswordlessProperties {
 
-    private static final String REDIS_SCOPE_AZURE = "https://*.cacheinfra.windows.net:10225/appid/.default";
+    private static final String REDIS_SCOPE_AZURE = "https://redis.azure.com/.default";
     private static final String REDIS_SCOPE_AZURE_CHINA = "https://*.cacheinfra.windows.net.china:10225/appid/.default";
     /**
      * @deprecated AZURE_GERMANY is deprecated. Please use other Redis scopes.

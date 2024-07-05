@@ -5,61 +5,63 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** An Azure Storage blob. */
-@JacksonXmlRootElement(localName = "Blob")
+/**
+ * An Azure Storage blob.
+ */
 @Fluent
-public final class BlobItemInternal {
+public final class BlobItemInternal implements XmlSerializable<BlobItemInternal> {
     /*
      * The Name property.
      */
-    @JsonProperty(value = "Name", required = true)
     private String name;
 
     /*
      * The Deleted property.
      */
-    @JsonProperty(value = "Deleted", required = true)
     private boolean deleted;
 
     /*
      * The Snapshot property.
      */
-    @JsonProperty(value = "Snapshot", required = true)
     private String snapshot;
 
     /*
      * The VersionId property.
      */
-    @JsonProperty(value = "VersionId")
     private String versionId;
 
     /*
      * The IsCurrentVersion property.
      */
-    @JsonProperty(value = "IsCurrentVersion")
     private Boolean isCurrentVersion;
 
     /*
      * Properties of a blob
      */
-    @JsonProperty(value = "Properties", required = true)
     private BlobPropertiesInternal properties;
 
     /*
      * The DeletionId property.
      */
-    @JsonProperty(value = "DeletionId")
     private String deletionId;
 
-    /** Creates an instance of BlobItemInternal class. */
-    public BlobItemInternal() {}
+    /**
+     * Creates an instance of BlobItemInternal class.
+     */
+    public BlobItemInternal() {
+    }
 
     /**
      * Get the name property: The Name property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -68,7 +70,7 @@ public final class BlobItemInternal {
 
     /**
      * Set the name property: The Name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the BlobItemInternal object itself.
      */
@@ -79,7 +81,7 @@ public final class BlobItemInternal {
 
     /**
      * Get the deleted property: The Deleted property.
-     *
+     * 
      * @return the deleted value.
      */
     public boolean isDeleted() {
@@ -88,7 +90,7 @@ public final class BlobItemInternal {
 
     /**
      * Set the deleted property: The Deleted property.
-     *
+     * 
      * @param deleted the deleted value to set.
      * @return the BlobItemInternal object itself.
      */
@@ -99,7 +101,7 @@ public final class BlobItemInternal {
 
     /**
      * Get the snapshot property: The Snapshot property.
-     *
+     * 
      * @return the snapshot value.
      */
     public String getSnapshot() {
@@ -108,7 +110,7 @@ public final class BlobItemInternal {
 
     /**
      * Set the snapshot property: The Snapshot property.
-     *
+     * 
      * @param snapshot the snapshot value to set.
      * @return the BlobItemInternal object itself.
      */
@@ -119,7 +121,7 @@ public final class BlobItemInternal {
 
     /**
      * Get the versionId property: The VersionId property.
-     *
+     * 
      * @return the versionId value.
      */
     public String getVersionId() {
@@ -128,7 +130,7 @@ public final class BlobItemInternal {
 
     /**
      * Set the versionId property: The VersionId property.
-     *
+     * 
      * @param versionId the versionId value to set.
      * @return the BlobItemInternal object itself.
      */
@@ -139,7 +141,7 @@ public final class BlobItemInternal {
 
     /**
      * Get the isCurrentVersion property: The IsCurrentVersion property.
-     *
+     * 
      * @return the isCurrentVersion value.
      */
     public Boolean isCurrentVersion() {
@@ -148,7 +150,7 @@ public final class BlobItemInternal {
 
     /**
      * Set the isCurrentVersion property: The IsCurrentVersion property.
-     *
+     * 
      * @param isCurrentVersion the isCurrentVersion value to set.
      * @return the BlobItemInternal object itself.
      */
@@ -159,7 +161,7 @@ public final class BlobItemInternal {
 
     /**
      * Get the properties property: Properties of a blob.
-     *
+     * 
      * @return the properties value.
      */
     public BlobPropertiesInternal getProperties() {
@@ -168,7 +170,7 @@ public final class BlobItemInternal {
 
     /**
      * Set the properties property: Properties of a blob.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BlobItemInternal object itself.
      */
@@ -179,7 +181,7 @@ public final class BlobItemInternal {
 
     /**
      * Get the deletionId property: The DeletionId property.
-     *
+     * 
      * @return the deletionId value.
      */
     public String getDeletionId() {
@@ -188,12 +190,85 @@ public final class BlobItemInternal {
 
     /**
      * Set the deletionId property: The DeletionId property.
-     *
+     * 
      * @param deletionId the deletionId value to set.
      * @return the BlobItemInternal object itself.
      */
     public BlobItemInternal setDeletionId(String deletionId) {
         this.deletionId = deletionId;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Blob" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("Name", this.name);
+        xmlWriter.writeBooleanElement("Deleted", this.deleted);
+        xmlWriter.writeStringElement("Snapshot", this.snapshot);
+        xmlWriter.writeStringElement("VersionId", this.versionId);
+        xmlWriter.writeBooleanElement("IsCurrentVersion", this.isCurrentVersion);
+        xmlWriter.writeXml(this.properties, "Properties");
+        xmlWriter.writeStringElement("DeletionId", this.deletionId);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of BlobItemInternal from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of BlobItemInternal if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the BlobItemInternal.
+     */
+    public static BlobItemInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of BlobItemInternal from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of BlobItemInternal if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the BlobItemInternal.
+     */
+    public static BlobItemInternal fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Blob" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            BlobItemInternal deserializedBlobItemInternal = new BlobItemInternal();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Name".equals(elementName.getLocalPart())) {
+                    deserializedBlobItemInternal.name = reader.getStringElement();
+                } else if ("Deleted".equals(elementName.getLocalPart())) {
+                    deserializedBlobItemInternal.deleted = reader.getBooleanElement();
+                } else if ("Snapshot".equals(elementName.getLocalPart())) {
+                    deserializedBlobItemInternal.snapshot = reader.getStringElement();
+                } else if ("VersionId".equals(elementName.getLocalPart())) {
+                    deserializedBlobItemInternal.versionId = reader.getStringElement();
+                } else if ("IsCurrentVersion".equals(elementName.getLocalPart())) {
+                    deserializedBlobItemInternal.isCurrentVersion = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("Properties".equals(elementName.getLocalPart())) {
+                    deserializedBlobItemInternal.properties = BlobPropertiesInternal.fromXml(reader, "Properties");
+                } else if ("DeletionId".equals(elementName.getLocalPart())) {
+                    deserializedBlobItemInternal.deletionId = reader.getStringElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedBlobItemInternal;
+        });
     }
 }

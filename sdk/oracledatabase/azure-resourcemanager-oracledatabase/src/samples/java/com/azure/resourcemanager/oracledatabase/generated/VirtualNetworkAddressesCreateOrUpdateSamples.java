@@ -11,7 +11,9 @@ import com.azure.resourcemanager.oracledatabase.models.VirtualNetworkAddressProp
  */
 public final class VirtualNetworkAddressesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/virtualNetworkAddresses_create.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/virtualNetworkAddresses_create.
+     * json
      */
     /**
      * Sample code: Create Virtual Network Address.

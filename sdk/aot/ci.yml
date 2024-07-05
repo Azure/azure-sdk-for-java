@@ -43,7 +43,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: aot
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-aot-graalvm-support
         groupId: com.azure

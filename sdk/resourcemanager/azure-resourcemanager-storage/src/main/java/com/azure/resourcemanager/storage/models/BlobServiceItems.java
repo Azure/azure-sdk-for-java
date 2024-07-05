@@ -9,7 +9,9 @@ import com.azure.resourcemanager.storage.fluent.models.BlobServicePropertiesInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The BlobServiceItems model. */
+/**
+ * The BlobServiceItems model.
+ */
 @Immutable
 public final class BlobServiceItems {
     /*
@@ -18,13 +20,15 @@ public final class BlobServiceItems {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<BlobServicePropertiesInner> value;
 
-    /** Creates an instance of BlobServiceItems class. */
+    /**
+     * Creates an instance of BlobServiceItems class.
+     */
     public BlobServiceItems() {
     }
 
     /**
      * Get the value property: List of blob services returned.
-     *
+     * 
      * @return the value value.
      */
     public List<BlobServicePropertiesInner> value() {
@@ -33,7 +37,7 @@ public final class BlobServiceItems {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

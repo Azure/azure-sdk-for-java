@@ -47,7 +47,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: openai
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-ai-openai
         groupId: com.azure

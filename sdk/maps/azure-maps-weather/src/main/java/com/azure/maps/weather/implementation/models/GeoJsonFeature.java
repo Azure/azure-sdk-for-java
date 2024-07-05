@@ -5,54 +5,65 @@
 package com.azure.maps.weather.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A valid `GeoJSON Feature` object type. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.2)
  * for details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Feature")
 @Fluent
 public final class GeoJsonFeature extends GeoJsonObject {
     /*
-     * A valid `GeoJSON` geometry object. The type must be one of the seven valid GeoJSON geometry types - Point,
-     * MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon and GeometryCollection. Please refer to [RFC
-     * 7946](https://tools.ietf.org/html/rfc7946#section-3.1) for details.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
-    @JsonProperty(value = "geometry", required = true)
+    private GeoJsonObjectType type = GeoJsonObjectType.GEO_JSON_FEATURE;
+
+    /*
+     * A valid `GeoJSON` geometry object. The type must be one of the seven valid GeoJSON geometry types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon and GeometryCollection. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1) for details.
+     */
     private GeoJsonGeometry geometry;
 
     /*
-     * Properties can contain any additional metadata about the `Feature`. Value can be any JSON object or a JSON null
-     * value
+     * Properties can contain any additional metadata about the `Feature`. Value can be any JSON object or a JSON null value
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /*
      * Identifier for the feature.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
-     * The type of the feature. The value depends on the data model the current feature is part of. Some data models
-     * may have an empty value.
+     * The type of the feature. The value depends on the data model the current feature is part of. Some data models may have an empty value.
      */
-    @JsonProperty(value = "featureType")
     private String featureType;
 
-    /** Creates an instance of GeoJsonFeature class. */
-    public GeoJsonFeature() {}
+    /**
+     * Creates an instance of GeoJsonFeature class.
+     */
+    public GeoJsonFeature() {
+    }
+
+    /**
+     * Get the type property: Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point,
+     * MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and
+     * FeatureCollection.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public GeoJsonObjectType getType() {
+        return this.type;
+    }
 
     /**
      * Get the geometry property: A valid `GeoJSON` geometry object. The type must be one of the seven valid GeoJSON
      * geometry types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon and GeometryCollection.
      * Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1) for details.
-     *
+     * 
      * @return the geometry value.
      */
     public GeoJsonGeometry getGeometry() {
@@ -63,7 +74,7 @@ public final class GeoJsonFeature extends GeoJsonObject {
      * Set the geometry property: A valid `GeoJSON` geometry object. The type must be one of the seven valid GeoJSON
      * geometry types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon and GeometryCollection.
      * Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1) for details.
-     *
+     * 
      * @param geometry the geometry value to set.
      * @return the GeoJsonFeature object itself.
      */
@@ -75,7 +86,7 @@ public final class GeoJsonFeature extends GeoJsonObject {
     /**
      * Get the properties property: Properties can contain any additional metadata about the `Feature`. Value can be any
      * JSON object or a JSON null value.
-     *
+     * 
      * @return the properties value.
      */
     public Object getProperties() {
@@ -85,7 +96,7 @@ public final class GeoJsonFeature extends GeoJsonObject {
     /**
      * Set the properties property: Properties can contain any additional metadata about the `Feature`. Value can be any
      * JSON object or a JSON null value.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the GeoJsonFeature object itself.
      */
@@ -96,7 +107,7 @@ public final class GeoJsonFeature extends GeoJsonObject {
 
     /**
      * Get the id property: Identifier for the feature.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -105,7 +116,7 @@ public final class GeoJsonFeature extends GeoJsonObject {
 
     /**
      * Set the id property: Identifier for the feature.
-     *
+     * 
      * @param id the id value to set.
      * @return the GeoJsonFeature object itself.
      */
@@ -117,7 +128,7 @@ public final class GeoJsonFeature extends GeoJsonObject {
     /**
      * Get the featureType property: The type of the feature. The value depends on the data model the current feature is
      * part of. Some data models may have an empty value.
-     *
+     * 
      * @return the featureType value.
      */
     public String getFeatureType() {
@@ -127,12 +138,61 @@ public final class GeoJsonFeature extends GeoJsonObject {
     /**
      * Set the featureType property: The type of the feature. The value depends on the data model the current feature is
      * part of. Some data models may have an empty value.
-     *
+     * 
      * @param featureType the featureType value to set.
      * @return the GeoJsonFeature object itself.
      */
     public GeoJsonFeature setFeatureType(String featureType) {
         this.featureType = featureType;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("geometry", this.geometry);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeUntypedField("properties", this.properties);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("featureType", this.featureType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GeoJsonFeature from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GeoJsonFeature if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GeoJsonFeature.
+     */
+    public static GeoJsonFeature fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GeoJsonFeature deserializedGeoJsonFeature = new GeoJsonFeature();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("geometry".equals(fieldName)) {
+                    deserializedGeoJsonFeature.geometry = GeoJsonGeometry.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedGeoJsonFeature.type = GeoJsonObjectType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGeoJsonFeature.properties = reader.readUntyped();
+                } else if ("id".equals(fieldName)) {
+                    deserializedGeoJsonFeature.id = reader.getString();
+                } else if ("featureType".equals(fieldName)) {
+                    deserializedGeoJsonFeature.featureType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGeoJsonFeature;
+        });
     }
 }

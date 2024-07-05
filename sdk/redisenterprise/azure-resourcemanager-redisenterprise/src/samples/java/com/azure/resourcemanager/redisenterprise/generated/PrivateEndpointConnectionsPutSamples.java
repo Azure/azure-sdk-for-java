@@ -12,8 +12,7 @@ import com.azure.resourcemanager.redisenterprise.models.PrivateLinkServiceConnec
  */
 public final class PrivateEndpointConnectionsPutSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/
-     * RedisEnterprisePutPrivateEndpointConnection.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-03-01-preview/examples/RedisEnterprisePutPrivateEndpointConnection.json
      */
     /**
      * Sample code: RedisEnterprisePutPrivateEndpointConnection.
@@ -22,9 +21,12 @@ public final class PrivateEndpointConnectionsPutSamples {
      */
     public static void redisEnterprisePutPrivateEndpointConnection(
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.privateEndpointConnections().define("pectest01").withExistingRedisEnterprise("rg1", "cache1")
-            .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED).withDescription("Auto-Approved"))
+        manager.privateEndpointConnections()
+            .define("pectest01")
+            .withExistingRedisEnterprise("rg1", "cache1")
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                    .withDescription("Auto-Approved"))
             .create();
     }
 }

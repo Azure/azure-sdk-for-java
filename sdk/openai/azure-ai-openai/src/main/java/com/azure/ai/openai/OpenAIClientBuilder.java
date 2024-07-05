@@ -276,6 +276,7 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
      */
     @Generated
     private OpenAIClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         OpenAIServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : OpenAIServiceVersion.getLatest();
@@ -365,5 +366,10 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
      */
     private boolean useNonAzureOpenAIService() {
         return endpoint == null || endpoint.startsWith(OPEN_AI_ENDPOINT);
+    }
+
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
     }
 }

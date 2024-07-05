@@ -30,7 +30,7 @@ import java.util.Arrays;
  */
 public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<AzurePipelinesCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(AzurePipelinesCredentialBuilder.class);
-    private static final String OIDC_API_VERSION = "7.1-preview.1";
+    private static final String OIDC_API_VERSION = "7.1";
     private String serviceConnectionId;
     private String systemAccessToken;
 
@@ -60,30 +60,48 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
     }
 
     /**
-     * Builds an instance of the {@link AzurePipelinesCredential} with the current configurations.
+     * Configures the persistent shared token cache options and enables the persistent token cache which is disabled
+     * by default. If configured, the credential will store tokens in a cache persisted to the machine, protected to
+     * the current user, which can be shared by other credentials and processes.
+     *
+     * @param tokenCachePersistenceOptions the token cache configuration options
+     * @return An updated instance of this builder with the token cache options configured.
+     */
+    public AzurePipelinesCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
+        this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
+        return this;
+    }
+
+    /**
+     * Builds an instance of the {@link AzurePipelinesCredential} with the current configurations. Requires setting
+     * the following parameters:
+     * <ul>
+     * <li>Client ID via {@link #clientId(String)}</li>
+     * <li>Tenant ID via {@link #tenantId(String)}</li>
+     * <li>Service Connection ID via {@link #serviceConnectionId(String)}</li>
+     * <li>System Access Token via {@link #systemAccessToken(String)}</li>
+     * </ul>
+     * Requires the {@code SYSTEM_OIDCREQUESTURI} environment variable to be set.
+     *
+     * @throws IllegalArgumentException Thrown when required parameters are set or the environment is not correctly
+     * configured.
      * @return an instance of the {@link AzurePipelinesCredential}.
      */
     public AzurePipelinesCredential build() {
-        ValidationUtil.validate(getClass().getSimpleName(),
-            LOGGER,
-            Arrays.asList("clientId", "tenantId", "serviceConnectionId", "systemAccessToken"),
-            Arrays.asList(this.clientId, this.tenantId, this.serviceConnectionId, this.systemAccessToken));
-
         Configuration configuration = identityClientOptions.getConfiguration();
         if (configuration == null) {
             configuration = Configuration.getGlobalConfiguration();
         }
-        String teamFoundationCollectionUri = configuration.get("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI");
-        String teamProjectId = configuration.get("SYSTEM_TEAMPROJECTID");
-        String planId = configuration.get("SYSTEM_PLANID");
-        String jobId = configuration.get("SYSTEM_JOBID");
 
-        ValidationUtil.validate(getClass().getSimpleName(), LOGGER,
-            Arrays.asList("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI", "SYSTEM_TEAMPROJECTID", "SYSTEM_PLANID", "SYSTEM_JOBID"),
-            Arrays.asList(teamFoundationCollectionUri, teamProjectId, planId, jobId));
+        String oidcEndpoint = configuration.get("SYSTEM_OIDCREQUESTURI");
 
-        String requestUrl = String.format("%s%s/_apis/distributedtask/hubs/build/plans/%s/jobs/%s/oidctoken?api-version=%s&serviceConnectionId=%s",
-            teamFoundationCollectionUri, teamProjectId, planId, jobId, OIDC_API_VERSION, serviceConnectionId);
-        return new AzurePipelinesCredential(this.clientId, this.tenantId, requestUrl, systemAccessToken, identityClientOptions.clone());
+        ValidationUtil.validate(getClass().getSimpleName(),
+            LOGGER,
+            Arrays.asList("clientId", "tenantId", "serviceConnectionId", "systemAccessToken", "oidcEndpoint"),
+            Arrays.asList(clientId, tenantId, serviceConnectionId, this.systemAccessToken, oidcEndpoint));
+
+        String requestUrl = String.format("%s?api-version=%s&serviceConnectionId=%s",
+            oidcEndpoint, OIDC_API_VERSION, serviceConnectionId);
+        return new AzurePipelinesCredential(clientId, tenantId, requestUrl, systemAccessToken, identityClientOptions.clone());
     }
 }

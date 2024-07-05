@@ -6,6 +6,6 @@ module com.azure.ai.vision.imageanalysis {
     requires transitive com.azure.core;
     exports com.azure.ai.vision.imageanalysis;
     exports com.azure.ai.vision.imageanalysis.models;
-    opens com.azure.ai.vision.imageanalysis.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.ai.vision.imageanalysis.implementation.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.ai.vision.imageanalysis.models to com.azure.core;
+    opens com.azure.ai.vision.imageanalysis.implementation.models to com.azure.core;
 }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The QueueProperties model. */
+/**
+ * The QueueProperties model.
+ */
 @Fluent
 public final class QueueProperties {
     /*
@@ -26,13 +28,15 @@ public final class QueueProperties {
     @JsonProperty(value = "approximateMessageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer approximateMessageCount;
 
-    /** Creates an instance of QueueProperties class. */
+    /**
+     * Creates an instance of QueueProperties class.
+     */
     public QueueProperties() {
     }
 
     /**
      * Get the metadata property: A name-value pair that represents queue metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -41,7 +45,7 @@ public final class QueueProperties {
 
     /**
      * Set the metadata property: A name-value pair that represents queue metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the QueueProperties object itself.
      */
@@ -53,7 +57,7 @@ public final class QueueProperties {
     /**
      * Get the approximateMessageCount property: Integer indicating an approximate number of messages in the queue. This
      * number is not lower than the actual number of messages in the queue, but could be higher.
-     *
+     * 
      * @return the approximateMessageCount value.
      */
     public Integer approximateMessageCount() {
@@ -62,7 +66,7 @@ public final class QueueProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -78,8 +78,9 @@ public final class AzureTableStorageApplicationLogsConfig {
      */
     public void validate() {
         if (sasUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sasUrl in model AzureTableStorageApplicationLogsConfig"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sasUrl in model AzureTableStorageApplicationLogsConfig"));
         }
     }
 

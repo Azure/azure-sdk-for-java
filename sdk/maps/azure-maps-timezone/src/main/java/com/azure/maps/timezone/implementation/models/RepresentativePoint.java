@@ -5,29 +5,36 @@
 package com.azure.maps.timezone.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Representative point property. */
+/**
+ * Representative point property.
+ */
 @Immutable
-public final class RepresentativePoint {
+public final class RepresentativePoint implements JsonSerializable<RepresentativePoint> {
     /*
      * Latitude property
      */
-    @JsonProperty(value = "Latitude", access = JsonProperty.Access.WRITE_ONLY)
     private Float latitude;
 
     /*
      * Longitude property
      */
-    @JsonProperty(value = "Longitude", access = JsonProperty.Access.WRITE_ONLY)
     private Float longitude;
 
-    /** Creates an instance of RepresentativePoint class. */
-    public RepresentativePoint() {}
+    /**
+     * Creates an instance of RepresentativePoint class.
+     */
+    public RepresentativePoint() {
+    }
 
     /**
      * Get the latitude property: Latitude property.
-     *
+     * 
      * @return the latitude value.
      */
     public Float getLatitude() {
@@ -36,10 +43,47 @@ public final class RepresentativePoint {
 
     /**
      * Get the longitude property: Longitude property.
-     *
+     * 
      * @return the longitude value.
      */
     public Float getLongitude() {
         return this.longitude;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RepresentativePoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RepresentativePoint if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RepresentativePoint.
+     */
+    public static RepresentativePoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RepresentativePoint deserializedRepresentativePoint = new RepresentativePoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("Latitude".equals(fieldName)) {
+                    deserializedRepresentativePoint.latitude = reader.getNullable(JsonReader::getFloat);
+                } else if ("Longitude".equals(fieldName)) {
+                    deserializedRepresentativePoint.longitude = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRepresentativePoint;
+        });
     }
 }

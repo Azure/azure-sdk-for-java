@@ -585,8 +585,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -614,7 +614,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -641,8 +641,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -670,7 +670,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -727,8 +727,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -756,7 +756,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -783,8 +783,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -812,7 +812,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -859,8 +859,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -888,7 +888,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -932,8 +932,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -961,7 +961,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -1025,6 +1025,14 @@ public final class JobRouterClientImpl {
 
     /**
      * Reclassify a job.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1061,6 +1069,14 @@ public final class JobRouterClientImpl {
 
     /**
      * Reclassify a job.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1096,6 +1112,14 @@ public final class JobRouterClientImpl {
 
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1135,6 +1159,14 @@ public final class JobRouterClientImpl {
 
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1173,6 +1205,14 @@ public final class JobRouterClientImpl {
 
     /**
      * Completes an assigned job.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1213,6 +1253,14 @@ public final class JobRouterClientImpl {
 
     /**
      * Completes an assigned job.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1252,6 +1300,14 @@ public final class JobRouterClientImpl {
 
     /**
      * Closes a completed job.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1293,6 +1349,14 @@ public final class JobRouterClientImpl {
 
     /**
      * Closes a completed job.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1367,8 +1431,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1396,7 +1460,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -1461,8 +1525,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1490,7 +1554,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -1573,8 +1637,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1602,7 +1666,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -1665,8 +1729,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1694,7 +1758,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -1801,6 +1865,14 @@ public final class JobRouterClientImpl {
 
     /**
      * Unassign a job.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1844,6 +1916,14 @@ public final class JobRouterClientImpl {
 
     /**
      * Unassign a job.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1946,6 +2026,14 @@ public final class JobRouterClientImpl {
 
     /**
      * Declines an offer to work on a job.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1986,6 +2074,14 @@ public final class JobRouterClientImpl {
 
     /**
      * Declines an offer to work on a job.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -2115,8 +2211,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2162,8 +2258,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2239,8 +2335,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2286,8 +2382,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2353,8 +2449,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2417,8 +2513,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2533,8 +2629,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2616,8 +2712,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2717,8 +2813,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2798,8 +2894,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -2882,8 +2978,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -2911,7 +3007,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -2922,9 +3018,7 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2963,8 +3057,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -2992,7 +3086,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -3003,9 +3097,7 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3045,8 +3137,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -3073,9 +3165,7 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3118,8 +3208,8 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -3146,9 +3236,7 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

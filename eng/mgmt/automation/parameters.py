@@ -12,11 +12,12 @@ ARTIFACT_FORMAT = None
 OUTPUT_FOLDER_FORMAT = None
 
 # Constant parameters
-MAVEN_URL = "https://repo1.maven.org/maven2/{group_id}/{artifact_id}/{version}/{artifact_id}-{version}.jar"
+MAVEN_HOST = "https://repo1.maven.org/maven2"
+MAVEN_URL = MAVEN_HOST + "/{group_id}/{artifact_id}/{version}/{artifact_id}-{version}.jar"
 
 SDK_ROOT = "../../../"  # related to file dir
 AUTOREST_CORE_VERSION = "3.9.7"
-AUTOREST_JAVA = "@autorest/java@4.1.29"
+AUTOREST_JAVA = "@autorest/java@4.1.32"
 DEFAULT_VERSION = "1.0.0-beta.1"
 GROUP_ID = "com.azure.resourcemanager"
 API_SPECS_FILE = "api-specs.yaml"
@@ -73,7 +74,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: {0}
-    EnableBatchRelease: true
     Artifacts: []
 """
 
@@ -96,3 +96,9 @@ POM_FORMAT = """\
 """
 
 POM_MODULE_FORMAT = "<module>{0}</module>\n"
+
+CHANGELOG_INITIAL_SECTION_FORMAT = """\
+### Features Added
+
+- Initial release for the {artifact_id} Java SDK.
+"""

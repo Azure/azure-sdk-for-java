@@ -10,7 +10,9 @@ import com.azure.resourcemanager.resources.models.ProviderResourceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Resource provider information. */
+/**
+ * Resource provider information.
+ */
 @Fluent
 public final class ProviderInner {
     /*
@@ -49,13 +51,15 @@ public final class ProviderInner {
     @JsonProperty(value = "providerAuthorizationConsentState")
     private ProviderAuthorizationConsentState providerAuthorizationConsentState;
 
-    /** Creates an instance of ProviderInner class. */
+    /**
+     * Creates an instance of ProviderInner class.
+     */
     public ProviderInner() {
     }
 
     /**
      * Get the id property: The provider ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -64,7 +68,7 @@ public final class ProviderInner {
 
     /**
      * Get the namespace property: The namespace of the resource provider.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -73,7 +77,7 @@ public final class ProviderInner {
 
     /**
      * Set the namespace property: The namespace of the resource provider.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the ProviderInner object itself.
      */
@@ -84,7 +88,7 @@ public final class ProviderInner {
 
     /**
      * Get the registrationState property: The registration state of the resource provider.
-     *
+     * 
      * @return the registrationState value.
      */
     public String registrationState() {
@@ -93,7 +97,7 @@ public final class ProviderInner {
 
     /**
      * Get the registrationPolicy property: The registration policy of the resource provider.
-     *
+     * 
      * @return the registrationPolicy value.
      */
     public String registrationPolicy() {
@@ -102,7 +106,7 @@ public final class ProviderInner {
 
     /**
      * Get the resourceTypes property: The collection of provider resource types.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<ProviderResourceType> resourceTypes() {
@@ -111,7 +115,7 @@ public final class ProviderInner {
 
     /**
      * Get the providerAuthorizationConsentState property: The provider authorization consent state.
-     *
+     * 
      * @return the providerAuthorizationConsentState value.
      */
     public ProviderAuthorizationConsentState providerAuthorizationConsentState() {
@@ -120,19 +124,19 @@ public final class ProviderInner {
 
     /**
      * Set the providerAuthorizationConsentState property: The provider authorization consent state.
-     *
+     * 
      * @param providerAuthorizationConsentState the providerAuthorizationConsentState value to set.
      * @return the ProviderInner object itself.
      */
-    public ProviderInner withProviderAuthorizationConsentState(
-        ProviderAuthorizationConsentState providerAuthorizationConsentState) {
+    public ProviderInner
+        withProviderAuthorizationConsentState(ProviderAuthorizationConsentState providerAuthorizationConsentState) {
         this.providerAuthorizationConsentState = providerAuthorizationConsentState;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

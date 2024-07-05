@@ -23,8 +23,11 @@ public final class OperationStatusInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationStatusInner model = new OperationStatusInner().withId("a").withName("th").withStartTime("hab")
-            .withEndTime("pikxwczbyscnpqxu").withStatus("vyq");
+        OperationStatusInner model = new OperationStatusInner().withId("a")
+            .withName("th")
+            .withStartTime("hab")
+            .withEndTime("pikxwczbyscnpqxu")
+            .withStatus("vyq");
         model = BinaryData.fromObject(model).toObject(OperationStatusInner.class);
         Assertions.assertEquals("a", model.id());
         Assertions.assertEquals("th", model.name());

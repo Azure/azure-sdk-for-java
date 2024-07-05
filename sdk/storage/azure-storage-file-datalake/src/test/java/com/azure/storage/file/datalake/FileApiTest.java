@@ -2584,6 +2584,36 @@ public class FileApiTest extends DataLakeTestBase {
         fc.flush(b.length(), true);
     }
 
+    @LiveOnly
+    @Test
+    public void uploadAndDownloadAndUploadAgain() {
+        byte[] randomData = getRandomByteArray(20 * Constants.MB);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+
+        String pathName = generatePathName();
+        DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient(pathName);
+        fileClient.createIfNotExists();
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong((long) Constants.MB)
+            .setMaxSingleUploadSizeLong(2L * Constants.MB)
+            .setMaxConcurrency(5);
+        FileParallelUploadOptions parallelUploadOptions = new FileParallelUploadOptions(input)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        fileClient.uploadWithResponse(parallelUploadOptions, null, null);
+
+        DataLakeFileOpenInputStreamResult inputStreamResult = fileClient.openInputStream();
+
+        // Upload the downloaded content to a different location
+        String pathName2 = generatePathName();
+
+        parallelUploadOptions = new FileParallelUploadOptions(inputStreamResult.getInputStream())
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        DataLakeFileClient fileClient2 = dataLakeFileSystemClient.getFileClient(pathName2);
+        fileClient2.uploadWithResponse(parallelUploadOptions, null, null);
+    }
 
     private static byte[] readFromInputStream(InputStream stream, int numBytesToRead) {
         byte[] queryData = new byte[numBytesToRead];
@@ -3382,16 +3412,20 @@ public class FileApiTest extends DataLakeTestBase {
         assertTrue(aadFileClient.exists());
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
         DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
             ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
             .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
             .buildFileClient();
 
-        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadFileClient::exists);
-        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
+        assertTrue(aadFileClient.exists());
     }
 
     @Test

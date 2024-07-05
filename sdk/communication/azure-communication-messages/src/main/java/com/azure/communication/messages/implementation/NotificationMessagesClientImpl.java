@@ -32,12 +32,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -161,8 +161,7 @@ public final class NotificationMessagesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> send(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData notificationContent, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/messages/notifications:send")
         @ExpectedResponses({ 202 })
@@ -172,8 +171,7 @@ public final class NotificationMessagesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> sendSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData notificationContent, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Get("/messages/streams/{id}")
         @ExpectedResponses({ 200 })
@@ -232,7 +230,7 @@ public final class NotificationMessagesClientImpl {
      * }
      * }</pre>
      * 
-     * @param notificationContent Details of the message to send.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -242,26 +240,24 @@ public final class NotificationMessagesClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> sendWithResponseAsync(BinaryData notificationContent,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> sendWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        String repeatabilityRequestId = UUID.randomUUID().toString();
-        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-request-id")) == null) {
                 requestLocal.getHeaders()
-                    .set(HttpHeaderName.fromString("repeatability-request-id"), repeatabilityRequestId);
+                    .set(HttpHeaderName.fromString("repeatability-request-id"), CoreUtils.randomUuid().toString());
             }
         });
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-first-sent")) == null) {
                 requestLocal.getHeaders()
-                    .set(HttpHeaderName.fromString("repeatability-first-sent"), repeatabilityFirstSent);
+                    .set(HttpHeaderName.fromString("repeatability-first-sent"),
+                        DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
             }
         });
         return FluxUtil.withContext(context -> service.send(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, notificationContent, requestOptionsLocal, context));
+            accept, body, requestOptionsLocal, context));
     }
 
     /**
@@ -300,7 +296,7 @@ public final class NotificationMessagesClientImpl {
      * }
      * }</pre>
      * 
-     * @param notificationContent Details of the message to send.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -309,24 +305,23 @@ public final class NotificationMessagesClientImpl {
      * @return result of the send message operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> sendWithResponse(BinaryData notificationContent, RequestOptions requestOptions) {
+    public Response<BinaryData> sendWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        String repeatabilityRequestId = UUID.randomUUID().toString();
-        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-request-id")) == null) {
                 requestLocal.getHeaders()
-                    .set(HttpHeaderName.fromString("repeatability-request-id"), repeatabilityRequestId);
+                    .set(HttpHeaderName.fromString("repeatability-request-id"), CoreUtils.randomUuid().toString());
             }
         });
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-first-sent")) == null) {
                 requestLocal.getHeaders()
-                    .set(HttpHeaderName.fromString("repeatability-first-sent"), repeatabilityFirstSent);
+                    .set(HttpHeaderName.fromString("repeatability-first-sent"),
+                        DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
             }
         });
-        return service.sendSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, notificationContent,
+        return service.sendSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, body,
             requestOptionsLocal, Context.NONE);
     }
 

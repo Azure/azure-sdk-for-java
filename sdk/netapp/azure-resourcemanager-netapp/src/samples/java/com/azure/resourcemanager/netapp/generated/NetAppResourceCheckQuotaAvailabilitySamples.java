@@ -12,8 +12,7 @@ import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
  */
 public final class NetAppResourceCheckQuotaAvailabilitySamples {
     /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/CheckQuotaAvailability.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/CheckQuotaAvailability.json
      */
     /**
      * Sample code: CheckQuotaAvailability.
@@ -21,9 +20,11 @@ public final class NetAppResourceCheckQuotaAvailabilitySamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void checkQuotaAvailability(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.netAppResources().checkQuotaAvailabilityWithResponse("eastus",
-            new QuotaAvailabilityRequest().withName("resource1")
-                .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS).withResourceGroup("myRG"),
-            com.azure.core.util.Context.NONE);
+        manager.netAppResources()
+            .checkQuotaAvailabilityWithResponse("eastus",
+                new QuotaAvailabilityRequest().withName("resource1")
+                    .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS)
+                    .withResourceGroup("myRG"),
+                com.azure.core.util.Context.NONE);
     }
 }

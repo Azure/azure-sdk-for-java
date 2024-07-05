@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Lease Container response schema. */
+/**
+ * Lease Container response schema.
+ */
 @Fluent
 public final class LeaseContainerResponseInner {
     /*
@@ -23,14 +25,16 @@ public final class LeaseContainerResponseInner {
     @JsonProperty(value = "leaseTimeSeconds")
     private String leaseTimeSeconds;
 
-    /** Creates an instance of LeaseContainerResponseInner class. */
+    /**
+     * Creates an instance of LeaseContainerResponseInner class.
+     */
     public LeaseContainerResponseInner() {
     }
 
     /**
      * Get the leaseId property: Returned unique lease ID that must be included with any request to delete the
      * container, or to renew, change, or release the lease.
-     *
+     * 
      * @return the leaseId value.
      */
     public String leaseId() {
@@ -40,7 +44,7 @@ public final class LeaseContainerResponseInner {
     /**
      * Set the leaseId property: Returned unique lease ID that must be included with any request to delete the
      * container, or to renew, change, or release the lease.
-     *
+     * 
      * @param leaseId the leaseId value to set.
      * @return the LeaseContainerResponseInner object itself.
      */
@@ -51,7 +55,7 @@ public final class LeaseContainerResponseInner {
 
     /**
      * Get the leaseTimeSeconds property: Approximate time remaining in the lease period, in seconds.
-     *
+     * 
      * @return the leaseTimeSeconds value.
      */
     public String leaseTimeSeconds() {
@@ -60,7 +64,7 @@ public final class LeaseContainerResponseInner {
 
     /**
      * Set the leaseTimeSeconds property: Approximate time remaining in the lease period, in seconds.
-     *
+     * 
      * @param leaseTimeSeconds the leaseTimeSeconds value to set.
      * @return the LeaseContainerResponseInner object itself.
      */
@@ -71,7 +75,7 @@ public final class LeaseContainerResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

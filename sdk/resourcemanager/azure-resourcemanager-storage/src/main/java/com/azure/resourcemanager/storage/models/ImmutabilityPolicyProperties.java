@@ -9,7 +9,9 @@ import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyPropert
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of an ImmutabilityPolicy of a blob container. */
+/**
+ * The properties of an ImmutabilityPolicy of a blob container.
+ */
 @Fluent
 public final class ImmutabilityPolicyProperties {
     /*
@@ -30,13 +32,15 @@ public final class ImmutabilityPolicyProperties {
     @JsonProperty(value = "updateHistory", access = JsonProperty.Access.WRITE_ONLY)
     private List<UpdateHistoryProperty> updateHistory;
 
-    /** Creates an instance of ImmutabilityPolicyProperties class. */
+    /**
+     * Creates an instance of ImmutabilityPolicyProperties class.
+     */
     public ImmutabilityPolicyProperties() {
     }
 
     /**
      * Get the innerProperties property: The properties of an ImmutabilityPolicy of a blob container.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ImmutabilityPolicyProperty innerProperties() {
@@ -45,7 +49,7 @@ public final class ImmutabilityPolicyProperties {
 
     /**
      * Get the etag property: ImmutabilityPolicy Etag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -54,7 +58,7 @@ public final class ImmutabilityPolicyProperties {
 
     /**
      * Get the updateHistory property: The ImmutabilityPolicy update history of the blob container.
-     *
+     * 
      * @return the updateHistory value.
      */
     public List<UpdateHistoryProperty> updateHistory() {
@@ -64,7 +68,7 @@ public final class ImmutabilityPolicyProperties {
     /**
      * Get the immutabilityPeriodSinceCreationInDays property: The immutability period for the blobs in the container
      * since the policy creation, in days.
-     *
+     * 
      * @return the immutabilityPeriodSinceCreationInDays value.
      */
     public Integer immutabilityPeriodSinceCreationInDays() {
@@ -74,12 +78,12 @@ public final class ImmutabilityPolicyProperties {
     /**
      * Set the immutabilityPeriodSinceCreationInDays property: The immutability period for the blobs in the container
      * since the policy creation, in days.
-     *
+     * 
      * @param immutabilityPeriodSinceCreationInDays the immutabilityPeriodSinceCreationInDays value to set.
      * @return the ImmutabilityPolicyProperties object itself.
      */
-    public ImmutabilityPolicyProperties withImmutabilityPeriodSinceCreationInDays(
-        Integer immutabilityPeriodSinceCreationInDays) {
+    public ImmutabilityPolicyProperties
+        withImmutabilityPeriodSinceCreationInDays(Integer immutabilityPeriodSinceCreationInDays) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ImmutabilityPolicyProperty();
         }
@@ -90,7 +94,7 @@ public final class ImmutabilityPolicyProperties {
     /**
      * Get the state property: The ImmutabilityPolicy state of a blob container, possible values include: Locked and
      * Unlocked.
-     *
+     * 
      * @return the state value.
      */
     public ImmutabilityPolicyState state() {
@@ -102,7 +106,7 @@ public final class ImmutabilityPolicyProperties {
      * policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and
      * compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
      * cannot be changed with ExtendImmutabilityPolicy API.
-     *
+     * 
      * @return the allowProtectedAppendWrites value.
      */
     public Boolean allowProtectedAppendWrites() {
@@ -114,7 +118,7 @@ public final class ImmutabilityPolicyProperties {
      * policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and
      * compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
      * cannot be changed with ExtendImmutabilityPolicy API.
-     *
+     * 
      * @param allowProtectedAppendWrites the allowProtectedAppendWrites value to set.
      * @return the ImmutabilityPolicyProperties object itself.
      */
@@ -132,7 +136,7 @@ public final class ImmutabilityPolicyProperties {
      * immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified
      * or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites'
      * and 'allowProtectedAppendWritesAll' properties are mutually exclusive.
-     *
+     * 
      * @return the allowProtectedAppendWritesAll value.
      */
     public Boolean allowProtectedAppendWritesAll() {
@@ -145,7 +149,7 @@ public final class ImmutabilityPolicyProperties {
      * immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified
      * or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites'
      * and 'allowProtectedAppendWritesAll' properties are mutually exclusive.
-     *
+     * 
      * @param allowProtectedAppendWritesAll the allowProtectedAppendWritesAll value to set.
      * @return the ImmutabilityPolicyProperties object itself.
      */
@@ -159,7 +163,7 @@ public final class ImmutabilityPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

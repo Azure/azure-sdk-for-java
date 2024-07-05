@@ -16,13 +16,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureDataExplorerLinkedServiceTypeProperties {
     /*
-     * The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format https://<clusterName>.<regionName>.kusto.windows.net. Type: string (or Expression with resultType string)
+     * The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
+     * https://<clusterName>.<regionName>.kusto.windows.net. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "endpoint", required = true)
     private Object endpoint;
 
     /*
-     * The ID of the service principal used to authenticate against Azure Data Explorer. Type: string (or Expression with resultType string).
+     * The ID of the service principal used to authenticate against Azure Data Explorer. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
@@ -40,7 +42,8 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
     private Object database;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;

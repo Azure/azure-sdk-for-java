@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the lease action. Can be one of the available actions. */
+/**
+ * Specifies the lease action. Can be one of the available actions.
+ */
 public final class LeaseContainerRequestAction extends ExpandableStringEnum<LeaseContainerRequestAction> {
-    /** Static value Acquire for LeaseContainerRequestAction. */
+    /**
+     * Static value Acquire for LeaseContainerRequestAction.
+     */
     public static final LeaseContainerRequestAction ACQUIRE = fromString("Acquire");
 
-    /** Static value Renew for LeaseContainerRequestAction. */
+    /**
+     * Static value Renew for LeaseContainerRequestAction.
+     */
     public static final LeaseContainerRequestAction RENEW = fromString("Renew");
 
-    /** Static value Change for LeaseContainerRequestAction. */
+    /**
+     * Static value Change for LeaseContainerRequestAction.
+     */
     public static final LeaseContainerRequestAction CHANGE = fromString("Change");
 
-    /** Static value Release for LeaseContainerRequestAction. */
+    /**
+     * Static value Release for LeaseContainerRequestAction.
+     */
     public static final LeaseContainerRequestAction RELEASE = fromString("Release");
 
-    /** Static value Break for LeaseContainerRequestAction. */
+    /**
+     * Static value Break for LeaseContainerRequestAction.
+     */
     public static final LeaseContainerRequestAction BREAK = fromString("Break");
 
     /**
      * Creates a new instance of LeaseContainerRequestAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class LeaseContainerRequestAction extends ExpandableStringEnum<Leas
 
     /**
      * Creates or finds a LeaseContainerRequestAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LeaseContainerRequestAction.
      */
@@ -47,7 +59,7 @@ public final class LeaseContainerRequestAction extends ExpandableStringEnum<Leas
 
     /**
      * Gets known LeaseContainerRequestAction values.
-     *
+     * 
      * @return known LeaseContainerRequestAction values.
      */
     public static Collection<LeaseContainerRequestAction> values() {

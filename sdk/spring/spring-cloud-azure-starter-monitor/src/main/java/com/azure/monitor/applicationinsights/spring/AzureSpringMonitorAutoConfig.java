@@ -34,8 +34,6 @@ public class AzureSpringMonitorAutoConfig {
 
     private static final Logger LOG = LoggerFactory.getLogger(AzureSpringMonitorAutoConfig.class);
 
-    private static final String CONNECTION_STRING_ERROR_MESSAGE = "Unable to find the Application Insights connection string.";
-
     static final String AZURE_EXPORTER_NAME = "azure-exporter";
 
     private final Optional<AzureMonitorExporterBuilder> azureMonitorExporterBuilderOpt;
@@ -61,21 +59,14 @@ public class AzureSpringMonitorAutoConfig {
     private Optional<AzureMonitorExporterBuilder> createAzureMonitorExporterBuilder(String connectionStringSysProp, ObjectProvider<HttpPipeline> httpPipeline) {
         Optional<String> connectionString = ConnectionStringRetriever.retrieveConnectionString(connectionStringSysProp);
         if (connectionString.isPresent()) {
-            try {
-                AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder().connectionString(connectionString.get());
-                HttpPipeline providedHttpPipeline = httpPipeline.getIfAvailable();
-                if (providedHttpPipeline != null) {
-                    azureMonitorExporterBuilder = azureMonitorExporterBuilder.httpPipeline(providedHttpPipeline);
-                }
-                return Optional.of(azureMonitorExporterBuilder);
-            } catch (IllegalArgumentException illegalArgumentException) {
-                String errorMessage = illegalArgumentException.getMessage();
-                if (errorMessage.contains("InstrumentationKey")) {
-                    LOG.warn(CONNECTION_STRING_ERROR_MESSAGE + " Please check you have not used an instrumentation key instead of a connection string");
-                }
+            AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder().connectionString(connectionString.get());
+            HttpPipeline providedHttpPipeline = httpPipeline.getIfAvailable();
+            if (providedHttpPipeline != null) {
+                azureMonitorExporterBuilder = azureMonitorExporterBuilder.httpPipeline(providedHttpPipeline);
             }
+            return Optional.of(azureMonitorExporterBuilder);
         } else {
-            LOG.warn(CONNECTION_STRING_ERROR_MESSAGE);
+            LOG.warn("Unable to find the Application Insights connection string. The telemetry data won't be sent to Azure.");
         }
         return Optional.empty();
     }

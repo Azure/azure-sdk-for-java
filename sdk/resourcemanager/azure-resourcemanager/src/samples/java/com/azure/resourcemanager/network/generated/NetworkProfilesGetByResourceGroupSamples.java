@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * NetworkProfileGetWithContainerNic.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkProfileGetWithContainerNic.json
      */
     /**
      * Sample code: Get network profile with container network interfaces.
@@ -19,14 +18,15 @@ public final class NetworkProfilesGetByResourceGroupSamples {
      */
     public static void
         getNetworkProfileWithContainerNetworkInterfaces(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkProfiles().getByResourceGroupWithResponse("rg1",
-            "networkProfile1", null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkProfiles()
+            .getByResourceGroupWithResponse("rg1", "networkProfile1", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkProfileGetConfigOnly.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkProfileGetConfigOnly.json
      */
     /**
      * Sample code: Get network profile.
@@ -34,7 +34,10 @@ public final class NetworkProfilesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getNetworkProfile(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkProfiles().getByResourceGroupWithResponse("rg1",
-            "networkProfile1", null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkProfiles()
+            .getByResourceGroupWithResponse("rg1", "networkProfile1", null, com.azure.core.util.Context.NONE);
     }
 }

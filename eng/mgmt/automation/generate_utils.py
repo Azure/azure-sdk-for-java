@@ -16,9 +16,10 @@ from typespec_utils import validate_tspconfig
 pwd = os.getcwd()
 # os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
-from utils import update_service_ci_and_pom
+from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 from utils import update_version
+from utils import is_windows
 
 os.chdir(pwd)
 
@@ -71,16 +72,24 @@ def generate(
             os.path.abspath(sdk_root),
             os.path.abspath(output_dir),
             namespace,
-            " ".join((tag_option, version_option, FLUENTLITE_ARGUMENTS, autorest_options, readme)),
+            " ".join(
+                (
+                    tag_option,
+                    version_option,
+                    FLUENTLITE_ARGUMENTS,
+                    autorest_options,
+                    readme,
+                )
+            ),
         )
     )
     logging.info(command)
     if os.system(command) != 0:
         error_message = (
             "[GENERATE][Error] Code generation failed.\n"
-            "Please first check if the failure happens only to Java automation, or for all SDK automations.\n"
-            "If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff.\n"
-            "If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
+            "[GENERATE][Error] Please first check if the failure happens only to Java automation, or for all SDK automations.\n"
+            "[GENERATE][Error] If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff.\n"
+            "[GENERATE][Error] If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
         )
         logging.error(error_message)
         print(error_message, file=sys.stderr)
@@ -88,7 +97,7 @@ def generate(
 
     group = GROUP_ID
     if require_sdk_integration:
-        update_service_ci_and_pom(sdk_root, service, group, module)
+        update_service_files_for_new_lib(sdk_root, service, group, module)
         update_root_pom(sdk_root, service)
     update_version(sdk_root, output_folder)
 
@@ -96,13 +105,18 @@ def generate(
 
 
 def remove_generated_source_code(sdk_folder: str, namespace: str):
-    shutil.rmtree(os.path.join(sdk_folder, "src/main"), ignore_errors=True)
-    shutil.rmtree(
-        os.path.join(sdk_folder, "src/test/java", namespace.replace(".", "/"), "generated"), ignore_errors=True
-    )
-    shutil.rmtree(
-        os.path.join(sdk_folder, "src/samples/java", namespace.replace(".", "/"), "generated"), ignore_errors=True
-    )
+    main_folder = os.path.join(sdk_folder, "src/main")
+    test_folder = os.path.join(sdk_folder, "src/test/java", namespace.replace(".", "/"), "generated")
+    sample_folder = os.path.join(sdk_folder, "src/samples/java", namespace.replace(".", "/"), "generated")
+
+    logging.info(f"Removing main source folder: {main_folder}")
+    shutil.rmtree(main_folder, ignore_errors=True)
+
+    logging.info(f"Removing generated test folder: {test_folder}")
+    shutil.rmtree(test_folder, ignore_errors=True)
+
+    logging.info(f"Removing generated samples folder: {sample_folder}")
+    shutil.rmtree(sample_folder, ignore_errors=True)
 
 
 def compile_arm_package(sdk_root: str, module: str) -> bool:
@@ -115,7 +129,7 @@ def compile_arm_package(sdk_root: str, module: str) -> bool:
         != 0
     ):
         error_message = (
-            "[COMPILE] Maven build fail.\n"
+            "[COMPILE] Maven build fail."
             'You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.'
         )
         logging.error(error_message)
@@ -175,35 +189,32 @@ def update_changelog(changelog_file, changelog):
     logging.info("[Changelog][Success] Write to changelog")
 
 
-def compare_with_maven_package(sdk_root: str, service: str, stable_version: str, current_version: str, module: str):
-    if stable_version == current_version:
+def compare_with_maven_package(
+    sdk_root: str, group_id: str, service: str, previous_version: str, current_version: str, module: str
+):
+    if previous_version == current_version or previous_version is None:
         logging.info("[Changelog][Skip] no previous version")
-        return
-
-    if "-beta." in current_version and "-beta." not in stable_version:
-        # if current version is preview, try compare it with a previous preview release
-
-        version_pattern = r"\d+\.\d+\.\d+-beta\.(\d+)?"
-        beta_version_int = int(re.match(version_pattern, current_version).group(1))
-        if beta_version_int > 1:
-            previous_beta_version_int = beta_version_int - 1
-            previous_beta_version = current_version.replace(
-                "-beta." + str(beta_version_int), "-beta." + str(previous_beta_version_int)
-            )
-            stable_version = previous_beta_version
+        return False, ""
 
     logging.info(
-        "[Changelog] Compare stable version {0} with current version {1}".format(stable_version, current_version)
+        "[Changelog] Compare stable version {0} with current version {1}".format(previous_version, current_version)
     )
 
-    r = requests.get(MAVEN_URL.format(group_id=GROUP_ID.replace(".", "/"), artifact_id=module, version=stable_version))
+    r = requests.get(
+        MAVEN_URL.format(
+            group_id=group_id.replace(".", "/"),
+            artifact_id=module,
+            version=previous_version,
+        )
+    )
     r.raise_for_status()
     old_jar_fd, old_jar = tempfile.mkstemp(".jar")
     try:
         with os.fdopen(old_jar_fd, "wb") as tmp:
             tmp.write(r.content)
         new_jar = os.path.join(
-            sdk_root, JAR_FORMAT.format(service=service, artifact_id=module, version=current_version)
+            sdk_root,
+            JAR_FORMAT.format(service=service, artifact_id=module, version=current_version),
         )
         if not os.path.exists(new_jar):
             raise Exception("Cannot found built jar in {0}".format(new_jar))
@@ -215,14 +226,16 @@ def compare_with_maven_package(sdk_root: str, service: str, stable_version: str,
             logging.error("[Changelog][Skip] Cannot get changelog")
     finally:
         os.remove(old_jar)
+    return breaking, changelog
 
 
 def get_version(
     sdk_root: str,
+    group_id: str,
     module: str,
 ) -> Union[str, None]:
     version_file = os.path.join(sdk_root, "eng/versioning/version_client.txt")
-    project = "{0}:{1}".format(GROUP_ID, module)
+    project = "{0}:{1}".format(group_id, module)
 
     with open(version_file, "r") as fin:
         for line in fin.readlines():
@@ -340,14 +353,21 @@ def generate_typespec_project(
         tspconfig_valid = True
         if url_match:
             # generate from remote url
-            tsp_cmd = ["npx", "tsp-client", "init", "--debug", "--tsp-config", tsp_project]
+            tsp_cmd = [
+                "npx" + (".cmd" if is_windows() else ""),
+                "tsp-client",
+                "init",
+                "--debug",
+                "--tsp-config",
+                tsp_project,
+            ]
         else:
             # sdk automation
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
             tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, "https://github.com/")
             tsp_cmd = [
-                "npx",
+                "npx" + (".cmd" if is_windows() else ""),
                 "tsp-client",
                 "init",
                 "--debug",
@@ -374,7 +394,12 @@ def generate_typespec_project(
                 # check require_sdk_integration
                 cmd = ["git", "add", "."]
                 check_call(cmd, sdk_root)
-                cmd = ["git", "status", "--porcelain", os.path.join(sdk_folder, "pom.xml")]
+                cmd = [
+                    "git",
+                    "status",
+                    "--porcelain",
+                    os.path.join(sdk_folder, "pom.xml"),
+                ]
                 logging.info("Command line: " + " ".join(cmd))
                 output = subprocess.check_output(cmd, cwd=sdk_root)
                 output_str = str(output, "utf-8")
@@ -383,17 +408,17 @@ def generate_typespec_project(
                     git_pom_item = git_items[0]
                     # new pom.xml implies new SDK
                     require_sdk_integration = git_pom_item.startswith("A ")
-                if not require_sdk_integration and remove_before_regen and group_id:
+                if remove_before_regen and group_id:
                     # clear existing generated source code, and regenerate
                     drop_changes(sdk_root)
-                    remove_generated_source_code(sdk_folder, f"${group_id}.${module}")
+                    remove_generated_source_code(sdk_folder, f"{group_id}.{service}")
                     # regenerate
                     check_call(tsp_cmd, sdk_root)
                 succeeded = True
     except subprocess.CalledProcessError as error:
         error_message = (
             f"[GENERATE][Error] Code generation failed. tsp-client init fails: {error}\n"
-            "If TypeSpec Validation passes, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
+            "[GENERATE][Error] If TypeSpec Validation passes, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
         )
         logging.error(error_message)
         print(error_message, file=sys.stderr)
@@ -401,14 +426,14 @@ def generate_typespec_project(
     return succeeded, require_sdk_integration, sdk_folder, service, module
 
 
-def check_call(cmd: List[str], work_dir: str):
+def check_call(cmd: List[str], work_dir: str, shell: bool = False):
     logging.info("Command line: " + " ".join(cmd))
-    subprocess.check_call(cmd, cwd=work_dir)
+    subprocess.check_call(cmd, cwd=work_dir, shell=shell)
 
 
 def drop_changes(work_dir: str):
     check_call(["git", "checkout", "--", "."], work_dir)
-    check_call(["git", "clean", "-qf"], work_dir)
+    check_call(["git", "clean", "-qf", "."], work_dir)
 
 
 def remove_prefix(text, prefix):
@@ -431,7 +456,28 @@ def find_sdk_folder(sdk_root: str):
         tsp_location_item: str = git_items[0]
         sdk_folder = tsp_location_item[1:].strip()[0 : -len("/tsp-location.yaml")]
 
-    cmd = ["git", "reset", "."]
+    cmd = ["git", "reset", ".", "-q"]
     check_call(cmd, sdk_root)
 
     return sdk_folder
+
+
+def clean_sdk_folder_if_swagger(sdk_root: str, sdk_folder: str) -> bool:
+    succeeded = False
+    # try to find the sdk_folder
+    if not sdk_folder:
+        sdk_folder = find_sdk_folder(sdk_root)
+    if sdk_folder:
+        sdk_path = os.path.join(sdk_root, sdk_folder)
+        # check whether this is migration from Swagger
+        if os.path.exists(os.path.join(sdk_path, "swagger")):
+            logging.info(f"[GENERATE] Delete folder: {sdk_folder}")
+            print(
+                "Existing package in SDK was from Swagger. It cannot be automatically converted to package from TypeSpec. Generate a fresh package from TypeSpec.",
+                file=sys.stderr,
+            )
+            # delete the folder
+            shutil.rmtree(sdk_path, ignore_errors=True)
+
+            succeeded = True
+    return succeeded

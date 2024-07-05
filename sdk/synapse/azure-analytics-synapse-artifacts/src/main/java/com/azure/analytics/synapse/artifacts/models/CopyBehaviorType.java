@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class CopyBehaviorType extends ExpandableStringEnum<CopyBehaviorTyp
      * @param name a name to look for.
      * @return the corresponding CopyBehaviorType.
      */
-    @JsonCreator
     public static CopyBehaviorType fromString(String name) {
         return fromString(name, CopyBehaviorType.class);
     }

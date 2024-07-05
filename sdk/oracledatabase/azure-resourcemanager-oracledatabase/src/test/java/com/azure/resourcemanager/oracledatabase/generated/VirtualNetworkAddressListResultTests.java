@@ -5,35 +5,17 @@
 package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.oracledatabase.fluent.models.VirtualNetworkAddressInner;
 import com.azure.resourcemanager.oracledatabase.models.VirtualNetworkAddressListResult;
-import com.azure.resourcemanager.oracledatabase.models.VirtualNetworkAddressProperties;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class VirtualNetworkAddressListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualNetworkAddressListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ipAddress\":\"mw\",\"vmOcid\":\"nbsazejjoqkag\",\"ocid\":\"sxtta\",\"domain\":\"zxnfaaz\",\"lifecycleDetails\":\"dtnkdmkq\",\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Terminated\",\"timeAssigned\":\"2021-06-14T14:36:08Z\"},\"id\":\"rkpyouaibrebqaay\",\"name\":\"j\",\"type\":\"ixqtn\"},{\"properties\":{\"ipAddress\":\"ezl\",\"vmOcid\":\"ffiakp\",\"ocid\":\"qqmtedltmmji\",\"domain\":\"eozphv\",\"lifecycleDetails\":\"uyqncygupkvipmd\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Failed\",\"timeAssigned\":\"2021-08-04T16:51:56Z\"},\"id\":\"vzhfstotxhoj\",\"name\":\"jbypel\",\"type\":\"c\"},{\"properties\":{\"ipAddress\":\"ixbjx\",\"vmOcid\":\"w\",\"ocid\":\"lrcoolsttpki\",\"domain\":\"kbnujr\",\"lifecycleDetails\":\"vtylbfpncu\",\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Terminated\",\"timeAssigned\":\"2021-02-21T18:31:28Z\"},\"id\":\"htywubxcbihwq\",\"name\":\"nfdn\",\"type\":\"wjchrdg\"},{\"properties\":{\"ipAddress\":\"xum\",\"vmOcid\":\"ton\",\"ocid\":\"jl\",\"domain\":\"dfdlwggyts\",\"lifecycleDetails\":\"tov\",\"provisioningState\":\"Failed\",\"lifecycleState\":\"Failed\",\"timeAssigned\":\"2021-08-16T08:05:38Z\"},\"id\":\"fiufx\",\"name\":\"knpirgnepttwq\",\"type\":\"sniffc\"}],\"nextLink\":\"qnrojlpijnkrxfrd\"}")
+            "{\"value\":[{\"properties\":{\"ipAddress\":\"acoebj\",\"vmOcid\":\"wzcjznmwcpmgua\",\"ocid\":\"raufactkahzova\",\"domain\":\"ziuxxpshnee\",\"lifecycleDetails\":\"lfg\",\"provisioningState\":\"Failed\",\"lifecycleState\":\"Terminated\",\"timeAssigned\":\"2021-07-12T23:03:26Z\"},\"id\":\"lenrd\",\"name\":\"utujba\",\"type\":\"pjuohminyfl\"},{\"properties\":{\"ipAddress\":\"wmd\",\"vmOcid\":\"wpklvxw\",\"ocid\":\"gdxpg\",\"domain\":\"chisze\",\"lifecycleDetails\":\"nb\",\"provisioningState\":\"Failed\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2021-06-04T19:59:32Z\"},\"id\":\"daxconfozauorsuk\",\"name\":\"kwbqplhlvnuu\",\"type\":\"pzlrphw\"},{\"properties\":{\"ipAddress\":\"l\",\"vmOcid\":\"eyuqdunvmnnrwr\",\"ocid\":\"ork\",\"domain\":\"lywjhh\",\"lifecycleDetails\":\"nhxmsi\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2021-11-09T14:46:05Z\"},\"id\":\"ggdufiqndieu\",\"name\":\"ao\",\"type\":\"jchvcyy\"},{\"properties\":{\"ipAddress\":\"gdotcubiipuipwo\",\"vmOcid\":\"nmacj\",\"ocid\":\"nizshqvcim\",\"domain\":\"vfgmblrrilby\",\"lifecycleDetails\":\"xsmiccwrwfscjf\",\"provisioningState\":\"Failed\",\"lifecycleState\":\"Failed\",\"timeAssigned\":\"2021-01-29T04:31:10Z\"},\"id\":\"i\",\"name\":\"dvoqyt\",\"type\":\"byowbblgyavutp\"}],\"nextLink\":\"joxoism\"}")
             .toObject(VirtualNetworkAddressListResult.class);
-        Assertions.assertEquals("mw", model.value().get(0).properties().ipAddress());
-        Assertions.assertEquals("nbsazejjoqkag", model.value().get(0).properties().vmOcid());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        VirtualNetworkAddressListResult model = new VirtualNetworkAddressListResult().withValue(Arrays.asList(
-            new VirtualNetworkAddressInner()
-                .withProperties(new VirtualNetworkAddressProperties().withIpAddress("mw").withVmOcid("nbsazejjoqkag")),
-            new VirtualNetworkAddressInner()
-                .withProperties(new VirtualNetworkAddressProperties().withIpAddress("ezl").withVmOcid("ffiakp")),
-            new VirtualNetworkAddressInner()
-                .withProperties(new VirtualNetworkAddressProperties().withIpAddress("ixbjx").withVmOcid("w")),
-            new VirtualNetworkAddressInner()
-                .withProperties(new VirtualNetworkAddressProperties().withIpAddress("xum").withVmOcid("ton"))));
-        model = BinaryData.fromObject(model).toObject(VirtualNetworkAddressListResult.class);
-        Assertions.assertEquals("mw", model.value().get(0).properties().ipAddress());
-        Assertions.assertEquals("nbsazejjoqkag", model.value().get(0).properties().vmOcid());
+        Assertions.assertEquals("acoebj", model.value().get(0).properties().ipAddress());
+        Assertions.assertEquals("wzcjznmwcpmgua", model.value().get(0).properties().vmOcid());
+        Assertions.assertEquals("joxoism", model.nextLink());
     }
 }

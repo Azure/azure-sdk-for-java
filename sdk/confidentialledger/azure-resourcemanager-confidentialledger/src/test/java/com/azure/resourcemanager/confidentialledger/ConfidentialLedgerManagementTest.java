@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.confidentialledger;
 
 
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.confidentialledger.models.AadBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.CertBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.LedgerRoleName;
@@ -24,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ConfidentialLedgerManagementTest extends ConfidentialLedgerManagementTestBase {
+
+    @LiveOnly
     @Test
     public void ledgerCreateTest() {
         ConfidentialLedgerManagementOperations ledgerOperations = getLedgerOperationsInstance();

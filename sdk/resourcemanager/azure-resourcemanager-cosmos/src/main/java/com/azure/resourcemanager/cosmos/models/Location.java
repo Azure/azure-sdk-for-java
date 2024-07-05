@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Location {
     /*
-     * The unique identifier of the region within the database account. Example:
-     * &lt;accountName&gt;-&lt;locationName&gt;.
+     * The unique identifier of the region within the database account. Example: &lt;accountName&gt;-&lt;locationName&gt;.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -26,27 +25,19 @@ public final class Location {
     private String locationName;
 
     /*
-     * The connection endpoint for the specific region. Example:
-     * https://&lt;accountName&gt;-&lt;locationName&gt;.documents.azure.com:443/
+     * The connection endpoint for the specific region. Example: https://&lt;accountName&gt;-&lt;locationName&gt;.documents.azure.com:443/
      */
     @JsonProperty(value = "documentEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String documentEndpoint;
 
     /*
-     * The status of the Cosmos DB account at the time the operation was called. The status can be one of following.
-     * 'Creating' – the Cosmos DB account is being created. When an account is in Creating state, only properties that
-     * are specified as input for the Create Cosmos DB account operation are returned. 'Succeeded' – the Cosmos DB
-     * account is active for use. 'Updating' – the Cosmos DB account is being updated. 'Deleting' – the Cosmos DB
-     * account is being deleted. 'Failed' – the Cosmos DB account failed creation. 'DeletionFailed' – the Cosmos DB
-     * account deletion failed.
+     * The status of the Cosmos DB account at the time the operation was called. The status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in Creating state, only properties that are specified as input for the Create Cosmos DB account operation are returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation. 'DeletionFailed' – the Cosmos DB account deletion failed.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
-     * The failover priority of the region. A failover priority of 0 indicates a write region. The maximum value for a
-     * failover priority = (total number of regions - 1). Failover priority values must be unique for each of the
-     * regions in which the database account exists.
+     * The failover priority of the region. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
      */
     @JsonProperty(value = "failoverPriority")
     private Integer failoverPriority;
@@ -104,8 +95,8 @@ public final class Location {
     }
 
     /**
-     * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called.
-     * The status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in
+     * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called. The
+     * status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in
      * Creating state, only properties that are specified as input for the Create Cosmos DB account operation are
      * returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being
      * updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation.
@@ -119,8 +110,8 @@ public final class Location {
 
     /**
      * Get the failoverPriority property: The failover priority of the region. A failover priority of 0 indicates a
-     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority
-     * values must be unique for each of the regions in which the database account exists.
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
+     * must be unique for each of the regions in which the database account exists.
      * 
      * @return the failoverPriority value.
      */
@@ -130,8 +121,8 @@ public final class Location {
 
     /**
      * Set the failoverPriority property: The failover priority of the region. A failover priority of 0 indicates a
-     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority
-     * values must be unique for each of the regions in which the database account exists.
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
+     * must be unique for each of the regions in which the database account exists.
      * 
      * @param failoverPriority the failoverPriority value to set.
      * @return the Location object itself.

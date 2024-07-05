@@ -9,15 +9,17 @@ import glob
 import subprocess
 import yaml
 import requests
+from utils import get_latest_ga_version
+from generate_utils import compare_with_maven_package
 from typing import List, Tuple, Optional
 
 from parameters import *
 from utils import set_or_default_version
-from utils import update_service_ci_and_pom
+from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 from utils import ListIndentDumper
 
-from generate_utils import generate_typespec_project
+from generate_utils import generate_typespec_project, clean_sdk_folder_if_swagger
 
 GROUP_ID = "com.azure"
 DPG_ARGUMENTS = "--sdk-integration --generate-samples --generate-tests"
@@ -30,20 +32,63 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     spec_root = os.path.abspath(config["specFolder"])
     head_sha: str = config["headSha"]
     repo_url: str = config["repoHttpsUrl"]
+    breaking: bool = False
+    changelog: str = ""
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project, sdk_root, spec_root, head_sha, repo_url
     )
 
+    if not succeeded:
+        # check whether this is migration from Swagger
+        clean_sdk_folder_succeeded = clean_sdk_folder_if_swagger(sdk_root, sdk_folder)
+        if clean_sdk_folder_succeeded:
+            # re-generate
+            succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
+                tsp_project, sdk_root, spec_root, head_sha, repo_url
+            )
+
     if succeeded:
         # TODO (weidxu): move to typespec-java
+        stable_version, current_version = set_or_default_version(sdk_root, GROUP_ID, module)
         if require_sdk_integration:
-            set_or_default_version(sdk_root, GROUP_ID, module)
-            update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+            update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
 
         # compile
         succeeded = compile_package(sdk_root, GROUP_ID, module)
+        if succeeded:
+            breaking, changelog = compare_with_maven_package(
+                sdk_root,
+                GROUP_ID,
+                service,
+                get_latest_ga_version(GROUP_ID, module, stable_version),
+                current_version,
+                module,
+            )
+        else:
+            # check whether this is migration from Swagger
+            clean_sdk_folder_succeeded = clean_sdk_folder_if_swagger(sdk_root, sdk_folder)
+            if clean_sdk_folder_succeeded:
+                # re-generate
+                succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
+                    tsp_project, sdk_root, spec_root, head_sha, repo_url
+                )
+                stable_version, current_version = set_or_default_version(sdk_root, GROUP_ID, module)
+                if require_sdk_integration:
+                    update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
+                    update_root_pom(sdk_root, service)
+                # compile
+                succeeded = compile_package(sdk_root, GROUP_ID, module)
+                if succeeded:
+                    breaking, changelog = compare_with_maven_package(
+                        sdk_root,
+                        GROUP_ID,
+                        service,
+                        get_latest_ga_version(GROUP_ID, module, stable_version),
+                        current_version,
+                        module,
+                    )
 
     # output
     if sdk_folder and module and service:
@@ -66,6 +111,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(sdk_folder))), None),
             "language": "Java",
             "result": result,
+            "changelog": {"content": changelog, "hasBreakingChange": breaking},
         }
     else:
         # no info about package, abort with result=failed
@@ -200,8 +246,21 @@ def sdk_automation_readme(readme_file_abspath: str, packages: List[dict], sdk_ro
 
         generated_folder = "sdk/{0}/{1}".format(service, module)
 
+        breaking = False
+        changelog = ""
+
         if succeeded:
-            compile_package(sdk_root, GROUP_ID, module)
+            stable_version, current_version = set_or_default_version(sdk_root, GROUP_ID, module)
+            succeeded = compile_package(sdk_root, GROUP_ID, module)
+            if succeeded:
+                breaking, changelog = compare_with_maven_package(
+                    sdk_root,
+                    GROUP_ID,
+                    service,
+                    get_latest_ga_version(GROUP_ID, module, stable_version),
+                    current_version,
+                    module,
+                )
 
         artifacts = ["{0}/pom.xml".format(generated_folder)]
         artifacts += [jar for jar in glob.glob("{0}/target/*.jar".format(generated_folder))]
@@ -221,6 +280,7 @@ def sdk_automation_readme(readme_file_abspath: str, packages: List[dict], sdk_ro
                 "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(generated_folder))), None),
                 "language": "Java",
                 "result": result,
+                "changelog": {"content": changelog, "hasBreakingChange": breaking},
             }
         )
 
@@ -238,7 +298,7 @@ def generate(
     autorest: str,
     use: str,
     autorest_options: str = "",
-    readme: str = None
+    readme: str = None,
 ) -> bool:
     namespace = "com.{0}".format(module.replace("-", "."))
     output_dir = os.path.join(sdk_root, "sdk", service, module)
@@ -280,7 +340,7 @@ def generate(
 
         if require_sdk_integration:
             set_or_default_version(sdk_root, GROUP_ID, module)
-            update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+            update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
     else:
         # no readme
@@ -320,7 +380,7 @@ def generate(
             return False
 
         set_or_default_version(sdk_root, GROUP_ID, module)
-        update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+        update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
         update_root_pom(sdk_root, service)
         # update_version(sdk_root, output_dir)
 

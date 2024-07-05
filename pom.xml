@@ -109,6 +109,7 @@
     <module>sdk/hybridnetwork</module>
     <module>sdk/identity</module>
     <module>sdk/imagebuilder</module>
+    <module>sdk/informaticadatamanagement</module>
     <module>sdk/iotcentral</module>
     <module>sdk/iotfirmwaredefense</module>
     <module>sdk/iothub</module>
@@ -136,6 +137,7 @@
     <module>sdk/mixedreality</module>
     <module>sdk/mobilenetwork</module>
     <module>sdk/modelsrepository</module>
+    <module>sdk/mongocluster</module>
     <module>sdk/monitor</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>

@@ -209,7 +209,8 @@ class JdkHttpClient implements HttpClient {
 
         }
 
-        return new JdkHttpResponse(request, response.statusCode(), coreHeaders, body == null ? BinaryData.EMPTY : body);
+        return new JdkHttpResponse(request, response.statusCode(), coreHeaders,
+            body == null ? BinaryData.empty() : body);
     }
 
     private static ResponseBodyMode getResponseBodyMode(HttpRequest request, String contentType,

@@ -16,18 +16,24 @@ import java.util.Collection;
  * transition to a Locked state which cannot be reverted.
  */
 public final class AccountImmutabilityPolicyState extends ExpandableStringEnum<AccountImmutabilityPolicyState> {
-    /** Static value Unlocked for AccountImmutabilityPolicyState. */
+    /**
+     * Static value Unlocked for AccountImmutabilityPolicyState.
+     */
     public static final AccountImmutabilityPolicyState UNLOCKED = fromString("Unlocked");
 
-    /** Static value Locked for AccountImmutabilityPolicyState. */
+    /**
+     * Static value Locked for AccountImmutabilityPolicyState.
+     */
     public static final AccountImmutabilityPolicyState LOCKED = fromString("Locked");
 
-    /** Static value Disabled for AccountImmutabilityPolicyState. */
+    /**
+     * Static value Disabled for AccountImmutabilityPolicyState.
+     */
     public static final AccountImmutabilityPolicyState DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of AccountImmutabilityPolicyState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +42,7 @@ public final class AccountImmutabilityPolicyState extends ExpandableStringEnum<A
 
     /**
      * Creates or finds a AccountImmutabilityPolicyState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AccountImmutabilityPolicyState.
      */
@@ -47,7 +53,7 @@ public final class AccountImmutabilityPolicyState extends ExpandableStringEnum<A
 
     /**
      * Gets known AccountImmutabilityPolicyState values.
-     *
+     * 
      * @return known AccountImmutabilityPolicyState values.
      */
     public static Collection<AccountImmutabilityPolicyState> values() {

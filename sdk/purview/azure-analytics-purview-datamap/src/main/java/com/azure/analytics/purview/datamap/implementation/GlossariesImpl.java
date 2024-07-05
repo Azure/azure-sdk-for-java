@@ -660,12 +660,8 @@ public final class GlossariesImpl {
     /**
      * Get all glossaries. Recommend using limit/offset to get pagination result.
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
-     * separately using
-     * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
-     * and
-     * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
+     * separately using 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
+     * and 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -753,12 +749,8 @@ public final class GlossariesImpl {
     /**
      * Get all glossaries. Recommend using limit/offset to get pagination result.
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
-     * separately using
-     * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
-     * and
-     * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
+     * separately using 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
+     * and 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>

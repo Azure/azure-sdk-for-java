@@ -37,7 +37,6 @@ extends:
     ServiceDirectory: serialization
     JavadocSafeJavaBuildVersion: '1.21'
     TimeoutInMinutes: 90
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-json
         groupId: com.azure

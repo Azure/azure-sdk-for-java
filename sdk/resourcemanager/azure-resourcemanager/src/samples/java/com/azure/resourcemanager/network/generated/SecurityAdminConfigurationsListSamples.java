@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SecurityAdminConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * NetworkManagerSecurityAdminConfigurationList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerSecurityAdminConfigurationList.json
      */
     /**
      * Sample code: List security admin configurations in a network manager.
@@ -19,7 +18,10 @@ public final class SecurityAdminConfigurationsListSamples {
      */
     public static void
         listSecurityAdminConfigurationsInANetworkManager(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSecurityAdminConfigurations().list("rg1", "testNetworkManager",
-            null, null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSecurityAdminConfigurations()
+            .list("rg1", "testNetworkManager", null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates the type of storage account. */
+/**
+ * Indicates the type of storage account.
+ */
 public final class Kind extends ExpandableStringEnum<Kind> {
-    /** Static value Storage for Kind. */
+    /**
+     * Static value Storage for Kind.
+     */
     public static final Kind STORAGE = fromString("Storage");
 
-    /** Static value StorageV2 for Kind. */
+    /**
+     * Static value StorageV2 for Kind.
+     */
     public static final Kind STORAGE_V2 = fromString("StorageV2");
 
-    /** Static value BlobStorage for Kind. */
+    /**
+     * Static value BlobStorage for Kind.
+     */
     public static final Kind BLOB_STORAGE = fromString("BlobStorage");
 
-    /** Static value FileStorage for Kind. */
+    /**
+     * Static value FileStorage for Kind.
+     */
     public static final Kind FILE_STORAGE = fromString("FileStorage");
 
-    /** Static value BlockBlobStorage for Kind. */
+    /**
+     * Static value BlockBlobStorage for Kind.
+     */
     public static final Kind BLOCK_BLOB_STORAGE = fromString("BlockBlobStorage");
 
     /**
      * Creates a new instance of Kind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class Kind extends ExpandableStringEnum<Kind> {
 
     /**
      * Creates or finds a Kind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Kind.
      */
@@ -47,7 +59,7 @@ public final class Kind extends ExpandableStringEnum<Kind> {
 
     /**
      * Gets known Kind values.
-     *
+     * 
      * @return known Kind values.
      */
     public static Collection<Kind> values() {

@@ -24,6 +24,7 @@ import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.RestoreParameters;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -62,9 +63,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     private Boolean isVirtualNetworkFilterEnabled;
 
     /*
-     * Enables automatic failover of the write region in the rare event that the region is unavailable due to an
-     * outage. Automatic failover will result in a new write region for the account and is chosen based on the failover
-     * priorities configured for the account.
+     * Enables automatic failover of the write region in the rare event that the region is unavailable due to an outage. Automatic failover will result in a new write region for the account and is chosen based on the failover priorities configured for the account.
      */
     @JsonProperty(value = "enableAutomaticFailover")
     private Boolean enableAutomaticFailover;
@@ -112,8 +111,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     private String keyVaultKeyUri;
 
     /*
-     * The default identity for accessing key vault used in features like customer managed keys. The default identity
-     * needs to be explicitly set by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity" and more.
+     * The default identity for accessing key vault used in features like customer managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity" and more.
      */
     @JsonProperty(value = "defaultIdentity")
     private String defaultIdentity;
@@ -197,8 +195,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     private Capacity capacity;
 
     /*
-     * This property is ignored during the update/create operation, as the metadata is read-only. The object represents
-     * the metadata for the Account Keys of the Cosmos DB account.
+     * This property is ignored during the update/create operation, as the metadata is read-only. The object represents the metadata for the Account Keys of the Cosmos DB account.
      */
     @JsonProperty(value = "keysMetadata", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseAccountKeysMetadata keysMetadata;
@@ -210,8 +207,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     private Boolean enablePartitionMerge;
 
     /*
-     * Indicates the minimum allowed Tls version. The default value is Tls 1.2. Cassandra and Mongo APIs only work with
-     * Tls 1.2.
+     * Indicates the minimum allowed Tls version. The default value is Tls 1.2. Cassandra and Mongo APIs only work with Tls 1.2.
      */
     @JsonProperty(value = "minimalTlsVersion")
     private MinimalTlsVersion minimalTlsVersion;
@@ -223,8 +219,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     private Boolean enableBurstCapacity;
 
     /*
-     * Indicates the status of the Customer Managed Key feature on the account. In case there are errors, the property
-     * provides troubleshooting guidance.
+     * Indicates the status of the Customer Managed Key feature on the account. In case there are errors, the property provides troubleshooting guidance.
      */
     @JsonProperty(value = "customerManagedKeyStatus")
     private String customerManagedKeyStatus;
@@ -237,7 +232,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the consistencyPolicy property: The consistency policy for the Cosmos DB account.
-     * 
+     *
      * @return the consistencyPolicy value.
      */
     public ConsistencyPolicy consistencyPolicy() {
@@ -246,7 +241,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the consistencyPolicy property: The consistency policy for the Cosmos DB account.
-     * 
+     *
      * @param consistencyPolicy the consistencyPolicy value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -258,7 +253,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Get the locations property: An array that contains the georeplication locations enabled for the Cosmos DB
      * account.
-     * 
+     *
      * @return the locations value.
      */
     public List<Location> locations() {
@@ -268,7 +263,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Set the locations property: An array that contains the georeplication locations enabled for the Cosmos DB
      * account.
-     * 
+     *
      * @param locations the locations value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -279,7 +274,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the databaseAccountOfferType property: The offer type for the database.
-     * 
+     *
      * @return the databaseAccountOfferType value.
      */
     public String databaseAccountOfferType() {
@@ -288,7 +283,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the databaseAccountOfferType property: The offer type for the database.
-     * 
+     *
      * @param databaseAccountOfferType the databaseAccountOfferType value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -299,7 +294,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the ipRules property: List of IpRules.
-     * 
+     *
      * @return the ipRules value.
      */
     public List<IpAddressOrRange> ipRules() {
@@ -308,7 +303,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the ipRules property: List of IpRules.
-     * 
+     *
      * @param ipRules the ipRules value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -320,7 +315,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Get the isVirtualNetworkFilterEnabled property: Flag to indicate whether to enable/disable Virtual Network ACL
      * rules.
-     * 
+     *
      * @return the isVirtualNetworkFilterEnabled value.
      */
     public Boolean isVirtualNetworkFilterEnabled() {
@@ -330,7 +325,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Set the isVirtualNetworkFilterEnabled property: Flag to indicate whether to enable/disable Virtual Network ACL
      * rules.
-     * 
+     *
      * @param isVirtualNetworkFilterEnabled the isVirtualNetworkFilterEnabled value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -344,7 +339,7 @@ public final class DatabaseAccountCreateUpdateProperties {
      * Get the enableAutomaticFailover property: Enables automatic failover of the write region in the rare event that
      * the region is unavailable due to an outage. Automatic failover will result in a new write region for the account
      * and is chosen based on the failover priorities configured for the account.
-     * 
+     *
      * @return the enableAutomaticFailover value.
      */
     public Boolean enableAutomaticFailover() {
@@ -355,7 +350,7 @@ public final class DatabaseAccountCreateUpdateProperties {
      * Set the enableAutomaticFailover property: Enables automatic failover of the write region in the rare event that
      * the region is unavailable due to an outage. Automatic failover will result in a new write region for the account
      * and is chosen based on the failover priorities configured for the account.
-     * 
+     *
      * @param enableAutomaticFailover the enableAutomaticFailover value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -366,7 +361,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the capabilities property: List of Cosmos DB capabilities for the account.
-     * 
+     *
      * @return the capabilities value.
      */
     public List<Capability> capabilities() {
@@ -375,7 +370,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the capabilities property: List of Cosmos DB capabilities for the account.
-     * 
+     *
      * @param capabilities the capabilities value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -386,7 +381,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the virtualNetworkRules property: List of Virtual Network ACL rules configured for the Cosmos DB account.
-     * 
+     *
      * @return the virtualNetworkRules value.
      */
     public List<VirtualNetworkRule> virtualNetworkRules() {
@@ -395,7 +390,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the virtualNetworkRules property: List of Virtual Network ACL rules configured for the Cosmos DB account.
-     * 
+     *
      * @param virtualNetworkRules the virtualNetworkRules value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -406,7 +401,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the enableMultipleWriteLocations property: Enables the account to write in multiple locations.
-     * 
+     *
      * @return the enableMultipleWriteLocations value.
      */
     public Boolean enableMultipleWriteLocations() {
@@ -415,7 +410,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the enableMultipleWriteLocations property: Enables the account to write in multiple locations.
-     * 
+     *
      * @param enableMultipleWriteLocations the enableMultipleWriteLocations value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -427,7 +422,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the enableCassandraConnector property: Enables the cassandra connector on the Cosmos DB C* account.
-     * 
+     *
      * @return the enableCassandraConnector value.
      */
     public Boolean enableCassandraConnector() {
@@ -436,7 +431,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the enableCassandraConnector property: Enables the cassandra connector on the Cosmos DB C* account.
-     * 
+     *
      * @param enableCassandraConnector the enableCassandraConnector value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -447,7 +442,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the connectorOffer property: The cassandra connector offer type for the Cosmos DB database C* account.
-     * 
+     *
      * @return the connectorOffer value.
      */
     public ConnectorOffer connectorOffer() {
@@ -456,7 +451,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the connectorOffer property: The cassandra connector offer type for the Cosmos DB database C* account.
-     * 
+     *
      * @param connectorOffer the connectorOffer value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -468,7 +463,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Get the disableKeyBasedMetadataWriteAccess property: Disable write operations on metadata resources (databases,
      * containers, throughput) via account keys.
-     * 
+     *
      * @return the disableKeyBasedMetadataWriteAccess value.
      */
     public Boolean disableKeyBasedMetadataWriteAccess() {
@@ -478,7 +473,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Set the disableKeyBasedMetadataWriteAccess property: Disable write operations on metadata resources (databases,
      * containers, throughput) via account keys.
-     * 
+     *
      * @param disableKeyBasedMetadataWriteAccess the disableKeyBasedMetadataWriteAccess value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -490,7 +485,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the keyVaultKeyUri property: The URI of the key vault.
-     * 
+     *
      * @return the keyVaultKeyUri value.
      */
     public String keyVaultKeyUri() {
@@ -499,7 +494,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the keyVaultKeyUri property: The URI of the key vault.
-     * 
+     *
      * @param keyVaultKeyUri the keyVaultKeyUri value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -512,7 +507,7 @@ public final class DatabaseAccountCreateUpdateProperties {
      * Get the defaultIdentity property: The default identity for accessing key vault used in features like customer
      * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
      * "SystemAssignedIdentity" and more.
-     * 
+     *
      * @return the defaultIdentity value.
      */
     public String defaultIdentity() {
@@ -523,7 +518,7 @@ public final class DatabaseAccountCreateUpdateProperties {
      * Set the defaultIdentity property: The default identity for accessing key vault used in features like customer
      * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
      * "SystemAssignedIdentity" and more.
-     * 
+     *
      * @param defaultIdentity the defaultIdentity value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -534,7 +529,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     * 
+     *
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -543,7 +538,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     * 
+     *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -554,7 +549,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the enableFreeTier property: Flag to indicate whether Free Tier is enabled.
-     * 
+     *
      * @return the enableFreeTier value.
      */
     public Boolean enableFreeTier() {
@@ -563,7 +558,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the enableFreeTier property: Flag to indicate whether Free Tier is enabled.
-     * 
+     *
      * @param enableFreeTier the enableFreeTier value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -574,7 +569,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the apiProperties property: API specific properties. Currently, supported only for MongoDB API.
-     * 
+     *
      * @return the apiProperties value.
      */
     public ApiProperties apiProperties() {
@@ -583,7 +578,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the apiProperties property: API specific properties. Currently, supported only for MongoDB API.
-     * 
+     *
      * @param apiProperties the apiProperties value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -594,7 +589,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the enableAnalyticalStorage property: Flag to indicate whether to enable storage analytics.
-     * 
+     *
      * @return the enableAnalyticalStorage value.
      */
     public Boolean enableAnalyticalStorage() {
@@ -603,7 +598,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the enableAnalyticalStorage property: Flag to indicate whether to enable storage analytics.
-     * 
+     *
      * @param enableAnalyticalStorage the enableAnalyticalStorage value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -614,7 +609,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the analyticalStorageConfiguration property: Analytical storage specific properties.
-     * 
+     *
      * @return the analyticalStorageConfiguration value.
      */
     public AnalyticalStorageConfiguration analyticalStorageConfiguration() {
@@ -623,7 +618,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the analyticalStorageConfiguration property: Analytical storage specific properties.
-     * 
+     *
      * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -635,7 +630,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the createMode property: Enum to indicate the mode of account creation.
-     * 
+     *
      * @return the createMode value.
      */
     public CreateMode createMode() {
@@ -644,7 +639,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the createMode property: Enum to indicate the mode of account creation.
-     * 
+     *
      * @param createMode the createMode value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -655,7 +650,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the backupPolicy property: The object representing the policy for taking backups on an account.
-     * 
+     *
      * @return the backupPolicy value.
      */
     public BackupPolicy backupPolicy() {
@@ -664,7 +659,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the backupPolicy property: The object representing the policy for taking backups on an account.
-     * 
+     *
      * @param backupPolicy the backupPolicy value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -675,7 +670,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the cors property: The CORS policy for the Cosmos DB database account.
-     * 
+     *
      * @return the cors value.
      */
     public List<CorsPolicy> cors() {
@@ -684,7 +679,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the cors property: The CORS policy for the Cosmos DB database account.
-     * 
+     *
      * @param cors the cors value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -695,7 +690,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
-     * 
+     *
      * @return the networkAclBypass value.
      */
     public NetworkAclBypass networkAclBypass() {
@@ -704,7 +699,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
-     * 
+     *
      * @param networkAclBypass the networkAclBypass value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -716,7 +711,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Get the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
      * the Cosmos DB account.
-     * 
+     *
      * @return the networkAclBypassResourceIds value.
      */
     public List<String> networkAclBypassResourceIds() {
@@ -726,7 +721,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Set the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
      * the Cosmos DB account.
-     * 
+     *
      * @param networkAclBypassResourceIds the networkAclBypassResourceIds value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -739,7 +734,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
-     * 
+     *
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -749,7 +744,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Set the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
-     * 
+     *
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -760,7 +755,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Get the restoreParameters property: Parameters to indicate the information about the restore.
-     * 
+     *
      * @return the restoreParameters value.
      */
     public RestoreParameters restoreParameters() {
@@ -769,7 +764,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Set the restoreParameters property: Parameters to indicate the information about the restore.
-     * 
+     *
      * @param restoreParameters the restoreParameters value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -781,7 +776,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Get the capacity property: The object that represents all properties related to capacity enforcement on an
      * account.
-     * 
+     *
      * @return the capacity value.
      */
     public Capacity capacity() {
@@ -791,7 +786,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Set the capacity property: The object that represents all properties related to capacity enforcement on an
      * account.
-     * 
+     *
      * @param capacity the capacity value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -803,7 +798,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Get the keysMetadata property: This property is ignored during the update/create operation, as the metadata is
      * read-only. The object represents the metadata for the Account Keys of the Cosmos DB account.
-     * 
+     *
      * @return the keysMetadata value.
      */
     public DatabaseAccountKeysMetadata keysMetadata() {
@@ -813,7 +808,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Get the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
      * account.
-     * 
+     *
      * @return the enablePartitionMerge value.
      */
     public Boolean enablePartitionMerge() {
@@ -823,7 +818,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Set the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
      * account.
-     * 
+     *
      * @param enablePartitionMerge the enablePartitionMerge value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -835,7 +830,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
      * Cassandra and Mongo APIs only work with Tls 1.2.
-     * 
+     *
      * @return the minimalTlsVersion value.
      */
     public MinimalTlsVersion minimalTlsVersion() {
@@ -845,7 +840,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
      * Cassandra and Mongo APIs only work with Tls 1.2.
-     * 
+     *
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -857,7 +852,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
      * the account.
-     * 
+     *
      * @return the enableBurstCapacity value.
      */
     public Boolean enableBurstCapacity() {
@@ -867,7 +862,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
      * the account.
-     * 
+     *
      * @param enableBurstCapacity the enableBurstCapacity value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -879,7 +874,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Get the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
      * account. In case there are errors, the property provides troubleshooting guidance.
-     * 
+     *
      * @return the customerManagedKeyStatus value.
      */
     public String customerManagedKeyStatus() {
@@ -889,7 +884,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     /**
      * Set the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
      * account. In case there are errors, the property provides troubleshooting guidance.
-     * 
+     *
      * @param customerManagedKeyStatus the customerManagedKeyStatus value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
@@ -900,7 +895,7 @@ public final class DatabaseAccountCreateUpdateProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -908,8 +903,9 @@ public final class DatabaseAccountCreateUpdateProperties {
             consistencyPolicy().validate();
         }
         if (locations() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property locations in model DatabaseAccountCreateUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property locations in model DatabaseAccountCreateUpdateProperties"));
         } else {
             locations().forEach(e -> e.validate());
         }

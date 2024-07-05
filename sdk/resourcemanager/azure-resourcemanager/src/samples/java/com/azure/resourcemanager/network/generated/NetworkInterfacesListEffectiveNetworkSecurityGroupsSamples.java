@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfacesListEffectiveNetworkSecurityGroupsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * NetworkInterfaceEffectiveNSGList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkInterfaceEffectiveNSGList.json
      */
     /**
      * Sample code: List network interface effective network security groups.
@@ -19,7 +18,10 @@ public final class NetworkInterfacesListEffectiveNetworkSecurityGroupsSamples {
      */
     public static void
         listNetworkInterfaceEffectiveNetworkSecurityGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkInterfaces().listEffectiveNetworkSecurityGroups("rg1",
-            "nic1", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkInterfaces()
+            .listEffectiveNetworkSecurityGroups("rg1", "nic1", com.azure.core.util.Context.NONE);
     }
 }

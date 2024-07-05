@@ -5,60 +5,57 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Views resource model.
  */
 @Immutable
-public final class DnsPrivateViewProperties {
+public final class DnsPrivateViewProperties implements JsonSerializable<DnsPrivateViewProperties> {
     /*
      * The OCID of the view
      */
-    @JsonProperty(value = "ocid", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String ocid;
 
     /*
      * The display name of the view resource
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * A Boolean flag indicating whether or not parts of the resource are unable to be explicitly managed.
      */
-    @JsonProperty(value = "isProtected", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private boolean isProtected;
+    private Boolean isProtected;
 
     /*
      * Views lifecycleState
      */
-    @JsonProperty(value = "lifecycleState", access = JsonProperty.Access.WRITE_ONLY)
     private DnsPrivateViewsLifecycleState lifecycleState;
 
     /*
      * The canonical absolute URL of the resource.
      */
-    @JsonProperty(value = "self", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String self;
 
     /*
      * views timeCreated
      */
-    @JsonProperty(value = "timeCreated", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
     /*
      * views timeCreated
      */
-    @JsonProperty(value = "timeUpdated", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeUpdated;
 
     /*
      * Azure resource provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /**
@@ -91,7 +88,7 @@ public final class DnsPrivateViewProperties {
      * 
      * @return the isProtected value.
      */
-    public boolean isProtected() {
+    public Boolean isProtected() {
         return this.isProtected;
     }
 
@@ -146,5 +143,58 @@ public final class DnsPrivateViewProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DnsPrivateViewProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DnsPrivateViewProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DnsPrivateViewProperties.
+     */
+    public static DnsPrivateViewProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DnsPrivateViewProperties deserializedDnsPrivateViewProperties = new DnsPrivateViewProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ocid".equals(fieldName)) {
+                    deserializedDnsPrivateViewProperties.ocid = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedDnsPrivateViewProperties.displayName = reader.getString();
+                } else if ("isProtected".equals(fieldName)) {
+                    deserializedDnsPrivateViewProperties.isProtected = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lifecycleState".equals(fieldName)) {
+                    deserializedDnsPrivateViewProperties.lifecycleState
+                        = DnsPrivateViewsLifecycleState.fromString(reader.getString());
+                } else if ("self".equals(fieldName)) {
+                    deserializedDnsPrivateViewProperties.self = reader.getString();
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedDnsPrivateViewProperties.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeUpdated".equals(fieldName)) {
+                    deserializedDnsPrivateViewProperties.timeUpdated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDnsPrivateViewProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDnsPrivateViewProperties;
+        });
     }
 }

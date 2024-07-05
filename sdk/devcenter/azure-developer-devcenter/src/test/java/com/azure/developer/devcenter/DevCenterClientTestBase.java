@@ -4,7 +4,7 @@
 
 package com.azure.developer.devcenter;
 
-// Based and modified from the 'generated' DevCenterClientTestBase 
+// Based and modified from the 'generated' DevCenterClientTestBase
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
@@ -14,8 +14,9 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
 
 public class DevCenterClientTestBase extends TestProxyTestBase {
     protected DevCenterClient devCenterClient;
@@ -60,6 +61,12 @@ public class DevCenterClientTestBase extends TestProxyTestBase {
         } else if (getTestMode() == TestMode.LIVE) {
             devCenterClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
+
+        if (!interceptorManager.isLiveMode()) {
+            // Removes the `$..name`, `$..id`, OperationLocation and Location sanitizer from the list of common sanitizers
+            interceptorManager.removeSanitizers("AZSDK3493", "AZSDK2003", "AZSDK2030", "AZSDK3430");
+        }
+
         devCenterClient = devCenterClientbuilder.buildClient();
 
         devBoxesClient = devCenterClient.getDevBoxesClient();

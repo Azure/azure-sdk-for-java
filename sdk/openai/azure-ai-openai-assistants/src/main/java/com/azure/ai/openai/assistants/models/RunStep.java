@@ -278,6 +278,134 @@ public final class RunStep implements JsonSerializable<RunStep> {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("assistant_id", this.assistantId);
+        jsonWriter.writeStringField("thread_id", this.threadId);
+        jsonWriter.writeStringField("run_id", this.runId);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("step_details", this.stepDetails);
+        jsonWriter.writeJsonField("last_error", this.lastError);
+        jsonWriter.writeLongField("created_at", this.createdAt);
+        jsonWriter.writeNumberField("expired_at", this.expiredAt);
+        jsonWriter.writeNumberField("completed_at", this.completedAt);
+        jsonWriter.writeNumberField("cancelled_at", this.cancelledAt);
+        jsonWriter.writeNumberField("failed_at", this.failedAt);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("usage", this.usage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunStep from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunStep if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunStep.
+     */
+    @Generated
+    public static RunStep fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            RunStepType type = null;
+            String assistantId = null;
+            String threadId = null;
+            String runId = null;
+            RunStepStatus status = null;
+            RunStepDetails stepDetails = null;
+            RunStepError lastError = null;
+            OffsetDateTime createdAt = null;
+            OffsetDateTime expiredAt = null;
+            OffsetDateTime completedAt = null;
+            OffsetDateTime cancelledAt = null;
+            OffsetDateTime failedAt = null;
+            Map<String, String> metadata = null;
+            RunStepCompletionUsage usage = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    type = RunStepType.fromString(reader.getString());
+                } else if ("assistant_id".equals(fieldName)) {
+                    assistantId = reader.getString();
+                } else if ("thread_id".equals(fieldName)) {
+                    threadId = reader.getString();
+                } else if ("run_id".equals(fieldName)) {
+                    runId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    status = RunStepStatus.fromString(reader.getString());
+                } else if ("step_details".equals(fieldName)) {
+                    stepDetails = RunStepDetails.fromJson(reader);
+                } else if ("last_error".equals(fieldName)) {
+                    lastError = RunStepError.fromJson(reader);
+                } else if ("created_at".equals(fieldName)) {
+                    createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
+                } else if ("expired_at".equals(fieldName)) {
+                    Long expiredAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (expiredAtHolder != null) {
+                        expiredAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(expiredAtHolder), ZoneOffset.UTC);
+                    }
+                } else if ("completed_at".equals(fieldName)) {
+                    Long completedAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (completedAtHolder != null) {
+                        completedAt
+                            = OffsetDateTime.ofInstant(Instant.ofEpochSecond(completedAtHolder), ZoneOffset.UTC);
+                    }
+                } else if ("cancelled_at".equals(fieldName)) {
+                    Long cancelledAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (cancelledAtHolder != null) {
+                        cancelledAt
+                            = OffsetDateTime.ofInstant(Instant.ofEpochSecond(cancelledAtHolder), ZoneOffset.UTC);
+                    }
+                } else if ("failed_at".equals(fieldName)) {
+                    Long failedAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (failedAtHolder != null) {
+                        failedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(failedAtHolder), ZoneOffset.UTC);
+                    }
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("usage".equals(fieldName)) {
+                    usage = RunStepCompletionUsage.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            RunStep deserializedRunStep = new RunStep(id, type, assistantId, threadId, runId, status, stepDetails,
+                lastError, createdAt, expiredAt, completedAt, cancelledAt, failedAt, metadata);
+            deserializedRunStep.usage = usage;
+            return deserializedRunStep;
+        });
+    }
+
+    /*
+     * Usage statistics related to the run step. This value will be `null` while the run step's status is `in_progress`.
+     */
+    @Generated
+    private RunStepCompletionUsage usage;
+
+    /**
+     * Get the usage property: Usage statistics related to the run step. This value will be `null` while the run step's
+     * status is `in_progress`.
+     *
+     * @return the usage value.
+     */
+    @Generated
+    public RunStepCompletionUsage getUsage() {
+        return this.usage;
+    }
+
+    /**
      * Creates an instance of RunStep class.
      *
      * @param id the id value to set.
@@ -334,110 +462,5 @@ public final class RunStep implements JsonSerializable<RunStep> {
             this.failedAt = failedAt.toEpochSecond();
         }
         this.metadata = metadata;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.object);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("assistant_id", this.assistantId);
-        jsonWriter.writeStringField("thread_id", this.threadId);
-        jsonWriter.writeStringField("run_id", this.runId);
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeJsonField("step_details", this.stepDetails);
-        jsonWriter.writeJsonField("last_error", this.lastError);
-        jsonWriter.writeLongField("created_at", this.createdAt);
-        jsonWriter.writeNumberField("expired_at", this.expiredAt);
-        jsonWriter.writeNumberField("completed_at", this.completedAt);
-        jsonWriter.writeNumberField("cancelled_at", this.cancelledAt);
-        jsonWriter.writeNumberField("failed_at", this.failedAt);
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RunStep from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RunStep if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RunStep.
-     */
-    @Generated
-    public static RunStep fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            RunStepType type = null;
-            String assistantId = null;
-            String threadId = null;
-            String runId = null;
-            RunStepStatus status = null;
-            RunStepDetails stepDetails = null;
-            RunStepError lastError = null;
-            OffsetDateTime createdAt = null;
-            OffsetDateTime expiredAt = null;
-            OffsetDateTime completedAt = null;
-            OffsetDateTime cancelledAt = null;
-            OffsetDateTime failedAt = null;
-            Map<String, String> metadata = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    type = RunStepType.fromString(reader.getString());
-                } else if ("assistant_id".equals(fieldName)) {
-                    assistantId = reader.getString();
-                } else if ("thread_id".equals(fieldName)) {
-                    threadId = reader.getString();
-                } else if ("run_id".equals(fieldName)) {
-                    runId = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    status = RunStepStatus.fromString(reader.getString());
-                } else if ("step_details".equals(fieldName)) {
-                    stepDetails = RunStepDetails.fromJson(reader);
-                } else if ("last_error".equals(fieldName)) {
-                    lastError = RunStepError.fromJson(reader);
-                } else if ("created_at".equals(fieldName)) {
-                    createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
-                } else if ("expired_at".equals(fieldName)) {
-                    Long expiredAtHolder = reader.getNullable(JsonReader::getLong);
-                    if (expiredAtHolder != null) {
-                        expiredAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(expiredAtHolder), ZoneOffset.UTC);
-                    }
-                } else if ("completed_at".equals(fieldName)) {
-                    Long completedAtHolder = reader.getNullable(JsonReader::getLong);
-                    if (completedAtHolder != null) {
-                        completedAt
-                            = OffsetDateTime.ofInstant(Instant.ofEpochSecond(completedAtHolder), ZoneOffset.UTC);
-                    }
-                } else if ("cancelled_at".equals(fieldName)) {
-                    Long cancelledAtHolder = reader.getNullable(JsonReader::getLong);
-                    if (cancelledAtHolder != null) {
-                        cancelledAt
-                            = OffsetDateTime.ofInstant(Instant.ofEpochSecond(cancelledAtHolder), ZoneOffset.UTC);
-                    }
-                } else if ("failed_at".equals(fieldName)) {
-                    Long failedAtHolder = reader.getNullable(JsonReader::getLong);
-                    if (failedAtHolder != null) {
-                        failedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(failedAtHolder), ZoneOffset.UTC);
-                    }
-                } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readMap(reader1 -> reader1.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new RunStep(id, type, assistantId, threadId, runId, status, stepDetails, lastError, createdAt,
-                expiredAt, completedAt, cancelledAt, failedAt, metadata);
-        });
     }
 }

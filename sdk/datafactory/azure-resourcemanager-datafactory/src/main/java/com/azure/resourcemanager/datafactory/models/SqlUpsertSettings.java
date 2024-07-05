@@ -25,7 +25,8 @@ public final class SqlUpsertSettings {
     private Object interimSchemaName;
 
     /*
-     * Key column names for unique row identification. Type: array of strings (or Expression with resultType array of strings).
+     * Key column names for unique row identification. Type: array of strings (or Expression with resultType array of
+     * strings).
      */
     @JsonProperty(value = "keys")
     private Object keys;

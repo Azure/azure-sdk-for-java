@@ -6,25 +6,27 @@ package com.azure.resourcemanager.devopsinfrastructure.implementation.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.models.PoolInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response of a Pool list operation.
  */
 @Immutable
-public final class PoolListResult {
+public final class PoolListResult implements JsonSerializable<PoolListResult> {
     /*
      * The Pool items on this page
      */
-    @JsonProperty(value = "value", required = true)
     private List<PoolInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -66,4 +68,45 @@ public final class PoolListResult {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PoolListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PoolListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PoolListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PoolListResult.
+     */
+    public static PoolListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PoolListResult deserializedPoolListResult = new PoolListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PoolInner> value = reader.readArray(reader1 -> PoolInner.fromJson(reader1));
+                    deserializedPoolListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPoolListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPoolListResult;
+        });
+    }
 }

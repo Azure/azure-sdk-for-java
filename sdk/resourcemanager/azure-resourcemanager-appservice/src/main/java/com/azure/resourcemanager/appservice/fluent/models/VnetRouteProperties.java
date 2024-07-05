@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VnetRouteProperties {
     /*
-     * The starting address for this route. This may also include a CIDR notation, in which case the end address must
-     * not be specified.
+     * The starting address for this route. This may also include a CIDR notation, in which case the end address must not be specified.
      */
     @JsonProperty(value = "startAddress")
     private String startAddress;

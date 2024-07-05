@@ -14,24 +14,22 @@ public final class ChainingTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChainingTriggerTypeProperties model = BinaryData.fromString(
-            "{\"dependsOn\":[{\"referenceName\":\"vb\",\"name\":\"yedrkgrtda\"},{\"referenceName\":\"lito\",\"name\":\"tarefexkbmodbpc\"},{\"referenceName\":\"uyhhzcj\",\"name\":\"ijwkcllo\"},{\"referenceName\":\"jshfcuzzujcib\",\"name\":\"fkxiixnxx\"}],\"runDimension\":\"vyizya\"}")
+            "{\"dependsOn\":[{\"referenceName\":\"vtjrobowhcv\",\"name\":\"mlwadst\"},{\"referenceName\":\"xrgqmuthx\",\"name\":\"dmhypptfppmu\"}],\"runDimension\":\"wvezt\"}")
             .toObject(ChainingTriggerTypeProperties.class);
-        Assertions.assertEquals("vb", model.dependsOn().get(0).referenceName());
-        Assertions.assertEquals("yedrkgrtda", model.dependsOn().get(0).name());
-        Assertions.assertEquals("vyizya", model.runDimension());
+        Assertions.assertEquals("vtjrobowhcv", model.dependsOn().get(0).referenceName());
+        Assertions.assertEquals("mlwadst", model.dependsOn().get(0).name());
+        Assertions.assertEquals("wvezt", model.runDimension());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ChainingTriggerTypeProperties model = new ChainingTriggerTypeProperties()
-            .withDependsOn(Arrays.asList(new PipelineReference().withReferenceName("vb").withName("yedrkgrtda"),
-                new PipelineReference().withReferenceName("lito").withName("tarefexkbmodbpc"),
-                new PipelineReference().withReferenceName("uyhhzcj").withName("ijwkcllo"),
-                new PipelineReference().withReferenceName("jshfcuzzujcib").withName("fkxiixnxx")))
-            .withRunDimension("vyizya");
+            .withDependsOn(Arrays.asList(new PipelineReference().withReferenceName("vtjrobowhcv").withName("mlwadst"),
+                new PipelineReference().withReferenceName("xrgqmuthx").withName("dmhypptfppmu")))
+            .withRunDimension("wvezt");
         model = BinaryData.fromObject(model).toObject(ChainingTriggerTypeProperties.class);
-        Assertions.assertEquals("vb", model.dependsOn().get(0).referenceName());
-        Assertions.assertEquals("yedrkgrtda", model.dependsOn().get(0).name());
-        Assertions.assertEquals("vyizya", model.runDimension());
+        Assertions.assertEquals("vtjrobowhcv", model.dependsOn().get(0).referenceName());
+        Assertions.assertEquals("mlwadst", model.dependsOn().get(0).name());
+        Assertions.assertEquals("wvezt", model.runDimension());
     }
 }

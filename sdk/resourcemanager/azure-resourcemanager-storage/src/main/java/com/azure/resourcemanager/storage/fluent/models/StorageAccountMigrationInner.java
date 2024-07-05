@@ -38,16 +38,18 @@ public final class StorageAccountMigrationInner {
      * The properties of a storage account’s ongoing or enqueued migration.
      */
     @JsonProperty(value = "properties", required = true)
-    private StorageAccountMigrationProperties innerStorageAccountMigrationDetails =
-        new StorageAccountMigrationProperties();
+    private StorageAccountMigrationProperties innerStorageAccountMigrationDetails
+        = new StorageAccountMigrationProperties();
 
-    /** Creates an instance of StorageAccountMigrationInner class. */
+    /**
+     * Creates an instance of StorageAccountMigrationInner class.
+     */
     public StorageAccountMigrationInner() {
     }
 
     /**
      * Get the id property: Migration Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +58,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Get the name property: current value is 'default' for customer initiated migration.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +67,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Set the name property: current value is 'default' for customer initiated migration.
-     *
+     * 
      * @param name the name value to set.
      * @return the StorageAccountMigrationInner object itself.
      */
@@ -76,7 +78,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Get the type property: SrpAccountMigrationType in ARM contract which is 'accountMigrations'.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -85,7 +87,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Set the type property: SrpAccountMigrationType in ARM contract which is 'accountMigrations'.
-     *
+     * 
      * @param type the type value to set.
      * @return the StorageAccountMigrationInner object itself.
      */
@@ -97,7 +99,7 @@ public final class StorageAccountMigrationInner {
     /**
      * Get the innerStorageAccountMigrationDetails property: The properties of a storage account’s ongoing or enqueued
      * migration.
-     *
+     * 
      * @return the innerStorageAccountMigrationDetails value.
      */
     private StorageAccountMigrationProperties innerStorageAccountMigrationDetails() {
@@ -106,7 +108,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Get the targetSkuName property: Target sku name for the account.
-     *
+     * 
      * @return the targetSkuName value.
      */
     public SkuName targetSkuName() {
@@ -117,7 +119,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Set the targetSkuName property: Target sku name for the account.
-     *
+     * 
      * @param targetSkuName the targetSkuName value to set.
      * @return the StorageAccountMigrationInner object itself.
      */
@@ -131,7 +133,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Get the migrationStatus property: Current status of migration.
-     *
+     * 
      * @return the migrationStatus value.
      */
     public MigrationStatus migrationStatus() {
@@ -142,7 +144,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Get the migrationFailedReason property: Error code for migration failure.
-     *
+     * 
      * @return the migrationFailedReason value.
      */
     public String migrationFailedReason() {
@@ -153,7 +155,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Get the migrationFailedDetailedReason property: Reason for migration failure.
-     *
+     * 
      * @return the migrationFailedDetailedReason value.
      */
     public String migrationFailedDetailedReason() {
@@ -164,16 +166,14 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerStorageAccountMigrationDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerStorageAccountMigrationDetails in model"
-                            + " StorageAccountMigrationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerStorageAccountMigrationDetails in model StorageAccountMigrationInner"));
         } else {
             innerStorageAccountMigrationDetails().validate();
         }

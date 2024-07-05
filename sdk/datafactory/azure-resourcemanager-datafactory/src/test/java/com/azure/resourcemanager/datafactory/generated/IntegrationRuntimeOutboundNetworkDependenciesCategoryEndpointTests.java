@@ -15,25 +15,40 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint model = BinaryData.fromString(
-            "{\"category\":\"qugxywpmueefjzwf\",\"endpoints\":[{\"domainName\":\"jidsuyonobglaoc\",\"endpointDetails\":[{\"port\":1581079817}]}]}")
+            "{\"category\":\"bmehh\",\"endpoints\":[{\"domainName\":\"jusrtslhspk\",\"endpointDetails\":[{\"port\":812184412},{\"port\":441408788},{\"port\":1351571833}]},{\"domainName\":\"gkvtmelmqkrhah\",\"endpointDetails\":[{\"port\":1468596781},{\"port\":1935710102},{\"port\":1520620796},{\"port\":27642330}]},{\"domainName\":\"hmdua\",\"endpointDetails\":[{\"port\":552039222}]}]}")
             .toObject(IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint.class);
-        Assertions.assertEquals("qugxywpmueefjzwf", model.category());
-        Assertions.assertEquals("jidsuyonobglaoc", model.endpoints().get(0).domainName());
-        Assertions.assertEquals(1581079817, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals("bmehh", model.category());
+        Assertions.assertEquals("jusrtslhspk", model.endpoints().get(0).domainName());
+        Assertions.assertEquals(812184412, model.endpoints().get(0).endpointDetails().get(0).port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint model
-            = new IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint().withCategory("qugxywpmueefjzwf")
-                .withEndpoints(Arrays.asList(
-                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("jidsuyonobglaoc")
-                        .withEndpointDetails(Arrays.asList(
-                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(1581079817)))));
+            = new IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint().withCategory("bmehh")
+                .withEndpoints(
+                    Arrays.asList(
+                        new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
+                            .withDomainName("jusrtslhspk")
+                            .withEndpointDetails(Arrays.asList(
+                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(812184412),
+                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(441408788),
+                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails()
+                                    .withPort(1351571833))),
+                        new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("gkvtmelmqkrhah")
+                            .withEndpointDetails(Arrays.asList(
+                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(1468596781),
+                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(1935710102),
+                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(1520620796),
+                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(27642330))),
+                        new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("hmdua")
+                            .withEndpointDetails(
+                                Arrays.asList(new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails()
+                                    .withPort(552039222)))));
         model = BinaryData.fromObject(model)
             .toObject(IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint.class);
-        Assertions.assertEquals("qugxywpmueefjzwf", model.category());
-        Assertions.assertEquals("jidsuyonobglaoc", model.endpoints().get(0).domainName());
-        Assertions.assertEquals(1581079817, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals("bmehh", model.category());
+        Assertions.assertEquals("jusrtslhspk", model.endpoints().get(0).domainName());
+        Assertions.assertEquals(812184412, model.endpoints().get(0).endpointDetails().get(0).port());
     }
 }

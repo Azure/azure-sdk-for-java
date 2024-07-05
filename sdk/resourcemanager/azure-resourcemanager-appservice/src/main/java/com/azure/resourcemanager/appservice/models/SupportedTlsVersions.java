@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -28,8 +29,13 @@ public final class SupportedTlsVersions extends ExpandableStringEnum<SupportedTl
     public static final SupportedTlsVersions ONE_TWO = fromString("1.2");
 
     /**
+     * Static value 1.3 for SupportedTlsVersions.
+     */
+    public static final SupportedTlsVersions ONE_THREE = fromString("1.3");
+
+    /**
      * Creates a new instance of SupportedTlsVersions value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -38,7 +44,7 @@ public final class SupportedTlsVersions extends ExpandableStringEnum<SupportedTl
 
     /**
      * Creates or finds a SupportedTlsVersions from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SupportedTlsVersions.
      */
@@ -49,7 +55,7 @@ public final class SupportedTlsVersions extends ExpandableStringEnum<SupportedTl
 
     /**
      * Gets known SupportedTlsVersions values.
-     * 
+     *
      * @return known SupportedTlsVersions values.
      */
     public static Collection<SupportedTlsVersions> values() {

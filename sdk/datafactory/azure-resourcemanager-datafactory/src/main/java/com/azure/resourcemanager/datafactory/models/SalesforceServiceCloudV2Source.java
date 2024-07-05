@@ -29,19 +29,31 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
     private String type = "SalesforceServiceCloudV2Source";
 
     /*
-     * Database query. Type: string (or Expression with resultType string).
+     * Deprecating, please use 'query' property instead. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "SOQLQuery")
     private Object soqlQuery;
 
     /*
-     * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or Expression with resultType boolean).
+     * You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL limitations, see this
+     * article:
+     * https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/queries.htm#SOQL%20Considerations.
+     * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
+     * will be retrieved. Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "query")
+    private Object query;
+
+    /*
+     * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or
+     * Expression with resultType boolean).
      */
     @JsonProperty(value = "includeDeletedObjects")
     private Object includeDeletedObjects;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
@@ -63,7 +75,8 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
     }
 
     /**
-     * Get the soqlQuery property: Database query. Type: string (or Expression with resultType string).
+     * Get the soqlQuery property: Deprecating, please use 'query' property instead. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the soqlQuery value.
      */
@@ -72,13 +85,42 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
     }
 
     /**
-     * Set the soqlQuery property: Database query. Type: string (or Expression with resultType string).
+     * Set the soqlQuery property: Deprecating, please use 'query' property instead. Type: string (or Expression with
+     * resultType string).
      * 
      * @param soqlQuery the soqlQuery value to set.
      * @return the SalesforceServiceCloudV2Source object itself.
      */
     public SalesforceServiceCloudV2Source withSoqlQuery(Object soqlQuery) {
         this.soqlQuery = soqlQuery;
+        return this;
+    }
+
+    /**
+     * Get the query property: You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL
+     * limitations, see this article:
+     * https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/queries.htm#SOQL%20Considerations.
+     * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
+     * will be retrieved. Type: string (or Expression with resultType string).
+     * 
+     * @return the query value.
+     */
+    public Object query() {
+        return this.query;
+    }
+
+    /**
+     * Set the query property: You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL
+     * limitations, see this article:
+     * https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/queries.htm#SOQL%20Considerations.
+     * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
+     * will be retrieved. Type: string (or Expression with resultType string).
+     * 
+     * @param query the query value to set.
+     * @return the SalesforceServiceCloudV2Source object itself.
+     */
+    public SalesforceServiceCloudV2Source withQuery(Object query) {
+        this.query = query;
         return this;
     }
 

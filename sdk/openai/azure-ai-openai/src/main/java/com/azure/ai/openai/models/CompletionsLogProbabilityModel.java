@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The CompletionsLogProbabilityModel model.
+ * Representation of a log probabilities model for a completions generation.
  */
 @Immutable
 public final class CompletionsLogProbabilityModel implements JsonSerializable<CompletionsLogProbabilityModel> {

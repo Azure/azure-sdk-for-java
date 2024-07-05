@@ -1,0 +1,17 @@
+trigger: none
+
+pr: none
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: iotfirmwaredefense
+    Artifacts:
+      - name: azure-resourcemanager-iotfirmwaredefense
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanageriotfirmwaredefense
+    Clouds: 'Public'
+    UseFederatedAuth: true
+    # Only run tests on Windows to save cost.
+    MatrixFilters:
+      - pool=.*(win).*

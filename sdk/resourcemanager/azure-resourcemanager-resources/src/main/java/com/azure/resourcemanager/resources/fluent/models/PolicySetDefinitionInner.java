@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The policy set definition. */
+/**
+ * The policy set definition.
+ */
 @Fluent
 public final class PolicySetDefinitionInner extends ProxyResource {
     /*
@@ -30,13 +32,15 @@ public final class PolicySetDefinitionInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of PolicySetDefinitionInner class. */
+    /**
+     * Creates an instance of PolicySetDefinitionInner class.
+     */
     public PolicySetDefinitionInner() {
     }
 
     /**
      * Get the innerProperties property: The policy definition properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PolicySetDefinitionProperties innerProperties() {
@@ -45,7 +49,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -55,7 +59,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
     /**
      * Get the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,
      * and Static.
-     *
+     * 
      * @return the policyType value.
      */
     public PolicyType policyType() {
@@ -65,7 +69,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
     /**
      * Set the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,
      * and Static.
-     *
+     * 
      * @param policyType the policyType value to set.
      * @return the PolicySetDefinitionInner object itself.
      */
@@ -79,7 +83,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
 
     /**
      * Get the displayName property: The display name of the policy set definition.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -88,7 +92,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
 
     /**
      * Set the displayName property: The display name of the policy set definition.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PolicySetDefinitionInner object itself.
      */
@@ -102,7 +106,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
 
     /**
      * Get the description property: The policy set definition description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -111,7 +115,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
 
     /**
      * Set the description property: The policy set definition description.
-     *
+     * 
      * @param description the description value to set.
      * @return the PolicySetDefinitionInner object itself.
      */
@@ -126,7 +130,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
     /**
      * Get the metadata property: The policy set definition metadata. Metadata is an open ended object and is typically
      * a collection of key value pairs.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -136,7 +140,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
     /**
      * Set the metadata property: The policy set definition metadata. Metadata is an open ended object and is typically
      * a collection of key value pairs.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the PolicySetDefinitionInner object itself.
      */
@@ -151,7 +155,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
     /**
      * Get the parameters property: The policy set definition parameters that can be used in policy definition
      * references.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, ParameterDefinitionsValue> parameters() {
@@ -161,7 +165,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
     /**
      * Set the parameters property: The policy set definition parameters that can be used in policy definition
      * references.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the PolicySetDefinitionInner object itself.
      */
@@ -175,7 +179,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
 
     /**
      * Get the policyDefinitions property: An array of policy definition references.
-     *
+     * 
      * @return the policyDefinitions value.
      */
     public List<PolicyDefinitionReference> policyDefinitions() {
@@ -184,7 +188,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
 
     /**
      * Set the policyDefinitions property: An array of policy definition references.
-     *
+     * 
      * @param policyDefinitions the policyDefinitions value to set.
      * @return the PolicySetDefinitionInner object itself.
      */
@@ -199,7 +203,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
     /**
      * Get the policyDefinitionGroups property: The metadata describing groups of policy definition references within
      * the policy set definition.
-     *
+     * 
      * @return the policyDefinitionGroups value.
      */
     public List<PolicyDefinitionGroup> policyDefinitionGroups() {
@@ -209,7 +213,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
     /**
      * Set the policyDefinitionGroups property: The metadata describing groups of policy definition references within
      * the policy set definition.
-     *
+     * 
      * @param policyDefinitionGroups the policyDefinitionGroups value to set.
      * @return the PolicySetDefinitionInner object itself.
      */
@@ -223,7 +227,7 @@ public final class PolicySetDefinitionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

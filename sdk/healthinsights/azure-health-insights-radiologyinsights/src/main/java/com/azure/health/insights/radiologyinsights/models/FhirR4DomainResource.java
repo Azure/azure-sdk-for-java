@@ -31,12 +31,12 @@ import java.util.List;
 public class FhirR4DomainResource extends FhirR4Resource {
 
     /*
-     * The resourceType property.
+     * Discriminator property for Fhir_R4_DomainResource.
      */
     @Generated
     @JsonTypeId
     @JsonProperty(value = "resourceType")
-    private String resourceType;
+    private String resourceType = "Fhir_R4_DomainResource";
 
     /*
      * Text summary of the resource, for human interpretation
@@ -78,7 +78,7 @@ public class FhirR4DomainResource extends FhirR4Resource {
     }
 
     /**
-     * Get the resourceType property: The resourceType property.
+     * Get the resourceType property: Discriminator property for Fhir_R4_DomainResource.
      *
      * @return the resourceType value.
      */

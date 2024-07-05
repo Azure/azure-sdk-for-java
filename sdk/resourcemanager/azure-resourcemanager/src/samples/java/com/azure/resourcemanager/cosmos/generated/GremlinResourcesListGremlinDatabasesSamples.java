@@ -9,8 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class GremlinResourcesListGremlinDatabasesSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBGremlinDatabaseList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBGremlinDatabaseList.json
      */
     /**
      * Sample code: CosmosDBGremlinDatabaseList.
@@ -18,7 +17,10 @@ public final class GremlinResourcesListGremlinDatabasesSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBGremlinDatabaseList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getGremlinResources().listGremlinDatabases("rgName", "ddb1",
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getGremlinResources()
+            .listGremlinDatabases("rgName", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

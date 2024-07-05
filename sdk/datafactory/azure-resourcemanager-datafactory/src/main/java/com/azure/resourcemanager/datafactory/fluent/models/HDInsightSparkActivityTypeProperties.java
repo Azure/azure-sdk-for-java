@@ -19,13 +19,15 @@ import java.util.Map;
 @Fluent
 public final class HDInsightSparkActivityTypeProperties {
     /*
-     * The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or Expression with resultType string).
+     * The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "rootPath", required = true)
     private Object rootPath;
 
     /*
-     * The relative path to the root folder of the code/package to be executed. Type: string (or Expression with resultType string).
+     * The relative path to the root folder of the code/package to be executed. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "entryFilePath", required = true)
     private Object entryFilePath;

@@ -81,8 +81,9 @@ public final class LocalDiagnosticsAccessConfiguration {
      */
     public void validate() {
         if (authenticationType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property authenticationType in model LocalDiagnosticsAccessConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationType in model LocalDiagnosticsAccessConfiguration"));
         }
         if (httpsServerCertificate() != null) {
             httpsServerCertificate().validate();

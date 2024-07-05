@@ -8,12 +8,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoBoundingBox;
 import com.azure.maps.render.models.TileIndex;
 import com.azure.maps.render.models.TilesetId;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,15 +29,8 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
     public void testAsyncGetMapTileset(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
-        new TilesetId();
-        StepVerifier.create(client.getMapTileset(TilesetId.MICROSOFT_BASE))
-            .assertNext(actualResults -> {
-                try {
-                    validateGetMapTileset(TestUtils.getExpectedMapTileset(), actualResults);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get map tileset");
-                }
-            })
+        StepVerifier.create(client.getMapTileset(TilesetId.MICROSOFT_BASE_HYBRID))
+            .assertNext(actualResults -> validateGetMapTileset(TestUtils.getExpectedMapTileset(), actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -50,15 +41,8 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
     public void testAsyncGetMapTilesetWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
-        new TilesetId();
-        StepVerifier.create(client.getMapTilesetWithResponse(TilesetId.MICROSOFT_BASE))
-            .assertNext(response -> {
-                try {
-                    validateGetMapTilesetWithResponse(TestUtils.getExpectedMapTileset(), 200, response);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get map tile set");
-                }
-            })
+        StepVerifier.create(client.getMapTilesetWithResponse(TilesetId.MICROSOFT_BASE_HYBRID))
+            .assertNext(response -> validateGetMapTilesetWithResponse(TestUtils.getExpectedMapTileset(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -66,14 +50,13 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     // Case 2: 400 invalid input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
-    public void testAsyncInvalidGetMapTilesetWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
+    public void testAsyncInvalidGetMapTilesetWithResponse(HttpClient httpClient,
+        MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getMapTilesetWithResponse(new TilesetId()))
-            .expectErrorSatisfies(ex -> {
-                final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            })
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(client.getMapTilesetWithResponse(new TilesetId())).expectErrorSatisfies(ex -> {
+            final HttpResponseException httpResponseException = (HttpResponseException) ex;
+            assertEquals(400, httpResponseException.getResponse().getStatusCode());
+        }).verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get map attribution
@@ -82,15 +65,9 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     public void testAsyncGetMapAttribution(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         GeoBoundingBox bounds = new GeoBoundingBox(-122.414162, 47.57949, -122.247157, 47.668372);
-        new TilesetId();
         StepVerifier.create(client.getMapAttribution(TilesetId.MICROSOFT_BASE, 6, bounds))
-            .assertNext(actualResults -> {
-                try {
-                    validateGetMapAttribution(TestUtils.getExpectedMapAttribution(), actualResults);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get map attribution");
-                }
-            })
+            .assertNext(
+                actualResults -> validateGetMapAttribution(TestUtils.getExpectedMapAttribution(), actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -102,15 +79,9 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     public void testAsyncGetMapAttributionWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         GeoBoundingBox bounds = new GeoBoundingBox(-122.414162, 47.57949, -122.247157, 47.668372);
-        new TilesetId();
         StepVerifier.create(client.getMapAttributionWithResponse(TilesetId.MICROSOFT_BASE, 6, bounds))
-            .assertNext(response -> {
-                try {
-                    validateGetMapAttributionWithResponse(TestUtils.getExpectedMapAttribution(), 200, response);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get map attribution");
-                }
-            })
+            .assertNext(
+                response -> validateGetMapAttributionWithResponse(TestUtils.getExpectedMapAttribution(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -118,7 +89,8 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     // Case 2: 400 invalid input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
-    public void testAsyncInvalidGetMapAttributionWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
+    public void testAsyncInvalidGetMapAttributionWithResponse(HttpClient httpClient,
+        MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         GeoBoundingBox bounds = new GeoBoundingBox(-10000, 0, 0, 0);
         StepVerifier.create(client.getMapAttributionWithResponse(new TilesetId(), 6, bounds))
@@ -135,13 +107,8 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     public void testAsyncGetCopyrightCaption(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCopyrightCaption())
-            .assertNext(actualResults -> {
-                try {
-                    validateGetCopyrightCaption(TestUtils.getExpectedCopyrightCaption(), actualResults);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get copyright caption");
-                }
-            })
+            .assertNext(
+                actualResults -> validateGetCopyrightCaption(TestUtils.getExpectedCopyrightCaption(), actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -150,16 +117,12 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
-    public void testAsyncGetCopyrightCaptionWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
+    public void testAsyncGetCopyrightCaptionWithResponse(HttpClient httpClient,
+        MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCopyrightCaptionWithResponse())
-            .assertNext(response -> {
-                try {
-                    validateGetCopyrightCaptionWithResponse(TestUtils.getExpectedCopyrightCaption(), 200, response);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get copyright caption");
-                }
-            })
+            .assertNext(
+                response -> validateGetCopyrightCaptionWithResponse(TestUtils.getExpectedCopyrightCaption(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -171,13 +134,8 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         GeoBoundingBox boundingBox = new GeoBoundingBox(52.41064, 4.84228, 52.41072, 4.84239);
         StepVerifier.create(client.getCopyrightFromBoundingBox(boundingBox, true))
-            .assertNext(actualResults -> {
-                try {
-                    validateGetCopyrightCaptionFromBoundingBox(TestUtils.getExpectedCopyrightFromBoundingBox(), actualResults);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get copyright from bounding box");
-                }
-            })
+            .assertNext(actualResults -> validateGetCopyrightCaptionFromBoundingBox(
+                TestUtils.getExpectedCopyrightFromBoundingBox(), actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -186,17 +144,13 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
-    public void testAsyncGetCopyrightFromBoundingBoxWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
+    public void testAsyncGetCopyrightFromBoundingBoxWithResponse(HttpClient httpClient,
+        MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         GeoBoundingBox boundingBox = new GeoBoundingBox(52.41064, 4.84228, 52.41072, 4.84239);
         StepVerifier.create(client.getCopyrightFromBoundingBoxWithResponse(boundingBox, true))
-            .assertNext(response -> {
-                try {
-                    validateGetCopyrightCaptionFromBoundingBoxWithResponse(TestUtils.getExpectedCopyrightFromBoundingBox(), 200, response);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get copyright caption");
-                }
-            })
+            .assertNext(response -> validateGetCopyrightCaptionFromBoundingBoxWithResponse(
+                TestUtils.getExpectedCopyrightFromBoundingBox(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -204,9 +158,11 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     // Case 2: 400 invalid input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
-    public void testAsyncInvalidGetCopyrightFromBoundingBoxWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
+    public void testAsyncInvalidGetCopyrightFromBoundingBoxWithResponse(HttpClient httpClient,
+        MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getCopyrightFromBoundingBoxWithResponse(new GeoBoundingBox(-100, -100, -100, -100), true))
+        StepVerifier.create(
+                client.getCopyrightFromBoundingBoxWithResponse(new GeoBoundingBox(-100, -100, -100, -100), true))
             .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -220,13 +176,8 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     public void testAsyncGetCopyrightForTitle(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCopyrightForTile(new TileIndex().setX(9).setY(22).setZ(6), true))
-            .assertNext(actualResults -> {
-                try {
-                    validateGetCopyrightForTile(TestUtils.getExpectedCopyrightForTile(), actualResults);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get copyright for title");
-                }
-            })
+            .assertNext(
+                actualResults -> validateGetCopyrightForTile(TestUtils.getExpectedCopyrightForTile(), actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -235,16 +186,12 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
-    public void testAsyncGetCopyrightForTitleWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
+    public void testAsyncGetCopyrightForTitleWithResponse(HttpClient httpClient,
+        MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCopyrightForTileWithResponse(new TileIndex().setX(9).setY(22).setZ(6), true))
-            .assertNext(response -> {
-                try {
-                    validateGetCopyrightForTileWithResponse(TestUtils.getExpectedCopyrightForTile(), 200, response);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get copyright for title");
-                }
-            })
+            .assertNext(
+                response -> validateGetCopyrightForTileWithResponse(TestUtils.getExpectedCopyrightForTile(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -252,7 +199,8 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     // Case 2: 400 invalid input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
-    public void testAsyncInvalidGetCopyrightForTitleWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
+    public void testAsyncInvalidGetCopyrightForTitleWithResponse(HttpClient httpClient,
+        MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCopyrightForTileWithResponse(new TileIndex().setX(9).setY(22).setZ(-100), true))
             .expectErrorSatisfies(ex -> {
@@ -268,13 +216,8 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     public void testAsyncGetCopyrightForWorld(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCopyrightForWorld(true))
-            .assertNext(actualResults -> {
-                try {
-                    validateGetCopyrightForWorld(TestUtils.getExpectedCopyrightForWorld(), actualResults);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get copyright for world");
-                }
-            })
+            .assertNext(
+                actualResults -> validateGetCopyrightForWorld(TestUtils.getExpectedCopyrightForWorld(), actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -283,16 +226,12 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
-    public void testAsyncGetCopyrightForWorldWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
+    public void testAsyncGetCopyrightForWorldWithResponse(HttpClient httpClient,
+        MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCopyrightForWorldWithResponse(true))
-            .assertNext(response -> {
-                try {
-                    validateGetCopyrightForWorldWithResponse(TestUtils.getExpectedCopyrightForWorld(), 200, response);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get copyright for world");
-                }
-            })
+            .assertNext(response -> validateGetCopyrightForWorldWithResponse(TestUtils.getExpectedCopyrightForWorld(),
+                response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PrivateEndpointsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/PrivateEndpointDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/PrivateEndpointDelete.json
      */
     /**
      * Sample code: Delete private endpoint.
@@ -18,7 +17,10 @@ public final class PrivateEndpointsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deletePrivateEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateEndpoints().delete("rg1", "testPe",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPrivateEndpoints()
+            .delete("rg1", "testPe", com.azure.core.util.Context.NONE);
     }
 }

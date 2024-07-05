@@ -5,150 +5,133 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The properties of DbNodeResource.
  */
 @Immutable
-public final class DbNodeProperties {
+public final class DbNodeProperties implements JsonSerializable<DbNodeProperties> {
     /*
      * DbNode OCID
      */
-    @JsonProperty(value = "ocid", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String ocid;
 
     /*
      * Additional information about the planned maintenance.
      */
-    @JsonProperty(value = "additionalDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String additionalDetails;
 
     /*
      * The OCID of the backup IP address associated with the database node.
      */
-    @JsonProperty(value = "backupIpId", access = JsonProperty.Access.WRITE_ONLY)
     private String backupIpId;
 
     /*
      * The OCID of the second backup VNIC.
      */
-    @JsonProperty(value = "backupVnic2Id", access = JsonProperty.Access.WRITE_ONLY)
     private String backupVnic2Id;
 
     /*
      * The OCID of the backup VNIC.
      */
-    @JsonProperty(value = "backupVnicId", access = JsonProperty.Access.WRITE_ONLY)
     private String backupVnicId;
 
     /*
      * The number of CPU cores enabled on the Db node.
      */
-    @JsonProperty(value = "cpuCoreCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer cpuCoreCount;
 
     /*
      * The allocated local node storage in GBs on the Db node.
      */
-    @JsonProperty(value = "dbNodeStorageSizeInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer dbNodeStorageSizeInGbs;
 
     /*
      * The OCID of the Exacc Db server associated with the database node.
      */
-    @JsonProperty(value = "dbServerId", access = JsonProperty.Access.WRITE_ONLY)
     private String dbServerId;
 
     /*
      * The OCID of the DB system.
      */
-    @JsonProperty(value = "dbSystemId", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String dbSystemId;
 
     /*
      * The name of the Fault Domain the instance is contained in.
      */
-    @JsonProperty(value = "faultDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String faultDomain;
 
     /*
      * The OCID of the host IP address associated with the database node.
      */
-    @JsonProperty(value = "hostIpId", access = JsonProperty.Access.WRITE_ONLY)
     private String hostIpId;
 
     /*
      * The host name for the database node.
      */
-    @JsonProperty(value = "hostname", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
      * The current state of the database node.
      */
-    @JsonProperty(value = "lifecycleState", access = JsonProperty.Access.WRITE_ONLY)
     private DbNodeProvisioningState lifecycleState;
 
     /*
      * Lifecycle details of Db Node.
      */
-    @JsonProperty(value = "lifecycleDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String lifecycleDetails;
 
     /*
      * The type of database node maintenance.
      */
-    @JsonProperty(value = "maintenanceType", access = JsonProperty.Access.WRITE_ONLY)
     private DbNodeMaintenanceType maintenanceType;
 
     /*
      * The allocated memory in GBs on the Db node.
      */
-    @JsonProperty(value = "memorySizeInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer memorySizeInGbs;
 
     /*
-     * The size (in GB) of the block storage volume allocation for the DB system. This attribute applies only for virtual machine DB systems.
+     * The size (in GB) of the block storage volume allocation for the DB system. This attribute applies only for
+     * virtual machine DB systems.
      */
-    @JsonProperty(value = "softwareStorageSizeInGb", access = JsonProperty.Access.WRITE_ONLY)
     private Integer softwareStorageSizeInGb;
 
     /*
      * The date and time that the database node was created.
      */
-    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
     /*
      * End date and time of maintenance window.
      */
-    @JsonProperty(value = "timeMaintenanceWindowEnd", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeMaintenanceWindowEnd;
 
     /*
      * Start date and time of maintenance window.
      */
-    @JsonProperty(value = "timeMaintenanceWindowStart", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeMaintenanceWindowStart;
 
     /*
      * The OCID of the second VNIC.
      */
-    @JsonProperty(value = "vnic2Id", access = JsonProperty.Access.WRITE_ONLY)
     private String vnic2Id;
 
     /*
      * The OCID of the VNIC.
      */
-    @JsonProperty(value = "vnicId", access = JsonProperty.Access.WRITE_ONLY)
     private String vnicId;
 
     /*
      * Azure resource provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /**
@@ -371,5 +354,89 @@ public final class DbNodeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DbNodeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DbNodeProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DbNodeProperties.
+     */
+    public static DbNodeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DbNodeProperties deserializedDbNodeProperties = new DbNodeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ocid".equals(fieldName)) {
+                    deserializedDbNodeProperties.ocid = reader.getString();
+                } else if ("additionalDetails".equals(fieldName)) {
+                    deserializedDbNodeProperties.additionalDetails = reader.getString();
+                } else if ("backupIpId".equals(fieldName)) {
+                    deserializedDbNodeProperties.backupIpId = reader.getString();
+                } else if ("backupVnic2Id".equals(fieldName)) {
+                    deserializedDbNodeProperties.backupVnic2Id = reader.getString();
+                } else if ("backupVnicId".equals(fieldName)) {
+                    deserializedDbNodeProperties.backupVnicId = reader.getString();
+                } else if ("cpuCoreCount".equals(fieldName)) {
+                    deserializedDbNodeProperties.cpuCoreCount = reader.getNullable(JsonReader::getInt);
+                } else if ("dbNodeStorageSizeInGbs".equals(fieldName)) {
+                    deserializedDbNodeProperties.dbNodeStorageSizeInGbs = reader.getNullable(JsonReader::getInt);
+                } else if ("dbServerId".equals(fieldName)) {
+                    deserializedDbNodeProperties.dbServerId = reader.getString();
+                } else if ("dbSystemId".equals(fieldName)) {
+                    deserializedDbNodeProperties.dbSystemId = reader.getString();
+                } else if ("faultDomain".equals(fieldName)) {
+                    deserializedDbNodeProperties.faultDomain = reader.getString();
+                } else if ("hostIpId".equals(fieldName)) {
+                    deserializedDbNodeProperties.hostIpId = reader.getString();
+                } else if ("hostname".equals(fieldName)) {
+                    deserializedDbNodeProperties.hostname = reader.getString();
+                } else if ("lifecycleState".equals(fieldName)) {
+                    deserializedDbNodeProperties.lifecycleState
+                        = DbNodeProvisioningState.fromString(reader.getString());
+                } else if ("lifecycleDetails".equals(fieldName)) {
+                    deserializedDbNodeProperties.lifecycleDetails = reader.getString();
+                } else if ("maintenanceType".equals(fieldName)) {
+                    deserializedDbNodeProperties.maintenanceType = DbNodeMaintenanceType.fromString(reader.getString());
+                } else if ("memorySizeInGbs".equals(fieldName)) {
+                    deserializedDbNodeProperties.memorySizeInGbs = reader.getNullable(JsonReader::getInt);
+                } else if ("softwareStorageSizeInGb".equals(fieldName)) {
+                    deserializedDbNodeProperties.softwareStorageSizeInGb = reader.getNullable(JsonReader::getInt);
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedDbNodeProperties.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeMaintenanceWindowEnd".equals(fieldName)) {
+                    deserializedDbNodeProperties.timeMaintenanceWindowEnd = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeMaintenanceWindowStart".equals(fieldName)) {
+                    deserializedDbNodeProperties.timeMaintenanceWindowStart = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("vnic2Id".equals(fieldName)) {
+                    deserializedDbNodeProperties.vnic2Id = reader.getString();
+                } else if ("vnicId".equals(fieldName)) {
+                    deserializedDbNodeProperties.vnicId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDbNodeProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDbNodeProperties;
+        });
     }
 }

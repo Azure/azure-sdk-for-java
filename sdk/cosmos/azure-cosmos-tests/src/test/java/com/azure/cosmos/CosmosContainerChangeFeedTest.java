@@ -20,8 +20,17 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -29,6 +38,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -52,6 +62,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertThrows;
+import static org.testng.Assert.fail;
 
 public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
@@ -64,6 +75,19 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     private CosmosDatabase createdDatabase;
     private final Multimap<String, ObjectNode> partitionKeyToDocuments = ArrayListMultimap.create();
     private final String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
+
+    @DataProvider(name = "changeFeedSplitHandlingDataProvider")
+    public static Object[][] changeFeedSplitHandlingDataProvider() {
+        return new Object[][]{
+            // Injected error type, disableSplitHandling, requestSucceeded
+            { FaultInjectionServerErrorType.NAME_CACHE_IS_STALE, false, true },
+            { FaultInjectionServerErrorType.NAME_CACHE_IS_STALE, true, true },
+            { FaultInjectionServerErrorType.TOO_MANY_REQUEST, false, true },
+            { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, true },
+            { FaultInjectionServerErrorType.PARTITION_IS_GONE, false, true },
+            { FaultInjectionServerErrorType.PARTITION_IS_GONE, true, false }
+        };
+    }
 
     @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public CosmosContainerChangeFeedTest(CosmosClientBuilder clientBuilder) {
@@ -582,6 +606,63 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             .isNotNull()
             .size()
             .isEqualTo(expectedEventCountAfterUpdates);
+    }
+
+    @Test(groups = { "emulator" }, dataProvider = "changeFeedSplitHandlingDataProvider", timeOut = 2 * TIMEOUT)
+    public void asyncChangeFeed_retryPolicy_tests(
+        FaultInjectionServerErrorType faultInjectionServerErrorType,
+        boolean disableSplitHandling,
+        boolean requestSucceeded) {
+        this.createContainer(
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
+        );
+        int documentCount = 10;
+        insertDocuments(1, documentCount);
+
+        FaultInjectionConditionBuilder faultInjectionCondition = new FaultInjectionConditionBuilder()
+            .operationType(FaultInjectionOperationType.READ_FEED_ITEM);
+        if (this.getClientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
+            faultInjectionCondition.connectionType(FaultInjectionConnectionType.GATEWAY);
+        }
+
+        FaultInjectionRule faultInjectionRule =
+            new FaultInjectionRuleBuilder("changeFeed_retry_" + UUID.randomUUID() + "_" + faultInjectionServerErrorType.toString())
+                .condition(faultInjectionCondition.build())
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(faultInjectionServerErrorType)
+                        .times(1)
+                        .build()
+                )
+                .build();
+
+        CosmosFaultInjectionHelper.configureFaultInjectionRules(this.createdAsyncContainer, Arrays.asList(faultInjectionRule)).block();
+
+        List<FeedRange> feedRanges = this.createdAsyncContainer.getFeedRanges().block();
+        // make sure to only use 1 feed range here, else when disableSplitHandling being true, 410/1002 will be returned
+        CosmosChangeFeedRequestOptions changeFeedRequestOptions =
+            CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
+        if (disableSplitHandling) {
+            ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
+        }
+
+        try {
+            createdContainer
+                .queryChangeFeed(changeFeedRequestOptions, ObjectNode.class)
+                .stream()
+                .collect(Collectors.toList());
+
+            if (!requestSucceeded) {
+                fail("ChangeFeed request should fail due to " + faultInjectionServerErrorType + " injected");
+            }
+
+        } catch (Exception e) {
+            if (requestSucceeded) {
+                fail("ChangeFeed request should have succeeded even " + faultInjectionServerErrorType + " injected");
+            }
+        } finally {
+            faultInjectionRule.disable();
+        }
     }
 
     void insertDocuments(
