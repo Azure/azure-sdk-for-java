@@ -25,7 +25,10 @@ EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 SKIP_IDS = [
     'org.eclipse.jgit:org.eclipse.jgit'  # Refs: https://github.com/Azure/azure-sdk-for-java/pull/13956/files#r468368271
 ]
-
+SPRING_BOOT_DEPENDENCY_PREFIX = {
+    'v2': '',
+    'v3': 'springboot3_'
+}
 
 def get_spring_boot_managed_external_dependencies_file_name(spring_boot_version):
     return 'sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt'.format(spring_boot_version)
@@ -42,6 +45,15 @@ def get_args():
         default = 'info',
         help = 'Set log level.'
     )
+    parser.add_argument(
+        '-sbmvn',
+        '--spring_boot_major_version_number',
+        type=str,
+        choices=['v2', 'v3'],
+        required=False,
+        default='v2',
+        help='Update the dependencies of Spring Boot major version.'
+    )
     args = parser.parse_args()
     log.set_log_level(args.log)
     return args
@@ -53,8 +65,8 @@ def main():
     args = get_args()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     file_name = get_spring_boot_managed_external_dependencies_file_name(args.spring_boot_dependencies_version)
-    sync_external_dependencies(file_name, EXTERNAL_DEPENDENCIES_FILE)
-    update_external_dependencies_comment(file_name, EXTERNAL_DEPENDENCIES_FILE)
+    sync_external_dependencies(SPRING_BOOT_DEPENDENCY_PREFIX[args.spring_boot_major_version_number], file_name, EXTERNAL_DEPENDENCIES_FILE)
+    update_external_dependencies_comment(args.spring_boot_major_version_number, file_name, EXTERNAL_DEPENDENCIES_FILE)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 
@@ -64,7 +76,7 @@ def change_to_repo_root_dir():
     os.chdir('../../..')
 
 
-def sync_external_dependencies(source_file, target_file):
+def sync_external_dependencies(version_prefix, source_file, target_file):
     # Read artifact version from source_file.
     dependency_dict = {}
     with open(source_file) as file:
@@ -76,7 +88,7 @@ def sync_external_dependencies(source_file, target_file):
                 key_value = line.split(';', 1)
                 key = key_value[0]
                 value = key_value[1]
-                dependency_dict[key] = value
+                dependency_dict[version_prefix + key] = value
     # Write artifact versions into target file.
     with in_place.InPlace(target_file) as file:
         for line in file:
@@ -100,13 +112,14 @@ def sync_external_dependencies(source_file, target_file):
             file.write('\n')
 
 
-def update_external_dependencies_comment(source_name, target_file):
-    with open(target_file, 'r', encoding = 'utf-8') as file:
-        lines = file.readlines()
-        lines[1] = '# make sure the version is same to {}\n'.format(source_name)
-        lines[2] = '# If your version is different from {},\n'.format(source_name)
-    with open(target_file, 'w', encoding = 'utf-8') as file:
-        file.writelines(lines)
+def update_external_dependencies_comment(spring_boot_major_version, source_name, target_file):
+    if spring_boot_major_version == 'v3':
+        with open(target_file, 'r', encoding='utf-8') as file:
+            lines = file.readlines()
+            lines[1] = '# make sure the version is same to {}\n'.format(source_name)
+            lines[2] = '# If your version is different from {},\n'.format(source_name)
+        with open(target_file, 'w', encoding='utf-8') as file:
+            file.writelines(lines)
 
 
 if __name__ == '__main__':
