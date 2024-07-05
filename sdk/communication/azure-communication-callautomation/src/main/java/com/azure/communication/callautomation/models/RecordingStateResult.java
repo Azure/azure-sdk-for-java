@@ -18,6 +18,8 @@ public final class RecordingStateResult {
      */
     private final String recordingId;
 
+    private final RecordingKind recordingKind;
+
     private final RecordingState recordingState;
 
     /**
