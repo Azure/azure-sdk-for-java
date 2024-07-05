@@ -17,7 +17,6 @@ import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.ReadOnlyRequestOptions;
 import com.azure.cosmos.util.Beta;
 
 import java.util.HashMap;

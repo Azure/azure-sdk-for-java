@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.PointOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -34,6 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
@@ -114,6 +116,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             ResourceType.Document,
             collectionResourceId,
             pkRangeId,
+            collectionResourceId,
             minInclusive,
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
@@ -178,6 +181,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             ResourceType.Document,
             collectionResourceId,
             pkRangeId,
+            collectionResourceId,
             minInclusive,
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
@@ -245,6 +249,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             ResourceType.Document,
             collectionResourceId,
             pkRangeId,
+            collectionResourceId,
             minInclusive,
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
@@ -329,6 +334,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             ResourceType.Document,
             collectionResourceId,
             pkRangeId,
+            collectionResourceId,
             minInclusive,
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
@@ -424,6 +430,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             ResourceType.Document,
             collectionResourceId,
             pkRangeId,
+            collectionResourceId,
             minInclusive,
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
@@ -526,6 +533,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             ResourceType.Document,
             collectionResourceId,
             pkRangeId,
+            collectionResourceId,
             minInclusive,
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
@@ -627,6 +635,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             ResourceType.Document,
             collectionResourceId,
             pkRangeId,
+            collectionResourceId,
             minInclusive,
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
@@ -698,6 +707,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             ResourceType.Document,
             collectionResourceId1,
             pkRangeId,
+            collectionResourceId1,
             minInclusive,
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
@@ -707,6 +717,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             ResourceType.Document,
             collectionResourceId2,
             pkRangeId,
+            collectionResourceId2,
             minInclusive,
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
@@ -812,6 +823,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             ResourceType.Document,
             collectionResourceId,
             pkRangeId,
+            collectionResourceId,
             minInclusive,
             maxExclusive,
             LocationCentralUsEndpointToLocationPair.getKey());
@@ -821,6 +833,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             ResourceType.Document,
             collectionResourceId,
             pkRangeId,
+            collectionResourceId,
             minInclusive,
             maxExclusive,
             LocationEastUsEndpointToLocationPair.getKey());
@@ -830,6 +843,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             ResourceType.Document,
             collectionResourceId,
             pkRangeId,
+            collectionResourceId,
             minInclusive,
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
@@ -927,6 +941,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         ResourceType resourceType,
         String collectionResourceId,
         String partitionKeyRangeId,
+        String collectionLink,
         String minInclusive,
         String maxExclusive,
         URI locationEndpointToRoute) {
@@ -941,6 +956,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange(partitionKeyRangeId, minInclusive, maxExclusive);
         request.requestContext.locationEndpointToRoute = locationEndpointToRoute;
         request.requestContext.setExcludeRegions(Collections.emptyList());
+        request.requestContext.setPointOperationContext(new PointOperationContextForCircuitBreaker(new AtomicBoolean(false), false, collectionLink));
 
         return request;
     }
