@@ -180,7 +180,7 @@ public class AddressResolver implements IAddressResolver {
 
             if (logger.isDebugEnabled()) {
                 logger.debug(
-                    "Routing map for request with partitionkeyrageid {} was not found",
+                    "Routing map for request with partitionkeyrangeid {} was not found",
                     request.getPartitionKeyRangeIdentity().toHeader());
             }
             InvalidPartitionException invalidPartitionException = new InvalidPartitionException();
