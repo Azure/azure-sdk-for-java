@@ -123,10 +123,6 @@
       "type": "string",
       "value": "[concat('https://', parameters('baseName'), parameters('cognitiveServicesEndpointSuffix'), '/')]"
     },
-    "DOCUMENTINTELLIGENCE_API_KEY": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('baseName')), '2023-10-01-preview').key1]"
-    },
     "DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL": {
       "type": "string",
       "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('trainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('trainingDataSasProperties')).serviceSasToken)]"

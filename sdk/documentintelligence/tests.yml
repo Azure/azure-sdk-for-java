@@ -16,5 +16,5 @@ extends:
         ServiceConnection: azure-sdk-tests
         SubscriptionConfigurationFilePaths:
           - eng/common/TestResources/sub-config/AzurePublicMsft.json
-        Location: 'centraluseuap'
+        Location: 'eastus'
     SupportedClouds: 'Public'

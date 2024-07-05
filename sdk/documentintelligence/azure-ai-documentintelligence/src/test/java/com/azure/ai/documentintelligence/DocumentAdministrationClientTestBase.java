@@ -12,9 +12,7 @@ import com.azure.ai.documentintelligence.models.CopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.ai.documentintelligence.models.ResourceDetails;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
@@ -27,7 +25,6 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.function.Consumer;
 
-import static com.azure.ai.documentintelligence.TestUtils.INVALID_KEY;
 import static com.azure.ai.documentintelligence.TestUtils.REMOVE_SANITIZER_ID;
 import static com.azure.ai.documentintelligence.TestUtils.getTestProxySanitizers;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -46,8 +43,7 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
     }
 
     DocumentIntelligenceAdministrationClientBuilder getModelAdminClientBuilder(HttpClient httpClient,
-                                                                               DocumentIntelligenceServiceVersion serviceVersion,
-                                                                               boolean useKeyCredential) {
+                                                                               DocumentIntelligenceServiceVersion serviceVersion) {
         String endpoint = getEndpoint();
         DocumentIntelligenceAdministrationClientBuilder builder = new DocumentIntelligenceAdministrationClientBuilder()
             .endpoint(endpoint)
@@ -55,27 +51,17 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
 
-        if (useKeyCredential) {
-            if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new AzureKeyCredential(INVALID_KEY));
-                setMatchers();
-            } else if (interceptorManager.isRecordMode()) {
-                builder.credential(new AzureKeyCredential(TestUtils.AZURE_DOCUMENTINTELLIGENCE_API_KEY_CONFIGURATION));
-                builder.addPolicy(interceptorManager.getRecordPolicy());
-            } else if (interceptorManager.isLiveMode()) {
-                builder.credential(new AzureKeyCredential(TestUtils.AZURE_DOCUMENTINTELLIGENCE_API_KEY_CONFIGURATION));
-            }
-        } else {
-            if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new MockTokenCredential());
-                setMatchers();
-            } else if (interceptorManager.isRecordMode()) {
-                builder.credential(new DefaultAzureCredentialBuilder().build());
-                builder.addPolicy(interceptorManager.getRecordPolicy());
-            } else if (interceptorManager.isLiveMode()) {
-                builder.credential(new AzurePowerShellCredentialBuilder().build());
-            }
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new MockTokenCredential());
+            setMatchers();
+        } else if (interceptorManager.isRecordMode()) {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isLiveMode()) {
+            builder.credential(new AzurePowerShellCredentialBuilder().build());
         }
+
         if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
             interceptorManager.addSanitizers(getTestProxySanitizers());
             interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
