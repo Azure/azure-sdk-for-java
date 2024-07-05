@@ -34,7 +34,7 @@ public final class RecordingStateResult {
      *
      * @return the recordingKind value.
      */
-    public RecordingState getRecordingKind() {
+    public RecordingKind getRecordingKind() {
         return this.recordingKind;
     }
 
