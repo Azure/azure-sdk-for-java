@@ -12,6 +12,12 @@ import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 public final class AmqpClientProperties extends ClientProperties implements ClientOptionsProvider.AmqpClientOptions {
 
     /**
+     * Creates an instance of {@link AmqpClientProperties}.
+     */
+    public AmqpClientProperties() {
+    }
+
+    /**
      * Transport type for AMQP-based client. Supported types are: AMQP, AMQP_WEB_SOCKETS.
      */
     private AmqpTransportType transportType;

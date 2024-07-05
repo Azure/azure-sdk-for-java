@@ -6,11 +6,11 @@ package com.azure.spring.messaging.servicebus.implementation.core.listener.adapt
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.implementation.listener.adapter.MessagingMessageListenerAdapter;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
-import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
+import com.azure.spring.messaging.servicebus.implementation.support.converter.ServiceBusMessageConverter;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 
@@ -41,8 +41,7 @@ public class RecordMessagingMessageListenerAdapter extends MessagingMessageListe
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public AbstractAzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> getMessageConverter() {
-        return (AbstractAzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage>) super.getMessageConverter();
+    public AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> getMessageConverter() {
+        return (AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage>) super.getMessageConverter();
     }
 }

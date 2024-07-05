@@ -12,10 +12,6 @@ import java.util.List;
 public class AzureCompatibilityNotMetException extends RuntimeException {
     private final List<VerificationResult> results;
 
-    /**
-     * Constructor of {@link AzureCompatibilityNotMetException}
-     * @param results VerificationResult List
-     */
     public AzureCompatibilityNotMetException(List<VerificationResult> results) {
         super("Spring Cloud Azure/ Spring Boot version compatibility checks have failed: " + Arrays.toString(results.toArray()));
         this.results = results;

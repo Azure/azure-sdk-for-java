@@ -10,7 +10,7 @@ import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType
 /**
  *
  */
-abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpConfigurationProperties {
+public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpConfigurationProperties {
 
     // https://help.boomi.com/bundle/connectors/page/r-atm-Microsoft_Azure_Service_Bus_connection.html
     // https://docs.microsoft.com/rest/api/servicebus/addressing-and-protocol

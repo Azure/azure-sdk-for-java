@@ -2,17 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.models;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Context passed into Feature Filters used for evaluation.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class FeatureFilterEvaluationContext {
+
+    /**
+     * Creates an instance of {@link FeatureFilterEvaluationContext}
+     */
+    public FeatureFilterEvaluationContext() {
+    }
 
     private String name;
 
@@ -22,6 +28,7 @@ public final class FeatureFilterEvaluationContext {
     private String featureName;
 
     /**
+     * Return the name
      * @return the name
      */
     public String getName() {
@@ -29,6 +36,7 @@ public final class FeatureFilterEvaluationContext {
     }
 
     /**
+     * Set the name
      * @param name the name to set
      */
     public void setName(String name) {
@@ -36,6 +44,7 @@ public final class FeatureFilterEvaluationContext {
     }
 
     /**
+     * Return the parameters
      * @return the parameters
      */
     public Map<String, Object> getParameters() {
@@ -47,6 +56,7 @@ public final class FeatureFilterEvaluationContext {
     }
 
     /**
+     * Set the parameters
      * @param parameters the parameters to set
      */
     public void setParameters(Map<String, Object> parameters) {
@@ -54,6 +64,7 @@ public final class FeatureFilterEvaluationContext {
     }
 
     /**
+     * Return the featureName
      * @return the featureName
      */
     public String getFeatureName() {
@@ -61,6 +72,7 @@ public final class FeatureFilterEvaluationContext {
     }
 
     /**
+     * Set the featureName
      * @param featureName the featureName to set
      */
     public void setFeatureName(String featureName) {

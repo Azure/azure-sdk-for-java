@@ -13,6 +13,13 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
  * Factory class for object mapper
  */
 public class ObjectMapperFactory {
+
+    /**
+     * Creates an instance of {@link ObjectMapperFactory}.
+     */
+    public ObjectMapperFactory() {
+    }
+
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     static {

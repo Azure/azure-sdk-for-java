@@ -3,10 +3,10 @@ spring:
     azure:
       servicebus:
         namespace: ${AZURE_SERVICE_BUS_NAMESPACE1}
+    function:
+      definition: queueConsume;queueSupply;topicConsume;topicSupply;
     stream:
       default-binder: servicebus
-      function:
-        definition: queueConsume;queueSupply;topicConsume;topicSupply;
       bindings:
         topicConsume-in-0:
           destination: topic1

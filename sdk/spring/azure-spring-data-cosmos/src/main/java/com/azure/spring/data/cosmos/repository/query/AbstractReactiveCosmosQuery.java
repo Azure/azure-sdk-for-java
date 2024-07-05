@@ -95,21 +95,25 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
     protected abstract CosmosQuery createQuery(ReactiveCosmosParameterAccessor accessor);
 
     /**
+     * Return whether this is a deletion query.
      * @return whether this is a deletion query.
      */
     protected abstract boolean isDeleteQuery();
 
     /**
+     * Return whether this is an exists query.
      * @return whether this is an exists query.
      */
     protected abstract boolean isExistsQuery();
 
     /**
+     * Return whether this is a count query.
      * @return whether this is a count query.
      */
     protected abstract boolean isCountQuery();
 
     /**
+     * Return whether this is a page query.
      * @return whether this is a page query.
      */
     protected boolean isPageQuery() {

@@ -51,7 +51,7 @@ public class AppConfigurationConstants {
      * Constant for tracing for Replica Count
      */
     public static final String REPLICA_COUNT = "ReplicaCount";
-    
+
     /**
      * Http Header User Agent
      */
@@ -66,6 +66,10 @@ public class AppConfigurationConstants {
      * Configuration Label for loading configurations with no label.
      */
     public static final String EMPTY_LABEL = "\0";
+
+    public static final String CONDITIONS = "conditions";
+
+    public static final String TELEMETRY = "telemetry";
 
     public static final String USERS = "users";
 
@@ -82,11 +86,16 @@ public class AppConfigurationConstants {
     public static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
 
     public static final String DEFAULT_ROLLOUT_PERCENTAGE_CAPS = "DefaultRolloutPercentage";
-    
+
     public static final String DEFAULT_REQUIREMENT_TYPE = "Any";
-    
+
     public static final String REQUIREMENT_TYPE_SERVICE = "requirement_type";
-    
+
     public static final String REQUIREMENT_TYPE = "requirement-type";
 
+    public static final String FEATURE_FLAG_ID = "FeatureFlagId";
+
+    public static final String FEATURE_FLAG_REFERENCE = "FeatureFlagReference";
+
+    public static final String E_TAG = "ETag";
 }

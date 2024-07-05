@@ -4,7 +4,6 @@ package com.azure.spring.cloud.feature.management.implementation.models;
 
 import static com.azure.spring.cloud.feature.management.implementation.FeatureManagementConstants.DEFAULT_REQUIREMENT_TYPE;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
@@ -23,11 +22,11 @@ public class Feature {
     @JsonProperty("evaluate")
     private Boolean evaluate = true;
 
-    @JsonProperty("requirement-type")
-    private String requirementType = DEFAULT_REQUIREMENT_TYPE;;
-
     @JsonProperty("enabled-for")
     private Map<Integer, FeatureFilterEvaluationContext> enabledFor;
+
+    @JsonProperty("requirement-type")
+    private String requirementType = DEFAULT_REQUIREMENT_TYPE;
 
     /**
      * @return the key
@@ -67,7 +66,7 @@ public class Feature {
     /**
      * @param enabledFor the enabledFor to set
      */
-    public void setEnabledFor(HashMap<Integer, FeatureFilterEvaluationContext> enabledFor) {
+    public void setEnabledFor(Map<Integer, FeatureFilterEvaluationContext> enabledFor) {
         this.enabledFor = enabledFor;
     }
 

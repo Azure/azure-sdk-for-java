@@ -4,11 +4,11 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.properties
 
 import java.time.Instant;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * Properties defining connection to Azure App Configuration.

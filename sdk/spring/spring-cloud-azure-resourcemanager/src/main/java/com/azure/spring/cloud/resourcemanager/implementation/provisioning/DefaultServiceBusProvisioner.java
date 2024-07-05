@@ -8,9 +8,8 @@ import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusQueueCrud;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicCrud;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicSubscriptionCrud;
-import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
-import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties;
-import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties;
+import com.azure.spring.cloud.resourcemanager.implementation.provisioning.properties.ServiceBusQueueProperties;
+import com.azure.spring.cloud.resourcemanager.implementation.provisioning.properties.ServiceBusTopicProperties;
 import reactor.util.function.Tuples;
 
 /**

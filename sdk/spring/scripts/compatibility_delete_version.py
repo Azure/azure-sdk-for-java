@@ -2,8 +2,8 @@
 #
 # This script is used to delete dependency version in ./sdk/spring/**/pom*.xml for compatibility check.
 # Sample:
-# 1. python .\sdk\spring\scripts\compatibility_delete_version.py --spring_boot_dependencies_version 2.7.0
-# 2. python .\sdk\spring\scripts\compatibility_delete_version.py -b 2.7.0
+# 1. python .\sdk\spring\scripts\compatibility_delete_version.py --spring_boot_dependencies_version 3.2.0
+# 2. python .\sdk\spring\scripts\compatibility_delete_version.py -b 3.2.0
 #
 # The script must be run at the root of azure-sdk-for-java.import time
 
@@ -17,8 +17,8 @@ from log import log
 
 IGNORED_ARTIFACTS = {'com.github.tomakehurst:wiremock-jre8'}
 IGNORED_SPRINGBOOT_ARTIFACTS = {
-    "2.5.15": {"org.postgresql:postgresql",
-               "com.mysql:mysql-connector-j"}
+    "3.0.13": {"net.bytebuddy:byte-buddy",
+               "net.bytebuddy:byte-buddy-agent"}
     }
 
 def get_args():

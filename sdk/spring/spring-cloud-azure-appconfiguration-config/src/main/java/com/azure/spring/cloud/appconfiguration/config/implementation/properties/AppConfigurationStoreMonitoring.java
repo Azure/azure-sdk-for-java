@@ -6,9 +6,9 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.util.Assert;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * Properties for Monitoring an Azure App Configuration Store.

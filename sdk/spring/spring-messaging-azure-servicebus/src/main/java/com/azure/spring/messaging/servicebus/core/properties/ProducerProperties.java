@@ -10,4 +10,9 @@ import com.azure.spring.cloud.service.implementation.servicebus.properties.Servi
  */
 public class ProducerProperties extends CommonProperties implements ServiceBusSenderClientProperties {
 
+    /**
+     * Create an instance of {@link ProducerProperties}.
+     */
+    public ProducerProperties() {
+    }
 }

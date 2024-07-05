@@ -17,9 +17,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -31,6 +28,8 @@ import org.springframework.web.method.HandlerMethod;
 
 import com.azure.spring.cloud.feature.management.FeatureManager;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import reactor.core.publisher.Mono;
 
 /**
@@ -61,12 +60,11 @@ public class FeatureHandlerTest {
 
     @Mock
     FeatureHandler featureHandler2;
-    
+
     @BeforeEach
     public void setup(TestInfo testInfo) {
         MockitoAnnotations.openMocks(this);
     }
-
 
     @Test
     public void preHandleNotHandler() {
@@ -130,7 +128,7 @@ public class FeatureHandlerTest {
         doThrow(ioException).when(response).sendRedirect("/redirected");
 
         UndeclaredThrowableException ex = assertThrows(UndeclaredThrowableException.class,
-                () -> featureHandler.preHandle(request, response, handlerMethod));
+            () -> featureHandler.preHandle(request, response, handlerMethod));
 
         assertSame(ioException, ex.getCause());
     }

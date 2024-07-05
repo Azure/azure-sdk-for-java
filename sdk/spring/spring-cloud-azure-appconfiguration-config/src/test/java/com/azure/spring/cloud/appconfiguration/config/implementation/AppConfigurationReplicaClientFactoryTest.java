@@ -9,11 +9,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+import org.mockito.quality.Strictness;
 
+import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 
 public class AppConfigurationReplicaClientFactoryTest {
@@ -22,6 +27,9 @@ public class AppConfigurationReplicaClientFactoryTest {
 
     @Mock
     private AppConfigurationReplicaClientsBuilder clientBuilderMock;
+    
+    @Mock
+    private ReplicaLookUp replicaLookUpMock;
 
     private final String originEndpoint = "clientFactoryTest.azconfig.io";
 
@@ -30,9 +38,12 @@ public class AppConfigurationReplicaClientFactoryTest {
     private final String noReplicaEndpoint = "noReplica.azconfig.io";
 
     private final String invalidReplica = "invalidReplica.azconfig.io";
+    
+    private MockitoSession session;
 
     @BeforeEach
     public void setup() {
+        session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
         MockitoAnnotations.openMocks(this);
         List<ConfigStore> stores = new ArrayList<>();
 
@@ -50,9 +61,14 @@ public class AppConfigurationReplicaClientFactoryTest {
         storeNoReplica.setEndpoint(noReplicaEndpoint);
         stores.add(storeNoReplica);
 
-        clientFactory = new AppConfigurationReplicaClientFactory(clientBuilderMock, stores);
+        clientFactory = new AppConfigurationReplicaClientFactory(clientBuilderMock, stores, replicaLookUpMock);
     }
 
+    @AfterEach
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
+        session.finishMocking();
+    }
     @Test
     public void findOriginTest() {
         assertEquals(originEndpoint, clientFactory.findOriginForEndpoint(originEndpoint));

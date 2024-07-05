@@ -2,17 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.PERCENTAGE_FILTER_SETTING;
-
+import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.PERCENTAGE_FILTER_SETTING;
 
 /**
  * A feature filter that can be used to activate a feature based on a random percentage.
  */
 public final class PercentageFilter implements FeatureFilter {
+
+    /**
+     * Creates an instance of {@link PercentageFilter}
+     */
+    public PercentageFilter() {
+    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PercentageFilter.class);
 

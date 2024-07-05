@@ -11,6 +11,8 @@ import org.springframework.util.Assert;
  *
  * Ported to cosmos from spring-data-mongo
  * https://github.com/spring-projects/spring-data-mongodb/blob/main/spring-data-mongodb/src/main/java/org/springframework/data/mongodb/core/mapping/event/AfterLoadEvent.java
+ *
+ * @param <T> the type of the event.
  */
 public class AfterLoadEvent<T> extends CosmosMappingEvent<JsonNode> {
 

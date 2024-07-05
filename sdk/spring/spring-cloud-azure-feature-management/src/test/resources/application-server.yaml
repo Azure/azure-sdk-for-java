@@ -1,0 +1,28 @@
+feature_management:
+    feature_flags:
+        -
+            id: Alpha
+            enabled: true
+            conditions:
+                client_filters:
+                    -
+                        name: Microsoft.Random
+                        parameters:
+                            Value: 50
+        -
+            id: Beta
+            enabled: true
+            conditions:
+                client_filters:
+                    -   name: Microsoft.TimeWindowFilter
+                        parameters:
+                            Start: "Thu, 29 Jun 2023 07:00:00 GMT"
+                            End: "Wed, 30 Aug 2023 07:00:00 GMT"
+        -
+            id: Gamma
+            enabled: true
+
+        -   id: Delta
+            enabled: true
+            conditions:
+                client_filters: {}

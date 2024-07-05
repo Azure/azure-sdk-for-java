@@ -10,6 +10,12 @@ import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
  */
 public class ProxyProperties implements ProxyOptionsProvider.ProxyOptions {
 
+    /**
+     * Creates an instance of {@link ProxyProperties}.
+     */
+    public ProxyProperties() {
+    }
+
     private String type;
     private String hostname;
     private Integer port;

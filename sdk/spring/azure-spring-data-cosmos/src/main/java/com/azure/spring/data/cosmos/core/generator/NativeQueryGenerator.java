@@ -15,9 +15,16 @@ import java.util.regex.Pattern;
  */
 public class NativeQueryGenerator {
 
+    /**
+     * Creates an instance of {@link NativeQueryGenerator}.
+     */
+    public NativeQueryGenerator() {
+    }
+
     private static final NativeQueryGenerator INSTANCE = new NativeQueryGenerator();
 
     /**
+     * Return the native query generator instance.
      * @return The native query generator instance
      */
     public static NativeQueryGenerator getInstance() {

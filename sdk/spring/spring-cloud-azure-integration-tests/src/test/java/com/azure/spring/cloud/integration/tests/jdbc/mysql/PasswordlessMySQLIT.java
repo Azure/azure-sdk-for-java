@@ -5,7 +5,6 @@ package com.azure.spring.cloud.integration.tests.jdbc.mysql;
 
 import com.azure.cosmos.implementation.guava25.base.Joiner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +18,9 @@ import java.util.List;
 
 /**
  * Disable this IT in China cloud, because it can't provision MySQL resource in China cloud with test subscription.
- * This test will resume running after 2024-04-20 .
+ * This test will resume running after 2023-02-01 .
  */
 @DisabledIfEnvironmentVariable(named = "AZURE_MYSQL_IT_SKIPRUNNING", matches = "skipRunning")
-@Disabled("Auth by workload identity is not supported now. Track issue: https://github.com/Azure/azure-sdk-for-java/issues/40897")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("jdbc-mysql")
 class PasswordlessMySQLIT {

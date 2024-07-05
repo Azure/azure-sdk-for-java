@@ -8,11 +8,11 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientsBuilder;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * Config Store Properties for Requests to an Azure App Configuration Store.
@@ -41,6 +41,8 @@ public final class ConfigStore {
     private AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
 
     private List<String> trimKeyPrefix;
+
+    private boolean replicaDiscoveryEnabled = true;
 
     /**
      * @return the endpoint
@@ -183,11 +185,24 @@ public final class ConfigStore {
     }
 
     /**
-     * @param trimKeyPrefix the values to be trimmed from key names before being set to
-     *        `@ConfigurationProperties`
+     * @param trimKeyPrefix the values to be trimmed from key names before being set to `@ConfigurationProperties`
      */
     public void setTrimKeyPrefix(List<String> trimKeyPrefix) {
         this.trimKeyPrefix = trimKeyPrefix;
+    }
+
+    /**
+     * @return the replicaDiscoveryEnabled
+     */
+    public boolean isReplicaDiscoveryEnabled() {
+        return replicaDiscoveryEnabled;
+    }
+
+    /**
+     * @param replicaDiscoveryEnabled the replicaDiscoveryEnabled to set
+     */
+    public void setReplicaDiscoveryEnabled(boolean replicaDiscoveryEnabled) {
+        this.replicaDiscoveryEnabled = replicaDiscoveryEnabled;
     }
 
     /**

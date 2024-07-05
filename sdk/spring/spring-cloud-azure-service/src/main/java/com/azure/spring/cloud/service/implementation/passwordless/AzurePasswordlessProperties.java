@@ -3,24 +3,17 @@
 
 package com.azure.spring.cloud.service.implementation.passwordless;
 
-import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.cloud.core.properties.client.ClientProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
 import com.azure.spring.cloud.core.properties.proxy.ProxyProperties;
-import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
-import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
-
-import java.util.Properties;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 /**
- * Implement {@link TokenCredentialOptionsProvider} and {@link AzureProfileOptionsProvider} for Spring Cloud Azure
- * support for other third party services.
+ * Implement {@link PasswordlessProperties} for Spring Cloud Azure support for other third party services.
  */
-public class AzurePasswordlessProperties implements AzureProperties {
+public class AzurePasswordlessProperties implements PasswordlessProperties, AzureProperties {
 
     private AzureProfileProperties profile = new AzureProfileProperties();
 
@@ -89,64 +82,4 @@ public class AzurePasswordlessProperties implements AzureProperties {
         this.scopes = scopes;
     }
 
-    public Properties toProperties() {
-        Properties target = new Properties();
-        for (AzurePasswordlessPropertiesMapping m : AzurePasswordlessPropertiesMapping.values()) {
-            if (m.getter.apply(this) != null) {
-                m.setter.accept(target, m.getter.apply(this));
-            }
-        }
-        return target;
-    }
-
-    private enum AzurePasswordlessPropertiesMapping {
-
-        SCOPES(p -> p.getScopes(),
-            (p, s) -> p.setProperty(AuthProperty.SCOPES.getPropertyKey(), s)),
-
-        CLIENT_CERTIFICATE_PASSWORD(p -> p.getCredential().getClientCertificatePassword(),
-            (p, s) -> p.setProperty(AuthProperty.CLIENT_CERTIFICATE_PASSWORD.getPropertyKey(), s)),
-
-        CLIENT_CERTIFICATE_PATH(p -> p.getCredential().getClientCertificatePath(),
-            (p, s) -> p.setProperty(AuthProperty.CLIENT_CERTIFICATE_PATH.getPropertyKey(), s)),
-
-        CLIENT_ID(p -> p.getCredential().getClientId(),
-            (p, s) -> p.setProperty(AuthProperty.CLIENT_ID.getPropertyKey(), s)),
-
-        CLIENT_SECRET(p -> p.getCredential().getClientSecret(),
-            (p, s) -> p.setProperty(AuthProperty.CLIENT_SECRET.getPropertyKey(), s)),
-
-        MANAGED_IDENTITY_ENABLED(p -> String.valueOf(p.getCredential().isManagedIdentityEnabled()),
-            (p, s) -> p.setProperty(AuthProperty.MANAGED_IDENTITY_ENABLED.getPropertyKey(), s)),
-
-        PASSWORD(p -> p.getCredential().getPassword(),
-            (p, s) -> p.setProperty(AuthProperty.PASSWORD.getPropertyKey(), s)),
-
-        USERNAME(p -> p.getCredential().getUsername(),
-            (p, s) -> p.setProperty(AuthProperty.USERNAME.getPropertyKey(), s)),
-
-        TENANT_ID(p -> p.getProfile().getTenantId(),
-            (p, s) -> p.setProperty(AuthProperty.TENANT_ID.getPropertyKey(), s)),
-
-        AUTHORITY_HOST(p -> p.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
-            (p, s) -> p.setProperty(AuthProperty.AUTHORITY_HOST.getPropertyKey(), s));
-
-        private Function<AzurePasswordlessProperties, String> getter;
-        private BiConsumer<Properties, String> setter;
-
-        AzurePasswordlessPropertiesMapping(Function<AzurePasswordlessProperties, String> getter, BiConsumer<Properties,
-            String> setter) {
-            this.getter = getter;
-            this.setter = setter;
-        }
-
-        public Function<AzurePasswordlessProperties, String> getter() {
-            return getter;
-        }
-
-        public BiConsumer<Properties, String> setter() {
-            return setter;
-        }
-
-    }
 }

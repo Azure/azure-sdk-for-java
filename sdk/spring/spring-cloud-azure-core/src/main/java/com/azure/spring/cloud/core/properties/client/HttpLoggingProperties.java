@@ -16,6 +16,12 @@ import java.util.Set;
 public final class HttpLoggingProperties implements HttpLoggingOptionsProvider.HttpLoggingOptions {
 
     /**
+     * Creates an instance of {@link HttpLoggingProperties}.
+     */
+    public HttpLoggingProperties() {
+    }
+
+    /**
      * The level of detail to log on HTTP messages. Supported types are: NONE, BASIC, HEADERS, BODY, BODY_AND_HEADERS. The default value is `NONE`.
      */
     private HttpLogDetailLevel level;

@@ -7,6 +7,8 @@ import org.springframework.data.mapping.PersistentEntity;
 
 /**
  * Represents a cosmos persistent entity.
+ *
+ * @param <T> the type that is persisted.
  */
 public interface CosmosPersistentEntity<T> extends PersistentEntity<T, CosmosPersistentProperty> {
 

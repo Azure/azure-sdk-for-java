@@ -5,10 +5,11 @@
         "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Session' }",
         "ProfileFlag": "-P integration-test-azure",
         "Pool": "env:LINUXPOOL",
-        "OSVmImage": "env:LINUXVMIMAGE"
+        "OSVmImage": "env:LINUXVMIMAGE",
+        "AdditionalArgs": "-Dargline=-DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
       }
     },
     "TestFromSource": true,
-    "JavaTestVersion": ["1.8", "1.11", "1.17", "1.21"]
+    "JavaTestVersion": ["1.11", "1.17", "1.21"]
   }
 }
