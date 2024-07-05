@@ -24,7 +24,7 @@ public final class DbSystemShapeProperties implements JsonSerializable<DbSystemS
     /*
      * The maximum number of CPU cores that can be enabled on the DB system for this shape.
      */
-    private int availableCoreCount;
+    private Integer availableCoreCount;
 
     /*
      * The minimum number of CPU cores that can be enabled on the DB system for this shape.
@@ -138,7 +138,7 @@ public final class DbSystemShapeProperties implements JsonSerializable<DbSystemS
      * 
      * @return the availableCoreCount value.
      */
-    public int availableCoreCount() {
+    public Integer availableCoreCount() {
         return this.availableCoreCount;
     }
 
@@ -338,7 +338,6 @@ public final class DbSystemShapeProperties implements JsonSerializable<DbSystemS
      * @param jsonReader The JsonReader being read.
      * @return An instance of DbSystemShapeProperties if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DbSystemShapeProperties.
      */
     public static DbSystemShapeProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -348,10 +347,10 @@ public final class DbSystemShapeProperties implements JsonSerializable<DbSystemS
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("availableCoreCount".equals(fieldName)) {
-                    deserializedDbSystemShapeProperties.availableCoreCount = reader.getInt();
-                } else if ("shapeFamily".equals(fieldName)) {
+                if ("shapeFamily".equals(fieldName)) {
                     deserializedDbSystemShapeProperties.shapeFamily = reader.getString();
+                } else if ("availableCoreCount".equals(fieldName)) {
+                    deserializedDbSystemShapeProperties.availableCoreCount = reader.getNullable(JsonReader::getInt);
                 } else if ("minimumCoreCount".equals(fieldName)) {
                     deserializedDbSystemShapeProperties.minimumCoreCount = reader.getNullable(JsonReader::getInt);
                 } else if ("runtimeMinimumCoreCount".equals(fieldName)) {

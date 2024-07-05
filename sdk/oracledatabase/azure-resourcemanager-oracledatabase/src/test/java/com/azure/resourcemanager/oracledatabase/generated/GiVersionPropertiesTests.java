@@ -10,8 +10,7 @@ import com.azure.resourcemanager.oracledatabase.models.GiVersionProperties;
 public final class GiVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GiVersionProperties model
-            = BinaryData.fromString("{\"version\":\"tibqdxbxwakb\"}").toObject(GiVersionProperties.class);
+        GiVersionProperties model = BinaryData.fromString("{\"version\":\"ubex\"}").toObject(GiVersionProperties.class);
     }
 
     @org.junit.jupiter.api.Test

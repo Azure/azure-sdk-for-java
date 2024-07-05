@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed `SyncRestProxy` to return `InputStream` instead of `Mono<InputStream>`. ([#40982](https://github.com/Azure/azure-sdk-for-java/pull/40982))
 
 ### Other Changes
 

@@ -26,7 +26,7 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
     /*
      * A Boolean flag indicating whether or not parts of the resource are unable to be explicitly managed.
      */
-    private boolean isProtected;
+    private Boolean isProtected;
 
     /*
      * Zones lifecycleState
@@ -41,7 +41,7 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
     /*
      * The current serial of the zone. As seen in the zone's SOA record.
      */
-    private int serial;
+    private Integer serial;
 
     /*
      * Version is the never-repeating, totally-orderable, version of the zone, from which the serial field of the zone's
@@ -91,7 +91,7 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
      * 
      * @return the isProtected value.
      */
-    public boolean isProtected() {
+    public Boolean isProtected() {
         return this.isProtected;
     }
 
@@ -118,7 +118,7 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
      * 
      * @return the serial value.
      */
-    public int serial() {
+    public Integer serial() {
         return this.serial;
     }
 
@@ -193,7 +193,6 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
      * @param jsonReader The JsonReader being read.
      * @return An instance of DnsPrivateZoneProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DnsPrivateZoneProperties.
      */
     public static DnsPrivateZoneProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -206,23 +205,23 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
                 if ("ocid".equals(fieldName)) {
                     deserializedDnsPrivateZoneProperties.ocid = reader.getString();
                 } else if ("isProtected".equals(fieldName)) {
-                    deserializedDnsPrivateZoneProperties.isProtected = reader.getBoolean();
+                    deserializedDnsPrivateZoneProperties.isProtected = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lifecycleState".equals(fieldName)) {
+                    deserializedDnsPrivateZoneProperties.lifecycleState
+                        = DnsPrivateZonesLifecycleState.fromString(reader.getString());
                 } else if ("self".equals(fieldName)) {
                     deserializedDnsPrivateZoneProperties.self = reader.getString();
                 } else if ("serial".equals(fieldName)) {
-                    deserializedDnsPrivateZoneProperties.serial = reader.getInt();
+                    deserializedDnsPrivateZoneProperties.serial = reader.getNullable(JsonReader::getInt);
                 } else if ("version".equals(fieldName)) {
                     deserializedDnsPrivateZoneProperties.version = reader.getString();
+                } else if ("viewId".equals(fieldName)) {
+                    deserializedDnsPrivateZoneProperties.viewId = reader.getString();
                 } else if ("zoneType".equals(fieldName)) {
                     deserializedDnsPrivateZoneProperties.zoneType = ZoneType.fromString(reader.getString());
                 } else if ("timeCreated".equals(fieldName)) {
                     deserializedDnsPrivateZoneProperties.timeCreated = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("lifecycleState".equals(fieldName)) {
-                    deserializedDnsPrivateZoneProperties.lifecycleState
-                        = DnsPrivateZonesLifecycleState.fromString(reader.getString());
-                } else if ("viewId".equals(fieldName)) {
-                    deserializedDnsPrivateZoneProperties.viewId = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDnsPrivateZoneProperties.provisioningState
                         = ResourceProvisioningState.fromString(reader.getString());
