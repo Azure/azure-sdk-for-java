@@ -34,6 +34,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     repo_url: str = config["repoHttpsUrl"]
     breaking: bool = False
     changelog: str = ""
+    clean_sdk_folder_succeeded = False
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project, sdk_root, spec_root, head_sha, repo_url
@@ -54,6 +55,8 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         if require_sdk_integration:
             update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
+        if clean_sdk_folder_succeeded:
+            current_version = DEFAULT_VERSION
 
         # compile
         succeeded = compile_package(sdk_root, GROUP_ID, module)
@@ -74,7 +77,8 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
                     tsp_project, sdk_root, spec_root, head_sha, repo_url
                 )
-                stable_version, current_version = set_or_default_version(sdk_root, GROUP_ID, module)
+                stable_version, = set_or_default_version(sdk_root, GROUP_ID, module)
+                current_version = DEFAULT_VERSION
                 if require_sdk_integration:
                     update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
                     update_root_pom(sdk_root, service)
