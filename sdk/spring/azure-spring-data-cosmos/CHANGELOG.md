@@ -1,15 +1,12 @@
 ## Release History
 
-### 5.14.0-beta.1 (Unreleased)
+### 5.14.0 (2024-07-05)
 
 #### Features Added
 * Added hierarchical or sub-partitioning support to 'azure-spring-data-cosmos' - See [PR 40928](https://github.com/Azure/azure-sdk-for-java/pull/40928).
 
-#### Breaking Changes
-
-#### Bugs Fixed
-
 #### Other Changes
+* Updated `azure-cosmos` to version `4.62.0`.
 
 ### 5.13.0 (2024-06-06)
 
