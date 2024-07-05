@@ -1143,12 +1143,7 @@
         "VCAP",
         "xiada",
         "yiliu",
-        "usgovcloudapi"
-      ]
-    },
-    {
-      "filename": "sdk/spring/**.md",
-      "words": [
+        "usgovcloudapi",
         "Dcheckstyle",
         "Dcodesnippet",
         "Djacoco",
@@ -1157,7 +1152,7 @@
         "Dskip",
         "Dspotbugs",
         "Pdev",
-	"Djava"
+        "Djava"
       ]
     },
     {
