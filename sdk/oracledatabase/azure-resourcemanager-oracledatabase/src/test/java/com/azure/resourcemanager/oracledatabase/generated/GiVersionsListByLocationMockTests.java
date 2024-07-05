@@ -21,7 +21,7 @@ public final class GiVersionsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"version\":\"inkfkbgbz\"},\"id\":\"wxeqocljmygvkzqk\",\"name\":\"jeokbzefezrxccz\",\"type\":\"rtle\"}]}";
+            = "{\"value\":[{\"properties\":{\"version\":\"hkfkimrtixokf\"},\"id\":\"yinljqe\",\"name\":\"qwhix\",\"type\":\"onsts\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class GiVersionsListByLocationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<GiVersion> response
-            = manager.giVersions().listByLocation("hdbevwqqxeyskon", com.azure.core.util.Context.NONE);
+            = manager.giVersions().listByLocation("wemxswvruunzz", com.azure.core.util.Context.NONE);
 
     }
 }

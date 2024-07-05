@@ -12,7 +12,7 @@ public final class DnsPrivateViewInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateViewInner model = BinaryData.fromString(
-            "{\"properties\":{\"ocid\":\"cwzzhxgktr\",\"displayName\":\"ucnapkteoellwp\",\"isProtected\":true,\"lifecycleState\":\"Deleted\",\"self\":\"gpfqbuace\",\"timeCreated\":\"2021-03-25T11:42:18Z\",\"timeUpdated\":\"2021-09-04T05:04:19Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"hhuao\",\"name\":\"ppcqeqxolz\",\"type\":\"ahzxctobgbk\"}")
+            "{\"properties\":{\"ocid\":\"n\",\"displayName\":\"ewgdrjervn\",\"isProtected\":false,\"lifecycleState\":\"Deleting\",\"self\":\"hin\",\"timeCreated\":\"2021-07-07T21:20Z\",\"timeUpdated\":\"2021-07-26T04:46:18Z\",\"provisioningState\":\"Failed\"},\"id\":\"hnzdndslgnayqi\",\"name\":\"ynduha\",\"type\":\"hqlkthumaqo\"}")
             .toObject(DnsPrivateViewInner.class);
     }
 

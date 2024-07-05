@@ -23,6 +23,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.CosmosOperationPolicy;
+import com.azure.cosmos.CosmosRequestContext;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.SessionRetryOptions;
@@ -792,6 +793,42 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosOperationDetailsAccessor {
             CosmosOperationDetails create(OverridableRequestOptions requestOptions, CosmosDiagnosticsContext diagnosticsContext);
+        }
+    }
+
+    public static final class CosmosRequestContextHelper {
+        private final static AtomicBoolean cosmosRequestContextClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosRequestContextAccessor> accessor = new AtomicReference<>();
+
+        private CosmosRequestContextHelper() {
+        }
+
+        public static void setCosmosRequestContextAccessor(final CosmosRequestContextAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosRequestContextAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosRequestContextAccessor ...");
+                cosmosRequestContextClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosRequestContextAccessor getCosmosRequestContextAccessor() {
+            if (!cosmosRequestContextClassLoaded.get()) {
+                logger.debug("Initializing CosmosRequestContextAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosRequestContextAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosRequestContextAccessor is not initialized yet!");
+
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosRequestContextAccessor {
+            CosmosRequestContext create(OverridableRequestOptions requestOptions);
         }
     }
 

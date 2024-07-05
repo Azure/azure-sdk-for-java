@@ -179,7 +179,8 @@ public class SyncRestProxy extends RestProxyBase {
             }
             result = responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
-            result = response.getSourceResponse().getBodyAsInputStream();
+            // getBodyAsInputStream returns Mono<InputStream>. So, we block() here to get the InputStream.
+            result = response.getSourceResponse().getBodyAsInputStream().block();
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
             // BinaryData
             // The raw response is directly used to create an instance of BinaryData which then provides

@@ -22,7 +22,7 @@ public final class DbNodesActionMockTests {
     @Test
     public void testAction() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ocid\":\"ribi\",\"additionalDetails\":\"tgplucfota\",\"backupIpId\":\"c\",\"backupVnic2Id\":\"nykzcugswvxwlm\",\"backupVnicId\":\"wmvtxnjm\",\"cpuCoreCount\":1038183797,\"dbNodeStorageSizeInGbs\":84697617,\"dbServerId\":\"dtcvcl\",\"dbSystemId\":\"ynpdkvgfab\",\"faultDomain\":\"yjibuzphdugne\",\"hostIpId\":\"n\",\"hostname\":\"oxgjiuqhibt\",\"lifecycleState\":\"Starting\",\"lifecycleDetails\":\"qw\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":1063877777,\"softwareStorageSizeInGb\":189610286,\"timeCreated\":\"2021-09-17T21:20:53Z\",\"timeMaintenanceWindowEnd\":\"2021-01-05T11:06Z\",\"timeMaintenanceWindowStart\":\"2021-09-08T09:03:52Z\",\"vnic2Id\":\"tvqylkmqpzoyhlfb\",\"vnicId\":\"wgcloxoebqinji\",\"provisioningState\":\"Succeeded\"},\"id\":\"fujqlafcba\",\"name\":\"hpzpo\",\"type\":\"o\"}";
+            = "{\"properties\":{\"ocid\":\"hgwydyynfsv\",\"additionalDetails\":\"gbv\",\"backupIpId\":\"anarfdlpukhpyrne\",\"backupVnic2Id\":\"jcpeogkhnmg\",\"backupVnicId\":\"ouxddbhfhpfpazj\",\"cpuCoreCount\":1207242533,\"dbNodeStorageSizeInGbs\":1156977348,\"dbServerId\":\"hpdulon\",\"dbSystemId\":\"cnpqwteht\",\"faultDomain\":\"vrh\",\"hostIpId\":\"jyoogwxh\",\"hostname\":\"duugwbsre\",\"lifecycleState\":\"Failed\",\"lifecycleDetails\":\"kfuarenlv\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":1867886432,\"softwareStorageSizeInGb\":1998431294,\"timeCreated\":\"2021-02-05T00:41:51Z\",\"timeMaintenanceWindowEnd\":\"2021-09-08T16:13:33Z\",\"timeMaintenanceWindowStart\":\"2021-07-03T20:59:21Z\",\"vnic2Id\":\"f\",\"vnicId\":\"ev\",\"provisioningState\":\"Succeeded\"},\"id\":\"lcqxypokk\",\"name\":\"minqcym\",\"type\":\"zng\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class DbNodesActionMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DbNode response = manager.dbNodes()
-            .action("jfrnxousxauzlwv", "gmwohqfzizvu", "mmkjsvthnwpztek",
-                new DbNodeAction().withAction(DbNodeActionEnum.STOP), com.azure.core.util.Context.NONE);
+            .action("byrplrohkpig", "fusuckzmkwklsno", "axmqeqal",
+                new DbNodeAction().withAction(DbNodeActionEnum.RESET), com.azure.core.util.Context.NONE);
 
     }
 }

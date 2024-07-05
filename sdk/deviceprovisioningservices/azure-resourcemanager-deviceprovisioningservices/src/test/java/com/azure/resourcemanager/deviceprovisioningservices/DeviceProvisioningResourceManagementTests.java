@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices;
 
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DeviceProvisioningResourceManagementTests extends DeviceProvisioningTestBase {
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void serviceCRUD() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
@@ -87,7 +87,7 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void updateSKU() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
@@ -122,7 +122,7 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void createFailure() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
@@ -131,7 +131,7 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
         try {
             iotDpsManager
                 .iotDpsResources()
-                .define("some invalid service name *&^-#2?")
+                .define("some invalid service name *%26%5E-%232%3F")
                 .withRegion(DEFAULT_REGION)
                 .withExistingResourceGroup(resourceGroup.name())
                 .withProperties(new IotDpsPropertiesDescription())

@@ -41,6 +41,21 @@ class PropertiesPostProcessor implements EnvironmentPostProcessor, Ordered {
         if (starterHasToBeDisabled(environment)) {
             return Collections.singletonMap("otel.sdk.disabled", true); // Disable the Spring Monitor starter and the OTel starter;
         }
+
+        String applicationInsightConnectionString = environment.getProperty("applicationinsights.connection.string", String.class);
+
+        if (applicationInsightConnectionString == null || applicationInsightConnectionString.isEmpty()) {
+            Map<String, Object> propertiesToOverride = new HashMap<>(3);
+            propertiesToOverride.put("otel.traces.exporter", "none");
+            propertiesToOverride.put("otel.metrics.exporter", "none");
+            propertiesToOverride.put("otel.logs.exporter", "none");
+            return propertiesToOverride;
+        }
+
+        if (!applicationInsightConnectionString.startsWith("InstrumentationKey=")) {
+            throw new WrongConnectionStringException();
+        }
+
         Map<String, Object> propertiesToOverride = new HashMap<>(3);
         propertiesToOverride.put("otel.traces.exporter", AzureSpringMonitorAutoConfig.AZURE_EXPORTER_NAME);
         propertiesToOverride.put("otel.metrics.exporter", AzureSpringMonitorAutoConfig.AZURE_EXPORTER_NAME);
