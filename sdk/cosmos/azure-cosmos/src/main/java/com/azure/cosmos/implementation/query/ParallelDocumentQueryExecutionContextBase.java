@@ -109,7 +109,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     createRequestFunc,
                     executeFunc,
                     () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(this.diagnosticsClientContext),
-                    targetRange);
+                    targetRange,
+                    collection.getSelfLink());
 
             documentProducers.add(dp);
         }
@@ -125,7 +126,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                                                                   Function<RxDocumentServiceRequest,
                                                                   Mono<FeedResponse<T>>> executeFunc,
                                                                   Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc,
-                                                                  FeedRangeEpkImpl feedRange);
+                                                                  FeedRangeEpkImpl feedRange,
+                                                                  String collectionLink);
 
     @Override
     abstract public Flux<FeedResponse<T>> drainAsync(int maxPageSize);
@@ -180,7 +182,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     createRequestFunc,
                     executeFunc,
                     () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(this.diagnosticsClientContext),
-                    feedRangeEpk);
+                    feedRangeEpk,
+                    collection.getSelfLink());
 
             documentProducers.add(dp);
         }

@@ -187,7 +187,8 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
             OperationType.Query,
             this::createClientRetryPolicyInstance,
             req,
-            this::executeInternalFuncCore);
+            this::executeInternalFuncCore,
+            PathsHelper.getCollectionPath(super.resourceLink));
     }
 
     private Mono<FeedResponse<T>> executeInternalFuncCore(

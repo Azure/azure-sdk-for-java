@@ -8,21 +8,25 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class PointOperationContextForCircuitBreaker {
 
     private final AtomicBoolean hasOperationSeenSuccess;
-
     private final boolean isThresholdBasedAvailabilityStrategyEnabled;
-
     private boolean isRequestHedged;
+    private final String collectionLink;
 
-    public PointOperationContextForCircuitBreaker(AtomicBoolean hasOperationSeenSuccess, boolean isThresholdBasedAvailabilityStrategyEnabled) {
+    public PointOperationContextForCircuitBreaker(
+        AtomicBoolean hasOperationSeenSuccess,
+        boolean isThresholdBasedAvailabilityStrategyEnabled,
+        String collectionLink) {
+
         this.hasOperationSeenSuccess = hasOperationSeenSuccess;
         this.isThresholdBasedAvailabilityStrategyEnabled = isThresholdBasedAvailabilityStrategyEnabled;
+        this.collectionLink = collectionLink;
     }
 
     public void setIsRequestHedged(boolean isRequestHedged) {
         this.isRequestHedged = isRequestHedged;
     }
 
-    public boolean getIsRequestHedged() {
+    public boolean isRequestHedged() {
         return this.isRequestHedged;
     }
 
@@ -35,6 +39,10 @@ public class PointOperationContextForCircuitBreaker {
     }
 
     public boolean isThresholdBasedAvailabilityStrategyEnabled() {
-        return isThresholdBasedAvailabilityStrategyEnabled;
+        return this.isThresholdBasedAvailabilityStrategyEnabled;
+    }
+
+    public String getCollectionLink() {
+        return this.collectionLink;
     }
 }

@@ -40,6 +40,7 @@ class ChangeFeedQueryImpl<T> {
     private final DiagnosticsClientContext clientContext;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final String documentsLink;
+    private final String collectionLink;
     private final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc;
     private final Class<T> klass;
     private final CosmosChangeFeedRequestOptions options;
@@ -77,6 +78,7 @@ class ChangeFeedQueryImpl<T> {
         this.client = client;
         this.resourceType = resourceType;
         this.klass = klass;
+        this.collectionLink = collectionLink;
         this.documentsLink = Utils.joinPath(collectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         this.options = requestOptions;
         this.itemSerializer = client.getEffectiveItemSerializer(requestOptions.getCustomItemSerializer());
@@ -144,7 +146,8 @@ class ChangeFeedQueryImpl<T> {
 
         if (request.requestContext != null) {
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
-            request.requestContext.setFeedOperationContext(new FeedOperationContextForCircuitBreaker(new ConcurrentHashMap<>(), false));
+            request.requestContext.setFeedOperationContext(
+                new FeedOperationContextForCircuitBreaker(new ConcurrentHashMap<>(), false, collectionLink));
         }
 
         return request;
@@ -204,14 +207,14 @@ class ChangeFeedQueryImpl<T> {
                 .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req)
                     .flatMap(documentCollectionValueHolder -> {
 
-                        checkNotNull(documentCollectionValueHolder, "documentCollectionValueHolder cannot be null!");
-                        checkNotNull(documentCollectionValueHolder.v, "documentCollectionValueHolder.v cannot be null!");
+                        checkNotNull(documentCollectionValueHolder, "Argument 'documentCollectionValueHolder' cannot be null!");
+                        checkNotNull(documentCollectionValueHolder.v, "Argument 'documentCollectionValueHolder.v' cannot be null!");
 
                         return client.getPartitionKeyRangeCache().tryLookupAsync(null, documentCollectionValueHolder.v.getResourceId(), null, null)
                             .flatMap(collectionRoutingMapValueHolder -> {
 
-                                checkNotNull(collectionRoutingMapValueHolder, "collectionRoutingMapValueHolder cannot be null!");
-                                checkNotNull(collectionRoutingMapValueHolder.v, "collectionRoutingMapValueHolder.v cannot be null!");
+                                checkNotNull(collectionRoutingMapValueHolder, "Argument 'collectionRoutingMapValueHolder' cannot be null!");
+                                checkNotNull(collectionRoutingMapValueHolder.v, "Argument 'collectionRoutingMapValueHolder.v' cannot be null!");
 
                                 changeFeedRequestOptionsAccessor.setPartitionKeyDefinition(options, documentCollectionValueHolder.v.getPartitionKey());
                                 changeFeedRequestOptionsAccessor.setCollectionRid(options, documentCollectionValueHolder.v.getResourceId());

@@ -520,13 +520,13 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
-    PartitionKeyDefinition getPartitionKeyDefinition() {
-        return this.actualRequestOptions.getPartitionKeyDefinition();
+    CosmosQueryRequestOptions disablePerPartitionCircuitBreaking() {
+        this.actualRequestOptions.setPerPartitionCircuitBreakingDisabled(true);
+        return this;
     }
 
-    CosmosQueryRequestOptions setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
-        this.actualRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
-        return this;
+    boolean isPerPartitionCircuitBreakingDisabled() {
+        return this.actualRequestOptions.isPerPartitionCircuitBreakingDisabled();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -645,6 +645,16 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public String getCollectionRid(CosmosQueryRequestOptions options) {
                     return options.actualRequestOptions.getCollectionRid();
+                }
+
+                @Override
+                public boolean isPerPartitionCircuitBreakerDisabled(CosmosQueryRequestOptions options) {
+                    return options.actualRequestOptions.isPerPartitionCircuitBreakingDisabled();
+                }
+
+                @Override
+                public void disablePerPartitionCircuitBreaker(CosmosQueryRequestOptions options) {
+                    options.actualRequestOptions.setPerPartitionCircuitBreakingDisabled(true);
                 }
             });
     }

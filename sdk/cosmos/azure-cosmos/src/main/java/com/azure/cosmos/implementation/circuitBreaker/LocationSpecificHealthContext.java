@@ -24,6 +24,7 @@ public class LocationSpecificHealthContext implements Serializable {
     private final Instant unavailableSince;
     private final LocationHealthStatus locationHealthStatus;
     private final boolean isExceptionThresholdBreached;
+    private final String lastCollectionLinkSeen;
 
     LocationSpecificHealthContext(
         int successCountForWriteForRecovery,
@@ -32,7 +33,8 @@ public class LocationSpecificHealthContext implements Serializable {
         int exceptionCountForReadForCircuitBreaking,
         Instant unavailableSince,
         LocationHealthStatus locationHealthStatus,
-        boolean isExceptionThresholdBreached) {
+        boolean isExceptionThresholdBreached,
+        String lastCollectionLinkSeen) {
 
         this.successCountForWriteForRecovery = successCountForWriteForRecovery;
         this.exceptionCountForWriteForCircuitBreaking = exceptionCountForWriteForCircuitBreaking;
@@ -41,6 +43,7 @@ public class LocationSpecificHealthContext implements Serializable {
         this.unavailableSince = unavailableSince;
         this.locationHealthStatus = locationHealthStatus;
         this.isExceptionThresholdBreached = isExceptionThresholdBreached;
+        this.lastCollectionLinkSeen = lastCollectionLinkSeen;
     }
 
     public boolean isExceptionThresholdBreached() {
@@ -54,27 +57,31 @@ public class LocationSpecificHealthContext implements Serializable {
     }
 
     public int getExceptionCountForWriteForCircuitBreaking() {
-        return exceptionCountForWriteForCircuitBreaking;
+        return this.exceptionCountForWriteForCircuitBreaking;
     }
 
     public int getSuccessCountForWriteForRecovery() {
-        return successCountForWriteForRecovery;
+        return this.successCountForWriteForRecovery;
     }
 
     public int getExceptionCountForReadForCircuitBreaking() {
-        return exceptionCountForReadForCircuitBreaking;
+        return this.exceptionCountForReadForCircuitBreaking;
     }
 
     public int getSuccessCountForReadForRecovery() {
-        return successCountForReadForRecovery;
+        return this.successCountForReadForRecovery;
     }
 
     public Instant getUnavailableSince() {
-        return unavailableSince;
+        return this.unavailableSince;
     }
 
     public LocationHealthStatus getLocationHealthStatus() {
-        return locationHealthStatus;
+        return this.locationHealthStatus;
+    }
+
+    public String getLastCollectionLinkSeen() {
+        return this.lastCollectionLinkSeen;
     }
 
     static class Builder {
@@ -86,9 +93,9 @@ public class LocationSpecificHealthContext implements Serializable {
         private Instant unavailableSince;
         private LocationHealthStatus locationHealthStatus;
         private boolean isExceptionThresholdBreached;
+        private String lastCollectionLinkSeen;
 
-        public Builder() {
-        }
+        public Builder() {}
 
         public Builder withExceptionCountForWriteForCircuitBreaking(int exceptionCountForWriteForCircuitBreaking) {
             this.exceptionCountForWriteForCircuitBreaking = exceptionCountForWriteForCircuitBreaking;
@@ -125,17 +132,22 @@ public class LocationSpecificHealthContext implements Serializable {
             return this;
         }
 
+        public Builder withLastCollectionLinkSeen(String lastCollectionLinkSeen) {
+            this.lastCollectionLinkSeen = lastCollectionLinkSeen;
+            return this;
+        }
+
         public LocationSpecificHealthContext build() {
-            LocationSpecificHealthContext locationSpecificHealthContext = new LocationSpecificHealthContext(
+
+            return new LocationSpecificHealthContext(
                 this.successCountForWriteForRecovery,
                 this.exceptionCountForWriteForCircuitBreaking,
                 this.successCountForReadForRecovery,
                 this.exceptionCountForReadForCircuitBreaking,
                 this.unavailableSince,
                 this.locationHealthStatus,
-                this.isExceptionThresholdBreached);
-
-            return locationSpecificHealthContext;
+                this.isExceptionThresholdBreached,
+                this.lastCollectionLinkSeen);
         }
     }
 

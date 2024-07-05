@@ -557,7 +557,7 @@ public class DocumentProducerTest {
                     invocation.getArgument(4);
 
                 return feedOperation.apply(retryPolicyFactory, req);
-            }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
+            }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any(), any());
 
             doAnswer(invocation -> {
                 RxDocumentServiceRequest req = invocation.getArgument(0);
@@ -659,7 +659,7 @@ public class DocumentProducerTest {
                     invocation.getArgument(4);
 
                 return feedOperation.apply(retryPolicyFactory, req);
-            }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
+            }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any(), any());
 
             doAnswer(invocation -> {
                 RxDocumentServiceRequest req = invocation.getArgument(0);
@@ -765,7 +765,7 @@ public class DocumentProducerTest {
                     invocation.getArgument(4);
 
                 return feedOperation.apply(retryPolicyFactory, req);
-            }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
+            }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any(), any());
 
             doAnswer(invocation -> {
                 RxDocumentServiceRequest req = invocation.getArgument(0);
@@ -902,7 +902,7 @@ public class DocumentProducerTest {
                 invocation.getArgument(4);
 
             return feedOperation.apply(retryPolicyFactory, req);
-        }).when(client).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
+        }).when(client).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any(), any());
 
         doReturn(cache).when(client).getPartitionKeyRangeCache();
 

@@ -34,7 +34,8 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
                 LocationSpecificHealthContext.Builder builder = new LocationSpecificHealthContext.Builder()
                     .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
                     .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
-                    .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached());
+                    .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached())
+                    .withLastCollectionLinkSeen(locationSpecificHealthContext.getLastCollectionLinkSeen());
 
                 if (isReadOnlyRequest) {
 
@@ -80,6 +81,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
                 LocationSpecificHealthContext.Builder builder = new LocationSpecificHealthContext.Builder()
                     .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
                     .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
+                    .withLastCollectionLinkSeen(locationSpecificHealthContext.getLastCollectionLinkSeen())
                     .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached());
 
                 if (isReadOnlyRequest) {
@@ -107,6 +109,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
                 builder = new LocationSpecificHealthContext.Builder()
                     .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
                     .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
+                    .withLastCollectionLinkSeen(locationSpecificHealthContext.getLastCollectionLinkSeen())
                     .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached());
 
                 if (isReadOnlyRequest) {

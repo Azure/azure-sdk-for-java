@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.circuitBreaker;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import org.slf4j.Logger;
@@ -69,7 +70,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                                     .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                         }
 
-                        return this.transitionHealthStatus(LocationHealthStatus.Healthy);
+                        return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.Healthy);
                     } else {
                         return locationSpecificHealthContextInner;
                     }
@@ -78,7 +79,7 @@ public class LocationSpecificHealthContextTransitionHandler {
             case Unavailable:
                 Instant unavailableSinceActual = locationSpecificHealthContext.getUnavailableSince();
                 if (!forceStatusChange) {
-                    if (Duration.between(unavailableSinceActual, Instant.now()).compareTo(Duration.ofSeconds(30)) > 0) {
+                    if (Duration.between(unavailableSinceActual, Instant.now()).compareTo(Duration.ofSeconds(Configs.getAllowedPartitionUnavailabilityDurationInSeconds())) > 0) {
 
                         if (logger.isDebugEnabled()) {
                             logger.debug("Partition {}-{} of collection : {} marked as HealthyTentative from Unavailable for region : {}",
@@ -89,7 +90,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                                     .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                         }
 
-                        return this.transitionHealthStatus(LocationHealthStatus.HealthyTentative);
+                        return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.HealthyTentative);
                     }
                 } else {
 
@@ -102,7 +103,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                                 .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                     }
 
-                    return this.transitionHealthStatus(LocationHealthStatus.HealthyTentative);
+                    return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.HealthyTentative);
                 }
                 break;
             default:
@@ -133,7 +134,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                             .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                 }
 
-                return this.transitionHealthStatus(LocationHealthStatus.HealthyWithFailures);
+                return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.HealthyWithFailures);
             case HealthyWithFailures:
                 if (!this.consecutiveExceptionBasedCircuitBreaker.shouldHealthStatusBeDowngraded(locationSpecificHealthContext, isReadOnlyRequest)) {
 
@@ -163,7 +164,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                                 .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                     }
 
-                    return this.transitionHealthStatus(LocationHealthStatus.Unavailable);
+                    return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.Unavailable);
                 }
             case HealthyTentative:
                 if (!this.consecutiveExceptionBasedCircuitBreaker.shouldHealthStatusBeDowngraded(locationSpecificHealthContext, isReadOnlyRequest)) {
@@ -179,23 +180,26 @@ public class LocationSpecificHealthContextTransitionHandler {
                                 .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                     }
 
-                    return this.transitionHealthStatus(LocationHealthStatus.Unavailable);
+                    return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.Unavailable);
                 }
             default:
                 throw new IllegalStateException("Unsupported health status: " + currentLocationHealthStatusSnapshot);
         }
     }
 
-    public LocationSpecificHealthContext transitionHealthStatus(LocationHealthStatus newStatus) {
+    public LocationSpecificHealthContext transitionHealthStatus(LocationSpecificHealthContext locationSpecificHealthContext, LocationHealthStatus newStatus) {
+
+        LocationSpecificHealthContext.Builder builder = new LocationSpecificHealthContext.Builder()
+            .withSuccessCountForWriteForRecovery(0)
+            .withExceptionCountForWriteForCircuitBreaking(0)
+            .withSuccessCountForReadForRecovery(0)
+            .withExceptionCountForReadForCircuitBreaking(0)
+            .withLastCollectionLinkSeen(locationSpecificHealthContext.getLastCollectionLinkSeen());
 
         switch (newStatus) {
             case Healthy:
 
-                return new LocationSpecificHealthContext.Builder()
-                    .withSuccessCountForWriteForRecovery(0)
-                    .withExceptionCountForWriteForCircuitBreaking(0)
-                    .withSuccessCountForReadForRecovery(0)
-                    .withExceptionCountForReadForCircuitBreaking(0)
+                return builder
                     .withUnavailableSince(Instant.MAX)
                     .withLocationHealthStatus(LocationHealthStatus.Healthy)
                     .withExceptionThresholdBreached(false)
@@ -203,11 +207,7 @@ public class LocationSpecificHealthContextTransitionHandler {
 
             case HealthyWithFailures:
 
-                return new LocationSpecificHealthContext.Builder()
-                    .withSuccessCountForWriteForRecovery(0)
-                    .withExceptionCountForWriteForCircuitBreaking(0)
-                    .withSuccessCountForReadForRecovery(0)
-                    .withExceptionCountForReadForCircuitBreaking(0)
+                return builder
                     .withUnavailableSince(Instant.MAX)
                     .withLocationHealthStatus(LocationHealthStatus.HealthyWithFailures)
                     .withExceptionThresholdBreached(false)
@@ -215,11 +215,7 @@ public class LocationSpecificHealthContextTransitionHandler {
 
             case Unavailable:
 
-                return new LocationSpecificHealthContext.Builder()
-                    .withSuccessCountForWriteForRecovery(0)
-                    .withExceptionCountForWriteForCircuitBreaking(0)
-                    .withSuccessCountForReadForRecovery(0)
-                    .withExceptionCountForReadForCircuitBreaking(0)
+                return builder
                     .withUnavailableSince(Instant.now())
                     .withLocationHealthStatus(LocationHealthStatus.Unavailable)
                     .withExceptionThresholdBreached(true)
@@ -227,11 +223,7 @@ public class LocationSpecificHealthContextTransitionHandler {
 
             case HealthyTentative:
 
-                return new LocationSpecificHealthContext.Builder()
-                    .withSuccessCountForWriteForRecovery(0)
-                    .withExceptionCountForWriteForCircuitBreaking(0)
-                    .withSuccessCountForReadForRecovery(0)
-                    .withExceptionCountForReadForCircuitBreaking(0)
+                return builder
                     .withUnavailableSince(Instant.now())
                     .withLocationHealthStatus(LocationHealthStatus.HealthyTentative)
                     .withExceptionThresholdBreached(false)

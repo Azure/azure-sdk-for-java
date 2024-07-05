@@ -31,6 +31,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     private Integer maxItemCountForVectorSearch;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
     private String collectionRid;
+    private boolean isPerPartitionCircuitBreakingDisabled = false;
 
     /**
      * Instantiates a new query request options.
@@ -70,6 +71,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
         this.maxItemCountForVectorSearch = options.maxItemCountForVectorSearch;
         this.collectionRid = options.collectionRid;
+        this.isPerPartitionCircuitBreakingDisabled = options.isPerPartitionCircuitBreakingDisabled;
     }
 
     /**
@@ -396,5 +398,14 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
 
     public void setCollectionRid(String collectionRid) {
         this.collectionRid = collectionRid;
+    }
+
+    public boolean isPerPartitionCircuitBreakingDisabled() {
+        return this.isPerPartitionCircuitBreakingDisabled;
+    }
+
+    public CosmosQueryRequestOptionsImpl setPerPartitionCircuitBreakingDisabled(boolean isPartitionCircuitBreakingDisabled) {
+        this.isPerPartitionCircuitBreakingDisabled = isPartitionCircuitBreakingDisabled;
+        return this;
     }
 }

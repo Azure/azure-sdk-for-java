@@ -12,11 +12,17 @@ public class FeedOperationContextForCircuitBreaker {
 
     private final Map<PartitionKeyRangeWrapper, PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess;
     private final boolean isThresholdBasedAvailabilityStrategyEnabled;
+    private final String collectionLink;
     private boolean isRequestHedged;
 
-    public FeedOperationContextForCircuitBreaker(Map<PartitionKeyRangeWrapper, PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess, boolean isThresholdBasedAvailabilityStrategyEnabled) {
+    public FeedOperationContextForCircuitBreaker(
+        Map<PartitionKeyRangeWrapper, PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess,
+        boolean isThresholdBasedAvailabilityStrategyEnabled,
+        String collectionLink) {
+
         this.partitionKeyRangesWithSuccess = partitionKeyRangesWithSuccess;
         this.isThresholdBasedAvailabilityStrategyEnabled = isThresholdBasedAvailabilityStrategyEnabled;
+        this.collectionLink = collectionLink;
     }
 
     public void setIsRequestHedged(boolean isRequestHedged) {
@@ -39,5 +45,9 @@ public class FeedOperationContextForCircuitBreaker {
 
     public boolean isThresholdBasedAvailabilityStrategyEnabled() {
         return isThresholdBasedAvailabilityStrategyEnabled;
+    }
+
+    public String getCollectionLink() {
+        return collectionLink;
     }
 }

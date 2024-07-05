@@ -1,8 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation;
+package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.circuitBreaker.LocationHealthStatus;
@@ -16,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 
 import java.lang.reflect.Field;
 import java.net.URI;
@@ -162,7 +170,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(uriToLocationMappings -> uriToLocationMappings.getLeft())
+            .map(Pair::getLeft)
             .collect(Collectors.toList());
 
         RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
@@ -229,7 +237,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(uriToLocationMappings -> uriToLocationMappings.getLeft())
+            .map(Pair::getLeft)
             .collect(Collectors.toList());
 
         RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
@@ -291,6 +299,16 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
 
+        RxDocumentClientImpl rxDocumentClientMock = Mockito.mock(RxDocumentClientImpl.class);
+        CosmosAsyncClient cosmosAsyncClientMock = Mockito.mock(CosmosAsyncClient.class);
+        ConnectionPolicy connectionPolicyMock = Mockito.mock(ConnectionPolicy.class);
+
+        globalPartitionEndpointManagerForCircuitBreaker.setRxDocumentClientImplSnapshot(rxDocumentClientMock);
+
+        setUpMockInvocations(rxDocumentClientMock, cosmosAsyncClientMock);
+        setUpMockInvocations(cosmosAsyncClientMock, connectionPolicyMock);
+        setUpMockInvocations(connectionPolicyMock);
+
         globalPartitionEndpointManagerForCircuitBreaker.init();
 
         String pkRangeId = "0";
@@ -303,7 +321,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(uriToLocationMappings -> uriToLocationMappings.getLeft())
+            .map(Pair::getLeft)
             .collect(Collectors.toList());
 
         RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
@@ -376,6 +394,16 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
 
+        RxDocumentClientImpl rxDocumentClientMock = Mockito.mock(RxDocumentClientImpl.class);
+        CosmosAsyncClient cosmosAsyncClientMock = Mockito.mock(CosmosAsyncClient.class);
+        ConnectionPolicy connectionPolicyMock = Mockito.mock(ConnectionPolicy.class);
+
+        globalPartitionEndpointManagerForCircuitBreaker.setRxDocumentClientImplSnapshot(rxDocumentClientMock);
+
+        setUpMockInvocations(rxDocumentClientMock, cosmosAsyncClientMock);
+        setUpMockInvocations(cosmosAsyncClientMock, connectionPolicyMock);
+        setUpMockInvocations(connectionPolicyMock);
+
         globalPartitionEndpointManagerForCircuitBreaker.init();
 
         String pkRangeId = "0";
@@ -388,7 +416,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(uriToLocationMappings -> uriToLocationMappings.getLeft())
+            .map(Pair::getLeft)
             .collect(Collectors.toList());
 
         RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
@@ -440,7 +468,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isTrue();
 
         try {
-            Thread.sleep(65_000);
+            Thread.sleep(90_000);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -468,6 +496,16 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
 
+        RxDocumentClientImpl rxDocumentClientMock = Mockito.mock(RxDocumentClientImpl.class);
+        CosmosAsyncClient cosmosAsyncClientMock = Mockito.mock(CosmosAsyncClient.class);
+        ConnectionPolicy connectionPolicyMock = Mockito.mock(ConnectionPolicy.class);
+
+        globalPartitionEndpointManagerForCircuitBreaker.setRxDocumentClientImplSnapshot(rxDocumentClientMock);
+
+        setUpMockInvocations(rxDocumentClientMock, cosmosAsyncClientMock);
+        setUpMockInvocations(cosmosAsyncClientMock, connectionPolicyMock);
+        setUpMockInvocations(connectionPolicyMock);
+
         globalPartitionEndpointManagerForCircuitBreaker.init();
 
         String pkRangeId = "0";
@@ -480,7 +518,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(uriToLocationMappings -> uriToLocationMappings.getLeft())
+            .map(Pair::getLeft)
             .collect(Collectors.toList());
 
         RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
@@ -559,6 +597,16 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
 
+        RxDocumentClientImpl rxDocumentClientMock = Mockito.mock(RxDocumentClientImpl.class);
+        CosmosAsyncClient cosmosAsyncClientMock = Mockito.mock(CosmosAsyncClient.class);
+        ConnectionPolicy connectionPolicyMock = Mockito.mock(ConnectionPolicy.class);
+
+        globalPartitionEndpointManagerForCircuitBreaker.setRxDocumentClientImplSnapshot(rxDocumentClientMock);
+
+        setUpMockInvocations(rxDocumentClientMock, cosmosAsyncClientMock);
+        setUpMockInvocations(cosmosAsyncClientMock, connectionPolicyMock);
+        setUpMockInvocations(connectionPolicyMock);
+
         globalPartitionEndpointManagerForCircuitBreaker.init();
 
         String pkRangeId = "0";
@@ -571,7 +619,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(uriToLocationMappings -> uriToLocationMappings.getLeft())
+            .map(Pair::getLeft)
             .collect(Collectors.toList());
 
         RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
@@ -642,7 +690,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(uriToLocationMappings -> uriToLocationMappings.getLeft())
+            .map(Pair::getLeft)
             .collect(Collectors.toList());
 
         RxDocumentServiceRequest request1 = constructRxDocumentServiceRequestInstance(
@@ -753,7 +801,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(uriToLocationMappings -> uriToLocationMappings.getLeft())
+            .map(Pair::getLeft)
             .collect(Collectors.toList());
 
         Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
@@ -914,5 +962,47 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         logger.warn("Class with simple name {} does not exist!", classSimpleName);
         return null;
+    }
+
+    private static void setUpMockInvocations(RxDocumentClientImpl rxDocumentClientMock, CosmosAsyncClient cosmosAsyncClientMock) {
+        Mockito.when(
+                rxDocumentClientMock.queryDocuments(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.any()))
+            .thenReturn(Flux.empty());
+
+        Mockito.when(
+                rxDocumentClientMock.getCachedCosmosAsyncClientSnapshot())
+            .thenReturn(cosmosAsyncClientMock);
+    }
+
+    private static void setUpMockInvocations(CosmosAsyncClient cosmosAsyncClientMock, ConnectionPolicy connectionPolicyMock) {
+        Mockito.when(
+            cosmosAsyncClientMock.getEffectiveDiagnosticsThresholds(Mockito.any())
+        ).thenReturn(new CosmosDiagnosticsThresholds());
+
+        Mockito.when(
+            cosmosAsyncClientMock.getEffectiveConsistencyLevel(Mockito.any(), Mockito.any())
+        ).thenReturn(ConsistencyLevel.EVENTUAL);
+
+        Mockito.when(
+            cosmosAsyncClientMock.getConnectionPolicy()
+        ).thenReturn(connectionPolicyMock);
+
+        Mockito.when(
+            cosmosAsyncClientMock.getAccountTagValue()
+        ).thenReturn("contoso-cosmos-db");
+
+        Mockito.when(
+            cosmosAsyncClientMock.getServiceEndpoint()
+        ).thenReturn("https://contoso-cosmos-db.azure.documents.com");
+
+        Mockito.when(
+            cosmosAsyncClientMock.getUserAgent()
+        ).thenReturn("java-circuit-breaker-test");
+    }
+
+    private static void setUpMockInvocations(ConnectionPolicy connectionPolicyMock) {
+        Mockito.when(
+            connectionPolicyMock.getConnectionMode()
+        ).thenReturn(ConnectionMode.DIRECT);
     }
 }

@@ -64,6 +64,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
     private volatile Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> regionToLocationSpecificHealthContext
         = new Utils.ValueHolder<>();
+    private volatile boolean isPerPartitionCircuitBreakerDisabledForRequest = false;
 
     public DocumentServiceRequestContext() {}
 
@@ -225,6 +226,14 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     public void setLocationToLocationSpecificHealthContext(Map<String, LocationSpecificHealthContext> regionToLocationSpecificHealthContext) {
         this.regionToLocationSpecificHealthContext.v = regionToLocationSpecificHealthContext;
+    }
+
+    public boolean isPerPartitionCircuitBreakerDisabledForRequest() {
+        return this.isPerPartitionCircuitBreakerDisabledForRequest;
+    }
+
+    public void setPerPartitionCircuitBreakerDisabledForRequest(boolean perPartitionCircuitBreakerDisabledForRequest) {
+        this.isPerPartitionCircuitBreakerDisabledForRequest = perPartitionCircuitBreakerDisabledForRequest;
     }
 }
 

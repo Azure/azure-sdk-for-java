@@ -121,7 +121,8 @@ public class ReadManySplitTest {
                                                              Function<RxDocumentServiceRequest,
                                                              Mono<FeedResponse<T>>> executeFunc,
                                                              Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc,
-                                                             FeedRangeEpkImpl feedRange) {
+                                                             FeedRangeEpkImpl feedRange,
+                                                             String collectionLink) {
             return new DocumentProducer<T>(
                 client,
                 collectionRid,

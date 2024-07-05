@@ -181,7 +181,8 @@ class DocumentProducer<T> {
                     return null;
                 },
                 request,
-                executeFeedOperationCore);
+                executeFeedOperationCore,
+                collectionLink);
         };
 
         this.lastResponseContinuationToken = initialContinuationToken;
