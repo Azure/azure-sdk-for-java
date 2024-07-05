@@ -83,10 +83,10 @@
         "description": "Geo-Redundant Backup setting"
       }
     },
-    // 2023-02-01 14:02:17
+    // 2024-04-20 17:01:38
     "resourceStartTime": {
       "type": "int",
-      "defaultValue": 1675231337
+      "defaultValue": 1713603698
     },
     "currentEpoch": {
       "type": "int",
