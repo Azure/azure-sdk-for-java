@@ -100,6 +100,16 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     }
 
     @Test
+    public void testBroadcastStringWithContentType() {
+        String message = "Hello World - Broadcast test!";
+        assertResponse(client.sendToAllWithResponse(
+            BinaryData.fromString(message),
+            WebPubSubContentType.TEXT_PLAIN,
+            message.length(),
+            REQUEST_OPTIONS_TEXT));
+    }
+
+    @Test
     public void testBroadcastStringWithFilter() {
         RequestOptions requestOptions = new RequestOptions()
             .setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain")
@@ -314,6 +324,17 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     public void testSendMessageToGroup() {
         StepVerifier.create(client.sendToGroupWithResponse("java",
             BinaryData.fromString("Hello World!"),
+            new RequestOptions().addRequestCallback(request -> request.getHeaders()
+                .set("Content-Type", "text/plain"))), 202);
+    }
+
+    @Test
+    public void testSendMessageToGroupWithContentType() {
+        String message = "Hello World!";
+        StepVerifier.create(client.sendToGroupWithResponse("java",
+            BinaryData.fromString(message),
+            WebPubSubContentType.TEXT_PLAIN,
+            message.length(),
             new RequestOptions().addRequestCallback(request -> request.getHeaders()
                 .set("Content-Type", "text/plain"))), 202);
     }

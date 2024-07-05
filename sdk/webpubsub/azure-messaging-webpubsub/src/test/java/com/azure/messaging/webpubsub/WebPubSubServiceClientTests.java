@@ -74,6 +74,16 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
+    public void testBroadcastStringWithContentType() {
+        String message = "Hello World - Broadcast test!";
+        assertResponse(client.sendToAllWithResponse(
+            BinaryData.fromString(message),
+            WebPubSubContentType.TEXT_PLAIN,
+            message.length(),
+            new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
+    }
+
+    @Test
     public void testBroadcastString() {
         assertResponse(client.sendToAllWithResponse(
             BinaryData.fromString("Hello World - Broadcast test!"),
@@ -264,6 +274,16 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     public void testSendMessageToGroup() {
         assertResponse(client.sendToGroupWithResponse("java",
             BinaryData.fromString("Hello World!"),
+            new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
+    }
+
+    @Test
+    public void testSendMessageToGroupWithContentType() {
+        String message = "Hello World!";
+        assertResponse(client.sendToGroupWithResponse("java",
+            BinaryData.fromString(message),
+            WebPubSubContentType.TEXT_PLAIN,
+            message.length(),
             new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
     }
 
