@@ -18,11 +18,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.implementation.WebPubSubUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
+import com.azure.messaging.webpubsub.implementation.models.AddToGroupsRequest;
 import com.azure.messaging.webpubsub.models.ClientEndpointType;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 import com.azure.messaging.webpubsub.models.WebPubSubPermission;
+
+import java.util.List;
 
 import static com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient.configureClientAccessTokenRequestOptions;
 
@@ -344,7 +347,8 @@ public final class WebPubSubServiceClient {
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
-     * @param groupsToAdd Target groups and connection filter.
+     * @param groups Target group names
+     * @param filter The filter to apply to the connections.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return the {@link Response}.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -353,9 +357,14 @@ public final class WebPubSubServiceClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addConnectionsToGroupsWithResponse(String hub, BinaryData groupsToAdd,
+    public Response<Void> addConnectionsToGroupsWithResponse(String hub, List<String> groups, String filter,
                                                              RequestOptions requestOptions) {
-        return this.serviceClient.addConnectionsToGroupsWithResponse(hub, groupsToAdd, requestOptions);
+        // Convert requestBody to Binary Data String
+        AddToGroupsRequest requestBody = new AddToGroupsRequest();
+        requestBody.setGroups(groups);
+        requestBody.setFilter(filter);
+        BinaryData body = BinaryData.fromObject(requestBody);
+        return this.serviceClient.addConnectionsToGroupsWithResponse(hub, body, requestOptions);
     }
 
     /**

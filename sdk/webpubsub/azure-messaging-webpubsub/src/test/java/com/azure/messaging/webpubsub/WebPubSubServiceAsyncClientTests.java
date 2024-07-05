@@ -3,6 +3,7 @@
 
 package com.azure.messaging.webpubsub;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -32,6 +33,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.azure.messaging.webpubsub.TestUtils.buildAsyncAssertingClient;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -317,26 +321,29 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
 
     @Test
     public void testAddConnectionsToGroup() {
-        BinaryData groupsToAdd = BinaryData.fromString("{\"groups\": [\"group1\", \"group2\"], \"filter\": \"userId eq 'user 1'\"}");
+        List<String> groupList = Arrays.asList("group1", "group2");
+        String filter = "userId eq 'user 1'";
         StepVerifier.create(
-            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, groupsToAdd, new RequestOptions()),
+            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, groupList, filter, new RequestOptions()),
             200
         );
     }
 
     @Test
     public void testAddConnectionsToGroupsThrowErrorWhenHubIsNull() {
-        BinaryData groupsToAdd = BinaryData.fromString("{\"groups\": [\"group1\", \"group2\"], \"filter\": \"userId eq 'user 1'\"}");
+        List<String> groupList = Arrays.asList("group1", "group2");
+        String filter = "userId eq 'user 1'";
         StepVerifier.create(
-            client.addConnectionsToGroupsWithResponse(null, groupsToAdd, new RequestOptions())
+            client.addConnectionsToGroupsWithResponse(null, groupList, filter, new RequestOptions())
         ).expectError(IllegalArgumentException.class);
     }
 
     @Test
     public void testAddConnectionsToGroupsThrowErrorWhenGroupsToAddIsNull() {
+        String filter = "userId eq 'user 1'";
         StepVerifier.create(
-            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, null, new RequestOptions())
-        ).expectError(IllegalArgumentException.class);
+            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, null, filter , new RequestOptions())
+        ).expectError(HttpResponseException.class);
     }
 
     @Test

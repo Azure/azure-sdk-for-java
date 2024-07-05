@@ -20,12 +20,15 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
+import com.azure.messaging.webpubsub.implementation.models.AddToGroupsRequest;
 import com.azure.messaging.webpubsub.models.ClientEndpointType;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 import com.azure.messaging.webpubsub.models.WebPubSubPermission;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /** Initializes a new instance of the asynchronous AzureWebPubSubServiceRestAPI type. */
 @ServiceClient(builder = WebPubSubServiceClientBuilder.class, isAsync = true)
@@ -373,18 +376,23 @@ public final class WebPubSubServiceAsyncClient {
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
-     * @param groupsToAdd Target groups and connection filter.
+     * @param groups Target group names
+     * @param filter The filter to apply to the connections.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addConnectionsToGroupsWithResponse(String hub, BinaryData groupsToAdd,
-                                                                   RequestOptions requestOptions) {
-        return this.serviceClient.addConnectionsToGroupsWithResponseAsync(hub, groupsToAdd, requestOptions);
+    public Mono<Response<Void>> addConnectionsToGroupsWithResponse(String hub,
+                                                                   List<String> groups, String filter, RequestOptions requestOptions) {
+        AddToGroupsRequest requestBody = new AddToGroupsRequest();
+        requestBody.setGroups(groups);
+        requestBody.setFilter(filter);
+        BinaryData body = BinaryData.fromObject(requestBody);
+        return this.serviceClient.addConnectionsToGroupsWithResponseAsync(hub, body, requestOptions);
     }
 
     /**

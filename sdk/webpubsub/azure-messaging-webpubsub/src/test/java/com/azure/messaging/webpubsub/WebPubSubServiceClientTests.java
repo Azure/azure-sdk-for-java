@@ -3,6 +3,7 @@
 
 package com.azure.messaging.webpubsub;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -29,6 +30,8 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -266,22 +269,25 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
 
     @Test
     public void testAddConnectionsToGroups() {
-        BinaryData groupsToAdd = BinaryData.fromString("{\"groups\": [\"group1\", \"group2\"], \"filter\": \"userId eq 'user 1'\"}");
+        List<String> groupList = Arrays.asList("group1", "group2");
+        String filter = "userId eq 'user 1'";
         assertResponse(
-            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, groupsToAdd, new RequestOptions()),
+            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, groupList, filter, new RequestOptions()),
             200
         );
     }
 
     @Test
     public void testAddConnectionsToGroupsThrowErrorWhenHubIsNull() {
-        BinaryData groupsToAdd = BinaryData.fromString("{\"groups\": [\"group1\", \"group2\"], \"filter\": \"userId eq 'user 1'\"}");
-        assertThrows(IllegalArgumentException.class, () -> client.addConnectionsToGroupsWithResponse(null, groupsToAdd, new RequestOptions()));
+        List<String> groupList = Arrays.asList("group1", "group2");
+        String filter = "userId eq 'user 1'";
+        assertThrows(IllegalArgumentException.class, () -> client.addConnectionsToGroupsWithResponse(null, groupList, filter, new RequestOptions()));
     }
 
     @Test
-    public void testAddConnectionsToGroupsThrowErrorWhenGroupsToAddIsNull() {
-        assertThrows(IllegalArgumentException.class, () -> client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, null, new RequestOptions()));
+    public void testAddConnectionsToGroupsThrowErrorWhenGroupsIsNull() {
+        String filter = "userId eq 'user 1'";
+        assertThrows(HttpResponseException.class, () -> client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, null, filter, new RequestOptions()));
     }
 
     @Test
