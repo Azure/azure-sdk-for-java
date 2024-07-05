@@ -8,7 +8,6 @@ import com.azure.spring.cloud.autoconfigure.redis.AzureJedisPasswordlessAutoConf
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -37,7 +36,6 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Testcontainers
 @DisabledOnOs({OS.WINDOWS, OS.MAC})
-@Disabled("Disable for Container startup failed")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AzureRedisAutoConfigurationTestContainerTest {
 
