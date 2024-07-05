@@ -67,7 +67,8 @@ public final class PolicySettings {
     private Integer customBlockResponseStatusCode;
 
     /*
-     * If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
+     * If the action type is block, customer can override the response body. The body must be specified in base64
+     * encoding.
      */
     @JsonProperty(value = "customBlockResponseBody")
     private String customBlockResponseBody;

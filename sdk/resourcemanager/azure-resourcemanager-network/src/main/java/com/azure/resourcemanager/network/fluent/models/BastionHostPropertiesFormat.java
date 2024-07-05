@@ -89,6 +89,12 @@ public final class BastionHostPropertiesFormat {
     @JsonProperty(value = "enableKerberos")
     private Boolean enableKerberos;
 
+    /*
+     * Enable/Disable Session Recording feature of the Bastion Host resource.
+     */
+    @JsonProperty(value = "enableSessionRecording")
+    private Boolean enableSessionRecording;
+
     /**
      * Creates an instance of BastionHostPropertiesFormat class.
      */
@@ -323,6 +329,26 @@ public final class BastionHostPropertiesFormat {
      */
     public BastionHostPropertiesFormat withEnableKerberos(Boolean enableKerberos) {
         this.enableKerberos = enableKerberos;
+        return this;
+    }
+
+    /**
+     * Get the enableSessionRecording property: Enable/Disable Session Recording feature of the Bastion Host resource.
+     * 
+     * @return the enableSessionRecording value.
+     */
+    public Boolean enableSessionRecording() {
+        return this.enableSessionRecording;
+    }
+
+    /**
+     * Set the enableSessionRecording property: Enable/Disable Session Recording feature of the Bastion Host resource.
+     * 
+     * @param enableSessionRecording the enableSessionRecording value to set.
+     * @return the BastionHostPropertiesFormat object itself.
+     */
+    public BastionHostPropertiesFormat withEnableSessionRecording(Boolean enableSessionRecording) {
+        this.enableSessionRecording = enableSessionRecording;
         return this;
     }
 

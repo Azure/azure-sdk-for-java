@@ -21,7 +21,8 @@ public final class AzureFirewallIpConfigurationPropertiesFormat {
     private String privateIpAddress;
 
     /*
-     * Reference to the subnet resource. This resource must be named 'AzureFirewallSubnet' or 'AzureFirewallManagementSubnet'.
+     * Reference to the subnet resource. This resource must be named 'AzureFirewallSubnet' or
+     * 'AzureFirewallManagementSubnet'.
      */
     @JsonProperty(value = "subnet")
     private SubResource subnet;

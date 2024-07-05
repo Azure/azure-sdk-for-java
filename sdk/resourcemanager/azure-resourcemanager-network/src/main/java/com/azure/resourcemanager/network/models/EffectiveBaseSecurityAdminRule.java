@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-
 import java.util.List;
 
 /**
@@ -32,7 +31,7 @@ public class EffectiveBaseSecurityAdminRule {
      */
     @JsonTypeId
     @JsonProperty(value = "kind", required = true)
-    private EffectiveAdminRuleKind kind;
+    private EffectiveAdminRuleKind kind = EffectiveAdminRuleKind.fromString("EffectiveBaseSecurityAdminRule");
 
     /*
      * Resource ID.
@@ -68,12 +67,11 @@ public class EffectiveBaseSecurityAdminRule {
      * Creates an instance of EffectiveBaseSecurityAdminRule class.
      */
     public EffectiveBaseSecurityAdminRule() {
-        this.kind = EffectiveAdminRuleKind.fromString("EffectiveBaseSecurityAdminRule");
     }
 
     /**
      * Get the kind property: Whether the rule is custom or default.
-     *
+     * 
      * @return the kind value.
      */
     public EffectiveAdminRuleKind kind() {
@@ -82,7 +80,7 @@ public class EffectiveBaseSecurityAdminRule {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -91,7 +89,7 @@ public class EffectiveBaseSecurityAdminRule {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the EffectiveBaseSecurityAdminRule object itself.
      */
@@ -102,7 +100,7 @@ public class EffectiveBaseSecurityAdminRule {
 
     /**
      * Get the configurationDescription property: A description of the security admin configuration.
-     *
+     * 
      * @return the configurationDescription value.
      */
     public String configurationDescription() {
@@ -111,7 +109,7 @@ public class EffectiveBaseSecurityAdminRule {
 
     /**
      * Set the configurationDescription property: A description of the security admin configuration.
-     *
+     * 
      * @param configurationDescription the configurationDescription value to set.
      * @return the EffectiveBaseSecurityAdminRule object itself.
      */
@@ -122,7 +120,7 @@ public class EffectiveBaseSecurityAdminRule {
 
     /**
      * Get the ruleCollectionDescription property: A description of the rule collection.
-     *
+     * 
      * @return the ruleCollectionDescription value.
      */
     public String ruleCollectionDescription() {
@@ -131,7 +129,7 @@ public class EffectiveBaseSecurityAdminRule {
 
     /**
      * Set the ruleCollectionDescription property: A description of the rule collection.
-     *
+     * 
      * @param ruleCollectionDescription the ruleCollectionDescription value to set.
      * @return the EffectiveBaseSecurityAdminRule object itself.
      */
@@ -142,7 +140,7 @@ public class EffectiveBaseSecurityAdminRule {
 
     /**
      * Get the ruleCollectionAppliesToGroups property: Groups for rule collection.
-     *
+     * 
      * @return the ruleCollectionAppliesToGroups value.
      */
     public List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups() {
@@ -151,7 +149,7 @@ public class EffectiveBaseSecurityAdminRule {
 
     /**
      * Set the ruleCollectionAppliesToGroups property: Groups for rule collection.
-     *
+     * 
      * @param ruleCollectionAppliesToGroups the ruleCollectionAppliesToGroups value to set.
      * @return the EffectiveBaseSecurityAdminRule object itself.
      */
@@ -163,7 +161,7 @@ public class EffectiveBaseSecurityAdminRule {
 
     /**
      * Get the ruleGroups property: Effective configuration groups.
-     *
+     * 
      * @return the ruleGroups value.
      */
     public List<ConfigurationGroup> ruleGroups() {
@@ -172,7 +170,7 @@ public class EffectiveBaseSecurityAdminRule {
 
     /**
      * Set the ruleGroups property: Effective configuration groups.
-     *
+     * 
      * @param ruleGroups the ruleGroups value to set.
      * @return the EffectiveBaseSecurityAdminRule object itself.
      */
@@ -183,7 +181,7 @@ public class EffectiveBaseSecurityAdminRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

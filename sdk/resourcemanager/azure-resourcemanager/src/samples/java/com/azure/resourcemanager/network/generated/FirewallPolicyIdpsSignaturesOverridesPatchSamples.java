@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.SignaturesOverridesInner;
 import com.azure.resourcemanager.network.models.SignaturesOverridesProperties;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,11 +14,12 @@ import java.util.Map;
  */
 public final class FirewallPolicyIdpsSignaturesOverridesPatchSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicySignatureOverridesPatch.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * FirewallPolicySignatureOverridesPatch.json
      */
     /**
      * Sample code: patch signature overrides.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void patchSignatureOverrides(com.azure.resourcemanager.AzureResourceManager azure) {

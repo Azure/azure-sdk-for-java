@@ -13,13 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FirewallPolicyIntrusionDetection {
     /*
-     * Intrusion detection general state. When attached to a parent policy, the firewall's effective IDPS mode is the stricter mode of the two.
+     * Intrusion detection general state. When attached to a parent policy, the firewall's effective IDPS mode is the
+     * stricter mode of the two.
      */
     @JsonProperty(value = "mode")
     private FirewallPolicyIntrusionDetectionStateType mode;
 
     /*
-     * IDPS profile name. When attached to a parent policy, the firewall's effective profile is the profile name of the parent policy.
+     * IDPS profile name. When attached to a parent policy, the firewall's effective profile is the profile name of the
+     * parent policy.
      */
     @JsonProperty(value = "profile")
     private FirewallPolicyIntrusionDetectionProfileType profile;

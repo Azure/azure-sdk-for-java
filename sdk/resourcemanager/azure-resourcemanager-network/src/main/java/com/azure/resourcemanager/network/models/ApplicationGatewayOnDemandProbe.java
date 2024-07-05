@@ -32,7 +32,8 @@ public final class ApplicationGatewayOnDemandProbe {
     private String path;
 
     /*
-     * The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period. Acceptable values are from 1 second to 86400 seconds.
+     * The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period.
+     * Acceptable values are from 1 second to 86400 seconds.
      */
     @JsonProperty(value = "timeout")
     private Integer timeout;

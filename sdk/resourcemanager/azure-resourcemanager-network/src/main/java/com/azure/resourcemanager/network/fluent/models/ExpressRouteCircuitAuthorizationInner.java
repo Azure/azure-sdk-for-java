@@ -151,6 +151,16 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
     }
 
     /**
+     * Get the connectionResourceUri property: The reference to the ExpressRoute connection resource using the
+     * authorization.
+     * 
+     * @return the connectionResourceUri value.
+     */
+    public String connectionResourceUri() {
+        return this.innerProperties() == null ? null : this.innerProperties().connectionResourceUri();
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the authorization resource.
      * 
      * @return the provisioningState value.

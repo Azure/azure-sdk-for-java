@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.AdminRuleCollectionInner;
 import com.azure.resourcemanager.network.models.NetworkManagerSecurityGroupItem;
-
 import java.util.Arrays;
 
 /**
@@ -14,11 +13,12 @@ import java.util.Arrays;
  */
 public final class AdminRuleCollectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerAdminRuleCollectionPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * NetworkManagerAdminRuleCollectionPut.json
      */
     /**
      * Sample code: Create or Update an admin rule collection.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAnAdminRuleCollection(com.azure.resourcemanager.AzureResourceManager azure) {

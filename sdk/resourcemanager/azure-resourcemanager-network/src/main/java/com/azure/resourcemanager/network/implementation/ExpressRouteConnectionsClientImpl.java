@@ -30,10 +30,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ExpressRouteConnectionsClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteConnectionInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteConnectionListInner;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in ExpressRouteConnectionsClient.
@@ -51,7 +50,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Initializes an instance of ExpressRouteConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExpressRouteConnectionsClientImpl(NetworkManagementClientImpl client) {
@@ -112,7 +111,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -151,7 +150,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
         } else {
             putExpressRouteConnectionParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -162,7 +161,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -202,7 +201,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
         } else {
             putExpressRouteConnectionParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, expressRouteGatewayName,
@@ -212,7 +211,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -235,7 +234,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -260,7 +259,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -282,7 +281,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -305,7 +304,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -325,7 +324,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -346,7 +345,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -365,7 +364,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -385,7 +384,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Gets the specified ExpressRouteConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the ExpressRoute connection.
@@ -417,7 +416,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, expressRouteGatewayName,
@@ -427,7 +426,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Gets the specified ExpressRouteConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the ExpressRoute connection.
@@ -460,7 +459,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, expressRouteGatewayName, connectionName,
@@ -469,7 +468,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Gets the specified ExpressRouteConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the ExpressRoute connection.
@@ -487,7 +486,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Gets the specified ExpressRouteConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the ExpressRoute connection.
@@ -505,7 +504,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Gets the specified ExpressRouteConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the ExpressRoute connection.
@@ -522,7 +521,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -553,7 +552,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -563,7 +562,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -595,7 +594,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, expressRouteGatewayName, connectionName,
@@ -604,7 +603,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -624,7 +623,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -646,7 +645,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -663,7 +662,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -682,7 +681,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -699,7 +698,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -718,7 +717,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -733,7 +732,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -750,7 +749,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Lists ExpressRouteConnections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -777,7 +776,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, expressRouteGatewayName,
@@ -787,7 +786,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Lists ExpressRouteConnections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param context The context to associate with this operation.
@@ -815,7 +814,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), resourceGroupName, expressRouteGatewayName, apiVersion,
@@ -824,7 +823,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Lists ExpressRouteConnections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -840,7 +839,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Lists ExpressRouteConnections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param context The context to associate with this operation.
@@ -857,7 +856,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
     /**
      * Lists ExpressRouteConnections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

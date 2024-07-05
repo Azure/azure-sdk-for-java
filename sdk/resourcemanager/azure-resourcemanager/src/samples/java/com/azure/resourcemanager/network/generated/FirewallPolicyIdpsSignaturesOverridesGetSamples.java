@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPolicyIdpsSignaturesOverridesGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicySignatureOverridesGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * FirewallPolicySignatureOverridesGet.json
      */
     /**
      * Sample code: get signature overrides.

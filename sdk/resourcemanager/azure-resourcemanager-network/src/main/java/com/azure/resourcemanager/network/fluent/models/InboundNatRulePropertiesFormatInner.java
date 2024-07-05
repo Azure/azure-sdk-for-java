@@ -22,7 +22,8 @@ public final class InboundNatRulePropertiesFormatInner {
     private SubResource frontendIpConfiguration;
 
     /*
-     * A reference to a private IP address defined on a network interface of a VM. Traffic sent to the frontend port of each of the frontend IP configurations is forwarded to the backend IP.
+     * A reference to a private IP address defined on a network interface of a VM. Traffic sent to the frontend port of
+     * each of the frontend IP configurations is forwarded to the backend IP.
      */
     @JsonProperty(value = "backendIPConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkInterfaceIpConfigurationInner backendIpConfiguration;
@@ -34,7 +35,8 @@ public final class InboundNatRulePropertiesFormatInner {
     private TransportProtocol protocol;
 
     /*
-     * The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer. Acceptable values range from 1 to 65534.
+     * The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer.
+     * Acceptable values range from 1 to 65534.
      */
     @JsonProperty(value = "frontendPort")
     private Integer frontendPort;
@@ -46,31 +48,39 @@ public final class InboundNatRulePropertiesFormatInner {
     private Integer backendPort;
 
     /*
-     * The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
+     * The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4
+     * minutes. This element is only used when the protocol is set to TCP.
      */
     @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
     /*
-     * Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
+     * Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn
+     * Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This
+     * setting can't be changed after you create the endpoint.
      */
     @JsonProperty(value = "enableFloatingIP")
     private Boolean enableFloatingIp;
 
     /*
-     * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used when the protocol is set to TCP.
+     * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is
+     * only used when the protocol is set to TCP.
      */
     @JsonProperty(value = "enableTcpReset")
     private Boolean enableTcpReset;
 
     /*
-     * The port range start for the external endpoint. This property is used together with BackendAddressPool and FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
+     * The port range start for the external endpoint. This property is used together with BackendAddressPool and
+     * FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be created for each backend address from
+     * BackendAddressPool. Acceptable values range from 1 to 65534.
      */
     @JsonProperty(value = "frontendPortRangeStart")
     private Integer frontendPortRangeStart;
 
     /*
-     * The port range end for the external endpoint. This property is used together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
+     * The port range end for the external endpoint. This property is used together with BackendAddressPool and
+     * FrontendPortRangeStart. Individual inbound NAT rule port mappings will be created for each backend address from
+     * BackendAddressPool. Acceptable values range from 1 to 65534.
      */
     @JsonProperty(value = "frontendPortRangeEnd")
     private Integer frontendPortRangeEnd;

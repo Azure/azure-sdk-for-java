@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SubscriptionNetworkManagerConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerConnectionSubscriptionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * NetworkManagerConnectionSubscriptionGet.json
      */
     /**
      * Sample code: Get Subscription Network Manager Connection.

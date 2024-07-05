@@ -26,7 +26,6 @@ import com.azure.resourcemanager.network.models.AzureFirewallSkuTier;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.HubIpAddresses;
 import com.azure.resourcemanager.network.models.HubPublicIpAddresses;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,11 +35,13 @@ import java.util.Map;
  */
 public final class AzureFirewallsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AzureFirewallPutWithIpGroups.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallPutWithIpGroups.
+     * json
      */
     /**
      * Sample code: Create Azure Firewall With IpGroups.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAzureFirewallWithIpGroups(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -115,11 +116,13 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AzureFirewallPutWithZones.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallPutWithZones.
+     * json
      */
     /**
      * Sample code: Create Azure Firewall With Zones.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAzureFirewallWithZones(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -194,11 +197,12 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AzureFirewallPut.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallPut.json
      */
     /**
      * Sample code: Create Azure Firewall.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAzureFirewall(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -273,11 +277,12 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AzureFirewallPutWithAdditionalProperties.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * AzureFirewallPutWithAdditionalProperties.json
      */
     /**
      * Sample code: Create Azure Firewall With Additional Properties.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -354,11 +359,12 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AzureFirewallPutInHub.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallPutInHub.json
      */
     /**
      * Sample code: Create Azure Firewall in virtual Hub.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAzureFirewallInVirtualHub(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -383,11 +389,12 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AzureFirewallPutWithMgmtSubnet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * AzureFirewallPutWithMgmtSubnet.json
      */
     /**
      * Sample code: Create Azure Firewall With management subnet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAzureFirewallWithManagementSubnet(com.azure.resourcemanager.AzureResourceManager azure) {

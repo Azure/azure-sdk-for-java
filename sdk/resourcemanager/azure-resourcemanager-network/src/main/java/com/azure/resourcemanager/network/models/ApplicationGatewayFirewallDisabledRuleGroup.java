@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public final class ApplicationGatewayFirewallDisabledRuleGroup {
 
     /**
      * Get the ruleGroupName property: The name of the rule group that will be disabled.
-     *
+     * 
      * @return the ruleGroupName value.
      */
     public String ruleGroupName() {
@@ -44,7 +43,7 @@ public final class ApplicationGatewayFirewallDisabledRuleGroup {
 
     /**
      * Set the ruleGroupName property: The name of the rule group that will be disabled.
-     *
+     * 
      * @param ruleGroupName the ruleGroupName value to set.
      * @return the ApplicationGatewayFirewallDisabledRuleGroup object itself.
      */
@@ -56,7 +55,7 @@ public final class ApplicationGatewayFirewallDisabledRuleGroup {
     /**
      * Get the rules property: The list of rules that will be disabled. If null, all rules of the rule group will be
      * disabled.
-     *
+     * 
      * @return the rules value.
      */
     public List<Integer> rules() {
@@ -66,7 +65,7 @@ public final class ApplicationGatewayFirewallDisabledRuleGroup {
     /**
      * Set the rules property: The list of rules that will be disabled. If null, all rules of the rule group will be
      * disabled.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the ApplicationGatewayFirewallDisabledRuleGroup object itself.
      */
@@ -77,7 +76,7 @@ public final class ApplicationGatewayFirewallDisabledRuleGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +24,7 @@ public final class ApplicationGatewaySkuFamily extends ExpandableStringEnum<Appl
 
     /**
      * Creates a new instance of ApplicationGatewaySkuFamily value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +33,7 @@ public final class ApplicationGatewaySkuFamily extends ExpandableStringEnum<Appl
 
     /**
      * Creates or finds a ApplicationGatewaySkuFamily from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationGatewaySkuFamily.
      */
@@ -45,7 +44,7 @@ public final class ApplicationGatewaySkuFamily extends ExpandableStringEnum<Appl
 
     /**
      * Gets known ApplicationGatewaySkuFamily values.
-     *
+     * 
      * @return known ApplicationGatewaySkuFamily values.
      */
     public static Collection<ApplicationGatewaySkuFamily> values() {

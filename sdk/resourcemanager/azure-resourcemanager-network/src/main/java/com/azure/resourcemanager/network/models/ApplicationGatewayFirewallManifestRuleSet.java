@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -53,7 +52,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Get the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -62,7 +61,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @param ruleSetType the ruleSetType value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
@@ -73,7 +72,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Get the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -82,7 +81,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
@@ -93,7 +92,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Get the status property: The rule set status.
-     *
+     * 
      * @return the status value.
      */
     public ApplicationGatewayRuleSetStatusOptions status() {
@@ -102,7 +101,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the status property: The rule set status.
-     *
+     * 
      * @param status the status value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
@@ -113,7 +112,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Get the tiers property: Tier of an application gateway that support the rule set.
-     *
+     * 
      * @return the tiers value.
      */
     public List<ApplicationGatewayTierTypes> tiers() {
@@ -122,7 +121,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the tiers property: Tier of an application gateway that support the rule set.
-     *
+     * 
      * @param tiers the tiers value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
@@ -133,7 +132,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Get the ruleGroups property: The rule groups of the web application firewall rule set.
-     *
+     * 
      * @return the ruleGroups value.
      */
     public List<ApplicationGatewayFirewallRuleGroup> ruleGroups() {
@@ -142,7 +141,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the ruleGroups property: The rule groups of the web application firewall rule set.
-     *
+     * 
      * @param ruleGroups the ruleGroups value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
@@ -154,7 +153,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

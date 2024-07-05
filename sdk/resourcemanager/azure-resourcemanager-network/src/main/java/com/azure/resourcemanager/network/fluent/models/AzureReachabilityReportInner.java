@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AzureReachabilityReportItem;
 import com.azure.resourcemanager.network.models.AzureReachabilityReportLocation;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -44,7 +43,7 @@ public final class AzureReachabilityReportInner {
     /**
      * Get the aggregationLevel property: The aggregation level of Azure reachability report. Can be Country, State or
      * City.
-     *
+     * 
      * @return the aggregationLevel value.
      */
     public String aggregationLevel() {
@@ -54,7 +53,7 @@ public final class AzureReachabilityReportInner {
     /**
      * Set the aggregationLevel property: The aggregation level of Azure reachability report. Can be Country, State or
      * City.
-     *
+     * 
      * @param aggregationLevel the aggregationLevel value to set.
      * @return the AzureReachabilityReportInner object itself.
      */
@@ -65,7 +64,7 @@ public final class AzureReachabilityReportInner {
 
     /**
      * Get the providerLocation property: Parameters that define a geographic location.
-     *
+     * 
      * @return the providerLocation value.
      */
     public AzureReachabilityReportLocation providerLocation() {
@@ -74,7 +73,7 @@ public final class AzureReachabilityReportInner {
 
     /**
      * Set the providerLocation property: Parameters that define a geographic location.
-     *
+     * 
      * @param providerLocation the providerLocation value to set.
      * @return the AzureReachabilityReportInner object itself.
      */
@@ -85,7 +84,7 @@ public final class AzureReachabilityReportInner {
 
     /**
      * Get the reachabilityReport property: List of Azure reachability report items.
-     *
+     * 
      * @return the reachabilityReport value.
      */
     public List<AzureReachabilityReportItem> reachabilityReport() {
@@ -94,7 +93,7 @@ public final class AzureReachabilityReportInner {
 
     /**
      * Set the reachabilityReport property: List of Azure reachability report items.
-     *
+     * 
      * @param reachabilityReport the reachabilityReport value to set.
      * @return the AzureReachabilityReportInner object itself.
      */
@@ -105,7 +104,7 @@ public final class AzureReachabilityReportInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

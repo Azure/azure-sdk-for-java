@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -26,7 +25,7 @@ public final class InboundSecurityRuleType extends ExpandableStringEnum<InboundS
 
     /**
      * Creates a new instance of InboundSecurityRuleType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,7 +34,7 @@ public final class InboundSecurityRuleType extends ExpandableStringEnum<InboundS
 
     /**
      * Creates or finds a InboundSecurityRuleType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InboundSecurityRuleType.
      */
@@ -46,7 +45,7 @@ public final class InboundSecurityRuleType extends ExpandableStringEnum<InboundS
 
     /**
      * Gets known InboundSecurityRuleType values.
-     *
+     * 
      * @return known InboundSecurityRuleType values.
      */
     public static Collection<InboundSecurityRuleType> values() {

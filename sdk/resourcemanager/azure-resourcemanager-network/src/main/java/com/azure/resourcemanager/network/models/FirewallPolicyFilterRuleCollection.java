@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-
 import java.util.List;
 
 /**
@@ -51,7 +50,7 @@ public final class FirewallPolicyFilterRuleCollection extends FirewallPolicyRule
 
     /**
      * Get the ruleCollectionType property: The type of the rule collection.
-     *
+     * 
      * @return the ruleCollectionType value.
      */
     @Override
@@ -61,7 +60,7 @@ public final class FirewallPolicyFilterRuleCollection extends FirewallPolicyRule
 
     /**
      * Get the action property: The action type of a Filter rule collection.
-     *
+     * 
      * @return the action value.
      */
     public FirewallPolicyFilterRuleCollectionAction action() {
@@ -70,7 +69,7 @@ public final class FirewallPolicyFilterRuleCollection extends FirewallPolicyRule
 
     /**
      * Set the action property: The action type of a Filter rule collection.
-     *
+     * 
      * @param action the action value to set.
      * @return the FirewallPolicyFilterRuleCollection object itself.
      */
@@ -81,7 +80,7 @@ public final class FirewallPolicyFilterRuleCollection extends FirewallPolicyRule
 
     /**
      * Get the rules property: List of rules included in a rule collection.
-     *
+     * 
      * @return the rules value.
      */
     public List<FirewallPolicyRule> rules() {
@@ -90,7 +89,7 @@ public final class FirewallPolicyFilterRuleCollection extends FirewallPolicyRule
 
     /**
      * Set the rules property: List of rules included in a rule collection.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the FirewallPolicyFilterRuleCollection object itself.
      */
@@ -119,7 +118,7 @@ public final class FirewallPolicyFilterRuleCollection extends FirewallPolicyRule
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

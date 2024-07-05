@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ApplicationGatewayPrivateLinkIpConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -36,7 +35,7 @@ public final class ApplicationGatewayPrivateLinkConfigurationProperties {
 
     /**
      * Get the ipConfigurations property: An array of application gateway private link ip configurations.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<ApplicationGatewayPrivateLinkIpConfiguration> ipConfigurations() {
@@ -45,7 +44,7 @@ public final class ApplicationGatewayPrivateLinkConfigurationProperties {
 
     /**
      * Set the ipConfigurations property: An array of application gateway private link ip configurations.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the ApplicationGatewayPrivateLinkConfigurationProperties object itself.
      */
@@ -57,7 +56,7 @@ public final class ApplicationGatewayPrivateLinkConfigurationProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the application gateway private link configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -66,7 +65,7 @@ public final class ApplicationGatewayPrivateLinkConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

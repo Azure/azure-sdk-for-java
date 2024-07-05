@@ -417,6 +417,29 @@ public final class BastionHostInner extends Resource {
     }
 
     /**
+     * Get the enableSessionRecording property: Enable/Disable Session Recording feature of the Bastion Host resource.
+     * 
+     * @return the enableSessionRecording value.
+     */
+    public Boolean enableSessionRecording() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableSessionRecording();
+    }
+
+    /**
+     * Set the enableSessionRecording property: Enable/Disable Session Recording feature of the Bastion Host resource.
+     * 
+     * @param enableSessionRecording the enableSessionRecording value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withEnableSessionRecording(Boolean enableSessionRecording) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withEnableSessionRecording(enableSessionRecording);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

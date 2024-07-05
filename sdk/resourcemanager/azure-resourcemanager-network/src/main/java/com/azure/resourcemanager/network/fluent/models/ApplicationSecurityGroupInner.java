@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Map;
 
 /**
@@ -42,7 +41,7 @@ public final class ApplicationSecurityGroupInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the application security group.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationSecurityGroupPropertiesFormat innerProperties() {
@@ -51,7 +50,7 @@ public final class ApplicationSecurityGroupInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -60,7 +59,7 @@ public final class ApplicationSecurityGroupInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -69,7 +68,7 @@ public final class ApplicationSecurityGroupInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ApplicationSecurityGroupInner object itself.
      */
@@ -100,7 +99,7 @@ public final class ApplicationSecurityGroupInner extends Resource {
      * Get the resourceGuid property: The resource GUID property of the application security group resource. It uniquely
      * identifies a resource, even if the user changes its name or migrate the resource across subscriptions or resource
      * groups.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -109,7 +108,7 @@ public final class ApplicationSecurityGroupInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the application security group resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -118,7 +117,7 @@ public final class ApplicationSecurityGroupInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

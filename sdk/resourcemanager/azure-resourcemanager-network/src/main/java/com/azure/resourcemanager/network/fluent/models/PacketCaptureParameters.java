@@ -26,7 +26,8 @@ public class PacketCaptureParameters {
     private String target;
 
     /*
-     * A list of AzureVMSS instances which can be included or excluded to run packet capture. If both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
+     * A list of AzureVMSS instances which can be included or excluded to run packet capture. If both included and
+     * excluded are empty, then the packet capture will run on all instances of AzureVMSS.
      */
     @JsonProperty(value = "scope")
     private PacketCaptureMachineScope scope;
@@ -68,7 +69,8 @@ public class PacketCaptureParameters {
     private List<PacketCaptureFilter> filters;
 
     /*
-     * This continuous capture is a nullable boolean, which can hold 'null', 'true' or 'false' value. If we do not pass this parameter, it would be consider as 'null', default value is 'null'.
+     * This continuous capture is a nullable boolean, which can hold 'null', 'true' or 'false' value. If we do not pass
+     * this parameter, it would be consider as 'null', default value is 'null'.
      */
     @JsonProperty(value = "continuousCapture")
     private Boolean continuousCapture;

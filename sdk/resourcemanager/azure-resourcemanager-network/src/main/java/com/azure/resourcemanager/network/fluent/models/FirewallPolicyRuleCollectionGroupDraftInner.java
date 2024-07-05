@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.FirewallPolicyRuleCollection;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -42,7 +41,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftInner extends SubResour
 
     /**
      * Get the innerProperties property: The properties of the firewall policy rule collection group.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FirewallPolicyRuleCollectionGroupDraftProperties innerProperties() {
@@ -52,7 +51,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftInner extends SubResour
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +61,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftInner extends SubResour
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the FirewallPolicyRuleCollectionGroupDraftInner object itself.
      */
@@ -73,7 +72,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftInner extends SubResour
 
     /**
      * Get the type property: Rule Group type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -92,7 +91,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftInner extends SubResour
     /**
      * Get the size property: A read-only string that represents the size of the
      * FirewallPolicyRuleCollectionGroupProperties in MB. (ex 1.2MB).
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -101,7 +100,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftInner extends SubResour
 
     /**
      * Get the priority property: Priority of the Firewall Policy Rule Collection Group resource.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -110,7 +109,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftInner extends SubResour
 
     /**
      * Set the priority property: Priority of the Firewall Policy Rule Collection Group resource.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the FirewallPolicyRuleCollectionGroupDraftInner object itself.
      */
@@ -124,7 +123,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftInner extends SubResour
 
     /**
      * Get the ruleCollections property: Group of Firewall Policy rule collections.
-     *
+     * 
      * @return the ruleCollections value.
      */
     public List<FirewallPolicyRuleCollection> ruleCollections() {
@@ -133,7 +132,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftInner extends SubResour
 
     /**
      * Set the ruleCollections property: Group of Firewall Policy rule collections.
-     *
+     * 
      * @param ruleCollections the ruleCollections value to set.
      * @return the FirewallPolicyRuleCollectionGroupDraftInner object itself.
      */
@@ -148,7 +147,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftInner extends SubResour
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

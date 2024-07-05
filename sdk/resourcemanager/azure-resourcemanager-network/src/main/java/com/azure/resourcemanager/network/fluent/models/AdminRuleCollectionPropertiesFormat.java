@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.NetworkManagerSecurityGroupItem;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -49,7 +48,7 @@ public final class AdminRuleCollectionPropertiesFormat {
 
     /**
      * Get the description property: A description of the admin rule collection.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -58,7 +57,7 @@ public final class AdminRuleCollectionPropertiesFormat {
 
     /**
      * Set the description property: A description of the admin rule collection.
-     *
+     * 
      * @param description the description value to set.
      * @return the AdminRuleCollectionPropertiesFormat object itself.
      */
@@ -69,7 +68,7 @@ public final class AdminRuleCollectionPropertiesFormat {
 
     /**
      * Get the appliesToGroups property: Groups for configuration.
-     *
+     * 
      * @return the appliesToGroups value.
      */
     public List<NetworkManagerSecurityGroupItem> appliesToGroups() {
@@ -78,7 +77,7 @@ public final class AdminRuleCollectionPropertiesFormat {
 
     /**
      * Set the appliesToGroups property: Groups for configuration.
-     *
+     * 
      * @param appliesToGroups the appliesToGroups value to set.
      * @return the AdminRuleCollectionPropertiesFormat object itself.
      */
@@ -90,7 +89,7 @@ public final class AdminRuleCollectionPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -99,7 +98,7 @@ public final class AdminRuleCollectionPropertiesFormat {
 
     /**
      * Get the resourceGuid property: Unique identifier for this resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -108,7 +107,7 @@ public final class AdminRuleCollectionPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

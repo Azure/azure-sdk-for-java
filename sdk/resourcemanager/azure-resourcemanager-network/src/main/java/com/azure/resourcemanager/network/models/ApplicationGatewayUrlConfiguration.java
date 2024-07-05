@@ -19,13 +19,15 @@ public final class ApplicationGatewayUrlConfiguration {
     private String modifiedPath;
 
     /*
-     * Query string which user has provided for url rewrite. Null means no query string will be updated. Default value is null.
+     * Query string which user has provided for url rewrite. Null means no query string will be updated. Default value
+     * is null.
      */
     @JsonProperty(value = "modifiedQueryString")
     private String modifiedQueryString;
 
     /*
-     * If set as true, it will re-evaluate the url path map provided in path based request routing rules using modified path. Default value is false.
+     * If set as true, it will re-evaluate the url path map provided in path based request routing rules using modified
+     * path. Default value is false.
      */
     @JsonProperty(value = "reroute")
     private Boolean reroute;

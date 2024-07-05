@@ -107,7 +107,8 @@ public final class SubnetPropertiesFormatInner {
     private List<Delegation> delegations;
 
     /*
-     * A read-only string identifying the intention of use for this subnet based on delegations and other user-defined properties.
+     * A read-only string identifying the intention of use for this subnet based on delegations and other user-defined
+     * properties.
      */
     @JsonProperty(value = "purpose", access = JsonProperty.Access.WRITE_ONLY)
     private String purpose;
@@ -137,13 +138,15 @@ public final class SubnetPropertiesFormatInner {
     private List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations;
 
     /*
-     * Set this property to Tenant to allow sharing subnet with other subscriptions in your AAD tenant. This property can only be set if defaultOutboundAccess is set to false, both properties can only be set if subnet is empty.
+     * Set this property to Tenant to allow sharing subnet with other subscriptions in your AAD tenant. This property
+     * can only be set if defaultOutboundAccess is set to false, both properties can only be set if subnet is empty.
      */
     @JsonProperty(value = "sharingScope")
     private SharingScope sharingScope;
 
     /*
-     * Set this property to false to disable default outbound connectivity for all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an existing subnet.
+     * Set this property to false to disable default outbound connectivity for all VMs in the subnet. This property can
+     * only be set at the time of subnet creation and cannot be updated for an existing subnet.
      */
     @JsonProperty(value = "defaultOutboundAccess")
     private Boolean defaultOutboundAccess;
