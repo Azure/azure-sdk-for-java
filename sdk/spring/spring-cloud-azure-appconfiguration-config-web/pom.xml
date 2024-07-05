@@ -139,9 +139,9 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>springboot3_org.springframework.boot:spring-boot-starter-actuator:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
-                <include>springboot3_org.springframework.boot:spring-boot-starter-web:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-                <include>springboot3_org.springframework.cloud:spring-cloud-bus:[4.1.1]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-actuator:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-web:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-bus:[4.1.1]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

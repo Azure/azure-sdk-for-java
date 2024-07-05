@@ -171,7 +171,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>springboot3_org.springframework.integration:spring-integration-core:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.integration:spring-integration-core;external_dependency} -->
+                <include>org.springframework.integration:spring-integration-core:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.integration:spring-integration-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

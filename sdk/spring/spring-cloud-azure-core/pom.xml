@@ -212,7 +212,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>springboot3_org.springframework:spring-context:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework:spring-context:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

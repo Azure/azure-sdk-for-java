@@ -198,13 +198,13 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>springboot3_com.fasterxml.jackson.core:jackson-annotations:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-                <include>springboot3_com.fasterxml.jackson.core:jackson-databind:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>springboot3_org.springframework.boot:spring-boot-actuator:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator;external_dependency} -->
-                <include>springboot3_org.springframework.boot:spring-boot-autoconfigure:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-                <include>springboot3_org.springframework.cloud:spring-cloud-context:[4.1.3]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-context;external_dependency} -->
-                <include>springboot3_org.springframework.boot:spring-boot-configuration-processor:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>springboot3_org.springframework.cloud:spring-cloud-starter-bootstrap:[4.1.3]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-context:[4.1.3]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-context;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-starter-bootstrap:[4.1.3]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

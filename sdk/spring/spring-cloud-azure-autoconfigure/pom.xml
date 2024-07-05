@@ -548,34 +548,34 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>springboot3_com.mysql:mysql-connector-j:[8.3.0]</include> <!-- {x-include-update;springboot3_com.mysql:mysql-connector-j;external_dependency} -->
-                <include>springboot3_com.fasterxml.jackson.core:jackson-annotations:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-                <include>springboot3_com.fasterxml.jackson.core:jackson-core:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-                <include>springboot3_com.fasterxml.jackson.core:jackson-databind:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>springboot3_com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
-                <include>springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
-                <include>springboot3_com.fasterxml.jackson.module:jackson-module-afterburner:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
-                <include>springboot3_io.lettuce:lettuce-core:[6.3.2.RELEASE]</include> <!-- {x-include-update;springboot3_io.lettuce:lettuce-core;external_dependency} -->
-                <include>springboot3_jakarta.servlet:jakarta.servlet-api:[6.0.0]</include> <!-- {x-include-update;springboot3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
-                <include>springboot3_jakarta.validation:jakarta.validation-api:[3.0.2]</include> <!-- {x-include-update;springboot3_jakarta.validation:jakarta.validation-api;external_dependency} -->
-                <include>springboot3_org.apache.qpid:qpid-jms-client:[2.0.0]</include> <!-- {x-include-update;springboot3_org.apache.qpid:qpid-jms-client;external_dependency} -->
-                <include>springboot3_org.hibernate.validator:hibernate-validator:[8.0.1.Final]</include> <!-- {x-include-update;springboot3_org.hibernate.validator:hibernate-validator;external_dependency} -->
-                <include>springboot3_org.messaginghub:pooled-jms:[3.1.6]</include> <!-- {x-include-update;springboot3_org.messaginghub:pooled-jms;external_dependency} -->
-                <include>springboot3_org.postgresql:postgresql:[42.7.3]</include> <!-- {x-include-update;springboot3_org.postgresql:postgresql;external_dependency} -->
-                <include>springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
-                <include>springboot3_org.springframework.boot:spring-boot-autoconfigure:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-                <include>springboot3_org.springframework.boot:spring-boot-configuration-processor:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka:[4.1.2]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
-                <include>springboot3_org.springframework.data:spring-data-redis:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.data:spring-data-redis;external_dependency} -->
-                <include>springboot3_org.springframework.kafka:spring-kafka:[3.2.1]</include> <!-- {x-include-update;springboot3_org.springframework.kafka:spring-kafka;external_dependency} -->
-                <include>springboot3_org.springframework.security:spring-security-config:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
-                <include>springboot3_org.springframework.security:spring-security-oauth2-client:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-client;external_dependency} -->
-                <include>springboot3_org.springframework.security:spring-security-oauth2-jose:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
-                <include>springboot3_org.springframework.security:spring-security-oauth2-resource-server:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
-                <include>springboot3_org.springframework:spring-context-support:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context-support;external_dependency} -->
-                <include>springboot3_org.springframework:spring-jdbc:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jdbc;external_dependency} -->
-                <include>springboot3_org.springframework:spring-jms:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jms;external_dependency} -->
-                <include>springboot3_org.springframework:spring-tx:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
+                <include>com.mysql:mysql-connector-j:[8.3.0]</include> <!-- {x-include-update;springboot3_com.mysql:mysql-connector-j;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+                <include>io.lettuce:lettuce-core:[6.3.2.RELEASE]</include> <!-- {x-include-update;springboot3_io.lettuce:lettuce-core;external_dependency} -->
+                <include>jakarta.servlet:jakarta.servlet-api:[6.0.0]</include> <!-- {x-include-update;springboot3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
+                <include>jakarta.validation:jakarta.validation-api:[3.0.2]</include> <!-- {x-include-update;springboot3_jakarta.validation:jakarta.validation-api;external_dependency} -->
+                <include>org.apache.qpid:qpid-jms-client:[2.0.0]</include> <!-- {x-include-update;springboot3_org.apache.qpid:qpid-jms-client;external_dependency} -->
+                <include>org.hibernate.validator:hibernate-validator:[8.0.1.Final]</include> <!-- {x-include-update;springboot3_org.hibernate.validator:hibernate-validator;external_dependency} -->
+                <include>org.messaginghub:pooled-jms:[3.1.6]</include> <!-- {x-include-update;springboot3_org.messaginghub:pooled-jms;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.7.3]</include> <!-- {x-include-update;springboot3_org.postgresql:postgresql;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[4.1.2]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
+                <include>org.springframework.data:spring-data-redis:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.data:spring-data-redis;external_dependency} -->
+                <include>org.springframework.kafka:spring-kafka:[3.2.1]</include> <!-- {x-include-update;springboot3_org.springframework.kafka:spring-kafka;external_dependency} -->
+                <include>org.springframework.security:spring-security-config:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-client:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-jose:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-resource-server:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
+                <include>org.springframework:spring-context-support:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context-support;external_dependency} -->
+                <include>org.springframework:spring-jdbc:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jdbc;external_dependency} -->
+                <include>org.springframework:spring-jms:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jms;external_dependency} -->
+                <include>org.springframework:spring-tx:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

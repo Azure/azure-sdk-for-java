@@ -202,8 +202,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>springboot3_org.springframework.boot:spring-boot-configuration-processor:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>springboot3_org.springframework.cloud:spring-cloud-stream:[4.1.2]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-stream:[4.1.2]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-stream;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
