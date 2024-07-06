@@ -12,6 +12,8 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
+import com.azure.messaging.servicebus.models.DeleteMessagesOptions;
+import com.azure.messaging.servicebus.models.PurgeMessagesOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
@@ -876,6 +878,82 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         asyncClient.rollbackTransaction(transactionContext).block(operationTimeout);
+    }
+
+    /**
+     * Deletes up to {@code messageCount} messages from the entity enqueued before {@link OffsetDateTime#now()}.
+     * The actual number of deleted messages may be less if there are fewer eligible messages in the entity.
+     * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     * <p>You can delete a maximum of 4000 messages in a single API call, this is the current limit determined by
+     * the Service Bus service.</p>
+     *
+     * @param messageCount the desired number of messages to delete.
+     * @return the number of messages deleted.
+     *
+     * @throws IllegalArgumentException when the {@code messageCount} is less than 1 or exceeds the maximum allowed, as
+     * determined by the Service Bus service.
+     */
+    public int deleteMessages(int messageCount) {
+        return deleteMessages(messageCount, new DeleteMessagesOptions());
+    }
+
+    /**
+     * Deletes up to {@code messageCount} messages from the entity. The actual number of deleted messages may be less
+     * if there are fewer eligible messages in the entity.
+     * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     * <p>You can delete a maximum of 4000 messages in a single API call, this is the current limit determined by
+     * the Service Bus service.</p>
+     *
+     * @param messageCount the desired number of messages to delete.
+     * @param options options used to delete the messages.
+     * @return the number of messages deleted.
+     *
+     * @throws IllegalArgumentException when the {@code messageCount} is less than 1 or exceeds the maximum allowed, as
+     * determined by the Service Bus service.
+     * @throws NullPointerException if {@code options} is null.
+     */
+    public int deleteMessages(int messageCount, DeleteMessagesOptions options) {
+        return asyncClient.deleteMessages(messageCount, options).block();
+    }
+
+    /**
+     * Attempts to purge all messages from an entity.
+     * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     * <p>
+     * This method may invoke multiple service requests to delete all messages. Because multiple service requests may be
+     * made, the possibility of partial success exists, in such scenario, the method will stop attempting to delete
+     * additional messages and throw the exception that was encountered. Also, due to the multiple service requests,
+     * purge operation may take longer if there are a lot of messages to delete.
+     * </p>
+     * <p>
+     * The api will purge all the messages enqueued before {@link OffsetDateTime#now()} UTC.
+     * </p>
+     *
+     * @return the number of messages deleted.
+     */
+    public int purgeMessages() {
+        return purgeMessages(new PurgeMessagesOptions());
+    }
+
+    /**
+     * Attempts to purge all messages from an entity.
+     * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     * <p>
+     * This method may invoke multiple service requests to delete all messages. Because multiple service requests may be
+     * made, the possibility of partial success exists, in such scenario, the method will stop attempting to delete
+     * additional messages and throw the exception that was encountered. Also, due to the multiple service requests,
+     * purge operation may take longer if there are a lot of messages to delete.
+     * </p>
+     *
+     * @param options options used to purge the messages, application may specify a UTC timestamp in the options
+     *  indicating only purge messages enqueued before that time, if such a cut of time is not specified then
+     *  {@link OffsetDateTime#now()} UTC will be used.
+     *
+     * @return the number of messages deleted.
+     * @throws NullPointerException if {@code options} is null.
+     */
+    public int purgeMessages(PurgeMessagesOptions options) {
+        return asyncClient.purgeMessages(options).block();
     }
 
     /**

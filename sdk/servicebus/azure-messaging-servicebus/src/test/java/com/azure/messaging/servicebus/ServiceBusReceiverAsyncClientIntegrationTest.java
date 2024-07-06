@@ -19,6 +19,7 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
+import com.azure.messaging.servicebus.models.PurgeMessagesOptions;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -37,6 +38,7 @@ import reactor.test.StepVerifier;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -76,6 +78,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
     private static final AmqpRetryOptions DEFAULT_RETRY_OPTIONS = null;
+    private static final ServiceBusMessage END = new ServiceBusMessage(new byte[0]);
     private final boolean isSessionEnabled = false;
     private final ClientCreationOptions defaultClientCreationOptions = new ClientCreationOptions()
         .setMaxAutoLockRenewDuration(Duration.ofMinutes(5));
@@ -1462,6 +1465,31 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
             StepVerifier.create(autoCompleteReceiver.peekMessage(sequenceNumber))
                 .verifyComplete();
         }
+    }
+
+    @Test
+    void purgeMessages() {
+        setSenderAndReceiver(MessagingEntityType.QUEUE, TestUtils.USE_CASE_BATCH_DELETE, false);
+
+        final int totalMessages = ServiceBusReceiverAsyncClient.MAX_DELETE_MESSAGES_COUNT * 2 + 100; // 8200
+        final List<ServiceBusMessage> messages = new ArrayList<>(totalMessages);
+        for (int i = 0; i < totalMessages; i++) {
+            messages.add(getMessage(UUID.randomUUID().toString(), false));
+        }
+
+        StepVerifier.create(sender.sendMessages(messages))
+            .verifyComplete();
+
+        final PurgeMessagesOptions options = new PurgeMessagesOptions()
+            // 5-sec buffer to account for any clock skew.
+            .setBeforeEnqueueTimeUtc(OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(5));
+
+        // since the service can delete upto 4000 messages in a single batch, the purge operation will make
+        // 3 batch delete API calls to delete the 8200 messages.
+        //
+        StepVerifier.create(receiver.purgeMessages(options))
+            .assertNext(count -> assertEquals(totalMessages, count))
+            .verifyComplete();
     }
 
     /**
