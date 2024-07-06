@@ -230,7 +230,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                         LocationSpecificHealthContext locationSpecificHealthContext = locationToLocationLevelMetrics.getValue();
 
                         if (!locationSpecificHealthContext.isRegionAvailableToProcessRequests()) {
-                            locationToLocationSpecificHealthContextList.add(Pair.of(partitionKeyRangeWrapper, Pair.of(locationWithStaleUnavailabilityInfo, locationSpecificHealthContext)));
+                            locationToLocationSpecificHealthContextList.add(
+                                Pair.of(
+                                    partitionKeyRangeWrapper,
+                                    Pair.of(
+                                        locationWithStaleUnavailabilityInfo,
+                                        locationSpecificHealthContext)));
                         }
                     }
 
@@ -283,31 +288,29 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     return rxDocumentClient
                         .queryDocuments(collectionLink, "SELECT * FROM C OFFSET 0 LIMIT 1", queryFeedOperationState, Document.class)
                         .publishOn(CosmosSchedulers.PARTITION_AVAILABILITY_STALENESS_CHECK_SINGLE)
-                        .doFinally(signalType -> {
-                            if (signalType != SignalType.ON_ERROR && signalType != SignalType.CANCEL) {
+                        .doOnComplete(() -> {
 
-                                if (logger.isDebugEnabled()) {
-                                    logger.debug("Partition health recovery query for partition key ranger : {}-{} and " +
-                                            "collection rid : {} has succeeded...",
-                                        partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
-                                        partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                                        partitionKeyRangeWrapper.getResourceId());
-                                }
-
-                                partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.compute(locationWithStaleUnavailabilityInfo, (locationWithStaleUnavailabilityInfoAsKey, locationSpecificContextAsVal) -> {
-
-                                    if (locationSpecificContextAsVal != null) {
-                                        locationSpecificContextAsVal = GlobalPartitionEndpointManagerForCircuitBreaker
-                                            .this.locationSpecificHealthContextTransitionHandler.handleSuccess(
-                                            locationSpecificContextAsVal,
-                                            partitionKeyRangeWrapper,
-                                            locationWithStaleUnavailabilityInfoAsKey,
-                                            false,
-                                            true);
-                                    }
-                                    return locationSpecificContextAsVal;
-                                });
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("Partition health recovery query for partition key ranger : {}-{} and " +
+                                        "collection rid : {} has succeeded...",
+                                    partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
+                                    partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
+                                    partitionKeyRangeWrapper.getResourceId());
                             }
+
+                            partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.compute(locationWithStaleUnavailabilityInfo, (locationWithStaleUnavailabilityInfoAsKey, locationSpecificContextAsVal) -> {
+
+                                if (locationSpecificContextAsVal != null) {
+                                    locationSpecificContextAsVal = GlobalPartitionEndpointManagerForCircuitBreaker
+                                        .this.locationSpecificHealthContextTransitionHandler.handleSuccess(
+                                        locationSpecificContextAsVal,
+                                        partitionKeyRangeWrapper,
+                                        locationWithStaleUnavailabilityInfoAsKey,
+                                        false,
+                                        true);
+                                }
+                                return locationSpecificContextAsVal;
+                            });
                         });
                 }
 
