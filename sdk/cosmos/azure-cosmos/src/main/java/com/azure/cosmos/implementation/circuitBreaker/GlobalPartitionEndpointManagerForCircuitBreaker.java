@@ -215,7 +215,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             .flatMap(partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair -> {
 
                 logger.debug("Background updateStaleLocationInfo kicking in...");
-
                 PartitionKeyRangeWrapper partitionKeyRangeWrapper = partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair.getKey();
 
                 PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
@@ -239,7 +238,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                         }
                     }
 
-                    return Flux.fromIterable(locationToLocationSpecificHealthContextList);
+                    if (locationToLocationSpecificHealthContextList.isEmpty()) {
+                        this.partitionKeyRangesWithPossibleUnavailableRegions.remove(partitionKeyRangeWrapper);
+                        return Flux.empty();
+                    } else {
+                        return Flux.fromIterable(locationToLocationSpecificHealthContextList);
+                    }
                 } else {
                     this.partitionKeyRangesWithPossibleUnavailableRegions.remove(partitionKeyRangeWrapper);
                     return Mono.empty();
