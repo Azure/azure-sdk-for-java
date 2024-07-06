@@ -135,6 +135,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * While this class is public, it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
+// todo: revert dummy change
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuMemoryListener,
     DiagnosticsClientContext {
 
