@@ -291,7 +291,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                         .doOnComplete(() -> {
 
                             if (logger.isDebugEnabled()) {
-                                logger.debug("Partition health recovery query for partition key ranger : {}-{} and " +
+                                logger.debug("Partition health recovery query for partition key range : {}-{} and " +
                                         "collection rid : {} has succeeded...",
                                     partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                                     partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
