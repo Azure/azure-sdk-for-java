@@ -205,7 +205,7 @@ public class RxDocumentClientImplTest {
             .thenReturn(Mono.just(dummyCollectionObs()));
 
         Mockito
-            .when(this.collectionCacheMock.resolveByNameAsync(Mockito.isNull(), Mockito.anyString(), Mockito.isNull()))
+            .when(this.collectionCacheMock.resolveByNameAsync(Mockito.any(), Mockito.anyString(), Mockito.isNull()))
             .thenReturn(Mono.just(dummyCollectionObs().v));
 
         Mockito
