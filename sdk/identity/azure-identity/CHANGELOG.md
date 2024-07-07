@@ -3,6 +3,7 @@
 ## 1.14.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for using subject name / issuer authentication with client certificates by setting `AZURE_CLIENT_SEND_CERTIFICATE_CHAIN` to `1` or `true`. [#40013](https://github.com/Azure/azure-sdk-for-java/issues/40013) 
 
 ### Breaking Changes
 

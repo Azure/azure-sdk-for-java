@@ -267,7 +267,10 @@ public abstract class IdentityClientBase {
             applicationBuilder.clientCapabilities(set);
         }
 
-        applicationBuilder.sendX5c(options.isIncludeX5c());
+        Configuration configuration = options.getConfiguration() == null
+            ? Configuration.getGlobalConfiguration() : options.getConfiguration();
+        String shouldSendChain = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SEND_CERTIFICATE_CHAIN, "false");
+        applicationBuilder.sendX5c(shouldSendChain.equals("1") || shouldSendChain.equalsIgnoreCase("true") || options.isIncludeX5c());
         initializeHttpPipelineAdapter();
 
         if (httpPipelineAdapter != null) {
