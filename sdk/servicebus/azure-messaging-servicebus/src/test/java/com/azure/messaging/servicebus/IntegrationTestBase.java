@@ -9,7 +9,6 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestContextManager;
@@ -22,13 +21,11 @@ import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +40,6 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -212,8 +208,8 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected ServiceBusClientBuilder getAuthenticatedBuilder(boolean useCredentials) {
+        System.out.println("TestMode:---" + super.getTestMode());
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-        logger.info("Getting Builder using credentials : [{}] ", useCredentials);
         if (useCredentials) {
             final String fullyQualifiedDomainName = getFullyQualifiedDomainName();
             assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
@@ -493,32 +489,5 @@ public abstract class IntegrationTestBase extends TestBase {
         }
         return new ConfigurationBuilder(configSource)
             .build();
-    }
-
-    public static final class SBPowerShellCachedCredentials implements TokenCredential {
-        private final AzurePowerShellCredentialBuilder builder;
-        private final TokenRequestContext context;
-        private final Mono<com.azure.core.credential.AccessToken> cached;
-
-        public SBPowerShellCachedCredentials() {
-
-            this.builder = new AzurePowerShellCredentialBuilder();
-            this.context = new TokenRequestContext().addScopes(ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-            this.cached = Mono.fromCallable(builder::build)
-                .flatMap(cred -> {
-                    return cred.getToken(context);
-                }).doOnNext(token -> {
-                    System.out.println(".....Got Token.....: now=" + OffsetDateTime.now() + " ExpireAt=" + token.getExpiresAt());
-                })
-                .doOnError(e -> {
-                    System.out.println(".....Fetching token failed.....:" + e);
-                })
-                .cache(t -> Duration.ofMinutes(5), e -> Duration.ZERO, () -> Duration.ZERO);
-        }
-
-        @Override
-        public Mono<com.azure.core.credential.AccessToken> getToken(TokenRequestContext context) {
-            return this.cached;
-        }
     }
 }
