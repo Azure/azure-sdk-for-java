@@ -5908,10 +5908,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             PartitionKeyRange partitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
 
             checkNotNull(partitionKeyRange, "partitionKeyRange cannot be null!");
-            checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
-            List<URI> unavailableLocationsForPartition = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableLocationEndpointsForPartitionKeyRange(request.getResourceId(), partitionKeyRange);
+            checkNotNull(this.globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+            List<URI> unavailableLocationsForPartition = this.globalPartitionEndpointManagerForCircuitBreaker.getUnavailableLocationEndpointsForPartitionKeyRange(request.getResourceId(), partitionKeyRange);
             List<String> unavailableRegionsForPartition = unavailableLocationsForPartition.stream().map(unavailableLocationForPartition -> this.globalEndpointManager.getRegionName(unavailableLocationForPartition, request.getOperationType())).collect(Collectors.toList());
 
+            // cache the effective partition key if possible - can be a bottleneck,
+            // since it is also recomputed in AddressResolver
+            request.setEffectivePartitionKey(effectivePartitionKeyString);
             request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
         }
     }
