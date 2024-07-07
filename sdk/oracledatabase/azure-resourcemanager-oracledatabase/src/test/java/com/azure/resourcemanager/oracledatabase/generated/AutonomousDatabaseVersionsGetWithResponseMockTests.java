@@ -20,7 +20,7 @@ public final class AutonomousDatabaseVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"version\":\"urut\",\"dbWorkload\":\"APEX\",\"isDefaultForFree\":true,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":false,\"isPaidEnabled\":true},\"id\":\"xzsrzpge\",\"name\":\"q\",\"type\":\"yb\"}";
+            = "{\"properties\":{\"version\":\"zid\",\"dbWorkload\":\"APEX\",\"isDefaultForFree\":true,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":false,\"isPaidEnabled\":true},\"id\":\"gznmmaxrizkzob\",\"name\":\"opxlhslnelxieixy\",\"type\":\"llxecwc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class AutonomousDatabaseVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AutonomousDbVersion response = manager.autonomousDatabaseVersions()
-            .getWithResponse("woycqucwyha", "nomdrkywuhpsv", com.azure.core.util.Context.NONE)
+            .getWithResponse("abpfhvfs", "kvntjlrigjkskyri", com.azure.core.util.Context.NONE)
             .getValue();
 
     }
