@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;

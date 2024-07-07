@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;

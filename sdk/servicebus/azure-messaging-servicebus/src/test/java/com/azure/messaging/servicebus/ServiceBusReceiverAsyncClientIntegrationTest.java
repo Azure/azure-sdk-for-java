@@ -1518,7 +1518,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
             logMessage(message, sender.getEntityPath(), "sent");
         });
     }
-//
+
     /**
      * Class represents various options while creating receiver/sender client.
      */
