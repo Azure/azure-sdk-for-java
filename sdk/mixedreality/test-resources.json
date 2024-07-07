@@ -45,10 +45,6 @@
     "MIXEDREALITY_ACCOUNT_DOMAIN": {
       "type": "string",
       "value": "[reference(variables('asaAccountName')).accountDomain]"
-    },
-    "MIXEDREALITY_ACCOUNT_KEY": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.MixedReality/spatialAnchorsAccounts', variables('asaAccountName')), variables('apiVersion')).primaryKey]"
     }
   }
 }
