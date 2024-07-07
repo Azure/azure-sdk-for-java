@@ -52,7 +52,6 @@ public class StoreClient implements IStoreClient {
     private final Logger logger = LoggerFactory.getLogger(StoreClient.class);
     private final GatewayServiceConfigurationReader serviceConfigurationReader;
     private final ISessionContainer sessionContainer;
-    private final IAddressResolver addressResolver;
     private final ReplicatedResourceClient replicatedResourceClient;
     private final TransportClient transportClient;
     private final String ZERO_PARTITION_KEY_RANGE = "0";
@@ -82,7 +81,6 @@ public class StoreClient implements IStoreClient {
             sessionRetryOptions);
 
         addressResolver.setOpenConnectionsProcessor(this.transportClient.getProactiveOpenConnectionsProcessor());
-        this.addressResolver = addressResolver;
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {

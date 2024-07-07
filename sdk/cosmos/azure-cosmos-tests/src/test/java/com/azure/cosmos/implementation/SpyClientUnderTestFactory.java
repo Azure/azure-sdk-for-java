@@ -121,8 +121,7 @@ public class SpyClientUnderTestFactory {
                                                  UserAgentContainer userAgentContainer,
                                                  GlobalEndpointManager globalEndpointManager,
                                                  HttpClient rxClient,
-                                                 ApiType apiType,
-                                                 GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager) {
+                                                 ApiType apiType) {
             this.origRxGatewayStoreModel = super.createRxGatewayProxy(
                 sessionContainer,
                 consistencyLevel,
@@ -130,8 +129,7 @@ public class SpyClientUnderTestFactory {
                 userAgentContainer,
                 globalEndpointManager,
                 rxClient,
-                apiType,
-                globalPartitionEndpointManager);
+                apiType);
             this.requests = Collections.synchronizedList(new ArrayList<>());
             this.spyRxGatewayStoreModel = Mockito.spy(this.origRxGatewayStoreModel);
             this.initRequestCapture();

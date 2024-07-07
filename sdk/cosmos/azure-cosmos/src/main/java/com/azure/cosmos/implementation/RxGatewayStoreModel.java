@@ -62,7 +62,6 @@ public class RxGatewayStoreModel implements RxStoreModel {
     private final HttpClient httpClient;
     private final QueryCompatibilityMode queryCompatibilityMode;
     private final GlobalEndpointManager globalEndpointManager;
-    private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager;
     private ConsistencyLevel defaultConsistencyLevel;
     private ISessionContainer sessionContainer;
     private ThroughputControlStore throughputControlStore;
@@ -80,8 +79,8 @@ public class RxGatewayStoreModel implements RxStoreModel {
         UserAgentContainer userAgentContainer,
         GlobalEndpointManager globalEndpointManager,
         HttpClient httpClient,
-        ApiType apiType,
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager) {
+        ApiType apiType) {
+
         this.clientContext = clientContext;
         this.defaultHeaders = new HashMap<>();
         this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
@@ -113,7 +112,6 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
         this.httpClient = httpClient;
         this.sessionContainer = sessionContainer;
-        this.globalPartitionEndpointManager = globalPartitionEndpointManager;
     }
 
     public RxGatewayStoreModel(RxGatewayStoreModel inner) {
@@ -125,7 +123,6 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
         this.httpClient = inner.httpClient;
         this.sessionContainer = inner.sessionContainer;
-        this.globalPartitionEndpointManager = inner.globalPartitionEndpointManager;
     }
 
     void setGatewayServiceConfigurationReader(GatewayServiceConfigurationReader gatewayServiceConfigurationReader) {
@@ -742,7 +739,8 @@ public class RxGatewayStoreModel implements RxStoreModel {
                                 SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
                             }
                         } else if (partitionKeyInternal != null) {
-                            String effectivePartitionKeyString = PartitionKeyInternalHelper
+                            String effectivePartitionKeyString = StringUtils.isNotEmpty(request.getEffectivePartitionKey()) ?
+                                request.getEffectivePartitionKey() : PartitionKeyInternalHelper
                                 .getEffectivePartitionKeyString(
                                     partitionKeyInternal,
                                     collectionValueHolder.v.getPartitionKey());
