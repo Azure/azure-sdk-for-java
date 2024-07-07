@@ -930,11 +930,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         logger.warn("Handling exception for {}", locationWithFailure.getPath());
         globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(request, locationWithFailure);
 
-        List<URI> unavailableLocations
-            = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableLocationEndpointsForPartitionKeyRange(collectionResourceId, partitionKeyRange);
+        List<String> unavailableRegions
+            = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(collectionResourceId, partitionKeyRange, request.getOperationType());
 
         logger.info("Assert that all regions are not Unavailable!");
-        assertThat(unavailableLocations.size()).isLessThan(applicableReadWriteLocations.size());
+        assertThat(unavailableRegions.size()).isLessThan(applicableReadWriteLocations.size());
     }
 
     private RxDocumentServiceRequest constructRxDocumentServiceRequestInstance(

@@ -4,12 +4,10 @@
 package com.azure.cosmos.implementation.circuitBreaker;
 
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FeedOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -21,9 +19,7 @@ import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -31,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.SignalType;
 
 import java.net.URI;
 import java.time.Duration;
@@ -177,7 +172,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         });
     }
 
-    public List<URI> getUnavailableLocationEndpointsForPartitionKeyRange(String collectionResourceId, PartitionKeyRange partitionKeyRange) {
+    public List<String> getUnavailableRegionsForPartitionKeyRange(String collectionResourceId, PartitionKeyRange partitionKeyRange, OperationType operationType) {
 
         checkNotNull(partitionKeyRange, "Argument 'partitionKeyRange' cannot be null!");
         checkNotNull(collectionResourceId, "Argument 'collectionResourceId' cannot be null!");
@@ -187,7 +182,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfoSnapshot =
             this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
 
-        List<URI> unavailableLocations = new ArrayList<>();
+        List<String> unavailableRegions = new ArrayList<>();
 
         if (partitionLevelLocationUnavailabilityInfoSnapshot != null) {
             Map<URI, LocationSpecificHealthContext> locationEndpointToFailureMetricsForPartition =
@@ -197,13 +192,13 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                 URI location = pair.getKey();
                 LocationSpecificHealthContext locationSpecificHealthContext = pair.getValue();
 
-                if (locationSpecificHealthContext.getLocationHealthStatus() == LocationHealthStatus.Unavailable) {
-                    unavailableLocations.add(location);
+                if (locationSpecificHealthContext.getLocationHealthStatus() == LocationHealthStatus.Unavailable) {;
+                    unavailableRegions.add(this.globalEndpointManager.getRegionName(location, operationType));
                 }
             }
         }
 
-        return UnmodifiableList.unmodifiableList(unavailableLocations);
+        return UnmodifiableList.unmodifiableList(unavailableRegions);
     }
 
     private Flux<?> updateStaleLocationInfo() {
