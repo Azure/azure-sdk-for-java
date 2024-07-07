@@ -91,7 +91,6 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                 userAgentContainer,
                 globalEndpointManager,
                 spyHttpClient,
-                apiType,
-                globalPartitionEndpointManagerForCircuitBreaker);
+                apiType);
     }
 }
