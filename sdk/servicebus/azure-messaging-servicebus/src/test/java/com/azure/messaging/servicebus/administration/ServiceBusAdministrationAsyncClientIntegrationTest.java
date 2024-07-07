@@ -21,6 +21,7 @@ import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -55,12 +56,9 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-//import java.util.regex.Matcher;
-//import java.util.regex.Pattern;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-import static com.azure.messaging.servicebus.IntegrationTestBase.USE_CREDENTIALS;
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
@@ -103,7 +101,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         TEST_PROXY_REQUEST_MATCHERS = Collections.singletonList(customMatcher);
     }
 
-    private final AtomicReference<TokenCredential> pipelineCredential = new AtomicReference<>();
+    private final AtomicReference<TokenCredential> credentialCached = new AtomicReference<>();
 
     public static Stream<Arguments> createHttpClients() {
         return Stream.of(Arguments.of(new NettyAsyncHttpClientBuilder().build()));
@@ -1219,46 +1217,38 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
     private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient) {
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        configure(builder, httpClient, interceptorManager, credentialCached);
+        return builder.buildAsyncClient();
+    }
 
-        if (USE_CREDENTIALS) {
-            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
-            builder.credential(fullyQualifiedDomainName, getTestTokenCredential(interceptorManager));
-        } else {
-            final String connectionString = interceptorManager.isPlaybackMode()
-                ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
-                : TestUtils.getConnectionString(false);
-            builder.connectionString(connectionString);
-        }
-
+    static void configure(ServiceBusAdministrationClientBuilder builder,
+        HttpClient httpClient, InterceptorManager interceptorManager, AtomicReference<TokenCredential> credentialCached) {
         if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new MockTokenCredential());
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isLiveMode()) {
-            builder.httpClient(httpClient);
+            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainNameWithAssertion();
+            final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
+            builder.credential(fullyQualifiedDomainName, credential);
+            if (httpClient != null) {
+                builder.httpClient(httpClient);
+            }
         } else {
+            // Record Mode.
+            final String connectionString = TestUtils.getConnectionString(false);
+            if (CoreUtils.isNullOrEmpty(connectionString)) {
+                final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainNameWithAssertion();
+                final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+                builder.credential(fullyQualifiedDomainName, credential);
+            } else {
+                builder.connectionString(connectionString);
+            }
             builder.httpClient(httpClient).addPolicy(interceptorManager.getRecordPolicy());
         }
 
         if (!interceptorManager.isLiveMode()) {
             interceptorManager.addSanitizers(TEST_PROXY_SANITIZERS);
             interceptorManager.addMatchers(TEST_PROXY_REQUEST_MATCHERS);
-        }
-
-        return builder.buildAsyncClient();
-    }
-
-    /**
-     * Retrieve the appropriate TokenCredential based on the test mode.
-     *
-     * @param interceptorManager the interceptor manager
-     * @return The appropriate token credential
-     */
-    private TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
-        if (interceptorManager.isLiveMode()) {
-            return TestUtils.getPipelineCredential(pipelineCredential);
-        } else if (interceptorManager.isRecordMode()) {
-            return new DefaultAzureCredentialBuilder().build();
-        } else {
-            return new MockTokenCredential();
         }
     }
 }

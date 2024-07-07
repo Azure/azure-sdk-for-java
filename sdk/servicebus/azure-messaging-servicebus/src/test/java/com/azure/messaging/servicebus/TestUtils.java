@@ -5,9 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -24,6 +22,7 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
+import org.opentest4j.TestAbortedException;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -54,7 +53,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class TestUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
@@ -173,6 +171,20 @@ public class TestUtils {
         return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME", "REDACTED.servicebus.windows.net");
     }
 
+    /**
+     * Gets the fully qualified domain name for the service bus resource.
+     *
+     * @return the fully qualified domain name for the service bus resource.
+     * @throws org.opentest4j.TestAbortedException if the environment variable is not set.
+     */
+    public static String getFullyQualifiedDomainNameWithAssertion() {
+        final String fullyQualifiedDomainName = getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedDomainName)) {
+            throw new TestAbortedException("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set.");
+        }
+        return fullyQualifiedDomainName;
+    }
+
     public static String getEndpoint() {
         return getPropertyValue("AZURE_SERVICEBUS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
     }
@@ -232,13 +244,13 @@ public class TestUtils {
     }
 
     /**
-     * Obtain a {@link com.azure.identity.AzurePowerShellCredentialBuilder} when running in Azure pipelines that is
+     * Obtain a {@link com.azure.identity.AzurePipelinesCredentialBuilder} when running in Azure pipelines that is
      * configured with service connections federated identity.
      *
-     * @return A {@link com.azure.identity.AzurePowerShellCredentialBuilder} when running in Azure pipelines that is
+     * @return A {@link com.azure.identity.AzurePipelinesCredentialBuilder} when running in Azure pipelines that is
      *   configured with service connections federated identity, {@code null} otherwise.
      */
-    public static AzurePipelinesCredentialBuilder getAzurePipelinesCredentialBuilder() {
+    public static AzurePipelinesCredentialBuilder getPipelineCredentialBuilder() {
         final String serviceConnectionId  = getPropertyValue("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
         final String clientId = getPropertyValue("AZURESUBSCRIPTION_CLIENT_ID");
         final String tenantId = getPropertyValue("AZURESUBSCRIPTION_TENANT_ID");
@@ -257,26 +269,20 @@ public class TestUtils {
      * Obtain the Azure Pipelines credential if running in Azure Pipelines configured with service connections federated identity.
      *
      * @return the Azure Pipelines credential.
+     * @throws TestAbortedException if the test is not running in Azure Pipelines configured with service connections federated identity.
      */
-    public static TokenCredential getPipelineCredential(AtomicReference<TokenCredential> pipelineCredential) {
-        return pipelineCredential.updateAndGet(credential -> {
-            if (credential == null) {
-                final AzurePipelinesCredentialBuilder builder = TestUtils.getAzurePipelinesCredentialBuilder();
-                if (builder == null) {
-                    assumeTrue(false, "Test required to run on Azure Pipelines that is configured with service connections federated identity.");
-                    return null;
-                }
-                final AzurePipelinesCredential pipelinesCredential = builder.build();
-                return new TokenCredential() {
-                    @Override
-                    public Mono<AccessToken> getToken(TokenRequestContext request) {
-                        return Mono.defer(() -> {
-                            return pipelinesCredential.getToken(request);
-                        }).subscribeOn(Schedulers.boundedElastic());
-                    }
-                };
+    public static TokenCredential getPipelineCredential(AtomicReference<TokenCredential> credentialCached) {
+        return credentialCached.updateAndGet(cached -> {
+            if (cached != null) {
+                return cached;
             }
-            return credential;
+            final AzurePipelinesCredentialBuilder builder = TestUtils.getPipelineCredentialBuilder();
+            if (builder == null) {
+                throw new TestAbortedException("Test required to run on Azure Pipelines that is configured with service connections federated identity.");
+            }
+            final AzurePipelinesCredential pipelinesCredential = builder.build();
+            return request -> Mono.defer(() -> pipelinesCredential.getToken(request))
+                .subscribeOn(Schedulers.boundedElastic());
         });
     }
 

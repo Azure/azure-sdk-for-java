@@ -79,7 +79,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         final String messageTracking = UUID.randomUUID().toString();
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageTracking);
-        final ServiceBusSenderAsyncClient sender = getAuthenticatedBuilder(USE_CREDENTIALS)
+        final ServiceBusSenderAsyncClient sender = getAuthenticatedBuilder()
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .sender()
@@ -88,7 +88,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
         toClose(sender);
 
-        final ServiceBusReceiverAsyncClient receiver = getAuthenticatedBuilder(USE_CREDENTIALS)
+        final ServiceBusReceiverAsyncClient receiver = getAuthenticatedBuilder()
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .receiver()

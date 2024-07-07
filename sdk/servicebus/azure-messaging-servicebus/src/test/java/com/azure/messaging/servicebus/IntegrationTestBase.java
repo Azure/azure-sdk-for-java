@@ -6,7 +6,6 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
@@ -21,6 +20,7 @@ import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
@@ -30,6 +30,7 @@ import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.provider.Arguments;
+import org.opentest4j.TestAbortedException;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -59,7 +60,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public abstract class IntegrationTestBase extends TestBase {
-    public static final boolean USE_CREDENTIALS = true;
     protected static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     // Tests use timeouts of 20-60 seconds to verify something has happened
@@ -73,7 +73,7 @@ public abstract class IntegrationTestBase extends TestBase {
     private List<AutoCloseable> toClose = new ArrayList<>();
     private String testName;
     private final Scheduler scheduler = Schedulers.parallel();
-    private final AtomicReference<TokenCredential> pipelineCredential = new AtomicReference<>();
+    private final AtomicReference<TokenCredential> credentialCached = new AtomicReference<>();
 
     protected static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     protected String sessionId;
@@ -123,26 +123,6 @@ public abstract class IntegrationTestBase extends TestBase {
         return TestMode.RECORD;
         // TODO (anu): alternative for this approach?
         // return CoreUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
-    }
-
-    public static String getConnectionString() {
-        return TestUtils.getConnectionString(false);
-    }
-
-    public static String getConnectionString(boolean withSas) {
-        return TestUtils.getConnectionString(withSas);
-    }
-
-    protected static ConnectionStringProperties getConnectionStringProperties() {
-        return new ConnectionStringProperties(getConnectionString(false));
-    }
-
-    protected static ConnectionStringProperties getConnectionStringProperties(boolean withSas) {
-        return new ConnectionStringProperties(getConnectionString(withSas));
-    }
-
-    public String getFullyQualifiedDomainName() {
-        return TestUtils.getFullyQualifiedDomainName();
     }
 
     /**
@@ -207,27 +187,39 @@ public abstract class IntegrationTestBase extends TestBase {
         return new ProxyOptions(authenticationType, proxy, username, password);
     }
 
-    protected ServiceBusClientBuilder getAuthenticatedBuilder(boolean useCredentials) {
-        System.out.println("TestMode:---" + super.getTestMode());
+    /**
+     * Creates a new instance of {@link ServiceBusClientBuilder} with authentication set up in {@link TestMode#LIVE} and
+     * {@link TestMode#RECORD} modes.
+     *
+     * @return the builder with authentication set up.
+     * @throws org.opentest4j.TestAbortedException if the test mode is {@link TestMode#PLAYBACK}.
+     */
+    protected ServiceBusClientBuilder getAuthenticatedBuilder() {
+        final TestMode mode = super.getTestMode();
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-        if (useCredentials) {
-            final String fullyQualifiedDomainName = getFullyQualifiedDomainName();
-            assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
-                "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
-            final TokenCredential tokenCredential = TestUtils.getPipelineCredential(pipelineCredential);
-            return builder.credential(fullyQualifiedDomainName, tokenCredential);
+        if (mode == TestMode.LIVE) {
+            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainNameWithAssertion();
+            final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
+            return builder.credential(fullyQualifiedDomainName, credential);
+        } else if (mode == TestMode.RECORD) {
+            final String connectionString = TestUtils.getConnectionString(false);
+            if (CoreUtils.isNullOrEmpty(connectionString)) {
+                final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainNameWithAssertion();
+                final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+                return builder.credential(fullyQualifiedDomainName, credential);
+            } else {
+                return builder.connectionString(connectionString);
+            }
         } else {
-            return builder.connectionString(getConnectionString());
+            throw new TestAbortedException("Integration tests are not enabled in playback mode.");
         }
     }
 
     /**
-     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
-     * connection string to authenticate if {@code useCredentials} is false. Otherwise, uses a service principal through
-     * {@link com.azure.identity.ClientSecretCredential}.
+     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings.
      */
-    protected ServiceBusClientBuilder getBuilder(boolean useCredentials) {
-        return getAuthenticatedBuilder(useCredentials)
+    protected ServiceBusClientBuilder getBuilder() {
+        return getAuthenticatedBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retryOptions(RETRY_OPTIONS)
             .clientOptions(optionsWithTracing)
@@ -236,31 +228,23 @@ public abstract class IntegrationTestBase extends TestBase {
             .configuration(v1OrV2(true));
     }
 
-    /**
-     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
-     * token credentials to authenticate.
-     */
-    protected ServiceBusClientBuilder getBuilder() {
-        return getBuilder(USE_CREDENTIALS);
-    }
-
-    protected ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
+    protected ServiceBusClientBuilder getBuilder(boolean sharedConnection) {
         ServiceBusClientBuilder builder;
         if (sharedConnection && sharedBuilder == null) {
-            sharedBuilder = getBuilder(useCredentials);
+            sharedBuilder = getBuilder();
             builder = sharedBuilder;
         } else if (sharedConnection) {
             builder = sharedBuilder;
         } else {
-            builder = getBuilder(useCredentials);
+            builder = getBuilder();
         }
         return builder;
     }
 
-    protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
+    protected ServiceBusSenderClientBuilder getSenderBuilder(MessagingEntityType entityType,
         int entityIndex, boolean isSessionAware, boolean sharedConnection) {
 
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        ServiceBusClientBuilder builder = getBuilder(sharedConnection);
         switch (entityType) {
             case QUEUE:
                 final String queueName = isSessionAware ? getSessionQueueName(entityIndex) : getQueueName(entityIndex);
@@ -277,10 +261,10 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials, MessagingEntityType entityType,
+    protected ServiceBusReceiverClientBuilder getReceiverBuilder(MessagingEntityType entityType,
         int entityIndex, boolean sharedConnection) {
 
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        ServiceBusClientBuilder builder = getBuilder(sharedConnection);
         switch (entityType) {
             case QUEUE:
                 final String queueName = getQueueName(entityIndex);
@@ -300,10 +284,10 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType, int entityIndex, boolean sharedConnection, AmqpRetryOptions retryOptions) {
+    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(MessagingEntityType entityType,
+        int entityIndex, boolean sharedConnection, AmqpRetryOptions retryOptions) {
 
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        ServiceBusClientBuilder builder = getBuilder(sharedConnection);
 
         switch (entityType) {
             case QUEUE:

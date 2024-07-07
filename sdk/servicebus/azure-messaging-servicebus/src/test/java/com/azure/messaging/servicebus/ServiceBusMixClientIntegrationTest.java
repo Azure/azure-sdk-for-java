@@ -98,7 +98,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         message.setSessionId(sessionId);
         final List<ServiceBusMessage> messages = Arrays.asList(message);
 
-        ServiceBusClientBuilder builder = getBuilder(USE_CREDENTIALS).enableCrossEntityTransactions();
+        ServiceBusClientBuilder builder = getBuilder().enableCrossEntityTransactions();
 
         // Initialize sender
         final ServiceBusSenderAsyncClient senderAsyncA = toClose(builder.sender().queueName(queueA).buildAsyncClient());
@@ -170,7 +170,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
 
         // Verify that message is received by queue B
         if (!isSessionEnabled) {
-            setSenderAndReceiver(entityType, sendQueueBIndex, USE_CREDENTIALS);
+            setSenderAndReceiver(entityType, sendQueueBIndex);
             StepVerifier.create(receiver.receiveMessages().take(1))
                 .assertNext(receivedMessage -> {
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
@@ -207,7 +207,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         message.setSessionId(sessionId);
         final List<ServiceBusMessage> messages = Arrays.asList(message);
 
-        ServiceBusClientBuilder builder = getBuilder(USE_CREDENTIALS).enableCrossEntityTransactions();
+        ServiceBusClientBuilder builder = getBuilder().enableCrossEntityTransactions();
 
         // Initialize sender
         final ServiceBusSenderAsyncClient senderAsyncA = toClose(builder.sender().topicName(topicA).buildAsyncClient());
@@ -287,7 +287,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
 
         // Verify that message is received by queue B
         if (!isSessionEnabled) {
-            setSenderAndReceiver(entityType, sendQueueBIndex, USE_CREDENTIALS);
+            setSenderAndReceiver(entityType, sendQueueBIndex);
             StepVerifier.create(receiver.receiveMessages().take(1))
                 .assertNext(receivedMessage -> {
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
@@ -323,7 +323,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         message.setSessionId(sessionId);
         final List<ServiceBusMessage> messages = Arrays.asList(message);
 
-        ServiceBusClientBuilder builder = getBuilder(USE_CREDENTIALS).enableCrossEntityTransactions();
+        ServiceBusClientBuilder builder = getBuilder().enableCrossEntityTransactions();
 
         // Initialize sender
         final ServiceBusSenderAsyncClient senderAsyncA = toClose(builder.sender().queueName(queueA).buildAsyncClient());
@@ -373,7 +373,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         // Assert
         // Verify that message is received by entity B
         if (!isSessionEnabled) {
-            setSenderAndReceiver(entityType, sendQueueBIndex, USE_CREDENTIALS);
+            setSenderAndReceiver(entityType, sendQueueBIndex);
             StepVerifier.create(receiver.receiveMessages()
                     .filter(receiveMessage -> messageId.equals(receiveMessage.getMessageId())).take(1))
                 .assertNext(receivedMessage -> {
@@ -410,7 +410,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         message.setSessionId(sessionId);
         final List<ServiceBusMessage> messages = Arrays.asList(message);
 
-        ServiceBusClientBuilder builder = getBuilder(USE_CREDENTIALS).enableCrossEntityTransactions();
+        ServiceBusClientBuilder builder = getBuilder().enableCrossEntityTransactions();
 
         // Initialize sender
         final ServiceBusSenderAsyncClient senderAsyncA = toClose(builder.sender().topicName(topicA).buildAsyncClient());
@@ -458,7 +458,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         // Assert
         // Verify that message is received by entity B
         if (!isSessionEnabled) {
-            setSenderAndReceiver(entityType, sendQueueBIndex, USE_CREDENTIALS);
+            setSenderAndReceiver(entityType, sendQueueBIndex);
             StepVerifier.create(receiver.receiveMessages().take(1))
                 .assertNext(receivedMessage -> {
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
@@ -472,13 +472,13 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean useCredentials) {
+    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex) {
         final boolean isSessionAware = false;
         final boolean sharedConnection = true;
 
-        this.sender = toClose(getSenderBuilder(useCredentials, entityType, entityIndex, isSessionAware, sharedConnection)
+        this.sender = toClose(getSenderBuilder(entityType, entityIndex, isSessionAware, sharedConnection)
             .buildAsyncClient());
-        this.receiver = toClose(getReceiverBuilder(useCredentials, entityType, entityIndex, sharedConnection)
+        this.receiver = toClose(getReceiverBuilder(entityType, entityIndex, sharedConnection)
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .disableAutoComplete()
             .buildAsyncClient());

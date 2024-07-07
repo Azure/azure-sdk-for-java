@@ -82,7 +82,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
             assertNotNull(sessionId, "'sessionId' should have been set.");
             AmqpRetryOptions amqpRetryOptions = new AmqpRetryOptions()
                 .setTryTimeout(Duration.ofSeconds(2 * lockTimeoutDurationSeconds));
-            processor = toClose(getSessionProcessorBuilder(USE_CREDENTIALS, entityType, entityIndex, false, amqpRetryOptions)
+            processor = toClose(getSessionProcessorBuilder(entityType, entityIndex, false, amqpRetryOptions)
                 .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
                 .disableAutoComplete()
                 .processMessage(context -> processMessage(context, countDownLatch, messageId, lastMessageReceivedTime, lockTimeoutDurationSeconds))
@@ -90,7 +90,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
                 .buildProcessorClient());
 
         } else {
-            processor = toClose(getProcessorBuilder(USE_CREDENTIALS, entityType, entityIndex, false)
+            processor = toClose(getProcessorBuilder(entityType, entityIndex, false)
                 .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
                 .disableAutoComplete()
                 .processMessage(context -> processMessage(context, countDownLatch, messageId, lastMessageReceivedTime, lockTimeoutDurationSeconds))
@@ -115,7 +115,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         ServiceBusSenderAsyncClient sender = createSender(entityType, entityIndex, true);
 
         ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder  processorBuilder =
-            getSessionProcessorBuilder(USE_CREDENTIALS, entityType, entityIndex, false, RETRY_OPTIONS)
+            getSessionProcessorBuilder(entityType, entityIndex, false, RETRY_OPTIONS)
                 .sessionIdleTimeout(sessionIdleTimeout)
                 .disableAutoComplete();
 
@@ -130,7 +130,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
 
         ServiceBusSenderAsyncClient sender = createSender(entityType, entityIndex, true);
         ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder  processorBuilder =
-            getSessionProcessorBuilder(USE_CREDENTIALS, entityType, entityIndex, false,
+            getSessionProcessorBuilder(entityType, entityIndex, false,
                     new AmqpRetryOptions().setTryTimeout(tryTimeout))
                 .disableAutoComplete();
 
@@ -196,10 +196,10 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
             context.getFullyQualifiedNamespace(), context.getEntityPath());
     }
 
-    private ServiceBusClientBuilder.ServiceBusProcessorClientBuilder getProcessorBuilder(boolean useCredentials,
-        MessagingEntityType entityType, int entityIndex, boolean sharedConnection) {
+    private ServiceBusClientBuilder.ServiceBusProcessorClientBuilder getProcessorBuilder(MessagingEntityType entityType,
+        int entityIndex, boolean sharedConnection) {
 
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        ServiceBusClientBuilder builder = getBuilder(sharedConnection);
         switch (entityType) {
             case QUEUE:
                 final String queueName = getQueueName(entityIndex);
@@ -218,10 +218,10 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         }
     }
 
-    private ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(boolean useCredentials,
-        MessagingEntityType entityType, int entityIndex, boolean sharedConnection, AmqpRetryOptions amqpRetryOptions) {
+    private ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(MessagingEntityType entityType,
+        int entityIndex, boolean sharedConnection, AmqpRetryOptions amqpRetryOptions) {
 
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        ServiceBusClientBuilder builder = getBuilder(sharedConnection);
         builder.retryOptions(amqpRetryOptions);
 
         switch (entityType) {
@@ -246,7 +246,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
 
     private ServiceBusSenderAsyncClient createSender(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
         final boolean shareConnection = false;
-        return toClose(getSenderBuilder(USE_CREDENTIALS, entityType, entityIndex, isSessionEnabled, shareConnection)
+        return toClose(getSenderBuilder(entityType, entityIndex, isSessionEnabled, shareConnection)
             .buildAsyncClient());
     }
 

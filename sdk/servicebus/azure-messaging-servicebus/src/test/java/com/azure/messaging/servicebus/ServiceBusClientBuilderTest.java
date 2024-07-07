@@ -270,8 +270,8 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     @Test
     @Disabled("Convert to use AzurePowerShellCredentials?")
     public void testBatchSendEventByAzureNameKeyCredential() {
-        ConnectionStringProperties properties = getConnectionStringProperties();
-        String fullyQualifiedNamespace = getFullyQualifiedDomainName();
+        ConnectionStringProperties properties = new ConnectionStringProperties(TestUtils.getConnectionString(false));
+        String fullyQualifiedNamespace = TestUtils.getFullyQualifiedDomainName();
         String sharedAccessKeyName = properties.getSharedAccessKeyName();
         String sharedAccessKey = properties.getSharedAccessKey();
         String queueName = getQueueName(TestUtils.USE_CASE_DEFAULT);
@@ -295,8 +295,8 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     @Test
     @Disabled("Convert to use AzurePowerShellCredentials?")
     public void testBatchSendEventByAzureSasCredential() {
-        ConnectionStringProperties properties = getConnectionStringProperties(true);
-        String fullyQualifiedNamespace = getFullyQualifiedDomainName();
+        ConnectionStringProperties properties = new ConnectionStringProperties(TestUtils.getConnectionString(true));
+        String fullyQualifiedNamespace = TestUtils.getFullyQualifiedDomainName();
         String sharedAccessSignature = properties.getSharedAccessSignature();
         String queueName = getQueueName(TestUtils.USE_CASE_DEFAULT);
 

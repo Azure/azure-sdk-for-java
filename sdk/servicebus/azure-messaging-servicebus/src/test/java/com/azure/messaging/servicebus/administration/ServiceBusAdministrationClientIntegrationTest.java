@@ -9,17 +9,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
@@ -58,7 +53,6 @@ import java.util.concurrent.atomic.AtomicReference;
 //import java.util.regex.Matcher;
 //import java.util.regex.Pattern;
 
-import static com.azure.messaging.servicebus.IntegrationTestBase.USE_CREDENTIALS;
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
 //import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
@@ -66,6 +60,7 @@ import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getRuleBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getTopicBaseName;
+import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClientIntegrationTest.configure;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -81,7 +76,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Execution(ExecutionMode.SAME_THREAD)
 public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
-    private final AtomicReference<TokenCredential> pipelineCredential = new AtomicReference<>();
+    private final AtomicReference<TokenCredential> credentialCached = new AtomicReference<>();
 
 //    /**
 //     * Test to connect to the service bus with an azure identity TokenCredential.
@@ -938,45 +933,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     private ServiceBusAdministrationClient getClient() {
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-
-        if (USE_CREDENTIALS) {
-            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
-            builder.credential(fullyQualifiedDomainName, getTestTokenCredential(interceptorManager));
-        } else {
-            final String connectionString = interceptorManager.isPlaybackMode()
-                ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
-                : TestUtils.getConnectionString(false);
-            builder.connectionString(connectionString);
-        }
-        builder.retryOptions(new RetryOptions(new FixedDelayOptions(1, TIMEOUT)));
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-        } else if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(ServiceBusAdministrationAsyncClientIntegrationTest.TEST_PROXY_SANITIZERS);
-            interceptorManager.addMatchers(ServiceBusAdministrationAsyncClientIntegrationTest.TEST_PROXY_REQUEST_MATCHERS);
-        }
-
+        configure(builder, null, interceptorManager, credentialCached);
         return builder.buildClient();
-    }
-
-    /**
-     * Retrieve the appropriate TokenCredential based on the test mode.
-     *
-     * @param interceptorManager the interceptor manager
-     * @return The appropriate token credential
-     */
-    private TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
-        if (interceptorManager.isLiveMode()) {
-            return TestUtils.getPipelineCredential(pipelineCredential);
-        } else if (interceptorManager.isRecordMode()) {
-            return new DefaultAzureCredentialBuilder().build();
-        } else {
-            return new MockTokenCredential();
-        }
     }
 }
