@@ -194,7 +194,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
     }
 
     private void setReceiver(MessagingEntityType entityType, int entityIndex,
-                             Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
+        Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
         ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(entityType, entityIndex,
             false, DEFAULT_RETRY_OPTIONS).disableAutoComplete();
 
