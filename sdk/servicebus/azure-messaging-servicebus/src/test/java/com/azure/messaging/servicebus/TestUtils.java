@@ -22,7 +22,6 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
-import org.opentest4j.TestAbortedException;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -53,6 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class TestUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
@@ -261,7 +261,7 @@ public class TestUtils {
      * Obtain the Azure Pipelines credential if running in Azure Pipelines configured with service connections federated identity.
      *
      * @return the Azure Pipelines credential.
-     * @throws TestAbortedException if the test is not running in Azure Pipelines configured with service connections federated identity.
+     * @throws org.opentest4j.TestAbortedException if the test is not running in Azure Pipelines configured with service connections federated identity.
      */
     public static TokenCredential getPipelineCredential(AtomicReference<TokenCredential> credentialCached) {
         return credentialCached.updateAndGet(cached -> {
@@ -270,7 +270,9 @@ public class TestUtils {
             }
             final AzurePipelinesCredentialBuilder builder = TestUtils.getPipelineCredentialBuilder();
             if (builder == null) {
-                throw new TestAbortedException("Test required to run on Azure Pipelines that is configured with service connections federated identity.");
+                // Throws org.opentest4j.TestAbortedException exception.
+                assumeTrue(false, "Test required to run on Azure Pipelines that is configured with service connections federated identity.");
+                return null;
             }
             final AzurePipelinesCredential pipelinesCredential = builder.build();
             return request -> Mono.defer(() -> pipelinesCredential.getToken(request))

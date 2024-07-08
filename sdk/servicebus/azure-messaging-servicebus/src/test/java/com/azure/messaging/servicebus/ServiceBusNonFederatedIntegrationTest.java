@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.opentest4j.TestAbortedException;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -120,7 +119,8 @@ public class ServiceBusNonFederatedIntegrationTest extends IntegrationTestBase {
         final TestMode mode = super.getTestMode();
         if (mode == TestMode.PLAYBACK) {
             // AMQP traffic never gets recorded so there is no PLAYBACK supported.
-            throw new TestAbortedException("Skipping integration tests in playback mode.");
+            assertTrue(false, "Skipping integration tests in playback mode.");
+            return;
         }
 
         if (mode == TestMode.RECORD || mode == TestMode.LIVE) {
@@ -130,6 +130,6 @@ public class ServiceBusNonFederatedIntegrationTest extends IntegrationTestBase {
                 return;
             }
         }
-        throw new TestAbortedException("Not running integration in record mode (missing authentication set up).");
+        assertTrue(false, "Not running integration in record mode (missing authentication set up).");
     }
 }

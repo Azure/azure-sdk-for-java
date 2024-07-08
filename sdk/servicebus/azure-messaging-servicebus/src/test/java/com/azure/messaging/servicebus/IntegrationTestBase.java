@@ -30,7 +30,6 @@ import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.provider.Arguments;
-import org.opentest4j.TestAbortedException;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -198,7 +197,9 @@ public abstract class IntegrationTestBase extends TestBase {
                 return builder.connectionString(connectionString);
             }
         } else {
-            throw new TestAbortedException("Integration tests are not enabled in playback mode.");
+            // Throws org.opentest4j.TestAbortedException exception.
+            assumeTrue(false, "Integration tests are not enabled in playback mode.");
+            return null;
         }
     }
 
@@ -466,13 +467,14 @@ public abstract class IntegrationTestBase extends TestBase {
      * Asserts that if the integration tests can be run. This method is expected to be called at the beginning of each
      * test run.
      *
-     * @throws TestAbortedException if the integration tests cannot be run.
+     * @throws org.opentest4j.TestAbortedException if the integration tests cannot be run.
      */
     protected void assertRunnable() {
         final TestMode mode = super.getTestMode();
         if (mode == TestMode.PLAYBACK) {
             // AMQP traffic never gets recorded so there is no PLAYBACK supported.
-            throw new TestAbortedException("Skipping integration tests in playback mode.");
+            assumeTrue(false, "Skipping integration tests in playback mode.");
+            return;
         }
 
         if (mode == TestMode.RECORD) {
@@ -488,7 +490,8 @@ public abstract class IntegrationTestBase extends TestBase {
                 // token credential type in DefaultAzureCredential (all token credentials requires FullyQualifiedDomainName).
                 return;
             }
-            throw new TestAbortedException("Not running integration in record mode (missing authentication set up).");
+            assumeTrue(false, "Not running integration in record mode (missing authentication set up).");
+            return;
         }
         // The CI pipeline is expected to have federated identity configured, so tests are runnable.
         assert mode == TestMode.LIVE;
