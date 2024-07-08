@@ -14,14 +14,17 @@ import time
 import argparse
 
 from log import log
-from _constants import get_spring_boot_major_version_tag_prefix
+from _constants import (get_spring_boot_major_version_tag_prefix, SPRING_BOOT_MAJOR_3_VERSION_TAG_PREFIX)
 
 
 IGNORED_ARTIFACTS = {'com.github.tomakehurst:wiremock-jre8'}
 IGNORED_SPRINGBOOT_ARTIFACTS = {
-    "3.0.13": {"net.bytebuddy:byte-buddy",
-               "net.bytebuddy:byte-buddy-agent"}
+    "3.0.13": {
+        SPRING_BOOT_MAJOR_3_VERSION_TAG_PREFIX + "net.bytebuddy:byte-buddy",
+        SPRING_BOOT_MAJOR_3_VERSION_TAG_PREFIX + "net.bytebuddy:byte-buddy-agent",
+        SPRING_BOOT_MAJOR_3_VERSION_TAG_PREFIX + "org.mockito:mockito-core"
     }
+}
 
 
 def get_args():
