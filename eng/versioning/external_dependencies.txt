@@ -450,6 +450,7 @@ spring_com.microsoft.azure:azure;1.34.0
 spring_redis.clients:jedis;3.8.0
 
 # sdk\spring\pom.xml modules
+springboot3_org.springframework.boot:spring-boot-dependencies;3.3.1
 springboot3_org.springframework:spring-core;6.1.10
 springboot3_org.springframework:spring-web;6.1.10
 springboot3_org.springframework:spring-beans;6.1.10
