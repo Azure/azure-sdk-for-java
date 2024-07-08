@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added diagnostic fields for `quorumAckedLSN` and `currentReplicaSetSize`. Changed `replicaStatusList` to include all replicas and more information. - See [PR 39844](https://github.com/Azure/azure-sdk-for-java/pull/39844)
 
 ### 4.62.0 (2024-07-02)
 
