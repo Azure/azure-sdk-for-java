@@ -304,6 +304,33 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         }
 
 
+def update_changelog_version(sdk_root:str, output_folder:str, current_version:str):
+    pwd = os.getcwd()
+    try:
+        os.chdir(sdk_root)
+        changelog_file = os.path.join(output_folder, "CHANGELOG.md")
+        if os.path.exists(changelog_file):
+            with open(changelog_file, "r") as fin:
+                changelog_str = fin.read()
+            logging.info("[CHANGELOG][Version] Update changelog latest version")
+            version_pattern = "^## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((?P<date>.*?)\)"
+
+            changelog_str = re.sub(
+                pattern = version_pattern,
+                repl = f"## {current_version} (\\g<date>)",
+                string = changelog_str,
+                count = 1,
+                flags = re.M
+            )
+            with open(changelog_file, "w") as fout:
+                fout.write(changelog_str)
+
+            logging.info("[Changelog][Success] Updated changelog latest version")
+        else:
+            logging.info("[Changelog][Skip] Cannot find changelog file under the given output folder")
+    finally:
+        os.chdir(pwd)
+
 def main():
     (parser, args) = parse_args()
     args = vars(args)
@@ -332,6 +359,7 @@ def main():
         update_parameters(None)
         output_folder = OUTPUT_FOLDER_FORMAT.format(service)
         update_version(sdk_root, output_folder)
+        update_changelog_version(sdk_root, output_folder, current_version)
     else:
         if not args.get("readme"):
             parser.print_help()
