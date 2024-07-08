@@ -176,21 +176,19 @@ public class TokenCacheTests {
 
         TokenCredential dummyCred = request -> {
             refreshes.incrementAndGet();
-            return Mono.just(new Token("testToken", 20000, 5000));
+            return Mono.just(new TokenCacheTests.Token("testToken", 200000, 33000));
         };
 
-        // Token acquisition time grows in 1 sec, 2 sec... To make sure only one token acquisition is run
         AccessTokenCache cache = new AccessTokenCache(dummyCred);
 
         cache.getTokenSync(new TokenRequestContext(), false);
 
-        sleep(6000);
+        sleep(33000);
 
         cache.getTokenSync(new TokenRequestContext(), false);
 
-        // Ensure that only one refresh attempt is made.
+        // Ensure refresh is made after refreshOn duration.
         assertEquals(2, refreshes.get());
-
     }
 
     private Mono<AccessToken> remoteGetTokenThatExpiresSoonAsync() {
@@ -204,7 +202,7 @@ public class TokenCacheTests {
             .map(l -> new Token(Integer.toString(ThreadLocalRandom.current().nextInt(100))));
     }
 
-    private static class Token extends AccessToken {
+    public static class Token extends AccessToken {
         Token(String token) {
             this(token, 5000);
         }
