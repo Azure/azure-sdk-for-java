@@ -179,7 +179,7 @@ public interface AnnotationJavadocCodesnippets {
             + "{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/"
             + "getEntityTypeImageUploadUrl",
             returnValueWireType = void.class,
-            requestHeaders = {"Content-Type: application/json; charset=utf-8", "accept-language: en-US"})
+            headers = {"Content-Type: application/json; charset=utf-8", "accept-language: en-US"})
         void getUploadUrlForEntityType(@PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("hubName") String hubName, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") RequestBody parameters);

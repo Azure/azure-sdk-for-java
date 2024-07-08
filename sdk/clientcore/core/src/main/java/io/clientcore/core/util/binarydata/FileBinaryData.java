@@ -133,9 +133,15 @@ public class FileBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
+    public <T> T toObject(Class<T> clazz, ObjectSerializer serializer) throws IOException {
+        return serializer.deserializeFromStream(toStream(), clazz);
+    }
+
+    @Override
+    public <T> T toObjectFromType(Type type, ObjectSerializer serializer) throws IOException {
         return serializer.deserializeFromStream(toStream(), type);
     }
+
 
     @Override
     public InputStream toStream() {
