@@ -142,11 +142,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <compilerArgs>
-            <arg>-Xlint:deprecation</arg>
-          </compilerArgs>
-        </configuration>
         <executions>
           <!-- disabled - the executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
           <execution>
@@ -178,9 +173,6 @@
               <goal>compile</goal>
             </goals>
             <configuration>
-              <compilerArgs>
-                <arg>-proc:only</arg> <!-- Turn on annotation processing -->
-              </compilerArgs>
               <release>17</release>
             </configuration>
           </execution>
