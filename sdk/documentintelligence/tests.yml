@@ -11,10 +11,11 @@ extends:
         groupId: com.azure
         safeName: azureaidocumentintelligence
     CloudConfig:
-      Public:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      CanaryPreview:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
         ServiceConnection: azure-sdk-tests
         SubscriptionConfigurationFilePaths:
           - eng/common/TestResources/sub-config/AzurePublicMsft.json
         Location: 'eastus'
-    SupportedClouds: 'Public'
+    Clouds: 'CanaryPreview'
+    SupportedClouds: 'CanaryPreview'
