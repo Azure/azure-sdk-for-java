@@ -10,7 +10,8 @@ extends:
         groupId: com.azure
         safeName: azureaidocumentintelligence
     CloudConfig:
-      Public:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      CanaryPreview:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
         Location: 'centraluseuap'
-    SupportedClouds: 'Public'
+    Clouds: 'CanaryPreview'
+    SupportedClouds: 'CanaryPreview'
