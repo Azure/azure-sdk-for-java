@@ -1725,15 +1725,15 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         Class<?> DatabaseAccountLocationsInfoClass = Class.forName("com.azure.cosmos.implementation.routing" +
             ".LocationCache$DatabaseAccountLocationsInfo");
-        Field availableWriteEndpointByLocation = DatabaseAccountLocationsInfoClass.getDeclaredField(
-            "availableWriteEndpointByLocation");
-        availableWriteEndpointByLocation.setAccessible(true);
+        Field availableWriteLocations = DatabaseAccountLocationsInfoClass.getDeclaredField(
+            "availableWriteLocations");
+        availableWriteLocations.setAccessible(true);
 
         @SuppressWarnings("unchecked")
-        Map<String, URI> map = (Map<String, URI>) availableWriteEndpointByLocation.get(locationInfo);
-        String regionName = map.keySet().iterator().next();
+        List<String> list = (List<String>) availableWriteLocations.get(locationInfo);
+        String regionName = list.get(0);
         assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
-        assertThat(cosmosDiagnostics.getContactedRegionNames().iterator().next()).isEqualTo(regionName.toLowerCase());
+        assertThat(cosmosDiagnostics.getContactedRegionNames().iterator().next()).isEqualTo(regionName);
     }
 
     private void validateChannelStatistics(CosmosDiagnostics cosmosDiagnostics) {
