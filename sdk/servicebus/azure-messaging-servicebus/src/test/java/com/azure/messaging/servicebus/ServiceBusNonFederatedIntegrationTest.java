@@ -119,10 +119,12 @@ public class ServiceBusNonFederatedIntegrationTest extends IntegrationTestBase {
     protected void assertRunnable() {
         final TestMode mode = super.getTestMode();
         if (mode == TestMode.PLAYBACK) {
+            // AMQP traffic never gets recorded so there is no PLAYBACK supported.
             throw new TestAbortedException("Skipping integration tests in playback mode.");
         }
 
         if (mode == TestMode.RECORD || mode == TestMode.LIVE) {
+            // RECORD mode used in SDK-dev setup and LIVE mode on CI pipeline.
             if (!CoreUtils.isNullOrEmpty(TestUtils.getConnectionString(false))) {
                 // non-federated integration tests are runnable using the connection string.
                 return;

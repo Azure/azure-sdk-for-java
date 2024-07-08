@@ -201,10 +201,6 @@
       "type": "string",
       "value": "[concat(variables('namespaceName'), parameters('serviceBusEndpointSuffix'))]"
     },
-    "AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING": {
-      "type": "string",
-      "value": "[listkeys(variables('authRuleResourceId'), '2021-01-01-preview').primaryConnectionString]"
-    },
     "AZURE_SERVICEBUS_QUEUE_NAME": {
       "type": "string",
       "value": "[variables('queueName')]"
