@@ -22,10 +22,10 @@ public class MetricsClientCustomization extends Customization {
     }
 
     private void customizeAzureMonitorMetricBatchBuilder(ClassCustomization classCustomization) {
-        classCustomization.addImports("com.azure.monitor.query.models.MetricsClientAudience");
+        classCustomization.addImports("com.azure.monitor.query.models.MetricsAudience");
 
         customizeAst(classCustomization, clazz -> {
-            clazz.addPrivateField("MetricsClientAudience", "audience")
+            clazz.addPrivateField("MetricsAudience", "audience")
                 .addAnnotation("Generated")
                 .setJavadocComment("The audience indicating the authorization scope of metrics clients.")
                 .createSetter()
@@ -41,7 +41,8 @@ public class MetricsClientCustomization extends Customization {
                     "     * @return the AzureMonitorMetricBatchBuilder.");
         });
 
-        classCustomization.getMethod("createHttpPipeline").replaceBody("Configuration buildConfiguration\n" +
+        classCustomization.getMethod("createHttpPipeline")
+            .replaceBody("Configuration buildConfiguration\n" +
             "            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;\n" +
             "        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;\n" +
             "        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;\n" +
@@ -65,7 +66,7 @@ public class MetricsClientCustomization extends Customization {
             "        policies.add(new AddDatePolicy());\n" +
             "        if (tokenCredential != null) {\n" +
             "            policies.add(\n" +
-            "                new BearerTokenAuthenticationPolicy(tokenCredential,  audience == null ? \"https://metrics.monitor.azure.com/.default\" : audience.toString()));\n" +
+            "                new BearerTokenAuthenticationPolicy(tokenCredential,  audience == null ? MetricsAudience.AZURE_PUBLIC_CLOUD.toString() + \"/.default\" : audience.toString()  + \"/.default\"));\n" +
             "        }\n" +
             "        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)\n" +
             "            .forEach(p -> policies.add(p));\n" +

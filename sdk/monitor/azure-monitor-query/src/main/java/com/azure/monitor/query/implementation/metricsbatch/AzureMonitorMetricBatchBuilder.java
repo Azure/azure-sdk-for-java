@@ -34,7 +34,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.monitor.query.models.MetricsClientAudience;
+import com.azure.monitor.query.models.MetricsAudience;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -302,8 +302,8 @@ public final class AzureMonitorMetricBatchBuilder
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
-                audience == null ? "https://metrics.monitor.azure.com/.default" : audience.toString()));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audience == null
+                ? MetricsAudience.AZURE_PUBLIC_CLOUD.toString() + "/.default" : audience.toString() + "/.default"));
         }
         this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
@@ -318,7 +318,7 @@ public final class AzureMonitorMetricBatchBuilder
      * The audience indicating the authorization scope of metrics clients.
      */
     @Generated()
-    private MetricsClientAudience audience;
+    private MetricsAudience audience;
 
     /**
      * Sets The audience.
@@ -327,7 +327,7 @@ public final class AzureMonitorMetricBatchBuilder
      * @return the AzureMonitorMetricBatchBuilder.
      */
     @Generated()
-    public AzureMonitorMetricBatchBuilder audience(MetricsClientAudience audience) {
+    public AzureMonitorMetricBatchBuilder audience(MetricsAudience audience) {
         this.audience = audience;
         return this;
     }
