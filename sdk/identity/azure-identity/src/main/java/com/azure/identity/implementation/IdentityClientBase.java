@@ -438,6 +438,9 @@ public abstract class IdentityClientBase {
                 result.setAccessToken(accessToken.getToken());
                 result.setTenantId(trc.getTenantId());
                 result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
+                if (accessToken.getRefreshOn() != null) {
+                    result.setRefreshInSeconds(accessToken.getRefreshOn().toEpochSecond());
+                }
                 return result;
             }).toFuture();
         });

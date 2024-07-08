@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
+import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -169,6 +170,29 @@ public class TokenCacheTests {
         assertTrue(refreshes.get() <= 11);
     }
 
+    @Test
+    public void testRefreshOnFlow() throws InterruptedException {
+        AtomicLong refreshes = new AtomicLong(0);
+
+        TokenCredential dummyCred = request -> {
+            refreshes.incrementAndGet();
+            return Mono.just(new Token("testToken", 20000, 5000));
+        };
+
+        // Token acquisition time grows in 1 sec, 2 sec... To make sure only one token acquisition is run
+        AccessTokenCache cache = new AccessTokenCache(dummyCred);
+
+        cache.getTokenSync(new TokenRequestContext(), false);
+
+        sleep(6000);
+
+        cache.getTokenSync(new TokenRequestContext(), false);
+
+        // Ensure that only one refresh attempt is made.
+        assertEquals(2, refreshes.get());
+
+    }
+
     private Mono<AccessToken> remoteGetTokenThatExpiresSoonAsync() {
         return Mono.delay(Duration.ofMillis(1000))
             .map(l -> new Token(Integer.toString(ThreadLocalRandom.current().nextInt(100)), 0));
@@ -186,7 +210,13 @@ public class TokenCacheTests {
         }
 
         Token(String token, long validityInMillis) {
-            super(token, OffsetDateTime.now().plus(Duration.ofMillis(validityInMillis)));
+            super(token, OffsetDateTime.now().plus(Duration.ofMillis(validityInMillis)),
+                OffsetDateTime.now().plusSeconds(5));
+        }
+
+        Token(String token, long validityInMillis, long refreshInMillis) {
+            super(token, OffsetDateTime.now().plus(Duration.ofMillis(validityInMillis)),
+                OffsetDateTime.now().plus(Duration.ofMillis(refreshInMillis)));
         }
     }
 }

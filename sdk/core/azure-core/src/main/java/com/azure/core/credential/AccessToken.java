@@ -38,7 +38,6 @@ public class AccessToken {
     private final OffsetDateTime expiresAt;
     private final OffsetDateTime refreshOn;
 
-
     /**
      * Creates an access token instance.
      *

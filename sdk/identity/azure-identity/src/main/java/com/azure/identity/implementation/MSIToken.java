@@ -44,6 +44,9 @@ public final class MSIToken extends AccessToken {
     @JsonProperty(value = "expires_in")
     private String expiresIn;
 
+    @JsonProperty(value = "refresh_in")
+    private String refreshIn;
+
 
     /**
      * Creates an access token instance.
@@ -56,8 +59,9 @@ public final class MSIToken extends AccessToken {
     public MSIToken(
         @JsonProperty(value = "access_token") String token,
         @JsonProperty(value = "expires_on") String expiresOn,
-        @JsonProperty(value = "expires_in") String expiresIn) {
-        super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)));
+        @JsonProperty(value = "expires_in") String expiresIn,
+        @JsonProperty(value = "refresh_in") String refreshIn) {
+        super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)), parseRefreshIn(refreshIn));
         this.accessToken = token;
         this.expiresOn = expiresOn;
         this.expiresIn = expiresIn;
@@ -101,5 +105,19 @@ public final class MSIToken extends AccessToken {
             LOGGER.verbose(e.getMessage());
         }
         throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateToParse));
+    }
+
+    private static OffsetDateTime parseRefreshIn(String refreshIn) {
+        if (!CoreUtils.isNullOrEmpty(refreshIn)) {
+            try {
+                long seconds = Long.parseLong(refreshIn);
+                return OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(seconds);
+            } catch (NumberFormatException e) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Unable to parse refresh in  " + refreshIn, e));
+            }
+
+        }
+        return null;
     }
 }
