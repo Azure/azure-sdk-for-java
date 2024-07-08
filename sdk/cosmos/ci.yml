@@ -185,5 +185,3 @@ extends:
         groupId: com.azure
       - name: azure-cosmos-spark_3_2-12
         groupId: com.azure.cosmos.spark
-      - name: azure-spring-data-cosmos
-        groupId: com.azure
