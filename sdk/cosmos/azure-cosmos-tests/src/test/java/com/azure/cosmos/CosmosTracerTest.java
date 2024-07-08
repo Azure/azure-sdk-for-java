@@ -891,7 +891,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
 
         // read many single item
-        feedItemResponse = cosmosAsyncContainer.readMany(List.of(createdDocs.get(0)), ObjectNode.class)
+        feedItemResponse = cosmosAsyncContainer.readMany(Arrays.asList(createdDocs.get(0)), ObjectNode.class)
                                                .block();
         assertThat(feedItemResponse).isNotNull();
         verifyTracerAttributes(

@@ -63,6 +63,7 @@ import java.lang.reflect.Field;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -428,7 +429,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 tuplesToBeRead,
                 new CosmosReadManyRequestOptions(),
                 InternalObjectNode.class);
-            validateReadManyFeedResponse(List.of(properties), readManyResponse);
+            validateReadManyFeedResponse(Arrays.asList(properties), readManyResponse);
 
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
