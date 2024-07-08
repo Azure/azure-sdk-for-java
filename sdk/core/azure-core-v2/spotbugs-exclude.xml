@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+  <Match>
+    <Bug pattern="CT_CONSTRUCTOR_THROW" />
+    <Or>
+      <Class name="com.azure.core.v2.credential.KeyCredential" />
+      <Class name="com.azure.core.http.HttpRequest" />
+      <Class name="com.azure.core.http.policy.ExponentialBackoff" />
+      <Class name="com.azure.core.http.policy.FixedDelay" />
+      <Class name="com.azure.core.http.policy.FixedDelayOptions" />
+      <Class name="com.azure.core.http.policy.KeyCredentialPolicy" />
+      <Class name="com.azure.core.implementation.http.UnexpectedExceptionInformation" />
+      <Class name="com.azure.core.implementation.http.rest.SwaggerMethodParser" />
+      <Class name="com.azure.core.util.paging.ContinuablePagedFluxCore" />
+      <Class name="com.azure.core.util.paging.ContinuablePagedIterable" />
+      <Class name="com.azure.core.util.serializer.TypeReference" />
+    </Or>
+    <Method name="&lt;init&gt;" />
+  </Match>
+
+  <Match>
+    <Bug pattern="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR" />
+    <Or>
+      <Class name="com.azure.core.v2.credential.SimpleTokenCache" />
+      <Class name="com.azure.core.http.HttpHeaders" />
+    </Or>
+    <Method name="&lt;init&gt;" />
+  </Match>
+
+  <Match>
+    <Bug pattern="CRLF_INJECTION_LOGS" />
+    <Or>
+      <Class name="com.azure.core.util.logging.ClientLogger" />
+      <Class name="com.azure.core.util.logging.LoggingEventBuilder"/>
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
+    <Or>
+      <And>
+        <Class name="com.azure.core.implementation.jackson.JacksonJsonReader" />
+        <Method name="getBinary" />
+      </And>
+      <And>
+        <Class name="com.azure.core.util.Base64Url" />
+        <Method name="decodedBytes" />
+      </And>
+      <And>
+        <Class name="com.azure.core.util.CoreUtils" />
+        <Method name="clone" />
+      </And>
+      <And>
+        <Class name="com.azure.core.util.serializer.JacksonAdapter" />
+        <Method name="serializeToBytes" />
+      </And>
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE" />
+    <Or>
+      <Class name="com.azure.core.http.HttpPipelineNextPolicy" />
+      <Class name="com.azure.core.http.HttpPipelineNextSyncPolicy" />
+      <Class name="com.azure.core.implementation.http.HttpPipelineCallState" />
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="PREDICTABLE_RANDOM" />
+    <Or>
+      <Class name="com.azure.core.http.policy.ExponentialBackoff" />
+      <Class name="com.azure.core.util.CoreUtils" />
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE" />
+    <Class name="com.azure.core.implementation.logging.DefaultLogger" />
+  </Match>
+
+  <Match>
+    <Bug pattern="SE_BAD_FIELD" />
+    <Or>
+      <Class name="com.azure.core.implementation.jackson.AdditionalPropertiesDeserializer" />
+      <Class name="com.azure.core.implementation.jackson.AdditionalPropertiesSerializer" />
+      <Class name="com.azure.core.implementation.jackson.FlatteningDeserializer" />
+      <Class name="com.azure.core.implementation.jackson.FlatteningSerializer" />
+      <Class name="com.azure.core.implementation.jackson.JsonSerializableDeserializer" />
+      <Class name="com.azure.core.implementation.jackson.JsonSerializableSerializer" />
+      <Class name="com.azure.core.implementation.logging.DefaultLogger" />
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="CN_IDIOM_NO_SUPER_CALL" />
+    <Class name="com.azure.core.util.Configuration" />
+    <Method name="clone" />
+  </Match>
+
+  <Match>
+    <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY" />
+    <Or>
+      <Class name="com.azure.core.implementation.util.ByteBufferContent" />
+      <Class name="com.azure.core.implementation.util.FileContent" />
+      <Class name="com.azure.core.implementation.util.FluxByteBufferContent" />
+      <Class name="com.azure.core.implementation.util.InputStreamContent" />
+      <Class name="com.azure.core.implementation.util.ListByteBufferContent" />
+      <Class name="com.azure.core.implementation.util.SerializableContent" />
+      <Class name="com.azure.core.implementation.util.StringContent" />
+    </Or>
+    <Field name="bytes" />
+  </Match>
+
+  <Match>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
+    <Or>
+      <Class name="com.azure.core.implementation.AsynchronousByteChannelWriteSubscriber" />
+      <Class name="com.azure.core.implementation.OutputStreamWriteSubscriber" />
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="BC_UNCONFIRMED_CAST" />
+    <Or>
+      <And>
+        <Class name="com.azure.core.implementation.TypeUtil" />
+        <Or>
+          <Method name="getRawClass" />
+          <Method name="typeImplementsInterface" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.MethodHandleReflectiveInvoker" />
+        <Or>
+          <Method name="invokeStatic" />
+          <Method name="invokeWithArguments" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.ReflectionUtilsMethodHandle" />
+        <Method name="getLookupToUse" />
+      </And>
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
+    <Or>
+      <And>
+        <Class name="com.azure.core.implementation.jackson.FlatteningSerializer" />
+        <Method name="propertyOnlyFlattenSerialize" />
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.jackson.ObjectMapperShim" />
+        <Method name="createJsonMapper" />
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.MethodHandleReflectiveInvoker" />
+        <Or>
+          <Method name="invokeStatic" />
+          <Method name="invokeWithArguments" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.jackson.JsonSerializableDeserializer" />
+        <Method name="deserialize" />
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.jackson.ObjectMapperFactory" />
+        <Method name="attemptJackson215Mutation" />
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.jackson.XmlMapperFactory" />
+        <Method name="&lt;init&gt;" />
+      </And>
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="NP_NULL_ON_SOME_PATH" />
+    <Class name="com.azure.core.util.io.IOUtils" />
+    <Method name="transfer" />
+  </Match>
+
+  <Match>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" />
+    <Class name="com.azure.core.implementation.http.rest.AsyncRestProxy" />
+  </Match>
+
+  <Match>
+    <Bug pattern="MS_EXPOSE_REP"/>
+    <Or>
+      <Class name="com.azure.core.implementation.util.EnvironmentConfiguration" />
+      <Class name="com.azure.core.util.Configuration" />
+    </Or>
+    <Method name="getGlobalConfiguration" />
+  </Match>
+
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <And>
+        <Class name="com.azure.core.v2.credential.TokenRequestContext" />
+        <Method name="getScopes" />
+      </And>
+      <And>
+        <Class name="com.azure.core.exception.HttpRequestException" />
+        <Method name="getRequest" />
+      </And>
+      <And>
+        <Class name="com.azure.core.exception.HttpResponseException" />
+        <Method name="getResponse" />
+      </And>
+      <And>
+        <Class name="com.azure.core.http.HttpPipeline" />
+        <Method name="getTracer" />
+      </And>
+      <And>
+        <Class name="com.azure.core.http.HttpPipelineCallContext" />
+        <Method name="getHttpRequest" />
+      </And>
+      <And>
+        <Class name="com.azure.core.http.HttpRequest" />
+        <Or>
+          <Method name="getHeaders" />
+          <Method name="getBodyAsBinaryData" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.http.HttpResponse" />
+        <Method name="getRequest" />
+      </And>
+      <And>
+        <Class name="com.azure.core.http.policy.HttpLogOptions" />
+        <Or>
+          <Method name="getAllowedHeaderNames" />
+          <Method name="getAllowedQueryParamNames" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.util.TracingOptions" />
+        <Method name="getAllowedTracingQueryParamNames" />
+      </And>
+      <And>
+        <Class name="com.azure.core.http.policy.HttpRequestLoggingContext" />
+        <Method name="getHttpRequest" />
+      </And>
+      <And>
+        <Class name="com.azure.core.http.policy.HttpResponseLoggingContext" />
+        <Method name="getHttpResponse" />
+      </And>
+      <And>
+        <Or>
+          <Class name="com.azure.core.http.rest.PagedResponseBase" />
+          <Class name="com.azure.core.http.rest.ResponseBase" />
+          <Class name="com.azure.core.http.rest.SimpleResponse" />
+        </Or>
+        <Or>
+          <Method name="getHeaders" />
+          <Method name="getRequest" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.ByteBufferCollector" />
+        <Method name="toByteArray" />
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.util.ByteArrayContent" />
+        <Method name="toBytes" />
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.http.HttpPipelineCallState" />
+        <Method name="getCallContext" />
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.http.rest.RequestDataConfiguration" />
+        <Or>
+          <Method name="getHttpRequest" />
+          <Method name="getMethodParser" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.serializer.HttpResponseDecoder$HttpDecodedResponse" />
+        <Method name="getSourceResponse" />
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.util.EnvironmentConfiguration$EnvironmentVariablesConfigurationSource" />
+        <Method name="getProperties" />
+      </And>
+      <And>
+        <Class name="com.azure.core.models.GeoCollection" />
+        <Method name="getGeometries" />
+      </And>
+      <And>
+        <Class name="com.azure.core.models.GeoLineString" />
+        <Method name="getCoordinates" />
+      </And>
+      <And>
+        <Class name="com.azure.core.models.GeoLineStringCollection" />
+        <Method name="getLines" />
+      </And>
+      <And>
+        <Class name="com.azure.core.models.GeoLinearRing" />
+        <Method name="getCoordinates" />
+      </And>
+      <And>
+        <Class name="com.azure.core.models.GeoObject" />
+        <Method name="getCustomProperties" />
+      </And>
+      <And>
+        <Class name="com.azure.core.models.GeoPointCollection" />
+        <Method name="getPoints" />
+      </And>
+      <And>
+        <Class name="com.azure.core.models.GeoPolygon" />
+        <Method name="getRings" />
+      </And>
+      <And>
+        <Class name="com.azure.core.models.GeoPolygonCollection" />
+        <Method name="getPolygons" />
+      </And>
+      <And>
+        <Class name="com.azure.core.util.ConfigurationBuilder" />
+        <Method name="build" />
+      </And>
+      <And>
+        <Class name="com.azure.core.util.ConfigurationProperty" />
+        <Method name="getAliases" />
+      </And>
+      <And>
+        <Class name="com.azure.core.util.Context" />
+        <Method name="getValues" />
+      </And>
+      <And>
+        <Class name="com.azure.core.util.HttpClientOptions" />
+        <Method name="getConfiguration" />
+      </And>
+      <And>
+        <Class name="com.azure.core.util.serializer.JacksonAdapter" />
+        <Method name="serializer" />
+      </And>
+      <And>
+        <Class name="com.azure.core.util.tracing.StartSpanOptions" />
+        <Or>
+          <Method name="getAttributes" />
+          <Method name="getLinks" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.util.tracing.TracingLink" />
+        <Method name="getAttributes" />
+      </And>
+      <And>
+        <Class name="com.azure.core.models.CloudEvent" />
+        <Method name="getData" />
+      </And>
+      <And>
+        <Class name="com.azure.core.models.MessageContent" />
+        <Method name="getBodyAsBinaryData" />
+      </And>
+      <And>
+        <Class name="com.azure.core.http.policy.RequestRetryCondition" />
+        <Or>
+          <Method name="getResponse" />
+          <Method name="getThrowable" />
+          <Method name="getRetriedThrowables" />
+        </Or>
+      </And>
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <And>
+        <Or>
+          <Class name="com.azure.core.exception.HttpRequestException" />
+          <Class name="com.azure.core.exception.HttpResponseException" />
+          <Class name="com.azure.core.http.HttpRequest" />
+          <Class name="com.azure.core.http.policy.AddHeadersPolicy" />
+          <Class name="com.azure.core.http.rest.PagedResponseBase" />
+          <Class name="com.azure.core.http.rest.ResponseBase" />
+          <Class name="com.azure.core.http.rest.SimpleResponse" />
+          <Class name="com.azure.core.http.rest.StreamResponse" />
+          <Class name="com.azure.core.implementation.AsynchronousByteChannelWriteSubscriber" />
+          <Class name="com.azure.core.implementation.AsynchronousFileChannelAdapter" />
+          <Class name="com.azure.core.implementation.OutputStreamWriteSubscriber" />
+          <Class name="com.azure.core.implementation.http.BufferedHttpResponse" />
+          <Class name="com.azure.core.implementation.http.HttpPipelineCallState" />
+          <Class name="com.azure.core.implementation.http.rest.RequestDataConfiguration" />
+          <Class name="com.azure.core.implementation.jackson.ObjectMapperShim" />
+          <Class name="com.azure.core.util.tracing.TracingLink" />
+          <Class name="com.azure.core.models.CloudEvent" />
+          <Class name="com.azure.core.implementation.logging.DefaultLogger" />
+        </Or>
+        <Method name="&lt;init&gt;" />
+      </And>
+      <And>
+        <Class name="com.azure.core.http.HttpPipelineBuilder" />
+        <Method name="tracer" />
+      </And>
+      <And>
+        <Class name="com.azure.core.http.HttpPipelineCallContext" />
+        <Method name="setHttpRequest" />
+      </And>
+      <And>
+        <Class name="com.azure.core.http.HttpRequest" />
+        <Or>
+          <Method name="setHeaders" />
+          <Method name="setBody" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.http.policy.InstrumentationPolicy" />
+        <Method name="initialize" />
+      </And>
+      <And>
+        <Class name="com.azure.core.util.HttpClientOptions" />
+        <Method name="setConfiguration" />
+      </And>
+      <And>
+        <Class name="com.azure.core.models.MessageContent" />
+        <Method name="setBodyAsBinaryData" />
+      </And>
+      <And>
+        <Class name="com.azure.core.util.TracingOptions" />
+        <Method name="setAllowedTracingQueryParamNames" />
+      </And>
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" />
+    <Class name="com.azure.core.util.CoreUtils" />
+    <Method name="getProperties" />
+  </Match>
+
+  <Match>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
+    <Class name="com.azure.core.util.CoreUtils" />
+    <Method name="getProperties" />
+  </Match>
+
+  <Match>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
+    <Class name="com.azure.core.implementation.http.rest.SwaggerMethodParser" />
+    <Method name="serialize" />
+  </Match>
+
+  <Match>
+    <Bug pattern="EI_EXPOSE_STATIC_REP2" />
+    <Class name="com.azure.core.implementation.util.HttpHeadersAccessHelper" />
+    <Method name="setAccessor" />
+  </Match>
+</FindBugsFilter>

@@ -21,5 +21,10 @@ module io.clientcore.core {
     exports io.clientcore.core.util.configuration;
     exports io.clientcore.core.util.serializer;
 
+    exports io.clientcore.core.implementation to com.azure.core;
+    exports io.clientcore.core.implementation.http.rest to com.azure.core;
+    exports io.clientcore.core.implementation.http.serializer to com.azure.core;
+    exports io.clientcore.core.implementation.util to com.azure.core;
+
     uses HttpClientProvider;
 }
