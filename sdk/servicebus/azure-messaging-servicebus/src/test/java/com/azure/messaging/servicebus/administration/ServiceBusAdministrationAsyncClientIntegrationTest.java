@@ -107,10 +107,17 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     /**
      * Test to connect to the service bus using com.azure.identity.ClientSecretCredential.
+     * <p>
+     * This is a potential test eligible to run in auxiliary tenant with secret auth. The CI Pipeline cannot be enabled
+     * for both Federated Managed Identity auth and Secret auth, the ARM deployment will fail if an attempt is made to
+     * enable two auth types - Exception calling "Invoke" with "0" argument(s): "Cannot process command because of one or
+     * more missing mandatory parameters: testApplicationSecret.". Hence, this test is disabled until auxiliary tenant is
+     * available.
+     * </p>
      */
     @ParameterizedTest
     @MethodSource("createHttpClients")
-    // @Disabled("With pipeline enabled for federated managed identity, the test needing secret won't work anymore - com.microsoft.aad.msal4j.MsalServiceException: AADSTS7000215: Invalid client secret provided")
+    @Disabled("The CI Pipeline cannot be enabled for both Federated Managed Identity auth and Secret auth")
     void azureClientSecretCredential(HttpClient httpClient) {
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
         final TokenCredential tokenCredential;
