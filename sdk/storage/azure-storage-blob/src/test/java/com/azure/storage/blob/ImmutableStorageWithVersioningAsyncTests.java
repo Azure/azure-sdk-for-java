@@ -12,7 +12,10 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -46,12 +49,12 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
-import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -88,15 +91,14 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     private static final String RESOURCE_GROUP_NAME = ENVIRONMENT.getResourceGroupName();
     private static final String SUBSCRIPTION_ID = ENVIRONMENT.getSubscriptionId();
     private static final String API_VERSION = "2021-04-01";
-    private BearerTokenAuthenticationPolicy credentialPolicy;
+    private static final TokenCredential CREDENTIAL = getTokenCredential(ENVIRONMENT.getTestMode());
+    private static final BearerTokenAuthenticationPolicy CREDENTIAL_POLICY =
+        new BearerTokenAuthenticationPolicy(CREDENTIAL, "https://management.azure.com/.default");
     private BlobContainerAsyncClient vlwContainer;
     private BlobAsyncClient vlwBlob;
 
-    @BeforeEach
-    public void setup() throws JsonProcessingException, MalformedURLException {
-        TokenCredential credential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
-        credentialPolicy = new BearerTokenAuthenticationPolicy(credential, "https://management.azure.com/.default");
-
+    @BeforeAll
+    public static void setupSpec() throws JsonProcessingException, MalformedURLException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             vlwContainerName = UUID.randomUUID().toString();
 
@@ -104,7 +106,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                     + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s",
                 SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, vlwContainerName, API_VERSION);
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .policies(credentialPolicy)
+                .policies(CREDENTIAL_POLICY)
                 .build();
 
             ImmutableStorageWithVersioning immutableStorageWithVersioning = new ImmutableStorageWithVersioning();
@@ -129,7 +131,10 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             }
             assertEquals(201, response.getStatusCode());
         }
+    }
 
+    @BeforeEach
+    public void setup() {
         vlwContainer = versionedBlobServiceAsyncClient.getBlobContainerAsyncClient(
             testResourceNamer.recordValueFromConfig(vlwContainerName));
         vlwBlob = vlwContainer.getBlobAsyncClient(generateBlobName());
@@ -199,11 +204,11 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         }
     }
 
-    @AfterEach
-    public void cleanup() throws MalformedURLException {
+    @AfterAll
+    public static void cleanupSpec() throws MalformedURLException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .policies(credentialPolicy)
+                .policies(CREDENTIAL_POLICY)
                 .build();
             BlobServiceClient cleanupClient = new BlobServiceClientBuilder()
                 .credential(ENVIRONMENT.getVersionedAccount().getCredential())
@@ -243,6 +248,16 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                 LOGGER.warning(response.getBodyAsString().block());
             }
             assertEquals(200, response.getStatusCode());
+        }
+    }
+
+    public static TokenCredential getTokenCredential(TestMode testMode) {
+        if (testMode == TestMode.RECORD){
+            return new DefaultAzureCredentialBuilder().build();
+        } else if (testMode == TestMode.LIVE){
+            return new AzurePowerShellCredentialBuilder().build();
+        } else { //playback or not set
+            return new MockTokenCredential();
         }
     }
 
@@ -510,7 +525,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
 
         StepVerifier.create(vlwContainer.getServiceAsyncClient().listBlobContainers(
-            new ListBlobContainersOptions().setPrefix(vlwContainer.getBlobContainerName())))
+                new ListBlobContainersOptions().setPrefix(vlwContainer.getBlobContainerName())))
             .assertNext(r -> assertTrue(r.getProperties().isImmutableStorageWithVersioningEnabled()))
             .verifyComplete();
     }
@@ -684,8 +699,8 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
 
         PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
             destination.beginCopy(new BlobBeginCopyOptions(vlwBlob.getBlobUrl())
-            .setImmutabilityPolicy(immutabilityPolicy)
-            .setLegalHold(true)));
+                .setImmutabilityPolicy(immutabilityPolicy)
+                .setLegalHold(true)));
         poller.blockLast();
 
         StepVerifier.create(destination.getProperties())
