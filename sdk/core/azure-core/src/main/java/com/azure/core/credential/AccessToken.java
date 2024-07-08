@@ -3,6 +3,8 @@
 
 package com.azure.core.credential;
 
+import reactor.util.annotation.Nullable;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -33,7 +35,6 @@ import java.time.OffsetDateTime;
  * @see com.azure.core.credential.TokenCredential
  */
 public class AccessToken {
-    private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     private final String token;
     private final OffsetDateTime expiresAt;
     private final OffsetDateTime refreshOn;
@@ -47,7 +48,7 @@ public class AccessToken {
     public AccessToken(String token, OffsetDateTime expiresAt) {
         this.token = token;
         this.expiresAt = expiresAt;
-        this.refreshOn = expiresAt.minus(REFRESH_OFFSET);
+        this.refreshOn = null;
     }
 
     /**
@@ -83,6 +84,8 @@ public class AccessToken {
 
     /**
      * Gets the time when the token should refresh, in UTC.
+     *
+     * Note: This value can be null.
      *
      * @return The time when the token should refresh, in UTC.
      */

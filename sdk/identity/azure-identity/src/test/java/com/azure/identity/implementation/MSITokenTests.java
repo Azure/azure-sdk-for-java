@@ -31,7 +31,7 @@ public class MSITokenTests {
         assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
         assertTrue((token2.getExpiresAt().toEpochSecond() - OffsetDateTime.now().toEpochSecond()) > 3500);
         assertEquals(expected.toEpochSecond(), token3.getExpiresAt().toEpochSecond());
-        assertTrue((token2.getRefreshOn().toEpochSecond() - OffsetDateTime.now().toEpochSecond()) > 1700);
+        assertTrue((token4.getRefreshOn().toEpochSecond() - OffsetDateTime.now().toEpochSecond()) > 1700);
     }
 
     @Test
