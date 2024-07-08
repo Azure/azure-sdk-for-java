@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.Duration;
 
 /**
  * The result for each word of the phrase
@@ -48,10 +49,10 @@ public class WordData {
 
       /**
      * Get the duration property.
-     *
+     * 
      * @return the duration value.
      */
-    public long getDuration() {
-        return duration;
+    public Duration getDuration() {
+        return Duration.ofNanos(duration * 100);
     }
 }

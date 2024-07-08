@@ -7,6 +7,7 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.List;
+import java.time.Duration;
 
 /**
  * The TranscriptionData model.
@@ -141,8 +142,8 @@ public final class TranscriptionData extends StreamingData {
      *
      * @return the duration value.
      */
-    public Long getDuration() {
-        return duration;
+    public Duration getDuration() {
+        return Duration.ofNanos(duration * 100);
     }
     /**
      * Get the words property.

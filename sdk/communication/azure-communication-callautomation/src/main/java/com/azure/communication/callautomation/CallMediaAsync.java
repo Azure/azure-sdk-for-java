@@ -909,7 +909,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateTranscription(String locale) {
-        return updateTransriptionWithResponse(locale, null).then();
+        return updateTranscriptionWithResponse(locale, null).then();
     }
 
     /**
@@ -921,7 +921,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateTranscription(String locale, String speechRecognitionModelEndpointId) {
-        return updateTransriptionWithResponse(locale, speechRecognitionModelEndpointId).then();
+        return updateTranscriptionWithResponse(locale, speechRecognitionModelEndpointId).then();
     }
 
      /**
@@ -931,8 +931,8 @@ public final class CallMediaAsync {
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateTransriptionWithResponse(String locale, String speechRecognitionModelEndpointId) {
-        return withContext(context -> updateTranscriptionWithResponseInternal(locale, speechRecognitionModelEndpointId, context)).then();
+    public Mono<Response<Void>> updateTranscriptionWithResponse(String locale, String speechRecognitionModelEndpointId) {
+        return withContext(context -> updateTranscriptionWithResponseInternal(locale, speechRecognitionModelEndpointId, context));
     }
 
     Mono<Response<Void>> updateTranscriptionWithResponseInternal(String locale, Context context) {
