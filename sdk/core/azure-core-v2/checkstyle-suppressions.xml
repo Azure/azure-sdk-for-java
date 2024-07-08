@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+  <!-- Suppress VisibilityModifier in MemberConverterImplTests and FieldBuilderTests.-->
+  <suppress checks="VisibilityModifier" files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java" />
+
+  <!-- Jackson adapter is allowed to expose external dependencies -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.util.serializer.JacksonAdapter"/>
+
+  <!-- Logger class suppression -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="(ClientLogger|ClientLoggerAccessHelper|DefaultLogger|LoggingEventBuilder).java"/>
+
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.core.implementation.jackson.(MemberNameConverterImpl|ObjectMapperFactory|XmlMapperFactory).java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.implementation.AccessTokenCache.java"/>
+
+  <!-- Exception is logged in an earlier line. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.http.policy.HttpLoggingPolicy.java"/>
+
+  <!-- Don't log in SyncRestProxy to match AsyncRestProxy. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.implementation.http.rest.SyncRestProxy.java"/>
+
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.core.implementation.http.policy.InstrumentationPolicy.java" />
+
+  <!-- Exception is being caught for tracing purposes only and rethrown as is, it is logged before or after tracing policy -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.core.implementation.http.policy.InstrumentationPolicy"/>
+
+  <!-- Code was copied from FasterXML.com and use their license instead of our usual one. -->
+  <suppress checks="Header"
+            files="com.azure.core.implementation.jackson.Option(BeanPropertyWriter|Module|PropertiesModifier|TypeModifier|SerializerProvider|Serializer)"/>
+
+  <!-- False positive in this case : This should not change behavior for UseCaughtExceptionCauseCheck when checking for throwing caught exceptions -->
+  <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="com.azure.core.http.policy.RetryPolicy.java"/>
+</suppressions>

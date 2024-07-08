@@ -55,4 +55,9 @@ public final class LoggingKeys {
      * Key representing response status code. The value should be a number.
      */
     public static final String STATUS_CODE_KEY = "statusCode";
+
+    /**
+     * Key representing a placeholder for redacted fields.
+     */
+    public static final String REDACTED_PLACEHOLDER = "REDACTED";
 }

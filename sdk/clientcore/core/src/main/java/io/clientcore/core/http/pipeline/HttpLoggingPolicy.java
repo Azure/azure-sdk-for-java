@@ -43,6 +43,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private final Set<String> allowedQueryParameterNames;
     private final HttpRequestLogger requestLogger;
     private final HttpResponseLogger responseLogger;
+    public static final String RETRY_COUNT_CONTEXT = "requestRetryCount";
 
     private static final String REQUEST_LOG_MESSAGE = "HTTP request";
     private static final String RESPONSE_LOG_MESSAGE = "HTTP response";
