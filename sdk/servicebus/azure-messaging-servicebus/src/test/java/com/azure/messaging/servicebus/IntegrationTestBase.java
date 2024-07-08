@@ -471,10 +471,12 @@ public abstract class IntegrationTestBase extends TestBase {
     protected void assertRunnable() {
         final TestMode mode = super.getTestMode();
         if (mode == TestMode.PLAYBACK) {
+            // AMQP traffic never gets recorded so there is no PLAYBACK supported.
             throw new TestAbortedException("Skipping integration tests in playback mode.");
         }
 
         if (mode == TestMode.RECORD) {
+            // RECORD mode used in SDK-dev setup not on CI pipeline.
             if (!CoreUtils.isNullOrEmpty(TestUtils.getConnectionString(false))) {
                 // integration tests are runnable using the connection string.
                 return;
@@ -488,8 +490,7 @@ public abstract class IntegrationTestBase extends TestBase {
             }
             throw new TestAbortedException("Not running integration in record mode (missing authentication set up).");
         }
+        // The CI pipeline is expected to have federated identity configured, so tests are runnable.
         assert mode == TestMode.LIVE;
-        // tests are runnable in pipeline with federated identity.
-        return;
     }
 }

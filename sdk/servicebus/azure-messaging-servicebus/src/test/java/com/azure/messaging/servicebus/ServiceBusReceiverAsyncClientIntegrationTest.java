@@ -364,7 +364,6 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
-    @Disabled("Investigate: Could not emit tick 0 due to lack of requests (interval doesn't support small downstream requests that replenish slower than the ticks)))")
     void peekMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, USE_CASE_PEEK_MESSAGE, isSessionEnabled);
