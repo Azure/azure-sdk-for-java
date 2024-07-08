@@ -68,8 +68,6 @@ public class TableAsyncClientTest extends TableClientTestBase {
     }
 
     protected void beforeTest() {
-        Assumptions.assumeFalse(IS_COSMOS_TEST && interceptorManager.isLiveMode(), "Tables CosmosDB live tests are currently disabled.");
-
         final String tableName = testResourceNamer.randomName("tableName", 20);
         tableClient = getClientBuilder(tableName, true).buildAsyncClient();
 
