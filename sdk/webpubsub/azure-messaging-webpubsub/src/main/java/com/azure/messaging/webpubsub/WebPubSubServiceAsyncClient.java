@@ -376,7 +376,7 @@ public final class WebPubSubServiceAsyncClient {
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
-     * @param groups Target group names
+     * @param groups Target group names. Rejected by server on status code 400 if this parameter is null.
      * @param filter The filter to apply to the connections.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return the {@link Response} on successful completion of {@link Mono}.
