@@ -345,7 +345,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
         String filter = "userId eq 'user 1'";
         // Expect no error
         StepVerifier
-            .create(client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, groupList, filter, new RequestOptions()))
+            .create(client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, groupList, filter))
             .expectComplete()
             .verify(TIMEOUT);
     }
@@ -355,7 +355,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
         List<String> groupList = Arrays.asList("group1", "group2");
         String filter = "userId eq 'user 1'";
         StepVerifier.create(
-            client.addConnectionsToGroupsWithResponse(null, groupList, filter, new RequestOptions())
+            client.addConnectionsToGroupsWithResponse(null, groupList, filter)
         ).expectError(IllegalArgumentException.class);
     }
 
@@ -363,7 +363,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     public void testAddConnectionsToGroupsThrowErrorWhenGroupsToAddIsNull() {
         String filter = "userId eq 'user 1'";
         StepVerifier.create(
-            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, null, filter, new RequestOptions())
+            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, null, filter)
         ).expectError(HttpResponseException.class);
     }
 
