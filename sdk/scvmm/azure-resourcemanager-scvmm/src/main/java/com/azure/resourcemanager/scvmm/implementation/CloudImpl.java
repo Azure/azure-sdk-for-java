@@ -9,12 +9,10 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.scvmm.fluent.models.CloudInner;
 import com.azure.resourcemanager.scvmm.models.Cloud;
-import com.azure.resourcemanager.scvmm.models.CloudCapacity;
+import com.azure.resourcemanager.scvmm.models.CloudProperties;
+import com.azure.resourcemanager.scvmm.models.CloudTagsUpdate;
 import com.azure.resourcemanager.scvmm.models.ExtendedLocation;
-import com.azure.resourcemanager.scvmm.models.ResourcePatch;
-import com.azure.resourcemanager.scvmm.models.StorageQoSPolicy;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public final class CloudImpl implements Cloud, Cloud.Definition, Cloud.Update {
@@ -47,45 +45,16 @@ public final class CloudImpl implements Cloud, Cloud.Definition, Cloud.Update {
         }
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public CloudProperties properties() {
+        return this.innerModel().properties();
     }
 
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
 
-    public String inventoryItemId() {
-        return this.innerModel().inventoryItemId();
-    }
-
-    public String uuid() {
-        return this.innerModel().uuid();
-    }
-
-    public String vmmServerId() {
-        return this.innerModel().vmmServerId();
-    }
-
-    public String cloudName() {
-        return this.innerModel().cloudName();
-    }
-
-    public CloudCapacity cloudCapacity() {
-        return this.innerModel().cloudCapacity();
-    }
-
-    public List<StorageQoSPolicy> storageQoSPolicies() {
-        List<StorageQoSPolicy> inner = this.innerModel().storageQoSPolicies();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public String provisioningState() {
-        return this.innerModel().provisioningState();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Region region() {
@@ -94,6 +63,10 @@ public final class CloudImpl implements Cloud, Cloud.Definition, Cloud.Update {
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public CloudInner innerModel() {
@@ -106,9 +79,9 @@ public final class CloudImpl implements Cloud, Cloud.Definition, Cloud.Update {
 
     private String resourceGroupName;
 
-    private String cloudName;
+    private String cloudResourceName;
 
-    private ResourcePatch updateBody;
+    private CloudTagsUpdate updateProperties;
 
     public CloudImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -116,70 +89,64 @@ public final class CloudImpl implements Cloud, Cloud.Definition, Cloud.Update {
     }
 
     public Cloud create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClouds()
-                .createOrUpdate(resourceGroupName, cloudName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getClouds()
+            .createOrUpdate(resourceGroupName, cloudResourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Cloud create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClouds()
-                .createOrUpdate(resourceGroupName, cloudName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getClouds()
+            .createOrUpdate(resourceGroupName, cloudResourceName, this.innerModel(), context);
         return this;
     }
 
     CloudImpl(String name, com.azure.resourcemanager.scvmm.ScvmmManager serviceManager) {
         this.innerObject = new CloudInner();
         this.serviceManager = serviceManager;
-        this.cloudName = name;
+        this.cloudResourceName = name;
     }
 
     public CloudImpl update() {
-        this.updateBody = new ResourcePatch();
+        this.updateProperties = new CloudTagsUpdate();
         return this;
     }
 
     public Cloud apply() {
-        this.innerObject =
-            serviceManager.serviceClient().getClouds().update(resourceGroupName, cloudName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getClouds()
+            .update(resourceGroupName, cloudResourceName, updateProperties, Context.NONE);
         return this;
     }
 
     public Cloud apply(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getClouds().update(resourceGroupName, cloudName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getClouds()
+            .update(resourceGroupName, cloudResourceName, updateProperties, context);
         return this;
     }
 
     CloudImpl(CloudInner innerObject, com.azure.resourcemanager.scvmm.ScvmmManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudName = Utils.getValueFromIdByName(innerObject.id(), "clouds");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.cloudResourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clouds");
     }
 
     public Cloud refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClouds()
-                .getByResourceGroupWithResponse(resourceGroupName, cloudName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getClouds()
+            .getByResourceGroupWithResponse(resourceGroupName, cloudResourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Cloud refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClouds()
-                .getByResourceGroupWithResponse(resourceGroupName, cloudName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getClouds()
+            .getByResourceGroupWithResponse(resourceGroupName, cloudResourceName, context)
+            .getValue();
         return this;
     }
 
@@ -203,23 +170,13 @@ public final class CloudImpl implements Cloud, Cloud.Definition, Cloud.Update {
             this.innerModel().withTags(tags);
             return this;
         } else {
-            this.updateBody.withTags(tags);
+            this.updateProperties.withTags(tags);
             return this;
         }
     }
 
-    public CloudImpl withInventoryItemId(String inventoryItemId) {
-        this.innerModel().withInventoryItemId(inventoryItemId);
-        return this;
-    }
-
-    public CloudImpl withUuid(String uuid) {
-        this.innerModel().withUuid(uuid);
-        return this;
-    }
-
-    public CloudImpl withVmmServerId(String vmmServerId) {
-        this.innerModel().withVmmServerId(vmmServerId);
+    public CloudImpl withProperties(CloudProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 

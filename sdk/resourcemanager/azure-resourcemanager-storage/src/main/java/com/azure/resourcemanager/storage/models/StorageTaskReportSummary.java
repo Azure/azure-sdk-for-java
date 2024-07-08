@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.storage.fluent.models.StorageTaskReportInstanceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -22,7 +21,8 @@ public final class StorageTaskReportSummary {
     private List<StorageTaskReportInstanceInner> value;
 
     /*
-     * Request URL that can be used to query next page of storage task run results summary. Returned when the number of run instances and summary reports exceed maximum page size.
+     * Request URL that can be used to query next page of storage task run results summary. Returned when the number of
+     * run instances and summary reports exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
@@ -35,7 +35,7 @@ public final class StorageTaskReportSummary {
 
     /**
      * Get the value property: Gets storage tasks run result summary.
-     *
+     * 
      * @return the value value.
      */
     public List<StorageTaskReportInstanceInner> value() {
@@ -45,7 +45,7 @@ public final class StorageTaskReportSummary {
     /**
      * Get the nextLink property: Request URL that can be used to query next page of storage task run results summary.
      * Returned when the number of run instances and summary reports exceed maximum page size.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -54,7 +54,7 @@ public final class StorageTaskReportSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

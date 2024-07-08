@@ -15,22 +15,18 @@ public final class RedshiftUnloadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RedshiftUnloadSettings model = BinaryData.fromString(
-            "{\"s3LinkedServiceName\":{\"referenceName\":\"ovblx\",\"parameters\":{\"nykfzso\":\"dataezgdpiurfe\",\"vzqldgii\":\"dataouezszl\",\"b\":\"datanpkxp\",\"jhbvllj\":\"datatyjf\"}},\"bucketName\":\"dataqlruhhkkbfgr\"}")
+            "{\"s3LinkedServiceName\":{\"referenceName\":\"jw\",\"parameters\":{\"jwdw\":\"datanmavf\",\"e\":\"datanx\"}},\"bucketName\":\"datand\"}")
             .toObject(RedshiftUnloadSettings.class);
-        Assertions.assertEquals("ovblx", model.s3LinkedServiceName().referenceName());
+        Assertions.assertEquals("jw", model.s3LinkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RedshiftUnloadSettings model
-            = new RedshiftUnloadSettings()
-                .withS3LinkedServiceName(
-                    new LinkedServiceReference().withReferenceName("ovblx")
-                        .withParameters(mapOf("nykfzso", "dataezgdpiurfe", "vzqldgii", "dataouezszl", "b", "datanpkxp",
-                            "jhbvllj", "datatyjf")))
-                .withBucketName("dataqlruhhkkbfgr");
+            = new RedshiftUnloadSettings().withS3LinkedServiceName(new LinkedServiceReference().withReferenceName("jw")
+                .withParameters(mapOf("jwdw", "datanmavf", "e", "datanx"))).withBucketName("datand");
         model = BinaryData.fromObject(model).toObject(RedshiftUnloadSettings.class);
-        Assertions.assertEquals("ovblx", model.s3LinkedServiceName().referenceName());
+        Assertions.assertEquals("jw", model.s3LinkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

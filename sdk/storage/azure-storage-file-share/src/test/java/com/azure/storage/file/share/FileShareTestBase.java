@@ -98,7 +98,8 @@ public class FileShareTestBase extends TestProxyTestBase {
                 "x-ms-file-rename-source", "x-ms-source-if-unmodified-since", "x-ms-source-lease-id",
                 "x-ms-encryption-key-sha256"))
             .setQueryOrderingIgnored(true)
-            .setIgnoredQueryParameters(Arrays.asList("sv"))));
+            .setIgnoredQueryParameters(Arrays.asList("sv"))
+            .setExcludedHeaders(Collections.singletonList("x-ms-meta-testmetadata"))));
 
         ShareServiceClientBuilder builder = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount());
         primaryFileServiceClient = builder.buildClient();

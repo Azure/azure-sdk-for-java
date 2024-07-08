@@ -64,24 +64,19 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
     }
 
     public Endpoint create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEndpoints()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, storageMoverName, endpointName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEndpoints()
+            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, endpointName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Endpoint create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEndpoints()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, storageMoverName, endpointName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEndpoints()
+            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, endpointName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -97,51 +92,42 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
     }
 
     public Endpoint apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEndpoints()
-                .updateWithResponse(
-                    resourceGroupName, storageMoverName, endpointName, updateEndpointParam, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEndpoints()
+            .updateWithResponse(resourceGroupName, storageMoverName, endpointName, updateEndpointParam, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Endpoint apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEndpoints()
-                .updateWithResponse(resourceGroupName, storageMoverName, endpointName, updateEndpointParam, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEndpoints()
+            .updateWithResponse(resourceGroupName, storageMoverName, endpointName, updateEndpointParam, context)
+            .getValue();
         return this;
     }
 
     EndpointImpl(EndpointInner innerObject, com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageMoverName = Utils.getValueFromIdByName(innerObject.id(), "storageMovers");
-        this.endpointName = Utils.getValueFromIdByName(innerObject.id(), "endpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.storageMoverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageMovers");
+        this.endpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "endpoints");
     }
 
     public Endpoint refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEndpoints()
-                .getWithResponse(resourceGroupName, storageMoverName, endpointName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEndpoints()
+            .getWithResponse(resourceGroupName, storageMoverName, endpointName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Endpoint refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEndpoints()
-                .getWithResponse(resourceGroupName, storageMoverName, endpointName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEndpoints()
+            .getWithResponse(resourceGroupName, storageMoverName, endpointName, context)
+            .getValue();
         return this;
     }
 

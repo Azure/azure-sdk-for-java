@@ -19,37 +19,33 @@ public final class LakeHouseTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseTableDataset model = BinaryData.fromString(
-            "{\"type\":\"wvxcai\",\"typeProperties\":{\"table\":\"datazvvxdvphx\"},\"description\":\"icbogsfo\",\"structure\":\"datamamiyfgunruk\",\"schema\":\"datayaalbk\",\"linkedServiceName\":{\"referenceName\":\"bzqa\",\"parameters\":{\"kifqbxmnnidot\":\"datarkvit\",\"odttq\":\"datapumzuh\",\"umvuwjyulqfpqql\":\"datapva\"}},\"parameters\":{\"dblapqraczvtniwf\":{\"type\":\"Float\",\"defaultValue\":\"datahjgmr\"},\"ibxkcegc\":{\"type\":\"Object\",\"defaultValue\":\"datawhxm\"},\"iawpjfkrarerdl\":{\"type\":\"Array\",\"defaultValue\":\"dataxkxtcxbbjbeyqoh\"},\"suameg\":{\"type\":\"String\",\"defaultValue\":\"datatpxowgowwdocj\"}},\"annotations\":[\"dataiszhexu\",\"datafav\",\"dataesloblit\"],\"folder\":{\"name\":\"s\"},\"\":{\"trztogujg\":\"dataosanjso\"}}")
+            "{\"type\":\"LakeHouseTable\",\"typeProperties\":{\"schema\":\"datagva\",\"table\":\"datar\"},\"description\":\"xlmbrtvtgolmlp\",\"structure\":\"datatlayyxhxj\",\"schema\":\"datays\",\"linkedServiceName\":{\"referenceName\":\"aqqjh\",\"parameters\":{\"njc\":\"datafaob\",\"qwssyd\":\"databozvc\",\"ywo\":\"datawrybi\"}},\"parameters\":{\"pkv\":{\"type\":\"Int\",\"defaultValue\":\"datavtzijrdlxbaeyo\"},\"mnpbdrcibj\":{\"type\":\"Int\",\"defaultValue\":\"datafdz\"}},\"annotations\":[\"datanoztnhvd\",\"datau\",\"dataamqobqehs\",\"datasht\"],\"folder\":{\"name\":\"zfeoctrzjw\"},\"\":{\"mbvwdxgy\":\"datackze\",\"l\":\"datapmxqzl\"}}")
             .toObject(LakeHouseTableDataset.class);
-        Assertions.assertEquals("icbogsfo", model.description());
-        Assertions.assertEquals("bzqa", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("dblapqraczvtniwf").type());
-        Assertions.assertEquals("s", model.folder().name());
+        Assertions.assertEquals("xlmbrtvtgolmlp", model.description());
+        Assertions.assertEquals("aqqjh", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("pkv").type());
+        Assertions.assertEquals("zfeoctrzjw", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LakeHouseTableDataset model = new LakeHouseTableDataset().withDescription("icbogsfo")
-            .withStructure("datamamiyfgunruk")
-            .withSchema("datayaalbk")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("bzqa")
-                .withParameters(
-                    mapOf("kifqbxmnnidot", "datarkvit", "odttq", "datapumzuh", "umvuwjyulqfpqql", "datapva")))
-            .withParameters(mapOf("dblapqraczvtniwf",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datahjgmr"), "ibxkcegc",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datawhxm"),
-                "iawpjfkrarerdl",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataxkxtcxbbjbeyqoh"),
-                "suameg",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datatpxowgowwdocj")))
-            .withAnnotations(Arrays.asList("dataiszhexu", "datafav", "dataesloblit"))
-            .withFolder(new DatasetFolder().withName("s"))
-            .withTable("datazvvxdvphx");
+        LakeHouseTableDataset model = new LakeHouseTableDataset().withDescription("xlmbrtvtgolmlp")
+            .withStructure("datatlayyxhxj")
+            .withSchema("datays")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("aqqjh")
+                .withParameters(mapOf("njc", "datafaob", "qwssyd", "databozvc", "ywo", "datawrybi")))
+            .withParameters(mapOf("pkv",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datavtzijrdlxbaeyo"),
+                "mnpbdrcibj", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datafdz")))
+            .withAnnotations(Arrays.asList("datanoztnhvd", "datau", "dataamqobqehs", "datasht"))
+            .withFolder(new DatasetFolder().withName("zfeoctrzjw"))
+            .withSchemaTypePropertiesSchema("datagva")
+            .withTable("datar");
         model = BinaryData.fromObject(model).toObject(LakeHouseTableDataset.class);
-        Assertions.assertEquals("icbogsfo", model.description());
-        Assertions.assertEquals("bzqa", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("dblapqraczvtniwf").type());
-        Assertions.assertEquals("s", model.folder().name());
+        Assertions.assertEquals("xlmbrtvtgolmlp", model.description());
+        Assertions.assertEquals("aqqjh", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("pkv").type());
+        Assertions.assertEquals("zfeoctrzjw", model.folder().name());
     }
 
     // Use "Map.of" if available

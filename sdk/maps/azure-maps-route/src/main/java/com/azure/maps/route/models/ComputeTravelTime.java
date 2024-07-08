@@ -5,31 +5,46 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ComputeTravelTime. */
+/**
+ * Defines values for ComputeTravelTime.
+ */
 public final class ComputeTravelTime extends ExpandableStringEnum<ComputeTravelTime> {
-    /** Static value none for ComputeTravelTime. */
+    /**
+     * Does not compute additional travel times.
+     */
     public static final ComputeTravelTime NONE = fromString("none");
 
-    /** Static value all for ComputeTravelTime. */
+    /**
+     * Computes travel times for all types of traffic information and specifies all results in the fields
+     * noTrafficTravelTimeInSeconds, historicTrafficTravelTimeInSeconds and liveTrafficIncidentsTravelTimeInSeconds
+     * being included in the summaries in the route response.
+     */
     public static final ComputeTravelTime ALL = fromString("all");
 
     /**
+     * Creates a new instance of ComputeTravelTime value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ComputeTravelTime() {
+    }
+
+    /**
      * Creates or finds a ComputeTravelTime from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ComputeTravelTime.
      */
-    @JsonCreator
     public static ComputeTravelTime fromString(String name) {
         return fromString(name, ComputeTravelTime.class);
     }
 
     /**
      * Gets known ComputeTravelTime values.
-     *
+     * 
      * @return known ComputeTravelTime values.
      */
     public static Collection<ComputeTravelTime> values() {

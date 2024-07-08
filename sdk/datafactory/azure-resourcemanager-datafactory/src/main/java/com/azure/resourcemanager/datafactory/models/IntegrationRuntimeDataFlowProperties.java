@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +37,8 @@ public final class IntegrationRuntimeDataFlowProperties {
     private Integer timeToLive;
 
     /*
-     * Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is reached if this is set as false. Default is true.
+     * Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is
+     * reached if this is set as false. Default is true.
      */
     @JsonProperty(value = "cleanup")
     private Boolean cleanup;
@@ -189,7 +190,7 @@ public final class IntegrationRuntimeDataFlowProperties {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

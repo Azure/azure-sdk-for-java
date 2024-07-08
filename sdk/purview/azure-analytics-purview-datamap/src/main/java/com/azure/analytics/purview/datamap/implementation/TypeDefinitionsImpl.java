@@ -4404,9 +4404,7 @@ public final class TypeDefinitionsImpl {
     }
 
     /**
-     * Create all atlas type definitions in bulk, only new definitions will be
-     * created.
-     * Any changes to the existing definitions will be discarded.
+     * Create all atlas type definitions in bulk. Please avoid recreating existing types.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -4990,9 +4988,7 @@ public final class TypeDefinitionsImpl {
     }
 
     /**
-     * Create all atlas type definitions in bulk, only new definitions will be
-     * created.
-     * Any changes to the existing definitions will be discarded.
+     * Create all atlas type definitions in bulk. Please avoid recreating existing types.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code

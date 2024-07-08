@@ -11,7 +11,7 @@ public final class DbServerPatchingDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbServerPatchingDetails model = BinaryData.fromString(
-            "{\"estimatedPatchDuration\":1181304554,\"patchingStatus\":\"Scheduled\",\"timePatchingEnded\":\"2021-05-21T08:31:31Z\",\"timePatchingStarted\":\"2021-10-21T17:47:33Z\"}")
+            "{\"estimatedPatchDuration\":46928565,\"patchingStatus\":\"Complete\",\"timePatchingEnded\":\"2021-03-15T03:06:41Z\",\"timePatchingStarted\":\"2021-06-08T06:14:34Z\"}")
             .toObject(DbServerPatchingDetails.class);
     }
 

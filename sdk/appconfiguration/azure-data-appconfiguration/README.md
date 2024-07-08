@@ -6,7 +6,7 @@ Modern programs, especially programs running in a cloud, generally have many com
 Use the client library for App Configuration to create and manage application configuration settings.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation]
-| [Product documentation][azconfig_docs] | [Samples][samples] | [Troubleshooting][troubleshooting]
+| [Product documentation][app_config_docs] | [Samples][samples] | [Troubleshooting][troubleshooting]
 
 ## Getting started
 
@@ -55,7 +55,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.6.0</version>
+  <version>1.6.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -240,7 +240,6 @@ For "Feature Flag" and "Secret Reference" configuration settings, see [samples][
 * [Recover a snapshot](#recover-a-snapshot)
 * [Retrieve all Snapshots](#retrieve-all-snapshots)
 * [Retrieve Configuration Settings in a Snapshot](#retrieve-configuration-settings-in-a-snapshot)
-* [Retrieve Labels](#retrieve-labels)
 
 ### Create a Configuration Client
 
@@ -400,7 +399,6 @@ configurationClient.setConfigurationSetting(key2, "new_label", "new_value");
 SettingSelector selector = new SettingSelector().setKeyFilter(key + "," + key2);
 PagedIterable<ConfigurationSetting> settings = configurationClient.listConfigurationSettings(selector);
 ```
-For more filters see class `SettingSelector`, such as `tagsFilter` see [samples][samples].
 
 ### List revisions of multiple Configuration Settings
 
@@ -536,18 +534,6 @@ for (ConfigurationSetting setting : configurationSettings) {
 }
 ```
 
-### Retrieve Labels
-List multiple labels in the App Configuration store by calling `listLabels`.
-
-```java readme-sample-listLabels
-String labelFilter = "{labelNamePrefix}*";
-configurationClient.listLabels(new LabelSelector().setLabelFilter(labelFilter))
-        .forEach(label -> {
-            System.out.println("label name = " + label);
-        });
-```
-
-
 ## Troubleshooting
 
 ### General
@@ -599,7 +585,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [api_documentation]: https://aka.ms/java-docs
 [app_config_store]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-dotnet-core-app#create-an-app-configuration-store
 [app_config_role]: https://docs.microsoft.com/azure/azure-app-configuration/rest-api-authorization-azure-ad#roles
-[azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
+[app_config_docs]: https://docs.microsoft.com/azure/azure-app-configuration
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [azure_subscription]: https://azure.microsoft.com/free

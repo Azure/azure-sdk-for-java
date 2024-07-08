@@ -58,13 +58,16 @@ public final class HBaseLinkedServiceTypeProperties {
     private Object enableSsl;
 
     /*
-     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file installed with the IR.
+     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
+     * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
+     * installed with the IR.
      */
     @JsonProperty(value = "trustedCertPath")
     private Object trustedCertPath;
 
     /*
-     * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when connecting over SSL. The default value is false.
+     * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
+     * connecting over SSL. The default value is false.
      */
     @JsonProperty(value = "allowHostNameCNMismatch")
     private Object allowHostnameCNMismatch;
@@ -76,7 +79,8 @@ public final class HBaseLinkedServiceTypeProperties {
     private Object allowSelfSignedServerCert;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

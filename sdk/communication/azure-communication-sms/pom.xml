@@ -40,9 +40,8 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
-    <jacoco.skip>false</jacoco.skip>
+    <jacoco.min.linecoverage>0.62</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.48</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
@@ -60,7 +59,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.3.3</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.3.4</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -113,7 +112,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

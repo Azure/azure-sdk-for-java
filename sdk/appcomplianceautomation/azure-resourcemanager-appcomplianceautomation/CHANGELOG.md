@@ -1,14 +1,22 @@
 # Release History
 
-## 1.0.0-beta.2 (2024-06-27)
+## 1.1.0-beta.1 (Unreleased)
 
-- Azure Resource Manager App Compliance Automation client library for Java. This package contains Microsoft Azure SDK for App Compliance Automation Management SDK. App Compliance Automation Tool for Microsoft 365 API spec. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2024-06-27)
+
+- Azure Resource Manager App Compliance Automation client library for Java. This package contains Microsoft Azure SDK for App Compliance Automation Management SDK. App Compliance Automation Tool for Microsoft 365 API spec. Package tag package-2024-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
 * `models.ControlFamilyType` was removed
-
-* `models.OperationListResult` was removed
 
 * `models.ControlType` was removed
 
@@ -40,25 +48,24 @@
 #### `models.Reports` was modified
 
 * `list(java.lang.String,java.lang.Integer,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-* `list()` was removed
 
 #### `models.ControlFamily` was modified
 
-* `familyName()` was removed
-* `familyStatus()` was removed
 * `familyType()` was removed
+* `familyStatus()` was removed
+* `familyName()` was removed
 
 #### `models.OverviewStatus` was modified
 
-* `withFailedCount(java.lang.Integer)` was removed
-* `withManualCount(java.lang.Integer)` was removed
 * `withPassedCount(java.lang.Integer)` was removed
+* `withManualCount(java.lang.Integer)` was removed
+* `withFailedCount(java.lang.Integer)` was removed
 
 #### `models.Control` was modified
 
+* `controlShortName()` was removed
 * `assessments()` was removed
 * `controlType()` was removed
-* `controlShortName()` was removed
 
 #### `models.ReportComplianceStatus` was modified
 
@@ -66,21 +73,21 @@
 
 #### `models.ResourceMetadata` was modified
 
-* `withResourceName(java.lang.String)` was removed
-* `withTags(java.util.Map)` was removed
-* `tags()` was removed
 * `resourceName()` was removed
+* `withTags(java.util.Map)` was removed
+* `withResourceName(java.lang.String)` was removed
+* `tags()` was removed
 
 #### `models.ComplianceReportItem` was modified
 
+* `complianceState()` was removed
+* `policyDisplayName()` was removed
 * `policyDescription()` was removed
+* `statusChangeDate()` was removed
 * `policyId()` was removed
 * `controlType()` was removed
-* `policyDisplayName()` was removed
-* `complianceState()` was removed
-* `statusChangeDate()` was removed
-* `resourceGroup()` was removed
 * `subscriptionId()` was removed
+* `resourceGroup()` was removed
 
 #### `models.SnapshotProperties` was modified
 
@@ -92,19 +99,18 @@
 
 #### `AppComplianceAutomationManager` was modified
 
-* `fluent.AppComplianceAutomationToolForMicrosoft365 serviceClient()` -> `fluent.AppComplianceAutomationClient serviceClient()`
 * `snapshotOperations()` was removed
 * `reportOperations()` was removed
+* `fluent.AppComplianceAutomationToolForMicrosoft365 serviceClient()` -> `fluent.AppComplianceAutomationClient serviceClient()`
 
 #### `models.Snapshots` was modified
 
 * `list(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-* `list(java.lang.String)` was removed
 
 #### `models.ReportProperties` was modified
 
-* `reportName()` was removed
 * `id()` was removed
+* `reportName()` was removed
 
 ### Features Added
 
@@ -114,9 +120,9 @@
 
 * `models.SendAllEvents` was added
 
-* `models.ResponsibilityStatus` was added
+* `models.ReportResourceListResult` was added
 
-* `implementation.models.EvidenceResourceListResult` was added
+* `models.ResponsibilityStatus` was added
 
 * `models.ContentType` was added
 
@@ -146,6 +152,8 @@
 
 * `models.CheckNameAvailabilityRequest` was added
 
+* `models.WebhookResourceListResult` was added
+
 * `models.TriggerEvaluationRequest` was added
 
 * `models.InputType` was added
@@ -155,12 +163,6 @@
 * `models.ListInUseStorageAccountsRequest` was added
 
 * `models.RecommendationSolution` was added
-
-* `implementation.models.ReportResourceListResult` was added
-
-* `implementation.models.ScopingConfigurationResourceListResult` was added
-
-* `implementation.models.WebhookResourceListResult` was added
 
 * `models.ScopingConfigurationResource` was added
 
@@ -176,7 +178,11 @@
 
 * `models.StatusItem` was added
 
+* `models.EvidenceResourceListResult` was added
+
 * `models.ScopingConfigurationProperties` was added
+
+* `models.ScopingConfigurationResourceListResult` was added
 
 * `models.WebhookKeyEnabled` was added
 
@@ -195,6 +201,8 @@
 * `models.DeliveryStatus` was added
 
 * `models.ResponsibilityType` was added
+
+* `models.SnapshotResourceListResult` was added
 
 * `models.SyncCertRecordResponse` was added
 
@@ -220,8 +228,6 @@
 
 * `models.ListInUseStorageAccountsResponse` was added
 
-* `implementation.models.SnapshotResourceListResult` was added
-
 * `models.EvidenceProperties` was added
 
 * `models.ScopingQuestion` was added
@@ -244,49 +250,51 @@
 
 * `models.Recommendation` was added
 
-* `implementation.models.OperationListResult` was added
-
 #### `models.ReportResourcePatch` was modified
 
 * `withProperties(models.ReportPatchProperties)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OperationListResult` was modified
+
 * `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.Reports` was modified
 
-* `getScopingQuestions(java.lang.String)` was added
-* `listByTenant(java.lang.String,java.lang.Integer,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `syncCertRecord(java.lang.String,models.SyncCertRecordRequest,com.azure.core.util.Context)` was added
 * `delete(java.lang.String,com.azure.core.util.Context)` was added
-* `fix(java.lang.String,com.azure.core.util.Context)` was added
 * `syncCertRecord(java.lang.String,models.SyncCertRecordRequest)` was added
-* `checkNameAvailability(java.lang.String,models.CheckNameAvailabilityRequest)` was added
-* `fix(java.lang.String)` was added
-* `checkNameAvailabilityWithResponse(java.lang.String,models.CheckNameAvailabilityRequest,com.azure.core.util.Context)` was added
-* `update(java.lang.String,models.ReportResourcePatch)` was added
-* `delete(java.lang.String)` was added
 * `getScopingQuestionsWithResponse(java.lang.String,com.azure.core.util.Context)` was added
-* `verify(java.lang.String,com.azure.core.util.Context)` was added
-* `createOrUpdate(java.lang.String,fluent.models.ReportResourceInner,com.azure.core.util.Context)` was added
-* `getWithResponse(java.lang.String,com.azure.core.util.Context)` was added
-* `listByTenant()` was added
+* `nestedResourceCheckNameAvailabilityWithResponse(java.lang.String,models.CheckNameAvailabilityRequest,com.azure.core.util.Context)` was added
+* `update(java.lang.String,models.ReportResourcePatch)` was added
 * `createOrUpdate(java.lang.String,fluent.models.ReportResourceInner)` was added
+* `getWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `fix(java.lang.String,com.azure.core.util.Context)` was added
+* `fix(java.lang.String)` was added
 * `get(java.lang.String)` was added
+* `verify(java.lang.String,com.azure.core.util.Context)` was added
+* `syncCertRecord(java.lang.String,models.SyncCertRecordRequest,com.azure.core.util.Context)` was added
 * `update(java.lang.String,models.ReportResourcePatch,com.azure.core.util.Context)` was added
+* `list(java.lang.String,java.lang.Integer,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `delete(java.lang.String)` was added
+* `getScopingQuestions(java.lang.String)` was added
 * `verify(java.lang.String)` was added
+* `nestedResourceCheckNameAvailability(java.lang.String,models.CheckNameAvailabilityRequest)` was added
+* `createOrUpdate(java.lang.String,fluent.models.ReportResourceInner,com.azure.core.util.Context)` was added
 
 #### `models.ControlFamily` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `controlFamilyName()` was added
-* `controlFamilyStatus()` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `controlFamilyStatus()` was added
 
 #### `models.OverviewStatus` was modified
 
-* `notApplicableCount()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `notApplicableCount()` was added
 * `pendingCount()` was added
 
 #### `models.DownloadResponseComplianceDetailedPdfReport` was modified
@@ -296,20 +304,20 @@
 
 #### `models.ComplianceResult` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.Control` was modified
 
+* `fromJson(com.azure.json.JsonReader)` was added
 * `responsibilities()` was added
 * `toJson(com.azure.json.JsonWriter)` was added
 * `controlName()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.ReportComplianceStatus` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.SnapshotDownloadRequest` was modified
 
@@ -328,24 +336,24 @@
 
 #### `models.ResourceMetadata` was modified
 
-* `resourceOrigin()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-* `accountId()` was added
 * `withAccountId(java.lang.String)` was added
-* `withResourceOrigin(models.ResourceOrigin)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `accountId()` was added
+* `withResourceOrigin(models.ResourceOrigin)` was added
+* `resourceOrigin()` was added
 
 #### `models.ComplianceReportItem` was modified
 
-* `resourceStatus()` was added
-* `resourceStatusChangeDate()` was added
-* `resourceOrigin()` was added
 * `controlFamilyName()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 * `responsibilityDescription()` was added
+* `resourceStatusChangeDate()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 * `controlStatus()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 * `responsibilityTitle()` was added
+* `resourceOrigin()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `resourceStatus()` was added
 
 #### `models.SnapshotProperties` was modified
 
@@ -354,8 +362,8 @@
 
 #### `models.Category` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.DownloadResponseCompliancePdfReport` was modified
 
@@ -366,26 +374,25 @@
 
 * `providerActions()` was added
 * `webhooks()` was added
-* `evidences()` was added
 * `scopingConfigurations()` was added
+* `evidences()` was added
 
 #### `models.Snapshots` was modified
 
-* `download(java.lang.String,java.lang.String,models.SnapshotDownloadRequest,com.azure.core.util.Context)` was added
-* `get(java.lang.String,java.lang.String)` was added
-* `listByReportResource(java.lang.String)` was added
 * `download(java.lang.String,java.lang.String,models.SnapshotDownloadRequest)` was added
 * `getWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `listByReportResource(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `download(java.lang.String,java.lang.String,models.SnapshotDownloadRequest,com.azure.core.util.Context)` was added
+* `list(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `get(java.lang.String,java.lang.String)` was added
 
 #### `models.ReportProperties` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
+* `storageInfo()` was added
+* `withStorageInfo(models.StorageInfo)` was added
 * `certRecords()` was added
 * `fromJson(com.azure.json.JsonReader)` was added
-* `withStorageInfo(models.StorageInfo)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 * `errors()` was added
-* `storageInfo()` was added
 
 ## 1.0.0-beta.1 (2022-11-15)
 

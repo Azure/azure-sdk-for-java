@@ -9,10 +9,10 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.batch.models.AccountKeyType;
 import com.azure.resourcemanager.batch.models.Application;
 import com.azure.resourcemanager.batch.models.ApplicationPackage;
@@ -54,11 +54,11 @@ public class BatchTests extends TestBase {
     public void beforeTest() {
         batchManager = BatchManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         storageManager = StorageManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
@@ -79,7 +79,7 @@ public class BatchTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCreateBatchAccount() {
         StorageAccount storageAccount = null;
         BatchAccount account = null;
@@ -121,7 +121,7 @@ public class BatchTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCRUDBatchAccount() {
         BatchAccount account = null;
         StorageAccount storageAccount = null;
@@ -177,7 +177,7 @@ public class BatchTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCRUDBatchApplication() {
         StorageAccount storageAccount = null;
         BatchAccount account = null;
@@ -253,7 +253,7 @@ public class BatchTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCRUDBatchPool() {
         BatchAccount account = null;
         Pool pool = null;

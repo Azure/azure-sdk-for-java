@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -89,12 +90,23 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         return this;
     }
 
+    @Override
+    public Boolean isContentResponseOnWriteEnabled() {
+        return null;
+    }
+
+    @Override
+    public Boolean getNonIdempotentWriteRetriesEnabled() {
+        return null;
+    }
+
     /**
      * Gets the option to allow scan on the queries which couldn't be served as
      * indexing was opted out on the requested paths.
      *
      * @return the option of enable scan in query.
      */
+    @Override
     public Boolean isScanInQueryEnabled() {
         return this.scanInQueryEnabled;
     }
@@ -140,7 +152,8 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * @return number of concurrent operations run client side during parallel query
      * execution.
      */
-    public int getMaxDegreeOfParallelism() {
+    @Override
+    public Integer getMaxDegreeOfParallelism() {
         return maxDegreeOfParallelism;
     }
 
@@ -163,7 +176,8 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * @return maximum number of items that can be buffered client side during
      * parallel query execution.
      */
-    public int getMaxBufferedItemCount() {
+    @Override
+    public Integer getMaxBufferedItemCount() {
         return maxBufferedItemCount;
     }
 
@@ -185,8 +199,14 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      *
      * @return the max number of items.
      */
+    @Override
     public Integer getMaxItemCount() {
         return this.maxItemCount;
+    }
+
+    @Override
+    public Integer getMaxPrefetchPageCount() {
+        return null;
     }
 
     /**
@@ -311,6 +331,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * @param defaultQueryName the default query name that should be used if none is specified on request options
      * @return the logical query name
      */
+    @Override
     public String getQueryNameOrDefault(String defaultQueryName) {
         return !Strings.isNullOrWhiteSpace(queryName) ? queryName : defaultQueryName;
     }
@@ -355,5 +376,15 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
 
     public PartitionKeyDefinition getPartitionKeyDefinition() {
         return this.partitionKeyDefinition;
+    }
+
+    @Override
+    public void override(CosmosRequestOptions cosmosRequestOptions) {
+        super.override(cosmosRequestOptions);
+        this.scanInQueryEnabled = overrideOption(cosmosRequestOptions.isScanInQueryEnabled(), this.scanInQueryEnabled);
+        this.maxDegreeOfParallelism = overrideOption(cosmosRequestOptions.getMaxDegreeOfParallelism(), this.maxDegreeOfParallelism);
+        this.maxBufferedItemCount = overrideOption(cosmosRequestOptions.getMaxBufferedItemCount(), this.maxBufferedItemCount);
+        this.maxItemCount = overrideOption(cosmosRequestOptions.getMaxItemCount(), this.maxItemCount);
+        this.queryName = overrideOption(cosmosRequestOptions.getQueryName(), this.queryName);
     }
 }

@@ -11,7 +11,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The PiiEntitiesDocumentResult model. */
+/**
+ * The PiiEntitiesDocumentResult model.
+ */
 @Fluent
 public class PiiEntitiesDocumentResult extends DocumentResult {
     /*
@@ -24,12 +26,15 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
      */
     private List<Entity> entities;
 
-    /** Creates an instance of PiiEntitiesDocumentResult class. */
-    public PiiEntitiesDocumentResult() {}
+    /**
+     * Creates an instance of PiiEntitiesDocumentResult class.
+     */
+    public PiiEntitiesDocumentResult() {
+    }
 
     /**
      * Get the redactedText property: Returns redacted text.
-     *
+     * 
      * @return the redactedText value.
      */
     public String getRedactedText() {
@@ -38,7 +43,7 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
 
     /**
      * Set the redactedText property: Returns redacted text.
-     *
+     * 
      * @param redactedText the redactedText value to set.
      * @return the PiiEntitiesDocumentResult object itself.
      */
@@ -49,7 +54,7 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
 
     /**
      * Get the entities property: Recognized entities in the document.
-     *
+     * 
      * @return the entities value.
      */
     public List<Entity> getEntities() {
@@ -58,7 +63,7 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
 
     /**
      * Set the entities property: Recognized entities in the document.
-     *
+     * 
      * @param entities the entities value to set.
      * @return the PiiEntitiesDocumentResult object itself.
      */
@@ -67,27 +72,36 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PiiEntitiesDocumentResult setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PiiEntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PiiEntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,40 +115,38 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
 
     /**
      * Reads an instance of PiiEntitiesDocumentResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of PiiEntitiesDocumentResult if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PiiEntitiesDocumentResult.
      */
     public static PiiEntitiesDocumentResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    PiiEntitiesDocumentResult deserializedPiiEntitiesDocumentResult = new PiiEntitiesDocumentResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            PiiEntitiesDocumentResult deserializedPiiEntitiesDocumentResult = new PiiEntitiesDocumentResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedPiiEntitiesDocumentResult.setId(reader.getString());
-                        } else if ("warnings".equals(fieldName)) {
-                            List<DocumentWarning> warnings =
-                                    reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
-                            deserializedPiiEntitiesDocumentResult.setWarnings(warnings);
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedPiiEntitiesDocumentResult.setStatistics(DocumentStatistics.fromJson(reader));
-                        } else if ("redactedText".equals(fieldName)) {
-                            deserializedPiiEntitiesDocumentResult.redactedText = reader.getString();
-                        } else if ("entities".equals(fieldName)) {
-                            List<Entity> entities = reader.readArray(reader1 -> Entity.fromJson(reader1));
-                            deserializedPiiEntitiesDocumentResult.entities = entities;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedPiiEntitiesDocumentResult.setId(reader.getString());
+                } else if ("warnings".equals(fieldName)) {
+                    List<DocumentWarning> warnings = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
+                    deserializedPiiEntitiesDocumentResult.setWarnings(warnings);
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedPiiEntitiesDocumentResult.setStatistics(DocumentStatistics.fromJson(reader));
+                } else if ("redactedText".equals(fieldName)) {
+                    deserializedPiiEntitiesDocumentResult.redactedText = reader.getString();
+                } else if ("entities".equals(fieldName)) {
+                    List<Entity> entities = reader.readArray(reader1 -> Entity.fromJson(reader1));
+                    deserializedPiiEntitiesDocumentResult.entities = entities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedPiiEntitiesDocumentResult;
-                });
+            return deserializedPiiEntitiesDocumentResult;
+        });
     }
 }

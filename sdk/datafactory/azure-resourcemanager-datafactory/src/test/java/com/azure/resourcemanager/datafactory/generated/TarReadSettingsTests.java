@@ -11,13 +11,13 @@ public final class TarReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TarReadSettings model = BinaryData.fromString(
-            "{\"type\":\"gfqxejjntiqbx\",\"preserveCompressionFileNameAsFolder\":\"datahsfnocz\",\"\":{\"fcrb\":\"dataudog\",\"wzbew\":\"dataoeomufaza\",\"ucj\":\"databsspexejhwpnjc\",\"dqtir\":\"databovuvmd\"}}")
+            "{\"type\":\"TarReadSettings\",\"preserveCompressionFileNameAsFolder\":\"datacpbmyghq\",\"\":{\"wkqztqrnreyj\":\"datasbb\",\"gvsjfpsyqvgaaym\":\"datamnrweevtunjdcl\",\"m\":\"datakexhi\",\"zkktcrcctt\":\"dataljhkgxcewzgo\"}}")
             .toObject(TarReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TarReadSettings model = new TarReadSettings().withPreserveCompressionFileNameAsFolder("datahsfnocz");
+        TarReadSettings model = new TarReadSettings().withPreserveCompressionFileNameAsFolder("datacpbmyghq");
         model = BinaryData.fromObject(model).toObject(TarReadSettings.class);
     }
 }

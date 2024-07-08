@@ -25,7 +25,7 @@ import java.util.Map;
 public final class VirtualMachineImageTemplatesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
      * CreateImageTemplateLinux.json
      */
     /**
@@ -35,7 +35,9 @@ public final class VirtualMachineImageTemplatesCreateOrUpdateSamples {
      */
     public static void
         createAnImageTemplateForLinux(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.virtualMachineImageTemplates().define("myImageTemplate").withRegion("westus")
+        manager.virtualMachineImageTemplates()
+            .define("myImageTemplate")
+            .withRegion("westus")
             .withExistingResourceGroup("myResourceGroup")
             .withIdentity(new ImageTemplateIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
@@ -51,7 +53,8 @@ public final class VirtualMachineImageTemplatesCreateOrUpdateSamples {
                 .withImageId(
                     "/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/image_it_1")
                 .withLocation("1_location")))
-            .withVmProfile(new ImageTemplateVmProfile().withVmSize("Standard_D2s_v3").withOsDiskSizeGB(64)
+            .withVmProfile(new ImageTemplateVmProfile().withVmSize("Standard_D2s_v3")
+                .withOsDiskSizeGB(64)
                 .withVnetConfig(new VirtualNetworkConfig().withSubnetId(
                     "/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet_name/subnets/subnet_name")))
             .create();
@@ -59,7 +62,7 @@ public final class VirtualMachineImageTemplatesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
      * CreateImageTemplateWindows.json
      */
     /**
@@ -69,7 +72,9 @@ public final class VirtualMachineImageTemplatesCreateOrUpdateSamples {
      */
     public static void
         createAnImageTemplateForWindows(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.virtualMachineImageTemplates().define("myImageTemplate").withRegion("westus")
+        manager.virtualMachineImageTemplates()
+            .define("myImageTemplate")
+            .withRegion("westus")
             .withExistingResourceGroup("myResourceGroup")
             .withIdentity(new ImageTemplateIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
@@ -87,30 +92,37 @@ public final class VirtualMachineImageTemplatesCreateOrUpdateSamples {
                 new ImageTemplatePowerShellCustomizer()
                     .withName("PowerShell (inline) Customizer Elevated Local System user Example")
                     .withInline(Arrays.asList("Powershell command-1", "Powershell command-2", "Powershell command-3"))
-                    .withRunElevated(true).withRunAsSystem(true),
+                    .withRunElevated(true)
+                    .withRunAsSystem(true),
                 new ImageTemplatePowerShellCustomizer().withName("PowerShell (script) Customizer Example")
-                    .withScriptUri("https://example.com/path/to/script.ps1").withValidExitCodes(Arrays.asList(0, 1)),
-                new ImageTemplatePowerShellCustomizer()
-                    .withName("PowerShell (script) Customizer Elevated Local System user Example")
-                    .withScriptUri("https://example.com/path/to/script.ps1").withRunElevated(true)
+                    .withScriptUri("https://example.com/path/to/script.ps1")
                     .withValidExitCodes(Arrays.asList(0, 1)),
                 new ImageTemplatePowerShellCustomizer()
                     .withName("PowerShell (script) Customizer Elevated Local System user Example")
-                    .withScriptUri("https://example.com/path/to/script.ps1").withRunElevated(true).withRunAsSystem(true)
+                    .withScriptUri("https://example.com/path/to/script.ps1")
+                    .withRunElevated(true)
+                    .withValidExitCodes(Arrays.asList(0, 1)),
+                new ImageTemplatePowerShellCustomizer()
+                    .withName("PowerShell (script) Customizer Elevated Local System user Example")
+                    .withScriptUri("https://example.com/path/to/script.ps1")
+                    .withRunElevated(true)
+                    .withRunAsSystem(true)
                     .withValidExitCodes(Arrays.asList(0, 1)),
                 new ImageTemplateRestartCustomizer().withName("Restart Customizer Example")
                     .withRestartCommand("shutdown /f /r /t 0 /c \"packer restart\"")
                     .withRestartCheckCommand("powershell -command \"& {Write-Output 'restarted.'}\"")
                     .withRestartTimeout("10m"),
                 new ImageTemplateWindowsUpdateCustomizer().withName("Windows Update Customizer Example")
-                    .withSearchCriteria("BrowseOnly=0 and IsInstalled=0").withFilters(Arrays.asList("$_.BrowseOnly"))
+                    .withSearchCriteria("BrowseOnly=0 and IsInstalled=0")
+                    .withFilters(Arrays.asList("$_.BrowseOnly"))
                     .withUpdateLimit(100)))
             .withDistribute(Arrays.asList(new ImageTemplateManagedImageDistributor().withRunOutputName("image_it_pir_1")
                 .withArtifactTags(mapOf("tagName", "value"))
                 .withImageId(
                     "/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/image_it_1")
                 .withLocation("1_location")))
-            .withVmProfile(new ImageTemplateVmProfile().withVmSize("Standard_D2s_v3").withOsDiskSizeGB(64)
+            .withVmProfile(new ImageTemplateVmProfile().withVmSize("Standard_D2s_v3")
+                .withOsDiskSizeGB(64)
                 .withVnetConfig(new VirtualNetworkConfig().withSubnetId(
                     "/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet_name/subnets/subnet_name")))
             .create();
