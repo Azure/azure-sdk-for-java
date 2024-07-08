@@ -256,9 +256,9 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     }
 
     public static TokenCredential getTokenCredential(TestMode testMode) {
-        if (testMode == TestMode.RECORD){
+        if (testMode == TestMode.RECORD) {
             return new DefaultAzureCredentialBuilder().build();
-        } else if (testMode == TestMode.LIVE){
+        } else if (testMode == TestMode.LIVE) {
             return new AzurePowerShellCredentialBuilder().build();
         } else { //playback or not set
             return new MockTokenCredential();

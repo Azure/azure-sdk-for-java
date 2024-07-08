@@ -14,8 +14,10 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.implementation.Constants;
@@ -294,7 +296,7 @@ public final class StorageCommonTestUtils {
     }
 
     /**
-     * Gets token credentials for a test. 
+     * Gets token credentials for a test.
      *
      * @param interceptorManager The interceptor manager to use.
      * @return The TokenCredential to use.
@@ -304,8 +306,20 @@ public final class StorageCommonTestUtils {
             return new MockTokenCredential();
         } else if (interceptorManager.isRecordMode()){
             return new DefaultAzureCredentialBuilder().build();
-        } else {
-            return new AzurePowerShellCredentialBuilder().build();
+        } else { //live
+            Configuration config = Configuration.getGlobalConfiguration();
+
+            String serviceConnectionId  = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+            return new AzurePipelinesCredentialBuilder()
+                .systemAccessToken(systemAccessToken)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .serviceConnectionId(serviceConnectionId)
+                .build();
         }
     }
 }
