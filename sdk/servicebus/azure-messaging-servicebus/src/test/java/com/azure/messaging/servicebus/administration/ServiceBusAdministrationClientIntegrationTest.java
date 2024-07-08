@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.administration;
 
-import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
@@ -14,7 +13,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
@@ -37,7 +35,6 @@ import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeP
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -50,8 +47,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
@@ -66,7 +61,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Tests {@link ServiceBusAdministrationClient}.
@@ -858,26 +852,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertTrue(rule.getFilter() instanceof SqlRuleFilter);
         assertNotNull(rule.getAction());
         assertTrue(rule.getAction() instanceof EmptyRuleAction);
-    }
-
-    @Test
-    @Disabled("Decide if this test can be removed since live tests are no longer connection string based.")
-    void azureSasCredentialsTest() {
-        assumeTrue(interceptorManager.isLiveMode(), "skipping azure Sas Credentials test");
-        assumeTrue(!CoreUtils.isNullOrEmpty(TestUtils.getConnectionString(false)), "Connection string is not configured.");
-
-        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainNameWithAssertion();
-        String connectionString = TestUtils.getConnectionString(true);
-        Pattern sasPattern = Pattern.compile("SharedAccessSignature=(.*);?", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = sasPattern.matcher(connectionString);
-        assertTrue(matcher.find(), "Couldn't find SAS from connection string");
-
-        ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
-            .endpoint("https://" + fullyQualifiedDomainName)
-            .credential(new AzureSasCredential(matcher.group(1)))
-            .buildClient();
-        NamespaceProperties np = client.getNamespaceProperties();
-        assertNotNull(np.getName());
     }
 
     //endregion

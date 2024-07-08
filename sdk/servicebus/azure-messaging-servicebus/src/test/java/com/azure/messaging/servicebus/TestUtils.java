@@ -165,7 +165,7 @@ public class TestUtils {
     /**
      * Gets the fully qualified domain name for the service bus resource.
      *
-     * @return The fully qualified domain name for the service bus resource.
+     * @return The fully qualified domain name for the service bus resource if set else a redacted dummy name.
      */
     public static String getFullyQualifiedDomainName() {
         return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME", "REDACTED.servicebus.windows.net");
@@ -174,15 +174,10 @@ public class TestUtils {
     /**
      * Gets the fully qualified domain name for the service bus resource.
      *
-     * @return the fully qualified domain name for the service bus resource.
-     * @throws org.opentest4j.TestAbortedException if the environment variable is not set.
+     * @return the fully qualified domain name for the service bus resource if set, {@code null} otherwise.
      */
-    public static String getFullyQualifiedDomainNameWithAssertion() {
-        final String fullyQualifiedDomainName = getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
-        if (CoreUtils.isNullOrEmpty(fullyQualifiedDomainName)) {
-            throw new TestAbortedException("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set.");
-        }
-        return fullyQualifiedDomainName;
+    public static String getLiveFullyQualifiedDomainName() {
+        return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
     }
 
     public static String getEndpoint() {

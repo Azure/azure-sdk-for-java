@@ -92,7 +92,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         logger.info("========= SET-UP [{}] =========", testName);
 
-        assumeTrue(getTestMode() == TestMode.RECORD);
+        assertRunnable();
 
         toClose = new ArrayList<>();
         optionsWithTracing = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
@@ -108,21 +108,6 @@ public abstract class IntegrationTestBase extends TestBase {
 
         logger.info("Disposing of subscriptions, consumers and clients.");
         dispose();
-    }
-
-    /**
-     * Gets the test mode for this API test. If AZURE_TEST_MODE equals {@link TestMode#RECORD} and Event Hubs connection
-     * string is set, then we return {@link TestMode#RECORD}. Otherwise, {@link TestMode#PLAYBACK} is returned.
-     */
-    @Override
-    public TestMode getTestMode() {
-        if (super.getTestMode() == TestMode.PLAYBACK) {
-            return TestMode.PLAYBACK;
-        }
-
-        return TestMode.RECORD;
-        // TODO (anu): alternative for this approach?
-        // return CoreUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
     }
 
     /**
@@ -198,13 +183,15 @@ public abstract class IntegrationTestBase extends TestBase {
         final TestMode mode = super.getTestMode();
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
         if (mode == TestMode.LIVE) {
-            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainNameWithAssertion();
+            final String fullyQualifiedDomainName = TestUtils.getLiveFullyQualifiedDomainName();
+            assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
             final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
             return builder.credential(fullyQualifiedDomainName, credential);
         } else if (mode == TestMode.RECORD) {
             final String connectionString = TestUtils.getConnectionString(false);
             if (CoreUtils.isNullOrEmpty(connectionString)) {
-                final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainNameWithAssertion();
+                final String fullyQualifiedDomainName = TestUtils.getLiveFullyQualifiedDomainName();
+                assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
                 final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
                 return builder.credential(fullyQualifiedDomainName, credential);
             } else {
@@ -473,5 +460,36 @@ public abstract class IntegrationTestBase extends TestBase {
         }
         return new ConfigurationBuilder(configSource)
             .build();
+    }
+
+    /**
+     * Asserts that if the integration tests can be run. This method is expected to be called at the beginning of each
+     * test run.
+     *
+     * @throws TestAbortedException if the integration tests cannot be run.
+     */
+    protected void assertRunnable() {
+        final TestMode mode = super.getTestMode();
+        if (mode == TestMode.PLAYBACK) {
+            throw new TestAbortedException("Skipping integration tests in playback mode.");
+        }
+
+        if (mode == TestMode.RECORD) {
+            if (!CoreUtils.isNullOrEmpty(TestUtils.getConnectionString(false))) {
+                // integration tests are runnable using the connection string.
+                return;
+            }
+            if (!CoreUtils.isNullOrEmpty(TestUtils.getFullyQualifiedDomainName())) {
+                // best effort check:
+                // integration tests are potentially runnable using DefaultAzureCredential. Here we're assuming that
+                // in RECORD mode with FullyQualifiedDomainName set, the dev environment is also set up for one of the
+                // token credential type in DefaultAzureCredential (all token credentials requires FullyQualifiedDomainName).
+                return;
+            }
+            throw new TestAbortedException("Not running integration in record mode (missing authentication set up).");
+        }
+        assert mode == TestMode.LIVE;
+        // tests are runnable in pipeline with federated identity.
+        return;
     }
 }

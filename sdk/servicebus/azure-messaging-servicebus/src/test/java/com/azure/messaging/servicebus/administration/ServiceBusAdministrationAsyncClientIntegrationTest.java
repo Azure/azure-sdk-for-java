@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.administration;
 
-import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
@@ -30,7 +29,6 @@ import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOp
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.EmptyRuleAction;
 import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
-import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.messaging.servicebus.administration.models.NamespaceType;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
@@ -41,9 +39,7 @@ import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeP
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -57,12 +53,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
-import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
@@ -1136,35 +1129,6 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    @Test
-    @Disabled("Decide if this test can be removed since live tests are no longer connection string based.")
-    void azureSasCredentialsTest() {
-        // Arrange
-        assumeTrue(interceptorManager.isLiveMode(), "skipping azure Sas Credentials test");
-        assumeTrue(!CoreUtils.isNullOrEmpty(TestUtils.getConnectionString(false)), "Connection string is not configured.");
-
-        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainNameWithAssertion();
-
-        String connectionString = getConnectionString(true);
-        Pattern sasPattern = Pattern.compile("SharedAccessSignature=(.*);?", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = sasPattern.matcher(connectionString);
-        assertTrue(matcher.find(), "Couldn't find SAS from connection string");
-
-        ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder()
-            .endpoint("https://" + fullyQualifiedDomainName)
-            .credential(new AzureSasCredential(matcher.group(1)))
-            .buildAsyncClient();
-
-        // Act & Assert
-        StepVerifier.create(client.getNamespacePropertiesWithResponse())
-            .assertNext(response -> {
-                final NamespaceProperties np = response.getValue();
-                assertNotNull(np.getName());
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
-    }
-
     private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient) {
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
@@ -1178,7 +1142,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             builder.credential(TestUtils.getFullyQualifiedDomainName(), new MockTokenCredential());
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isLiveMode()) {
-            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainNameWithAssertion();
+            final String fullyQualifiedDomainName = TestUtils.getLiveFullyQualifiedDomainName();
+            assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
             final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
             builder.credential(fullyQualifiedDomainName, credential);
             if (httpClient != null) {
@@ -1188,7 +1153,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             // Record Mode.
             final String connectionString = TestUtils.getConnectionString(false);
             if (CoreUtils.isNullOrEmpty(connectionString)) {
-                final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainNameWithAssertion();
+                final String fullyQualifiedDomainName = TestUtils.getLiveFullyQualifiedDomainName();
+                assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
                 final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
                 builder.credential(fullyQualifiedDomainName, credential);
             } else {
