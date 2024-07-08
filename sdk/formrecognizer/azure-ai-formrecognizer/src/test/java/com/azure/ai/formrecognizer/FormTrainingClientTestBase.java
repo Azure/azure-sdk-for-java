@@ -46,7 +46,6 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
     private static final String RESOURCE_REGION = "FORM_RECOGNIZER_TARGET_RESOURCE_REGION";
     private static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
 
-    static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
     static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
     static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";

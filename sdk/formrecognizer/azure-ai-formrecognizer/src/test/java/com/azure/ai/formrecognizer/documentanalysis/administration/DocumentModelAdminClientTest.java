@@ -58,8 +58,8 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
                                                                                    DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentModelAdminClientBuilder(
             buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
-            serviceVersion,
-            true)
+            serviceVersion
+        )
             .buildClient();
     }
 

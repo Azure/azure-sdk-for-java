@@ -87,8 +87,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         return getDocumentAnalysisBuilder(
             buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
-            serviceVersion,
-            true)
+            serviceVersion
+        )
             .buildAsyncClient();
     }
 
@@ -97,8 +97,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         return getDocumentModelAdminClientBuilder(
             buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
-            serviceVersion,
-            true)
+            serviceVersion
+        )
             .buildAsyncClient();
     }
 
