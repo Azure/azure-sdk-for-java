@@ -600,9 +600,3 @@ extends:
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterappconfigurationconfig }}
-    PreBuildSteps:
-      # AzureRedisAutoConfigurationTestContainerTest pulls in `ryuk` image because of testcontainers dependency.
-      # `ryuk` does not exist in mcr.microsoft.com image repository. Do not pull image.
-      - bash: |
-          echo "##vso[task.setvariable variable=TESTCONTAINERS_RYUK_DISABLED;]true"
-        displayName: 'Disable testcontainers ryuk'

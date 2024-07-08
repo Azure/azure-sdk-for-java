@@ -5,15 +5,12 @@ package com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.d
 
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.redis.AzureJedisPasswordlessAutoConfiguration;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.condition.DisabledOnOs;
-import org.junit.jupiter.api.condition.OS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +21,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
@@ -35,7 +33,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Testcontainers
-@DisabledOnOs({OS.WINDOWS, OS.MAC})
+@Disabled("Disable for Container startup failed")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AzureRedisAutoConfigurationTestContainerTest {
 
@@ -44,34 +42,17 @@ public class AzureRedisAutoConfigurationTestContainerTest {
 
     private static final String REDIS_PASSWORD = "fake-testcontainer-password";
 
-    /**
-     * Pulling Docker registry name from testcontainers.properties file as prefix.
-     */
-    private static final GenericContainer<?> REDIS;
+    @Container
+    private static GenericContainer<?> redis =
+        new GenericContainer<>(DockerImageName.parse("redis:5.0.3-alpine"))
+            .withCommand("--requirepass", REDIS_PASSWORD)
+            .withExposedPorts(6379);
 
-    static {
-        System.out.println("TESTCONTAINERS_RYUK_DISABLED value: [" + System.getenv("TESTCONTAINERS_RYUK_DISABLED") + "]");
-
-        REDIS =
-            new GenericContainer<>(DockerImageName.parse("redis:6"))
-                .withCommand("--requirepass", REDIS_PASSWORD)
-                .withExposedPorts(6379);
-    }
-
-    @BeforeAll
-    public static void beforeAll() {
-        REDIS.start();
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        REDIS.stop();
-    }
 
     @DynamicPropertySource
     static void redisProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.redis.host", REDIS::getHost);
-        registry.add("spring.redis.port", REDIS::getFirstMappedPort);
+        registry.add("spring.redis.host", redis::getHost);
+        registry.add("spring.redis.port", redis::getFirstMappedPort);
         registry.add("spring.redis.ssl", () -> false);
         registry.add("spring.redis.azure.passwordless-enabled", () -> true);
     }
@@ -91,10 +72,11 @@ public class AzureRedisAutoConfigurationTestContainerTest {
 
     @Test
     @Order(2)
-    void testGetValueAfterSet() {
+    void testGetVauleAfterSet() {
         String value = (String) redisTemplate.opsForValue().get("valueMap3");
         Assertions.assertEquals("map3", value);
     }
+
 
     @Configuration
     @Import({AzureJedisPasswordlessAutoConfiguration.class, RedisAutoConfiguration.class})
