@@ -342,10 +342,12 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
                                                       FormRecognizerServiceVersion serviceVersion);
 
     @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     abstract void recognizeCustomFormUrlUnlabeledDataIncludeFieldElements(HttpClient httpClient,
                                                                           FormRecognizerServiceVersion serviceVersion);
 
     @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     abstract void recognizeCustomFormUrlMultiPageUnlabeled(HttpClient httpClient,
                                                            FormRecognizerServiceVersion serviceVersion);
 

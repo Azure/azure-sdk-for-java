@@ -54,7 +54,7 @@
     },
     "blobResourceId": {
       "type": "string",
-      "defaultValue": "[resourceId(subscription().subscriptionId, 'TrainingData', 'Microsoft.Storage/storageAccounts', parameters('blobStorageAccount'))]"
+      "defaultValue": "[resourceId('TrainingData', 'Microsoft.Storage/storageAccounts', parameters('blobStorageAccount'))]"
     },
     "classifierTrainingDataContainer": {
       "type": "string",
@@ -122,6 +122,33 @@
       "defaultValue": {
         "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('classifierTrainingDataContainer'))]",
         "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT3H')]",
+        "signedPermission": "rl",
+        "signedResource": "c"
+      }
+    },
+    "trainingDataSasPropertiesV3": {
+      "type": "object",
+      "defaultValue": {
+        "canonicalizedResource": "[concat('/blob/', parameters('trainingDataAccount'), '/', parameters('trainingDataContainer'), '-v3')]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
+        "signedPermission": "rl",
+        "signedResource": "c"
+      }
+    },
+    "multipageTrainingDataSasPropertiesV3": {
+      "type": "object",
+      "defaultValue": {
+        "canonicalizedResource": "[concat('/blob/', parameters('trainingDataAccount'), '/', parameters('multipageTrainingDataContainer'), '-v3')]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
+        "signedPermission": "rl",
+        "signedResource": "c"
+      }
+    },
+    "selectionMarkTrainingDataSasPropertiesV3": {
+      "type": "object",
+      "defaultValue": {
+        "canonicalizedResource": "[concat('/blob/', parameters('trainingDataAccount'), '/', parameters('selectionMarkTrainingDataContainer'), '-v3')]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
         "signedPermission": "rl",
         "signedResource": "c"
       }
@@ -197,6 +224,18 @@
     "FORM_RECOGNIZER_TARGET_RESOURCE_ID": {
       "type": "string",
       "value": "[resourceId('Microsoft.CognitiveServices/accounts', variables('formRecognizerBaseName'))]"
+    },
+    "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL_V3": {
+      "type": "string",
+      "value": "[concat(reference(parameters('trainingDataResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('trainingDataContainer'), '-v3?', listServiceSas(parameters('trainingDataResourceId'), '2019-06-01', parameters('trainingDataSasPropertiesV3')).serviceSasToken)]"
+    },
+    "FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL_V3": {
+      "type": "string",
+      "value": "[concat(reference(parameters('trainingDataResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('multipageTrainingDataContainer'), '-v3?', listServiceSas(parameters('trainingDataResourceId'), '2019-06-01', parameters('multipageTrainingDataSasPropertiesV3')).serviceSasToken)]"
+    },
+    "FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL_V3": {
+      "type": "string",
+      "value": "[concat(reference(parameters('trainingDataResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('selectionMarkTrainingDataContainer'), '-v3?', listServiceSas(parameters('trainingDataResourceId'), '2019-06-01', parameters('selectionMarkTrainingDataSasPropertiesV3')).serviceSasToken)]"
     }
   }
 }

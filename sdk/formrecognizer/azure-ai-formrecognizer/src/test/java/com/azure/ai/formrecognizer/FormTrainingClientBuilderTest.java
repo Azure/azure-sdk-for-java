@@ -173,14 +173,14 @@ public class FormTrainingClientBuilderTest extends TestProxyTestBase {
         return clientBuilder;
     }
 
-     private TokenCredential getCredential() {
+    private TokenCredential getCredential() {
         if (interceptorManager.isPlaybackMode()) {
             return new MockTokenCredential();
         } else if (interceptorManager.isRecordMode()) {
             return new DefaultAzureCredentialBuilder().build();
         } else if (interceptorManager.isLiveMode()) {
-           return new AzurePowerShellCredentialBuilder().build();
+            return new AzurePowerShellCredentialBuilder().build();
         }
-         return null;
-     }
+        return null;
+    }
 }
