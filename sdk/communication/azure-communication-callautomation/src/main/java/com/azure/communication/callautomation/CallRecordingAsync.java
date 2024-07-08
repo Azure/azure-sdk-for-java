@@ -184,6 +184,9 @@ public final class CallRecordingAsync {
                 request.setExternalStorage(recordingStorageInternal);
             }
         }
+        if (options.isPauseOnStart() != null) {
+            request.setPauseOnStart(options.isPauseOnStart());
+        }
 
         return request;
     }
