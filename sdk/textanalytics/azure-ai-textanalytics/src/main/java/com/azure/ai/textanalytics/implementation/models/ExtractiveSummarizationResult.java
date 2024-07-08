@@ -11,7 +11,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The ExtractiveSummarizationResult model. */
+/**
+ * The ExtractiveSummarizationResult model.
+ */
 @Fluent
 public final class ExtractiveSummarizationResult extends PreBuiltResult {
     /*
@@ -19,12 +21,15 @@ public final class ExtractiveSummarizationResult extends PreBuiltResult {
      */
     private List<ExtractedSummaryDocumentResult> documents;
 
-    /** Creates an instance of ExtractiveSummarizationResult class. */
-    public ExtractiveSummarizationResult() {}
+    /**
+     * Creates an instance of ExtractiveSummarizationResult class.
+     */
+    public ExtractiveSummarizationResult() {
+    }
 
     /**
      * Get the documents property: Response by document.
-     *
+     * 
      * @return the documents value.
      */
     public List<ExtractedSummaryDocumentResult> getDocuments() {
@@ -33,7 +38,7 @@ public final class ExtractiveSummarizationResult extends PreBuiltResult {
 
     /**
      * Set the documents property: Response by document.
-     *
+     * 
      * @param documents the documents value to set.
      * @return the ExtractiveSummarizationResult object itself.
      */
@@ -42,27 +47,36 @@ public final class ExtractiveSummarizationResult extends PreBuiltResult {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtractiveSummarizationResult setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtractiveSummarizationResult setStatistics(RequestStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtractiveSummarizationResult setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,39 +89,38 @@ public final class ExtractiveSummarizationResult extends PreBuiltResult {
 
     /**
      * Reads an instance of ExtractiveSummarizationResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ExtractiveSummarizationResult if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ExtractiveSummarizationResult.
      */
     public static ExtractiveSummarizationResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ExtractiveSummarizationResult deserializedExtractiveSummarizationResult =
-                            new ExtractiveSummarizationResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            ExtractiveSummarizationResult deserializedExtractiveSummarizationResult
+                = new ExtractiveSummarizationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("errors".equals(fieldName)) {
-                            List<DocumentError> errors = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
-                            deserializedExtractiveSummarizationResult.setErrors(errors);
-                        } else if ("modelVersion".equals(fieldName)) {
-                            deserializedExtractiveSummarizationResult.setModelVersion(reader.getString());
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedExtractiveSummarizationResult.setStatistics(RequestStatistics.fromJson(reader));
-                        } else if ("documents".equals(fieldName)) {
-                            List<ExtractedSummaryDocumentResult> documents =
-                                    reader.readArray(reader1 -> ExtractedSummaryDocumentResult.fromJson(reader1));
-                            deserializedExtractiveSummarizationResult.documents = documents;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("errors".equals(fieldName)) {
+                    List<DocumentError> errors = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
+                    deserializedExtractiveSummarizationResult.setErrors(errors);
+                } else if ("modelVersion".equals(fieldName)) {
+                    deserializedExtractiveSummarizationResult.setModelVersion(reader.getString());
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedExtractiveSummarizationResult.setStatistics(RequestStatistics.fromJson(reader));
+                } else if ("documents".equals(fieldName)) {
+                    List<ExtractedSummaryDocumentResult> documents
+                        = reader.readArray(reader1 -> ExtractedSummaryDocumentResult.fromJson(reader1));
+                    deserializedExtractiveSummarizationResult.documents = documents;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedExtractiveSummarizationResult;
-                });
+            return deserializedExtractiveSummarizationResult;
+        });
     }
 }

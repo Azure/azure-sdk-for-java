@@ -15,7 +15,7 @@ from typing import List, Tuple, Optional
 
 from parameters import *
 from utils import set_or_default_version
-from utils import update_service_ci_and_pom
+from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 from utils import ListIndentDumper
 
@@ -34,6 +34,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     repo_url: str = config["repoHttpsUrl"]
     breaking: bool = False
     changelog: str = ""
+    clean_sdk_folder_succeeded = False
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project, sdk_root, spec_root, head_sha, repo_url
@@ -52,8 +53,10 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         # TODO (weidxu): move to typespec-java
         stable_version, current_version = set_or_default_version(sdk_root, GROUP_ID, module)
         if require_sdk_integration:
-            update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+            update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
+        if clean_sdk_folder_succeeded:
+            current_version = DEFAULT_VERSION
 
         # compile
         succeeded = compile_package(sdk_root, GROUP_ID, module)
@@ -74,9 +77,10 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
                     tsp_project, sdk_root, spec_root, head_sha, repo_url
                 )
-                stable_version, current_version = set_or_default_version(sdk_root, GROUP_ID, module)
+                stable_version, _= set_or_default_version(sdk_root, GROUP_ID, module)
+                current_version = DEFAULT_VERSION
                 if require_sdk_integration:
-                    update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+                    update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
                     update_root_pom(sdk_root, service)
                 # compile
                 succeeded = compile_package(sdk_root, GROUP_ID, module)
@@ -340,7 +344,7 @@ def generate(
 
         if require_sdk_integration:
             set_or_default_version(sdk_root, GROUP_ID, module)
-            update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+            update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
     else:
         # no readme
@@ -380,7 +384,7 @@ def generate(
             return False
 
         set_or_default_version(sdk_root, GROUP_ID, module)
-        update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+        update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
         update_root_pom(sdk_root, service)
         # update_version(sdk_root, output_dir)
 

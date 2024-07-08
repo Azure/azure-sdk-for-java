@@ -16,7 +16,7 @@ from typespec_utils import validate_tspconfig
 pwd = os.getcwd()
 # os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
-from utils import update_service_ci_and_pom
+from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 from utils import update_version
 from utils import is_windows
@@ -87,9 +87,9 @@ def generate(
     if os.system(command) != 0:
         error_message = (
             "[GENERATE][Error] Code generation failed.\n"
-            "Please first check if the failure happens only to Java automation, or for all SDK automations.\n"
-            "If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff.\n"
-            "If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
+            "[GENERATE][Error] Please first check if the failure happens only to Java automation, or for all SDK automations.\n"
+            "[GENERATE][Error] If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff.\n"
+            "[GENERATE][Error] If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
         )
         logging.error(error_message)
         print(error_message, file=sys.stderr)
@@ -97,7 +97,7 @@ def generate(
 
     group = GROUP_ID
     if require_sdk_integration:
-        update_service_ci_and_pom(sdk_root, service, group, module)
+        update_service_files_for_new_lib(sdk_root, service, group, module)
         update_root_pom(sdk_root, service)
     update_version(sdk_root, output_folder)
 
@@ -129,7 +129,7 @@ def compile_arm_package(sdk_root: str, module: str) -> bool:
         != 0
     ):
         error_message = (
-            "[COMPILE] Maven build fail.\n"
+            "[COMPILE] Maven build fail."
             'You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.'
         )
         logging.error(error_message)
@@ -418,7 +418,7 @@ def generate_typespec_project(
     except subprocess.CalledProcessError as error:
         error_message = (
             f"[GENERATE][Error] Code generation failed. tsp-client init fails: {error}\n"
-            "If TypeSpec Validation passes, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
+            "[GENERATE][Error] If TypeSpec Validation passes, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
         )
         logging.error(error_message)
         print(error_message, file=sys.stderr)

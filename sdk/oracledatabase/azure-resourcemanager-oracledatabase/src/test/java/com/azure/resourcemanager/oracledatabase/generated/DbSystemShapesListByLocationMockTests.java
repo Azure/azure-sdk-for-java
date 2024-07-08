@@ -21,7 +21,7 @@ public final class DbSystemShapesListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"shapeFamily\":\"cxkjibnxmysuxswq\",\"availableCoreCount\":1365374514,\"minimumCoreCount\":342142930,\"runtimeMinimumCoreCount\":1773751874,\"coreCountIncrement\":134024740,\"minStorageCount\":1177215499,\"maxStorageCount\":169879542,\"availableDataStoragePerServerInTbs\":94.79692003340423,\"availableMemoryPerNodeInGbs\":496912008,\"availableDbNodePerNodeInGbs\":1231024606,\"minCoreCountPerNode\":1055275397,\"availableMemoryInGbs\":2114285001,\"minMemoryPerNodeInGbs\":14478242,\"availableDbNodeStorageInGbs\":1094217479,\"minDbNodeStoragePerNodeInGbs\":451814884,\"availableDataStorageInTbs\":567152409,\"minDataStorageInTbs\":1652679465,\"minimumNodeCount\":2077646980,\"maximumNodeCount\":109210510,\"availableCoreCountPerNode\":892310228},\"id\":\"zhlctddunqndyfpc\",\"name\":\"rqbnjjrc\",\"type\":\"egy\"}]}";
+            = "{\"value\":[{\"properties\":{\"shapeFamily\":\"u\",\"availableCoreCount\":1033844337,\"minimumCoreCount\":904578774,\"runtimeMinimumCoreCount\":636393326,\"coreCountIncrement\":1801427646,\"minStorageCount\":599043237,\"maxStorageCount\":342779147,\"availableDataStoragePerServerInTbs\":97.73447564067305,\"availableMemoryPerNodeInGbs\":400681699,\"availableDbNodePerNodeInGbs\":1175106778,\"minCoreCountPerNode\":864075629,\"availableMemoryInGbs\":2001173638,\"minMemoryPerNodeInGbs\":1981328937,\"availableDbNodeStorageInGbs\":1991738571,\"minDbNodeStoragePerNodeInGbs\":1272146098,\"availableDataStorageInTbs\":1776698371,\"minDataStorageInTbs\":1352761194,\"minimumNodeCount\":1513896325,\"maximumNodeCount\":1557012856,\"availableCoreCountPerNode\":1956173646},\"id\":\"p\",\"name\":\"pmxelnwcltyje\",\"type\":\"ex\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class DbSystemShapesListByLocationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DbSystemShape> response
-            = manager.dbSystemShapes().listByLocation("wwpgdakchzyvlixq", com.azure.core.util.Context.NONE);
+            = manager.dbSystemShapes().listByLocation("ojphslhc", com.azure.core.util.Context.NONE);
 
     }
 }
