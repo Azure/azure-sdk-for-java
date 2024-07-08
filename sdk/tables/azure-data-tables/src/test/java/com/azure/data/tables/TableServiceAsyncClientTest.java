@@ -69,8 +69,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
 
     @Override
     protected void beforeTest() {
-        final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
-        serviceClient = getClientBuilder(endpoint, false).buildAsyncClient();
+        serviceClient = getClientBuilder(false).buildAsyncClient();
     }
 
     @Test
@@ -111,9 +110,8 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 .additionallyAllowedTenants("*")
                 .build();
         }
-        final TableServiceAsyncClient tableServiceAsyncClient =
-            getClientBuilder(Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
-                "https://tablestests.table.core.windows.com"), true).buildAsyncClient();
+
+        final TableServiceAsyncClient tableServiceAsyncClient = getClientBuilder(true).buildAsyncClient();
 
         // Act & Assert
         // This request will use the tenant ID extracted from the previous request.
@@ -345,7 +343,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        TableServiceAsyncClient serviceClient2 = getClientBuilderWithConnectionString().buildAsyncClient();
+        TableServiceAsyncClient serviceClient2 = getClientBuilderWithConnectionString(false).buildAsyncClient();
         final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
 
         assertTrue(
@@ -379,7 +377,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 .setStartTime(startTime)
                 .setSasIpRange(ipRange);
 
-        TableServiceAsyncClient serviceClient2 = getClientBuilderWithConnectionString().buildAsyncClient();
+        TableServiceAsyncClient serviceClient2 = getClientBuilderWithConnectionString(false).buildAsyncClient();
         final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
 
         assertTrue(
@@ -411,7 +409,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        TableServiceAsyncClient serviceClient2 = getClientBuilderWithConnectionString().buildAsyncClient();
+        TableServiceAsyncClient serviceClient2 = getClientBuilderWithConnectionString(false).buildAsyncClient();
         final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
         final String tableName = testResourceNamer.randomName("test", 20);
 

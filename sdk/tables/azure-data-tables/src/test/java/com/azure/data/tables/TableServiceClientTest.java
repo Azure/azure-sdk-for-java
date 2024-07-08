@@ -75,8 +75,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
 
     @Override
     protected void beforeTest() {
-        final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
-        serviceClient = getClientBuilder(endpoint, false).buildClient();
+        serviceClient = getClientBuilder(false).buildClient();
     }
 
     @Test
@@ -116,9 +115,8 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
                 .additionallyAllowedTenants("*")
                 .build();
         }
-        final TableServiceClient tableServiceClient =
-            getClientBuilder(Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
-                "https://tablestests.table.core.windows.com"), true).buildClient();
+
+        final TableServiceClient tableServiceClient = getClientBuilder(true).buildClient();
 
         // Act & Assert
         // This request will use the tenant ID extracted from the previous request.
@@ -306,7 +304,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
                 .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        TableServiceClient serviceClient2 = getClientBuilderWithConnectionString().buildClient();
+        TableServiceClient serviceClient2 = getClientBuilderWithConnectionString(false).buildClient();
         final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
 
         assertTrue(
@@ -340,7 +338,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
                 .setStartTime(startTime)
                 .setSasIpRange(ipRange);
 
-        TableServiceClient serviceClient2 = getClientBuilderWithConnectionString().buildClient();
+        TableServiceClient serviceClient2 = getClientBuilderWithConnectionString(false).buildClient();
         final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
 
         assertTrue(
@@ -371,7 +369,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
                 .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        TableServiceClient serviceClient2 = getClientBuilderWithConnectionString().buildClient();
+        TableServiceClient serviceClient2 = getClientBuilderWithConnectionString(false).buildClient();
         final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
         final String tableName = testResourceNamer.randomName("test", 20);
 
