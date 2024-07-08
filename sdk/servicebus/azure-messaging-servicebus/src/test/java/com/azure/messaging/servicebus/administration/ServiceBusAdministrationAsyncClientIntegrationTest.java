@@ -40,6 +40,7 @@ import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeP
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -109,6 +110,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
      */
     @ParameterizedTest
     @MethodSource("createHttpClients")
+    // @Disabled("With pipeline enabled for federated managed identity, the test needing secret won't work anymore - com.microsoft.aad.msal4j.MsalServiceException: AADSTS7000215: Invalid client secret provided")
     void azureClientSecretCredential(HttpClient httpClient) {
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
         final TokenCredential tokenCredential;
@@ -116,7 +118,6 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             tokenCredential = request -> Mono.fromCallable(() ->
                 new AccessToken("foo-bar", OffsetDateTime.now().plus(Duration.ofMinutes(5))));
         } else {
-            // Uses ClientSecretCredential specific EnvVars exported in ..\..\..\..\..\..\test.yml
             tokenCredential = new DefaultAzureCredentialBuilder().build();
         }
 
