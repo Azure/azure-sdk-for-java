@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.administration;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
@@ -101,6 +102,48 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     public static Stream<Arguments> createHttpClients() {
         return Stream.of(Arguments.of(new NettyAsyncHttpClientBuilder().build()));
+    }
+
+    /**
+     * Test to connect to the service bus using com.azure.identity.ClientSecretCredential.
+     */
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void azureClientSecretCredential(HttpClient httpClient) {
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+        final TokenCredential tokenCredential;
+        if (interceptorManager.isPlaybackMode()) {
+            tokenCredential = request -> Mono.fromCallable(() ->
+                new AccessToken("foo-bar", OffsetDateTime.now().plus(Duration.ofMinutes(5))));
+        } else {
+            // Uses ClientSecretCredential specific EnvVars exported in ..\..\..\..\..\..\test.yml
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
+        }
+
+        final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder();
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (interceptorManager.isLiveMode()) {
+            builder.httpClient(httpClient);
+        } else {
+            builder.httpClient(httpClient).addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        final ServiceBusAdministrationAsyncClient client = builder
+            .credential(fullyQualifiedDomainName, tokenCredential)
+            .buildAsyncClient();
+
+        StepVerifier.create(client.getNamespaceProperties())
+            .assertNext(properties -> {
+                assertNotNull(properties);
+                if (!interceptorManager.isPlaybackMode()) {
+                    final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
+                    assertEquals(split[0], properties.getName());
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     //region Create tests
