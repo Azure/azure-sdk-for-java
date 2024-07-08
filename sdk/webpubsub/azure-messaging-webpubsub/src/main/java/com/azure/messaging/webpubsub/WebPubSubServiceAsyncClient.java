@@ -390,7 +390,7 @@ public final class WebPubSubServiceAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addConnectionsToGroupsWithResponse(String hub, List<String> groups, String filter) {
+    public Mono<Void> addConnectionsToGroups(String hub, List<String> groups, String filter) {
         AddToGroupsRequest requestBody = new AddToGroupsRequest();
         requestBody.setGroups(groups);
         requestBody.setFilter(filter);

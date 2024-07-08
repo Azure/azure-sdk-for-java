@@ -360,7 +360,7 @@ public final class WebPubSubServiceClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addConnectionsToGroupsWithResponse(String hub, List<String> groups, String filter) {
+    public void addConnectionsToGroups(String hub, List<String> groups, String filter) {
         // Convert requestBody to Binary Data String
         AddToGroupsRequest requestBody = new AddToGroupsRequest();
         requestBody.setGroups(groups);
