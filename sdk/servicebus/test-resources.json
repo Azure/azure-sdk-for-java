@@ -16,13 +16,6 @@
         "description": "The subscription id to which the application and resources belong."
       }
     },
-    "tenantId": {
-      "type": "string",
-      "defaultValue": "[subscription().tenantId]",
-      "metadata": {
-        "description": "The tenant id to which the application and resources belong."
-      }
-    },
     "testApplicationOid": {
       "type": "string",
       "metadata": {
@@ -189,14 +182,6 @@
     }
   ],
   "outputs": {
-    "AZURE_TENANT_ID": {
-      "type": "string",
-      "value": "[parameters('tenantId')]"
-    },
-    "AZURE_CLIENT_ID": {
-      "type": "string",
-      "value": "[parameters('testApplicationId')]"
-    },
     "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME": {
       "type": "string",
       "value": "[concat(variables('namespaceName'), parameters('serviceBusEndpointSuffix'))]"
