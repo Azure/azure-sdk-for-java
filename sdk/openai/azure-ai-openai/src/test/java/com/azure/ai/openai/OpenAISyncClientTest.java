@@ -26,6 +26,7 @@ import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
+import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.ai.openai.models.OnYourDataApiKeyAuthenticationOptions;
 import com.azure.ai.openai.models.OnYourDataContextProperty;
 import com.azure.ai.openai.models.SpeechGenerationResponseFormat;
@@ -238,6 +239,17 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
         getImageGenerationRunner((deploymentId, options) ->
                 assertImageGenerationsForAzure(client.getImageGenerations(deploymentId, options)));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGenerateImageWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getImageGenerationWithResponseRunner(deploymentId -> options -> requestOptions -> {
+            Response<ImageGenerations> response = client.getImageGenerationsWithResponse(deploymentId, options, requestOptions);
+            assertResponseRequestHeader(response.getRequest());
+            assertImageGenerationsForAzure(response.getValue());
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
