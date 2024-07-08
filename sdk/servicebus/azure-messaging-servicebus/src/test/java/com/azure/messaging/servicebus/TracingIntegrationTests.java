@@ -68,7 +68,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        spanProcessor = new TestSpanProcessor(TestUtils.getFullyQualifiedDomainName(), getQueueName(0));
+        spanProcessor = new TestSpanProcessor(TestUtils.getFullyQualifiedDomainName(true), getQueueName(0));
         OpenTelemetryTracingOptions tracingOptions = new OpenTelemetryTracingOptions()
             .setOpenTelemetry(OpenTelemetrySdk.builder()
                 .setTracerProvider(
@@ -189,7 +189,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES)
             .setSessionId(sessionId);
 
-        OpenTelemetry otel = configureOTel(TestUtils.getFullyQualifiedDomainName(), getSessionQueueName(0));
+        OpenTelemetry otel = configureOTel(TestUtils.getFullyQualifiedDomainName(true), getSessionQueueName(0));
         final ServiceBusClientBuilder senderBuilder = getAuthenticatedBuilder();
         sender = toClose(senderBuilder
             .clientOptions(new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel)))
@@ -598,7 +598,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         String sessionId = UUID.randomUUID().toString();
         ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES).setSessionId(sessionId);
 
-        OpenTelemetry otel = configureOTel(TestUtils.getFullyQualifiedDomainName(), sessionQueueName);
+        OpenTelemetry otel = configureOTel(TestUtils.getFullyQualifiedDomainName(true), sessionQueueName);
         clientOptions = new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel));
         final ServiceBusClientBuilder senderBuilder = getAuthenticatedBuilder();
         sender = toClose(senderBuilder

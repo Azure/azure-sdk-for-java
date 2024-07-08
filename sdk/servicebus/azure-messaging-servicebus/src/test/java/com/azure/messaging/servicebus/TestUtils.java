@@ -165,19 +165,16 @@ public class TestUtils {
     /**
      * Gets the fully qualified domain name for the service bus resource.
      *
-     * @return The fully qualified domain name for the service bus resource if set else a redacted dummy name.
-     */
-    public static String getFullyQualifiedDomainName() {
-        return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME", "REDACTED.servicebus.windows.net");
-    }
-
-    /**
-     * Gets the fully qualified domain name for the service bus resource.
+     * @param useFallbackValue If {@code true}, a redacted dummy name is returned if the fully qualified domain name environment variable is not set.
      *
-     * @return the fully qualified domain name for the service bus resource if set, {@code null} otherwise.
+     * @return The fully qualified domain name for the service bus resource.
      */
-    public static String getLiveFullyQualifiedDomainName() {
-        return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
+    public static String getFullyQualifiedDomainName(boolean useFallbackValue) {
+        if (useFallbackValue) {
+            return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME", "REDACTED.servicebus.windows.net");
+        } else {
+            return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
+        }
     }
 
     public static String getEndpoint() {

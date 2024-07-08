@@ -119,7 +119,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
     @MethodSource("createHttpClients")
     @Disabled("The CI Pipeline cannot be enabled for both Federated Managed Identity auth and Secret auth")
     void azureClientSecretCredential(HttpClient httpClient) {
-        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName(true);
         final TokenCredential tokenCredential;
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = request -> Mono.fromCallable(() ->
@@ -146,7 +146,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .assertNext(properties -> {
                 assertNotNull(properties);
                 if (!interceptorManager.isPlaybackMode()) {
-                    final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
+                    final String[] split = TestUtils.getFullyQualifiedDomainName(true).split("\\.", 2);
                     assertEquals(split[0], properties.getName());
                 }
             })
@@ -703,7 +703,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .assertNext(properties -> {
                 assertEquals(NamespaceType.MESSAGING, properties.getNamespaceType());
                 if (!interceptorManager.isPlaybackMode()) {
-                    final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
+                    final String[] split = TestUtils.getFullyQualifiedDomainName(true).split("\\.", 2);
                     assertEquals(split[0], properties.getName());
                 }
             })
@@ -1190,10 +1190,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
     static void configure(ServiceBusAdministrationClientBuilder builder,
         HttpClient httpClient, InterceptorManager interceptorManager, AtomicReference<TokenCredential> credentialCached) {
         if (interceptorManager.isPlaybackMode()) {
-            builder.credential(TestUtils.getFullyQualifiedDomainName(), new MockTokenCredential());
+            builder.credential(TestUtils.getFullyQualifiedDomainName(true), new MockTokenCredential());
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isLiveMode()) {
-            final String fullyQualifiedDomainName = TestUtils.getLiveFullyQualifiedDomainName();
+            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName(false);
             assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
             final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
             builder.credential(fullyQualifiedDomainName, credential);
@@ -1204,7 +1204,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             // Record Mode.
             final String connectionString = TestUtils.getConnectionString(false);
             if (CoreUtils.isNullOrEmpty(connectionString)) {
-                final String fullyQualifiedDomainName = TestUtils.getLiveFullyQualifiedDomainName();
+                final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName(false);
                 assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
                 final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
                 builder.credential(fullyQualifiedDomainName, credential);

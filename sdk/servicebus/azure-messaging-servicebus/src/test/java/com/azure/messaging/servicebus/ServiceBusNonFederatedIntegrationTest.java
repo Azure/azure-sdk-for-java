@@ -46,7 +46,7 @@ public class ServiceBusNonFederatedIntegrationTest extends IntegrationTestBase {
     @Test
     public void testBatchSendEventByAzureNameKeyCredential() {
         ConnectionStringProperties properties = new ConnectionStringProperties(TestUtils.getConnectionString(false));
-        String fullyQualifiedNamespace = TestUtils.getFullyQualifiedDomainName();
+        String fullyQualifiedNamespace = TestUtils.getFullyQualifiedDomainName(true);
         String sharedAccessKeyName = properties.getSharedAccessKeyName();
         String sharedAccessKey = properties.getSharedAccessKey();
         String queueName = getQueueName(TestUtils.USE_CASE_DEFAULT);
@@ -70,7 +70,7 @@ public class ServiceBusNonFederatedIntegrationTest extends IntegrationTestBase {
     @Test
     public void testBatchSendEventByAzureSasCredential() {
         ConnectionStringProperties properties = new ConnectionStringProperties(TestUtils.getConnectionString(true));
-        String fullyQualifiedNamespace = TestUtils.getFullyQualifiedDomainName();
+        String fullyQualifiedNamespace = TestUtils.getFullyQualifiedDomainName(true);
         String sharedAccessSignature = properties.getSharedAccessSignature();
         String queueName = getQueueName(TestUtils.USE_CASE_DEFAULT);
 
@@ -94,7 +94,7 @@ public class ServiceBusNonFederatedIntegrationTest extends IntegrationTestBase {
 
     @Test
     void azureSasCredentialsTest() {
-        final String fullyQualifiedDomainName = TestUtils.getLiveFullyQualifiedDomainName();
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName(false);
         assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
         String connectionString = getConnectionString(true);
         Pattern sasPattern = Pattern.compile("SharedAccessSignature=(.*);?", Pattern.CASE_INSENSITIVE);

@@ -183,14 +183,14 @@ public abstract class IntegrationTestBase extends TestBase {
         final TestMode mode = super.getTestMode();
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
         if (mode == TestMode.LIVE) {
-            final String fullyQualifiedDomainName = TestUtils.getLiveFullyQualifiedDomainName();
+            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName(false);
             assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
             final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
             return builder.credential(fullyQualifiedDomainName, credential);
         } else if (mode == TestMode.RECORD) {
             final String connectionString = TestUtils.getConnectionString(false);
             if (CoreUtils.isNullOrEmpty(connectionString)) {
-                final String fullyQualifiedDomainName = TestUtils.getLiveFullyQualifiedDomainName();
+                final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName(false);
                 assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
                 final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
                 return builder.credential(fullyQualifiedDomainName, credential);
@@ -481,7 +481,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 // integration tests are runnable using the connection string.
                 return;
             }
-            if (!CoreUtils.isNullOrEmpty(TestUtils.getFullyQualifiedDomainName())) {
+            if (!CoreUtils.isNullOrEmpty(TestUtils.getFullyQualifiedDomainName(false))) {
                 // best effort check:
                 // integration tests are potentially runnable using DefaultAzureCredential. Here we're assuming that
                 // in RECORD mode with FullyQualifiedDomainName set, the dev environment is also set up for one of the

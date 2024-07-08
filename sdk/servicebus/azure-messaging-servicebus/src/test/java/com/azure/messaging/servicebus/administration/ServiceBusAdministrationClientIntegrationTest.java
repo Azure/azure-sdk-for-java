@@ -430,7 +430,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final NamespaceProperties namespaceProperties = client.getNamespaceProperties();
         assertEquals(NamespaceType.MESSAGING, namespaceProperties.getNamespaceType());
         if (!interceptorManager.isPlaybackMode()) {
-            final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
+            final String[] split = TestUtils.getFullyQualifiedDomainName(true).split("\\.", 2);
             assertEquals(split[0], namespaceProperties.getName());
         }
     }
