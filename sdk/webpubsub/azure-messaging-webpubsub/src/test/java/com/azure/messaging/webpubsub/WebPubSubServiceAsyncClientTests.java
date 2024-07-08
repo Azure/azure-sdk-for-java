@@ -343,10 +343,11 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     public void testAddConnectionsToGroup() {
         List<String> groupList = Arrays.asList("group1", "group2");
         String filter = "userId eq 'user 1'";
-        StepVerifier.create(
-            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, groupList, filter, new RequestOptions()),
-            200
-        );
+        // Expect no error
+        StepVerifier
+            .create(client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, groupList, filter, new RequestOptions()))
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     @Test
@@ -396,7 +397,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
 
-        StepVerifier.create(client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "q6MY8-6w2oQ7GAa4ViNr4w-DPgpgK02",
+        StepVerifier.create(client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "M0UuAb14DkmvBp4hZsct8A-DPgpgK02",
             requestOptions))
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());

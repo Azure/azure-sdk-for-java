@@ -334,6 +334,11 @@ public final class WebPubSubServiceClient {
         return this.serviceClient.addConnectionToGroupWithResponse(hub, group, connectionId, requestOptions);
     }
 
+    private Response<Void> addConnectionsToGroupsWithResponse(String hub, BinaryData groupsToAdd,
+                                                             RequestOptions requestOptions) {
+        return this.serviceClient.addConnectionsToGroupsWithResponse(hub, groupsToAdd, requestOptions);
+    }
+
     /**
      * Add filtered connections to multiple groups.
      * <p><strong>Request Body Schema</strong></p>
@@ -350,21 +355,20 @@ public final class WebPubSubServiceClient {
      * @param groups Target group names. Rejected by server on status code 400 if this parameter is null.
      * @param filter The filter to apply to the connections.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the {@link Response}.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addConnectionsToGroupsWithResponse(String hub, List<String> groups, String filter,
+    public void addConnectionsToGroupsWithResponse(String hub, List<String> groups, String filter,
                                                              RequestOptions requestOptions) {
         // Convert requestBody to Binary Data String
         AddToGroupsRequest requestBody = new AddToGroupsRequest();
         requestBody.setGroups(groups);
         requestBody.setFilter(filter);
         BinaryData body = BinaryData.fromObject(requestBody);
-        return this.serviceClient.addConnectionsToGroupsWithResponse(hub, body, requestOptions);
+        addConnectionsToGroupsWithResponse(hub, body, requestOptions);
     }
 
     /**

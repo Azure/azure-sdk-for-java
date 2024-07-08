@@ -33,6 +33,7 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -291,10 +292,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     public void testAddConnectionsToGroups() {
         List<String> groupList = Arrays.asList("group1", "group2");
         String filter = "userId eq 'user 1'";
-        assertResponse(
-            client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, groupList, filter, new RequestOptions()),
-            200
-        );
+        assertDoesNotThrow(() -> client.addConnectionsToGroupsWithResponse(TestUtils.HUB_NAME, groupList, filter, new RequestOptions()));
     }
 
     @Test
@@ -346,7 +344,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
             To do this, refer to https://learn.microsoft.com/en-us/azure/azure-web-pubsub/quickstarts-pubsub-among-clients
             and define the connected event callback to get the connectionID.
          */
-        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "q6MY8-6w2oQ7GAa4ViNr4w-DPgpgK02",
+        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "M0UuAb14DkmvBp4hZsct8A-DPgpgK02",
             requestOptions).getValue();
         Assertions.assertTrue(permission);
     }

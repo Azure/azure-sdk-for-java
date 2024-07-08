@@ -363,6 +363,11 @@ public final class WebPubSubServiceAsyncClient {
         return this.serviceClient.addConnectionToGroupWithResponseAsync(hub, group, connectionId, requestOptions);
     }
 
+    private Mono<Response<Void>> addConnectionsToGroupsWithResponse(String hub, BinaryData groupsToAdd,
+                                                                   RequestOptions requestOptions) {
+        return this.serviceClient.addConnectionsToGroupsWithResponseAsync(hub, groupsToAdd, requestOptions);
+    }
+
     /**
      * Add filtered connections to multiple groups.
      * <p><strong>Request Body Schema</strong></p>
@@ -379,20 +384,20 @@ public final class WebPubSubServiceAsyncClient {
      * @param groups Target group names. Rejected by server on status code 400 if this parameter is null.
      * @param filter The filter to apply to the connections.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion of {@link Mono}.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addConnectionsToGroupsWithResponse(String hub,
+    public Mono<Void> addConnectionsToGroupsWithResponse(String hub,
                                                                    List<String> groups, String filter, RequestOptions requestOptions) {
         AddToGroupsRequest requestBody = new AddToGroupsRequest();
         requestBody.setGroups(groups);
         requestBody.setFilter(filter);
         BinaryData body = BinaryData.fromObject(requestBody);
-        return this.serviceClient.addConnectionsToGroupsWithResponseAsync(hub, body, requestOptions);
+        return addConnectionsToGroupsWithResponse(hub, body, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
