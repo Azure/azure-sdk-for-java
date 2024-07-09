@@ -1648,6 +1648,4 @@ public interface AsyncDocumentClient {
     void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 
     public String getMasterKeyOrResourceToken();
-
-    void cacheEnclosingCosmosAsyncClient(CosmosAsyncClient cosmosAsyncClient);
 }

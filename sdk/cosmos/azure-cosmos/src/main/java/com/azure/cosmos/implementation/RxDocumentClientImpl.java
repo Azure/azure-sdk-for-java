@@ -557,15 +557,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
 
-            // todo: revert config before merge
-            System.setProperty(
-                "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
-                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                    + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
-                    + "\"consecutiveExceptionCountToleratedForReads\": 10,"
-                    + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
-                    + "}");
-
             this.globalPartitionEndpointManagerForCircuitBreaker = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManager);
 
             this.globalPartitionEndpointManagerForCircuitBreaker.init();
@@ -698,7 +689,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.apiType);
 
             this.globalEndpointManager.init();
-            this.globalPartitionEndpointManagerForCircuitBreaker.setRxDocumentClientImplSnapshot(this);
 
             DatabaseAccount databaseAccountSnapshot = this.initializeGatewayConfigurationReader();
             this.resetSessionContainerIfNeeded(databaseAccountSnapshot);
@@ -797,6 +787,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.clientTelemetry,
             this.globalEndpointManager);
 
+        this.globalPartitionEndpointManagerForCircuitBreaker.setGlobalAddressResolver(this.addressResolver);
         this.createStoreModel(true);
     }
 
@@ -5764,11 +5755,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public String getMasterKeyOrResourceToken() {
         return this.masterKeyOrResourceToken;
-    }
-
-    @Override
-    public void cacheEnclosingCosmosAsyncClient(CosmosAsyncClient cosmosAsyncClient) {
-        this.cachedCosmosAsyncClientSnapshot.set(cosmosAsyncClient);
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

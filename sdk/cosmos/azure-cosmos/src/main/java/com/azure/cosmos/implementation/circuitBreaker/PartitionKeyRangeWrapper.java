@@ -20,7 +20,7 @@ public class PartitionKeyRangeWrapper {
         return partitionKeyRange;
     }
 
-    public String getResourceId() {
+    public String getCollectionResourceId() {
         return resourceId;
     }
 

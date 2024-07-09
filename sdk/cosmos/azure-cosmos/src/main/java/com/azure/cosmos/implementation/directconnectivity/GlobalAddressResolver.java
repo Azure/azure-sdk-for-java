@@ -317,6 +317,16 @@ public class GlobalAddressResolver implements IAddressResolver {
         return endpointCache;
     }
 
+    public GatewayAddressCache getGatewayAddressCache(URI endpoint) {
+        EndpointCache endpointCache = this.addressCacheByEndpoint.get(endpoint);
+
+        if (endpointCache != null) {
+            return endpointCache.addressCache;
+        }
+
+        return null;
+    }
+
     static class EndpointCache {
         GatewayAddressCache addressCache;
         AddressResolver addressResolver;

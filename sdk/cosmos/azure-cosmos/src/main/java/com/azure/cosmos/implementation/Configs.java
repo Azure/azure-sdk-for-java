@@ -203,16 +203,31 @@ public class Configs {
     //                + "\"applyDiagnosticThresholdsForTransportLevelMeters\":true}");
     public static final String METRICS_CONFIG = "COSMOS.METRICS_CONFIG";
     public static final String DEFAULT_METRICS_CONFIG = CosmosMicrometerMetricsConfig.DEFAULT.toJson();
+
+    // For partition-level circuit breaker, below config will set the tolerated consecutive exception counts
+    // for reads and writes for a given partition before being marked as Unavailable
     private static final String DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG = PartitionLevelCircuitBreakerConfig.DEFAULT.toJson();
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG";
     private static final String STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT = "COSMOS.STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT";
     private static final int DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT = 2;
     private static final String STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS = "COSMOS.STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS";
     private static final int DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS = 1;
+
+    // For partition-level circuit breaker, a background thread will run periodically every y seconds at a minimum
+    // in an attempt to recover Unavailable partitions
     private static final String STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS = "COSMOS.STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS";
     private static final int DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS = 60;
+
+    // For partition-level circuit breaker, a partition can be allowed to be Unavailable for minimum of x seconds
+    // as specified by the below setting after which a background thread will attempt to recover the partition
     private static final String ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS = "COSMOS.ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS";
     private static final int DEFAULT_ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS = 30;
+
+    // For partition-level circuit breaker, in order to recover a partition in a region, the SDK when configured
+    // in the direct connectivity mode, establishes connections to replicas to attempt to recover a region
+    // Below sets a time limit on how long these connection establishments be attempted for
+    private static final int DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS = 10;
+    private static final String CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS = "COSMOS.CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS";
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -613,14 +628,25 @@ public class Configs {
     }
 
     public static PartitionLevelCircuitBreakerConfig getPartitionLevelCircuitBreakerConfig() {
-        String partitionLevelCircuitBreakerConfig =
+        String partitionLevelCircuitBreakerConfigAsString =
             System.getProperty(
                 PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG,
                 firstNonNull(
                     emptyToNull(System.getenv().get(PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG)),
                     DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG));
 
-        return PartitionLevelCircuitBreakerConfig.fromJsonString(partitionLevelCircuitBreakerConfig);
+        PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig
+            = PartitionLevelCircuitBreakerConfig.fromJsonString(partitionLevelCircuitBreakerConfigAsString);
+
+        if (partitionLevelCircuitBreakerConfig.getConsecutiveExceptionCountToleratedForReads() < 10) {
+            return PartitionLevelCircuitBreakerConfig.DEFAULT;
+        }
+
+        if (partitionLevelCircuitBreakerConfig.getConsecutiveExceptionCountToleratedForWrites() < 5) {
+            return PartitionLevelCircuitBreakerConfig.DEFAULT;
+        }
+
+        return partitionLevelCircuitBreakerConfig;
     }
 
     public static int getStaleCollectionCacheRefreshRetryCount() {
@@ -628,13 +654,13 @@ public class Configs {
         String valueFromSystemProperty = System.getProperty(STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
 
         if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
-            return Integer.parseInt(valueFromSystemProperty);
+            return Math.max(Integer.parseInt(valueFromSystemProperty), DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
         }
 
         String valueFromEnvVariable = System.getenv(STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
 
         if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
-            return Integer.parseInt(valueFromEnvVariable);
+            return Math.max(Integer.parseInt(valueFromEnvVariable), DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
         }
 
         return DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT;
@@ -645,13 +671,13 @@ public class Configs {
         String valueFromSystemProperty = System.getProperty(STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS);
 
         if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
-            return Integer.parseInt(valueFromSystemProperty);
+            return Math.max(Integer.parseInt(valueFromSystemProperty), DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
         }
 
         String valueFromEnvVariable = System.getenv(STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS);
 
         if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
-            return Integer.parseInt(valueFromEnvVariable);
+            return Math.max(Integer.parseInt(valueFromEnvVariable), DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
         }
 
         return DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS;
@@ -662,13 +688,13 @@ public class Configs {
         String valueFromSystemProperty = System.getProperty(STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
 
         if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
-            return Integer.parseInt(valueFromSystemProperty);
+            return Math.max(Integer.parseInt(valueFromSystemProperty), DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
         }
 
         String valueFromEnvVariable = System.getenv(STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
 
         if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
-            return Integer.parseInt(valueFromEnvVariable);
+            return Math.max(Integer.parseInt(valueFromEnvVariable), DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
         }
 
         return DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS;
@@ -679,15 +705,32 @@ public class Configs {
         String valueFromSystemProperty = System.getProperty(ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS);
 
         if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
-            return Integer.parseInt(valueFromSystemProperty);
+            return Math.max(Integer.parseInt(valueFromSystemProperty), DEFAULT_ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS);
         }
 
         String valueFromEnvVariable = System.getenv(ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS);
 
         if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
-            return Integer.parseInt(valueFromEnvVariable);
+            return Math.max(Integer.parseInt(valueFromEnvVariable), DEFAULT_ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS);
         }
 
         return DEFAULT_ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS;
+    }
+
+    public static int getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds() {
+
+        String valueFromSystemProperty = System.getProperty(CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS);
+
+        if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
+            return Math.max(Integer.parseInt(valueFromSystemProperty), DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS);
+        }
+
+        String valueFromEnvVariable = System.getenv(CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS);
+
+        if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
+            return Math.max(Integer.parseInt(valueFromEnvVariable), DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS);
+        }
+
+        return DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS;
     }
 }

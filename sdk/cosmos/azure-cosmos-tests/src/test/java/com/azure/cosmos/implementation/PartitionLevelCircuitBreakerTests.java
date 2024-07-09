@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -79,7 +78,6 @@ import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.fail;
-
 
 public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 

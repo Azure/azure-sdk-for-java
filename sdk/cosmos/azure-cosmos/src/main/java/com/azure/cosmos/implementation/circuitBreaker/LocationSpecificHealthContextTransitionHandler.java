@@ -65,7 +65,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                             logger.debug("Partition {}-{} of collection : {} marked as Healthy from HealthyTentative for region : {}",
                                 partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                                 partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                                partitionKeyRangeWrapper.getResourceId(),
+                                partitionKeyRangeWrapper.getCollectionResourceId(),
                                 this.globalEndpointManager
                                     .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                         }
@@ -85,7 +85,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                             logger.debug("Partition {}-{} of collection : {} marked as HealthyTentative from Unavailable for region : {}",
                                 partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                                 partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                                partitionKeyRangeWrapper.getResourceId(),
+                                partitionKeyRangeWrapper.getCollectionResourceId(),
                                 this.globalEndpointManager
                                     .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                         }
@@ -98,7 +98,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                         logger.debug("Partition {}-{} of collection : {} marked as HealthyTentative from Unavailable for region : {}",
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                            partitionKeyRangeWrapper.getResourceId(),
+                            partitionKeyRangeWrapper.getCollectionResourceId(),
                             this.globalEndpointManager
                                 .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                     }
@@ -129,7 +129,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                     logger.debug("Partition {}-{} of collection : {} marked as HealthyWithFailures from Healthy for region : {}",
                         partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                         partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                        partitionKeyRangeWrapper.getResourceId(),
+                        partitionKeyRangeWrapper.getCollectionResourceId(),
                         this.globalEndpointManager
                             .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                 }
@@ -145,7 +145,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                         logger.debug("Partition {}-{} of collection : {} has exception count of {} for region : {}",
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                            partitionKeyRangeWrapper.getResourceId(),
+                            partitionKeyRangeWrapper.getCollectionResourceId(),
                             isReadOnlyRequest ? locationSpecificHealthContextInner.getExceptionCountForReadForCircuitBreaking() : locationSpecificHealthContextInner.getExceptionCountForWriteForCircuitBreaking(),
                             this.globalEndpointManager
                                 .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
@@ -175,7 +175,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                         logger.debug("Partition {}-{} of collection : {} marked as Unavailable from HealthyTentative for region : {}",
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                            partitionKeyRangeWrapper.getResourceId(),
+                            partitionKeyRangeWrapper.getCollectionResourceId(),
                             this.globalEndpointManager
                                 .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                     }

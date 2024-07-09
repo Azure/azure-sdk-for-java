@@ -305,16 +305,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
 
-        RxDocumentClientImpl rxDocumentClientMock = Mockito.mock(RxDocumentClientImpl.class);
-        CosmosAsyncClient cosmosAsyncClientMock = Mockito.mock(CosmosAsyncClient.class);
-        ConnectionPolicy connectionPolicyMock = Mockito.mock(ConnectionPolicy.class);
-
-        globalPartitionEndpointManagerForCircuitBreaker.setRxDocumentClientImplSnapshot(rxDocumentClientMock);
-
-        setUpMockInvocations(rxDocumentClientMock, cosmosAsyncClientMock);
-        setUpMockInvocations(cosmosAsyncClientMock, connectionPolicyMock);
-        setUpMockInvocations(connectionPolicyMock);
-
         globalPartitionEndpointManagerForCircuitBreaker.init();
 
         String pkRangeId = "0";
@@ -400,16 +390,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
-
-        RxDocumentClientImpl rxDocumentClientMock = Mockito.mock(RxDocumentClientImpl.class);
-        CosmosAsyncClient cosmosAsyncClientMock = Mockito.mock(CosmosAsyncClient.class);
-        ConnectionPolicy connectionPolicyMock = Mockito.mock(ConnectionPolicy.class);
-
-        globalPartitionEndpointManagerForCircuitBreaker.setRxDocumentClientImplSnapshot(rxDocumentClientMock);
-
-        setUpMockInvocations(rxDocumentClientMock, cosmosAsyncClientMock);
-        setUpMockInvocations(cosmosAsyncClientMock, connectionPolicyMock);
-        setUpMockInvocations(connectionPolicyMock);
 
         globalPartitionEndpointManagerForCircuitBreaker.init();
 
@@ -504,16 +484,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
 
-        RxDocumentClientImpl rxDocumentClientMock = Mockito.mock(RxDocumentClientImpl.class);
-        CosmosAsyncClient cosmosAsyncClientMock = Mockito.mock(CosmosAsyncClient.class);
-        ConnectionPolicy connectionPolicyMock = Mockito.mock(ConnectionPolicy.class);
-
-        globalPartitionEndpointManagerForCircuitBreaker.setRxDocumentClientImplSnapshot(rxDocumentClientMock);
-
-        setUpMockInvocations(rxDocumentClientMock, cosmosAsyncClientMock);
-        setUpMockInvocations(cosmosAsyncClientMock, connectionPolicyMock);
-        setUpMockInvocations(connectionPolicyMock);
-
         globalPartitionEndpointManagerForCircuitBreaker.init();
 
         String pkRangeId = "0";
@@ -605,16 +575,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
-
-        RxDocumentClientImpl rxDocumentClientMock = Mockito.mock(RxDocumentClientImpl.class);
-        CosmosAsyncClient cosmosAsyncClientMock = Mockito.mock(CosmosAsyncClient.class);
-        ConnectionPolicy connectionPolicyMock = Mockito.mock(ConnectionPolicy.class);
-
-        globalPartitionEndpointManagerForCircuitBreaker.setRxDocumentClientImplSnapshot(rxDocumentClientMock);
-
-        setUpMockInvocations(rxDocumentClientMock, cosmosAsyncClientMock);
-        setUpMockInvocations(cosmosAsyncClientMock, connectionPolicyMock);
-        setUpMockInvocations(connectionPolicyMock);
 
         globalPartitionEndpointManagerForCircuitBreaker.init();
 
@@ -979,47 +939,5 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         logger.warn("Class with simple name {} does not exist!", classSimpleName);
         return null;
-    }
-
-    private static void setUpMockInvocations(RxDocumentClientImpl rxDocumentClientMock, CosmosAsyncClient cosmosAsyncClientMock) {
-        Mockito.when(
-                rxDocumentClientMock.queryDocuments(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.any()))
-            .thenReturn(Flux.empty());
-
-        Mockito.when(
-                rxDocumentClientMock.getCachedCosmosAsyncClientSnapshot())
-            .thenReturn(cosmosAsyncClientMock);
-    }
-
-    private static void setUpMockInvocations(CosmosAsyncClient cosmosAsyncClientMock, ConnectionPolicy connectionPolicyMock) {
-        Mockito.when(
-            cosmosAsyncClientMock.getEffectiveDiagnosticsThresholds(Mockito.any())
-        ).thenReturn(new CosmosDiagnosticsThresholds());
-
-        Mockito.when(
-            cosmosAsyncClientMock.getEffectiveConsistencyLevel(Mockito.any(), Mockito.any())
-        ).thenReturn(ConsistencyLevel.EVENTUAL);
-
-        Mockito.when(
-            cosmosAsyncClientMock.getConnectionPolicy()
-        ).thenReturn(connectionPolicyMock);
-
-        Mockito.when(
-            cosmosAsyncClientMock.getAccountTagValue()
-        ).thenReturn("contoso-cosmos-db");
-
-        Mockito.when(
-            cosmosAsyncClientMock.getServiceEndpoint()
-        ).thenReturn("https://contoso-cosmos-db.azure.documents.com");
-
-        Mockito.when(
-            cosmosAsyncClientMock.getUserAgent()
-        ).thenReturn("java-circuit-breaker-test");
-    }
-
-    private static void setUpMockInvocations(ConnectionPolicy connectionPolicyMock) {
-        Mockito.when(
-            connectionPolicyMock.getConnectionMode()
-        ).thenReturn(ConnectionMode.DIRECT);
     }
 }
