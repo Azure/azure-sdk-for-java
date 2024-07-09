@@ -93,14 +93,6 @@
 		"CONFIDENTIALLEDGER_CLIENT_OBJECTID": {
 			"type": "string",
 			"value": "[parameters('testApplicationOid')]"
-		},
-		"CONFIDENTIALLEDGER_CLIENT_PEM": {
-			"type": "string",
-			"value": "[parameters('ConfidentialLedgerPrincipalPEM')]"
-		},
-		"CONFIDENTIALLEDGER_CLIENT_PEM_PK": {
-			"type": "string",
-			"value": "[parameters('ConfidentialLedgerPrincipalPEMPK')]"
 		}
 	}
 }
