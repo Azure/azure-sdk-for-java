@@ -364,8 +364,10 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withRedisConfiguration("aof-storage-connection-string-1", connectionString)
                 .create();
         Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().aofBackupEnabled());
-        Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString0());
-        Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString1());
+        if (!isPlaybackMode()) {
+            Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString0());
+            Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString1());
+        }
 
         assertSameVersion(RedisCache.RedisVersion.V6, redisCache.redisVersion());
     }
