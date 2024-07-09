@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
@@ -45,7 +46,7 @@ public final class JdkHttpResponseSync extends JdkHttpResponseBase {
      * @param headers the headers of the response.
      * @param bytes the response body bytes.
      */
-    public JdkHttpResponseSync(final HttpRequest request, int statusCode, HttpHeaders headers, byte[] bytes) {
+    public JdkHttpResponseSync(HttpRequest request, int statusCode, HttpHeaders headers, byte[] bytes) {
         super(request, statusCode, headers);
         this.bodyStream = null;
         this.bodyBytes = bytes;
@@ -56,10 +57,12 @@ public final class JdkHttpResponseSync extends JdkHttpResponseBase {
      *
      * @param request the request which resulted in this response.
      * @param streamResponse the JDK HttpClient response.
+     * @param readTimeout The duration before a read operation times out.
      */
-    public JdkHttpResponseSync(final HttpRequest request, java.net.http.HttpResponse<InputStream> streamResponse) {
+    public JdkHttpResponseSync(HttpRequest request, java.net.http.HttpResponse<InputStream> streamResponse,
+        Duration readTimeout) {
         super(request, streamResponse.statusCode(), fromJdkHttpHeaders(streamResponse.headers()));
-        this.bodyStream = streamResponse.body();
+        this.bodyStream = new InputStreamWithReadTimeout(streamResponse.body(), readTimeout);
         this.bodyBytes = null;
     }
 
