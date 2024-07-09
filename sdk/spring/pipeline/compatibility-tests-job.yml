@@ -24,11 +24,6 @@ jobs:
       - script: |
           python -m pip install termcolor
         displayName: 'Python module install'
-      # AzureRedisAutoConfigurationTestContainerTest pulls in `ryuk` image because of testcontainers dependency.
-      # `ryuk` does not exist in mcr.microsoft.com image repository. Do not pull image.
-      - bash: |
-          echo "##vso[task.setvariable variable=TESTCONTAINERS_RYUK_DISABLED;]true"
-        displayName: 'Disable testcontainers ryuk'
       - bash: |
           echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION]$(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION))"
         displayName: 'Set env'
