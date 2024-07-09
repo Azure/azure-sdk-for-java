@@ -458,6 +458,10 @@
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs/            @sjkwak
 
+# ServiceLabel: %Face
+# PRLabel:  %Face
+/sdk/translation/azure-ai-vision-face/               @leareai
+
 # ServiceLabel: %Functions
 # ServiceOwners:                                     @ahmedelnably @fabiocav
 
