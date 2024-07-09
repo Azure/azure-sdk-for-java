@@ -6,7 +6,10 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.communication.callautomation.implementation.models.MediaStreamingSubscriptionInternal;
+import com.azure.communication.callautomation.implementation.accesshelpers.MediaStreamingSubscriptionConstructorProxy;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Media streaming Subscription Object.
@@ -31,10 +34,37 @@ public final class MediaStreamingSubscription {
     @JsonProperty(value = "subscribedContentTypes")
     private List<MediaStreamingContentType> subscribedContentTypes;
 
+
+    static {
+        MediaStreamingSubscriptionConstructorProxy.setAccessor(
+            new MediaStreamingSubscriptionConstructorProxy.MediaStreamingSubscriptionConstructorAccessor() {
+                @Override
+                public MediaStreamingSubscription create(MediaStreamingSubscriptionInternal internalHeaders) {
+                    return new MediaStreamingSubscription(internalHeaders);
+                }
+            });
+    }
+
     /**
      * Creates an instance of MediaStreamingSubscription class.
      */
     public MediaStreamingSubscription() {
+        id = null;
+        state = null;
+        subscribedContentTypes = null;
+    }
+
+     /**
+     * Package-private constructor of the class, used internally.
+     *
+     * @param mediaStreamingSubscriptionInternal The internal response of MediaStreamingSubscription
+     */
+    public MediaStreamingSubscription(MediaStreamingSubscriptionInternal mediaStreamingSubscriptionInternal) {
+        id = mediaStreamingSubscriptionInternal.getId() != null ? mediaStreamingSubscriptionInternal.getId() : null;
+        state = mediaStreamingSubscriptionInternal.getState() != null ? MediaStreamingSubscriptionState.fromString(mediaStreamingSubscriptionInternal.getState().toString()) : null;
+        subscribedContentTypes = mediaStreamingSubscriptionInternal.getSubscribedContentTypes() != null ? mediaStreamingSubscriptionInternal.getSubscribedContentTypes().stream().
+        map(contentType -> MediaStreamingContentType.fromString(contentType.toString())).
+        collect(Collectors.toList()) : null;
     }
 
     /**
@@ -47,17 +77,6 @@ public final class MediaStreamingSubscription {
     }
 
     /**
-     * Set the id property: Subscription Id.
-     * 
-     * @param id the id value to set.
-     * @return the MediaStreamingSubscriptionInternal object itself.
-     */
-    public MediaStreamingSubscription setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the state property: Gets or Sets media streaming subscription state.
      * 
      * @return the state value.
@@ -67,34 +86,11 @@ public final class MediaStreamingSubscription {
     }
 
     /**
-     * Set the state property: Media streaming subscription state.
-     * 
-     * @param state the state value to set.
-     * @return the MediaStreamingSubscriptionInternal object itself.
-     */
-    public MediaStreamingSubscription setState(MediaStreamingSubscriptionState state) {
-        this.state = state;
-        return this;
-    }
-
-    /**
      * Get the subscribedContentTypes property: Gets or Sets the subscribed media streaming content types.
      * 
      * @return the subscribedContentTypes value.
      */
     public List<MediaStreamingContentType> getSubscribedContentTypes() {
         return this.subscribedContentTypes;
-    }    
-
-    /**
-     * Set the subscribedContentTypes property: Subscribed media streaming content types.
-     * 
-     * @param subscribedContentTypes the subscribedContentTypes value to set.
-     * @return the MediaStreamingSubscriptionInternal object itself.
-     */
-    public MediaStreamingSubscription
-        setSubscribedContentTypes(List<MediaStreamingContentType> subscribedContentTypes) {
-        this.subscribedContentTypes = subscribedContentTypes;
-        return this;
     }
 }

@@ -5,8 +5,11 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.communication.callautomation.implementation.models.TranscriptionSubscriptionInternal;
+import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionSubscriptionConstructorProxy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Transcription Subscription Object.
@@ -31,10 +34,36 @@ public final class TranscriptionSubscription {
     @JsonProperty(value = "subscribedResultTypes")
     private List<TranscriptionResultState> subscribedResultTypes;
 
+    static {
+        TranscriptionSubscriptionConstructorProxy.setAccessor(
+            new TranscriptionSubscriptionConstructorProxy.TranscriptionSubscriptionConstructorAccessor() {
+                @Override
+                public TranscriptionSubscription create(TranscriptionSubscriptionInternal internalHeaders) {
+                    return new TranscriptionSubscription(internalHeaders);
+                }
+            });
+    }
+
     /**
      * Creates an instance of TranscriptionSubscriptionInternal class.
      */
     public TranscriptionSubscription() {
+        id = null;
+        state = null;
+        subscribedResultTypes = null;
+    }
+
+     /**
+     * Package-private constructor of the class, used internally.
+     *
+     * @param transcriptionSubscriptionInternal The internal response of TranscriptionSubscription
+     */
+    public TranscriptionSubscription(TranscriptionSubscriptionInternal transcriptionSubscriptionInternal) {
+        id = transcriptionSubscriptionInternal.getId() != null ? transcriptionSubscriptionInternal.getId() : null;
+        state = transcriptionSubscriptionInternal.getState() != null ? TranscriptionSubscriptionState.fromString(transcriptionSubscriptionInternal.getState().toString()) : null;
+        subscribedResultTypes = transcriptionSubscriptionInternal.getSubscribedResultTypes() != null ? transcriptionSubscriptionInternal.getSubscribedResultTypes().stream()
+                .map(resultType -> TranscriptionResultState.fromString(resultType.toString()))
+                .collect(Collectors.toList()) : null;
     }
 
     /**
@@ -47,17 +76,6 @@ public final class TranscriptionSubscription {
     }
 
     /**
-     * Set the id property: Gets or Sets subscription Id.
-     * 
-     * @param id the id value to set.
-     * @return the TranscriptionSubscriptionInternal object itself.
-     */
-    public TranscriptionSubscription setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the state property: Gets or Sets transcription subscription state.
      * 
      * @return the state value.
@@ -67,34 +85,11 @@ public final class TranscriptionSubscription {
     }
 
     /**
-     * Set the state property: Gets or Sets transcription subscription state.
-     * 
-     * @param state the state value to set.
-     * @return the TranscriptionSubscriptionInternal object itself.
-     */
-    public TranscriptionSubscription setState(TranscriptionSubscriptionState state) {
-        this.state = state;
-        return this;
-    }
-
-    /**
      * Get the subscribedResultTypes property: Gets or Sets the subscribed transcription result types.
      * 
      * @return the subscribedResultTypes value.
      */
     public List<TranscriptionResultState> getSubscribedResultTypes() {
         return this.subscribedResultTypes;
-    }
-
-    /**
-     * Set the subscribedResultTypes property: Gets or Sets the subscribed transcription result types.
-     * 
-     * @param subscribedResultTypes the subscribedResultTypes value to set.
-     * @return the TranscriptionSubscriptionInternal object itself.
-     */
-    public TranscriptionSubscription
-        setSubscribedResultTypes(List<TranscriptionResultState> subscribedResultTypes) {
-        this.subscribedResultTypes = subscribedResultTypes;
-        return this;
     }
 }

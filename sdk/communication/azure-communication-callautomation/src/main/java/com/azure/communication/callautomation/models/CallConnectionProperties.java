@@ -8,16 +8,12 @@ import com.azure.communication.callautomation.implementation.converters.Communic
 import com.azure.communication.callautomation.implementation.converters.CommunicationUserIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingSubscriptionInternal;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Immutable;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
-
 
 /**
  * Asynchronous client that supports call connection operations.
@@ -82,8 +78,8 @@ public final class CallConnectionProperties {
         this.targetParticipants = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.callbackUrl = callConnectionPropertiesInternal.getCallbackUri();
-        this.mediaStreamingSubscription = convertMediaStreamingSubscription(callConnectionPropertiesInternal);
-        this.transcriptionSubscription = convertTranscriptionSubscription(callConnectionPropertiesInternal);
+        this.mediaStreamingSubscription = callConnectionPropertiesInternal.getMediaStreamingSubscription() != null ? new MediaStreamingSubscription(callConnectionPropertiesInternal.getMediaStreamingSubscription()) : null;
+        this.transcriptionSubscription = callConnectionPropertiesInternal.getTranscriptionSubscription() != null ? new TranscriptionSubscription(callConnectionPropertiesInternal.getTranscriptionSubscription()) : null;
         this.answeredBy = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredBy());
         this.correlationId = callConnectionPropertiesInternal.getCorrelationId();
         this.answeredFor = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredFor());
@@ -203,37 +199,5 @@ public final class CallConnectionProperties {
      */
     public PhoneNumberIdentifier getAnsweredFor() {
         return answeredFor;
-    }
-
-    private MediaStreamingSubscription convertMediaStreamingSubscription(CallConnectionPropertiesInternal callConnectionPropertiesInternal) {
-        if (callConnectionPropertiesInternal.getMediaStreamingSubscription() == null) {
-            return null;
-        }
-
-        MediaStreamingSubscriptionInternal mediaStreamingSubscriptionInternal = callConnectionPropertiesInternal.getMediaStreamingSubscription();
-        MediaStreamingSubscription mediaStreamingSubscription = new MediaStreamingSubscription();
-        mediaStreamingSubscription.setId(mediaStreamingSubscriptionInternal.getId());
-        mediaStreamingSubscription.setState(MediaStreamingSubscriptionState.fromString(mediaStreamingSubscriptionInternal.getState().toString()));
-
-        if(mediaStreamingSubscriptionInternal.getSubscribedContentTypes() != null) {
-            mediaStreamingSubscription.setSubscribedContentTypes(mediaStreamingSubscriptionInternal.getSubscribedContentTypes().stream()
-                .map(contentType -> MediaStreamingContentType.fromString(contentType.toString()))
-                .collect(Collectors.toList()));
-        }
-
-        return mediaStreamingSubscription;
-    }
-
-    private TranscriptionSubscription convertTranscriptionSubscription(CallConnectionPropertiesInternal callConnectionPropertiesInternal) {
-        if (callConnectionPropertiesInternal.getTranscriptionSubscription() == null) {
-            return null;
-        }
-        TranscriptionSubscription transcriptionSubscription = new TranscriptionSubscription();
-        transcriptionSubscription.setId(callConnectionPropertiesInternal.getTranscriptionSubscription().getId());
-        transcriptionSubscription.setState(TranscriptionSubscriptionState.fromString(callConnectionPropertiesInternal.getTranscriptionSubscription().getState().toString()));
-        transcriptionSubscription.setSubscribedResultTypes(callConnectionPropertiesInternal.getTranscriptionSubscription().getSubscribedResultTypes().stream()
-                .map(resultType -> TranscriptionResultState.fromString(resultType.toString()))
-                .collect(Collectors.toList()));
-        return transcriptionSubscription;
     }
 }
