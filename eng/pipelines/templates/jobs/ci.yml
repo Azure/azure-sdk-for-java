@@ -58,9 +58,9 @@ parameters:
   - name: TimeoutInMinutes
     type: number
     default: 60
-- name: EnvVars
-  type: object
-  default: {}
+  - name: EnvVars
+    type: object
+    default: {}
 
 jobs:
   - job: 'Build'
