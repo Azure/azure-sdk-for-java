@@ -10,7 +10,11 @@
   },
   "generateOptions": {
     "generateScript": {
-      "path": "./eng/mgmt/automation/generate.py"
+      "path": "./eng/mgmt/automation/generate.py",
+      "logPrefix": "Java-Sdk-Automation",
+      "stderr": {
+        "showInComment": "(\\[GENERATE\\]\\[Error\\]|\\[COMPILE\\] Maven build fail|ExternalError).*"
+      }
     }
   },
   "artifactOptions": {

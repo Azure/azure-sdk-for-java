@@ -12,6 +12,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 ### Prerequisites
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Maven][maven]
 - Microsoft Azure subscription
     - You can create a free account at: [https://azure.microsoft.com](https://azure.microsoft.com)
