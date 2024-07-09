@@ -661,9 +661,16 @@ public final class DiagnosticsProvider {
         final double samplingRateSnapshot = this.samplingRateSnapshotSupplier.get();
         final boolean isSampledOut = this.shouldSampleOutOperation(samplingRateSnapshot);
         final CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
+        ctxAccessor.setSamplingRateSnapshot(ctx, samplingRateSnapshot, isSampledOut);
 
         if (ctx == null || isSampledOut) {
-            return publisher;
+            return publisher.map(r -> {
+                CosmosDiagnostics diagnostics = r.getCosmosDiagnostics();
+                if (diagnostics != null) {
+                    diagnosticsAccessor.setSamplingRateSnapshot(diagnostics, samplingRateSnapshot);
+                }
+                return r;
+            });
         }
 
         return publisherWithDiagnostics(
