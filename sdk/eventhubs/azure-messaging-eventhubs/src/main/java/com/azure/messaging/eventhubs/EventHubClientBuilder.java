@@ -827,6 +827,27 @@ public class EventHubClientBuilder implements
     }
 
     /**
+     * Gets the connection string properties.
+     *
+     * @return the connection string properties.
+     */
+    ConnectionStringProperties getConnectionStringProperties() {
+        return connectionStringProperties;
+    }
+
+    /**
+     * Sets the connection string properties.
+     *
+     * @param connectionStringProperties the connection string properties to set.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    EventHubClientBuilder setConnectionStringProperties(ConnectionStringProperties connectionStringProperties) {
+        this.connectionStringProperties = connectionStringProperties;
+        return this;
+    }
+
+    /**
      * Sets the scheduler for the created Event Hub client.
      *
      * @param scheduler Scheduler to set.
