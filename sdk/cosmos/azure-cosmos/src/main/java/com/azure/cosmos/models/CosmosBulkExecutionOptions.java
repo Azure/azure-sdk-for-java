@@ -13,6 +13,7 @@ import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -333,6 +334,8 @@ public final class CosmosBulkExecutionOptions {
     public CosmosBulkExecutionOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
         if (keywordIdentifiers != null) {
             this.actualRequestOptions.setKeywordIdentifiers(Collections.unmodifiableSet(keywordIdentifiers));
+        } else {
+            this.actualRequestOptions.setKeywordIdentifiers(new HashSet<>());
         }
         return this;
     }

@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -209,6 +210,8 @@ public final class CosmosBatchRequestOptions {
     public CosmosBatchRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
         if (keywordIdentifiers != null) {
             this.keywordIdentifiers = Collections.unmodifiableSet(keywordIdentifiers);
+        } else {
+            this.keywordIdentifiers = new HashSet<>();
         }
         return this;
     }

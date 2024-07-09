@@ -538,9 +538,7 @@ public class CosmosQueryRequestOptions {
      * @return the current request options.
      */
     public CosmosQueryRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
-        if (keywordIdentifiers != null) {
-            this.actualRequestOptions.setKeywordIdentifiers(Collections.unmodifiableSet(keywordIdentifiers));
-        }
+        this.actualRequestOptions.setKeywordIdentifiers(keywordIdentifiers);
         return this;
     }
 

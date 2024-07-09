@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -320,9 +321,7 @@ public final class CosmosReadManyRequestOptions {
      * @return the current request options.
      */
     public CosmosReadManyRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
-        if (keywordIdentifiers != null) {
-            this.actualRequestOptions.setKeywordIdentifiers(Collections.unmodifiableSet(keywordIdentifiers));
-        }
+        this.actualRequestOptions.setKeywordIdentifiers(keywordIdentifiers);
         return this;
     }
 
