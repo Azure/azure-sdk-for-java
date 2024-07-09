@@ -4,24 +4,38 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-/** Describes the entities certainty and polarity. */
+/**
+ * Describes the entities certainty and polarity.
+ */
 public enum Certainty {
-    /** Enum value positive. */
+    /**
+     * Enum value positive.
+     */
     POSITIVE("positive"),
 
-    /** Enum value positivePossible. */
+    /**
+     * Enum value positivePossible.
+     */
     POSITIVE_POSSIBLE("positivePossible"),
 
-    /** Enum value neutralPossible. */
+    /**
+     * Enum value neutralPossible.
+     */
     NEUTRAL_POSSIBLE("neutralPossible"),
 
-    /** Enum value negativePossible. */
+    /**
+     * Enum value negativePossible.
+     */
     NEGATIVE_POSSIBLE("negativePossible"),
 
-    /** Enum value negative. */
+    /**
+     * Enum value negative.
+     */
     NEGATIVE("negative");
 
-    /** The actual serialized value for a Certainty instance. */
+    /**
+     * The actual serialized value for a Certainty instance.
+     */
     private final String value;
 
     Certainty(String value) {
@@ -30,7 +44,7 @@ public enum Certainty {
 
     /**
      * Parses a serialized value to a Certainty instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Certainty object, or null if unable to parse.
      */
@@ -47,7 +61,9 @@ public enum Certainty {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

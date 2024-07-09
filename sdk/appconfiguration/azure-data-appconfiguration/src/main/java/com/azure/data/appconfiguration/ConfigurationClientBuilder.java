@@ -99,7 +99,7 @@ import static com.azure.data.appconfiguration.implementation.ClientConstants.APP
  *
  * ConfigurationClient configurationClient = new ConfigurationClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
- *     .endpoint&#40;&quot;https:&#47;&#47;myconfig.azure.net&#47;&quot;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;dummy.azure.net&#47;&quot;&#41;
  *     .connectionString&#40;connectionString&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
