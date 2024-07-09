@@ -114,9 +114,14 @@ public class FeatureFlagSettingUnitTest {
 
     @Test
     public void setKeyShowFeatureFlagPrefix() {
+        String keyWithPrefix = KEY_PREFIX + "key";
         FeatureFlagConfigurationSetting setting = new FeatureFlagConfigurationSetting("featureID", true);
         setting.setKey("key");
-        assertEquals(KEY_PREFIX + "key", setting.getKey());
+        assertEquals(keyWithPrefix, setting.getKey());
+
+        FeatureFlagConfigurationSetting settingWithPrefix = new FeatureFlagConfigurationSetting("featureID", true);
+        settingWithPrefix.setKey(keyWithPrefix);
+        assertEquals(keyWithPrefix, settingWithPrefix.getKey());
     }
 
     private FeatureFlagConfigurationSetting createFeatureFlagConfigurationSetting() {
