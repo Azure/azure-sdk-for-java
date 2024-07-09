@@ -37,6 +37,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class CosmosChangeFeedRequestOptions {
    private final CosmosChangeFeedRequestOptionsImpl actualRequestOptions;
+   private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
 
     CosmosChangeFeedRequestOptions(CosmosChangeFeedRequestOptions topBeCloned) {
        this.actualRequestOptions  = new CosmosChangeFeedRequestOptionsImpl(topBeCloned.actualRequestOptions);
@@ -531,7 +532,7 @@ public final class CosmosChangeFeedRequestOptions {
         if (keywordIdentifiers != null) {
             this.actualRequestOptions.setKeywordIdentifiers(Collections.unmodifiableSet(keywordIdentifiers));
         } else {
-            this.actualRequestOptions.setKeywordIdentifiers(new HashSet<>());
+            this.actualRequestOptions.setKeywordIdentifiers(EMPTY_KEYWORD_IDENTIFIERS);
         }
         return this;
     }

@@ -48,6 +48,7 @@ public class CosmosItemRequestOptions {
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
     private Set<String> keywordIdentifiers;
+    private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
 
     /**
      * copy constructor
@@ -574,7 +575,7 @@ public class CosmosItemRequestOptions {
         if (keywordIdentifiers != null) {
             this.keywordIdentifiers = Collections.unmodifiableSet(keywordIdentifiers);
         } else {
-            this.keywordIdentifiers = new HashSet<>();
+            this.keywordIdentifiers = EMPTY_KEYWORD_IDENTIFIERS;
         }
         return this;
     }

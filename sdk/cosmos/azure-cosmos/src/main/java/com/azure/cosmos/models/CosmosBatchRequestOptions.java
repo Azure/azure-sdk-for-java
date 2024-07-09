@@ -30,6 +30,7 @@ public final class CosmosBatchRequestOptions {
 
     private CosmosItemSerializer customSerializer;
     private Set<String> keywordIdentifiers;
+    private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
 
     /**
      * Creates an instance of the CosmosBatchRequestOptions class
@@ -211,7 +212,7 @@ public final class CosmosBatchRequestOptions {
         if (keywordIdentifiers != null) {
             this.keywordIdentifiers = Collections.unmodifiableSet(keywordIdentifiers);
         } else {
-            this.keywordIdentifiers = new HashSet<>();
+            this.keywordIdentifiers = EMPTY_KEYWORD_IDENTIFIERS;
         }
         return this;
     }

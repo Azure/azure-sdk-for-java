@@ -46,6 +46,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
     private Set<String> keywordIdentifiers;
+    private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
 
     /**
      * Instantiates a new query request options.
@@ -465,7 +466,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         if (keywordIdentifiers != null) {
             this.keywordIdentifiers = Collections.unmodifiableSet(keywordIdentifiers);
         } else {
-            this.keywordIdentifiers = new HashSet<>();
+            this.keywordIdentifiers = EMPTY_KEYWORD_IDENTIFIERS;
         }
     }
 

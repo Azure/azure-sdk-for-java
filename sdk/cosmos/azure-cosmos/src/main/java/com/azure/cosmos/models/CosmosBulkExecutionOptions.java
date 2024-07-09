@@ -25,6 +25,7 @@ import java.util.Set;
  */
 public final class CosmosBulkExecutionOptions {
     private final CosmosBulkExecutionOptionsImpl actualRequestOptions;
+    private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
 
     CosmosBulkExecutionOptions(CosmosBulkExecutionOptions toBeCloned) {
         this.actualRequestOptions = new CosmosBulkExecutionOptionsImpl(toBeCloned.actualRequestOptions);
@@ -335,7 +336,7 @@ public final class CosmosBulkExecutionOptions {
         if (keywordIdentifiers != null) {
             this.actualRequestOptions.setKeywordIdentifiers(Collections.unmodifiableSet(keywordIdentifiers));
         } else {
-            this.actualRequestOptions.setKeywordIdentifiers(new HashSet<>());
+            this.actualRequestOptions.setKeywordIdentifiers(EMPTY_KEYWORD_IDENTIFIERS);
         }
         return this;
     }

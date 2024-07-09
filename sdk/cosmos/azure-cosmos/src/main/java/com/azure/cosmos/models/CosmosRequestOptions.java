@@ -36,6 +36,7 @@ public final class CosmosRequestOptions {
     private Integer maxPrefetchPageCount;
     private String queryName;
     private Set<String> keywordIdentifiers;
+    private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
 
     /**
      * Sets the CosmosEndToEndLatencyPolicyConfig.
@@ -234,7 +235,7 @@ public final class CosmosRequestOptions {
         if (keywordIdentifiers != null) {
             this.keywordIdentifiers = Collections.unmodifiableSet(keywordIdentifiers);
         } else {
-            this.keywordIdentifiers = new HashSet<>();
+            this.keywordIdentifiers = EMPTY_KEYWORD_IDENTIFIERS;
         }
         return this;
     }
