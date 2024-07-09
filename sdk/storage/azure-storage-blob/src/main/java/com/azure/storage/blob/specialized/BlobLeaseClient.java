@@ -12,7 +12,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -34,7 +33,6 @@ import com.azure.storage.blob.options.BlobChangeLeaseOptions;
 import com.azure.storage.blob.options.BlobReleaseLeaseOptions;
 import com.azure.storage.blob.options.BlobRenewLeaseOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.time.Duration;

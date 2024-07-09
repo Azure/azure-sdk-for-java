@@ -104,6 +104,7 @@ public class BlobClient extends BlobClientBase {
     /**
      * Protected constructor for use by {@link BlobClientBuilder}.
      *
+     * @param client the async blob client
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
      * @param serviceVersion The version of the service to receive requests.
@@ -123,6 +124,7 @@ public class BlobClient extends BlobClientBase {
     /**
      * Protected constructor for use by {@link BlobClientBuilder}.
      *
+     * @param client the async blob client
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
      * @param serviceVersion The version of the service to receive requests.
@@ -145,6 +147,7 @@ public class BlobClient extends BlobClientBase {
     /**
      * Protected constructor for use by {@link BlobClientBuilder}.
      *
+     * @param client the async blob client
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
      * @param serviceVersion The version of the service to receive requests.

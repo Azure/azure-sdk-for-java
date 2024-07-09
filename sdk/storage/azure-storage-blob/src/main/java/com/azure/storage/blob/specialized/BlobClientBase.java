@@ -190,6 +190,7 @@ public class BlobClientBase {
     /**
      * Protected constructor for use by {@link SpecializedBlobClientBuilder}.
      *
+     * @param client the async blob client
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
      * @param serviceVersion The version of the service to receive requests.
@@ -2498,7 +2499,7 @@ public class BlobClientBase {
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(),
             null, qr, getCustomerProvidedKey(), Context.NONE);
         InputStream avroInputStream = response.getValue();
-        BlobQueryReader reader = new BlobQueryReader(avroInputStream, queryOptions.getProgressConsumer(),
+        BlobQueryReader reader = new BlobQueryReader(null, queryOptions.getProgressConsumer(),
             queryOptions.getErrorConsumer());
         try {
             InputStream resultStream = reader.readInputStream(avroInputStream);
@@ -2606,7 +2607,7 @@ public class BlobClientBase {
                 BlobStorageException.class);
 
             InputStream avroInputStream = response.getValue();
-            BlobQueryReader reader = new BlobQueryReader(avroInputStream, queryOptions.getProgressConsumer(),
+            BlobQueryReader reader = new BlobQueryReader(null, queryOptions.getProgressConsumer(),
                 queryOptions.getErrorConsumer());
 
                 InputStream resultStream = reader.readInputStream(avroInputStream);

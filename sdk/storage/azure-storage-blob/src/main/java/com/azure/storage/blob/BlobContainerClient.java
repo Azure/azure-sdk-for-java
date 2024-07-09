@@ -58,7 +58,6 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.Duration;
@@ -75,7 +74,6 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
 
 /**
@@ -1210,7 +1208,7 @@ public final class BlobContainerClient {
                         .setDetails(options.getDetails());
                 }
             } else {
-                finalOptions = options;
+                finalOptions = options == null ? new ListBlobsOptions() : options;
             }
             return listBlobsHierarchySegment(marker, delimiter, finalOptions, timeout);
         };
