@@ -120,7 +120,7 @@ public final class CosmosBatchRequestOptions {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());
             }
         }
-        requestOptions.setExcludeRegions(excludeRegions);
+        requestOptions.setExcludedRegions(excludeRegions);
 
         return requestOptions;
     }
@@ -224,14 +224,10 @@ public final class CosmosBatchRequestOptions {
                 }
 
                 @Override
-                public List<String> getExcludeRegions(CosmosBatchRequestOptions cosmosBatchRequestOptions) {
-                    return cosmosBatchRequestOptions.excludeRegions;
-                }
-
-                @Override
                 public CosmosBatchRequestOptions clone(CosmosBatchRequestOptions toBeCloned) {
                     return new CosmosBatchRequestOptions(toBeCloned);
                 }
+
             }
         );
     }

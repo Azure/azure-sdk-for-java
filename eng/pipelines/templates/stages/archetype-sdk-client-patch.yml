@@ -60,6 +60,7 @@ extends:
                   Paths:
                     - '**/*.xml'
                     - '**/*.md'
+                    - '**/*.yml'
                     - '!sdk/**/test-recordings/*'
                     - '!sdk/**/session-records/*'
 

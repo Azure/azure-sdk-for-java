@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** An object representing a single summary with context for given document. */
+/**
+ * An object representing a single summary with context for given document.
+ */
 @Fluent
 public final class AbstractiveSummary implements JsonSerializable<AbstractiveSummary> {
     /*
@@ -25,12 +27,15 @@ public final class AbstractiveSummary implements JsonSerializable<AbstractiveSum
      */
     private List<SummaryContext> contexts;
 
-    /** Creates an instance of AbstractiveSummary class. */
-    public AbstractiveSummary() {}
+    /**
+     * Creates an instance of AbstractiveSummary class.
+     */
+    public AbstractiveSummary() {
+    }
 
     /**
      * Get the text property: The text of the summary.
-     *
+     * 
      * @return the text value.
      */
     public String getText() {
@@ -39,7 +44,7 @@ public final class AbstractiveSummary implements JsonSerializable<AbstractiveSum
 
     /**
      * Set the text property: The text of the summary.
-     *
+     * 
      * @param text the text value to set.
      * @return the AbstractiveSummary object itself.
      */
@@ -50,7 +55,7 @@ public final class AbstractiveSummary implements JsonSerializable<AbstractiveSum
 
     /**
      * Get the contexts property: The context list of the summary.
-     *
+     * 
      * @return the contexts value.
      */
     public List<SummaryContext> getContexts() {
@@ -59,7 +64,7 @@ public final class AbstractiveSummary implements JsonSerializable<AbstractiveSum
 
     /**
      * Set the contexts property: The context list of the summary.
-     *
+     * 
      * @param contexts the contexts value to set.
      * @return the AbstractiveSummary object itself.
      */
@@ -68,6 +73,9 @@ public final class AbstractiveSummary implements JsonSerializable<AbstractiveSum
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -78,33 +86,31 @@ public final class AbstractiveSummary implements JsonSerializable<AbstractiveSum
 
     /**
      * Reads an instance of AbstractiveSummary from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AbstractiveSummary if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AbstractiveSummary.
      */
     public static AbstractiveSummary fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AbstractiveSummary deserializedAbstractiveSummary = new AbstractiveSummary();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            AbstractiveSummary deserializedAbstractiveSummary = new AbstractiveSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("text".equals(fieldName)) {
-                            deserializedAbstractiveSummary.text = reader.getString();
-                        } else if ("contexts".equals(fieldName)) {
-                            List<SummaryContext> contexts =
-                                    reader.readArray(reader1 -> SummaryContext.fromJson(reader1));
-                            deserializedAbstractiveSummary.contexts = contexts;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("text".equals(fieldName)) {
+                    deserializedAbstractiveSummary.text = reader.getString();
+                } else if ("contexts".equals(fieldName)) {
+                    List<SummaryContext> contexts = reader.readArray(reader1 -> SummaryContext.fromJson(reader1));
+                    deserializedAbstractiveSummary.contexts = contexts;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedAbstractiveSummary;
-                });
+            return deserializedAbstractiveSummary;
+        });
     }
 }

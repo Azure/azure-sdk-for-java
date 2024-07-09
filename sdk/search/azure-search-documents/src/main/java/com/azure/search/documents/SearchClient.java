@@ -15,9 +15,9 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
+import com.azure.search.documents.implementation.models.ErrorResponseException;
 import com.azure.search.documents.implementation.models.SearchContinuationToken;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
-import com.azure.search.documents.implementation.models.SearchErrorException;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
@@ -334,7 +334,7 @@ public final class SearchClient {
      *
      * @return the pipeline.
      */
-    public HttpPipeline getHttpPipeline() {
+    HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
@@ -839,8 +839,8 @@ public final class SearchClient {
 
             return new SimpleResponse<>(response, serializer.deserializeFromBytes(
                 serializer.serializeToBytes(response.getValue()), createInstance(modelClass)));
-        } catch (SearchErrorException ex) {
-            throw LOGGER.logExceptionAsError(Utility.mapSearchErrorException(ex));
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError(Utility.mapErrorResponseException(ex));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }

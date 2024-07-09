@@ -27,6 +27,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 ### Code generation settings
 ``` yaml
 tag: package-2023-10-03-preview
+use: '@autorest/java@4.1.29'
 require:
     - https://github.com/Azure/azure-rest-api-specs/blob/ebedc156cf07929f3f72e71e5323ecdfa402267d/specification/communication/data-plane/CallAutomation/readme.md
 java: true

@@ -3,7 +3,7 @@
 
 package com.azure.messaging.webpubsub.client;
 
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -25,14 +25,14 @@ public class GroupMessageTests extends TestBase {
     private static final String HELLO = "hello";
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendMessageBeforeStart() {
         WebPubSubClient client = getClient();
         Assertions.assertThrows(SendMessageFailedException.class, () -> client.sendToGroup("testSendMessageBeforeStart", HELLO));
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendMessage() {
         String groupName = "testSendMessage";
         WebPubSubClient client = getClient();
@@ -52,7 +52,7 @@ public class GroupMessageTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendMessageFireAndForget() {
         String groupName = "testSendMessageFireAndForget";
         WebPubSubClient client = getClient();
@@ -69,7 +69,7 @@ public class GroupMessageTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendJsonMessage() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         BinaryData[] data = new BinaryData[1];
@@ -102,7 +102,7 @@ public class GroupMessageTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendBinaryMessage() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         BinaryData[] data = new BinaryData[1];
@@ -132,7 +132,7 @@ public class GroupMessageTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendDuplicateMessage() {
         String groupName = "testSendDuplicateMessage";
         WebPubSubClient client = getClient();
@@ -153,7 +153,7 @@ public class GroupMessageTests extends TestBase {
 
     @Disabled("Performance test")
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendMessagePerformance() throws InterruptedException {
         final int count = 1000;
         CountDownLatch latch = new CountDownLatch(count);

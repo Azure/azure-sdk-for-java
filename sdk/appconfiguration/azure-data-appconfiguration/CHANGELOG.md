@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+## 1.6.2 (2024-06-25)
+
+### Other Changes
+
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
@@ -253,7 +257,7 @@ Note: Below breaking changes only affect the version `1.5.0-beta.1`.
 ## 1.4.0 (2023-01-11)
 
 ### Features Added
-- Added `getEnpoint()` method to both App Configuration synchronous and asynchronous clients.
+- Added `getEndpoint()` method to both App Configuration synchronous and asynchronous clients.
 
 ### Other Changes
 
@@ -488,7 +492,7 @@ and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
 
 ## 1.0.0-preview.5 (2019-10-11)
-- Fixed a explored bug that ConfigurationClientCredential is already pacakge-private. Using connection String instead.
+- Fixed a explored bug that ConfigurationClientCredential is already package-private. Using connection String instead.
 
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
@@ -511,7 +515,7 @@ demonstrate the new API.
 
 ## 1.0.0-preview.3 (2019-09-10)
 - Removed dependency on Netty.
-- Added logging when throwing `RutimeException`s.
+- Added logging when throwing `RuntimeException`s.
 
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
