@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class ResourceSkuRestrictionsReasonCode extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding ResourceSkuRestrictionsReasonCode.
      */
-    @JsonCreator
     public static ResourceSkuRestrictionsReasonCode fromString(String name) {
         return fromString(name, ResourceSkuRestrictionsReasonCode.class);
     }

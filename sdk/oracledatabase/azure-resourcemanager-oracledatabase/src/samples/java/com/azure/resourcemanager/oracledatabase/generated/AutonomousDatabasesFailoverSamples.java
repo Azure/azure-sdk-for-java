@@ -11,7 +11,24 @@ import com.azure.resourcemanager.oracledatabase.models.PeerDbDetails;
  */
 public final class AutonomousDatabasesFailoverSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_failover.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_failover.json
+     */
+    /**
+     * Sample code: AutonomousDatabases_Failover.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        autonomousDatabasesFailover(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabases()
+            .failover("rg000", "databasedb1", new PeerDbDetails().withPeerDbId("peerDbId"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_failover.json
      */
     /**
      * Sample code: Perform failover action on Autonomous Database.

@@ -5,24 +5,15 @@
 package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.oracledatabase.fluent.models.DbSystemShapeInner;
 import com.azure.resourcemanager.oracledatabase.models.DbSystemShapeListResult;
-import com.azure.resourcemanager.oracledatabase.models.DbSystemShapeProperties;
-import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class DbSystemShapeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbSystemShapeListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"shapeFamily\":\"mwsrcrgvxpvgo\",\"availableCoreCount\":1677729561,\"minimumCoreCount\":1121960551,\"runtimeMinimumCoreCount\":1625950300,\"coreCountIncrement\":731525012,\"minStorageCount\":688595045,\"maxStorageCount\":180961430,\"availableDataStoragePerServerInTbs\":1.9824161936036533,\"availableMemoryPerNodeInGbs\":941784903,\"availableDbNodePerNodeInGbs\":127391101,\"minCoreCountPerNode\":1782633502,\"availableMemoryInGbs\":70118233,\"minMemoryPerNodeInGbs\":113893877,\"availableDbNodeStorageInGbs\":12612409,\"minDbNodeStoragePerNodeInGbs\":568079364,\"availableDataStorageInTbs\":997736872,\"minDataStorageInTbs\":30531984,\"minimumNodeCount\":33232567,\"maximumNodeCount\":1607260784,\"availableCoreCountPerNode\":661923872},\"id\":\"xosow\",\"name\":\"xcug\",\"type\":\"cjooxdjebwpucwwf\"},{\"properties\":{\"shapeFamily\":\"bvmeuecivy\",\"availableCoreCount\":297335263,\"minimumCoreCount\":360614729,\"runtimeMinimumCoreCount\":1628145340,\"coreCountIncrement\":2089251939,\"minStorageCount\":347281810,\"maxStorageCount\":1178618137,\"availableDataStoragePerServerInTbs\":74.56943523044518,\"availableMemoryPerNodeInGbs\":798957461,\"availableDbNodePerNodeInGbs\":1580797213,\"minCoreCountPerNode\":54920560,\"availableMemoryInGbs\":643148633,\"minMemoryPerNodeInGbs\":17080551,\"availableDbNodeStorageInGbs\":384724385,\"minDbNodeStoragePerNodeInGbs\":838785311,\"availableDataStorageInTbs\":1070997174,\"minDataStorageInTbs\":381866779,\"minimumNodeCount\":1635091244,\"maximumNodeCount\":1316784956,\"availableCoreCountPerNode\":1718909076},\"id\":\"ni\",\"name\":\"kxfbkpycgklwndn\",\"type\":\"jdauwhvy\"}],\"nextLink\":\"zbtd\"}")
+            "{\"value\":[{\"properties\":{\"shapeFamily\":\"t\",\"availableCoreCount\":1491290789,\"minimumCoreCount\":777481009,\"runtimeMinimumCoreCount\":1258750458,\"coreCountIncrement\":1397437100,\"minStorageCount\":1232796575,\"maxStorageCount\":1519275761,\"availableDataStoragePerServerInTbs\":54.5079147632145,\"availableMemoryPerNodeInGbs\":1214313613,\"availableDbNodePerNodeInGbs\":1999029226,\"minCoreCountPerNode\":350152394,\"availableMemoryInGbs\":1115460475,\"minMemoryPerNodeInGbs\":580617744,\"availableDbNodeStorageInGbs\":1773507503,\"minDbNodeStoragePerNodeInGbs\":957944639,\"availableDataStorageInTbs\":1672254683,\"minDataStorageInTbs\":2086388671,\"minimumNodeCount\":351214213,\"maximumNodeCount\":2051758056,\"availableCoreCountPerNode\":1378087535},\"id\":\"bp\",\"name\":\"xqpsrknftguv\",\"type\":\"iuhprwmdyvxqta\"},{\"properties\":{\"shapeFamily\":\"ww\",\"availableCoreCount\":1692678524,\"minimumCoreCount\":1731999756,\"runtimeMinimumCoreCount\":1603221085,\"coreCountIncrement\":591654502,\"minStorageCount\":1070859381,\"maxStorageCount\":75631080,\"availableDataStoragePerServerInTbs\":81.21344104639293,\"availableMemoryPerNodeInGbs\":934632065,\"availableDbNodePerNodeInGbs\":988905675,\"minCoreCountPerNode\":2121055666,\"availableMemoryInGbs\":841332893,\"minMemoryPerNodeInGbs\":1391032405,\"availableDbNodeStorageInGbs\":1995543121,\"minDbNodeStoragePerNodeInGbs\":488274582,\"availableDataStorageInTbs\":673503494,\"minDataStorageInTbs\":2048055130,\"minimumNodeCount\":1125430045,\"maximumNodeCount\":1715507551,\"availableCoreCountPerNode\":1436102139},\"id\":\"zcjrvxdjzlmwlx\",\"name\":\"vu\",\"type\":\"fhzovawjvzunluth\"}],\"nextLink\":\"prnxipeil\"}")
             .toObject(DbSystemShapeListResult.class);
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        DbSystemShapeListResult model = new DbSystemShapeListResult()
-            .withValue(Arrays.asList(new DbSystemShapeInner().withProperties(new DbSystemShapeProperties()),
-                new DbSystemShapeInner().withProperties(new DbSystemShapeProperties())));
-        model = BinaryData.fromObject(model).toObject(DbSystemShapeListResult.class);
+        Assertions.assertEquals("prnxipeil", model.nextLink());
     }
 }

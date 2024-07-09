@@ -11,21 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class PlatformImagePurchasePlanTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PlatformImagePurchasePlan model = BinaryData.fromString(
-            "{\"planName\":\"lazjdyggdtjixhbk\",\"planProduct\":\"ofqweykhmenevfye\",\"planPublisher\":\"fwhybcibvy\"}")
+        PlatformImagePurchasePlan model = BinaryData
+            .fromString("{\"planName\":\"eypvhezrkg\",\"planProduct\":\"hcjrefovgmk\",\"planPublisher\":\"sle\"}")
             .toObject(PlatformImagePurchasePlan.class);
-        Assertions.assertEquals("lazjdyggdtjixhbk", model.planName());
-        Assertions.assertEquals("ofqweykhmenevfye", model.planProduct());
-        Assertions.assertEquals("fwhybcibvy", model.planPublisher());
+        Assertions.assertEquals("eypvhezrkg", model.planName());
+        Assertions.assertEquals("hcjrefovgmk", model.planProduct());
+        Assertions.assertEquals("sle", model.planPublisher());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlatformImagePurchasePlan model = new PlatformImagePurchasePlan().withPlanName("lazjdyggdtjixhbk")
-            .withPlanProduct("ofqweykhmenevfye").withPlanPublisher("fwhybcibvy");
+        PlatformImagePurchasePlan model = new PlatformImagePurchasePlan().withPlanName("eypvhezrkg")
+            .withPlanProduct("hcjrefovgmk")
+            .withPlanPublisher("sle");
         model = BinaryData.fromObject(model).toObject(PlatformImagePurchasePlan.class);
-        Assertions.assertEquals("lazjdyggdtjixhbk", model.planName());
-        Assertions.assertEquals("ofqweykhmenevfye", model.planProduct());
-        Assertions.assertEquals("fwhybcibvy", model.planPublisher());
+        Assertions.assertEquals("eypvhezrkg", model.planName());
+        Assertions.assertEquals("hcjrefovgmk", model.planProduct());
+        Assertions.assertEquals("sle", model.planPublisher());
     }
 }

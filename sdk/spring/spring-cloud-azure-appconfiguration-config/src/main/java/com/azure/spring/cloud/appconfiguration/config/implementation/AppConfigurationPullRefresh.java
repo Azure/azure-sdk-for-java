@@ -3,8 +3,6 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -12,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.endpoint.event.RefreshEvent;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
@@ -28,7 +24,7 @@ import reactor.core.publisher.Mono;
  * Enables checking of Configuration updates.
  */
 @Component
-public class AppConfigurationPullRefresh implements AppConfigurationRefresh, EnvironmentAware {
+public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPullRefresh.class);
 
@@ -41,8 +37,6 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     private final AppConfigurationReplicaClientFactory clientFactory;
 
     private final Duration refreshInterval;
-
-    private List<String> profiles;
     
     private final ReplicaLookUp replicaLookUp;
 
@@ -105,7 +99,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
             BaseAppConfigurationPolicy.setWatchRequests(true);
             try {
                 RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactory,
-                    refreshInterval, profiles, defaultMinBackoff, replicaLookUp);
+                    refreshInterval, defaultMinBackoff, replicaLookUp);
                 if (eventData.getDoRefresh()) {
                     publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
                     return true;
@@ -124,11 +118,6 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     @Override
     public Map<String, AppConfigurationStoreHealth> getAppConfigurationStoresHealth() {
         return clientFactory.getHealth();
-    }
-
-    @Override
-    public void setEnvironment(Environment environment) {
-        profiles = Arrays.asList(environment.getActiveProfiles());
     }
 
 }

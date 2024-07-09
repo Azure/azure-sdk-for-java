@@ -11,8 +11,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import com.azure.spring.cloud.feature.management.filters.TimeWindowFilter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -201,6 +203,39 @@ public class FeatureManagerTest {
             .thenReturn(new AlwaysOffFilter());
 
         assertFalse(featureManager.isEnabledAsync("On").block());
+    }
+
+    @Test
+    public void timeWindowFilter() {
+        final HashMap<String, Feature> features = new HashMap<>();
+        final HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
+
+        final HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put("Start", "Sun, 14 Jan 2024 00:00:00 GMT");
+        parameters.put("End", "Mon, 15 Jan 2024 00:00:00 GMT");
+        final HashMap<String, Object> pattern = new HashMap<>();
+        pattern.put("Type", "Weekly");
+        pattern.put("DaysOfWeek", List.of("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
+        final HashMap<String, Object> range = new HashMap<>();
+        range.put("Type", "NoEnd");
+        final HashMap<String, Object> recurrence = new HashMap<>();
+        recurrence.put("Pattern", pattern);
+        recurrence.put("Range", range);
+        parameters.put("Recurrence", recurrence);
+
+        final FeatureFilterEvaluationContext weeklyAlwaysOn = new FeatureFilterEvaluationContext();
+        weeklyAlwaysOn.setName("TimeWindowFilter");
+        weeklyAlwaysOn.setParameters(parameters);
+        filters.put(0, weeklyAlwaysOn);
+
+        final Feature weeklyAlwaysOnFeature = new Feature();
+        weeklyAlwaysOnFeature.setEnabledFor(filters);
+        features.put("Alpha", weeklyAlwaysOnFeature);
+
+        when(featureManagementPropertiesMock.getFeatureManagement()).thenReturn(features);
+        when(context.getBean(Mockito.matches("TimeWindowFilter"))).thenReturn(new TimeWindowFilter());
+
+        assertTrue(featureManager.isEnabled("Alpha"));
     }
 
     class AlwaysOnFilter implements FeatureFilter {

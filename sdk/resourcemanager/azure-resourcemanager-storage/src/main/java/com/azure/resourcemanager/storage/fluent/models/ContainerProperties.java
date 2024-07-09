@@ -14,7 +14,6 @@ import com.azure.resourcemanager.storage.models.LegalHoldProperties;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -109,19 +108,24 @@ public final class ContainerProperties {
     private LegalHoldProperties legalHold;
 
     /*
-     * The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared out. There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
+     * The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold
+     * public property is set to false by SRP if all existing legal hold tags are cleared out. There can be a maximum of
+     * 1000 blob containers with hasLegalHold=true for a given account.
      */
     @JsonProperty(value = "hasLegalHold", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasLegalHold;
 
     /*
-     * The hasImmutabilityPolicy public property is set to true by SRP if ImmutabilityPolicy has been created for this container. The hasImmutabilityPolicy public property is set to false by SRP if ImmutabilityPolicy has not been created for this container.
+     * The hasImmutabilityPolicy public property is set to true by SRP if ImmutabilityPolicy has been created for this
+     * container. The hasImmutabilityPolicy public property is set to false by SRP if ImmutabilityPolicy has not been
+     * created for this container.
      */
     @JsonProperty(value = "hasImmutabilityPolicy", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasImmutabilityPolicy;
 
     /*
-     * The object level immutability property of the container. The property is immutable and can only be set to true at the container creation time. Existing containers must undergo a migration process.
+     * The object level immutability property of the container. The property is immutable and can only be set to true at
+     * the container creation time. Existing containers must undergo a migration process.
      */
     @JsonProperty(value = "immutableStorageWithVersioning")
     private ImmutableStorageWithVersioning immutableStorageWithVersioning;
@@ -146,7 +150,7 @@ public final class ContainerProperties {
 
     /**
      * Get the version property: The version of the deleted blob container.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -155,7 +159,7 @@ public final class ContainerProperties {
 
     /**
      * Get the deleted property: Indicates whether the blob container was deleted.
-     *
+     * 
      * @return the deleted value.
      */
     public Boolean deleted() {
@@ -164,7 +168,7 @@ public final class ContainerProperties {
 
     /**
      * Get the deletedTime property: Blob container deletion time.
-     *
+     * 
      * @return the deletedTime value.
      */
     public OffsetDateTime deletedTime() {
@@ -173,7 +177,7 @@ public final class ContainerProperties {
 
     /**
      * Get the remainingRetentionDays property: Remaining retention days for soft deleted blob container.
-     *
+     * 
      * @return the remainingRetentionDays value.
      */
     public Integer remainingRetentionDays() {
@@ -182,7 +186,7 @@ public final class ContainerProperties {
 
     /**
      * Get the defaultEncryptionScope property: Default the container to use specified encryption scope for all writes.
-     *
+     * 
      * @return the defaultEncryptionScope value.
      */
     public String defaultEncryptionScope() {
@@ -191,7 +195,7 @@ public final class ContainerProperties {
 
     /**
      * Set the defaultEncryptionScope property: Default the container to use specified encryption scope for all writes.
-     *
+     * 
      * @param defaultEncryptionScope the defaultEncryptionScope value to set.
      * @return the ContainerProperties object itself.
      */
@@ -202,7 +206,7 @@ public final class ContainerProperties {
 
     /**
      * Get the denyEncryptionScopeOverride property: Block override of encryption scope from the container default.
-     *
+     * 
      * @return the denyEncryptionScopeOverride value.
      */
     public Boolean denyEncryptionScopeOverride() {
@@ -211,7 +215,7 @@ public final class ContainerProperties {
 
     /**
      * Set the denyEncryptionScopeOverride property: Block override of encryption scope from the container default.
-     *
+     * 
      * @param denyEncryptionScopeOverride the denyEncryptionScopeOverride value to set.
      * @return the ContainerProperties object itself.
      */
@@ -223,7 +227,7 @@ public final class ContainerProperties {
     /**
      * Get the publicAccess property: Specifies whether data in the container may be accessed publicly and the level of
      * access.
-     *
+     * 
      * @return the publicAccess value.
      */
     public PublicAccess publicAccess() {
@@ -233,7 +237,7 @@ public final class ContainerProperties {
     /**
      * Set the publicAccess property: Specifies whether data in the container may be accessed publicly and the level of
      * access.
-     *
+     * 
      * @param publicAccess the publicAccess value to set.
      * @return the ContainerProperties object itself.
      */
@@ -244,7 +248,7 @@ public final class ContainerProperties {
 
     /**
      * Get the lastModifiedTime property: Returns the date and time the container was last modified.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -253,7 +257,7 @@ public final class ContainerProperties {
 
     /**
      * Get the leaseStatus property: The lease status of the container.
-     *
+     * 
      * @return the leaseStatus value.
      */
     public LeaseStatus leaseStatus() {
@@ -262,7 +266,7 @@ public final class ContainerProperties {
 
     /**
      * Get the leaseState property: Lease state of the container.
-     *
+     * 
      * @return the leaseState value.
      */
     public LeaseState leaseState() {
@@ -272,7 +276,7 @@ public final class ContainerProperties {
     /**
      * Get the leaseDuration property: Specifies whether the lease on a container is of infinite or fixed duration, only
      * when the container is leased.
-     *
+     * 
      * @return the leaseDuration value.
      */
     public LeaseDuration leaseDuration() {
@@ -281,7 +285,7 @@ public final class ContainerProperties {
 
     /**
      * Get the metadata property: A name-value pair to associate with the container as metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -290,7 +294,7 @@ public final class ContainerProperties {
 
     /**
      * Set the metadata property: A name-value pair to associate with the container as metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the ContainerProperties object itself.
      */
@@ -301,7 +305,7 @@ public final class ContainerProperties {
 
     /**
      * Get the immutabilityPolicy property: The ImmutabilityPolicy property of the container.
-     *
+     * 
      * @return the immutabilityPolicy value.
      */
     public ImmutabilityPolicyProperties immutabilityPolicy() {
@@ -310,7 +314,7 @@ public final class ContainerProperties {
 
     /**
      * Get the legalHold property: The LegalHold property of the container.
-     *
+     * 
      * @return the legalHold value.
      */
     public LegalHoldProperties legalHold() {
@@ -321,7 +325,7 @@ public final class ContainerProperties {
      * Get the hasLegalHold property: The hasLegalHold public property is set to true by SRP if there are at least one
      * existing tag. The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared
      * out. There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
-     *
+     * 
      * @return the hasLegalHold value.
      */
     public Boolean hasLegalHold() {
@@ -332,7 +336,7 @@ public final class ContainerProperties {
      * Get the hasImmutabilityPolicy property: The hasImmutabilityPolicy public property is set to true by SRP if
      * ImmutabilityPolicy has been created for this container. The hasImmutabilityPolicy public property is set to false
      * by SRP if ImmutabilityPolicy has not been created for this container.
-     *
+     * 
      * @return the hasImmutabilityPolicy value.
      */
     public Boolean hasImmutabilityPolicy() {
@@ -343,7 +347,7 @@ public final class ContainerProperties {
      * Get the immutableStorageWithVersioning property: The object level immutability property of the container. The
      * property is immutable and can only be set to true at the container creation time. Existing containers must
      * undergo a migration process.
-     *
+     * 
      * @return the immutableStorageWithVersioning value.
      */
     public ImmutableStorageWithVersioning immutableStorageWithVersioning() {
@@ -354,7 +358,7 @@ public final class ContainerProperties {
      * Set the immutableStorageWithVersioning property: The object level immutability property of the container. The
      * property is immutable and can only be set to true at the container creation time. Existing containers must
      * undergo a migration process.
-     *
+     * 
      * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
      * @return the ContainerProperties object itself.
      */
@@ -366,7 +370,7 @@ public final class ContainerProperties {
 
     /**
      * Get the enableNfsV3RootSquash property: Enable NFSv3 root squash on blob container.
-     *
+     * 
      * @return the enableNfsV3RootSquash value.
      */
     public Boolean enableNfsV3RootSquash() {
@@ -375,7 +379,7 @@ public final class ContainerProperties {
 
     /**
      * Set the enableNfsV3RootSquash property: Enable NFSv3 root squash on blob container.
-     *
+     * 
      * @param enableNfsV3RootSquash the enableNfsV3RootSquash value to set.
      * @return the ContainerProperties object itself.
      */
@@ -386,7 +390,7 @@ public final class ContainerProperties {
 
     /**
      * Get the enableNfsV3AllSquash property: Enable NFSv3 all squash on blob container.
-     *
+     * 
      * @return the enableNfsV3AllSquash value.
      */
     public Boolean enableNfsV3AllSquash() {
@@ -395,7 +399,7 @@ public final class ContainerProperties {
 
     /**
      * Set the enableNfsV3AllSquash property: Enable NFSv3 all squash on blob container.
-     *
+     * 
      * @param enableNfsV3AllSquash the enableNfsV3AllSquash value to set.
      * @return the ContainerProperties object itself.
      */
@@ -406,7 +410,7 @@ public final class ContainerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -376,7 +376,7 @@ public class UserSample {
 - Azure Spring Data Cosmos supports nested partition key. To add nested partition key, use `partitionKeyPath` field in `@Container` annotation.
 - `partitionKeyPath` should only be used to support nested partition key path. For general partition key support, use the `@PartitionKey` annotation.
 - By default `@PartitionKey` annotation will take precedence, unless not specified.
-- Below example shows how to properly use Nested Partition key feature.
+- Below example shows how to properly use Nested Partition Key feature.
 
 ```java readme-sample-NestedPartitionKeyEntitySample
 @Container(containerName = "nested-partition-key", partitionKeyPath = "/nestedEntitySample/nestedPartitionKey")
@@ -389,6 +389,29 @@ public class NestedPartitionKeyEntitySample {
 ```java readme-sample-NestedEntitySample
 public class NestedEntitySample {
     private String nestedPartitionKey;
+}
+```
+
+#### Hierarchical Partition Key support
+
+- Azure Spring Data Cosmos supports hierarchical partition key. To add hierarchical partition key, use `hierarchicalPartitionKeyPaths` field in `@Container` annotation.
+- `hierarchicalPartitionKeyPaths` should only be used to support hierarchical partition keys. For general partition key support, use the `@PartitionKey` annotation.
+- By default `@PartitionKey` annotation will take precedence, unless not specified.
+- Below example shows how to properly use Hierarchical Partition Key feature.
+
+```java readme-sample-HierarchicalPartitionKeyEntitySample
+@Container(containerName = "hierarchical-partition-key", hierarchicalPartitionKeyPaths = {"/id", "/firstName", "/lastName"})
+public class HierarchicalPartitionKeyEntitySample {
+
+    private HierarchicalEntitySample hierarchicalEntitySample;
+}
+```
+
+```java readme-sample-HierarchicalEntitySample
+public class HierarchicalEntitySample {
+    private String id;
+    private String firstName;
+    private String lastName;
 }
 ```
 

@@ -4,29 +4,40 @@
 
 package com.azure.resourcemanager.scvmm.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.scvmm.fluent.models.VmmServerInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of VmmServers. */
-@Fluent
-public final class VmmServerListResult {
+/**
+ * The response of a VmmServer list operation.
+ */
+@Immutable
+public final class VmmServerListResult implements JsonSerializable<VmmServerListResult> {
     /*
-     * List of VmmServers.
+     * The VmmServer items on this page
      */
-    @JsonProperty(value = "value")
     private List<VmmServerInner> value;
 
     /*
-     * Url to follow for getting next page of resources.
+     * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
-     * Get the value property: List of VmmServers.
-     *
+     * Creates an instance of VmmServerListResult class.
+     */
+    private VmmServerListResult() {
+    }
+
+    /**
+     * Get the value property: The VmmServer items on this page.
+     * 
      * @return the value value.
      */
     public List<VmmServerInner> value() {
@@ -34,19 +45,8 @@ public final class VmmServerListResult {
     }
 
     /**
-     * Set the value property: List of VmmServers.
-     *
-     * @param value the value value to set.
-     * @return the VmmServerListResult object itself.
-     */
-    public VmmServerListResult withValue(List<VmmServerInner> value) {
-        this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: Url to follow for getting next page of resources.
-     *
+     * Get the nextLink property: The link to the next page of items.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -54,24 +54,58 @@ public final class VmmServerListResult {
     }
 
     /**
-     * Set the nextLink property: Url to follow for getting next page of resources.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the VmmServerListResult object itself.
-     */
-    public VmmServerListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() != null) {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model VmmServerListResult"));
+        } else {
             value().forEach(e -> e.validate());
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VmmServerListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VmmServerListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VmmServerListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VmmServerListResult.
+     */
+    public static VmmServerListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VmmServerListResult deserializedVmmServerListResult = new VmmServerListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VmmServerInner> value = reader.readArray(reader1 -> VmmServerInner.fromJson(reader1));
+                    deserializedVmmServerListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVmmServerListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVmmServerListResult;
+        });
     }
 }

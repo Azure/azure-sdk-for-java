@@ -21,7 +21,7 @@ public final class DbServersListByCloudExadataInfrastructureMockTests {
     @Test
     public void testListByCloudExadataInfrastructure() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ocid\":\"embnkbw\",\"displayName\":\"vxkdivqihebwtswb\",\"compartmentId\":\"wfmdurage\",\"exadataInfrastructureId\":\"zvcjfelisdjubggb\",\"cpuCoreCount\":941272169,\"dbServerPatchingDetails\":{\"estimatedPatchDuration\":2003917859,\"patchingStatus\":\"Complete\",\"timePatchingEnded\":\"2021-11-10T07:11:50Z\",\"timePatchingStarted\":\"2021-02-28T17:22:58Z\"},\"maxMemoryInGbs\":1203431733,\"dbNodeStorageSizeInGbs\":689564177,\"vmClusterIds\":[\"cmjdmspof\",\"pv\",\"hryl\",\"iofrzgbzjedmstk\"],\"dbNodeIds\":[\"v\"],\"lifecycleDetails\":\"c\",\"lifecycleState\":\"Unavailable\",\"maxCpuCount\":2051570067,\"autonomousVmClusterIds\":[\"wfansnvpdi\",\"mik\"],\"autonomousVirtualMachineIds\":[\"bzbkiw\",\"uqn\",\"ophzfylsgcrp\",\"bcunezzceze\"],\"maxDbNodeStorageInGbs\":217220442,\"memorySizeInGbs\":945619349,\"shape\":\"lwxjwetn\",\"timeCreated\":\"2021-06-29T10:43:54Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"afzvaylptrs\",\"name\":\"qwztcmwqkc\",\"type\":\"cxwaxfewz\"}]}";
+            = "{\"value\":[{\"properties\":{\"ocid\":\"ozipqwjedmurrxx\",\"displayName\":\"wpktvqylkmqpzoyh\",\"compartmentId\":\"bcg\",\"exadataInfrastructureId\":\"cloxo\",\"cpuCoreCount\":477398510,\"dbServerPatchingDetails\":{\"estimatedPatchDuration\":1567586671,\"patchingStatus\":\"MaintenanceInProgress\",\"timePatchingEnded\":\"2021-03-04T16:18:21Z\",\"timePatchingStarted\":\"2021-09-02T19:32:53Z\"},\"maxMemoryInGbs\":1159366069,\"dbNodeStorageSizeInGbs\":2022448357,\"vmClusterIds\":[\"cbahhpzpofoiy\",\"w\"],\"dbNodeIds\":[\"lkmkkholvdndvi\",\"uogphuartvtiuky\"],\"lifecycleDetails\":\"chnmna\",\"lifecycleState\":\"Unavailable\",\"maxCpuCount\":1789997323,\"autonomousVmClusterIds\":[\"jqirwrw\",\"ooxf\",\"i\"],\"autonomousVirtualMachineIds\":[\"wrsnewmozqvbu\",\"qmamhsycxhxzga\"],\"maxDbNodeStorageInGbs\":75419046,\"memorySizeInGbs\":545466012,\"shape\":\"idvmfqhppubo\",\"timeCreated\":\"2021-04-23T03:49:20Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"g\",\"name\":\"mtdherngb\",\"type\":\"c\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class DbServersListByCloudExadataInfrastructureMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DbServer> response = manager.dbServers()
-            .listByCloudExadataInfrastructure("wwinhehf", "pofvwb", com.azure.core.util.Context.NONE);
+            .listByCloudExadataInfrastructure("neiknpg", "xgjiuqh", com.azure.core.util.Context.NONE);
 
     }
 }

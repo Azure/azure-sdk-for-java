@@ -13,7 +13,8 @@ import com.azure.resourcemanager.oracledatabase.models.Plan;
  */
 public final class OracleSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/oracleSubscriptions_create.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/oracleSubscriptions_create.json
      */
     /**
      * Sample code: Create or Update Oracle Subscription.

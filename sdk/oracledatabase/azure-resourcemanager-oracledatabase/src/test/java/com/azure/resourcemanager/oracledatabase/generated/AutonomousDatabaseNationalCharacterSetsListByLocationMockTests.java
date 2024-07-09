@@ -21,7 +21,7 @@ public final class AutonomousDatabaseNationalCharacterSetsListByLocationMockTest
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"characterSet\":\"ha\"},\"id\":\"ylhjlm\",\"name\":\"oyxprimr\",\"type\":\"opteecj\"}]}";
+            = "{\"value\":[{\"properties\":{\"characterSet\":\"wogqqnobpudcdab\"},\"id\":\"wpwyawbz\",\"name\":\"sqbuc\",\"type\":\"jg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class AutonomousDatabaseNationalCharacterSetsListByLocationMockTest
 
         PagedIterable<AutonomousDatabaseNationalCharacterSet> response
             = manager.autonomousDatabaseNationalCharacterSets()
-                .listByLocation("jpdn", com.azure.core.util.Context.NONE);
+                .listByLocation("kmfx", com.azure.core.util.Context.NONE);
 
     }
 }

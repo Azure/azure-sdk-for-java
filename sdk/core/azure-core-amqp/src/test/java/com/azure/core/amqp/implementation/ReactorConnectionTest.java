@@ -6,7 +6,6 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -746,7 +745,6 @@ class ReactorConnectionTest {
         final ReactorConnection connection2
             = new ReactorConnection(CONNECTION_ID, connectionOptions, provider, reactorHandlerProvider, linkProvider,
                 tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true);
-        final AmqpShutdownSignal signal = new AmqpShutdownSignal(false, false, "Remove");
 
         when(provider.getReactorDispatcher()).thenReturn(dispatcher);
 
@@ -759,11 +757,11 @@ class ReactorConnectionTest {
         connection2.getReactorConnection().subscribe();
 
         // Act and Assert
-        StepVerifier.create(connection2.closeAsync(signal)).expectComplete().verify(VERIFY_TIMEOUT);
+        StepVerifier.create(connection2.closeAsync()).expectComplete().verify(VERIFY_TIMEOUT);
 
         assertTrue(connection2.isDisposed());
 
-        StepVerifier.create(connection2.closeAsync(signal)).expectComplete().verify(VERIFY_TIMEOUT);
+        StepVerifier.create(connection2.closeAsync()).expectComplete().verify(VERIFY_TIMEOUT);
     }
 
     @Test

@@ -5,34 +5,47 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The BaseDialog model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = BaseDialog.class)
-@JsonTypeName("BaseDialog")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureOpenAI", value = AzureOpenAIDialog.class),
-    @JsonSubTypes.Type(name = "PowerVirtualAgents", value = PowerVirtualAgentsDialog.class)
-})
+/**
+ * The BaseDialog model.
+ */
 @Fluent
-public class BaseDialog {
+public class BaseDialog implements JsonSerializable<BaseDialog> {
+    /*
+     * Determines the type of the dialog.
+     */
+    private DialogInputType kind;
+
     /*
      * Dialog context.
      */
-    @JsonProperty(value = "context", required = true)
     private Map<String, Object> context;
 
     /**
+     * Creates an instance of BaseDialog class.
+     */
+    public BaseDialog() {
+        this.kind = DialogInputType.fromString("BaseDialog");
+    }
+
+    /**
+     * Get the kind property: Determines the type of the dialog.
+     * 
+     * @return the kind value.
+     */
+    public DialogInputType getKind() {
+        return this.kind;
+    }
+
+    /**
      * Get the context property: Dialog context.
-     *
+     * 
      * @return the context value.
      */
     public Map<String, Object> getContext() {
@@ -41,12 +54,80 @@ public class BaseDialog {
 
     /**
      * Set the context property: Dialog context.
-     *
+     * 
      * @param context the context value to set.
      * @return the BaseDialog object itself.
      */
     public BaseDialog setContext(Map<String, Object> context) {
         this.context = context;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("context", this.context, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BaseDialog from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BaseDialog if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BaseDialog.
+     */
+    public static BaseDialog fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("azureOpenAI".equals(discriminatorValue)) {
+                    return AzureOpenAIDialog.fromJson(readerToUse.reset());
+                } else if ("powerVirtualAgents".equals(discriminatorValue)) {
+                    return PowerVirtualAgentsDialog.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static BaseDialog fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BaseDialog deserializedBaseDialog = new BaseDialog();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("context".equals(fieldName)) {
+                    Map<String, Object> context = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedBaseDialog.context = context;
+                } else if ("kind".equals(fieldName)) {
+                    deserializedBaseDialog.kind = DialogInputType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBaseDialog;
+        });
     }
 }

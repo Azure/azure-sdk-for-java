@@ -4,33 +4,36 @@
 
 package com.azure.resourcemanager.oracledatabase.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.oracledatabase.fluent.models.CloudExadataInfrastructureInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response of a CloudExadataInfrastructure list operation.
  */
-@Fluent
-public final class CloudExadataInfrastructureListResult {
+@Immutable
+public final class CloudExadataInfrastructureListResult
+    implements JsonSerializable<CloudExadataInfrastructureListResult> {
     /*
      * The CloudExadataInfrastructure items on this page
      */
-    @JsonProperty(value = "value", required = true)
     private List<CloudExadataInfrastructureInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
      * Creates an instance of CloudExadataInfrastructureListResult class.
      */
-    public CloudExadataInfrastructureListResult() {
+    private CloudExadataInfrastructureListResult() {
     }
 
     /**
@@ -40,17 +43,6 @@ public final class CloudExadataInfrastructureListResult {
      */
     public List<CloudExadataInfrastructureInner> value() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: The CloudExadataInfrastructure items on this page.
-     * 
-     * @param value the value value to set.
-     * @return the CloudExadataInfrastructureListResult object itself.
-     */
-    public CloudExadataInfrastructureListResult withValue(List<CloudExadataInfrastructureInner> value) {
-        this.value = value;
-        return this;
     }
 
     /**
@@ -78,4 +70,47 @@ public final class CloudExadataInfrastructureListResult {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CloudExadataInfrastructureListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudExadataInfrastructureListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudExadataInfrastructureListResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CloudExadataInfrastructureListResult.
+     */
+    public static CloudExadataInfrastructureListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudExadataInfrastructureListResult deserializedCloudExadataInfrastructureListResult
+                = new CloudExadataInfrastructureListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CloudExadataInfrastructureInner> value
+                        = reader.readArray(reader1 -> CloudExadataInfrastructureInner.fromJson(reader1));
+                    deserializedCloudExadataInfrastructureListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudExadataInfrastructureListResult;
+        });
+    }
 }

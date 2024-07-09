@@ -5,72 +5,69 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Zones resource model.
  */
 @Immutable
-public final class DnsPrivateZoneProperties {
+public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPrivateZoneProperties> {
     /*
      * The OCID of the Zone
      */
-    @JsonProperty(value = "ocid", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String ocid;
 
     /*
      * A Boolean flag indicating whether or not parts of the resource are unable to be explicitly managed.
      */
-    @JsonProperty(value = "isProtected", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private boolean isProtected;
+    private Boolean isProtected;
 
     /*
      * Zones lifecycleState
      */
-    @JsonProperty(value = "lifecycleState", access = JsonProperty.Access.WRITE_ONLY)
     private DnsPrivateZonesLifecycleState lifecycleState;
 
     /*
      * The canonical absolute URL of the resource.
      */
-    @JsonProperty(value = "self", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String self;
 
     /*
      * The current serial of the zone. As seen in the zone's SOA record.
      */
-    @JsonProperty(value = "serial", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private int serial;
+    private Integer serial;
 
     /*
-     * Version is the never-repeating, totally-orderable, version of the zone, from which the serial field of the zone's SOA record is derived.
+     * Version is the never-repeating, totally-orderable, version of the zone, from which the serial field of the zone's
+     * SOA record is derived.
      */
-    @JsonProperty(value = "version", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
-     * The OCID of the private view containing the zone. This value will be null for zones in the global DNS, which are publicly resolvable and not part of a private view.
+     * The OCID of the private view containing the zone. This value will be null for zones in the global DNS, which are
+     * publicly resolvable and not part of a private view.
      */
-    @JsonProperty(value = "viewId", access = JsonProperty.Access.WRITE_ONLY)
     private String viewId;
 
     /*
      * The type of the zone. Must be either PRIMARY or SECONDARY. SECONDARY is only supported for GLOBAL zones.
      */
-    @JsonProperty(value = "zoneType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private ZoneType zoneType;
 
     /*
      * Zones timeCreated
      */
-    @JsonProperty(value = "timeCreated", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
     /*
      * Azure resource provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /**
@@ -94,7 +91,7 @@ public final class DnsPrivateZoneProperties {
      * 
      * @return the isProtected value.
      */
-    public boolean isProtected() {
+    public Boolean isProtected() {
         return this.isProtected;
     }
 
@@ -121,7 +118,7 @@ public final class DnsPrivateZoneProperties {
      * 
      * @return the serial value.
      */
-    public int serial() {
+    public Integer serial() {
         return this.serial;
     }
 
@@ -179,5 +176,61 @@ public final class DnsPrivateZoneProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DnsPrivateZoneProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DnsPrivateZoneProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DnsPrivateZoneProperties.
+     */
+    public static DnsPrivateZoneProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DnsPrivateZoneProperties deserializedDnsPrivateZoneProperties = new DnsPrivateZoneProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ocid".equals(fieldName)) {
+                    deserializedDnsPrivateZoneProperties.ocid = reader.getString();
+                } else if ("isProtected".equals(fieldName)) {
+                    deserializedDnsPrivateZoneProperties.isProtected = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lifecycleState".equals(fieldName)) {
+                    deserializedDnsPrivateZoneProperties.lifecycleState
+                        = DnsPrivateZonesLifecycleState.fromString(reader.getString());
+                } else if ("self".equals(fieldName)) {
+                    deserializedDnsPrivateZoneProperties.self = reader.getString();
+                } else if ("serial".equals(fieldName)) {
+                    deserializedDnsPrivateZoneProperties.serial = reader.getNullable(JsonReader::getInt);
+                } else if ("version".equals(fieldName)) {
+                    deserializedDnsPrivateZoneProperties.version = reader.getString();
+                } else if ("viewId".equals(fieldName)) {
+                    deserializedDnsPrivateZoneProperties.viewId = reader.getString();
+                } else if ("zoneType".equals(fieldName)) {
+                    deserializedDnsPrivateZoneProperties.zoneType = ZoneType.fromString(reader.getString());
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedDnsPrivateZoneProperties.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDnsPrivateZoneProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDnsPrivateZoneProperties;
+        });
     }
 }

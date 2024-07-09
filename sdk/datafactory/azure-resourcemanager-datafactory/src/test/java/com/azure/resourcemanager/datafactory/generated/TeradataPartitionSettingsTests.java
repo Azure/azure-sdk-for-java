@@ -11,15 +11,15 @@ public final class TeradataPartitionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TeradataPartitionSettings model = BinaryData.fromString(
-            "{\"partitionColumnName\":\"dataoqbzrclar\",\"partitionUpperBound\":\"datafmfkuvybem\",\"partitionLowerBound\":\"dataamshqvku\"}")
+            "{\"partitionColumnName\":\"dataift\",\"partitionUpperBound\":\"dataupuukpsw\",\"partitionLowerBound\":\"datatduchcfndijz\"}")
             .toObject(TeradataPartitionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TeradataPartitionSettings model = new TeradataPartitionSettings().withPartitionColumnName("dataoqbzrclar")
-            .withPartitionUpperBound("datafmfkuvybem")
-            .withPartitionLowerBound("dataamshqvku");
+        TeradataPartitionSettings model = new TeradataPartitionSettings().withPartitionColumnName("dataift")
+            .withPartitionUpperBound("dataupuukpsw")
+            .withPartitionLowerBound("datatduchcfndijz");
         model = BinaryData.fromObject(model).toObject(TeradataPartitionSettings.class);
     }
 }
