@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class AutonomousDatabaseBackupsListByAutonomousDatabaseSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/
      * autonomousDatabaseBackup_listByParent.json
      */
     /**
@@ -24,7 +24,7 @@ public final class AutonomousDatabaseBackupsListByAutonomousDatabaseSamples {
     }
 
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/
      * autonomousDatabaseBackup_listByParent.json
      */
     /**

@@ -11,7 +11,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The LinkedEntitiesDocumentResult model. */
+/**
+ * The LinkedEntitiesDocumentResult model.
+ */
 @Fluent
 public class LinkedEntitiesDocumentResult extends DocumentResult {
     /*
@@ -19,12 +21,15 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
      */
     private List<LinkedEntity> entities;
 
-    /** Creates an instance of LinkedEntitiesDocumentResult class. */
-    public LinkedEntitiesDocumentResult() {}
+    /**
+     * Creates an instance of LinkedEntitiesDocumentResult class.
+     */
+    public LinkedEntitiesDocumentResult() {
+    }
 
     /**
      * Get the entities property: Recognized well known entities in the document.
-     *
+     * 
      * @return the entities value.
      */
     public List<LinkedEntity> getEntities() {
@@ -33,7 +38,7 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
 
     /**
      * Set the entities property: Recognized well known entities in the document.
-     *
+     * 
      * @param entities the entities value to set.
      * @return the LinkedEntitiesDocumentResult object itself.
      */
@@ -42,27 +47,36 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LinkedEntitiesDocumentResult setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LinkedEntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LinkedEntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,39 +89,36 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
 
     /**
      * Reads an instance of LinkedEntitiesDocumentResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of LinkedEntitiesDocumentResult if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LinkedEntitiesDocumentResult.
      */
     public static LinkedEntitiesDocumentResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    LinkedEntitiesDocumentResult deserializedLinkedEntitiesDocumentResult =
-                            new LinkedEntitiesDocumentResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            LinkedEntitiesDocumentResult deserializedLinkedEntitiesDocumentResult = new LinkedEntitiesDocumentResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedLinkedEntitiesDocumentResult.setId(reader.getString());
-                        } else if ("warnings".equals(fieldName)) {
-                            List<DocumentWarning> warnings =
-                                    reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
-                            deserializedLinkedEntitiesDocumentResult.setWarnings(warnings);
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedLinkedEntitiesDocumentResult.setStatistics(DocumentStatistics.fromJson(reader));
-                        } else if ("entities".equals(fieldName)) {
-                            List<LinkedEntity> entities = reader.readArray(reader1 -> LinkedEntity.fromJson(reader1));
-                            deserializedLinkedEntitiesDocumentResult.entities = entities;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedLinkedEntitiesDocumentResult.setId(reader.getString());
+                } else if ("warnings".equals(fieldName)) {
+                    List<DocumentWarning> warnings = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
+                    deserializedLinkedEntitiesDocumentResult.setWarnings(warnings);
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedLinkedEntitiesDocumentResult.setStatistics(DocumentStatistics.fromJson(reader));
+                } else if ("entities".equals(fieldName)) {
+                    List<LinkedEntity> entities = reader.readArray(reader1 -> LinkedEntity.fromJson(reader1));
+                    deserializedLinkedEntitiesDocumentResult.entities = entities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedLinkedEntitiesDocumentResult;
-                });
+            return deserializedLinkedEntitiesDocumentResult;
+        });
     }
 }
