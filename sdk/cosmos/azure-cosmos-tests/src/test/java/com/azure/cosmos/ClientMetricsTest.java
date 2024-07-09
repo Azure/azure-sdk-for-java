@@ -31,6 +31,7 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -41,6 +42,8 @@ import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -60,6 +63,7 @@ import java.lang.reflect.Field;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -396,6 +400,95 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(
                     TagName.Operation.toString(), "Document/Read"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Read"),
+                0,
+                500
+            );
+
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            this.assertMetrics("cosmos.client.req.gw", false, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void readManySingleItem() throws Exception {
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
+        try {
+            InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+            container.createItem(properties);
+
+            List<CosmosItemIdentity> tuplesToBeRead = new ArrayList<>();
+            tuplesToBeRead.add(new CosmosItemIdentity(
+                new PartitionKey(properties.get("mypk")),
+                properties.getId()
+            ));
+
+            FeedResponse<InternalObjectNode> readManyResponse = container.readMany(
+                tuplesToBeRead,
+                new CosmosReadManyRequestOptions(),
+                InternalObjectNode.class);
+            validateReadManyFeedResponse(Arrays.asList(properties), readManyResponse);
+
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "200"),
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
+                0,
+                500
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Query/readMany"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Read"),
+                0,
+                500
+            );
+
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            this.assertMetrics("cosmos.client.req.gw", false, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void readManyMultipleItems() throws Exception {
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
+
+        List<InternalObjectNode> createdDocs = new ArrayList<>();
+        List<CosmosItemIdentity> tuplesToBeRead = new ArrayList<>();
+        try {
+            for (int i = 0; i < 20; i++) {
+                InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+                container.createItem(properties);
+                createdDocs.add(properties);
+                tuplesToBeRead.add(new CosmosItemIdentity(
+                    new PartitionKey(properties.get("mypk")),
+                    properties.getId()
+                ));
+            }
+
+
+            FeedResponse<InternalObjectNode> readManyResponse = container.readMany(
+                tuplesToBeRead,
+                new CosmosReadManyRequestOptions(),
+                InternalObjectNode.class);
+            validateReadManyFeedResponse(createdDocs, readManyResponse);
+
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "200"),
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
+                0,
+                500
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Query/readMany"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Query"),
                 0,
                 500
             );
@@ -1349,6 +1442,19 @@ public class ClientMetricsTest extends BatchTestBase {
         assertThat(BridgeInternal.getProperties(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(containerProperties.getId());
+    }
+
+    private void validateReadManyFeedResponse(
+        List<InternalObjectNode> createdDocs,
+        FeedResponse<InternalObjectNode> readManyResponse) {
+        // Basic validation
+        assertThat(readManyResponse).isNotNull();
+        assertThat(readManyResponse.getResults()).isNotNull();
+        List<InternalObjectNode> docsFromResponse = readManyResponse.getResults();
+        assertThat(docsFromResponse).hasSize(createdDocs.size());
+        for (InternalObjectNode doc: createdDocs) {
+            assertThat(docsFromResponse.stream().anyMatch(r -> r.getId() != null && r.getId().equals(doc.getId())));
+        }
     }
 
     private void validateItemCountMetrics(Tag expectedOperationTag) {
