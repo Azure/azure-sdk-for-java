@@ -85,14 +85,8 @@ public final class ConfigurationSettingDeserializationHelper {
         ConfigurationSettingHelper.setReadOnly(setting, keyValue.isLocked() != null && keyValue.isLocked());
         try {
             if (FEATURE_FLAG_CONTENT_TYPE.equals(contentType)) {
-
-                String responseKey = setting.getKey();
-                if (responseKey != null && responseKey.startsWith(FeatureFlagConfigurationSetting.KEY_PREFIX)) {
-                    responseKey = responseKey.substring(FeatureFlagConfigurationSetting.KEY_PREFIX.length());
-                }
-
                 return subclassConfigurationSettingReflection(setting, parseFeatureFlagValue(setting.getValue()))
-                    .setKey(responseKey)
+                    .setKey(setting.getKey())
                     .setValue(setting.getValue())
                     .setLabel(setting.getLabel())
                     .setETag(setting.getETag())
