@@ -79,7 +79,11 @@ import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
-import java.time.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -436,7 +440,7 @@ public abstract class IdentityClientBase {
                 result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
                 if (accessToken.getRefreshOn() != null) {
                     result.setRefreshInSeconds(Math.max((accessToken.getRefreshOn().toEpochSecond()
-                        - Instant.now().getEpochSecond()), 1));
+                        - OffsetDateTime.now(ZoneOffset.UTC).toEpochSecond()), 1));
                 }
                 return result;
             }).toFuture();
