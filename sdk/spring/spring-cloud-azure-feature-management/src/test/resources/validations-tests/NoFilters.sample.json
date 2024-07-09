@@ -1,0 +1,44 @@
+{
+    "feature_management": {
+        "feature_flags": [
+            {
+                "id": "BooleanTrue",
+                "description": "A feature flag with no Filters, that returns true.",
+                "enabled": true,
+                "conditions": {
+                    "client_filters": []
+                }
+            },
+            {
+                "id": "BooleanFalse",
+                "description": "A feature flag with no Filters, that returns false.",
+                "enabled": false,
+                "conditions": {
+                    "client_filters": []
+                }
+            },
+            {
+                "id": "InvalidEnabled",
+                "description": "A feature flag with an invalid 'enabled' value, that returns false.",
+                "enabled": "invalid",
+                "conditions": {
+                    "client_filters": []
+                }
+            },
+            {
+                "id": "Minimal",
+                "enabled": true
+            },
+            {
+                "id": "NoEnabled"
+            },
+            {
+                "id": "EmptyConditions",
+                "description": "A feature flag with no values in conditions, that returns true.",
+                "enabled": true,
+                "conditions": {
+                }
+            }
+        ]
+    }
+}

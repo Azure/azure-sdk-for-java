@@ -43,7 +43,7 @@ public class FeatureManager {
      * @param featureManagementConfigurations Configuration Properties for Feature Flags
      * @param properties FeatureManagementConfigProperties
      */
-    FeatureManager(ApplicationContext context, FeatureManagementProperties featureManagementConfigurations,
+    public FeatureManager(ApplicationContext context, FeatureManagementProperties featureManagementConfigurations,
         FeatureManagementConfigProperties properties) {
         this.context = context;
         this.featureManagementConfigurations = featureManagementConfigurations;

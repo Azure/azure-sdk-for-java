@@ -1,0 +1,230 @@
+[
+    {
+        "FriendlyName": "DisabledDefaultRollout",
+        "FeatureFlagName": "ComplexTargeting",
+        "Inputs": {"user":"Aiden"},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, Aiden is not part of the default rollout."
+    },
+    {
+        "FriendlyName": "EnabledDefaultRollout",
+        "FeatureFlagName": "ComplexTargeting",
+        "Inputs": {"user":"Blossom"},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, Blossom is part of the default rollout."
+    },
+    {
+        "FriendlyName": "TargetedUser",
+        "FeatureFlagName": "ComplexTargeting",
+        "Inputs": {"user":"Alice"},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, Alice is a targeted user."
+    },
+    {
+        "FriendlyName": "TargetedGroup",
+        "FeatureFlagName": "ComplexTargeting",
+        "Inputs": {"user":"Aiden", "groups":["Stage1"]},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, Aiden is now targeted because Stage1 is 100% rolled out."
+    },
+    {
+        "FriendlyName": "DisabledTargetedGroup",
+        "FeatureFlagName": "ComplexTargeting",
+        "Inputs": {"groups":["Stage2"]},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "empty/no user will hit the 50% rollout of group stage 2, so it is targeted."
+    },
+    {
+        "FriendlyName": "EnabledTargetedGroup50",
+        "FeatureFlagName": "ComplexTargeting",
+        "Inputs": {"user":"Aiden", "groups":["Stage2"]},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, Aiden who is not part of the default rollout is part of the first 50% of Stage 2."
+    },
+    {
+        "FriendlyName": "DisabledTargetedGroup50",
+        "FeatureFlagName": "ComplexTargeting",
+        "Inputs": {"user":"Chris", "groups":["Stage2"]},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, Chris is neither part of the default rollout nor part of the first 50% of Stage 2."
+    },
+    {
+        "FriendlyName": "ExcludedGroup",
+        "FeatureFlagName": "ComplexTargeting",
+        "Inputs": {"groups":["Stage3"]},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, the Stage 3 is the group on the exclusion list."
+    },
+    {
+        "FriendlyName": "ExcludedGroupTargetedUser",
+        "FeatureFlagName": "ComplexTargeting",
+        "Inputs": {"user":"Alice", "groups":["Stage3"]},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Alice is excluded because she is part of the Stage 3 group, even if she is an included user. "
+    },
+    {
+        "FriendlyName": "ExcludedGroupDefaultRollout",
+        "FeatureFlagName": "ComplexTargeting",
+        "Inputs": {"user":"Blossom", "groups":["Stage3"]},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, Blossom who was Expected Result by the default rollout is now excluded as part of the Stage 3 group."
+    },
+    {
+        "FriendlyName": "ExcludedUser",
+        "FeatureFlagName": "ComplexTargeting",
+        "Inputs": {"user":"Dave", "groups":["Stage1"]},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, Dave is on the exclusion list, is still excluded even though he is part of the 100% rolled out Stage 1."
+    },
+    {
+        "FriendlyName": "Aiden61",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Aiden"},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, 62% default rollout Aiden is part of it."
+    },
+    {
+        "FriendlyName": "Aiden61 - Stage1",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Aiden", "groups":["Stage1"]},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, group is not part of default rollout calculation, no change."
+    },
+    {
+        "FriendlyName": "Aiden61 - Stage2",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Aiden", "groups":["Stage2"]},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, group is not part of default rollout calculation, no change."
+    },
+    {
+        "FriendlyName": "Aiden61 - Stage3",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Aiden", "groups":["Stage3"]},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, group is not part of default rollout calculation, no change."
+    },
+    {
+        "FriendlyName": "Brittney61",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Brittney"},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, 62% default rollout Brittney is not part of it."
+    },
+    {
+        "FriendlyName": "Brittney61 - Stage1",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Brittney", "groups":["Stage1"]},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, group is not part of default rollout calculation, no change."
+    },
+    {
+        "FriendlyName": "Brittney61 - Stage2",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Brittney", "groups":["Stage2"]},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, group is not part of default rollout calculation, no change."
+    },
+    {
+        "FriendlyName": "Brittney61 - Stage3",
+        "FeatureFlagName": "RolloutPercentageUpdate",
+        "Inputs": {"user":"Brittney", "groups":["Stage3"]},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Targeting Filter, group is not part of default rollout calculation, no change."
+    }
+]
