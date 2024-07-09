@@ -128,7 +128,7 @@ public class NonStreamingOrderByQueryVectorSearchTest {
         resultDocs = flatIndexContainer.queryItems(euclideanSpecsQuery, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
-        validateOrdering(6, resultDocs, false);
+        validateOrdering(6, resultDocs, true);
 
         String dotproductSpecsQuery = String.format("SELECT DISTINCT TOP 6 c.text, VectorDistance(c.embedding, [%s], false, {'distanceFunction': 'dotproduct'}) AS " +
             "score FROM c ORDER BY VectorDistance(c.embedding, [%s], false, {'distanceFunction': 'dotproduct'})", queryVector, queryVector);
