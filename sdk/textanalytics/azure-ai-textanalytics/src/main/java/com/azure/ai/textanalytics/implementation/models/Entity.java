@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The Entity model. */
+/**
+ * The Entity model.
+ */
 @Fluent
 public final class Entity implements JsonSerializable<Entity> {
     /*
@@ -44,12 +46,15 @@ public final class Entity implements JsonSerializable<Entity> {
      */
     private double confidenceScore;
 
-    /** Creates an instance of Entity class. */
-    public Entity() {}
+    /**
+     * Creates an instance of Entity class.
+     */
+    public Entity() {
+    }
 
     /**
      * Get the text property: Entity text as appears in the request.
-     *
+     * 
      * @return the text value.
      */
     public String getText() {
@@ -58,7 +63,7 @@ public final class Entity implements JsonSerializable<Entity> {
 
     /**
      * Set the text property: Entity text as appears in the request.
-     *
+     * 
      * @param text the text value to set.
      * @return the Entity object itself.
      */
@@ -69,7 +74,7 @@ public final class Entity implements JsonSerializable<Entity> {
 
     /**
      * Get the category property: Entity type.
-     *
+     * 
      * @return the category value.
      */
     public String getCategory() {
@@ -78,7 +83,7 @@ public final class Entity implements JsonSerializable<Entity> {
 
     /**
      * Set the category property: Entity type.
-     *
+     * 
      * @param category the category value to set.
      * @return the Entity object itself.
      */
@@ -89,7 +94,7 @@ public final class Entity implements JsonSerializable<Entity> {
 
     /**
      * Get the subcategory property: (Optional) Entity sub type.
-     *
+     * 
      * @return the subcategory value.
      */
     public String getSubcategory() {
@@ -98,7 +103,7 @@ public final class Entity implements JsonSerializable<Entity> {
 
     /**
      * Set the subcategory property: (Optional) Entity sub type.
-     *
+     * 
      * @param subcategory the subcategory value to set.
      * @return the Entity object itself.
      */
@@ -110,7 +115,7 @@ public final class Entity implements JsonSerializable<Entity> {
     /**
      * Get the offset property: Start position for the entity text. Use of different 'stringIndexType' values can affect
      * the offset returned.
-     *
+     * 
      * @return the offset value.
      */
     public int getOffset() {
@@ -120,7 +125,7 @@ public final class Entity implements JsonSerializable<Entity> {
     /**
      * Set the offset property: Start position for the entity text. Use of different 'stringIndexType' values can affect
      * the offset returned.
-     *
+     * 
      * @param offset the offset value to set.
      * @return the Entity object itself.
      */
@@ -132,7 +137,7 @@ public final class Entity implements JsonSerializable<Entity> {
     /**
      * Get the length property: Length for the entity text. Use of different 'stringIndexType' values can affect the
      * length returned.
-     *
+     * 
      * @return the length value.
      */
     public int getLength() {
@@ -142,7 +147,7 @@ public final class Entity implements JsonSerializable<Entity> {
     /**
      * Set the length property: Length for the entity text. Use of different 'stringIndexType' values can affect the
      * length returned.
-     *
+     * 
      * @param length the length value to set.
      * @return the Entity object itself.
      */
@@ -153,7 +158,7 @@ public final class Entity implements JsonSerializable<Entity> {
 
     /**
      * Get the confidenceScore property: Confidence score between 0 and 1 of the extracted entity.
-     *
+     * 
      * @return the confidenceScore value.
      */
     public double getConfidenceScore() {
@@ -162,7 +167,7 @@ public final class Entity implements JsonSerializable<Entity> {
 
     /**
      * Set the confidenceScore property: Confidence score between 0 and 1 of the extracted entity.
-     *
+     * 
      * @param confidenceScore the confidenceScore value to set.
      * @return the Entity object itself.
      */
@@ -171,6 +176,9 @@ public final class Entity implements JsonSerializable<Entity> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -185,39 +193,38 @@ public final class Entity implements JsonSerializable<Entity> {
 
     /**
      * Reads an instance of Entity from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of Entity if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     *     JSON null.
+     * JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Entity.
      */
     public static Entity fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Entity deserializedEntity = new Entity();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            Entity deserializedEntity = new Entity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("text".equals(fieldName)) {
-                            deserializedEntity.text = reader.getString();
-                        } else if ("category".equals(fieldName)) {
-                            deserializedEntity.category = reader.getString();
-                        } else if ("offset".equals(fieldName)) {
-                            deserializedEntity.offset = reader.getInt();
-                        } else if ("length".equals(fieldName)) {
-                            deserializedEntity.length = reader.getInt();
-                        } else if ("confidenceScore".equals(fieldName)) {
-                            deserializedEntity.confidenceScore = reader.getDouble();
-                        } else if ("subcategory".equals(fieldName)) {
-                            deserializedEntity.subcategory = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("text".equals(fieldName)) {
+                    deserializedEntity.text = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedEntity.category = reader.getString();
+                } else if ("offset".equals(fieldName)) {
+                    deserializedEntity.offset = reader.getInt();
+                } else if ("length".equals(fieldName)) {
+                    deserializedEntity.length = reader.getInt();
+                } else if ("confidenceScore".equals(fieldName)) {
+                    deserializedEntity.confidenceScore = reader.getDouble();
+                } else if ("subcategory".equals(fieldName)) {
+                    deserializedEntity.subcategory = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedEntity;
-                });
+            return deserializedEntity;
+        });
     }
 }
