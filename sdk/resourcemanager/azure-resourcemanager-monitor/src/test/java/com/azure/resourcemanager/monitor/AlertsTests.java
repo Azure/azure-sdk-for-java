@@ -7,7 +7,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.monitor.models.ActionGroup;
@@ -31,9 +30,7 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Iterator;
 
-@LiveOnly
 public class AlertsTests extends MonitorManagementTest {
-    // LiveOnly because test needs to be refactored to check for resource region
     private String rgName = "";
     private String saName = "";
 
@@ -105,7 +102,7 @@ public class AlertsTests extends MonitorManagementTest {
 
             Assertions.assertNotNull(ma);
             Assertions.assertEquals(1, ma.scopes().size());
-            Assertions.assertEquals(sa.id(), ma.scopes().iterator().next());
+            assertResourceIdEquals(sa.id(), ma.scopes().iterator().next());
             Assertions
                 .assertEquals(
                     "This alert rule is for U3 - Single resource  multiple-criteria  with dimensions-single timeseries",
@@ -116,7 +113,7 @@ public class AlertsTests extends MonitorManagementTest {
             Assertions.assertEquals(true, ma.enabled());
             Assertions.assertEquals(true, ma.autoMitigate());
             Assertions.assertEquals(1, ma.actionGroupIds().size());
-            Assertions.assertEquals(ag.id(), ma.actionGroupIds().iterator().next());
+            assertResourceIdEquals(ag.id(), ma.actionGroupIds().iterator().next());
             Assertions.assertEquals(1, ma.alertCriterias().size());
             MetricAlertCondition ac1 = ma.alertCriterias().values().iterator().next();
             Assertions.assertEquals("Metric1", ac1.name());
@@ -183,7 +180,7 @@ public class AlertsTests extends MonitorManagementTest {
 
             Assertions.assertNotNull(ma);
             Assertions.assertEquals(1, ma.scopes().size());
-            Assertions.assertEquals(sa.id(), ma.scopes().iterator().next());
+            assertResourceIdEquals(sa.id(), ma.scopes().iterator().next());
             Assertions
                 .assertEquals(
                     "This alert rule is for U3 - Single resource  multiple-criteria  with dimensions-single timeseries",
@@ -194,7 +191,7 @@ public class AlertsTests extends MonitorManagementTest {
             Assertions.assertEquals(false, ma.enabled());
             Assertions.assertEquals(true, ma.autoMitigate());
             Assertions.assertEquals(1, ma.actionGroupIds().size());
-            Assertions.assertEquals(ag.id(), ma.actionGroupIds().iterator().next());
+            assertResourceIdEquals(ag.id(), ma.actionGroupIds().iterator().next());
             Assertions.assertEquals(2, ma.alertCriterias().size());
             Iterator<MetricAlertCondition> maCriteriaIterator = ma.alertCriterias().values().iterator();
             ac1 = maCriteriaIterator.next();
@@ -231,7 +228,7 @@ public class AlertsTests extends MonitorManagementTest {
 
             Assertions.assertNotNull(maFromGet);
             Assertions.assertEquals(1, maFromGet.scopes().size());
-            Assertions.assertEquals(sa.id(), maFromGet.scopes().iterator().next());
+            assertResourceIdEquals(sa.id(), maFromGet.scopes().iterator().next());
             Assertions
                 .assertEquals(
                     "This alert rule is for U3 - Single resource  multiple-criteria  with dimensions-single timeseries",
@@ -242,7 +239,7 @@ public class AlertsTests extends MonitorManagementTest {
             Assertions.assertEquals(false, maFromGet.enabled());
             Assertions.assertEquals(true, maFromGet.autoMitigate());
             Assertions.assertEquals(1, maFromGet.actionGroupIds().size());
-            Assertions.assertEquals(ag.id(), maFromGet.actionGroupIds().iterator().next());
+            assertResourceIdEquals(ag.id(), maFromGet.actionGroupIds().iterator().next());
             Assertions.assertEquals(2, maFromGet.alertCriterias().size());
             maCriteriaIterator = maFromGet.alertCriterias().values().iterator();
             ac1 = maCriteriaIterator.next();
@@ -283,7 +280,7 @@ public class AlertsTests extends MonitorManagementTest {
 
             Assertions.assertNotNull(maFromGet);
             Assertions.assertEquals(1, maFromGet.scopes().size());
-            Assertions.assertEquals(sa.id(), maFromGet.scopes().iterator().next());
+            assertResourceIdEquals(sa.id(), maFromGet.scopes().iterator().next());
             Assertions
                 .assertEquals(
                     "This alert rule is for U3 - Single resource  multiple-criteria  with dimensions-single timeseries",
@@ -294,7 +291,7 @@ public class AlertsTests extends MonitorManagementTest {
             Assertions.assertEquals(false, maFromGet.enabled());
             Assertions.assertEquals(true, maFromGet.autoMitigate());
             Assertions.assertEquals(1, maFromGet.actionGroupIds().size());
-            Assertions.assertEquals(ag.id(), maFromGet.actionGroupIds().iterator().next());
+            assertResourceIdEquals(ag.id(), maFromGet.actionGroupIds().iterator().next());
             Assertions.assertEquals(2, maFromGet.alertCriterias().size());
             maCriteriaIterator = maFromGet.alertCriterias().values().iterator();
             ac1 = maCriteriaIterator.next();
@@ -391,7 +388,9 @@ public class AlertsTests extends MonitorManagementTest {
             ma.refresh();
             Assertions.assertEquals(2, ma.scopes().size());
             Assertions.assertEquals(vm1.type(), ma.innerModel().targetResourceType());
-            Assertions.assertEquals(vm1.regionName(), ma.innerModel().targetResourceRegion());
+            if (!isPlaybackMode()) {
+                Assertions.assertEquals(vm1.regionName(), ma.innerModel().targetResourceRegion());
+            }
             Assertions.assertEquals(1, ma.alertCriterias().size());
             Assertions.assertEquals(0, ma.dynamicAlertCriterias().size());
             Assertions.assertEquals("Percentage CPU", ma.alertCriterias().get("Metric1").metricName());
@@ -418,7 +417,9 @@ public class AlertsTests extends MonitorManagementTest {
             ma.refresh();
             Assertions.assertEquals(2, ma.scopes().size());
             Assertions.assertEquals(vm1.type(), ma.innerModel().targetResourceType());
-            Assertions.assertEquals(vm1.regionName(), ma.innerModel().targetResourceRegion());
+            if (!isPlaybackMode()) {
+                Assertions.assertEquals(vm1.regionName(), ma.innerModel().targetResourceRegion());
+            }
             Assertions.assertEquals(0, ma.alertCriterias().size());
             Assertions.assertEquals(1, ma.dynamicAlertCriterias().size());
             MetricDynamicAlertCondition condition = ma.dynamicAlertCriterias().get("Metric2");
@@ -486,7 +487,7 @@ public class AlertsTests extends MonitorManagementTest {
         Assertions.assertEquals("AutoScale-VM-Creation-Failed", ala.description());
         Assertions.assertEquals(true, ala.enabled());
         Assertions.assertEquals(1, ala.actionGroupIds().size());
-        Assertions.assertEquals(ag.id(), ala.actionGroupIds().iterator().next());
+        assertResourceIdEquals(ag.id(), ala.actionGroupIds().iterator().next());
         Assertions.assertEquals(3, ala.equalsConditions().size());
         Assertions.assertEquals("Administrative", ala.equalsConditions().get("category"));
         Assertions.assertEquals(justAvm.id(), ala.equalsConditions().get("resourceId"));
@@ -505,9 +506,7 @@ public class AlertsTests extends MonitorManagementTest {
         Assertions.assertEquals(ala.equalsConditions().size(), alaFromGet.equalsConditions().size());
         Assertions
             .assertEquals(ala.equalsConditions().get("category"), alaFromGet.equalsConditions().get("category"));
-        Assertions
-            .assertEquals(
-                ala.equalsConditions().get("resourceId"), alaFromGet.equalsConditions().get("resourceId"));
+        assertResourceIdEquals(ala.equalsConditions().get("resourceId"), alaFromGet.equalsConditions().get("resourceId"));
         Assertions
             .assertEquals(
                 ala.equalsConditions().get("operationName"), alaFromGet.equalsConditions().get("operationName"));
@@ -526,7 +525,7 @@ public class AlertsTests extends MonitorManagementTest {
         Assertions.assertEquals("AutoScale-VM-Creation-Failed", ala.description());
         Assertions.assertEquals(false, ala.enabled());
         Assertions.assertEquals(1, ala.actionGroupIds().size());
-        Assertions.assertEquals(ag.id(), ala.actionGroupIds().iterator().next());
+        assertResourceIdEquals(ag.id(), ala.actionGroupIds().iterator().next());
         Assertions.assertEquals(3, ala.equalsConditions().size());
         Assertions.assertEquals("Administrative", ala.equalsConditions().get("category"));
         Assertions.assertEquals(justAvm.id(), ala.equalsConditions().get("resourceId"));
@@ -549,9 +548,7 @@ public class AlertsTests extends MonitorManagementTest {
         Assertions.assertEquals(ala.equalsConditions().size(), alaFromGet.equalsConditions().size());
         Assertions
             .assertEquals(ala.equalsConditions().get("category"), alaFromGet.equalsConditions().get("category"));
-        Assertions
-            .assertEquals(
-                ala.equalsConditions().get("resourceId"), alaFromGet.equalsConditions().get("resourceId"));
+        assertResourceIdEquals(ala.equalsConditions().get("resourceId"), alaFromGet.equalsConditions().get("resourceId"));
         Assertions.assertEquals(ala.equalsConditions().get("status"), alaFromGet.equalsConditions().get("status"));
         Assertions
             .assertEquals(
