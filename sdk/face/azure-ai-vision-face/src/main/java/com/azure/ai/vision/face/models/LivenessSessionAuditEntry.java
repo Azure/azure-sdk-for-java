@@ -5,22 +5,26 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Audit entry for a request in session.
  */
 @Immutable
-public final class LivenessSessionAuditEntry {
+public final class LivenessSessionAuditEntry implements JsonSerializable<LivenessSessionAuditEntry> {
 
     /*
      * The unique id to refer to this audit request. Use this id with the 'start' query parameter to continue on to the
      * next page of audit results.
      */
     @Generated
-    @JsonProperty(value = "id")
     private final long id;
 
     /*
@@ -28,42 +32,36 @@ public final class LivenessSessionAuditEntry {
      * sooner using the corresponding session DELETE operation.
      */
     @Generated
-    @JsonProperty(value = "sessionId")
     private final String sessionId;
 
     /*
      * The unique requestId that is returned by the service to the client in the 'apim-request-id' header.
      */
     @Generated
-    @JsonProperty(value = "requestId")
     private final String requestId;
 
     /*
      * The unique clientRequestId that is sent by the client in the 'client-request-id' header.
      */
     @Generated
-    @JsonProperty(value = "clientRequestId")
     private final String clientRequestId;
 
     /*
      * The UTC DateTime that the request was received.
      */
     @Generated
-    @JsonProperty(value = "receivedDateTime")
     private final OffsetDateTime receivedDateTime;
 
     /*
      * The request of this entry.
      */
     @Generated
-    @JsonProperty(value = "request")
     private final AuditRequestInfo request;
 
     /*
      * The response of this entry.
      */
     @Generated
-    @JsonProperty(value = "response")
     private final AuditLivenessResponseInfo response;
 
     /*
@@ -73,7 +71,6 @@ public final class LivenessSessionAuditEntry {
      * solution.
      */
     @Generated
-    @JsonProperty(value = "digest")
     private final String digest;
 
     /**
@@ -89,14 +86,8 @@ public final class LivenessSessionAuditEntry {
      * @param digest the digest value to set.
      */
     @Generated
-    @JsonCreator
-    private LivenessSessionAuditEntry(@JsonProperty(value = "id") long id,
-        @JsonProperty(value = "sessionId") String sessionId, @JsonProperty(value = "requestId") String requestId,
-        @JsonProperty(value = "clientRequestId") String clientRequestId,
-        @JsonProperty(value = "receivedDateTime") OffsetDateTime receivedDateTime,
-        @JsonProperty(value = "request") AuditRequestInfo request,
-        @JsonProperty(value = "response") AuditLivenessResponseInfo response,
-        @JsonProperty(value = "digest") String digest) {
+    private LivenessSessionAuditEntry(long id, String sessionId, String requestId, String clientRequestId,
+        OffsetDateTime receivedDateTime, AuditRequestInfo request, AuditLivenessResponseInfo response, String digest) {
         this.id = id;
         this.sessionId = sessionId;
         this.requestId = requestId;
@@ -192,5 +183,75 @@ public final class LivenessSessionAuditEntry {
     @Generated
     public String getDigest() {
         return this.digest;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("id", this.id);
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeStringField("requestId", this.requestId);
+        jsonWriter.writeStringField("clientRequestId", this.clientRequestId);
+        jsonWriter.writeStringField("receivedDateTime",
+            this.receivedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedDateTime));
+        jsonWriter.writeJsonField("request", this.request);
+        jsonWriter.writeJsonField("response", this.response);
+        jsonWriter.writeStringField("digest", this.digest);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LivenessSessionAuditEntry from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LivenessSessionAuditEntry if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LivenessSessionAuditEntry.
+     */
+    @Generated
+    public static LivenessSessionAuditEntry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            long id = 0L;
+            String sessionId = null;
+            String requestId = null;
+            String clientRequestId = null;
+            OffsetDateTime receivedDateTime = null;
+            AuditRequestInfo request = null;
+            AuditLivenessResponseInfo response = null;
+            String digest = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getLong();
+                } else if ("sessionId".equals(fieldName)) {
+                    sessionId = reader.getString();
+                } else if ("requestId".equals(fieldName)) {
+                    requestId = reader.getString();
+                } else if ("clientRequestId".equals(fieldName)) {
+                    clientRequestId = reader.getString();
+                } else if ("receivedDateTime".equals(fieldName)) {
+                    receivedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("request".equals(fieldName)) {
+                    request = AuditRequestInfo.fromJson(reader);
+                } else if ("response".equals(fieldName)) {
+                    response = AuditLivenessResponseInfo.fromJson(reader);
+                } else if ("digest".equals(fieldName)) {
+                    digest = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new LivenessSessionAuditEntry(id, sessionId, requestId, clientRequestId, receivedDateTime, request,
+                response, digest);
+        });
     }
 }

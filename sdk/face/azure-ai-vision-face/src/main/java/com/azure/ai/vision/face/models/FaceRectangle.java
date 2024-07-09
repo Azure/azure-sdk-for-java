@@ -5,41 +5,40 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A rectangle within which a face can be found.
  */
 @Immutable
-public final class FaceRectangle {
+public final class FaceRectangle implements JsonSerializable<FaceRectangle> {
 
     /*
      * The distance from the top edge if the image to the top edge of the rectangle, in pixels.
      */
     @Generated
-    @JsonProperty(value = "top")
     private final int top;
 
     /*
      * The distance from the left edge if the image to the left edge of the rectangle, in pixels.
      */
     @Generated
-    @JsonProperty(value = "left")
     private final int left;
 
     /*
      * The width of the rectangle, in pixels.
      */
     @Generated
-    @JsonProperty(value = "width")
     private final int width;
 
     /*
      * The height of the rectangle, in pixels.
      */
     @Generated
-    @JsonProperty(value = "height")
     private final int height;
 
     /**
@@ -51,9 +50,7 @@ public final class FaceRectangle {
      * @param height the height value to set.
      */
     @Generated
-    @JsonCreator
-    private FaceRectangle(@JsonProperty(value = "top") int top, @JsonProperty(value = "left") int left,
-        @JsonProperty(value = "width") int width, @JsonProperty(value = "height") int height) {
+    private FaceRectangle(int top, int left, int width, int height) {
         this.top = top;
         this.left = left;
         this.width = width;
@@ -98,5 +95,54 @@ public final class FaceRectangle {
     @Generated
     public int getHeight() {
         return this.height;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("top", this.top);
+        jsonWriter.writeIntField("left", this.left);
+        jsonWriter.writeIntField("width", this.width);
+        jsonWriter.writeIntField("height", this.height);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FaceRectangle from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FaceRectangle if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FaceRectangle.
+     */
+    @Generated
+    public static FaceRectangle fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            int top = 0;
+            int left = 0;
+            int width = 0;
+            int height = 0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("top".equals(fieldName)) {
+                    top = reader.getInt();
+                } else if ("left".equals(fieldName)) {
+                    left = reader.getInt();
+                } else if ("width".equals(fieldName)) {
+                    width = reader.getInt();
+                } else if ("height".equals(fieldName)) {
+                    height = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new FaceRectangle(top, left, width, height);
+        });
     }
 }

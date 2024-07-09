@@ -5,27 +5,28 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Accessory item and corresponding confidence level.
  */
 @Immutable
-public final class AccessoryItem {
+public final class AccessoryItem implements JsonSerializable<AccessoryItem> {
 
     /*
      * Type of the accessory.
      */
     @Generated
-    @JsonProperty(value = "type")
     private final AccessoryType type;
 
     /*
      * Confidence level of the accessory type. Range between [0,1].
      */
     @Generated
-    @JsonProperty(value = "confidence")
     private final double confidence;
 
     /**
@@ -35,9 +36,7 @@ public final class AccessoryItem {
      * @param confidence the confidence value to set.
      */
     @Generated
-    @JsonCreator
-    private AccessoryItem(@JsonProperty(value = "type") AccessoryType type,
-        @JsonProperty(value = "confidence") double confidence) {
+    private AccessoryItem(AccessoryType type, double confidence) {
         this.type = type;
         this.confidence = confidence;
     }
@@ -60,5 +59,46 @@ public final class AccessoryItem {
     @Generated
     public double getConfidence() {
         return this.confidence;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeDoubleField("confidence", this.confidence);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessoryItem from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessoryItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AccessoryItem.
+     */
+    @Generated
+    public static AccessoryItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessoryType type = null;
+            double confidence = 0.0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    type = AccessoryType.fromString(reader.getString());
+                } else if ("confidence".equals(fieldName)) {
+                    confidence = reader.getDouble();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new AccessoryItem(type, confidence);
+        });
     }
 }

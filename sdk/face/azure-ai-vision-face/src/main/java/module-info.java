@@ -4,8 +4,9 @@
 
 module com.azure.ai.vision.face {
     requires transitive com.azure.core;
+    requires com.azure.json;
     exports com.azure.ai.vision.face;
     exports com.azure.ai.vision.face.models;
-    opens com.azure.ai.vision.face.implementation.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.ai.vision.face.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.ai.vision.face.implementation.models to com.azure.core;
+    opens com.azure.ai.vision.face.models to com.azure.core;
 }

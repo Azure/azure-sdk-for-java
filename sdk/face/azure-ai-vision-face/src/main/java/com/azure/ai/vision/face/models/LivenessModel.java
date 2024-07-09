@@ -5,7 +5,6 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -54,7 +53,6 @@ public final class LivenessModel extends ExpandableStringEnum<LivenessModel> {
      * @return the corresponding LivenessModel.
      */
     @Generated
-    @JsonCreator
     public static LivenessModel fromString(String name) {
         return fromString(name, LivenessModel.class);
     }

@@ -5,27 +5,28 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The detail of face for verification.
  */
 @Immutable
-public final class LivenessWithVerifyImage {
+public final class LivenessWithVerifyImage implements JsonSerializable<LivenessWithVerifyImage> {
 
     /*
      * The face region where the comparison image's classification was made.
      */
     @Generated
-    @JsonProperty(value = "faceRectangle")
     private final FaceRectangle faceRectangle;
 
     /*
      * Quality of face image for recognition.
      */
     @Generated
-    @JsonProperty(value = "qualityForRecognition")
     private final QualityForRecognition qualityForRecognition;
 
     /**
@@ -35,9 +36,7 @@ public final class LivenessWithVerifyImage {
      * @param qualityForRecognition the qualityForRecognition value to set.
      */
     @Generated
-    @JsonCreator
-    private LivenessWithVerifyImage(@JsonProperty(value = "faceRectangle") FaceRectangle faceRectangle,
-        @JsonProperty(value = "qualityForRecognition") QualityForRecognition qualityForRecognition) {
+    private LivenessWithVerifyImage(FaceRectangle faceRectangle, QualityForRecognition qualityForRecognition) {
         this.faceRectangle = faceRectangle;
         this.qualityForRecognition = qualityForRecognition;
     }
@@ -60,5 +59,47 @@ public final class LivenessWithVerifyImage {
     @Generated
     public QualityForRecognition getQualityForRecognition() {
         return this.qualityForRecognition;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("faceRectangle", this.faceRectangle);
+        jsonWriter.writeStringField("qualityForRecognition",
+            this.qualityForRecognition == null ? null : this.qualityForRecognition.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LivenessWithVerifyImage from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LivenessWithVerifyImage if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LivenessWithVerifyImage.
+     */
+    @Generated
+    public static LivenessWithVerifyImage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FaceRectangle faceRectangle = null;
+            QualityForRecognition qualityForRecognition = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("faceRectangle".equals(fieldName)) {
+                    faceRectangle = FaceRectangle.fromJson(reader);
+                } else if ("qualityForRecognition".equals(fieldName)) {
+                    qualityForRecognition = QualityForRecognition.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new LivenessWithVerifyImage(faceRectangle, qualityForRecognition);
+        });
     }
 }

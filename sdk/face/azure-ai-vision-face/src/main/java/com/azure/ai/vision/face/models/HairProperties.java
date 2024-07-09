@@ -5,35 +5,35 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties describing hair attributes.
  */
 @Immutable
-public final class HairProperties {
+public final class HairProperties implements JsonSerializable<HairProperties> {
 
     /*
      * A number describing confidence level of whether the person is bald.
      */
     @Generated
-    @JsonProperty(value = "bald")
     private final double bald;
 
     /*
      * A boolean value describing whether the hair is visible in the image.
      */
     @Generated
-    @JsonProperty(value = "invisible")
     private final boolean invisible;
 
     /*
      * An array of candidate colors and confidence level in the presence of each.
      */
     @Generated
-    @JsonProperty(value = "hairColor")
     private final List<HairColor> hairColor;
 
     /**
@@ -44,10 +44,7 @@ public final class HairProperties {
      * @param hairColor the hairColor value to set.
      */
     @Generated
-    @JsonCreator
-    private HairProperties(@JsonProperty(value = "bald") double bald,
-        @JsonProperty(value = "invisible") boolean invisible,
-        @JsonProperty(value = "hairColor") List<HairColor> hairColor) {
+    private HairProperties(double bald, boolean invisible, List<HairColor> hairColor) {
         this.bald = bald;
         this.invisible = invisible;
         this.hairColor = hairColor;
@@ -81,5 +78,50 @@ public final class HairProperties {
     @Generated
     public List<HairColor> getHairColor() {
         return this.hairColor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeDoubleField("bald", this.bald);
+        jsonWriter.writeBooleanField("invisible", this.invisible);
+        jsonWriter.writeArrayField("hairColor", this.hairColor, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HairProperties from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HairProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HairProperties.
+     */
+    @Generated
+    public static HairProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            double bald = 0.0;
+            boolean invisible = false;
+            List<HairColor> hairColor = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("bald".equals(fieldName)) {
+                    bald = reader.getDouble();
+                } else if ("invisible".equals(fieldName)) {
+                    invisible = reader.getBoolean();
+                } else if ("hairColor".equals(fieldName)) {
+                    hairColor = reader.readArray(reader1 -> HairColor.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new HairProperties(bald, invisible, hairColor);
+        });
     }
 }

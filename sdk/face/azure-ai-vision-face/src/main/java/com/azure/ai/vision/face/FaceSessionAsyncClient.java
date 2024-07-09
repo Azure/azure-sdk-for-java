@@ -440,7 +440,7 @@ public final class FaceSessionAsyncClient {
      * }
      * }</pre>
      *
-     * @param createLivenessWithVerifySessionContent Request of liveness with verify session creation.
+     * @param body Request content of liveness with verify session creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -451,12 +451,11 @@ public final class FaceSessionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createLivenessWithVerifySessionWithVerifyImageWithResponse(
-        BinaryData createLivenessWithVerifySessionContent, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> createLivenessWithVerifySessionWithVerifyImageWithResponse(BinaryData body,
+        RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation
         // 'createLivenessWithVerifySessionWithVerifyImage' is 'multipart/form-data'
-        return this.serviceClient.createLivenessWithVerifySessionWithVerifyImageWithResponseAsync(
-            createLivenessWithVerifySessionContent, requestOptions);
+        return this.serviceClient.createLivenessWithVerifySessionWithVerifyImageWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -944,7 +943,7 @@ public final class FaceSessionAsyncClient {
      *
      * Recommended Option: VerifyImage is provided during session creation.
      *
-     * @param createLivenessWithVerifySessionContent Request of liveness with verify session creation.
+     * @param body Request content of liveness with verify session creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -956,17 +955,17 @@ public final class FaceSessionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CreateLivenessWithVerifySessionResult> createLivenessWithVerifySessionWithVerifyImage(
-        CreateLivenessWithVerifySessionContent createLivenessWithVerifySessionContent) {
+    Mono<CreateLivenessWithVerifySessionResult>
+        createLivenessWithVerifySessionWithVerifyImage(CreateLivenessWithVerifySessionContent body) {
         // Generated convenience method for createLivenessWithVerifySessionWithVerifyImageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createLivenessWithVerifySessionWithVerifyImageWithResponse(new MultipartFormDataHelper(requestOptions)
-            .serializeJsonField("Parameters", createLivenessWithVerifySessionContent.getParameters())
-            .serializeFileField("VerifyImage", createLivenessWithVerifySessionContent.getVerifyImage().getContent(),
-                createLivenessWithVerifySessionContent.getVerifyImage().getContentType(),
-                createLivenessWithVerifySessionContent.getVerifyImage().getFilename())
-            .end()
-            .getRequestBody(), requestOptions).flatMap(FluxUtil::toMono)
+        return createLivenessWithVerifySessionWithVerifyImageWithResponse(
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("Parameters", body.getParameters())
+                .serializeFileField("VerifyImage", body.getVerifyImage().getContent(),
+                    body.getVerifyImage().getContentType(), body.getVerifyImage().getFilename())
+                .end()
+                .getRequestBody(),
+            requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(CreateLivenessWithVerifySessionResult.class));
     }
 

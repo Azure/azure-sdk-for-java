@@ -6,36 +6,36 @@ package com.azure.ai.vision.face.implementation.models;
 import com.azure.ai.vision.face.models.FindSimilarMatchMode;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The FindSimilarRequest model.
  */
 @Fluent
-public final class FindSimilarRequest {
+public final class FindSimilarRequest implements JsonSerializable<FindSimilarRequest> {
 
     /*
      * faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this faceId is not
      * persisted and will expire 24 hours after the detection call.
      */
     @Generated
-    @JsonProperty(value = "faceId")
     private final String faceId;
 
     /*
      * The number of top similar faces returned. The valid range is [1, 1000]. Default value is 20.
      */
     @Generated
-    @JsonProperty(value = "maxNumOfCandidatesReturned")
     private Integer maxNumOfCandidatesReturned;
 
     /*
      * Similar face searching mode. It can be 'matchPerson' or 'matchFace'. Default value is 'matchPerson'.
      */
     @Generated
-    @JsonProperty(value = "mode")
     private FindSimilarMatchMode mode;
 
     /*
@@ -43,7 +43,6 @@ public final class FindSimilarRequest {
      * detection call. The number of faceIds is limited to 1000.
      */
     @Generated
-    @JsonProperty(value = "faceIds")
     private final List<String> faceIds;
 
     /**
@@ -53,9 +52,7 @@ public final class FindSimilarRequest {
      * @param faceIds the faceIds value to set.
      */
     @Generated
-    @JsonCreator
-    public FindSimilarRequest(@JsonProperty(value = "faceId") String faceId,
-        @JsonProperty(value = "faceIds") List<String> faceIds) {
+    public FindSimilarRequest(String faceId, List<String> faceIds) {
         this.faceId = faceId;
         this.faceIds = faceIds;
     }
@@ -128,5 +125,57 @@ public final class FindSimilarRequest {
     @Generated
     public List<String> getFaceIds() {
         return this.faceIds;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("faceId", this.faceId);
+        jsonWriter.writeArrayField("faceIds", this.faceIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("maxNumOfCandidatesReturned", this.maxNumOfCandidatesReturned);
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FindSimilarRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FindSimilarRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FindSimilarRequest.
+     */
+    @Generated
+    public static FindSimilarRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String faceId = null;
+            List<String> faceIds = null;
+            Integer maxNumOfCandidatesReturned = null;
+            FindSimilarMatchMode mode = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("faceId".equals(fieldName)) {
+                    faceId = reader.getString();
+                } else if ("faceIds".equals(fieldName)) {
+                    faceIds = reader.readArray(reader1 -> reader1.getString());
+                } else if ("maxNumOfCandidatesReturned".equals(fieldName)) {
+                    maxNumOfCandidatesReturned = reader.getNullable(JsonReader::getInt);
+                } else if ("mode".equals(fieldName)) {
+                    mode = FindSimilarMatchMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FindSimilarRequest deserializedFindSimilarRequest = new FindSimilarRequest(faceId, faceIds);
+            deserializedFindSimilarRequest.maxNumOfCandidatesReturned = maxNumOfCandidatesReturned;
+            deserializedFindSimilarRequest.mode = mode;
+            return deserializedFindSimilarRequest;
+        });
     }
 }

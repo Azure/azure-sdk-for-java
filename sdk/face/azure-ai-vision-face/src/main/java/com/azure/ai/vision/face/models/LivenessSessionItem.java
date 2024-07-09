@@ -5,42 +5,43 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Session data returned for enumeration.
  */
 @Immutable
-public final class LivenessSessionItem {
+public final class LivenessSessionItem implements JsonSerializable<LivenessSessionItem> {
 
     /*
      * The unique ID to reference this session.
      */
     @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * DateTime when this session was created.
      */
     @Generated
-    @JsonProperty(value = "createdDateTime")
     private final OffsetDateTime createdDateTime;
 
     /*
      * DateTime when this session was started by the client.
      */
     @Generated
-    @JsonProperty(value = "sessionStartDateTime")
     private OffsetDateTime sessionStartDateTime;
 
     /*
      * Whether or not the session is expired.
      */
     @Generated
-    @JsonProperty(value = "sessionExpired")
     private final boolean sessionExpired;
 
     /*
@@ -48,14 +49,12 @@ public final class LivenessSessionItem {
      * 'deviceCorrelationIdSetInClient' is true in this request, this 'deviceCorrelationId' must be null.
      */
     @Generated
-    @JsonProperty(value = "deviceCorrelationId")
     private String deviceCorrelationId;
 
     /*
      * Seconds the session should last for. Range is 60 to 86400 seconds. Default value is 600.
      */
     @Generated
-    @JsonProperty(value = "authTokenTimeToLiveInSeconds")
     private Integer authTokenTimeToLiveInSeconds;
 
     /**
@@ -65,9 +64,7 @@ public final class LivenessSessionItem {
      * @param sessionExpired the sessionExpired value to set.
      */
     @Generated
-    @JsonCreator
-    private LivenessSessionItem(@JsonProperty(value = "createdDateTime") OffsetDateTime createdDateTime,
-        @JsonProperty(value = "sessionExpired") boolean sessionExpired) {
+    private LivenessSessionItem(OffsetDateTime createdDateTime, boolean sessionExpired) {
         this.createdDateTime = createdDateTime;
         this.sessionExpired = sessionExpired;
     }
@@ -133,5 +130,73 @@ public final class LivenessSessionItem {
     @Generated
     public Integer getAuthTokenTimeToLiveInSeconds() {
         return this.authTokenTimeToLiveInSeconds;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeBooleanField("sessionExpired", this.sessionExpired);
+        jsonWriter.writeStringField("sessionStartDateTime",
+            this.sessionStartDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.sessionStartDateTime));
+        jsonWriter.writeStringField("deviceCorrelationId", this.deviceCorrelationId);
+        jsonWriter.writeNumberField("authTokenTimeToLiveInSeconds", this.authTokenTimeToLiveInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LivenessSessionItem from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LivenessSessionItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LivenessSessionItem.
+     */
+    @Generated
+    public static LivenessSessionItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            OffsetDateTime createdDateTime = null;
+            boolean sessionExpired = false;
+            OffsetDateTime sessionStartDateTime = null;
+            String deviceCorrelationId = null;
+            Integer authTokenTimeToLiveInSeconds = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("createdDateTime".equals(fieldName)) {
+                    createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("sessionExpired".equals(fieldName)) {
+                    sessionExpired = reader.getBoolean();
+                } else if ("sessionStartDateTime".equals(fieldName)) {
+                    sessionStartDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deviceCorrelationId".equals(fieldName)) {
+                    deviceCorrelationId = reader.getString();
+                } else if ("authTokenTimeToLiveInSeconds".equals(fieldName)) {
+                    authTokenTimeToLiveInSeconds = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            LivenessSessionItem deserializedLivenessSessionItem
+                = new LivenessSessionItem(createdDateTime, sessionExpired);
+            deserializedLivenessSessionItem.id = id;
+            deserializedLivenessSessionItem.sessionStartDateTime = sessionStartDateTime;
+            deserializedLivenessSessionItem.deviceCorrelationId = deviceCorrelationId;
+            deserializedLivenessSessionItem.authTokenTimeToLiveInSeconds = authTokenTimeToLiveInSeconds;
+            return deserializedLivenessSessionItem;
+        });
     }
 }

@@ -5,27 +5,28 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The liveness classification for target face.
  */
 @Immutable
-public final class LivenessOutputsTarget {
+public final class LivenessOutputsTarget implements JsonSerializable<LivenessOutputsTarget> {
 
     /*
      * The face region where the liveness classification was made on.
      */
     @Generated
-    @JsonProperty(value = "faceRectangle")
     private final FaceRectangle faceRectangle;
 
     /*
      * The file name which contains the face rectangle where the liveness classification was made on.
      */
     @Generated
-    @JsonProperty(value = "fileName")
     private final String fileName;
 
     /*
@@ -33,14 +34,12 @@ public final class LivenessOutputsTarget {
      * was made on.
      */
     @Generated
-    @JsonProperty(value = "timeOffsetWithinFile")
     private final int timeOffsetWithinFile;
 
     /*
      * The image type which contains the face rectangle where the liveness classification was made on.
      */
     @Generated
-    @JsonProperty(value = "imageType")
     private final FaceImageType imageType;
 
     /**
@@ -52,11 +51,8 @@ public final class LivenessOutputsTarget {
      * @param imageType the imageType value to set.
      */
     @Generated
-    @JsonCreator
-    private LivenessOutputsTarget(@JsonProperty(value = "faceRectangle") FaceRectangle faceRectangle,
-        @JsonProperty(value = "fileName") String fileName,
-        @JsonProperty(value = "timeOffsetWithinFile") int timeOffsetWithinFile,
-        @JsonProperty(value = "imageType") FaceImageType imageType) {
+    private LivenessOutputsTarget(FaceRectangle faceRectangle, String fileName, int timeOffsetWithinFile,
+        FaceImageType imageType) {
         this.faceRectangle = faceRectangle;
         this.fileName = fileName;
         this.timeOffsetWithinFile = timeOffsetWithinFile;
@@ -104,5 +100,54 @@ public final class LivenessOutputsTarget {
     @Generated
     public FaceImageType getImageType() {
         return this.imageType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("faceRectangle", this.faceRectangle);
+        jsonWriter.writeStringField("fileName", this.fileName);
+        jsonWriter.writeIntField("timeOffsetWithinFile", this.timeOffsetWithinFile);
+        jsonWriter.writeStringField("imageType", this.imageType == null ? null : this.imageType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LivenessOutputsTarget from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LivenessOutputsTarget if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LivenessOutputsTarget.
+     */
+    @Generated
+    public static LivenessOutputsTarget fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FaceRectangle faceRectangle = null;
+            String fileName = null;
+            int timeOffsetWithinFile = 0;
+            FaceImageType imageType = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("faceRectangle".equals(fieldName)) {
+                    faceRectangle = FaceRectangle.fromJson(reader);
+                } else if ("fileName".equals(fieldName)) {
+                    fileName = reader.getString();
+                } else if ("timeOffsetWithinFile".equals(fieldName)) {
+                    timeOffsetWithinFile = reader.getInt();
+                } else if ("imageType".equals(fieldName)) {
+                    imageType = FaceImageType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new LivenessOutputsTarget(faceRectangle, fileName, timeOffsetWithinFile, imageType);
+        });
     }
 }

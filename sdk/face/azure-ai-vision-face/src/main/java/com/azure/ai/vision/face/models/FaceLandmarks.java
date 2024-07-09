@@ -5,202 +5,178 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A collection of 27-point face landmarks pointing to the important positions of face components.
  */
 @Immutable
-public final class FaceLandmarks {
+public final class FaceLandmarks implements JsonSerializable<FaceLandmarks> {
 
     /*
      * The coordinates of the left eye pupil.
      */
     @Generated
-    @JsonProperty(value = "pupilLeft")
     private final LandmarkCoordinate pupilLeft;
 
     /*
      * The coordinates of the right eye pupil.
      */
     @Generated
-    @JsonProperty(value = "pupilRight")
     private final LandmarkCoordinate pupilRight;
 
     /*
      * The coordinates of the nose tip.
      */
     @Generated
-    @JsonProperty(value = "noseTip")
     private final LandmarkCoordinate noseTip;
 
     /*
      * The coordinates of the mouth left.
      */
     @Generated
-    @JsonProperty(value = "mouthLeft")
     private final LandmarkCoordinate mouthLeft;
 
     /*
      * The coordinates of the mouth right.
      */
     @Generated
-    @JsonProperty(value = "mouthRight")
     private final LandmarkCoordinate mouthRight;
 
     /*
      * The coordinates of the left eyebrow outer.
      */
     @Generated
-    @JsonProperty(value = "eyebrowLeftOuter")
     private final LandmarkCoordinate eyebrowLeftOuter;
 
     /*
      * The coordinates of the left eyebrow inner.
      */
     @Generated
-    @JsonProperty(value = "eyebrowLeftInner")
     private final LandmarkCoordinate eyebrowLeftInner;
 
     /*
      * The coordinates of the left eye outer.
      */
     @Generated
-    @JsonProperty(value = "eyeLeftOuter")
     private final LandmarkCoordinate eyeLeftOuter;
 
     /*
      * The coordinates of the left eye top.
      */
     @Generated
-    @JsonProperty(value = "eyeLeftTop")
     private final LandmarkCoordinate eyeLeftTop;
 
     /*
      * The coordinates of the left eye bottom.
      */
     @Generated
-    @JsonProperty(value = "eyeLeftBottom")
     private final LandmarkCoordinate eyeLeftBottom;
 
     /*
      * The coordinates of the left eye inner.
      */
     @Generated
-    @JsonProperty(value = "eyeLeftInner")
     private final LandmarkCoordinate eyeLeftInner;
 
     /*
      * The coordinates of the right eyebrow inner.
      */
     @Generated
-    @JsonProperty(value = "eyebrowRightInner")
     private final LandmarkCoordinate eyebrowRightInner;
 
     /*
      * The coordinates of the right eyebrow outer.
      */
     @Generated
-    @JsonProperty(value = "eyebrowRightOuter")
     private final LandmarkCoordinate eyebrowRightOuter;
 
     /*
      * The coordinates of the right eye inner.
      */
     @Generated
-    @JsonProperty(value = "eyeRightInner")
     private final LandmarkCoordinate eyeRightInner;
 
     /*
      * The coordinates of the right eye top.
      */
     @Generated
-    @JsonProperty(value = "eyeRightTop")
     private final LandmarkCoordinate eyeRightTop;
 
     /*
      * The coordinates of the right eye bottom.
      */
     @Generated
-    @JsonProperty(value = "eyeRightBottom")
     private final LandmarkCoordinate eyeRightBottom;
 
     /*
      * The coordinates of the right eye outer.
      */
     @Generated
-    @JsonProperty(value = "eyeRightOuter")
     private final LandmarkCoordinate eyeRightOuter;
 
     /*
      * The coordinates of the nose root left.
      */
     @Generated
-    @JsonProperty(value = "noseRootLeft")
     private final LandmarkCoordinate noseRootLeft;
 
     /*
      * The coordinates of the nose root right.
      */
     @Generated
-    @JsonProperty(value = "noseRootRight")
     private final LandmarkCoordinate noseRootRight;
 
     /*
      * The coordinates of the nose left alar top.
      */
     @Generated
-    @JsonProperty(value = "noseLeftAlarTop")
     private final LandmarkCoordinate noseLeftAlarTop;
 
     /*
      * The coordinates of the nose right alar top.
      */
     @Generated
-    @JsonProperty(value = "noseRightAlarTop")
     private final LandmarkCoordinate noseRightAlarTop;
 
     /*
      * The coordinates of the nose left alar out tip.
      */
     @Generated
-    @JsonProperty(value = "noseLeftAlarOutTip")
     private final LandmarkCoordinate noseLeftAlarOutTip;
 
     /*
      * The coordinates of the nose right alar out tip.
      */
     @Generated
-    @JsonProperty(value = "noseRightAlarOutTip")
     private final LandmarkCoordinate noseRightAlarOutTip;
 
     /*
      * The coordinates of the upper lip top.
      */
     @Generated
-    @JsonProperty(value = "upperLipTop")
     private final LandmarkCoordinate upperLipTop;
 
     /*
      * The coordinates of the upper lip bottom.
      */
     @Generated
-    @JsonProperty(value = "upperLipBottom")
     private final LandmarkCoordinate upperLipBottom;
 
     /*
      * The coordinates of the under lip top.
      */
     @Generated
-    @JsonProperty(value = "underLipTop")
     private final LandmarkCoordinate underLipTop;
 
     /*
      * The coordinates of the under lip bottom.
      */
     @Generated
-    @JsonProperty(value = "underLipBottom")
     private final LandmarkCoordinate underLipBottom;
 
     /**
@@ -235,34 +211,15 @@ public final class FaceLandmarks {
      * @param underLipBottom the underLipBottom value to set.
      */
     @Generated
-    @JsonCreator
-    private FaceLandmarks(@JsonProperty(value = "pupilLeft") LandmarkCoordinate pupilLeft,
-        @JsonProperty(value = "pupilRight") LandmarkCoordinate pupilRight,
-        @JsonProperty(value = "noseTip") LandmarkCoordinate noseTip,
-        @JsonProperty(value = "mouthLeft") LandmarkCoordinate mouthLeft,
-        @JsonProperty(value = "mouthRight") LandmarkCoordinate mouthRight,
-        @JsonProperty(value = "eyebrowLeftOuter") LandmarkCoordinate eyebrowLeftOuter,
-        @JsonProperty(value = "eyebrowLeftInner") LandmarkCoordinate eyebrowLeftInner,
-        @JsonProperty(value = "eyeLeftOuter") LandmarkCoordinate eyeLeftOuter,
-        @JsonProperty(value = "eyeLeftTop") LandmarkCoordinate eyeLeftTop,
-        @JsonProperty(value = "eyeLeftBottom") LandmarkCoordinate eyeLeftBottom,
-        @JsonProperty(value = "eyeLeftInner") LandmarkCoordinate eyeLeftInner,
-        @JsonProperty(value = "eyebrowRightInner") LandmarkCoordinate eyebrowRightInner,
-        @JsonProperty(value = "eyebrowRightOuter") LandmarkCoordinate eyebrowRightOuter,
-        @JsonProperty(value = "eyeRightInner") LandmarkCoordinate eyeRightInner,
-        @JsonProperty(value = "eyeRightTop") LandmarkCoordinate eyeRightTop,
-        @JsonProperty(value = "eyeRightBottom") LandmarkCoordinate eyeRightBottom,
-        @JsonProperty(value = "eyeRightOuter") LandmarkCoordinate eyeRightOuter,
-        @JsonProperty(value = "noseRootLeft") LandmarkCoordinate noseRootLeft,
-        @JsonProperty(value = "noseRootRight") LandmarkCoordinate noseRootRight,
-        @JsonProperty(value = "noseLeftAlarTop") LandmarkCoordinate noseLeftAlarTop,
-        @JsonProperty(value = "noseRightAlarTop") LandmarkCoordinate noseRightAlarTop,
-        @JsonProperty(value = "noseLeftAlarOutTip") LandmarkCoordinate noseLeftAlarOutTip,
-        @JsonProperty(value = "noseRightAlarOutTip") LandmarkCoordinate noseRightAlarOutTip,
-        @JsonProperty(value = "upperLipTop") LandmarkCoordinate upperLipTop,
-        @JsonProperty(value = "upperLipBottom") LandmarkCoordinate upperLipBottom,
-        @JsonProperty(value = "underLipTop") LandmarkCoordinate underLipTop,
-        @JsonProperty(value = "underLipBottom") LandmarkCoordinate underLipBottom) {
+    private FaceLandmarks(LandmarkCoordinate pupilLeft, LandmarkCoordinate pupilRight, LandmarkCoordinate noseTip,
+        LandmarkCoordinate mouthLeft, LandmarkCoordinate mouthRight, LandmarkCoordinate eyebrowLeftOuter,
+        LandmarkCoordinate eyebrowLeftInner, LandmarkCoordinate eyeLeftOuter, LandmarkCoordinate eyeLeftTop,
+        LandmarkCoordinate eyeLeftBottom, LandmarkCoordinate eyeLeftInner, LandmarkCoordinate eyebrowRightInner,
+        LandmarkCoordinate eyebrowRightOuter, LandmarkCoordinate eyeRightInner, LandmarkCoordinate eyeRightTop,
+        LandmarkCoordinate eyeRightBottom, LandmarkCoordinate eyeRightOuter, LandmarkCoordinate noseRootLeft,
+        LandmarkCoordinate noseRootRight, LandmarkCoordinate noseLeftAlarTop, LandmarkCoordinate noseRightAlarTop,
+        LandmarkCoordinate noseLeftAlarOutTip, LandmarkCoordinate noseRightAlarOutTip, LandmarkCoordinate upperLipTop,
+        LandmarkCoordinate upperLipBottom, LandmarkCoordinate underLipTop, LandmarkCoordinate underLipBottom) {
         this.pupilLeft = pupilLeft;
         this.pupilRight = pupilRight;
         this.noseTip = noseTip;
@@ -560,5 +517,150 @@ public final class FaceLandmarks {
     @Generated
     public LandmarkCoordinate getUnderLipBottom() {
         return this.underLipBottom;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("pupilLeft", this.pupilLeft);
+        jsonWriter.writeJsonField("pupilRight", this.pupilRight);
+        jsonWriter.writeJsonField("noseTip", this.noseTip);
+        jsonWriter.writeJsonField("mouthLeft", this.mouthLeft);
+        jsonWriter.writeJsonField("mouthRight", this.mouthRight);
+        jsonWriter.writeJsonField("eyebrowLeftOuter", this.eyebrowLeftOuter);
+        jsonWriter.writeJsonField("eyebrowLeftInner", this.eyebrowLeftInner);
+        jsonWriter.writeJsonField("eyeLeftOuter", this.eyeLeftOuter);
+        jsonWriter.writeJsonField("eyeLeftTop", this.eyeLeftTop);
+        jsonWriter.writeJsonField("eyeLeftBottom", this.eyeLeftBottom);
+        jsonWriter.writeJsonField("eyeLeftInner", this.eyeLeftInner);
+        jsonWriter.writeJsonField("eyebrowRightInner", this.eyebrowRightInner);
+        jsonWriter.writeJsonField("eyebrowRightOuter", this.eyebrowRightOuter);
+        jsonWriter.writeJsonField("eyeRightInner", this.eyeRightInner);
+        jsonWriter.writeJsonField("eyeRightTop", this.eyeRightTop);
+        jsonWriter.writeJsonField("eyeRightBottom", this.eyeRightBottom);
+        jsonWriter.writeJsonField("eyeRightOuter", this.eyeRightOuter);
+        jsonWriter.writeJsonField("noseRootLeft", this.noseRootLeft);
+        jsonWriter.writeJsonField("noseRootRight", this.noseRootRight);
+        jsonWriter.writeJsonField("noseLeftAlarTop", this.noseLeftAlarTop);
+        jsonWriter.writeJsonField("noseRightAlarTop", this.noseRightAlarTop);
+        jsonWriter.writeJsonField("noseLeftAlarOutTip", this.noseLeftAlarOutTip);
+        jsonWriter.writeJsonField("noseRightAlarOutTip", this.noseRightAlarOutTip);
+        jsonWriter.writeJsonField("upperLipTop", this.upperLipTop);
+        jsonWriter.writeJsonField("upperLipBottom", this.upperLipBottom);
+        jsonWriter.writeJsonField("underLipTop", this.underLipTop);
+        jsonWriter.writeJsonField("underLipBottom", this.underLipBottom);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FaceLandmarks from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FaceLandmarks if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FaceLandmarks.
+     */
+    @Generated
+    public static FaceLandmarks fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LandmarkCoordinate pupilLeft = null;
+            LandmarkCoordinate pupilRight = null;
+            LandmarkCoordinate noseTip = null;
+            LandmarkCoordinate mouthLeft = null;
+            LandmarkCoordinate mouthRight = null;
+            LandmarkCoordinate eyebrowLeftOuter = null;
+            LandmarkCoordinate eyebrowLeftInner = null;
+            LandmarkCoordinate eyeLeftOuter = null;
+            LandmarkCoordinate eyeLeftTop = null;
+            LandmarkCoordinate eyeLeftBottom = null;
+            LandmarkCoordinate eyeLeftInner = null;
+            LandmarkCoordinate eyebrowRightInner = null;
+            LandmarkCoordinate eyebrowRightOuter = null;
+            LandmarkCoordinate eyeRightInner = null;
+            LandmarkCoordinate eyeRightTop = null;
+            LandmarkCoordinate eyeRightBottom = null;
+            LandmarkCoordinate eyeRightOuter = null;
+            LandmarkCoordinate noseRootLeft = null;
+            LandmarkCoordinate noseRootRight = null;
+            LandmarkCoordinate noseLeftAlarTop = null;
+            LandmarkCoordinate noseRightAlarTop = null;
+            LandmarkCoordinate noseLeftAlarOutTip = null;
+            LandmarkCoordinate noseRightAlarOutTip = null;
+            LandmarkCoordinate upperLipTop = null;
+            LandmarkCoordinate upperLipBottom = null;
+            LandmarkCoordinate underLipTop = null;
+            LandmarkCoordinate underLipBottom = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("pupilLeft".equals(fieldName)) {
+                    pupilLeft = LandmarkCoordinate.fromJson(reader);
+                } else if ("pupilRight".equals(fieldName)) {
+                    pupilRight = LandmarkCoordinate.fromJson(reader);
+                } else if ("noseTip".equals(fieldName)) {
+                    noseTip = LandmarkCoordinate.fromJson(reader);
+                } else if ("mouthLeft".equals(fieldName)) {
+                    mouthLeft = LandmarkCoordinate.fromJson(reader);
+                } else if ("mouthRight".equals(fieldName)) {
+                    mouthRight = LandmarkCoordinate.fromJson(reader);
+                } else if ("eyebrowLeftOuter".equals(fieldName)) {
+                    eyebrowLeftOuter = LandmarkCoordinate.fromJson(reader);
+                } else if ("eyebrowLeftInner".equals(fieldName)) {
+                    eyebrowLeftInner = LandmarkCoordinate.fromJson(reader);
+                } else if ("eyeLeftOuter".equals(fieldName)) {
+                    eyeLeftOuter = LandmarkCoordinate.fromJson(reader);
+                } else if ("eyeLeftTop".equals(fieldName)) {
+                    eyeLeftTop = LandmarkCoordinate.fromJson(reader);
+                } else if ("eyeLeftBottom".equals(fieldName)) {
+                    eyeLeftBottom = LandmarkCoordinate.fromJson(reader);
+                } else if ("eyeLeftInner".equals(fieldName)) {
+                    eyeLeftInner = LandmarkCoordinate.fromJson(reader);
+                } else if ("eyebrowRightInner".equals(fieldName)) {
+                    eyebrowRightInner = LandmarkCoordinate.fromJson(reader);
+                } else if ("eyebrowRightOuter".equals(fieldName)) {
+                    eyebrowRightOuter = LandmarkCoordinate.fromJson(reader);
+                } else if ("eyeRightInner".equals(fieldName)) {
+                    eyeRightInner = LandmarkCoordinate.fromJson(reader);
+                } else if ("eyeRightTop".equals(fieldName)) {
+                    eyeRightTop = LandmarkCoordinate.fromJson(reader);
+                } else if ("eyeRightBottom".equals(fieldName)) {
+                    eyeRightBottom = LandmarkCoordinate.fromJson(reader);
+                } else if ("eyeRightOuter".equals(fieldName)) {
+                    eyeRightOuter = LandmarkCoordinate.fromJson(reader);
+                } else if ("noseRootLeft".equals(fieldName)) {
+                    noseRootLeft = LandmarkCoordinate.fromJson(reader);
+                } else if ("noseRootRight".equals(fieldName)) {
+                    noseRootRight = LandmarkCoordinate.fromJson(reader);
+                } else if ("noseLeftAlarTop".equals(fieldName)) {
+                    noseLeftAlarTop = LandmarkCoordinate.fromJson(reader);
+                } else if ("noseRightAlarTop".equals(fieldName)) {
+                    noseRightAlarTop = LandmarkCoordinate.fromJson(reader);
+                } else if ("noseLeftAlarOutTip".equals(fieldName)) {
+                    noseLeftAlarOutTip = LandmarkCoordinate.fromJson(reader);
+                } else if ("noseRightAlarOutTip".equals(fieldName)) {
+                    noseRightAlarOutTip = LandmarkCoordinate.fromJson(reader);
+                } else if ("upperLipTop".equals(fieldName)) {
+                    upperLipTop = LandmarkCoordinate.fromJson(reader);
+                } else if ("upperLipBottom".equals(fieldName)) {
+                    upperLipBottom = LandmarkCoordinate.fromJson(reader);
+                } else if ("underLipTop".equals(fieldName)) {
+                    underLipTop = LandmarkCoordinate.fromJson(reader);
+                } else if ("underLipBottom".equals(fieldName)) {
+                    underLipBottom = LandmarkCoordinate.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new FaceLandmarks(pupilLeft, pupilRight, noseTip, mouthLeft, mouthRight, eyebrowLeftOuter,
+                eyebrowLeftInner, eyeLeftOuter, eyeLeftTop, eyeLeftBottom, eyeLeftInner, eyebrowRightInner,
+                eyebrowRightOuter, eyeRightInner, eyeRightTop, eyeRightBottom, eyeRightOuter, noseRootLeft,
+                noseRootRight, noseLeftAlarTop, noseRightAlarTop, noseLeftAlarOutTip, noseRightAlarOutTip, upperLipTop,
+                upperLipBottom, underLipTop, underLipBottom);
+        });
     }
 }
