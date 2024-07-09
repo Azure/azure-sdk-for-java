@@ -37,7 +37,7 @@ public class MetricsAudience extends ExpandableStringEnum<MetricsAudience> {
      * Creates an instance of MetricsAudience.
      *
      * @param name the string value.
-     * @return the MetricsClientAudience.
+     * @return the MetricsAudience.
      */
     public static MetricsAudience fromString(String name) {
         return fromString(name, MetricsAudience.class);
