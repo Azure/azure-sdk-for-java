@@ -1470,10 +1470,11 @@ public class CosmosTracerTest extends TestSuiteBase {
             
             String dbStatement = (String) attributes.get("db.statement");
 
-            if (ShowQueryMode.ALL.equals(showQueryMode)) {
+            boolean isReadMany = "readMany".equals(cosmosDiagnostics.getDiagnosticsContext().getOperationId());
+            if (!isReadMany && ShowQueryMode.ALL.equals(showQueryMode)) {
                 assertThat(attributes.get("db.statement")).isNotNull();
                 assertThat(attributes.get("db.statement")).isEqualTo(queryStatement);
-            } else if (ShowQueryMode.PARAMETERIZED_ONLY.equals(showQueryMode)
+            } else if (!isReadMany && ShowQueryMode.PARAMETERIZED_ONLY.equals(showQueryMode)
                     && null != dbStatement && dbStatement.contains("@")) {
                 assertThat(attributes.get("db.statement")).isNotNull();
                 assertThat(attributes.get("db.statement")).isEqualTo(queryStatement);
