@@ -148,12 +148,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>adal4j</artifactId>
-      <version>1.6.5</version> <!-- {x-version-update;com.microsoft.azure:adal4j;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.objenesis</groupId>
       <artifactId>objenesis</artifactId>
       <version>3.1</version> <!-- {x-version-update;org.objenesis:objenesis;external_dependency} -->
