@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
@@ -74,6 +75,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -616,10 +618,13 @@ public class CosmosTracerTest extends TestSuiteBase {
             samplingRate);
         mockTracer.reset();
 
+        List<CosmosItemIdentity> createdDocs = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
             // inserting high enough number of documents to make sure we have at least 1 doc on each
             // of the two partitions
-            item = getDocumentDefinition(ITEM_ID + "_" + i);
+            String id = ITEM_ID + "_" + i;
+            createdDocs.add(new CosmosItemIdentity(new PartitionKey(id), id));
+            item = getDocumentDefinition(id);
             requestOptions = new CosmosItemRequestOptions();
             cosmosItemResponse = cosmosAsyncContainer
                 .createItem(item, requestOptions)
@@ -883,7 +888,27 @@ public class CosmosTracerTest extends TestSuiteBase {
                 forceThresholdViolations,
                 null,
                 samplingRate);
-        mockTracer.reset();   
+        mockTracer.reset();
+
+        // read many single item
+        feedItemResponse = cosmosAsyncContainer.readMany(Arrays.asList(createdDocs.get(0)), ObjectNode.class)
+                                               .block();
+        assertThat(feedItemResponse).isNotNull();
+        verifyTracerAttributes(
+            mockTracer,
+            "readManyItems." + cosmosAsyncContainer.getId(),
+            cosmosAsyncDatabase.getId(),
+            cosmosAsyncContainer.getId(),
+            feedItemResponse.getCosmosDiagnostics(),
+            null,
+            useLegacyTracing,
+            enableRequestLevelTracing,
+            showQueryMode,
+            query,
+            forceThresholdViolations,
+            "readMany",
+            samplingRate);
+        mockTracer.reset();
     }
 
     @Test(groups = { "fast", "simple" }, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
@@ -1445,10 +1470,11 @@ public class CosmosTracerTest extends TestSuiteBase {
             
             String dbStatement = (String) attributes.get("db.statement");
 
-            if (ShowQueryMode.ALL.equals(showQueryMode)) {
+            boolean isReadMany = "readMany".equals(cosmosDiagnostics.getDiagnosticsContext().getOperationId());
+            if (!isReadMany && ShowQueryMode.ALL.equals(showQueryMode)) {
                 assertThat(attributes.get("db.statement")).isNotNull();
                 assertThat(attributes.get("db.statement")).isEqualTo(queryStatement);
-            } else if (ShowQueryMode.PARAMETERIZED_ONLY.equals(showQueryMode)
+            } else if (!isReadMany && ShowQueryMode.PARAMETERIZED_ONLY.equals(showQueryMode)
                     && null != dbStatement && dbStatement.contains("@")) {
                 assertThat(attributes.get("db.statement")).isNotNull();
                 assertThat(attributes.get("db.statement")).isEqualTo(queryStatement);
