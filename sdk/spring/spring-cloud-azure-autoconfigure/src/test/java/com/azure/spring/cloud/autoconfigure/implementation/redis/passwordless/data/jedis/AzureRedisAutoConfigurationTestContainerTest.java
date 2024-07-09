@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.OS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -37,6 +38,7 @@ import static org.mockito.Mockito.when;
 @Testcontainers
 @DisabledOnOs({OS.WINDOWS, OS.MAC})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@EnabledIfEnvironmentVariable(named = "TESTCONTAINERS_RYUK_DISABLED", matches = "true")
 public class AzureRedisAutoConfigurationTestContainerTest {
 
     @Autowired
