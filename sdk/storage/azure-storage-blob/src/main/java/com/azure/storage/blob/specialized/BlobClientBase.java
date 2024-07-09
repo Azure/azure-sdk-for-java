@@ -2497,9 +2497,15 @@ public class BlobClientBase {
             requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(),
             null, qr, getCustomerProvidedKey(), Context.NONE);
-        InputStream inputStream = response.getValue();
-
-        return new SimpleResponse<>(response, inputStream);
+        InputStream avroInputStream = response.getValue();
+        BlobQueryReader reader = new BlobQueryReader(avroInputStream, queryOptions.getProgressConsumer(),
+            queryOptions.getErrorConsumer());
+        try {
+            InputStream resultStream = reader.readInputStream(avroInputStream);
+            return new SimpleResponse<>(response, resultStream);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
     }
 
     /**
@@ -2598,22 +2604,28 @@ public class BlobClientBase {
         try {
             ResponseBase<BlobsQueryHeaders, InputStream> response = sendRequest(operation, timeout,
                 BlobStorageException.class);
-            InputStream inputStream = response.getValue();
-            OutputStream outputStream = queryOptions.getOutputStream();
 
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
+            InputStream avroInputStream = response.getValue();
+            BlobQueryReader reader = new BlobQueryReader(avroInputStream, queryOptions.getProgressConsumer(),
+                queryOptions.getErrorConsumer());
 
-            BlobQueryAsyncResponse asyncResponse = new BlobQueryAsyncResponse(response.getRequest(),
-                response.getStatusCode(), response.getHeaders(),
-                /* Parse the avro reactive stream. */
-                new BlobQueryReader(null, queryOptions.getProgressConsumer(), queryOptions.getErrorConsumer()).read(),
-                ModelHelper.transformQueryHeaders(response.getDeserializedHeaders(), response.getHeaders()));
+                InputStream resultStream = reader.readInputStream(avroInputStream);
+                OutputStream outputStream = queryOptions.getOutputStream();
 
-            return new BlobQueryResponse(asyncResponse);
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = resultStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+
+                BlobQueryAsyncResponse asyncResponse = new BlobQueryAsyncResponse(response.getRequest(),
+                    response.getStatusCode(), response.getHeaders(),
+                    /* Parse the avro reactive stream. */
+                    null,
+                    ModelHelper.transformQueryHeaders(response.getDeserializedHeaders(), response.getHeaders()));
+
+                return new BlobQueryResponse(asyncResponse);
+
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to read query results or write to the output stream", e);
         }

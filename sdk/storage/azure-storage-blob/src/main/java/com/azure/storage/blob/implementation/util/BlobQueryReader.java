@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.ArrowConfiguration;
 import com.azure.storage.blob.implementation.models.ArrowField;
@@ -19,6 +20,7 @@ import com.azure.storage.blob.models.BlobQueryJsonSerialization;
 import com.azure.storage.blob.models.BlobQueryParquetSerialization;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.AvroObject;
 import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
@@ -28,8 +30,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -41,7 +48,8 @@ import java.util.function.Consumer;
  */
 public class BlobQueryReader {
 
-    private final Flux<ByteBuffer> avro;
+    private final Flux<ByteBuffer> avroFlux;
+    private final InputStream avroInputStream;
     private final Consumer<BlobQueryProgress> progressConsumer;
     private final Consumer<BlobQueryError> errorConsumer;
 
@@ -54,7 +62,24 @@ public class BlobQueryReader {
      */
     public BlobQueryReader(Flux<ByteBuffer> avro, Consumer<BlobQueryProgress> progressConsumer,
         Consumer<BlobQueryError> errorConsumer) {
-        this.avro = avro;
+        this.avroFlux = avro;
+        this.progressConsumer = progressConsumer;
+        this.errorConsumer = errorConsumer;
+        this.avroInputStream = null;
+    }
+
+    /**
+     * Creates a new BlobQueryReader.
+     *
+     * @param inputStream the {@link InputStream} containing the Avro data.
+     * @param progressConsumer The progress consumer.
+     * @param errorConsumer The error consumer.
+     */
+    public BlobQueryReader(InputStream inputStream, Consumer<BlobQueryProgress> progressConsumer,
+                           Consumer<BlobQueryError> errorConsumer) {
+        StorageImplUtils.assertNotNull("inputStream", inputStream);
+        this.avroInputStream = inputStream;
+        this.avroFlux = null;
         this.progressConsumer = progressConsumer;
         this.errorConsumer = errorConsumer;
     }
@@ -69,10 +94,82 @@ public class BlobQueryReader {
      * @return The parsed query reactive stream.
      */
     public Flux<ByteBuffer> read() {
-        return new AvroReaderFactory().getAvroReader(avro).read()
+        return new AvroReaderFactory().getAvroReader(avroFlux).read()
             .map(AvroObject::getObject)
             .concatMap(this::parseRecord);
     }
+
+    /**
+     * Avro parses a query reactive stream.
+     *
+     * The Avro stream is formatted as the Avro Header (that specifies the schema) and the Avro Body (that contains
+     * a series of blocks of data). The Query Avro schema indicates that the objects being emitted from the parser can
+     * either be a result data record, an end record, a progress record or an error record.
+     *
+     * @return The parsed query reactive stream.
+     */
+    public InputStream readInputStream(InputStream inputStream) throws IOException {
+        // Convert InputStream to Flux<ByteBuffer>
+        Flux<ByteBuffer> avroFlux = toFluxByteBuffer(inputStream);
+
+        // Use existing read method to process the data
+        Flux<ByteBuffer> processedData = new AvroReaderFactory().getAvroReader(avroFlux).read()
+            .map(AvroObject::getObject)
+            .concatMap(this::parseRecord);
+
+        // Convert back to InputStream
+        return convertToInputStream(processedData);
+    }
+
+    private Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream) {
+        // Convert InputStream to Flux<ByteBuffer>, consider buffering if necessary
+        return FluxUtil.toFluxByteBuffer(inputStream);
+    }
+
+    private InputStream convertToInputStream(Flux<ByteBuffer> flux) throws IOException {
+        PipedOutputStream outStream = new PipedOutputStream();
+        PipedInputStream inStream = new PipedInputStream(outStream);
+
+        // Handle stream conversion in a separate thread
+        Thread thread = new Thread(() -> {
+            try {
+                flux.subscribe(
+                    byteBuffer -> {
+                        try {
+                            byte[] array = byteBuffer.array();
+                            outStream.write(array, byteBuffer.position(), byteBuffer.remaining());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    },
+                    error -> {
+                        try {
+                            outStream.close();
+                        } catch (IOException e) {
+                            // Handle error closing stream
+                        }
+                    },
+                    () -> {
+                        try {
+                            outStream.close();
+                        } catch (IOException e) {
+                            // Handle error closing stream
+                        }
+                    }
+                );
+            } catch (Exception e) {
+                try {
+                    outStream.close();
+                } catch (IOException ex) {
+                    // Handle error closing stream
+                }
+            }
+        });
+        thread.start();
+
+        return inStream;
+    }
+
 
     /**
      * Parses a query record.

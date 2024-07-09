@@ -942,7 +942,6 @@ public final class PageBlobClient extends BlobClientBase {
                 response.getDeserializedHeaders());
         };
         return new PagedIterable<>(pageSize -> pageRetriever.apply(null, pageSize), pageRetriever);
-        //return new PagedIterable<>(() -> pageRetriever.apply(null), pageRetriever);
     }
 
     private List<PageRangeItem> parsePageRangeItems(PageList pageList) {
