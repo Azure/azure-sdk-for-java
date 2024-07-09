@@ -149,7 +149,7 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
-          EnvVars: ${{ parameters.EnvVars }}
+          TestEnvVars: ${{ parameters.EnvVars }}
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
