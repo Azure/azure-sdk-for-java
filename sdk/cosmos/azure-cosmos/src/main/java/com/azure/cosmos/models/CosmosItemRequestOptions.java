@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -569,7 +570,9 @@ public class CosmosItemRequestOptions {
      * @return the current request options.
      */
     public CosmosItemRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
-        this.keywordIdentifiers = keywordIdentifiers;
+        if (keywordIdentifiers != null) {
+            this.keywordIdentifiers = Collections.unmodifiableSet(keywordIdentifiers);
+        }
         return this;
     }
 
@@ -579,7 +582,7 @@ public class CosmosItemRequestOptions {
      * @return the custom ids.
      */
     public Set<String> getKeywordIdentifiers() {
-        return keywordIdentifiers;
+        return this.keywordIdentifiers;
     }
 
     /**

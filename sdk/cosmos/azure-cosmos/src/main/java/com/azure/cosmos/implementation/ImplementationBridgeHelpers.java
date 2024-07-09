@@ -56,7 +56,6 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
-import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;

@@ -24,6 +24,7 @@ import com.azure.cosmos.util.Beta;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -526,7 +527,9 @@ public final class CosmosChangeFeedRequestOptions {
      * @return the current request options.
      */
     public CosmosChangeFeedRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
-        this.actualRequestOptions.setKeywordIdentifiers(keywordIdentifiers);
+        if (keywordIdentifiers != null) {
+            this.actualRequestOptions.setKeywordIdentifiers(Collections.unmodifiableSet(keywordIdentifiers));
+        }
         return this;
     }
 

@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -206,7 +207,9 @@ public final class CosmosBatchRequestOptions {
      * @return the current request options.
      */
     public CosmosBatchRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
-        this.keywordIdentifiers = keywordIdentifiers;
+        if (keywordIdentifiers != null) {
+            this.keywordIdentifiers = Collections.unmodifiableSet(keywordIdentifiers);
+        }
         return this;
     }
 

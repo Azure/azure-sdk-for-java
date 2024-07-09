@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -229,7 +230,9 @@ public final class CosmosRequestOptions {
      * @return current CosmosCommonRequestOptions.
      */
     public CosmosRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
-        this.keywordIdentifiers = keywordIdentifiers;
+        if (keywordIdentifiers != null) {
+            this.keywordIdentifiers = Collections.unmodifiableSet(keywordIdentifiers);
+        }
         return this;
     }
 

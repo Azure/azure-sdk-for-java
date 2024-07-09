@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -330,7 +331,9 @@ public final class CosmosBulkExecutionOptions {
      * @return the current request options.
      */
     public CosmosBulkExecutionOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
-        this.actualRequestOptions.setKeywordIdentifiers(keywordIdentifiers);
+        if (keywordIdentifiers != null) {
+            this.actualRequestOptions.setKeywordIdentifiers(Collections.unmodifiableSet(keywordIdentifiers));
+        }
         return this;
     }
 

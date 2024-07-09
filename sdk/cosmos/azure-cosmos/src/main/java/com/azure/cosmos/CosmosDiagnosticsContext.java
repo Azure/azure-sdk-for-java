@@ -979,6 +979,7 @@ public final class CosmosDiagnosticsContext {
                             requestOptions
                             );
                     }
+
                     @Override
                     public OverridableRequestOptions getRequestOptions(CosmosDiagnosticsContext ctx) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
