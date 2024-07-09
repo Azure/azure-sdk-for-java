@@ -113,12 +113,10 @@ public final class ReflectionSerializable {
 
     private static <T> T serializeJsonSerializableWithReturn(JsonSerializable<?> jsonSerializable,
         Function<AccessibleByteArrayOutputStream, T> returner) throws IOException {
-        try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-            JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
-            jsonWriter.writeJson(jsonSerializable).flush();
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        jsonSerializable.toJson(outputStream);
 
-            return returner.apply(outputStream);
-        }
+        return returner.apply(outputStream);
     }
 
     /**
@@ -130,9 +128,7 @@ public final class ReflectionSerializable {
      */
     public static void serializeJsonSerializableIntoOutputStream(JsonSerializable<?> jsonSerializable,
         OutputStream outputStream) throws IOException {
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
-            jsonWriter.writeJson(jsonSerializable).flush();
-        }
+        jsonSerializable.toJson(outputStream);
     }
 
     /**

@@ -9,8 +9,6 @@ import com.azure.json.JsonWriter;
 import com.azure.json.implementation.jackson.core.io.JsonStringEncoder;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 /**
  * Class representing the JSON string type
@@ -63,10 +61,6 @@ public final class JsonString extends JsonElement {
      * After ensuring the JsonReader has begun reading, if the current token is not {@link JsonToken#STRING}, an
      * {@link IllegalStateException} will be thrown. Otherwise, a JSON string representing the string value will be
      * created and returned.
-     * <p>
-     * The {@link JsonNumber} returned will have a {@link JsonNumber#getValue()} that is the smallest type that can
-     * represent the numeric value. Numeric types used are {@link Integer}, {@link Long}, {@link BigInteger},
-     * {@link Float}, {@link Double}, and {@link BigDecimal}.
      *
      * @param jsonReader The JsonReader to deserialize from.
      * @return The deserialized JSON string.
@@ -81,7 +75,7 @@ public final class JsonString extends JsonElement {
 
         if (token != JsonToken.STRING) {
             throw new IllegalStateException(
-                "JsonReader is pointing to an invalid token for deserialization. " + "Token was: " + token + ".");
+                "JsonReader is pointing to an invalid token for deserialization. Token was: " + token + ".");
         }
 
         return new JsonString(jsonReader.getString());
