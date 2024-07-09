@@ -50,7 +50,6 @@ public class AzureRedisAutoConfigurationTestContainerTest {
     private static final GenericContainer<?> REDIS;
 
     static {
-        System.setProperty("TESTCONTAINERS_RYUK_DISABLED","true");
         System.out.println("TESTCONTAINERS_RYUK_DISABLED value: [" + System.getenv("TESTCONTAINERS_RYUK_DISABLED") + "]");
 
         REDIS =
