@@ -3,9 +3,7 @@
 
 package com.azure.core.credential;
 
-import reactor.util.annotation.Nullable;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
@@ -85,7 +83,9 @@ public class AccessToken {
     /**
      * Gets the time when the token should refresh, in UTC.
      *
-     * Note: This value can be null.
+     * Note: This value can be null as it is not always provided by the service. When it is provided, it overrides the
+     * default refresh offset used by the {@link com.azure.core.http.policy.BearerTokenAuthenticationPolicy} to
+     * proactively refresh the token.
      *
      * @return The time when the token should refresh, in UTC.
      */

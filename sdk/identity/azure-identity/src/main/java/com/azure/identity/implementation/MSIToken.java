@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -44,7 +45,6 @@ public final class MSIToken extends AccessToken {
     @JsonProperty(value = "expires_in")
     private String expiresIn;
 
-    @JsonProperty(value = "refresh_in")
     private String refreshIn;
 
 
@@ -59,9 +59,9 @@ public final class MSIToken extends AccessToken {
     public MSIToken(
         @JsonProperty(value = "access_token") String token,
         @JsonProperty(value = "expires_on") String expiresOn,
-        @JsonProperty(value = "expires_in") String expiresIn,
-        @JsonProperty(value = "refresh_in") String refreshIn) {
-        super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)), parseRefreshIn(refreshIn));
+        @JsonProperty(value = "expires_in") String expiresIn) {
+        super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)),
+            inferManagedIdentityRefreshInValue(EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn))));
         this.accessToken = token;
         this.expiresOn = expiresOn;
         this.expiresIn = expiresIn;
@@ -117,6 +117,17 @@ public final class MSIToken extends AccessToken {
                     new IllegalArgumentException("Unable to parse refresh in  " + refreshIn, e));
             }
 
+        }
+        return null;
+    }
+
+    private static OffsetDateTime inferManagedIdentityRefreshInValue(OffsetDateTime expiresOn) {
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+
+        if (expiresOn.isAfter(now.plus(Duration.ofHours(2))) && expiresOn.isBefore(OffsetDateTime.MAX)) {
+            // return the midpoint between now and expiresOn
+            Duration duration = Duration.between(now, expiresOn);
+            return expiresOn.minus(duration.dividedBy(2));
         }
         return null;
     }
