@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The TasksState model. */
+/**
+ * The TasksState model.
+ */
 @Fluent
 public class TasksState implements JsonSerializable<TasksState> {
     /*
@@ -19,12 +21,15 @@ public class TasksState implements JsonSerializable<TasksState> {
      */
     private TasksStateTasks tasks;
 
-    /** Creates an instance of TasksState class. */
-    public TasksState() {}
+    /**
+     * Creates an instance of TasksState class.
+     */
+    public TasksState() {
+    }
 
     /**
      * Get the tasks property: The tasks property.
-     *
+     * 
      * @return the tasks value.
      */
     public TasksStateTasks getTasks() {
@@ -33,7 +38,7 @@ public class TasksState implements JsonSerializable<TasksState> {
 
     /**
      * Set the tasks property: The tasks property.
-     *
+     * 
      * @param tasks the tasks value to set.
      * @return the TasksState object itself.
      */
@@ -42,6 +47,9 @@ public class TasksState implements JsonSerializable<TasksState> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -51,29 +59,28 @@ public class TasksState implements JsonSerializable<TasksState> {
 
     /**
      * Reads an instance of TasksState from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of TasksState if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
+     * to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TasksState.
      */
     public static TasksState fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    TasksState deserializedTasksState = new TasksState();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            TasksState deserializedTasksState = new TasksState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("tasks".equals(fieldName)) {
-                            deserializedTasksState.tasks = TasksStateTasks.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("tasks".equals(fieldName)) {
+                    deserializedTasksState.tasks = TasksStateTasks.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedTasksState;
-                });
+            return deserializedTasksState;
+        });
     }
 }

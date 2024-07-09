@@ -871,6 +871,7 @@
 /eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
 /eng/versioning/                                     @alzimmermsft @samvaity @g2vinay @JimSuplizio
 /eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan
+/.github/workflows/                                  @Azure/azure-sdk-eng
 
 # Removing owners for these files to not require codeowner approval for changes to them given they are shared with project
 /eng/versioning/version_client.txt

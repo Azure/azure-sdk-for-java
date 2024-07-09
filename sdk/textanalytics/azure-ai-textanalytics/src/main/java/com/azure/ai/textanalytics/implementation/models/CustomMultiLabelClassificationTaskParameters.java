@@ -10,33 +10,47 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Supported parameters for a Custom Multi Classification task. */
+/**
+ * Supported parameters for a Custom Multi Classification task.
+ */
 @Fluent
 public final class CustomMultiLabelClassificationTaskParameters extends CustomTaskParameters {
-    /** Creates an instance of CustomMultiLabelClassificationTaskParameters class. */
-    public CustomMultiLabelClassificationTaskParameters() {}
+    /**
+     * Creates an instance of CustomMultiLabelClassificationTaskParameters class.
+     */
+    public CustomMultiLabelClassificationTaskParameters() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomMultiLabelClassificationTaskParameters setProjectName(String projectName) {
         super.setProjectName(projectName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomMultiLabelClassificationTaskParameters setDeploymentName(String deploymentName) {
         super.setDeploymentName(deploymentName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomMultiLabelClassificationTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         super.setLoggingOptOut(loggingOptOut);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -48,37 +62,34 @@ public final class CustomMultiLabelClassificationTaskParameters extends CustomTa
 
     /**
      * Reads an instance of CustomMultiLabelClassificationTaskParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomMultiLabelClassificationTaskParameters if the JsonReader was pointing to an instance
-     *     of it, or null if it was pointing to JSON null.
+     * of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomMultiLabelClassificationTaskParameters.
      */
     public static CustomMultiLabelClassificationTaskParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CustomMultiLabelClassificationTaskParameters
-                            deserializedCustomMultiLabelClassificationTaskParameters =
-                                    new CustomMultiLabelClassificationTaskParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CustomMultiLabelClassificationTaskParameters deserializedCustomMultiLabelClassificationTaskParameters
+                = new CustomMultiLabelClassificationTaskParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("projectName".equals(fieldName)) {
-                            deserializedCustomMultiLabelClassificationTaskParameters.setProjectName(reader.getString());
-                        } else if ("deploymentName".equals(fieldName)) {
-                            deserializedCustomMultiLabelClassificationTaskParameters.setDeploymentName(
-                                    reader.getString());
-                        } else if ("loggingOptOut".equals(fieldName)) {
-                            deserializedCustomMultiLabelClassificationTaskParameters.setLoggingOptOut(
-                                    reader.getNullable(JsonReader::getBoolean));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("projectName".equals(fieldName)) {
+                    deserializedCustomMultiLabelClassificationTaskParameters.setProjectName(reader.getString());
+                } else if ("deploymentName".equals(fieldName)) {
+                    deserializedCustomMultiLabelClassificationTaskParameters.setDeploymentName(reader.getString());
+                } else if ("loggingOptOut".equals(fieldName)) {
+                    deserializedCustomMultiLabelClassificationTaskParameters
+                        .setLoggingOptOut(reader.getNullable(JsonReader::getBoolean));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCustomMultiLabelClassificationTaskParameters;
-                });
+            return deserializedCustomMultiLabelClassificationTaskParameters;
+        });
     }
 }

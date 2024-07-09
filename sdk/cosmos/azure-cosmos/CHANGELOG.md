@@ -10,6 +10,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added metrics and tracing for ReadMany operations. - See [PR 41042](https://github.com/Azure/azure-sdk-for-java/pull/41042)
 
 ### 4.62.0 (2024-07-02)
 
