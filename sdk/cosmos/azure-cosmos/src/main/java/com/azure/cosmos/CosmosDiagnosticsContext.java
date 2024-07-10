@@ -618,7 +618,7 @@ public final class CosmosDiagnosticsContext {
         ctxNode.put("maxRequestSizeInBytes", this.maxRequestSize);
         ctxNode.put("maxResponseSizeInBytes", this.maxResponseSize);
 
-        if (this.requestOptions.getKeywordIdentifiers() != null) {
+        if (this.requestOptions != null && this.requestOptions.getKeywordIdentifiers() != null) {
             ctxNode.put("keywordIdentifiers", String.join(",", this.requestOptions.getKeywordIdentifiers()));
         }
 
