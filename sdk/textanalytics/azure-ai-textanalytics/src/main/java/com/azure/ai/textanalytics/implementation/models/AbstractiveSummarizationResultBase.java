@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** An object representing the summarization results of each document. */
+/**
+ * An object representing the summarization results of each document.
+ */
 @Fluent
 public class AbstractiveSummarizationResultBase implements JsonSerializable<AbstractiveSummarizationResultBase> {
     /*
@@ -20,12 +22,15 @@ public class AbstractiveSummarizationResultBase implements JsonSerializable<Abst
      */
     private List<AbstractiveSummaryDocumentResult> documents;
 
-    /** Creates an instance of AbstractiveSummarizationResultBase class. */
-    public AbstractiveSummarizationResultBase() {}
+    /**
+     * Creates an instance of AbstractiveSummarizationResultBase class.
+     */
+    public AbstractiveSummarizationResultBase() {
+    }
 
     /**
      * Get the documents property: Response by document.
-     *
+     * 
      * @return the documents value.
      */
     public List<AbstractiveSummaryDocumentResult> getDocuments() {
@@ -34,7 +39,7 @@ public class AbstractiveSummarizationResultBase implements JsonSerializable<Abst
 
     /**
      * Set the documents property: Response by document.
-     *
+     * 
      * @param documents the documents value to set.
      * @return the AbstractiveSummarizationResultBase object itself.
      */
@@ -43,6 +48,9 @@ public class AbstractiveSummarizationResultBase implements JsonSerializable<Abst
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -52,32 +60,31 @@ public class AbstractiveSummarizationResultBase implements JsonSerializable<Abst
 
     /**
      * Reads an instance of AbstractiveSummarizationResultBase from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AbstractiveSummarizationResultBase if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AbstractiveSummarizationResultBase.
      */
     public static AbstractiveSummarizationResultBase fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AbstractiveSummarizationResultBase deserializedAbstractiveSummarizationResultBase =
-                            new AbstractiveSummarizationResultBase();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            AbstractiveSummarizationResultBase deserializedAbstractiveSummarizationResultBase
+                = new AbstractiveSummarizationResultBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("documents".equals(fieldName)) {
-                            List<AbstractiveSummaryDocumentResult> documents =
-                                    reader.readArray(reader1 -> AbstractiveSummaryDocumentResult.fromJson(reader1));
-                            deserializedAbstractiveSummarizationResultBase.documents = documents;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("documents".equals(fieldName)) {
+                    List<AbstractiveSummaryDocumentResult> documents
+                        = reader.readArray(reader1 -> AbstractiveSummaryDocumentResult.fromJson(reader1));
+                    deserializedAbstractiveSummarizationResultBase.documents = documents;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedAbstractiveSummarizationResultBase;
-                });
+            return deserializedAbstractiveSummarizationResultBase;
+        });
     }
 }

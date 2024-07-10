@@ -123,14 +123,14 @@ public class NonStreamingOrderByQueryVectorSearchTest {
             .collectList().block();
         validateOrdering(6, resultDocs, false);
 
-        String euclideanSpecsQuery = String.format("SELECT DISTINCT TOP 6 c.text, VectorDistance(c.embedding, [%s], {'distanceFunction': 'euclidean'}) AS " +
+        String euclideanSpecsQuery = String.format("SELECT DISTINCT TOP 6 c.text, VectorDistance(c.embedding, [%s], false, {'distanceFunction': 'euclidean'}) AS " +
             "score FROM c ORDER BY VectorDistance(c.embedding, [%s], false, {'distanceFunction': 'euclidean'})", queryVector, queryVector);
         resultDocs = flatIndexContainer.queryItems(euclideanSpecsQuery, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
-        validateOrdering(6, resultDocs, false);
+        validateOrdering(6, resultDocs, true);
 
-        String dotproductSpecsQuery = String.format("SELECT DISTINCT TOP 6 c.text, VectorDistance(c.embedding, [%s], {'distanceFunction': 'dotproduct'}) AS " +
+        String dotproductSpecsQuery = String.format("SELECT DISTINCT TOP 6 c.text, VectorDistance(c.embedding, [%s], false, {'distanceFunction': 'dotproduct'}) AS " +
             "score FROM c ORDER BY VectorDistance(c.embedding, [%s], false, {'distanceFunction': 'dotproduct'})", queryVector, queryVector);
         resultDocs = flatIndexContainer.queryItems(dotproductSpecsQuery, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
@@ -156,7 +156,7 @@ public class NonStreamingOrderByQueryVectorSearchTest {
             .collectList().block();
         validateOrdering(6, resultDocs, true);
 
-        String dotproduct_specs_query = String.format("SELECT DISTINCT TOP 6 c.text, VectorDistance(c.embedding, [%s], {'distanceFunction': 'dotproduct'}) AS " +
+        String dotproduct_specs_query = String.format("SELECT DISTINCT TOP 6 c.text, VectorDistance(c.embedding, [%s], false, {'distanceFunction': 'dotproduct'}) AS " +
             "score FROM c ORDER BY VectorDistance(c.embedding, [%s], false, {'distanceFunction': 'dotproduct'})", queryVector, queryVector);
         resultDocs = quantizedIndexContainer.queryItems(dotproduct_specs_query, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))

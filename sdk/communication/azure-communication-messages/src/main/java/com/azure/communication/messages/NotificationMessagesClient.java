@@ -73,7 +73,7 @@ public final class NotificationMessagesClient {
      * }
      * }</pre>
      *
-     * @param body Body parameter.
+     * @param notificationContent Details of the message to send.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -83,8 +83,8 @@ public final class NotificationMessagesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> sendWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.sendWithResponse(body, requestOptions);
+    public Response<BinaryData> sendWithResponse(BinaryData notificationContent, RequestOptions requestOptions) {
+        return this.serviceClient.sendWithResponse(notificationContent, requestOptions);
     }
 
     /**
@@ -112,7 +112,7 @@ public final class NotificationMessagesClient {
     /**
      * Sends a notification message from Business to User.
      *
-     * @param body Body parameter.
+     * @param notificationContent Details of the message to send.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -123,10 +123,10 @@ public final class NotificationMessagesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendMessageResult send(NotificationContent body) {
+    public SendMessageResult send(NotificationContent notificationContent) {
         // Generated convenience method for sendWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return sendWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+        return sendWithResponse(BinaryData.fromObject(notificationContent), requestOptions).getValue()
             .toObject(SendMessageResult.class);
     }
 

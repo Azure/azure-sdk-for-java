@@ -77,7 +77,6 @@
     "sdk/appconfiguration/azure-spring-cloud-feature-management-web/**",
     "sdk/appconfiguration/azure-spring-cloud-feature-management/**",
     "sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/**",
-    "sdk/appconfiguration/azure-data-appconfiguration/**",
     "sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/**",
     "sdk/boms/azure-sdk-bom/**",
     "sdk/boms/azure-sdk-template-bom/**",

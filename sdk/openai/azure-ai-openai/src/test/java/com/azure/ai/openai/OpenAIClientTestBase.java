@@ -274,6 +274,12 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         );
     }
 
+    void getImageGenerationWithResponseRunner(Function<String, Function<ImageGenerationOptions, Consumer<RequestOptions>>> testRunner) {
+        testRunner.apply("dall-e-3")
+                .apply(new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh"))
+                .accept(getRequestOption());
+    }
+
     void contentFilterInputExceptionRunner(BiConsumer<String, ImageGenerationOptions> testRunner) {
         testRunner.accept("dall-e-3", new ImageGenerationOptions("Go kill yourself"));
     }
