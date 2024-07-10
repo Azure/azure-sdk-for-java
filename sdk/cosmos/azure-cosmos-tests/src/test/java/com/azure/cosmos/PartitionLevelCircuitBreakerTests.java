@@ -1,22 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation;
+package com.azure.cosmos;
 
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDiagnosticsContext;
-import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
-import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosRegionSwitchHint;
-import com.azure.cosmos.SessionRetryOptionsBuilder;
-import com.azure.cosmos.TestObject;
-import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.faultinjection.FaultInjectionTestBase;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.circuitBreaker.ConsecutiveExceptionBasedCircuitBreaker;
