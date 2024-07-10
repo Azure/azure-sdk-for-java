@@ -5,32 +5,41 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The PlaySourceInternal model. */
+/**
+ * The PlaySourceInternal model.
+ */
 @Fluent
-public final class PlaySourceInternal {
+public final class PlaySourceInternal implements JsonSerializable<PlaySourceInternal> {
     /*
      * Defines the type of the play source
      */
-    @JsonProperty(value = "sourceType", required = true)
     private PlaySourceTypeInternal sourceType;
 
     /*
      * Defines the identifier to be used for caching related media
      */
-    @JsonProperty(value = "playSourceId")
     private String playSourceId;
 
     /*
      * Defines the file source info to be used for play
      */
-    @JsonProperty(value = "fileSource")
     private FileSourceInternal fileSource;
 
     /**
+     * Creates an instance of PlaySourceInternal class.
+     */
+    public PlaySourceInternal() {
+    }
+
+    /**
      * Get the sourceType property: Defines the type of the play source.
-     *
+     * 
      * @return the sourceType value.
      */
     public PlaySourceTypeInternal getSourceType() {
@@ -39,7 +48,7 @@ public final class PlaySourceInternal {
 
     /**
      * Set the sourceType property: Defines the type of the play source.
-     *
+     * 
      * @param sourceType the sourceType value to set.
      * @return the PlaySourceInternal object itself.
      */
@@ -50,7 +59,7 @@ public final class PlaySourceInternal {
 
     /**
      * Get the playSourceId property: Defines the identifier to be used for caching related media.
-     *
+     * 
      * @return the playSourceId value.
      */
     public String getPlaySourceId() {
@@ -59,7 +68,7 @@ public final class PlaySourceInternal {
 
     /**
      * Set the playSourceId property: Defines the identifier to be used for caching related media.
-     *
+     * 
      * @param playSourceId the playSourceId value to set.
      * @return the PlaySourceInternal object itself.
      */
@@ -70,7 +79,7 @@ public final class PlaySourceInternal {
 
     /**
      * Get the fileSource property: Defines the file source info to be used for play.
-     *
+     * 
      * @return the fileSource value.
      */
     public FileSourceInternal getFileSource() {
@@ -79,12 +88,55 @@ public final class PlaySourceInternal {
 
     /**
      * Set the fileSource property: Defines the file source info to be used for play.
-     *
+     * 
      * @param fileSource the fileSource value to set.
      * @return the PlaySourceInternal object itself.
      */
     public PlaySourceInternal setFileSource(FileSourceInternal fileSource) {
         this.fileSource = fileSource;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceType", this.sourceType == null ? null : this.sourceType.toString());
+        jsonWriter.writeStringField("playSourceId", this.playSourceId);
+        jsonWriter.writeJsonField("fileSource", this.fileSource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlaySourceInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlaySourceInternal if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PlaySourceInternal.
+     */
+    public static PlaySourceInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlaySourceInternal deserializedPlaySourceInternal = new PlaySourceInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceType".equals(fieldName)) {
+                    deserializedPlaySourceInternal.sourceType = PlaySourceTypeInternal.fromString(reader.getString());
+                } else if ("playSourceId".equals(fieldName)) {
+                    deserializedPlaySourceInternal.playSourceId = reader.getString();
+                } else if ("fileSource".equals(fieldName)) {
+                    deserializedPlaySourceInternal.fileSource = FileSourceInternal.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlaySourceInternal;
+        });
     }
 }

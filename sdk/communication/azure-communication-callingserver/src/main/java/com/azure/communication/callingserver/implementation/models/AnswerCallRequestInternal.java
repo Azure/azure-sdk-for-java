@@ -5,32 +5,41 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The request payload for answering the call. */
+/**
+ * The request payload for answering the call.
+ */
 @Fluent
-public final class AnswerCallRequestInternal {
+public final class AnswerCallRequestInternal implements JsonSerializable<AnswerCallRequestInternal> {
     /*
      * The context associated with the call.
      */
-    @JsonProperty(value = "incomingCallContext", required = true)
     private String incomingCallContext;
 
     /*
      * The callback uri.
      */
-    @JsonProperty(value = "callbackUri")
     private String callbackUri;
 
     /*
      * Media Streaming Configuration.
      */
-    @JsonProperty(value = "mediaStreamingConfiguration")
     private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
 
     /**
+     * Creates an instance of AnswerCallRequestInternal class.
+     */
+    public AnswerCallRequestInternal() {
+    }
+
+    /**
      * Get the incomingCallContext property: The context associated with the call.
-     *
+     * 
      * @return the incomingCallContext value.
      */
     public String getIncomingCallContext() {
@@ -39,7 +48,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the incomingCallContext property: The context associated with the call.
-     *
+     * 
      * @param incomingCallContext the incomingCallContext value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
@@ -50,7 +59,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Get the callbackUri property: The callback uri.
-     *
+     * 
      * @return the callbackUri value.
      */
     public String getCallbackUri() {
@@ -59,7 +68,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the callbackUri property: The callback uri.
-     *
+     * 
      * @param callbackUri the callbackUri value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
@@ -70,7 +79,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
+     * 
      * @return the mediaStreamingConfiguration value.
      */
     public MediaStreamingConfigurationInternal getMediaStreamingConfiguration() {
@@ -79,13 +88,57 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
+     * 
      * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setMediaStreamingConfiguration(
-            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
+    public AnswerCallRequestInternal
+        setMediaStreamingConfiguration(MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
         this.mediaStreamingConfiguration = mediaStreamingConfiguration;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("incomingCallContext", this.incomingCallContext);
+        jsonWriter.writeStringField("callbackUri", this.callbackUri);
+        jsonWriter.writeJsonField("mediaStreamingConfiguration", this.mediaStreamingConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnswerCallRequestInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnswerCallRequestInternal if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnswerCallRequestInternal.
+     */
+    public static AnswerCallRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnswerCallRequestInternal deserializedAnswerCallRequestInternal = new AnswerCallRequestInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("incomingCallContext".equals(fieldName)) {
+                    deserializedAnswerCallRequestInternal.incomingCallContext = reader.getString();
+                } else if ("callbackUri".equals(fieldName)) {
+                    deserializedAnswerCallRequestInternal.callbackUri = reader.getString();
+                } else if ("mediaStreamingConfiguration".equals(fieldName)) {
+                    deserializedAnswerCallRequestInternal.mediaStreamingConfiguration
+                        = MediaStreamingConfigurationInternal.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnswerCallRequestInternal;
+        });
     }
 }

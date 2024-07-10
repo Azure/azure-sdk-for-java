@@ -24,25 +24,34 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
+import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServerCallings. */
+/**
+ * An instance of this class provides access to all the operations defined in ServerCallings.
+ */
 public final class ServerCallingsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServerCallingsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureCommunicationCallingServerServiceImpl client;
 
     /**
      * Initializes an instance of ServerCallingsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServerCallingsImpl(AzureCommunicationCallingServerServiceImpl client) {
-        this.service =
-                RestProxy.create(ServerCallingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ServerCallingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,245 +63,237 @@ public final class ServerCallingsImpl {
     @ServiceInterface(name = "AzureCommunicationCa")
     public interface ServerCallingsService {
         @Post("/calling/callConnections")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<CallConnectionPropertiesInternal>> createCall(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CreateCallRequestInternal body,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CallConnectionPropertiesInternal>> createCall(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CreateCallRequestInternal createCallRequest,
+            @HeaderParam("Accept") String accept,
+            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
 
         @Post("/calling/callConnections:answer")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<CallConnectionPropertiesInternal>> answerCall(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") AnswerCallRequestInternal answerCallRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CallConnectionPropertiesInternal>> answerCall(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AnswerCallRequestInternal answerCallRequest,
+            @HeaderParam("Accept") String accept,
+            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
 
         @Post("/calling/callConnections:redirect")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> redirectCall(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") RedirectCallRequestInternal redirectCallRequest,
-                Context context);
+        Mono<Response<Void>> redirectCall(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RedirectCallRequestInternal redirectCallRequest,
+            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
 
         @Post("/calling/callConnections:reject")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> rejectCall(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") RejectCallRequestInternal rejectCallRequest,
-                Context context);
+        Mono<Response<Void>> rejectCall(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RejectCallRequestInternal rejectCallRequest,
+            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
     }
 
     /**
      * Create an outbound call.
-     *
-     * @param body The create call request.
+     * 
+     * @param createCallRequest The create call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesInternal>> createCallWithResponseAsync(
-            CreateCallRequestInternal body) {
+    public Mono<Response<CallConnectionPropertiesInternal>>
+        createCallWithResponseAsync(CreateCallRequestInternal createCallRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createCall(
-                                this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context));
+        return FluxUtil.withContext(context -> service.createCall(this.client.getEndpoint(),
+            this.client.getApiVersion(), createCallRequest, accept, CoreUtils.randomUuid().toString(),
+            DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context));
     }
 
     /**
      * Create an outbound call.
-     *
-     * @param body The create call request.
+     * 
+     * @param createCallRequest The create call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesInternal>> createCallWithResponseAsync(
-            CreateCallRequestInternal body, Context context) {
+    public Mono<Response<CallConnectionPropertiesInternal>>
+        createCallWithResponseAsync(CreateCallRequestInternal createCallRequest, Context context) {
         final String accept = "application/json";
-        return service.createCall(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
+        return service.createCall(this.client.getEndpoint(), this.client.getApiVersion(), createCallRequest, accept,
+            CoreUtils.randomUuid().toString(), DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
     }
 
     /**
      * Create an outbound call.
-     *
-     * @param body The create call request.
+     * 
+     * @param createCallRequest The create call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionPropertiesInternal> createCallAsync(CreateCallRequestInternal body) {
-        return createCallWithResponseAsync(body)
-                .flatMap(
-                        (Response<CallConnectionPropertiesInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<CallConnectionPropertiesInternal> createCallAsync(CreateCallRequestInternal createCallRequest) {
+        return createCallWithResponseAsync(createCallRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create an outbound call.
-     *
-     * @param body The create call request.
+     * 
+     * @param createCallRequest The create call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionPropertiesInternal> createCallAsync(CreateCallRequestInternal body, Context context) {
-        return createCallWithResponseAsync(body, context)
-                .flatMap(
-                        (Response<CallConnectionPropertiesInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<CallConnectionPropertiesInternal> createCallAsync(CreateCallRequestInternal createCallRequest,
+        Context context) {
+        return createCallWithResponseAsync(createCallRequest, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create an outbound call.
-     *
-     * @param body The create call request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnectionPropertiesInternal createCall(CreateCallRequestInternal body) {
-        return createCallAsync(body).block();
-    }
-
-    /**
-     * Create an outbound call.
-     *
-     * @param body The create call request.
+     * 
+     * @param createCallRequest The create call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionPropertiesInternal> createCallWithResponse(
-            CreateCallRequestInternal body, Context context) {
-        return createCallWithResponseAsync(body, context).block();
+    public Response<CallConnectionPropertiesInternal>
+        createCallWithResponse(CreateCallRequestInternal createCallRequest, Context context) {
+        return createCallWithResponseAsync(createCallRequest, context).block();
     }
 
     /**
+     * Create an outbound call.
+     * 
+     * @param createCallRequest The create call request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CallConnectionPropertiesInternal createCall(CreateCallRequestInternal createCallRequest) {
+        return createCallWithResponse(createCallRequest, Context.NONE).getValue();
+    }
+
+    /**
+     * Answer a Call.
+     * 
      * Answer a call using the IncomingCallContext from Event Grid.
-     *
+     * 
      * @param answerCallRequest The answer call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesInternal>> answerCallWithResponseAsync(
-            AnswerCallRequestInternal answerCallRequest) {
+    public Mono<Response<CallConnectionPropertiesInternal>>
+        answerCallWithResponseAsync(AnswerCallRequestInternal answerCallRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.answerCall(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                answerCallRequest,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.answerCall(this.client.getEndpoint(),
+            this.client.getApiVersion(), answerCallRequest, accept, CoreUtils.randomUuid().toString(),
+            DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context));
     }
 
     /**
+     * Answer a Call.
+     * 
      * Answer a call using the IncomingCallContext from Event Grid.
-     *
+     * 
      * @param answerCallRequest The answer call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesInternal>> answerCallWithResponseAsync(
-            AnswerCallRequestInternal answerCallRequest, Context context) {
+    public Mono<Response<CallConnectionPropertiesInternal>>
+        answerCallWithResponseAsync(AnswerCallRequestInternal answerCallRequest, Context context) {
         final String accept = "application/json";
-        return service.answerCall(
-                this.client.getEndpoint(), this.client.getApiVersion(), answerCallRequest, accept, context);
+        return service.answerCall(this.client.getEndpoint(), this.client.getApiVersion(), answerCallRequest, accept,
+            CoreUtils.randomUuid().toString(), DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
     }
 
     /**
+     * Answer a Call.
+     * 
      * Answer a call using the IncomingCallContext from Event Grid.
-     *
+     * 
      * @param answerCallRequest The answer call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> answerCallAsync(AnswerCallRequestInternal answerCallRequest) {
-        return answerCallWithResponseAsync(answerCallRequest)
-                .flatMap(
-                        (Response<CallConnectionPropertiesInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return answerCallWithResponseAsync(answerCallRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Answer a Call.
+     * 
      * Answer a call using the IncomingCallContext from Event Grid.
-     *
+     * 
      * @param answerCallRequest The answer call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionPropertiesInternal> answerCallAsync(
-            AnswerCallRequestInternal answerCallRequest, Context context) {
-        return answerCallWithResponseAsync(answerCallRequest, context)
-                .flatMap(
-                        (Response<CallConnectionPropertiesInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<CallConnectionPropertiesInternal> answerCallAsync(AnswerCallRequestInternal answerCallRequest,
+        Context context) {
+        return answerCallWithResponseAsync(answerCallRequest, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Answer a Call.
+     * 
      * Answer a call using the IncomingCallContext from Event Grid.
-     *
+     * 
+     * @param answerCallRequest The answer call request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CallConnectionPropertiesInternal>
+        answerCallWithResponse(AnswerCallRequestInternal answerCallRequest, Context context) {
+        return answerCallWithResponseAsync(answerCallRequest, context).block();
+    }
+
+    /**
+     * Answer a Call.
+     * 
+     * Answer a call using the IncomingCallContext from Event Grid.
+     * 
      * @param answerCallRequest The answer call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -301,111 +302,80 @@ public final class ServerCallingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnectionPropertiesInternal answerCall(AnswerCallRequestInternal answerCallRequest) {
-        return answerCallAsync(answerCallRequest).block();
-    }
-
-    /**
-     * Answer a call using the IncomingCallContext from Event Grid.
-     *
-     * @param answerCallRequest The answer call request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionPropertiesInternal> answerCallWithResponse(
-            AnswerCallRequestInternal answerCallRequest, Context context) {
-        return answerCallWithResponseAsync(answerCallRequest, context).block();
+        return answerCallWithResponse(answerCallRequest, Context.NONE).getValue();
     }
 
     /**
      * Redirect a call.
-     *
-     * @param redirectCallRequest The request payload for redirecting the call.
+     * 
+     * @param redirectCallRequest The redirectCallRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> redirectCallWithResponseAsync(RedirectCallRequestInternal redirectCallRequest) {
         return FluxUtil.withContext(
-                context ->
-                        service.redirectCall(
-                                this.client.getEndpoint(), this.client.getApiVersion(), redirectCallRequest, context));
+            context -> service.redirectCall(this.client.getEndpoint(), this.client.getApiVersion(), redirectCallRequest,
+                CoreUtils.randomUuid().toString(), DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context));
     }
 
     /**
      * Redirect a call.
-     *
-     * @param redirectCallRequest The request payload for redirecting the call.
+     * 
+     * @param redirectCallRequest The redirectCallRequest parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> redirectCallWithResponseAsync(
-            RedirectCallRequestInternal redirectCallRequest, Context context) {
-        return service.redirectCall(
-                this.client.getEndpoint(), this.client.getApiVersion(), redirectCallRequest, context);
+    public Mono<Response<Void>> redirectCallWithResponseAsync(RedirectCallRequestInternal redirectCallRequest,
+        Context context) {
+        return service.redirectCall(this.client.getEndpoint(), this.client.getApiVersion(), redirectCallRequest,
+            CoreUtils.randomUuid().toString(), DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
     }
 
     /**
      * Redirect a call.
-     *
-     * @param redirectCallRequest The request payload for redirecting the call.
+     * 
+     * @param redirectCallRequest The redirectCallRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> redirectCallAsync(RedirectCallRequestInternal redirectCallRequest) {
-        return redirectCallWithResponseAsync(redirectCallRequest).flatMap((Response<Void> res) -> Mono.empty());
+        return redirectCallWithResponseAsync(redirectCallRequest).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Redirect a call.
-     *
-     * @param redirectCallRequest The request payload for redirecting the call.
+     * 
+     * @param redirectCallRequest The redirectCallRequest parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> redirectCallAsync(RedirectCallRequestInternal redirectCallRequest, Context context) {
-        return redirectCallWithResponseAsync(redirectCallRequest, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return redirectCallWithResponseAsync(redirectCallRequest, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Redirect a call.
-     *
-     * @param redirectCallRequest The request payload for redirecting the call.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void redirectCall(RedirectCallRequestInternal redirectCallRequest) {
-        redirectCallAsync(redirectCallRequest).block();
-    }
-
-    /**
-     * Redirect a call.
-     *
-     * @param redirectCallRequest The request payload for redirecting the call.
+     * 
+     * @param redirectCallRequest The redirectCallRequest parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> redirectCallWithResponse(RedirectCallRequestInternal redirectCallRequest, Context context) {
@@ -413,70 +383,98 @@ public final class ServerCallingsImpl {
     }
 
     /**
+     * Redirect a call.
+     * 
+     * @param redirectCallRequest The redirectCallRequest parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void redirectCall(RedirectCallRequestInternal redirectCallRequest) {
+        redirectCallWithResponse(redirectCallRequest, Context.NONE);
+    }
+
+    /**
      * Reject the call.
-     *
+     * 
      * @param rejectCallRequest The reject call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rejectCallWithResponseAsync(RejectCallRequestInternal rejectCallRequest) {
         return FluxUtil.withContext(
-                context ->
-                        service.rejectCall(
-                                this.client.getEndpoint(), this.client.getApiVersion(), rejectCallRequest, context));
+            context -> service.rejectCall(this.client.getEndpoint(), this.client.getApiVersion(), rejectCallRequest,
+                CoreUtils.randomUuid().toString(), DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context));
     }
 
     /**
      * Reject the call.
-     *
+     * 
      * @param rejectCallRequest The reject call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rejectCallWithResponseAsync(
-            RejectCallRequestInternal rejectCallRequest, Context context) {
-        return service.rejectCall(this.client.getEndpoint(), this.client.getApiVersion(), rejectCallRequest, context);
+    public Mono<Response<Void>> rejectCallWithResponseAsync(RejectCallRequestInternal rejectCallRequest,
+        Context context) {
+        return service.rejectCall(this.client.getEndpoint(), this.client.getApiVersion(), rejectCallRequest,
+            CoreUtils.randomUuid().toString(), DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
     }
 
     /**
      * Reject the call.
-     *
+     * 
      * @param rejectCallRequest The reject call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rejectCallAsync(RejectCallRequestInternal rejectCallRequest) {
-        return rejectCallWithResponseAsync(rejectCallRequest).flatMap((Response<Void> res) -> Mono.empty());
+        return rejectCallWithResponseAsync(rejectCallRequest).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Reject the call.
-     *
+     * 
      * @param rejectCallRequest The reject call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rejectCallAsync(RejectCallRequestInternal rejectCallRequest, Context context) {
-        return rejectCallWithResponseAsync(rejectCallRequest, context).flatMap((Response<Void> res) -> Mono.empty());
+        return rejectCallWithResponseAsync(rejectCallRequest, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Reject the call.
-     *
+     * 
+     * @param rejectCallRequest The reject call request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> rejectCallWithResponse(RejectCallRequestInternal rejectCallRequest, Context context) {
+        return rejectCallWithResponseAsync(rejectCallRequest, context).block();
+    }
+
+    /**
+     * Reject the call.
+     * 
      * @param rejectCallRequest The reject call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -484,21 +482,6 @@ public final class ServerCallingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rejectCall(RejectCallRequestInternal rejectCallRequest) {
-        rejectCallAsync(rejectCallRequest).block();
-    }
-
-    /**
-     * Reject the call.
-     *
-     * @param rejectCallRequest The reject call request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rejectCallWithResponse(RejectCallRequestInternal rejectCallRequest, Context context) {
-        return rejectCallWithResponseAsync(rejectCallRequest, context).block();
+        rejectCallWithResponse(rejectCallRequest, Context.NONE);
     }
 }

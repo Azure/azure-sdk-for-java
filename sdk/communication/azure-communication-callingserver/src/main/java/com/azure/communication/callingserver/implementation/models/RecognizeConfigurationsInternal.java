@@ -5,33 +5,34 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The RecognizeConfigurationsInternal model. */
 @Fluent
-public final class RecognizeConfigurationsInternal {
+public final class RecognizeConfigurationsInternal implements JsonSerializable<RecognizeConfigurationsInternal> {
     /*
      * Determines if we interrupt the prompt and start recognizing.
      */
-    @JsonProperty(value = "interruptPromptAndStartRecognition")
     private Boolean interruptPromptAndStartRecognition;
 
     /*
      * Time to wait for first input after prompt (if any).
      */
-    @JsonProperty(value = "initialSilenceTimeoutInSeconds")
     private Integer initialSilenceTimeoutInSeconds;
 
     /*
      * Target participant of DTFM tone recognition.
      */
-    @JsonProperty(value = "targetParticipant")
     private CommunicationIdentifierModel targetParticipant;
 
     /*
      * Defines configurations for DTMF.
      */
-    @JsonProperty(value = "dtmfConfigurations")
     private DtmfConfigurationsInternal dtmfConfigurations;
 
     /**
@@ -113,5 +114,52 @@ public final class RecognizeConfigurationsInternal {
     public RecognizeConfigurationsInternal setDtmfConfigurations(DtmfConfigurationsInternal dtmfConfigurations) {
         this.dtmfConfigurations = dtmfConfigurations;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("targetParticipant", this.targetParticipant);
+        jsonWriter.writeBooleanField("interruptPromptAndStartRecognition", this.interruptPromptAndStartRecognition);
+        jsonWriter.writeNumberField("initialSilenceTimeoutInSeconds", this.initialSilenceTimeoutInSeconds);
+        jsonWriter.writeJsonField("dtmfConfigurations", this.dtmfConfigurations);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecognizeConfigurationsInternal from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecognizeConfigurationsInternal if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecognizeConfigurationsInternal.
+     */
+    public static RecognizeConfigurationsInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecognizeConfigurationsInternal deserializedRecognizeOptions = new RecognizeConfigurationsInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetParticipant".equals(fieldName)) {
+                    deserializedRecognizeOptions.targetParticipant = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("interruptPromptAndStartRecognition".equals(fieldName)) {
+                    deserializedRecognizeOptions.interruptPromptAndStartRecognition = reader.getNullable(JsonReader::getBoolean);
+                } else if ("initialSilenceTimeoutInSeconds".equals(fieldName)) {
+                    deserializedRecognizeOptions.initialSilenceTimeoutInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("dtmfConfigurations".equals(fieldName)) {
+                    deserializedRecognizeOptions.dtmfConfigurations = DtmfConfigurationsInternal.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecognizeOptions;
+        });
     }
 }

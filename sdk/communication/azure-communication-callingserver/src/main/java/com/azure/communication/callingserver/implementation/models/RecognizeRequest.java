@@ -5,45 +5,51 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The RecognizeRequest model. */
+/**
+ * The RecognizeRequest model.
+ */
 @Fluent
-public final class RecognizeRequest {
+public final class RecognizeRequest implements JsonSerializable<RecognizeRequest> {
     /*
      * Determines the type of the recognition.
      */
-    @JsonProperty(value = "recognizeInputType", required = true)
     private RecognizeInputTypeInternal recognizeInputType;
 
     /*
      * The source of the audio to be played for recognition.
      */
-    @JsonProperty(value = "playPrompt")
     private PlaySourceInternal playPrompt;
 
     /*
-     * If set recognize can barge into other existing
-     * queued-up/currently-processing requests.
+     * If set recognize can barge into other existing queued-up/currently-processing requests.
      */
-    @JsonProperty(value = "stopCurrentOperations")
-    private Boolean stopCurrentOperations;
+    private Boolean interruptCallMediaOperation;
 
     /*
      * Defines options for recognition.
      */
-    @JsonProperty(value = "recognizeConfiguration", required = true)
-    private RecognizeConfigurationsInternal recognizeConfiguration;
+    private RecognizeOptions recognizeOptions;
 
     /*
      * The value to identify context of the operation.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
+     * Creates an instance of RecognizeRequest class.
+     */
+    public RecognizeRequest() {
+    }
+
+    /**
      * Get the recognizeInputType property: Determines the type of the recognition.
-     *
+     * 
      * @return the recognizeInputType value.
      */
     public RecognizeInputTypeInternal getRecognizeInputType() {
@@ -52,7 +58,7 @@ public final class RecognizeRequest {
 
     /**
      * Set the recognizeInputType property: Determines the type of the recognition.
-     *
+     * 
      * @param recognizeInputType the recognizeInputType value to set.
      * @return the RecognizeRequest object itself.
      */
@@ -63,7 +69,7 @@ public final class RecognizeRequest {
 
     /**
      * Get the playPrompt property: The source of the audio to be played for recognition.
-     *
+     * 
      * @return the playPrompt value.
      */
     public PlaySourceInternal getPlayPrompt() {
@@ -72,7 +78,7 @@ public final class RecognizeRequest {
 
     /**
      * Set the playPrompt property: The source of the audio to be played for recognition.
-     *
+     * 
      * @param playPrompt the playPrompt value to set.
      * @return the RecognizeRequest object itself.
      */
@@ -82,50 +88,50 @@ public final class RecognizeRequest {
     }
 
     /**
-     * Get the stopCurrentOperations property: If set recognize can barge into other existing
+     * Get the interruptCallMediaOperation property: If set recognize can barge into other existing
      * queued-up/currently-processing requests.
-     *
-     * @return the stopCurrentOperations value.
+     * 
+     * @return the interruptCallMediaOperation value.
      */
-    public Boolean isStopCurrentOperations() {
-        return this.stopCurrentOperations;
+    public Boolean isInterruptCallMediaOperation() {
+        return this.interruptCallMediaOperation;
     }
 
     /**
-     * Set the stopCurrentOperations property: If set recognize can barge into other existing
+     * Set the interruptCallMediaOperation property: If set recognize can barge into other existing
      * queued-up/currently-processing requests.
-     *
-     * @param stopCurrentOperations the stopCurrentOperations value to set.
+     * 
+     * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
      * @return the RecognizeRequest object itself.
      */
-    public RecognizeRequest setStopCurrentOperations(Boolean stopCurrentOperations) {
-        this.stopCurrentOperations = stopCurrentOperations;
+    public RecognizeRequest setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
+        this.interruptCallMediaOperation = interruptCallMediaOperation;
         return this;
     }
 
     /**
-     * Get the recognizeConfiguration property: Defines options for recognition.
-     *
-     * @return the recognizeConfiguration value.
+     * Get the recognizeOptions property: Defines options for recognition.
+     * 
+     * @return the recognizeOptions value.
      */
-    public RecognizeConfigurationsInternal getRecognizeConfiguration() {
-        return this.recognizeConfiguration;
+    public RecognizeOptions getRecognizeOptions() {
+        return this.recognizeOptions;
     }
 
     /**
-     * Set the recognizeConfiguration property: Defines options for recognition.
-     *
-     * @param recognizeConfiguration the recognizeConfiguration value to set.
+     * Set the recognizeOptions property: Defines options for recognition.
+     * 
+     * @param recognizeOptions the recognizeOptions value to set.
      * @return the RecognizeRequest object itself.
      */
-    public RecognizeRequest setRecognizeConfiguration(RecognizeConfigurationsInternal recognizeConfiguration) {
-        this.recognizeConfiguration = recognizeConfiguration;
+    public RecognizeRequest setRecognizeOptions(RecognizeOptions recognizeOptions) {
+        this.recognizeOptions = recognizeOptions;
         return this;
     }
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -134,12 +140,64 @@ public final class RecognizeRequest {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the RecognizeRequest object itself.
      */
     public RecognizeRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recognizeInputType",
+            this.recognizeInputType == null ? null : this.recognizeInputType.toString());
+        jsonWriter.writeJsonField("recognizeOptions", this.recognizeOptions);
+        jsonWriter.writeJsonField("playPrompt", this.playPrompt);
+        jsonWriter.writeBooleanField("interruptCallMediaOperation", this.interruptCallMediaOperation);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecognizeRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecognizeRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecognizeRequest.
+     */
+    public static RecognizeRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecognizeRequest deserializedRecognizeRequest = new RecognizeRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recognizeInputType".equals(fieldName)) {
+                    deserializedRecognizeRequest.recognizeInputType
+                        = RecognizeInputTypeInternal.fromString(reader.getString());
+                } else if ("recognizeOptions".equals(fieldName)) {
+                    deserializedRecognizeRequest.recognizeOptions = RecognizeOptions.fromJson(reader);
+                } else if ("playPrompt".equals(fieldName)) {
+                    deserializedRecognizeRequest.playPrompt = PlaySourceInternal.fromJson(reader);
+                } else if ("interruptCallMediaOperation".equals(fieldName)) {
+                    deserializedRecognizeRequest.interruptCallMediaOperation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedRecognizeRequest.operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecognizeRequest;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for AcsEventTypeInternal. */
@@ -50,17 +49,29 @@ public final class AcsEventTypeInternal extends ExpandableStringEnum<AcsEventTyp
     public static final AcsEventTypeInternal RECOGNIZE_FAILED = fromString("recognizeFailed");
 
     /**
+     * Creates a new instance of AcsEventTypeInternal value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AcsEventTypeInternal() {
+    }
+
+    /**
      * Creates or finds a AcsEventTypeInternal from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding AcsEventTypeInternal.
      */
-    @JsonCreator
     public static AcsEventTypeInternal fromString(String name) {
         return fromString(name, AcsEventTypeInternal.class);
     }
 
-    /** @return known AcsEventTypeInternal values. */
+    /**
+     * Gets known AcsEventTypeInternal values.
+     *
+     * @return known AcsEventTypeInternal values.
+     */
     public static Collection<AcsEventTypeInternal> values() {
         return values(AcsEventTypeInternal.class);
     }

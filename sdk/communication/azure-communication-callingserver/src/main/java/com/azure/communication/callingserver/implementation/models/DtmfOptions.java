@@ -9,31 +9,38 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
 import java.io.IOException;
 import java.util.List;
 
-/** Options for DTMF recognition. */
+/**
+ * Options for DTMF recognition.
+ */
 @Fluent
-public final class DtmfConfigurationsInternal implements JsonSerializable<DtmfConfigurationsInternal> {
+public final class DtmfOptions implements JsonSerializable<DtmfOptions> {
     /*
      * Time to wait between DTMF inputs to stop recognizing.
      */
     private Integer interToneTimeoutInSeconds;
 
     /*
-     * Maximum number of DTMFs to be collected.
+     * Maximum number of DTMF tones to be collected.
      */
     private Integer maxTonesToCollect;
 
     /*
      * List of tones that will stop recognizing.
      */
-    private List<StopTonesInternal> stopTones;
+    private List<Tone> stopTones;
+
+    /**
+     * Creates an instance of DtmfOptions class.
+     */
+    public DtmfOptions() {
+    }
 
     /**
      * Get the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
-     *
+     * 
      * @return the interToneTimeoutInSeconds value.
      */
     public Integer getInterToneTimeoutInSeconds() {
@@ -42,18 +49,18 @@ public final class DtmfConfigurationsInternal implements JsonSerializable<DtmfCo
 
     /**
      * Set the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
-     *
+     * 
      * @param interToneTimeoutInSeconds the interToneTimeoutInSeconds value to set.
-     * @return the DtmfConfigurationsInternal object itself.
+     * @return the DtmfOptions object itself.
      */
-    public DtmfConfigurationsInternal setInterToneTimeoutInSeconds(Integer interToneTimeoutInSeconds) {
+    public DtmfOptions setInterToneTimeoutInSeconds(Integer interToneTimeoutInSeconds) {
         this.interToneTimeoutInSeconds = interToneTimeoutInSeconds;
         return this;
     }
 
     /**
-     * Get the maxTonesToCollect property: Maximum number of DTMFs to be collected.
-     *
+     * Get the maxTonesToCollect property: Maximum number of DTMF tones to be collected.
+     * 
      * @return the maxTonesToCollect value.
      */
     public Integer getMaxTonesToCollect() {
@@ -61,32 +68,32 @@ public final class DtmfConfigurationsInternal implements JsonSerializable<DtmfCo
     }
 
     /**
-     * Set the maxTonesToCollect property: Maximum number of DTMFs to be collected.
-     *
+     * Set the maxTonesToCollect property: Maximum number of DTMF tones to be collected.
+     * 
      * @param maxTonesToCollect the maxTonesToCollect value to set.
-     * @return the DtmfConfigurationsInternal object itself.
+     * @return the DtmfOptions object itself.
      */
-    public DtmfConfigurationsInternal setMaxTonesToCollect(Integer maxTonesToCollect) {
+    public DtmfOptions setMaxTonesToCollect(Integer maxTonesToCollect) {
         this.maxTonesToCollect = maxTonesToCollect;
         return this;
     }
 
     /**
      * Get the stopTones property: List of tones that will stop recognizing.
-     *
+     * 
      * @return the stopTones value.
      */
-    public List<StopTonesInternal> getStopTones() {
+    public List<Tone> getStopTones() {
         return this.stopTones;
     }
 
     /**
      * Set the stopTones property: List of tones that will stop recognizing.
-     *
+     * 
      * @param stopTones the stopTones value to set.
-     * @return the DtmfConfigurationsInternal object itself.
+     * @return the DtmfOptions object itself.
      */
-    public DtmfConfigurationsInternal setStopTones(List<StopTonesInternal> stopTones) {
+    public DtmfOptions setStopTones(List<Tone> stopTones) {
         this.stopTones = stopTones;
         return this;
     }
@@ -105,16 +112,16 @@ public final class DtmfConfigurationsInternal implements JsonSerializable<DtmfCo
     }
 
     /**
-     * Reads an instance of DtmfConfigurationsInternal from the JsonReader.
-     *
+     * Reads an instance of DtmfOptions from the JsonReader.
+     * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DtmfConfigurationsInternal if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of DtmfOptions if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DtmfConfigurationsInternal.
+     * @throws IOException If an error occurs while reading the DtmfOptions.
      */
-    public static DtmfConfigurationsInternal fromJson(JsonReader jsonReader) throws IOException {
+    public static DtmfOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DtmfConfigurationsInternal deserializedDtmfOptions = new DtmfConfigurationsInternal();
+            DtmfOptions deserializedDtmfOptions = new DtmfOptions();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -124,7 +131,7 @@ public final class DtmfConfigurationsInternal implements JsonSerializable<DtmfCo
                 } else if ("maxTonesToCollect".equals(fieldName)) {
                     deserializedDtmfOptions.maxTonesToCollect = reader.getNullable(JsonReader::getInt);
                 } else if ("stopTones".equals(fieldName)) {
-                    List<StopTonesInternal> stopTones = reader.readArray(reader1 -> StopTonesInternal.fromString(reader1.getString()));
+                    List<Tone> stopTones = reader.readArray(reader1 -> Tone.fromString(reader1.getString()));
                     deserializedDtmfOptions.stopTones = stopTones;
                 } else {
                     reader.skipChildren();
