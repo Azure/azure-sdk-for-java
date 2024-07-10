@@ -65,7 +65,7 @@ public class StreamingDataParserUnitTests {
     private void checkAudioDataNoParticipant(AudioData mediaStreamingAudio) {
         assertEquals(OffsetDateTime.parse("2022-10-03T19:16:12.925Z"), mediaStreamingAudio.getTimestamp());
         assertNull(mediaStreamingAudio.getParticipant());
-        assertEquals( "AQIDBAU=", mediaStreamingAudio.getData());
+        assertEquals("AQIDBAU=", mediaStreamingAudio.getData());
         assertFalse(mediaStreamingAudio.isSilent());
     }
 

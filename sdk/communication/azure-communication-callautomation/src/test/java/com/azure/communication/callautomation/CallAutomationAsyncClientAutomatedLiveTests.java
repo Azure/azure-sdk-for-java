@@ -238,8 +238,8 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
 
             // Create call automation client and use source as the caller.
             CallAutomationAsyncClient connectAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("createVOIPCallAndConnectCallTest", next))
-            .buildAsyncClient();
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndConnectCallTest", next))
+                .buildAsyncClient();
             String uniqueId = serviceBusWithNewCall(caller, target);
 
             // create a call
@@ -284,8 +284,8 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             //Connect call
             String serverCallId = answerCallResult.getCallConnectionProperties().getServerCallId();
             ServerCallLocator serverCallLocator = new ServerCallLocator(serverCallId);
-            ConnectCallOptions connectCallOptions= new ConnectCallOptions(serverCallLocator, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            ConnectCallResult connectCallResult =Objects.requireNonNull(connectAsyncClient.connectCallWithResponse(connectCallOptions).block()).getValue();
+            ConnectCallOptions connectCallOptions = new ConnectCallOptions(serverCallLocator, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            ConnectCallResult connectCallResult = Objects.requireNonNull(connectAsyncClient.connectCallWithResponse(connectCallOptions).block()).getValue();
             String callConnectionId = connectCallResult.getCallConnectionProperties().getCallConnectionId();
             CallConnected connectCallConnectedEvent = waitForEvent(CallConnected.class, callConnectionId, Duration.ofSeconds(10));
             assertNotNull(connectCallConnectedEvent);
