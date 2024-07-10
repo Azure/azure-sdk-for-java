@@ -1733,7 +1733,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         List<String> list = (List<String>) availableWriteLocations.get(locationInfo);
         String regionName = list.get(0);
         assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
-        assertThat(cosmosDiagnostics.getContactedRegionNames().iterator().next()).isEqualTo(regionName);
+        assertThat(cosmosDiagnostics.getContactedRegionNames().iterator().next()).isEqualTo(regionName.toLowerCase());
     }
 
     private void validateChannelStatistics(CosmosDiagnostics cosmosDiagnostics) {

@@ -68,8 +68,6 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -146,7 +144,7 @@ public class ClientMetricsTest extends BatchTestBase {
         AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(this.client.asyncClient());
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
 
-        Set<String> writeRegions = this.getAvailableRegionNames(rxDocumentClient, true);
+        List<String> writeRegions = this.getAvailableWriteRegionNames(rxDocumentClient);
         assertThat(writeRegions).isNotNull().isNotEmpty();
         this.preferredRegion = writeRegions.iterator().next();
 
@@ -1511,7 +1509,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.assertMetrics(
                 "cosmos.client.op.regionsContacted",
                 true,
-                Tag.of(TagName.RegionName.toString(), this.preferredRegion));
+                Tag.of(TagName.RegionName.toString(), this.preferredRegion.toLowerCase(Locale.ROOT)));
         }
 
         if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)) {
@@ -1531,7 +1529,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.assertMetrics(
                 "cosmos.client.req.rntbd.latency",
                 true,
-                Tag.of(TagName.RegionName.toString(), this.preferredRegion));
+                Tag.of(TagName.RegionName.toString(), this.preferredRegion.toLowerCase(Locale.ROOT)));
             this.assertMetrics("cosmos.client.req.rntbd.backendLatency", true, expectedRequestTag);
             this.assertMetrics("cosmos.client.req.rntbd.requests", true, expectedRequestTag);
             Meter reportedRntbdRequestCharge =
@@ -1548,7 +1546,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 this.assertMetrics(
                     "cosmos.client.req.gw.latency",
                     true,
-                    Tag.of(TagName.RegionName.toString(), this.preferredRegion));
+                    Tag.of(TagName.RegionName.toString(), this.preferredRegion.toLowerCase(Locale.ROOT)));
             }
             this.assertMetrics("cosmos.client.req.gw.backendLatency", false, expectedRequestTag);
             this.assertMetrics("cosmos.client.req.gw.requests", true, expectedRequestTag);
@@ -1654,7 +1652,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    private Set<String> getAvailableRegionNames(RxDocumentClientImpl rxDocumentClient, boolean isWriteRegion) {
+    private List<String> getAvailableWriteRegionNames(RxDocumentClientImpl rxDocumentClient) {
         try {
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
             LocationCache locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
@@ -1665,22 +1663,13 @@ public class ClientMetricsTest extends BatchTestBase {
 
             Class<?> DatabaseAccountLocationsInfoClass = Class.forName("com.azure.cosmos.implementation.routing" +
                 ".LocationCache$DatabaseAccountLocationsInfo");
+            Field availableWriteLocations = DatabaseAccountLocationsInfoClass.getDeclaredField(
+                "availableWriteLocations");
+            availableWriteLocations.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            List<String> list = (List<String>) availableWriteLocations.get(locationInfo);
+            return list;
 
-            if (isWriteRegion) {
-                Field availableWriteEndpointByLocation = DatabaseAccountLocationsInfoClass.getDeclaredField(
-                    "availableWriteEndpointByLocation");
-                availableWriteEndpointByLocation.setAccessible(true);
-                @SuppressWarnings("unchecked")
-                Map<String, URI> map = (Map<String, URI>) availableWriteEndpointByLocation.get(locationInfo);
-                return map.keySet();
-            } else {
-                Field availableReadEndpointByLocation = DatabaseAccountLocationsInfoClass.getDeclaredField(
-                    "availableReadEndpointByLocation");
-                availableReadEndpointByLocation.setAccessible(true);
-                @SuppressWarnings("unchecked")
-                Map<String, URI> map = (Map<String, URI>) availableReadEndpointByLocation.get(locationInfo);
-                return map.keySet();
-            }
         } catch (Exception error) {
             fail(error.toString());
 
