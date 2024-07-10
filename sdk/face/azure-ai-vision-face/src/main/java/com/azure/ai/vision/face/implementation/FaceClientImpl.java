@@ -156,7 +156,7 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectFromUrlImpl(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData detectFromUrlRequest,
             RequestOptions requestOptions, Context context);
 
         @Post("/detect")
@@ -167,7 +167,7 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> detectFromUrlImplSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData detectFromUrlRequest,
             RequestOptions requestOptions, Context context);
 
         @Post("/detect")
@@ -428,7 +428,7 @@ public final class FaceClientImpl {
      * ]
      * }</pre>
      * 
-     * @param request The request parameter.
+     * @param detectFromUrlRequest The detectFromUrlRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -437,12 +437,12 @@ public final class FaceClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> detectFromUrlImplWithResponseAsync(BinaryData request,
+    public Mono<Response<BinaryData>> detectFromUrlImplWithResponseAsync(BinaryData detectFromUrlRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.detectFromUrlImpl(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, accept, request, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, detectFromUrlRequest, requestOptions, context));
     }
 
     /**
@@ -616,7 +616,7 @@ public final class FaceClientImpl {
      * ]
      * }</pre>
      * 
-     * @param request The request parameter.
+     * @param detectFromUrlRequest The detectFromUrlRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -625,11 +625,12 @@ public final class FaceClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectFromUrlImplWithResponse(BinaryData request, RequestOptions requestOptions) {
+    public Response<BinaryData> detectFromUrlImplWithResponse(BinaryData detectFromUrlRequest,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.detectFromUrlImplSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            accept, request, requestOptions, Context.NONE);
+            accept, detectFromUrlRequest, requestOptions, Context.NONE);
     }
 
     /**

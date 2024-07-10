@@ -8,6 +8,7 @@ import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.assistants.implementation.models.CreateVectorStoreFileBatchRequest;
 import com.azure.ai.openai.assistants.implementation.models.CreateVectorStoreFileRequest;
 import com.azure.ai.openai.assistants.implementation.models.FileListResponse;
+import com.azure.ai.openai.assistants.implementation.models.ModifyVectorStoreRequest;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistant;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfRunStep;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadMessage;
@@ -40,12 +41,12 @@ import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.ai.openai.assistants.models.UpdateAssistantThreadOptions;
 import com.azure.ai.openai.assistants.models.VectorStore;
 import com.azure.ai.openai.assistants.models.VectorStoreDeletionStatus;
+import com.azure.ai.openai.assistants.models.VectorStoreExpirationPolicy;
 import com.azure.ai.openai.assistants.models.VectorStoreFile;
 import com.azure.ai.openai.assistants.models.VectorStoreFileBatch;
 import com.azure.ai.openai.assistants.models.VectorStoreFileDeletionStatus;
 import com.azure.ai.openai.assistants.models.VectorStoreFileStatusFilter;
 import com.azure.ai.openai.assistants.models.VectorStoreOptions;
-import com.azure.ai.openai.assistants.models.VectorStoreUpdateOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -2287,9 +2288,9 @@ public final class AssistantsClient {
     public ThreadMessage updateMessage(String threadId, String messageId, Map<String, String> metadata) {
         // Generated convenience method for updateMessageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateMessageRequest requestObj = new UpdateMessageRequest().setMetadata(metadata);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return updateMessageWithResponse(threadId, messageId, request, requestOptions).getValue()
+        UpdateMessageRequest updateMessageRequestObj = new UpdateMessageRequest().setMetadata(metadata);
+        BinaryData updateMessageRequest = BinaryData.fromObject(updateMessageRequestObj);
+        return updateMessageWithResponse(threadId, messageId, updateMessageRequest, requestOptions).getValue()
             .toObject(ThreadMessage.class);
     }
 
@@ -2311,9 +2312,9 @@ public final class AssistantsClient {
     public ThreadMessage updateMessage(String threadId, String messageId) {
         // Generated convenience method for updateMessageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateMessageRequest requestObj = new UpdateMessageRequest();
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return updateMessageWithResponse(threadId, messageId, request, requestOptions).getValue()
+        UpdateMessageRequest updateMessageRequestObj = new UpdateMessageRequest();
+        BinaryData updateMessageRequest = BinaryData.fromObject(updateMessageRequestObj);
+        return updateMessageWithResponse(threadId, messageId, updateMessageRequest, requestOptions).getValue()
             .toObject(ThreadMessage.class);
     }
 
@@ -2429,9 +2430,10 @@ public final class AssistantsClient {
     public ThreadRun updateRun(String threadId, String runId, Map<String, String> metadata) {
         // Generated convenience method for updateRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateRunRequest requestObj = new UpdateRunRequest().setMetadata(metadata);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return updateRunWithResponse(threadId, runId, request, requestOptions).getValue().toObject(ThreadRun.class);
+        UpdateRunRequest updateRunRequestObj = new UpdateRunRequest().setMetadata(metadata);
+        BinaryData updateRunRequest = BinaryData.fromObject(updateRunRequestObj);
+        return updateRunWithResponse(threadId, runId, updateRunRequest, requestOptions).getValue()
+            .toObject(ThreadRun.class);
     }
 
     /**
@@ -2452,9 +2454,10 @@ public final class AssistantsClient {
     public ThreadRun updateRun(String threadId, String runId) {
         // Generated convenience method for updateRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateRunRequest requestObj = new UpdateRunRequest();
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return updateRunWithResponse(threadId, runId, request, requestOptions).getValue().toObject(ThreadRun.class);
+        UpdateRunRequest updateRunRequestObj = new UpdateRunRequest();
+        BinaryData updateRunRequest = BinaryData.fromObject(updateRunRequestObj);
+        return updateRunWithResponse(threadId, runId, updateRunRequest, requestOptions).getValue()
+            .toObject(ThreadRun.class);
     }
 
     /**
@@ -2652,9 +2655,10 @@ public final class AssistantsClient {
     public ThreadRun submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs) {
         // Generated convenience method for submitToolOutputsToRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).getValue()
+        SubmitToolOutputsToRunRequest submitToolOutputsToRunRequestObj = new SubmitToolOutputsToRunRequest(toolOutputs);
+        BinaryData submitToolOutputsToRunRequest = BinaryData.fromObject(submitToolOutputsToRunRequestObj);
+        return submitToolOutputsToRunWithResponse(threadId, runId, submitToolOutputsToRunRequest, requestOptions)
+            .getValue()
             .toObject(ThreadRun.class);
     }
 
@@ -3429,28 +3433,6 @@ public final class AssistantsClient {
     }
 
     /**
-     * The ID of the vector store to modify.
-     *
-     * @param vectorStoreId The ID of the vector store to modify.
-     * @param vectorStoreUpdateOptions Request object for updating a vector store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vector store is a collection of processed files can be used by the `file_search` tool.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VectorStore modifyVectorStore(String vectorStoreId, VectorStoreUpdateOptions vectorStoreUpdateOptions) {
-        // Generated convenience method for modifyVectorStoreWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return modifyVectorStoreWithResponse(vectorStoreId, BinaryData.fromObject(vectorStoreUpdateOptions),
-            requestOptions).getValue().toObject(VectorStore.class);
-    }
-
-    /**
      * Deletes the vector store object matching the specified ID.
      *
      * @param vectorStoreId The ID of the vector store to delete.
@@ -3561,9 +3543,9 @@ public final class AssistantsClient {
     public VectorStoreFile createVectorStoreFile(String vectorStoreId, String fileId) {
         // Generated convenience method for createVectorStoreFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateVectorStoreFileRequest requestObj = new CreateVectorStoreFileRequest(fileId);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return createVectorStoreFileWithResponse(vectorStoreId, request, requestOptions).getValue()
+        CreateVectorStoreFileRequest createVectorStoreFileRequestObj = new CreateVectorStoreFileRequest(fileId);
+        BinaryData createVectorStoreFileRequest = BinaryData.fromObject(createVectorStoreFileRequestObj);
+        return createVectorStoreFileWithResponse(vectorStoreId, createVectorStoreFileRequest, requestOptions).getValue()
             .toObject(VectorStoreFile.class);
     }
 
@@ -3632,9 +3614,11 @@ public final class AssistantsClient {
     public VectorStoreFileBatch createVectorStoreFileBatch(String vectorStoreId, List<String> fileIds) {
         // Generated convenience method for createVectorStoreFileBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateVectorStoreFileBatchRequest requestObj = new CreateVectorStoreFileBatchRequest(fileIds);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return createVectorStoreFileBatchWithResponse(vectorStoreId, request, requestOptions).getValue()
+        CreateVectorStoreFileBatchRequest createVectorStoreFileBatchRequestObj
+            = new CreateVectorStoreFileBatchRequest(fileIds);
+        BinaryData createVectorStoreFileBatchRequest = BinaryData.fromObject(createVectorStoreFileBatchRequestObj);
+        return createVectorStoreFileBatchWithResponse(vectorStoreId, createVectorStoreFileBatchRequest, requestOptions)
+            .getValue()
             .toObject(VectorStoreFileBatch.class);
     }
 
@@ -3755,5 +3739,58 @@ public final class AssistantsClient {
                 .toObject(OpenAIPageableListOfVectorStoreFile.class);
         return PageableListAccessHelper.create(vectorStoreFileList.getData(), vectorStoreFileList.getFirstId(),
             vectorStoreFileList.getLastId(), vectorStoreFileList.isHasMore());
+    }
+
+    /**
+     * The ID of the vector store to modify.
+     *
+     * @param vectorStoreId The ID of the vector store to modify.
+     * @param name The name of the vector store.
+     * @param expiresAfter Details on when this vector store expires.
+     * @param metadata A set of up to 16 key/value pairs that can be attached to an object, used for storing additional
+     * information about that object in a structured format. Keys may be up to 64 characters in length and values may be
+     * up to 512 characters in length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a vector store is a collection of processed files can be used by the `file_search` tool.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VectorStore modifyVectorStore(String vectorStoreId, String name, VectorStoreExpirationPolicy expiresAfter,
+        Map<String, String> metadata) {
+        // Generated convenience method for modifyVectorStoreWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        ModifyVectorStoreRequest modifyVectorStoreRequestObj
+            = new ModifyVectorStoreRequest().setName(name).setExpiresAfter(expiresAfter).setMetadata(metadata);
+        BinaryData modifyVectorStoreRequest = BinaryData.fromObject(modifyVectorStoreRequestObj);
+        return modifyVectorStoreWithResponse(vectorStoreId, modifyVectorStoreRequest, requestOptions).getValue()
+            .toObject(VectorStore.class);
+    }
+
+    /**
+     * The ID of the vector store to modify.
+     *
+     * @param vectorStoreId The ID of the vector store to modify.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a vector store is a collection of processed files can be used by the `file_search` tool.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VectorStore modifyVectorStore(String vectorStoreId) {
+        // Generated convenience method for modifyVectorStoreWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        ModifyVectorStoreRequest modifyVectorStoreRequestObj = new ModifyVectorStoreRequest();
+        BinaryData modifyVectorStoreRequest = BinaryData.fromObject(modifyVectorStoreRequestObj);
+        return modifyVectorStoreWithResponse(vectorStoreId, modifyVectorStoreRequest, requestOptions).getValue()
+            .toObject(VectorStore.class);
     }
 }

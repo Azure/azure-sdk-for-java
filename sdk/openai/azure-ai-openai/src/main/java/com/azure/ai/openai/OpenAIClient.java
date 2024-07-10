@@ -4,19 +4,22 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
+import com.azure.ai.openai.implementation.models.GenerateSpeechFromTextRequest;
+import com.azure.ai.openai.implementation.models.GetChatCompletionsRequest;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.ChatCompletions;
-import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.GetChatCompletionsOptions;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
-import com.azure.ai.openai.models.SpeechGenerationOptions;
+import com.azure.ai.openai.models.SpeechGenerationResponseFormat;
+import com.azure.ai.openai.models.SpeechVoice;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -29,6 +32,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.MultipartDataHelper;
 import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
@@ -642,36 +646,6 @@ public final class OpenAIClient {
         OpenAIServerSentEvents<Completions> completionsStream
             = new OpenAIServerSentEvents<>(responseStream, Completions.class);
         return new IterableStream<>(completionsStream.getEvents());
-    }
-
-    /**
-     * Gets chat completions for the provided chat messages.
-     * Completions support a wide variety of tasks and generate text that continues from or "completes"
-     * provided prompt data.
-     *
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     * (when using non-Azure OpenAI) to use for this request.
-     * @param chatCompletionsOptions The configuration information for a chat completions request.
-     * Completions support a wide variety of tasks and generate text that continues from or "completes"
-     * provided prompt data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chat completions for the provided chat messages.
-     * Completions support a wide variety of tasks and generate text that continues from or "completes"
-     * provided prompt data.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChatCompletions getChatCompletions(String deploymentOrModelName,
-        ChatCompletionsOptions chatCompletionsOptions) {
-        // Generated convenience method for getChatCompletionsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions),
-            requestOptions).getValue().toObject(ChatCompletions.class);
     }
 
     /**
@@ -1477,12 +1451,66 @@ public final class OpenAIClient {
     }
 
     /**
+     * Gets chat completions for the provided chat messages.
+     * Completions support a wide variety of tasks and generate text that continues from or "completes"
+     * provided prompt data.
+     *
+     * @param options Options for getChatCompletions API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return chat completions for the provided chat messages.
+     * Completions support a wide variety of tasks and generate text that continues from or "completes"
+     * provided prompt data.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ChatCompletions getChatCompletions(GetChatCompletionsOptions options) {
+        // Generated convenience method for getChatCompletionsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String deploymentOrModelName = options.getDeploymentOrModelName();
+        GetChatCompletionsRequest getChatCompletionsRequestObj
+            = new GetChatCompletionsRequest(options.getMessages()).setFunctions(options.getFunctions())
+                .setFunctionCall(options.getFunctionCall())
+                .setMaxTokens(options.getMaxTokens())
+                .setTemperature(options.getTemperature())
+                .setTopP(options.getTopP())
+                .setLogitBias(options.getLogitBias())
+                .setUser(options.getUser())
+                .setN(options.getN())
+                .setStop(options.getStop())
+                .setPresencePenalty(options.getPresencePenalty())
+                .setFrequencyPenalty(options.getFrequencyPenalty())
+                .setStream(options.isStream())
+                .setModel(options.getModel())
+                .setDataSources(options.getDataSources())
+                .setEnhancements(options.getEnhancements())
+                .setSeed(options.getSeed())
+                .setLogprobs(options.isLogprobs())
+                .setTopLogprobs(options.getTopLogprobs())
+                .setResponseFormat(options.getResponseFormat())
+                .setTools(options.getTools())
+                .setToolChoice(options.getToolChoice());
+        BinaryData getChatCompletionsRequest = BinaryData.fromObject(getChatCompletionsRequestObj);
+        return getChatCompletionsWithResponse(deploymentOrModelName, getChatCompletionsRequest, requestOptions)
+            .getValue()
+            .toObject(ChatCompletions.class);
+    }
+
+    /**
      * Generates text-to-speech audio from the input text.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param speechGenerationOptions A representation of the request options that control the behavior of a
-     * text-to-speech operation.
+     * @param input The text to generate audio for. The maximum length is 4096 characters.
+     * @param voice The voice to use for text-to-speech.
+     * @param responseFormat The audio output format for the spoken text. By default, the MP3 format will be used.
+     * @param speed The speed of speech for generated audio. Values are valid in the range from 0.25 to 4.0, with 1.0
+     * the default and higher values corresponding to faster speech.
+     * @param model The model to use for this text-to-speech request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1493,11 +1521,43 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData generateSpeechFromText(String deploymentOrModelName,
-        SpeechGenerationOptions speechGenerationOptions) {
+    public BinaryData generateSpeechFromText(String deploymentOrModelName, String input, SpeechVoice voice,
+        SpeechGenerationResponseFormat responseFormat, Double speed, String model) {
         // Generated convenience method for generateSpeechFromTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return generateSpeechFromTextWithResponse(deploymentOrModelName, BinaryData.fromObject(speechGenerationOptions),
-            requestOptions).getValue();
+        GenerateSpeechFromTextRequest generateSpeechFromTextRequestObj
+            = new GenerateSpeechFromTextRequest(input, voice).setResponseFormat(responseFormat)
+                .setSpeed(speed)
+                .setModel(model);
+        BinaryData generateSpeechFromTextRequest = BinaryData.fromObject(generateSpeechFromTextRequestObj);
+        return generateSpeechFromTextWithResponse(deploymentOrModelName, generateSpeechFromTextRequest, requestOptions)
+            .getValue();
+    }
+
+    /**
+     * Generates text-to-speech audio from the input text.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param input The text to generate audio for. The maximum length is 4096 characters.
+     * @param voice The voice to use for text-to-speech.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData generateSpeechFromText(String deploymentOrModelName, String input, SpeechVoice voice) {
+        // Generated convenience method for generateSpeechFromTextWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        GenerateSpeechFromTextRequest generateSpeechFromTextRequestObj
+            = new GenerateSpeechFromTextRequest(input, voice);
+        BinaryData generateSpeechFromTextRequest = BinaryData.fromObject(generateSpeechFromTextRequestObj);
+        return generateSpeechFromTextWithResponse(deploymentOrModelName, generateSpeechFromTextRequest, requestOptions)
+            .getValue();
     }
 }
