@@ -41,6 +41,7 @@ public final class TimeWindowFilter implements FeatureFilter {
      * @param context The feature evaluation context.
      * @return True if the feature is enabled, false otherwise.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public boolean evaluate(FeatureFilterEvaluationContext context) {
         final Map<String, Object> parameters = context.getParameters();

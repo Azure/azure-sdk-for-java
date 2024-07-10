@@ -73,7 +73,7 @@ class KafkaBinderConfigurationPropertiesBeanPostProcessor extends AbstractKafkaP
     }
 
     private Map<String, Object> mergeAdminProperties(KafkaBinderConfigurationProperties properties) {
-        Map<String, Object> adminProperties = properties.getKafkaProperties().buildAdminProperties();
+        Map<String, Object> adminProperties = properties.getKafkaProperties().buildAdminProperties(null);
         normalalizeBootPropsWithBinder(adminProperties, properties.getKafkaProperties(), properties);
         AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping.getPropertyKeys()
             .forEach(k -> PROPERTY_MAPPER.from(properties.getConfiguration().get(k)).to(v -> adminProperties.put(k, v)));

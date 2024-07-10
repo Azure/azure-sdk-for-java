@@ -84,6 +84,7 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      * @param restTemplateBuilder the RestTemplateBuilder
      * @param jwkSetCache the JWK set cache
      */
+    @SuppressWarnings("deprecation")
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
                                    AadAuthorizationServerEndpoints endpoints,
                                    ResourceRetriever resourceRetriever,

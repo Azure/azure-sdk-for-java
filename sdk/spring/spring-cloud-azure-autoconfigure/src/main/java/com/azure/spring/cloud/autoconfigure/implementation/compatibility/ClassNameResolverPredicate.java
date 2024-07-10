@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.compatibility;
 
 public class ClassNameResolverPredicate {
 
+    @SuppressWarnings("rawtypes")
     boolean resolve(String fullyQualifiedClassName) {
         try {
             if (fullyQualifiedClassName == null) {

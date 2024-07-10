@@ -15,6 +15,7 @@ public class FeatureFilterUtils {
      * @param parameters map of generic objects
      * @param key key of object int the parameters map
      */
+    @SuppressWarnings("unchecked")
     public static void updateValueFromMapToList(Map<String, Object> parameters, String key) {
         Object objectMap = parameters.get(key);
         if (objectMap instanceof Map) {

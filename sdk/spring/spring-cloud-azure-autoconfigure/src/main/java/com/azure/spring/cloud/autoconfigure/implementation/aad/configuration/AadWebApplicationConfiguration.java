@@ -48,11 +48,10 @@ class AadWebApplicationConfiguration {
         @Bean
         SecurityFilterChain defaultAadWebApplicationFilterChain(HttpSecurity http) throws Exception {
             http
-                .apply(aadWebApplication())
-                    .and()
-                .authorizeHttpRequests()
+                .with(aadWebApplication(), configurer -> {})
+                .authorizeHttpRequests(matcher -> matcher
                     .requestMatchers("/login").permitAll()
-                    .anyRequest().authenticated();
+                    .anyRequest().authenticated());
             return http.build();
         }
     }

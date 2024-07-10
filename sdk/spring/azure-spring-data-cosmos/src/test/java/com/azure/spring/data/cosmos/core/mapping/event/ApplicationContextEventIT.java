@@ -44,6 +44,7 @@ public class ApplicationContextEventIT {
     @Autowired
     private SimpleCosmosMappingEventListener simpleCosmosMappingEventListener;
 
+    @SuppressWarnings("deprecation")
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 

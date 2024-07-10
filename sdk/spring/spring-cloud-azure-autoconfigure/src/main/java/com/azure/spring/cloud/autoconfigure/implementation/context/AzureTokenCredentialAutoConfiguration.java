@@ -32,7 +32,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
-import org.springframework.boot.task.TaskExecutorBuilder;
+import org.springframework.boot.task.ThreadPoolTaskExecutorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -123,7 +123,8 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
                         .clientId(clientId);
 
                     if (StringUtils.hasText(properties.getClientCertificatePassword())) {
-                        builder.pfxCertificate(clientCertificatePath, properties.getClientCertificatePassword());
+                        builder.pfxCertificate(clientCertificatePath)
+                               .clientCertificatePassword(properties.getClientCertificatePassword());
                     } else {
                         builder.pemCertificate(clientCertificatePath);
                     }
@@ -212,7 +213,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     @Bean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
     ThreadPoolTaskExecutor credentialTaskExecutor() {
-        return new TaskExecutorBuilder()
+        return new ThreadPoolTaskExecutorBuilder()
             .corePoolSize(8)
             .allowCoreThreadTimeOut(true)
             .threadNamePrefix(DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX)

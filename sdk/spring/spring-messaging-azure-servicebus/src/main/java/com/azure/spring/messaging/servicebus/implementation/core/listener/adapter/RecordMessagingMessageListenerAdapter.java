@@ -40,6 +40,7 @@ public class RecordMessagingMessageListenerAdapter extends MessagingMessageListe
         invokeHandler(message);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> getMessageConverter() {
         return (AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage>) super.getMessageConverter();

@@ -56,6 +56,7 @@ public class AadAuthenticationFilterAutoConfiguration {
                 properties.getProfile().getTenantId());
     }
 
+    @SuppressWarnings("deprecation")
     @Bean
     @ConditionalOnMissingBean(AadAuthenticationFilter.class)
     @ConditionalOnExpression("${spring.cloud.azure.active-directory.session-stateless:false} == false")
@@ -91,6 +92,7 @@ public class AadAuthenticationFilterAutoConfiguration {
         return new RestOperationsResourceRetriever(restTemplateBuilder);
     }
 
+    @SuppressWarnings("deprecation")
     @Bean
     @ConditionalOnMissingBean(JWKSetCache.class)
     JWKSetCache jwkSetCache() {

@@ -100,7 +100,7 @@ public final class RestTemplateTestUtil {
         assertEquals(FACTORY, restTemplate.getRequestFactory());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "deprecation"})
     private static void assertRestTemplateWellConfiguredForJwtDecoderFactory(ApplicationContext context) {
         JwtDecoderFactory<ClientRegistration> factory = (JwtDecoderFactory<ClientRegistration>) context.getBean(JwtDecoderFactory.class);
         JwtDecoder jwtDecoder = factory.createDecoder(clientRegistration());

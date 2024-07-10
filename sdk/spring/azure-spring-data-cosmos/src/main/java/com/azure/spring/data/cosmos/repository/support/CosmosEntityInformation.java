@@ -158,6 +158,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     /**
+     * Get transient field list
      * @return fields with @Transient annotation
      */
     public List<String> getTransientFields() {

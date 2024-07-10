@@ -36,9 +36,13 @@ public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigu
         ApplicationContext context = builder.getSharedObject(ApplicationContext.class);
         this.properties = context.getBean(AadResourceServerProperties.class);
         // @formatter:off
-        builder.oauth2ResourceServer()
-                   .jwt()
-                   .jwtAuthenticationConverter(jwtAuthenticationConverter());
+        builder.oauth2ResourceServer(
+            oauth2ResourceServer ->
+                oauth2ResourceServer.jwt(
+                    jwt ->
+                        jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())
+                )
+        );
         // @formatter:off
     }
 

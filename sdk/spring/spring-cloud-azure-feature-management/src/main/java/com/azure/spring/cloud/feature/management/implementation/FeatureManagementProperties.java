@@ -63,6 +63,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void tryServerSideSchema(Map<? extends String, ? extends Object> features) {
         if (features.keySet().isEmpty()) {
             return;
@@ -91,7 +92,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
             if (List.class.isAssignableFrom(featureFlagsObject.getClass())) {
                 final List<Object> featureFlagsSection = (List<Object>) featureFlagsObject;
                 for (Object flag : featureFlagsSection) {
-                    addServerSideFeature((Map<? extends String, ? extends Object>) flag, null);
+                    addServerSideFeature((Map<? extends String, ?>) flag, null);
                 }
             }
         }
@@ -135,6 +136,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void addServerSideFeature(Map<? extends String, ? extends Object> features, String key) {
         Object featureValue = null;
         if (key != null) {

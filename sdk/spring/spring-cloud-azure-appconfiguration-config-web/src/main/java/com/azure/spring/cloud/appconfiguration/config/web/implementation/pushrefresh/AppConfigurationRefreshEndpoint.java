@@ -29,6 +29,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Endpoint for requesting new configurations to be loaded.
  */
+@SuppressWarnings("removal")
 @ControllerEndpoint(id = APPCONFIGURATION_REFRESH)
 public class AppConfigurationRefreshEndpoint implements ApplicationEventPublisherAware {
 

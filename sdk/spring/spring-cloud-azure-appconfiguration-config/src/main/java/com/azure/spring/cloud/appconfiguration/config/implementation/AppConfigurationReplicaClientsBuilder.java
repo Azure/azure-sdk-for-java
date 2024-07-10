@@ -322,6 +322,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
         private final String secret;
 
+        @SuppressWarnings("deprecation")
         ConnectionString(String connectionString) {
             if (CoreUtils.isNullOrEmpty(connectionString)) {
                 throw new IllegalArgumentException("'connectionString' cannot be null or empty.");
@@ -357,6 +358,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
             }
         }
 
+        @SuppressWarnings("deprecation")
         protected ConnectionString setUri(String uri) {
             try {
                 this.baseUri = new URL(uri);

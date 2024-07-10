@@ -151,6 +151,7 @@ public class AppConfigurationRefreshUtilTest {
         }
     }
 
+    @SuppressWarnings("try")
     @Test
     public void refreshWithoutTimeFeatureFlagDisabled(TestInfo testInfo) {
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
@@ -165,6 +166,7 @@ public class AppConfigurationRefreshUtilTest {
         }
     }
 
+    @SuppressWarnings("try")
     @Test
     public void refreshWithoutTimeFeatureFlagNotLoaded(TestInfo testInfo) {
         endpoint = testInfo.getDisplayName() + ".azconfig.io";

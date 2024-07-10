@@ -41,6 +41,7 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
         this.tracingInfo = tracingInfo;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String sdkUserAgent = context.getHttpRequest().getHeaders().get(USER_AGENT_TYPE).getValue();

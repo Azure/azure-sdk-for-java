@@ -27,6 +27,7 @@ class ServiceBusChannelProvisionerTests {
         consumerProperties = new ServiceBusConsumerProperties();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     void provisionProducerDestination() {
         ExtendedProducerProperties<ServiceBusProducerProperties> extendedProperties =
@@ -36,6 +37,7 @@ class ServiceBusChannelProvisionerTests {
         verify(provisioner, times(1)).validateOrCreateForProducer("test", producerProperties.getEntityType());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     void provisionConsumerDestination() {
         ExtendedConsumerProperties<ServiceBusConsumerProperties> extendedProperties =

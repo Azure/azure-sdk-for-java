@@ -78,6 +78,7 @@ public class UserPrincipalManager {
      * @param explicitAudienceCheck Whether explicitly check the audience.
      * @throws IllegalArgumentException If AAD key discovery URI is malformed.
      */
+    @SuppressWarnings("deprecation")
     public UserPrincipalManager(AadAuthorizationServerEndpoints endpoints,
                                 AadAuthenticationProperties aadAuthenticationProperties,
                                 ResourceRetriever resourceRetriever,
@@ -112,6 +113,7 @@ public class UserPrincipalManager {
      * @param explicitAudienceCheck Whether explicitly check the audience.
      * @throws IllegalArgumentException If AAD key discovery URI is malformed.
      */
+    @SuppressWarnings("deprecation")
     public UserPrincipalManager(AadAuthorizationServerEndpoints endpoints,
                                 AadAuthenticationProperties aadAuthenticationProperties,
                                 ResourceRetriever resourceRetriever,

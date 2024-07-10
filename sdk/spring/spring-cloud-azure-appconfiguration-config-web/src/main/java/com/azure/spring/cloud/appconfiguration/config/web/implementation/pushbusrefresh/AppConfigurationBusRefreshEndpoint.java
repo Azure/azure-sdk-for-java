@@ -30,6 +30,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Endpoint for requesting new configurations to be loaded in all registered instances on the Bus.
  */
+@SuppressWarnings("removal")
 @ControllerEndpoint(id = APPCONFIGURATION_REFRESH_BUS)
 public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
 
