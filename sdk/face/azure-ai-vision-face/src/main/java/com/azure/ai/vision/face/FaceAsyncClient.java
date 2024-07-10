@@ -531,7 +531,7 @@ public final class FaceAsyncClient {
      * ]
      * }</pre>
      *
-     * @param request The request parameter.
+     * @param detectFromUrlRequest The detectFromUrlRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -541,8 +541,9 @@ public final class FaceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> detectFromUrlImplWithResponse(BinaryData request, RequestOptions requestOptions) {
-        return this.serviceClient.detectFromUrlImplWithResponseAsync(request, requestOptions);
+    Mono<Response<BinaryData>> detectFromUrlImplWithResponse(BinaryData detectFromUrlRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.detectFromUrlImplWithResponseAsync(detectFromUrlRequest, requestOptions);
     }
 
     /**
@@ -778,8 +779,8 @@ public final class FaceAsyncClient {
     Mono<List<FaceDetectionResult>> detectFromUrlImpl(DetectFromUrlImplOptions options) {
         // Generated convenience method for detectFromUrlImplWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        DetectFromUrlImplRequest requestObj = new DetectFromUrlImplRequest(options.getUrl());
-        BinaryData request = BinaryData.fromObject(requestObj);
+        DetectFromUrlImplRequest detectFromUrlRequestObj = new DetectFromUrlImplRequest(options.getUrl());
+        BinaryData detectFromUrlRequest = BinaryData.fromObject(detectFromUrlRequestObj);
         FaceDetectionModel detectionModel = options.getDetectionModel();
         FaceRecognitionModel recognitionModel = options.getRecognitionModel();
         Boolean returnFaceId = options.isReturnFaceId();
@@ -812,7 +813,7 @@ public final class FaceAsyncClient {
         if (faceIdTimeToLive != null) {
             requestOptions.addQueryParam("faceIdTimeToLive", String.valueOf(faceIdTimeToLive), false);
         }
-        return detectFromUrlImplWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
+        return detectFromUrlImplWithResponse(detectFromUrlRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT));
     }
 
