@@ -3,7 +3,6 @@
 
 package com.azure.core.credential;
 
-
 import java.time.OffsetDateTime;
 
 /**
@@ -35,7 +34,7 @@ import java.time.OffsetDateTime;
 public class AccessToken {
     private final String token;
     private final OffsetDateTime expiresAt;
-    private final OffsetDateTime refreshOn;
+    private final OffsetDateTime refreshAt;
 
     /**
      * Creates an access token instance.
@@ -46,7 +45,7 @@ public class AccessToken {
     public AccessToken(String token, OffsetDateTime expiresAt) {
         this.token = token;
         this.expiresAt = expiresAt;
-        this.refreshOn = null;
+        this.refreshAt = null;
     }
 
     /**
@@ -54,12 +53,12 @@ public class AccessToken {
      *
      * @param token the token string.
      * @param expiresAt the expiration time.
-     * @param refreshOn the token refresh time.
+     * @param refreshAt the next token refresh time.
      */
-    public AccessToken(String token, OffsetDateTime expiresAt, OffsetDateTime refreshOn) {
+    public AccessToken(String token, OffsetDateTime expiresAt, OffsetDateTime refreshAt) {
         this.token = token;
         this.expiresAt = expiresAt;
-        this.refreshOn = refreshOn;
+        this.refreshAt = refreshAt;
     }
 
     /**
@@ -81,16 +80,16 @@ public class AccessToken {
     }
 
     /**
-     * Gets the time when the token should refresh, in UTC.
+     * Gets the time when the token should refresh next, in UTC.
      *
-     * Note: This value can be null as it is not always provided by the service. When it is provided, it overrides the
-     * default refresh offset used by the {@link com.azure.core.http.policy.BearerTokenAuthenticationPolicy} to
-     * proactively refresh the token.
+     * <p>Note: This value can be null as it is not always provided by the service. When it is provided,
+     * it overrides the default refresh offset used by the
+     * {@link com.azure.core.http.policy.BearerTokenAuthenticationPolicy} to proactively refresh the token.</p>
      *
-     * @return The time when the token should refresh, in UTC.
+     * @return The time when the token should refresh next, in UTC.
      */
-    public OffsetDateTime getRefreshOn() {
-        return refreshOn;
+    public OffsetDateTime getRefreshAt() {
+        return refreshAt;
     }
 
     /**

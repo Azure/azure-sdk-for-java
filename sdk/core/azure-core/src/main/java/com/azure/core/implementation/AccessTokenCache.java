@@ -58,9 +58,9 @@ public final class AccessTokenCache {
         this.tokenCredential = tokenCredential;
         this.cacheInfo = new AtomicReference<>(new AccessTokenCacheInfo(null, OffsetDateTime.now()));
         this.shouldRefresh = accessToken -> OffsetDateTime.now()
-            .isAfter(accessToken.getRefreshOn() == null
+            .isAfter(accessToken.getRefreshAt() == null
                 ? accessToken.getExpiresAt().minus(REFRESH_OFFSET)
-                : accessToken.getRefreshOn());
+                : accessToken.getRefreshAt());
         this.tokenSupplierAsync = () -> tokenCredential.getToken(this.tokenRequestContext);
         this.tokenSupplierSync = () -> tokenCredential.getTokenSync(this.tokenRequestContext);
         this.lock = new ReentrantLock();

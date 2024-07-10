@@ -110,7 +110,7 @@ public final class MSIToken extends AccessToken {
     private static OffsetDateTime inferManagedIdentityRefreshInValue(OffsetDateTime expiresOn) {
         OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
 
-        if (expiresOn.isAfter(now.plus(Duration.ofHours(2))) && expiresOn.isBefore(OffsetDateTime.MAX)) {
+        if (expiresOn.isAfter(now.plus(Duration.ofHours(2)))) {
             // Calculate the duration between now and expiresOn
             Duration duration = Duration.between(now, expiresOn);
             // Return the midpoint between now and expiresOn by dividing the duration by 2
