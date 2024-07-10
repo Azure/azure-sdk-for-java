@@ -8,7 +8,7 @@ module com.azure.resourcemanager.deviceregistry {
     exports com.azure.resourcemanager.deviceregistry.fluent;
     exports com.azure.resourcemanager.deviceregistry.fluent.models;
     exports com.azure.resourcemanager.deviceregistry.models;
-    opens com.azure.resourcemanager.deviceregistry.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.deviceregistry.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.deviceregistry.implementation.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.deviceregistry.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.deviceregistry.models to com.azure.core;
+    opens com.azure.resourcemanager.deviceregistry.implementation.models to com.azure.core;
 }
