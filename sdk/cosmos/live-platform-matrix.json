@@ -8,6 +8,9 @@
     "-Pdirect": "Direct",
     "-Pmulti-master": "MultiMaster",
     "-Pflaky-multi-master": "FlakyMultiMaster",
+    "-Pcircuit-breaker-misc-direct": "CircuitBreakerMiscDirect",
+    "-Pcircuit-breaker-misc-gateway": "CircuitBreakerMiscGateway",
+    "-Pcircuit-breaker-read-all-read-many": "CircuitBreakerReadAllAndReadMany",
     "-Pmulti-region": "MultiRegion",
     "-Plong": "Long",
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
@@ -101,7 +104,7 @@
         }
       },
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pmulti-master", "-Pflaky-multi-master", "-Pfast", "-Pdirect" ],
+      "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pmulti-master", "-Pflaky-multi-master", "-Pcircuit-breaker-misc-direct", "-Pcircuit-breaker-misc-gateway", "-Pcircuit-breaker-read-all-read-many", "-Pfast", "-Pdirect" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }
