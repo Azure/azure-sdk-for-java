@@ -93,7 +93,6 @@ public class ShareAsyncApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
     @Test
-<<<<<<< HEAD
     public void createShareSasError() {
         ShareServiceAsyncClient unauthorizedServiceClient = fileServiceBuilderHelper()
             .sasToken("sig=dummyToken")
@@ -107,7 +106,10 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
                 assertTrue(e.getServiceMessage().contains("AuthenticationErrorDetail"));
             });
-=======
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
     public void createShareOAuth() {
         ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
             .shareTokenIntent(ShareTokenIntent.BACKUP));
@@ -116,7 +118,6 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(shareClient.createWithResponse(null, (Integer) null))
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
             .verifyComplete();
->>>>>>> 02c23b58afc (STG94 Files OAuth - full data plane support (#39653))
     }
 
     @ParameterizedTest
