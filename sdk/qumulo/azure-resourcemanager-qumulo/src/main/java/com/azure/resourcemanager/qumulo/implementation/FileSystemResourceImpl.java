@@ -14,7 +14,6 @@ import com.azure.resourcemanager.qumulo.models.FileSystemResourceUpdatePropertie
 import com.azure.resourcemanager.qumulo.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.qumulo.models.MarketplaceDetails;
 import com.azure.resourcemanager.qumulo.models.ProvisioningState;
-import com.azure.resourcemanager.qumulo.models.StorageSku;
 import com.azure.resourcemanager.qumulo.models.UserDetails;
 import java.util.Collections;
 import java.util.List;
@@ -67,7 +66,7 @@ public final class FileSystemResourceImpl
         return this.innerModel().provisioningState();
     }
 
-    public StorageSku storageSku() {
+    public String storageSku() {
         return this.innerModel().storageSku();
     }
 
@@ -94,10 +93,6 @@ public final class FileSystemResourceImpl
 
     public String adminPassword() {
         return this.innerModel().adminPassword();
-    }
-
-    public int initialCapacity() {
-        return this.innerModel().initialCapacity();
     }
 
     public String availabilityZone() {
@@ -136,20 +131,16 @@ public final class FileSystemResourceImpl
     }
 
     public FileSystemResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileSystems()
-                .createOrUpdate(resourceGroupName, fileSystemName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFileSystems()
+            .createOrUpdate(resourceGroupName, fileSystemName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public FileSystemResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileSystems()
-                .createOrUpdate(resourceGroupName, fileSystemName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFileSystems()
+            .createOrUpdate(resourceGroupName, fileSystemName, this.innerModel(), context);
         return this;
     }
 
@@ -165,50 +156,42 @@ public final class FileSystemResourceImpl
     }
 
     public FileSystemResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileSystems()
-                .updateWithResponse(resourceGroupName, fileSystemName, updateProperties, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFileSystems()
+            .updateWithResponse(resourceGroupName, fileSystemName, updateProperties, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FileSystemResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileSystems()
-                .updateWithResponse(resourceGroupName, fileSystemName, updateProperties, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFileSystems()
+            .updateWithResponse(resourceGroupName, fileSystemName, updateProperties, context)
+            .getValue();
         return this;
     }
 
-    FileSystemResourceImpl(
-        FileSystemResourceInner innerObject, com.azure.resourcemanager.qumulo.QumuloManager serviceManager) {
+    FileSystemResourceImpl(FileSystemResourceInner innerObject,
+        com.azure.resourcemanager.qumulo.QumuloManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fileSystemName = Utils.getValueFromIdByName(innerObject.id(), "fileSystems");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.fileSystemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fileSystems");
     }
 
     public FileSystemResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileSystems()
-                .getByResourceGroupWithResponse(resourceGroupName, fileSystemName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFileSystems()
+            .getByResourceGroupWithResponse(resourceGroupName, fileSystemName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FileSystemResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileSystems()
-                .getByResourceGroupWithResponse(resourceGroupName, fileSystemName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFileSystems()
+            .getByResourceGroupWithResponse(resourceGroupName, fileSystemName, context)
+            .getValue();
         return this;
     }
 
@@ -219,36 +202,6 @@ public final class FileSystemResourceImpl
 
     public FileSystemResourceImpl withRegion(String location) {
         this.innerModel().withLocation(location);
-        return this;
-    }
-
-    public FileSystemResourceImpl withMarketplaceDetails(MarketplaceDetails marketplaceDetails) {
-        this.innerModel().withMarketplaceDetails(marketplaceDetails);
-        return this;
-    }
-
-    public FileSystemResourceImpl withStorageSku(StorageSku storageSku) {
-        this.innerModel().withStorageSku(storageSku);
-        return this;
-    }
-
-    public FileSystemResourceImpl withUserDetails(UserDetails userDetails) {
-        this.innerModel().withUserDetails(userDetails);
-        return this;
-    }
-
-    public FileSystemResourceImpl withDelegatedSubnetId(String delegatedSubnetId) {
-        this.innerModel().withDelegatedSubnetId(delegatedSubnetId);
-        return this;
-    }
-
-    public FileSystemResourceImpl withAdminPassword(String adminPassword) {
-        this.innerModel().withAdminPassword(adminPassword);
-        return this;
-    }
-
-    public FileSystemResourceImpl withInitialCapacity(int initialCapacity) {
-        this.innerModel().withInitialCapacity(initialCapacity);
         return this;
     }
 
@@ -272,6 +225,26 @@ public final class FileSystemResourceImpl
         }
     }
 
+    public FileSystemResourceImpl withMarketplaceDetails(MarketplaceDetails marketplaceDetails) {
+        this.innerModel().withMarketplaceDetails(marketplaceDetails);
+        return this;
+    }
+
+    public FileSystemResourceImpl withStorageSku(String storageSku) {
+        this.innerModel().withStorageSku(storageSku);
+        return this;
+    }
+
+    public FileSystemResourceImpl withUserDetails(UserDetails userDetails) {
+        this.innerModel().withUserDetails(userDetails);
+        return this;
+    }
+
+    public FileSystemResourceImpl withDelegatedSubnetId(String delegatedSubnetId) {
+        this.innerModel().withDelegatedSubnetId(delegatedSubnetId);
+        return this;
+    }
+
     public FileSystemResourceImpl withClusterLoginUrl(String clusterLoginUrl) {
         this.innerModel().withClusterLoginUrl(clusterLoginUrl);
         return this;
@@ -279,6 +252,11 @@ public final class FileSystemResourceImpl
 
     public FileSystemResourceImpl withPrivateIPs(List<String> privateIPs) {
         this.innerModel().withPrivateIPs(privateIPs);
+        return this;
+    }
+
+    public FileSystemResourceImpl withAdminPassword(String adminPassword) {
+        this.innerModel().withAdminPassword(adminPassword);
         return this;
     }
 

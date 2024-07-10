@@ -21,42 +21,39 @@ public final class FileSystemsImpl implements FileSystems {
 
     private final com.azure.resourcemanager.qumulo.QumuloManager serviceManager;
 
-    public FileSystemsImpl(
-        FileSystemsClient innerClient, com.azure.resourcemanager.qumulo.QumuloManager serviceManager) {
+    public FileSystemsImpl(FileSystemsClient innerClient,
+        com.azure.resourcemanager.qumulo.QumuloManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<FileSystemResource> list() {
         PagedIterable<FileSystemResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new FileSystemResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FileSystemResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FileSystemResource> list(Context context) {
         PagedIterable<FileSystemResourceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new FileSystemResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FileSystemResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FileSystemResource> listByResourceGroup(String resourceGroupName) {
         PagedIterable<FileSystemResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new FileSystemResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FileSystemResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FileSystemResource> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<FileSystemResourceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new FileSystemResourceImpl(inner1, this.manager()));
+        PagedIterable<FileSystemResourceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FileSystemResourceImpl(inner1, this.manager()));
     }
 
-    public Response<FileSystemResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String fileSystemName, Context context) {
-        Response<FileSystemResourceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, fileSystemName, context);
+    public Response<FileSystemResource> getByResourceGroupWithResponse(String resourceGroupName, String fileSystemName,
+        Context context) {
+        Response<FileSystemResourceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, fileSystemName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FileSystemResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -81,77 +78,57 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     public FileSystemResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fileSystemName = Utils.getValueFromIdByName(id, "fileSystems");
+        String fileSystemName = ResourceManagerUtils.getValueFromIdByName(id, "fileSystems");
         if (fileSystemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fileSystems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fileSystems'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, fileSystemName, Context.NONE).getValue();
     }
 
     public Response<FileSystemResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fileSystemName = Utils.getValueFromIdByName(id, "fileSystems");
+        String fileSystemName = ResourceManagerUtils.getValueFromIdByName(id, "fileSystems");
         if (fileSystemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fileSystems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fileSystems'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, fileSystemName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fileSystemName = Utils.getValueFromIdByName(id, "fileSystems");
+        String fileSystemName = ResourceManagerUtils.getValueFromIdByName(id, "fileSystems");
         if (fileSystemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fileSystems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fileSystems'.", id)));
         }
         this.delete(resourceGroupName, fileSystemName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fileSystemName = Utils.getValueFromIdByName(id, "fileSystems");
+        String fileSystemName = ResourceManagerUtils.getValueFromIdByName(id, "fileSystems");
         if (fileSystemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fileSystems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fileSystems'.", id)));
         }
         this.delete(resourceGroupName, fileSystemName, context);
     }

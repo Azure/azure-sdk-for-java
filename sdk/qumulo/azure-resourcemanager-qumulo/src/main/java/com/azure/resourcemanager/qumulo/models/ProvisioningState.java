@@ -4,69 +4,78 @@
 
 package com.azure.resourcemanager.qumulo.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
 
-/** Provisioning State of the File system resource. */
-public enum ProvisioningState {
-    /** Enum value Accepted. */
-    ACCEPTED("Accepted"),
+/**
+ * Provisioning State of the File system resource.
+ */
+public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
+    /**
+     * Static value Accepted for ProvisioningState.
+     */
+    public static final ProvisioningState ACCEPTED = fromString("Accepted");
 
-    /** Enum value Creating. */
-    CREATING("Creating"),
+    /**
+     * Static value Creating for ProvisioningState.
+     */
+    public static final ProvisioningState CREATING = fromString("Creating");
 
-    /** Enum value Updating. */
-    UPDATING("Updating"),
+    /**
+     * Static value Updating for ProvisioningState.
+     */
+    public static final ProvisioningState UPDATING = fromString("Updating");
 
-    /** Enum value Deleting. */
-    DELETING("Deleting"),
+    /**
+     * Static value Deleting for ProvisioningState.
+     */
+    public static final ProvisioningState DELETING = fromString("Deleting");
 
-    /** Enum value Succeeded. */
-    SUCCEEDED("Succeeded"),
+    /**
+     * Static value Succeeded for ProvisioningState.
+     */
+    public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Enum value Failed. */
-    FAILED("Failed"),
+    /**
+     * Static value Failed for ProvisioningState.
+     */
+    public static final ProvisioningState FAILED = fromString("Failed");
 
-    /** Enum value Canceled. */
-    CANCELED("Canceled"),
+    /**
+     * Static value Canceled for ProvisioningState.
+     */
+    public static final ProvisioningState CANCELED = fromString("Canceled");
 
-    /** Enum value Deleted. */
-    DELETED("Deleted"),
+    /**
+     * Static value Deleted for ProvisioningState.
+     */
+    public static final ProvisioningState DELETED = fromString("Deleted");
 
-    /** Enum value NotSpecified. */
-    NOT_SPECIFIED("NotSpecified");
-
-    /** The actual serialized value for a ProvisioningState instance. */
-    private final String value;
-
-    ProvisioningState(String value) {
-        this.value = value;
+    /**
+     * Creates a new instance of ProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProvisioningState() {
     }
 
     /**
-     * Parses a serialized value to a ProvisioningState instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed ProvisioningState object, or null if unable to parse.
+     * Creates or finds a ProvisioningState from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ProvisioningState.
      */
-    @JsonCreator
-    public static ProvisioningState fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ProvisioningState[] items = ProvisioningState.values();
-        for (ProvisioningState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ProvisioningState fromString(String name) {
+        return fromString(name, ProvisioningState.class);
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * Gets known ProvisioningState values.
+     * 
+     * @return known ProvisioningState values.
+     */
+    public static Collection<ProvisioningState> values() {
+        return values(ProvisioningState.class);
     }
 }

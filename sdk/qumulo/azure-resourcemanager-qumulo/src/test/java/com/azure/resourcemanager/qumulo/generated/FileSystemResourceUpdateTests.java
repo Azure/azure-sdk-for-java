@@ -12,7 +12,6 @@ import com.azure.resourcemanager.qumulo.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.qumulo.models.MarketplaceDetails;
 import com.azure.resourcemanager.qumulo.models.UserAssignedIdentity;
 import com.azure.resourcemanager.qumulo.models.UserDetails;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -20,64 +19,50 @@ import org.junit.jupiter.api.Assertions;
 public final class FileSystemResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileSystemResourceUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"principalId\":\"26a53dc5-f4b6-414b-b84c-19a0b79607c0\",\"tenantId\":\"4171f035-c188-403c-a0b4-3ea1abc39872\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ygxgispemvtz\":{\"principalId\":\"20a43eda-ae37-462d-9ba6-51e4f6734f05\",\"clientId\":\"7cb6c0f4-520d-4554-9107-d22e3f7612b7\"},\"fublj\":{\"principalId\":\"39bc2d33-f459-4f1b-adee-74f518442166\",\"clientId\":\"44d17a06-5d55-47cf-b90f-d6a0f86f86ad\"},\"qeof\":{\"principalId\":\"a0bcde25-fa6c-40cf-8fc1-930e96a24109\",\"clientId\":\"2c39cab6-d132-41f9-925d-45c91d3956b0\"}}},\"tags\":{\"msmjqulngsntn\":\"qjhqjbas\"},\"properties\":{\"marketplaceDetails\":{\"marketplaceSubscriptionId\":\"zgcwrw\",\"planId\":\"lxxwrljdouskc\",\"offerId\":\"vkocrcjdkwtn\",\"publisherId\":\"xbnjbiksq\",\"marketplaceSubscriptionStatus\":\"Subscribed\"},\"userDetails\":{\"email\":\"sainqpjwnzl\"},\"delegatedSubnetId\":\"fmppe\",\"clusterLoginUrl\":\"vmgxsab\",\"privateIPs\":[\"duuji\",\"c\",\"czdzev\",\"dhkrwpdappdsbdk\"]}}")
-                .toObject(FileSystemResourceUpdate.class);
+        FileSystemResourceUpdate model = BinaryData.fromString(
+            "{\"identity\":{\"principalId\":\"6694746d-6433-42d8-b2ba-96c95fab0a20\",\"tenantId\":\"0c683f53-48c8-4802-821a-ead7cb8611f8\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"feusnhut\":{\"principalId\":\"fbd8b113-ca03-4b29-9f7c-9c65eb19300c\",\"clientId\":\"588bda0a-2ee3-4413-b7f6-b289a9a6a8e7\"},\"tmrldhugjzzdatq\":{\"principalId\":\"4476afe6-0786-4d25-a1e7-d531f421d747\",\"clientId\":\"804ca7a6-4b8d-41f6-a698-bdbf819cf7ae\"}}},\"tags\":{\"lgphu\":\"cdgea\"},\"properties\":{\"marketplaceDetails\":{\"marketplaceSubscriptionId\":\"dvkaozw\",\"planId\":\"i\",\"offerId\":\"tyhxhurokft\",\"publisherId\":\"olniwpwcukjf\",\"termUnit\":\"iawxklry\",\"marketplaceSubscriptionStatus\":\"Suspended\"},\"userDetails\":{\"email\":\"kbasyypn\"},\"delegatedSubnetId\":\"hsgcbacphejkot\"}}")
+            .toObject(FileSystemResourceUpdate.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("qjhqjbas", model.tags().get("msmjqulngsntn"));
-        Assertions.assertEquals("zgcwrw", model.properties().marketplaceDetails().marketplaceSubscriptionId());
-        Assertions.assertEquals("lxxwrljdouskc", model.properties().marketplaceDetails().planId());
-        Assertions.assertEquals("vkocrcjdkwtn", model.properties().marketplaceDetails().offerId());
-        Assertions.assertEquals("xbnjbiksq", model.properties().marketplaceDetails().publisherId());
-        Assertions.assertEquals("sainqpjwnzl", model.properties().userDetails().email());
-        Assertions.assertEquals("fmppe", model.properties().delegatedSubnetId());
-        Assertions.assertEquals("vmgxsab", model.properties().clusterLoginUrl());
-        Assertions.assertEquals("duuji", model.properties().privateIPs().get(0));
+        Assertions.assertEquals("cdgea", model.tags().get("lgphu"));
+        Assertions.assertEquals("dvkaozw", model.properties().marketplaceDetails().marketplaceSubscriptionId());
+        Assertions.assertEquals("i", model.properties().marketplaceDetails().planId());
+        Assertions.assertEquals("tyhxhurokft", model.properties().marketplaceDetails().offerId());
+        Assertions.assertEquals("olniwpwcukjf", model.properties().marketplaceDetails().publisherId());
+        Assertions.assertEquals("iawxklry", model.properties().marketplaceDetails().termUnit());
+        Assertions.assertEquals("kbasyypn", model.properties().userDetails().email());
+        Assertions.assertEquals("hsgcbacphejkot", model.properties().delegatedSubnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileSystemResourceUpdate model =
-            new FileSystemResourceUpdate()
+        FileSystemResourceUpdate model
+            = new FileSystemResourceUpdate()
                 .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "ygxgispemvtz",
-                                new UserAssignedIdentity(),
-                                "fublj",
-                                new UserAssignedIdentity(),
-                                "qeof",
-                                new UserAssignedIdentity())))
-                .withTags(mapOf("msmjqulngsntn", "qjhqjbas"))
-                .withProperties(
-                    new FileSystemResourceUpdateProperties()
-                        .withMarketplaceDetails(
-                            new MarketplaceDetails()
-                                .withMarketplaceSubscriptionId("zgcwrw")
-                                .withPlanId("lxxwrljdouskc")
-                                .withOfferId("vkocrcjdkwtn")
-                                .withPublisherId("xbnjbiksq"))
-                        .withUserDetails(new UserDetails().withEmail("sainqpjwnzl"))
-                        .withDelegatedSubnetId("fmppe")
-                        .withClusterLoginUrl("vmgxsab")
-                        .withPrivateIPs(Arrays.asList("duuji", "c", "czdzev", "dhkrwpdappdsbdk")));
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("feusnhut", new UserAssignedIdentity(), "tmrldhugjzzdatq",
+                            new UserAssignedIdentity())))
+                .withTags(mapOf("lgphu", "cdgea"))
+                .withProperties(new FileSystemResourceUpdateProperties()
+                    .withMarketplaceDetails(new MarketplaceDetails().withMarketplaceSubscriptionId("dvkaozw")
+                        .withPlanId("i")
+                        .withOfferId("tyhxhurokft")
+                        .withPublisherId("olniwpwcukjf")
+                        .withTermUnit("iawxklry"))
+                    .withUserDetails(new UserDetails().withEmail("kbasyypn"))
+                    .withDelegatedSubnetId("hsgcbacphejkot"));
         model = BinaryData.fromObject(model).toObject(FileSystemResourceUpdate.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("qjhqjbas", model.tags().get("msmjqulngsntn"));
-        Assertions.assertEquals("zgcwrw", model.properties().marketplaceDetails().marketplaceSubscriptionId());
-        Assertions.assertEquals("lxxwrljdouskc", model.properties().marketplaceDetails().planId());
-        Assertions.assertEquals("vkocrcjdkwtn", model.properties().marketplaceDetails().offerId());
-        Assertions.assertEquals("xbnjbiksq", model.properties().marketplaceDetails().publisherId());
-        Assertions.assertEquals("sainqpjwnzl", model.properties().userDetails().email());
-        Assertions.assertEquals("fmppe", model.properties().delegatedSubnetId());
-        Assertions.assertEquals("vmgxsab", model.properties().clusterLoginUrl());
-        Assertions.assertEquals("duuji", model.properties().privateIPs().get(0));
+        Assertions.assertEquals("cdgea", model.tags().get("lgphu"));
+        Assertions.assertEquals("dvkaozw", model.properties().marketplaceDetails().marketplaceSubscriptionId());
+        Assertions.assertEquals("i", model.properties().marketplaceDetails().planId());
+        Assertions.assertEquals("tyhxhurokft", model.properties().marketplaceDetails().offerId());
+        Assertions.assertEquals("olniwpwcukjf", model.properties().marketplaceDetails().publisherId());
+        Assertions.assertEquals("iawxklry", model.properties().marketplaceDetails().termUnit());
+        Assertions.assertEquals("kbasyypn", model.properties().userDetails().email());
+        Assertions.assertEquals("hsgcbacphejkot", model.properties().delegatedSubnetId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

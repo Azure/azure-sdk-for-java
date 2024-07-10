@@ -7,79 +7,73 @@ package com.azure.resourcemanager.qumulo.generated;
 import com.azure.resourcemanager.qumulo.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.qumulo.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.qumulo.models.MarketplaceDetails;
-import com.azure.resourcemanager.qumulo.models.StorageSku;
 import com.azure.resourcemanager.qumulo.models.UserAssignedIdentity;
 import com.azure.resourcemanager.qumulo.models.UserDetails;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for FileSystems CreateOrUpdate. */
+/**
+ * Samples for FileSystems CreateOrUpdate.
+ */
 public final class FileSystemsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/
+     * FileSystems_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
-     * Sample code: FileSystems_CreateOrUpdate_MaximumSet_Gen.
-     *
+     * Sample code: FileSystems_CreateOrUpdate.
+     * 
      * @param manager Entry point to QumuloManager.
      */
-    public static void fileSystemsCreateOrUpdateMaximumSetGen(com.azure.resourcemanager.qumulo.QumuloManager manager) {
-        manager
-            .fileSystems()
-            .define("nauwwbfoqehgbhdsmkewoboyxeqg")
-            .withRegion("przdlsmlzsszphnixq")
+    public static void fileSystemsCreateOrUpdate(com.azure.resourcemanager.qumulo.QumuloManager manager) {
+        manager.fileSystems()
+            .define("hfcmtgaes")
+            .withRegion("pnb")
             .withExistingResourceGroup("rgQumulo")
-            .withMarketplaceDetails(
-                new MarketplaceDetails()
-                    .withMarketplaceSubscriptionId("ujrcqvxfnhxxheoth")
-                    .withPlanId("x")
-                    .withOfferId("eiyhbmpwgezcmzrrfoiskuxlcvwojf")
-                    .withPublisherId("wfmokfdjbwpjhz"))
-            .withStorageSku(StorageSku.STANDARD)
-            .withUserDetails(new UserDetails().withEmail("viptslwulnpaupfljvnjeq"))
-            .withDelegatedSubnetId("neqctctqdmjezfgt")
-            .withAdminPassword("ekceujoecaashtjlsgcymnrdozk")
-            .withInitialCapacity(9)
-            .withTags(mapOf("key6565", "cgdhmupta"))
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.NONE)
-                    .withUserAssignedIdentities(mapOf("key4522", new UserAssignedIdentity())))
-            .withClusterLoginUrl("jjqhgevy")
-            .withPrivateIPs(Arrays.asList("kslguxrwbwkrj"))
-            .withAvailabilityZone("maseyqhlnhoiwbabcqabtedbjpip")
+            .withTags(mapOf("key7090", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key7679", new UserAssignedIdentity())))
+            .withMarketplaceDetails(new MarketplaceDetails().withMarketplaceSubscriptionId("xaqtkloiyovmexqhn")
+                .withPlanId("fwtpz")
+                .withOfferId("s")
+                .withPublisherId("czxcfrwodazyaft")
+                .withTermUnit("cfwwczmygsimcyvoclcw"))
+            .withStorageSku("yhyzby")
+            .withUserDetails(new UserDetails().withEmail("aqsnzyroo"))
+            .withDelegatedSubnetId("jykmxrf")
+            .withClusterLoginUrl("ykaynsjvhihdthkkvvodjrgc")
+            .withPrivateIPs(Arrays.asList("gzken"))
+            .withAdminPassword("fakeTestSecretPlaceholder")
+            .withAvailabilityZone("eqdvbdiuwmhhzqzmksmwllpddqquwt")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/
+     * FileSystems_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_CreateOrUpdate_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to QumuloManager.
      */
     public static void fileSystemsCreateOrUpdateMinimumSetGen(com.azure.resourcemanager.qumulo.QumuloManager manager) {
-        manager
-            .fileSystems()
+        manager.fileSystems()
             .define("aaaaaaaa")
             .withRegion("aaaaaaaaaaaaaaaaaaaaaaaaa")
             .withExistingResourceGroup("rgopenapi")
-            .withMarketplaceDetails(
-                new MarketplaceDetails()
-                    .withMarketplaceSubscriptionId("aaaaaaaaaaaaa")
-                    .withPlanId("aaaaaa")
-                    .withOfferId("aaaaaaaaaaaaaaaaaaaaaaaaa")
-                    .withPublisherId("aa"))
-            .withStorageSku(StorageSku.STANDARD)
+            .withMarketplaceDetails(new MarketplaceDetails().withMarketplaceSubscriptionId("aaaaaaaaaaaaa")
+                .withPlanId("aaaaaa")
+                .withOfferId("aaaaaaaaaaaaaaaaaaaaaaaaa"))
+            .withStorageSku("Standard")
             .withUserDetails(new UserDetails().withEmail("viptslwulnpaupfljvnjeq"))
             .withDelegatedSubnetId("aaaaaaaaaa")
-            .withAdminPassword("ekceujoecaashtjlsgcymnrdozk")
-            .withInitialCapacity(9)
+            .withAdminPassword("fakeTestSecretPlaceholder")
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -11,66 +11,58 @@ import com.azure.resourcemanager.qumulo.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.qumulo.models.MarketplaceDetails;
 import com.azure.resourcemanager.qumulo.models.UserAssignedIdentity;
 import com.azure.resourcemanager.qumulo.models.UserDetails;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for FileSystems Update. */
+/**
+ * Samples for FileSystems Update.
+ */
 public final class FileSystemsUpdateSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/
+     * FileSystems_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Update_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to QumuloManager.
      */
     public static void fileSystemsUpdateMinimumSetGen(com.azure.resourcemanager.qumulo.QumuloManager manager) {
-        FileSystemResource resource =
-            manager
-                .fileSystems()
-                .getByResourceGroupWithResponse("rgQumulo", "aaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE)
-                .getValue();
+        FileSystemResource resource = manager.fileSystems()
+            .getByResourceGroupWithResponse("rgQumulo", "aaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/
+     * FileSystems_Update_MaximumSet_Gen.json
      */
     /**
-     * Sample code: FileSystems_Update_MaximumSet_Gen.
-     *
+     * Sample code: FileSystems_Update.
+     * 
      * @param manager Entry point to QumuloManager.
      */
-    public static void fileSystemsUpdateMaximumSetGen(com.azure.resourcemanager.qumulo.QumuloManager manager) {
-        FileSystemResource resource =
-            manager
-                .fileSystems()
-                .getByResourceGroupWithResponse(
-                    "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withTags(mapOf("key7534", "jsgqvqbagquvxowbrkanyhzvo"))
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.NONE)
-                    .withUserAssignedIdentities(mapOf("key4522", new UserAssignedIdentity())))
-            .withProperties(
-                new FileSystemResourceUpdateProperties()
-                    .withMarketplaceDetails(
-                        new MarketplaceDetails()
-                            .withMarketplaceSubscriptionId("ujrcqvxfnhxxheoth")
-                            .withPlanId("x")
-                            .withOfferId("eiyhbmpwgezcmzrrfoiskuxlcvwojf")
-                            .withPublisherId("wfmokfdjbwpjhz"))
-                    .withUserDetails(new UserDetails().withEmail("aa"))
-                    .withDelegatedSubnetId("vjfirtaljehawmflyfianw")
-                    .withClusterLoginUrl("adabmuthwrbjshzfbo")
-                    .withPrivateIPs(Arrays.asList("eugjqbaoucgjsopzfrq")))
+    public static void fileSystemsUpdate(com.azure.resourcemanager.qumulo.QumuloManager manager) {
+        FileSystemResource resource = manager.fileSystems()
+            .getByResourceGroupWithResponse("rgQumulo", "ahpixnvykleksjlr", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key357", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key7679", new UserAssignedIdentity())))
+            .withProperties(new FileSystemResourceUpdateProperties()
+                .withMarketplaceDetails(new MarketplaceDetails().withMarketplaceSubscriptionId("xaqtkloiyovmexqhn")
+                    .withPlanId("fwtpz")
+                    .withOfferId("s")
+                    .withPublisherId("czxcfrwodazyaft")
+                    .withTermUnit("cfwwczmygsimcyvoclcw"))
+                .withUserDetails(new UserDetails().withEmail("aqsnzyroo"))
+                .withDelegatedSubnetId("bqaryqsjlackxphpmzffgoqsvm"))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
