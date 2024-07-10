@@ -26,7 +26,7 @@ public class MSITokenTests {
         MSIToken token = new MSIToken("fake_token", "1578668608", null);
         MSIToken token2 = new MSIToken("fake_token", null, "3599");
         MSIToken token3 = new MSIToken("fake_token", "1578668608", "3599");
-        MSIToken token4 = new MSIToken("fake_token", "1578668608", "8000");
+        MSIToken token4 = new MSIToken("fake_token", null, "8000");
 
         assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
         assertTrue((token2.getExpiresAt().toEpochSecond() - OffsetDateTime.now().toEpochSecond()) > 3500);
