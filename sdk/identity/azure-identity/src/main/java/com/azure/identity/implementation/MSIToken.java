@@ -107,26 +107,14 @@ public final class MSIToken extends AccessToken {
         throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateToParse));
     }
 
-    private static OffsetDateTime parseRefreshIn(String refreshIn) {
-        if (!CoreUtils.isNullOrEmpty(refreshIn)) {
-            try {
-                long seconds = Long.parseLong(refreshIn);
-                return OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(seconds);
-            } catch (NumberFormatException e) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Unable to parse refresh in  " + refreshIn, e));
-            }
-
-        }
-        return null;
-    }
-
     private static OffsetDateTime inferManagedIdentityRefreshInValue(OffsetDateTime expiresOn) {
         OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
 
         if (expiresOn.isAfter(now.plus(Duration.ofHours(2))) && expiresOn.isBefore(OffsetDateTime.MAX)) {
-            // return the midpoint between now and expiresOn
+            // Calculate the duration between now and expiresOn
             Duration duration = Duration.between(now, expiresOn);
+            // Return the midpoint between now and expiresOn by dividing the duration by 2
+            // The division operation snaps to the floor in case of an odd number duration (i.e., it truncates any decimal part)
             return expiresOn.minus(duration.dividedBy(2));
         }
         return null;
