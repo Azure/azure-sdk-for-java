@@ -110,7 +110,7 @@ class AzureEventHubsKafkaAutoConfigurationTests {
     void shouldWorkWithAzureEventHubsAndArm() {
         this.contextRunner
                 .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-                .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class, ArmConnectionStringProviderConfiguration.class))
+                .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class))
                 .withPropertyValues(
                         "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "static-namespace")
                 )
