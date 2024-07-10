@@ -1274,9 +1274,15 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpdateMessageResult> updateMessageWithResponse(String messageId, String popReceipt,
         String messageText, Duration visibilityTimeout, Duration timeout, Context context) {
+        QueueMessage message;
+        if (messageText != null) {
+            String finalMessage = ModelHelper.encodeMessage(BinaryData.fromString(messageText), messageEncoding);
+            message = new QueueMessage().setMessageText(finalMessage);
+        } else {
+            message = null;
+        }
         Context finalContext = context == null ? Context.NONE : context;
         Duration finalVisibilityTimeout = visibilityTimeout == null ? Duration.ZERO : visibilityTimeout;
-        QueueMessage message = messageText == null ? null : new QueueMessage().setMessageText(messageText);
         Supplier<ResponseBase<MessageIdsUpdateHeaders, Void>> operation = () -> this.azureQueueStorage.getMessageIds()
             .updateWithResponse(queueName, messageId, popReceipt, (int) finalVisibilityTimeout.getSeconds(), null, null,
                 message, finalContext);
