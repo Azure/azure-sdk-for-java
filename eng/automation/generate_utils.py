@@ -146,7 +146,7 @@ def generate_changelog_and_breaking_change(
 ) -> Tuple[bool, str]:
     logging.info("[CHANGELOG] changelog jar: {0} -> {1}".format(old_jar, new_jar))
     stdout = subprocess.run(
-        'mvn --no-transfer-progress clean compile exec:java -q -f {0}/eng/mgmt/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'.format(
+        'mvn --no-transfer-progress clean compile exec:java -q -f {0}/eng/automation/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'.format(
             sdk_root, old_jar, new_jar
         ),
         stdout=subprocess.PIPE,
