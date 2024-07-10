@@ -193,8 +193,7 @@ public class LocationSpecificHealthContextTransitionHandler {
             .withSuccessCountForWriteForRecovery(0)
             .withExceptionCountForWriteForCircuitBreaking(0)
             .withSuccessCountForReadForRecovery(0)
-            .withExceptionCountForReadForCircuitBreaking(0)
-            .withLastCollectionLinkSeen(locationSpecificHealthContext.getLastCollectionLinkSeen());
+            .withExceptionCountForReadForCircuitBreaking(0);
 
         switch (newStatus) {
             case Healthy:

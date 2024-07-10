@@ -24,7 +24,6 @@ public class LocationSpecificHealthContext implements Serializable {
     private final Instant unavailableSince;
     private final LocationHealthStatus locationHealthStatus;
     private final boolean isExceptionThresholdBreached;
-    private final String lastCollectionLinkSeen;
 
     LocationSpecificHealthContext(
         int successCountForWriteForRecovery,
@@ -33,8 +32,7 @@ public class LocationSpecificHealthContext implements Serializable {
         int exceptionCountForReadForCircuitBreaking,
         Instant unavailableSince,
         LocationHealthStatus locationHealthStatus,
-        boolean isExceptionThresholdBreached,
-        String lastCollectionLinkSeen) {
+        boolean isExceptionThresholdBreached) {
 
         this.successCountForWriteForRecovery = successCountForWriteForRecovery;
         this.exceptionCountForWriteForCircuitBreaking = exceptionCountForWriteForCircuitBreaking;
@@ -43,7 +41,6 @@ public class LocationSpecificHealthContext implements Serializable {
         this.unavailableSince = unavailableSince;
         this.locationHealthStatus = locationHealthStatus;
         this.isExceptionThresholdBreached = isExceptionThresholdBreached;
-        this.lastCollectionLinkSeen = lastCollectionLinkSeen;
     }
 
     public boolean isExceptionThresholdBreached() {
@@ -80,10 +77,6 @@ public class LocationSpecificHealthContext implements Serializable {
         return this.locationHealthStatus;
     }
 
-    public String getLastCollectionLinkSeen() {
-        return this.lastCollectionLinkSeen;
-    }
-
     static class Builder {
 
         private int exceptionCountForWriteForCircuitBreaking;
@@ -93,7 +86,6 @@ public class LocationSpecificHealthContext implements Serializable {
         private Instant unavailableSince;
         private LocationHealthStatus locationHealthStatus;
         private boolean isExceptionThresholdBreached;
-        private String lastCollectionLinkSeen;
 
         public Builder() {}
 
@@ -132,11 +124,6 @@ public class LocationSpecificHealthContext implements Serializable {
             return this;
         }
 
-        public Builder withLastCollectionLinkSeen(String lastCollectionLinkSeen) {
-            this.lastCollectionLinkSeen = lastCollectionLinkSeen;
-            return this;
-        }
-
         public LocationSpecificHealthContext build() {
 
             return new LocationSpecificHealthContext(
@@ -146,8 +133,7 @@ public class LocationSpecificHealthContext implements Serializable {
                 this.exceptionCountForReadForCircuitBreaking,
                 this.unavailableSince,
                 this.locationHealthStatus,
-                this.isExceptionThresholdBreached,
-                this.lastCollectionLinkSeen);
+                this.isExceptionThresholdBreached);
         }
     }
 

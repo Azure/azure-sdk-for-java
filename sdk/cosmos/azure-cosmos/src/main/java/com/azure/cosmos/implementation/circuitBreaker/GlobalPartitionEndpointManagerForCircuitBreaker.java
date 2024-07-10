@@ -377,7 +377,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                         .withUnavailableSince(Instant.MAX)
                         .withLocationHealthStatus(LocationHealthStatus.HealthyWithFailures)
                         .withExceptionThresholdBreached(false)
-                        .withLastCollectionLinkSeen(collectionLink)
                         .build();
                 }
 
@@ -428,7 +427,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                         .withUnavailableSince(Instant.MAX)
                         .withLocationHealthStatus(LocationHealthStatus.Healthy)
                         .withExceptionThresholdBreached(false)
-                        .withLastCollectionLinkSeen(collectionLink)
                         .build();
                 }
 
