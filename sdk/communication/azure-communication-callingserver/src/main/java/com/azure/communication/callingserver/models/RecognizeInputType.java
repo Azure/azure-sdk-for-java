@@ -13,6 +13,18 @@ public final class RecognizeInputType extends ExpandableStringEnum<RecognizeInpu
     public static final RecognizeInputType DTMF = fromString("dtmf");
 
     /**
+     * Creates a new instance of {@link RecognizeInputType} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link RecognizeInputType} which doesn't
+     * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecognizeInputType() {
+    }
+
+    /**
      * Creates or finds a RecognizeInputTypeInternal from its string representation.
      *
      * @param name a name to look for.
@@ -23,7 +35,11 @@ public final class RecognizeInputType extends ExpandableStringEnum<RecognizeInpu
         return fromString(name, RecognizeInputType.class);
     }
 
-    /** @return known RecognizeInputTypeInternal values. */
+    /**
+     * Gets known RecognizeInputType values.
+     *
+     * @return known RecognizeInputType values.
+     */
     public static Collection<RecognizeInputType> values() {
         return values(RecognizeInputType.class);
     }

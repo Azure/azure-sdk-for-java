@@ -74,6 +74,7 @@ public final class ParallelDownloadOptions {
 
     /**
      * Gets the maximum number of parallel requests that will be issued at any given time.
+     *
      * @return The max concurrency value.
      */
     public int getMaxConcurrency() {
@@ -81,6 +82,8 @@ public final class ParallelDownloadOptions {
     }
 
     /**
+     * sets the maximum number of parallel requests that will be issued at any given time.
+     *
      * @param maxConcurrency The maximum number of parallel requests that will be issued at any given time as a part of
      * a single parallel transfer. This value applies per api. For example, if two calls to downloadTo are made at
      * the same time, and each specifies a maxConcurrency of 5, there may be up to 10 outstanding, concurrent requests,

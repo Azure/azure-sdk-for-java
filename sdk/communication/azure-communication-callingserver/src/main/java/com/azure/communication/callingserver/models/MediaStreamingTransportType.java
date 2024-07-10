@@ -14,6 +14,18 @@ public final class MediaStreamingTransportType extends ExpandableStringEnum<Medi
     public static final MediaStreamingTransportType WEBSOCKET = fromString("websocket");
 
     /**
+     * Creates a new instance of {@link MediaStreamingTransportType} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link MediaStreamingTransportType} which doesn't
+     * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MediaStreamingTransportType() {
+    }
+
+    /**
      * Creates or finds a MediaStreamingTransportType from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +36,11 @@ public final class MediaStreamingTransportType extends ExpandableStringEnum<Medi
         return fromString(name, MediaStreamingTransportType.class);
     }
 
-    /** @return known MediaStreamingTransportType values. */
+    /**
+     * Gets known MediaStreamingTransportType values.
+     *
+     * @return known MediaStreamingTransportType values.
+     */
     public static Collection<MediaStreamingTransportType> values() {
         return values(MediaStreamingTransportType.class);
     }

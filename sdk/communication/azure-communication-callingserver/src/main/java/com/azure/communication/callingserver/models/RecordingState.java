@@ -15,6 +15,18 @@ public final class RecordingState extends ExpandableStringEnum<RecordingState> {
     public static final RecordingState INACTIVE = fromString("inactive");
 
     /**
+     * Creates a new instance of {@link RecordingFormat} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link RecordingState} which doesn't
+     * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecordingState() {
+    }
+
+    /**
      * Creates or finds a RecordingStateInternal from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +36,11 @@ public final class RecordingState extends ExpandableStringEnum<RecordingState> {
         return fromString(name, RecordingState.class);
     }
 
-    /** @return known RecordingStateInternal values. */
+    /**
+     * Gets known RecordingState values.
+     *
+     * @return known RecordingState values.
+     */
     public static Collection<RecordingState> values() {
         return values(RecordingState.class);
     }
