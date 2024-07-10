@@ -5,6 +5,7 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,7 +20,9 @@ import java.time.format.DateTimeFormatter;
 @Fluent
 public final class ChatParticipant implements JsonSerializable<ChatParticipant> {
     /*
-     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may be set which must match the kind enum value.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     private CommunicationIdentifierModel communicationIdentifier;
 
@@ -29,7 +32,8 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     private String displayName;
 
     /*
-     * Time from which the chat history is shared with the participant. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * Time from which the chat history is shared with the participant. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
     private OffsetDateTime shareHistoryTime;
 
@@ -141,8 +145,8 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
                 } else if ("displayName".equals(fieldName)) {
                     deserializedChatParticipant.displayName = reader.getString();
                 } else if ("shareHistoryTime".equals(fieldName)) {
-                    deserializedChatParticipant.shareHistoryTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedChatParticipant.shareHistoryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

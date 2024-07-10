@@ -17,7 +17,8 @@ import java.io.IOException;
 @Fluent
 public final class TypingNotificationOptions implements JsonSerializable<TypingNotificationOptions> {
     /*
-     * The display name of the typing notification sender. This property is used to populate sender name for push notifications.
+     * The display name of the typing notification sender. This property is used to populate sender name for push
+     * notifications.
      */
     private String senderDisplayName;
 

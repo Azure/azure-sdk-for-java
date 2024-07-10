@@ -30,10 +30,9 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -76,7 +75,8 @@ public final class ChatsImpl {
         Mono<Response<CreateChatThreadResult>> createChatThread(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CreateChatThreadOptions createChatThreadRequest,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept,
+            @HeaderParam("repeatability-request-id") String repeatabilityRequestId, Context context);
 
         @Get("/chat/threads")
         @ExpectedResponses({ 200 })
@@ -125,10 +125,8 @@ public final class ChatsImpl {
     public Mono<Response<CreateChatThreadResult>>
         createChatThreadWithResponseAsync(CreateChatThreadOptions createChatThreadRequest) {
         final String accept = "application/json";
-        String repeatabilityRequestId = UUID.randomUUID().toString();
-        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return FluxUtil.withContext(context -> service.createChatThread(this.client.getEndpoint(),
-            this.client.getApiVersion(), createChatThreadRequest, accept, context));
+            this.client.getApiVersion(), createChatThreadRequest, accept, CoreUtils.randomUuid().toString(), context));
     }
 
     /**
@@ -148,10 +146,8 @@ public final class ChatsImpl {
     public Mono<Response<CreateChatThreadResult>>
         createChatThreadWithResponseAsync(CreateChatThreadOptions createChatThreadRequest, Context context) {
         final String accept = "application/json";
-        String repeatabilityRequestId = UUID.randomUUID().toString();
-        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return service.createChatThread(this.client.getEndpoint(), this.client.getApiVersion(), createChatThreadRequest,
-            accept, context);
+            accept, CoreUtils.randomUuid().toString(), context);
     }
 
     /**
@@ -529,9 +525,7 @@ public final class ChatsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
@@ -551,9 +545,7 @@ public final class ChatsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -573,9 +565,7 @@ public final class ChatsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
@@ -591,9 +581,7 @@ public final class ChatsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.

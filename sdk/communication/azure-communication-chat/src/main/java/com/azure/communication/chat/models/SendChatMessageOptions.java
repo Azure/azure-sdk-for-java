@@ -23,7 +23,8 @@ public final class SendChatMessageOptions implements JsonSerializable<SendChatMe
     private String content;
 
     /*
-     * The display name of the chat message sender. This property is used to populate sender name for push notifications.
+     * The display name of the chat message sender. This property is used to populate sender name for push
+     * notifications.
      */
     private String senderDisplayName;
 

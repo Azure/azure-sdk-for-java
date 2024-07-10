@@ -5,6 +5,7 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -34,7 +35,9 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     private OffsetDateTime createdOn;
 
     /*
-     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may be set which must match the kind enum value.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     private CommunicationIdentifierModel createdByCommunicationIdentifier;
 
@@ -195,14 +198,14 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
                 } else if ("topic".equals(fieldName)) {
                     deserializedChatThreadProperties.topic = reader.getString();
                 } else if ("createdOn".equals(fieldName)) {
-                    deserializedChatThreadProperties.createdOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedChatThreadProperties.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("createdByCommunicationIdentifier".equals(fieldName)) {
                     deserializedChatThreadProperties.createdByCommunicationIdentifier
                         = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("deletedOn".equals(fieldName)) {
-                    deserializedChatThreadProperties.deletedOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedChatThreadProperties.deletedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

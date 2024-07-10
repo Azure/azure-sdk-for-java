@@ -6,6 +6,7 @@ package com.azure.communication.chat.implementation.models;
 
 import com.azure.communication.chat.models.ChatMessageType;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -46,27 +47,33 @@ public final class ChatMessage implements JsonSerializable<ChatMessage> {
     private ChatMessageContent content;
 
     /*
-     * The display name of the chat message sender. This property is used to populate sender name for push notifications.
+     * The display name of the chat message sender. This property is used to populate sender name for push
+     * notifications.
      */
     private String senderDisplayName;
 
     /*
-     * The timestamp when the chat message arrived at the server. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp when the chat message arrived at the server. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
     private OffsetDateTime createdOn;
 
     /*
-     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may be set which must match the kind enum value.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     private CommunicationIdentifierModel senderCommunicationIdentifier;
 
     /*
-     * The timestamp (if applicable) when the message was deleted. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp (if applicable) when the message was deleted. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
     private OffsetDateTime deletedOn;
 
     /*
-     * The last timestamp (if applicable) when the message was edited. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The last timestamp (if applicable) when the message was edited. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
     private OffsetDateTime editedOn;
 
@@ -361,8 +368,8 @@ public final class ChatMessage implements JsonSerializable<ChatMessage> {
                 } else if ("version".equals(fieldName)) {
                     deserializedChatMessage.version = reader.getString();
                 } else if ("createdOn".equals(fieldName)) {
-                    deserializedChatMessage.createdOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedChatMessage.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("content".equals(fieldName)) {
                     deserializedChatMessage.content = ChatMessageContent.fromJson(reader);
                 } else if ("senderDisplayName".equals(fieldName)) {
@@ -371,11 +378,11 @@ public final class ChatMessage implements JsonSerializable<ChatMessage> {
                     deserializedChatMessage.senderCommunicationIdentifier
                         = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("deletedOn".equals(fieldName)) {
-                    deserializedChatMessage.deletedOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedChatMessage.deletedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("editedOn".equals(fieldName)) {
-                    deserializedChatMessage.editedOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedChatMessage.editedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("metadata".equals(fieldName)) {
                     Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
                     deserializedChatMessage.metadata = metadata;

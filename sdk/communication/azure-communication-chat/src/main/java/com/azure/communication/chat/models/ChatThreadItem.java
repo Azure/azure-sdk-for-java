@@ -5,6 +5,7 @@
 package com.azure.communication.chat.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -34,7 +35,8 @@ public final class ChatThreadItem implements JsonSerializable<ChatThreadItem> {
     private OffsetDateTime deletedOn;
 
     /*
-     * The timestamp when the last message arrived at the server. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp when the last message arrived at the server. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
     private OffsetDateTime lastMessageReceivedOn;
 
@@ -150,11 +152,11 @@ public final class ChatThreadItem implements JsonSerializable<ChatThreadItem> {
                 } else if ("topic".equals(fieldName)) {
                     deserializedChatThreadItem.topic = reader.getString();
                 } else if ("deletedOn".equals(fieldName)) {
-                    deserializedChatThreadItem.deletedOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedChatThreadItem.deletedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastMessageReceivedOn".equals(fieldName)) {
-                    deserializedChatThreadItem.lastMessageReceivedOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedChatThreadItem.lastMessageReceivedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

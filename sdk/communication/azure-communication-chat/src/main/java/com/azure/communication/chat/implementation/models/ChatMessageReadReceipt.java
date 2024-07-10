@@ -5,6 +5,7 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,7 +20,9 @@ import java.time.format.DateTimeFormatter;
 @Fluent
 public final class ChatMessageReadReceipt implements JsonSerializable<ChatMessageReadReceipt> {
     /*
-     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may be set which must match the kind enum value.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     private CommunicationIdentifierModel senderCommunicationIdentifier;
 
@@ -141,8 +144,8 @@ public final class ChatMessageReadReceipt implements JsonSerializable<ChatMessag
                 } else if ("chatMessageId".equals(fieldName)) {
                     deserializedChatMessageReadReceipt.chatMessageId = reader.getString();
                 } else if ("readOn".equals(fieldName)) {
-                    deserializedChatMessageReadReceipt.readOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedChatMessageReadReceipt.readOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
