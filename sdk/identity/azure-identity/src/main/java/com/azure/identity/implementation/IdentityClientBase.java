@@ -267,7 +267,6 @@ public abstract class IdentityClientBase {
             applicationBuilder.clientCapabilities(set);
         }
 
-
         applicationBuilder.sendX5c(options.isIncludeX5c());
         initializeHttpPipelineAdapter();
 
