@@ -32,9 +32,9 @@ To update generated files for calling service, run the following command
 ### Code generation settings
 ``` yaml
 tag: package-2022-04-07-preview
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.33'
 require:
-    - https://github.com/richardcho-msft/azure-rest-api-specs/blob/dev-communication-CallingServer-2022-04-07-preview/specification/communication/data-plane/CallingServer/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/anuchan/add-callingserver-2022-04-07-preview/specification/communication/data-plane/CallingServer/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
