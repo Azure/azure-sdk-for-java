@@ -3,16 +3,17 @@
 
 package com.azure.core.implementation.logging;
 
+import com.azure.core.implementation.StringBuilderWriter;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.LogLevel;
+import org.slf4j.Logger;
+import org.slf4j.Marker;
 import org.slf4j.helpers.FormattingTuple;
-import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.InvalidPathException;
 import java.time.LocalDateTime;
@@ -21,8 +22,7 @@ import java.time.temporal.ChronoField;
 /**
  * This class is an internal implementation of slf4j logger.
  */
-public final class DefaultLogger extends MarkerIgnoringBase {
-    private static final long serialVersionUID = -144261058636441630L;
+public final class DefaultLogger implements Logger {
 
     // The template for the log message:
     // YYYY-MM-DD HH:MM:ss.SSS [thread] [level] classpath - message
@@ -156,6 +156,36 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         log(TRACE, msg, t);
     }
 
+    @Override
+    public boolean isTraceEnabled(Marker marker) {
+        return isTraceEnabled();
+    }
+
+    @Override
+    public void trace(Marker marker, String s) {
+        trace(s);
+    }
+
+    @Override
+    public void trace(Marker marker, String s, Object o) {
+        trace(s, o);
+    }
+
+    @Override
+    public void trace(Marker marker, String s, Object o, Object o1) {
+        trace(s, o, o1);
+    }
+
+    @Override
+    public void trace(Marker marker, String s, Object... objects) {
+        trace(s, objects);
+    }
+
+    @Override
+    public void trace(Marker marker, String s, Throwable throwable) {
+        trace(s, throwable);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -199,6 +229,36 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     @Override
     public void debug(final String msg, final Throwable t) {
         log(DEBUG, msg, t);
+    }
+
+    @Override
+    public boolean isDebugEnabled(Marker marker) {
+        return isDebugEnabled();
+    }
+
+    @Override
+    public void debug(Marker marker, String s) {
+        debug(s);
+    }
+
+    @Override
+    public void debug(Marker marker, String s, Object o) {
+        debug(s, o);
+    }
+
+    @Override
+    public void debug(Marker marker, String s, Object o, Object o1) {
+        debug(s, o, o1);
+    }
+
+    @Override
+    public void debug(Marker marker, String s, Object... objects) {
+        debug(s, objects);
+    }
+
+    @Override
+    public void debug(Marker marker, String s, Throwable throwable) {
+        debug(s, throwable);
     }
 
     /**
@@ -249,6 +309,36 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         log(INFO, msg, t);
     }
 
+    @Override
+    public boolean isInfoEnabled(Marker marker) {
+        return isInfoEnabled();
+    }
+
+    @Override
+    public void info(Marker marker, String s) {
+        info(s);
+    }
+
+    @Override
+    public void info(Marker marker, String s, Object o) {
+        info(s, o);
+    }
+
+    @Override
+    public void info(Marker marker, String s, Object o, Object o1) {
+        info(s, o, o1);
+    }
+
+    @Override
+    public void info(Marker marker, String s, Object... objects) {
+        info(s, objects);
+    }
+
+    @Override
+    public void info(Marker marker, String s, Throwable throwable) {
+        info(s, throwable);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -297,6 +387,36 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         log(WARN, msg, t);
     }
 
+    @Override
+    public boolean isWarnEnabled(Marker marker) {
+        return isWarnEnabled();
+    }
+
+    @Override
+    public void warn(Marker marker, String s) {
+        warn(s);
+    }
+
+    @Override
+    public void warn(Marker marker, String s, Object o) {
+        warn(s, o);
+    }
+
+    @Override
+    public void warn(Marker marker, String s, Object o, Object o1) {
+        warn(s, o, o1);
+    }
+
+    @Override
+    public void warn(Marker marker, String s, Object... objects) {
+        warn(s, objects);
+    }
+
+    @Override
+    public void warn(Marker marker, String s, Throwable throwable) {
+        warn(s, throwable);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -343,6 +463,36 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     @Override
     public void error(final String msg, final Throwable t) {
         log(ERROR, msg, t);
+    }
+
+    @Override
+    public boolean isErrorEnabled(Marker marker) {
+        return isErrorEnabled();
+    }
+
+    @Override
+    public void error(Marker marker, String s) {
+        error(s);
+    }
+
+    @Override
+    public void error(Marker marker, String s, Object o) {
+        error(s, o);
+    }
+
+    @Override
+    public void error(Marker marker, String s, Object o, Object o1) {
+        error(s, o, o1);
+    }
+
+    @Override
+    public void error(Marker marker, String s, Object... objects) {
+        error(s, objects);
+    }
+
+    @Override
+    public void error(Marker marker, String s, Throwable throwable) {
+        error(s, throwable);
     }
 
     /**
@@ -452,10 +602,9 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     void writeWithThrowable(StringBuilder stringBuilder, Throwable t) {
         if (t != null) {
-            StringWriter sw = new StringWriter();
+            StringBuilderWriter sw = new StringBuilderWriter(stringBuilder);
             try (PrintWriter pw = new PrintWriter(sw)) {
                 t.printStackTrace(pw);
-                stringBuilder.append(sw);
             }
         }
         logLocation.print(stringBuilder.toString());

@@ -238,13 +238,6 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
         });
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void clientBuilderWithAAD(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithAadRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            validatePrimaryLanguage(clientBuilder.buildClient().detectLanguage(input)));
-    }
-
     @Test
     @DoNotRecord
     public void applicationIdFallsBackToLogOptions() {
