@@ -7,7 +7,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -584,14 +583,13 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    @LiveOnly
     public void canGetSqlServerCapabilitiesAndCreateIdentity() throws Exception {
         // LiveOnly because "test timing out after latest test proxy update"
         String sqlServerAdminName = "sqladmin";
         String sqlServerAdminPassword = password();
         String databaseName = "db-from-sample";
 
-        RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST);
+        RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_WEST2);
         Assertions.assertNotNull(regionCapabilities);
         Assertions.assertNotNull(regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0"));
         Assertions
@@ -611,7 +609,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             sqlServerManager
                 .sqlServers()
                 .define(sqlServerName)
-                .withRegion(Region.US_EAST)
+                .withRegion(Region.US_WEST2)
                 .withNewResourceGroup(rgName)
                 .withAdministratorLogin(sqlServerAdminName)
                 .withAdministratorPassword(sqlServerAdminPassword)
@@ -1654,7 +1652,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    @LiveOnly
     public void testRandomSku() {
         // LiveOnly because "test timing out after latest test proxy update"
         // "M" series is not supported in this region
@@ -1663,7 +1660,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         List<ElasticPoolSku> elasticPoolSkus = ElasticPoolSku.getAll().stream().filter(sku -> !"M".equals(sku.toSku().family())).collect(Collectors.toCollection(LinkedList::new));
         Collections.shuffle(elasticPoolSkus);
 
-        sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()
+        sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_WEST2).supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
                     edition.supportedServiceLevelObjectives().forEach(serviceObjective -> {
@@ -1682,7 +1679,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             });
 
         SqlServer sqlServer = sqlServerManager.sqlServers().define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin("userName")
             .withAdministratorPassword(password())
