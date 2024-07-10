@@ -8,7 +8,9 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import com.azure.core.credential.AzureKeyCredential;
@@ -26,6 +28,8 @@ import com.azure.health.insights.radiologyinsights.models.Encounter;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
+import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible;
+import com.azure.health.insights.radiologyinsights.models.FhirR4Extension;
 import com.azure.health.insights.radiologyinsights.models.FindingOptions;
 import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
 import com.azure.health.insights.radiologyinsights.models.OrderedProcedure;
@@ -47,19 +51,25 @@ import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 class RadiologyInsightsClientTestBase extends TestProxyTestBase {
 
     private static final String FAKE_API_KEY = "fakeKeyPlaceholder";
+    private String documentContent;
+    private RadiologyInsightsInferenceType inferenceType;
+    private String orderCode;
+    private String orderDescription;
 
-    void testRadiologyInsightsgWithResponse(Consumer<RadiologyInsightsData> testRunner) {
+    void testRadiologyInsightsWithResponse(Consumer<RadiologyInsightsData> testRunner) {
         testRunner.accept(createRadiologyInsightsRequest());
     }
 
     RadiologyInsightsClientBuilder getClientBuilder() {
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_API_KEY", FAKE_API_KEY);
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "https://localhost:8080");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "http://localhost:8080");
 
-        RadiologyInsightsClientBuilder builder = new RadiologyInsightsClientBuilder()
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey));
+        RadiologyInsightsClientBuilder builder = new RadiologyInsightsClientBuilder().endpoint(endpoint);
+        if (apiKey != null && !apiKey.equals(FAKE_API_KEY)) {
+            builder = builder.credential(new AzureKeyCredential(apiKey));
+        }
 
+        System.out.println("Test mode: " + getTestMode());
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.PLAYBACK) {
@@ -74,7 +84,7 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    private static RadiologyInsightsData createRadiologyInsightsRequest() {
+    private RadiologyInsightsData createRadiologyInsightsRequest() {
         List<PatientRecord> patientRecords = createPatientRecords();
         RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
@@ -126,12 +136,12 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         FhirR4CodeableConcept procedureCode = new FhirR4CodeableConcept();
         FhirR4Coding procedureCoding = new FhirR4Coding();
         procedureCoding.setSystem("Http://hl7.org/fhir/ValueSet/cpt-all");
-        procedureCoding.setCode("MVLW");
-        procedureCoding.setDisplay("IH Hip 1 View Left");
+        procedureCoding.setCode(getOrderCode());
+        procedureCoding.setDisplay(getOrderDescription());
 
         procedureCode.setCoding(Arrays.asList(procedureCoding));
         orderedProcedure.setCode(procedureCode);
-        orderedProcedure.setDescription("IH Hip 1 View Left");
+        orderedProcedure.setDescription(getOrderDescription());
 
         adminMetadata.setOrderedProcedures(Arrays.asList(orderedProcedure));
         adminMetadata.setEncounterId("encounterid1");
@@ -149,16 +159,16 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         return patientRecords;
     }
 
-    private static PatientDocument getPatientDocument() {
-        DocumentContent documentContent = new DocumentContent(DocumentContentSourceType.INLINE, "Findings: There is a total hip prosthesis.");
+    private PatientDocument getPatientDocument() {
+        DocumentContent documentContent = new DocumentContent(DocumentContentSourceType.INLINE, this.getDocumentContent());
         return new PatientDocument(DocumentType.NOTE, "docid1", documentContent);
     }
 
-    private static RadiologyInsightsModelConfiguration createRadiologyInsightsModelConfig() {
+    private RadiologyInsightsModelConfiguration createRadiologyInsightsModelConfig() {
         RadiologyInsightsModelConfiguration configuration = new RadiologyInsightsModelConfiguration();
         RadiologyInsightsInferenceOptions inferenceOptions = getRadiologyInsightsInferenceOptions();
         configuration.setInferenceOptions(inferenceOptions);
-        configuration.setInferenceTypes(Arrays.asList(RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY));
+        configuration.setInferenceTypes(Arrays.asList(this.getInferenceType()));
         configuration.setLocale("en-US");
         configuration.setVerbose(false);
         configuration.setIncludeEvidence(true);
@@ -177,4 +187,81 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         inferenceOptions.setFindingOptions(findingOptions);
         return inferenceOptions;
     }
+
+    public String extractEvidence(List<FhirR4Extension> extensions) {
+        String evidence = "";
+        for (FhirR4Extension extension : extensions) {
+            List<FhirR4Extension> subExtensions = extension.getExtension();
+            if (subExtensions != null) {
+                evidence += extractEvidenceToken(subExtensions) + " ";
+            }
+        }
+        return evidence;
+    }
+
+    public String extractEvidenceToken(List<FhirR4Extension> subExtensions) {
+        String evidence = "";
+        int offset = -1;
+        int length = -1;
+        for (FhirR4Extension iExtension : subExtensions) {
+            if (iExtension.getUrl().equals("offset")) {
+                offset = iExtension.getValueInteger();
+            }
+            if (iExtension.getUrl().equals("length")) {
+                length = iExtension.getValueInteger();
+            }
+        }
+        if (offset > 0 && length > 0) {
+            //System.out.println("Offset: " + offset + ", length: " + length);
+            evidence = this.getDocumentContent().substring(offset, Math.min(offset + length, this.getDocumentContent().length()));
+        }
+        return evidence;
+    }
+
+    public static Set<String> getCodeStrings(FhirR4CodeableConcept codeableConcept) {
+        Set<String> rv = new HashSet<>();
+        if (codeableConcept != null) {
+            List<FhirR4Coding> codingList = codeableConcept.getCoding();
+            if (codingList != null) {
+                for (FhirR4Coding fhirR4Coding : codingList) {
+                    rv.add("Coding: " + fhirR4Coding.getCode() + ", " + fhirR4Coding.getDisplay() + " (" + fhirR4Coding.getSystem() + ")");
+                }
+            }
+        }
+        return rv;
+    }
+
+    public String getDocumentContent() {
+        return documentContent;
+    }
+
+    public void setDocumentContent(String documentContent) {
+        this.documentContent = documentContent;
+    }
+
+    public RadiologyInsightsInferenceType getInferenceType() {
+        return inferenceType;
+    }
+
+    public void setInferenceType(RadiologyInsightsInferenceType inferenceType) {
+        this.inferenceType = inferenceType;
+    }
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
+    }
+
+    public String getOrderDescription() {
+        return orderDescription;
+    }
+
+    public void setOrderDescription(String orderDescription) {
+        this.orderDescription = orderDescription;
+    }
+
+
 }
