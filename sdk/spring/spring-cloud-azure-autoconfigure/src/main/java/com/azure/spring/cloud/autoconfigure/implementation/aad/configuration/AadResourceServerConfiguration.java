@@ -83,10 +83,11 @@ class AadResourceServerConfiguration {
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     static class DefaultAadResourceServerConfiguration {
 
+        @SuppressWarnings({"deprecation", "removal"})
         @Bean
         @ConditionalOnBean(AadResourceServerProperties.class)
         SecurityFilterChain defaultAadResourceServerFilterChain(HttpSecurity http) throws Exception {
-            http.with(aadResourceServer(), (configurer) -> {});
+            http.apply(aadResourceServer());
             return http.build();
         }
     }

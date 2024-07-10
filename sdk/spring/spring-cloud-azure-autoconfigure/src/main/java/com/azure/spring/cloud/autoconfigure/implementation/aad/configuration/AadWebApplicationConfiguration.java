@@ -45,13 +45,15 @@ class AadWebApplicationConfiguration {
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     static class DefaultAadWebSecurityConfiguration {
 
+        @SuppressWarnings({"deprecation", "removal"})
         @Bean
         SecurityFilterChain defaultAadWebApplicationFilterChain(HttpSecurity http) throws Exception {
             http
-                .with(aadWebApplication(), configurer -> {})
-                .authorizeHttpRequests(matcher -> matcher
+                .apply(aadWebApplication())
+                    .and()
+                .authorizeHttpRequests()
                     .requestMatchers("/login").permitAll()
-                    .anyRequest().authenticated());
+                    .anyRequest().authenticated();
             return http.build();
         }
     }

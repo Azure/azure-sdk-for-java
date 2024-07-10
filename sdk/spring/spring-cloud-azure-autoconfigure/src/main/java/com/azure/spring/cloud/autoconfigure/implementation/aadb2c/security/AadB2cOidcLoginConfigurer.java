@@ -76,16 +76,19 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
      * @param http the http
      * @throws Exception failed to initialize SecurityBuilder
      */
+    @SuppressWarnings({"deprecation", "removal"})
     @Override
     public void init(HttpSecurity http) throws Exception {
         // @formatter:off
-        http
-            .logout(logout -> logout.logoutSuccessHandler(handler))
-            .oauth2Login(
-                oauthLogin -> oauthLogin
-                    .authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint.authorizationRequestResolver(resolver))
-                    .tokenEndpoint(tokenEndpoint -> tokenEndpoint.accessTokenResponseClient(accessTokenResponseClient()))
-            );
+        http.logout()
+                .logoutSuccessHandler(handler)
+                .and()
+                .oauth2Login()
+                .authorizationEndpoint()
+                .authorizationRequestResolver(resolver)
+                .and()
+                .tokenEndpoint()
+                .accessTokenResponseClient(accessTokenResponseClient());
         // @formatter:on
     }
 

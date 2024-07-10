@@ -63,6 +63,7 @@ public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigu
      */
     private Filter conditionalAccessFilter;
 
+    @SuppressWarnings({"deprecation", "removal"})
     @Override
     public void init(HttpSecurity builder)throws Exception {
         super.init(builder);
@@ -78,16 +79,19 @@ public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigu
         this.jwkResolvers = context.getBeanProvider(OAuth2ClientAuthenticationJwkResolver.class);
 
         // @formatter:off
-        builder
-            .oauth2Login(
-                oauth2Login -> oauth2Login
-                    .authorizationEndpoint(
-                        authorizationEndpoint -> authorizationEndpoint.authorizationRequestResolver(requestResolver())
-                    )
-                    .tokenEndpoint(tokenEndpoint -> tokenEndpoint.accessTokenResponseClient(accessTokenResponseClient()))
-                    .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.oidcUserService(oidcUserService))
-            )
-            .logout(logout -> logout.logoutSuccessHandler(oidcLogoutSuccessHandler()));
+        builder.oauth2Login()
+                    .authorizationEndpoint()
+                       .authorizationRequestResolver(requestResolver())
+                       .and()
+                    .tokenEndpoint()
+                       .accessTokenResponseClient(accessTokenResponseClient())
+                       .and()
+                    .userInfoEndpoint()
+                    .oidcUserService(oidcUserService)
+                        .and()
+                    .and()
+               .logout()
+                    .logoutSuccessHandler(oidcLogoutSuccessHandler());
         // @formatter:off
     }
 

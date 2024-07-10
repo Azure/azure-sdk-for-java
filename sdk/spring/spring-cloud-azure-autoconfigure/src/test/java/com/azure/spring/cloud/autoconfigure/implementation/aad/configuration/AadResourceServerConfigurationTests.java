@@ -186,10 +186,12 @@ class AadResourceServerConfigurationTests {
 
         private HttpSecurity savedResourceServerHttpSecurity;
 
+        @SuppressWarnings({"deprecation", "removal"})
         @Bean
         SecurityFilterChain testAadResourceServerFilterChain(HttpSecurity http,
                                                              TestJwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter) throws Exception {
-            http.with(aadResourceServer().jwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter), configurer -> {});
+            http.apply(aadResourceServer()
+                    .jwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter));
             savedResourceServerHttpSecurity = http;
             return http.build();
         }

@@ -285,12 +285,15 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
     @EnableWebSecurity
     public static class AadB2cTestWebSecurityConfiguration {
 
+        @SuppressWarnings({"deprecation", "removal"})
         @Bean
-        public SecurityFilterChain apiFilterChain(HttpSecurity http, AadB2cOidcLoginConfigurer b2cConfigurer) throws Exception {
+        public SecurityFilterChain apiFilterChain(HttpSecurity http, AadB2cOidcLoginConfigurer configurer) throws Exception {
             // @formatter:off
             http
-                .authorizeHttpRequests(matcher -> matcher.anyRequest().authenticated())
-                .with(b2cConfigurer, configurer -> {});
+                .authorizeHttpRequests()
+                .anyRequest().authenticated()
+                .and()
+                .apply(configurer);
             // @formatter:on
             return http.build();
         }
