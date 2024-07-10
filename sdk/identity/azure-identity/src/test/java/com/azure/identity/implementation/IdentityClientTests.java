@@ -119,7 +119,13 @@ public class IdentityClientTests {
     @Test
     public void testValidCertificate() {
         // setup
-        String pfxPath = getClass().getResource("/keyStore.pfx").getPath();
+        URL pfxUrl = getClass().getResource("/keyStore.pfx");
+        String pfxPath;
+        if (pfxUrl.getPath().contains(":")) {
+            pfxPath = pfxUrl.getPath().substring(1);
+        } else {
+            pfxPath = pfxUrl.getPath();
+        }
         String accessToken = "token";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
@@ -169,7 +175,13 @@ public class IdentityClientTests {
     @Test
     public void testInvalidCertificatePassword() {
         // setup
-        String pfxPath = getClass().getResource("/keyStore.pfx").getPath();
+        URL pfxUrl = getClass().getResource("/keyStore.pfx");
+        String pfxPath;
+        if (pfxUrl.getPath().contains(":")) {
+            pfxPath = pfxUrl.getPath().substring(1);
+        } else {
+            pfxPath = pfxUrl.getPath();
+        }
         String accessToken = "token";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);

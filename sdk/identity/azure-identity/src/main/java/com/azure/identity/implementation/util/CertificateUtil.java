@@ -83,5 +83,9 @@ public final class CertificateUtil {
         return x509CertificateList;
     }
 
+    public static boolean isPem(byte[] pem) {
+        return new String(pem, StandardCharsets.UTF_8).contains("-----BEGIN");
+    }
+
     private CertificateUtil() { }
 }
