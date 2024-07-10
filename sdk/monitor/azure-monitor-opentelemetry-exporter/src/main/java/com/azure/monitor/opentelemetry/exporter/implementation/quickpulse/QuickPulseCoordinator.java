@@ -58,13 +58,12 @@ final class QuickPulseCoordinator implements Runnable {
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-        } catch (Throwable t) {
-            if (t instanceof Error) {
-                throw (Error) t;
-            }
+            logger.error("QuickPulseCoordinator was interrupted", e);
+        } catch (Exception exception) {
+            // Not supposed to happen
+            logger.error("QuickPulseCoordinator failed", exception);
         }
     }
-
     @SuppressWarnings("try")
     private long sendData() {
         dataFetcher.prepareQuickPulseDataForSend(qpsServiceRedirectedEndpoint);
