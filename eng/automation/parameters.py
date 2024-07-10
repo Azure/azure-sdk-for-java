@@ -15,7 +15,7 @@ OUTPUT_FOLDER_FORMAT = None
 MAVEN_HOST = "https://repo1.maven.org/maven2"
 MAVEN_URL = MAVEN_HOST + "/{group_id}/{artifact_id}/{version}/{artifact_id}-{version}.jar"
 
-SDK_ROOT = "../../../"  # related to file dir
+SDK_ROOT = "../../"  # related to file dir
 AUTOREST_CORE_VERSION = "3.9.7"
 AUTOREST_JAVA = "@autorest/java@4.1.32"
 DEFAULT_VERSION = "1.0.0-beta.1"
