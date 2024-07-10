@@ -58,8 +58,10 @@ public final class AddParticipantsSucceededEvent extends CallAutomationEventBase
             .collect(Collectors.toList());
     }
 
-    private AddParticipantsSucceededEvent() {
-
+    private AddParticipantsSucceededEvent(String operationContext, ResultInfo resultInfo, List<CommunicationIdentifier> participants) {
+        this.operationContext = operationContext;
+        this.resultInfo = resultInfo;
+        this.participants = participants;
     }
 
     /**
@@ -100,11 +102,13 @@ public final class AddParticipantsSucceededEvent extends CallAutomationEventBase
         jsonWriter.writeStartArray("participants");
         for (CommunicationIdentifier participant : participants) {
             final CommunicationIdentifierModel inner = CommunicationIdentifierConverter.convert(participant);
-            // TODO (anu): Fix this
+            // TODO (anu): Enable this after refreshing the protocol layer.
             // jsonWriter.writeJson(inner);
         }
         jsonWriter.writeEndArray();
-        super.writeFields(jsonWriter);
+        jsonWriter.writeStringField("callConnectionId", super.getCallConnectionId());
+        jsonWriter.writeStringField("serverCallId", super.getServerCallId());
+        jsonWriter.writeStringField("correlationId", super.getCorrelationId());
         return jsonWriter.writeEndObject();
     }
 
@@ -118,25 +122,38 @@ public final class AddParticipantsSucceededEvent extends CallAutomationEventBase
      */
     public static AddParticipantsSucceededEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            final AddParticipantsSucceededEvent event = new AddParticipantsSucceededEvent();
+            String operationContext = null;
+            ResultInfo resultInfo = null;
+            List<CommunicationIdentifier> participants = null;
+            String callConnectionId = null;
+            String serverCallId = null;
+            String correlationId = null;
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("operationContext".equals(fieldName)) {
-                    event.operationContext = reader.getString();
+                    operationContext = reader.getString();
                 } else if ("resultInfo".equals(fieldName)) {
-                    event.resultInfo = ResultInfo.fromJson(reader);
+                    resultInfo = ResultInfo.fromJson(reader);
                 } else if ("participants".equals(fieldName)) {
-                    event.participants = null;
-                    // TODO (anu): Fix this
-                    // event.participants = reader.readArray(CommunicationIdentifierModel::fromJson)
+                    participants = null;
+                    // TODO (anu): Enable this after refreshing the protocol layer.
+                    // participants = reader.readArray(CommunicationIdentifierModel::fromJson)
                     //    .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+                }  else if ("callConnectionId".equals(fieldName)) {
+                    callConnectionId = reader.getString();
+                } else if ("serverCallId".equals(fieldName)) {
+                    serverCallId = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    correlationId = reader.getString();
                 } else {
-                    if (!event.readField(fieldName, reader)) {
-                        reader.skipChildren();
-                    }
+                    reader.skipChildren();
                 }
             }
+            final AddParticipantsSucceededEvent event = new AddParticipantsSucceededEvent(operationContext, resultInfo, participants);
+            event.setCorrelationId(correlationId)
+                .setServerCallId(serverCallId)
+                .setCallConnectionId(callConnectionId);
             return event;
         });
     }

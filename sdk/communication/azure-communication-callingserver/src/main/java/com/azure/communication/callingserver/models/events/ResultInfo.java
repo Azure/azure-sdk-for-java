@@ -72,8 +72,8 @@ public final class ResultInfo implements JsonSerializable<ResultInfo> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("code", this.code);
-        jsonWriter.writeIntField("subCode", this.subCode);
+        jsonWriter.writeNumberField("code", this.code);
+        jsonWriter.writeNumberField("subCode", this.subCode);
         jsonWriter.writeStringField("message", this.message);
         return jsonWriter.writeEndObject();
     }
@@ -93,9 +93,9 @@ public final class ResultInfo implements JsonSerializable<ResultInfo> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("code".equals(fieldName)) {
-                    information.code = reader.getInt();
+                    information.code = reader.getNullable(JsonReader::getInt);
                 } else if ("subCode".equals(fieldName)) {
-                    information.subCode = reader.getInt();
+                    information.subCode = reader.getNullable(JsonReader::getInt);
                 } else if ("message".equals(fieldName)) {
                     information.message = reader.getString();
                 } else {

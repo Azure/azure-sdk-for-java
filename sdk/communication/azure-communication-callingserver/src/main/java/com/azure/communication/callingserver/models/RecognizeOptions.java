@@ -180,23 +180,28 @@ public class RecognizeOptions implements JsonSerializable<RecognizeOptions> {
      */
     public static RecognizeOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            final RecognizeOptions source = new RecognizeOptions(null, null);
+            RecognizeInputType recognizeInputType = null;
+            Boolean stopCurrentOperations = null;
+            RecognizeConfigurations recognizeConfiguration = null;
+            String operationContext = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("recognizeInputType".equals(fieldName)) {
-                    source.recognizeInputType = RecognizeInputType.fromString(reader.getString());
+                    recognizeInputType = RecognizeInputType.fromString(reader.getString());
                 } else if ("stopCurrentOperations".equals(fieldName)) {
-                    source.stopCurrentOperations = reader.getNullable(JsonReader::getBoolean);
+                    stopCurrentOperations = reader.getNullable(JsonReader::getBoolean);
                 } else if ("recognizeConfiguration".equals(fieldName)) {
-                    source.recognizeConfiguration = RecognizeConfigurations.fromJson(reader);
+                    recognizeConfiguration = RecognizeConfigurations.fromJson(reader);
                 } else if ("operationContext".equals(fieldName)) {
-                    source.operationContext = reader.getString();
+                    operationContext = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return source;
+            return new RecognizeOptions(recognizeInputType, recognizeConfiguration)
+                .setStopCurrentOperations(stopCurrentOperations)
+                .setOperationContext(operationContext);
         });
     }
 }

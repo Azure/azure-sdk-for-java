@@ -30,6 +30,12 @@ public final class PlayCompleted extends CallAutomationEventBase {
         this.operationContext = null;
         this.resultInfo = null;
     }
+
+    private PlayCompleted(String operationContext, ResultInfo resultInfo) {
+        this.operationContext = operationContext;
+        this.resultInfo = resultInfo;
+    }
+
     /**
      * Get the operationContext property: Operation context.
      *
@@ -56,7 +62,9 @@ public final class PlayCompleted extends CallAutomationEventBase {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operationContext", operationContext);
         jsonWriter.writeJsonField("resultInfo", resultInfo);
-        super.writeFields(jsonWriter);
+        jsonWriter.writeStringField("callConnectionId", super.getCallConnectionId());
+        jsonWriter.writeStringField("serverCallId", super.getServerCallId());
+        jsonWriter.writeStringField("correlationId", super.getCorrelationId());
         return jsonWriter.writeEndObject();
     }
 
@@ -70,20 +78,32 @@ public final class PlayCompleted extends CallAutomationEventBase {
      */
     public static PlayCompleted fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            final PlayCompleted event = new PlayCompleted();
+            String operationContext = null;
+            ResultInfo resultInfo = null;
+            String callConnectionId = null;
+            String serverCallId = null;
+            String correlationId = null;
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("operationContext".equals(fieldName)) {
-                    event.operationContext = reader.getString();
+                    operationContext = reader.getString();
                 } else if ("resultInfo".equals(fieldName)) {
-                    event.resultInfo = ResultInfo.fromJson(reader);
+                    resultInfo = ResultInfo.fromJson(reader);
+                } else if ("callConnectionId".equals(fieldName)) {
+                    callConnectionId = reader.getString();
+                } else if ("serverCallId".equals(fieldName)) {
+                    serverCallId = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    correlationId = reader.getString();
                 } else {
-                    if (!event.readField(fieldName, reader)) {
-                        reader.skipChildren();
-                    }
+                    reader.skipChildren();
                 }
             }
+            final PlayCompleted event = new PlayCompleted(operationContext, resultInfo);
+            event.setCorrelationId(correlationId)
+                .setServerCallId(serverCallId)
+                .setCallConnectionId(callConnectionId);
             return event;
         });
     }

@@ -47,7 +47,7 @@ public final class FileSource extends PlaySource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("uri", uri);
-        super.writeFields(jsonWriter);
+        jsonWriter.writeStringField("playSourceId", super.getPlaySourceId());
         return jsonWriter.writeEndObject();
     }
 
@@ -67,10 +67,10 @@ public final class FileSource extends PlaySource {
                 reader.nextToken();
                 if ("uri".equals(fieldName)) {
                     source.uri = reader.getString();
+                } else if ("playSourceId".equals(fieldName)) {
+                    source.setPlaySourceId(reader.getString());
                 } else {
-                    if (!source.readField(fieldName, reader)) {
-                        reader.skipChildren();
-                    }
+                    reader.skipChildren();
                 }
             }
             return source;

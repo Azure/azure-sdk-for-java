@@ -31,7 +31,7 @@ public final class ParticipantsUpdatedEvent extends CallAutomationEventBase {
     private List<CommunicationIdentifier> participants;
 
     @JsonCreator
-    private ParticipantsUpdatedEvent(@JsonProperty("participants") List<Map<String, Object>> participants) {
+    private ParticipantsUpdatedEvent(@JsonProperty("participants") List<Map<String, Object>> participants, Integer ignore) {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
@@ -44,8 +44,8 @@ public final class ParticipantsUpdatedEvent extends CallAutomationEventBase {
             .collect(Collectors.toList());
     }
 
-    private ParticipantsUpdatedEvent() {
-
+    private ParticipantsUpdatedEvent(List<CommunicationIdentifier> participants) {
+        this.participants = participants;
     }
 
     /**
@@ -66,11 +66,13 @@ public final class ParticipantsUpdatedEvent extends CallAutomationEventBase {
         jsonWriter.writeStartArray("participants");
         for (CommunicationIdentifier participant : participants) {
             final CommunicationIdentifierModel inner = CommunicationIdentifierConverter.convert(participant);
-            // TODO (anu): Fix this
+            // TODO (anu): Enable this after refreshing the protocol layer.
             // jsonWriter.writeJson(inner);
         }
         jsonWriter.writeEndArray();
-        super.writeFields(jsonWriter);
+        jsonWriter.writeStringField("callConnectionId", super.getCallConnectionId());
+        jsonWriter.writeStringField("serverCallId", super.getServerCallId());
+        jsonWriter.writeStringField("correlationId", super.getCorrelationId());
         return jsonWriter.writeEndObject();
     }
 
@@ -84,21 +86,32 @@ public final class ParticipantsUpdatedEvent extends CallAutomationEventBase {
      */
     public static ParticipantsUpdatedEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            final ParticipantsUpdatedEvent event = new ParticipantsUpdatedEvent();
+            List<CommunicationIdentifier> participants = null;
+            String callConnectionId = null;
+            String serverCallId = null;
+            String correlationId = null;
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("participants".equals(fieldName)) {
-                    event.participants = null;
-                    // TODO (anu): Fix this
+                    participants = null;
+                    // TODO (anu): Enable this after refreshing the protocol layer.
                     // event.participants = reader.readArray(CommunicationIdentifierModel::fromJson)
                     //    .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+                } else if ("callConnectionId".equals(fieldName)) {
+                    callConnectionId = reader.getString();
+                } else if ("serverCallId".equals(fieldName)) {
+                    serverCallId = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    correlationId = reader.getString();
                 } else {
-                    if (!event.readField(fieldName, reader)) {
-                        reader.skipChildren();
-                    }
+                    reader.skipChildren();
                 }
             }
+            final ParticipantsUpdatedEvent event = new ParticipantsUpdatedEvent(participants);
+            event.setCorrelationId(correlationId)
+                .setServerCallId(serverCallId)
+                .setCallConnectionId(callConnectionId);
             return event;
         });
     }

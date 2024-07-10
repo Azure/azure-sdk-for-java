@@ -23,7 +23,9 @@ public final class CallDisconnectedEvent extends CallAutomationEventBase {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        super.writeFields(jsonWriter);
+        jsonWriter.writeStringField("callConnectionId", super.getCallConnectionId());
+        jsonWriter.writeStringField("serverCallId", super.getServerCallId());
+        jsonWriter.writeStringField("correlationId", super.getCorrelationId());
         return jsonWriter.writeEndObject();
     }
 
@@ -41,7 +43,13 @@ public final class CallDisconnectedEvent extends CallAutomationEventBase {
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if (!event.readField(fieldName, reader)) {
+                if ("callConnectionId".equals(fieldName)) {
+                    event.setCallConnectionId(reader.getString());
+                } else if ("serverCallId".equals(fieldName)) {
+                    event.setServerCallId(reader.getString());
+                } else if ("correlationId".equals(fieldName)) {
+                    event.setCorrelationId(reader.getString());
+                } else {
                     reader.skipChildren();
                 }
             }

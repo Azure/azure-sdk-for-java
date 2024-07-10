@@ -134,7 +134,7 @@ public final class RecognizeConfigurations implements JsonSerializable<Recognize
         jsonWriter.writeBooleanField("interruptPromptAndStartRecognition", this.interruptPromptAndStartRecognition);
         jsonWriter.writeStringField("initialSilenceTimeoutInSeconds", CoreUtils.durationToStringWithDays(initialSilenceTimeoutInSeconds));
         final CommunicationIdentifierModel participant = CommunicationIdentifierConverter.convert(this.targetParticipant);
-        // TODO: (anu): Fix this
+        // TODO: (anu): Enable this after refreshing the protocol layer.
         // jsonWriter.writeJsonField("targetParticipant", participant);
         jsonWriter.writeJsonField("dtmfConfigurations", dtmfConfigurations);
         return jsonWriter.writeEndObject();
@@ -158,10 +158,12 @@ public final class RecognizeConfigurations implements JsonSerializable<Recognize
                     source.interruptPromptAndStartRecognition = reader.getNullable(JsonReader::getBoolean);
                 } else if ("initialSilenceTimeoutInSeconds".equals(fieldName)) {
                     final String value = reader.getString();
-                    source.initialSilenceTimeoutInSeconds = Duration.parse(value);
+                    if (!CoreUtils.isNullOrEmpty(value)) {
+                        source.initialSilenceTimeoutInSeconds = Duration.parse(value);
+                    }
                 } else if ("targetParticipant".equals(fieldName)) {
                     source.targetParticipant = null;
-                    // TODO: (anu): Fix this
+                    // TODO: (anu): Enable this after refreshing the protocol layer.
                     // final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
                     // source.targetParticipant = CommunicationIdentifierConverter.convert(inner);
                 } else if ("dtmfConfigurations".equals(fieldName)) {

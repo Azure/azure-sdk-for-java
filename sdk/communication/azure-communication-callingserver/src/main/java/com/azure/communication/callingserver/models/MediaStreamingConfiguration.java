@@ -96,39 +96,42 @@ public final class MediaStreamingConfiguration implements JsonSerializable<Media
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("transportUrl", transportUrl);
-        jsonWriter.writeStringField("transportType", transportType.toString());
-        jsonWriter.writeStringField("contentType", contentType.toString());
-        jsonWriter.writeStringField("audioChannelType", audioChannelType.toString());
+        jsonWriter.writeStringField("transportType", transportType == null ? null : transportType.toString());
+        jsonWriter.writeStringField("contentType", contentType == null ? null : contentType.toString());
+        jsonWriter.writeStringField("audioChannelType", audioChannelType == null ? null : audioChannelType.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of RecognizeConfigurations from the JsonReader.
+     * Reads an instance of MediaStreamingConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RecognizeConfigurations if the JsonReader was pointing to an instance of it, or
+     * @return An instance of MediaStreamingConfiguration if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the RecognizeConfigurations.
+     * @throws IOException If an error occurs while reading the MediaStreamingConfiguration.
      */
     public static MediaStreamingConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            final MediaStreamingConfiguration source = new MediaStreamingConfiguration(null, null, null, null);
+            String transportUrl = null;
+            MediaStreamingTransportType transportType = null;
+            MediaStreamingContentType contentType = null;
+            MediaStreamingAudioChannelType audioChannelType = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("transportUrl".equals(fieldName)) {
-                    source.transportUrl = reader.getString();
+                    transportUrl = reader.getString();
                 } else if ("transportType".equals(fieldName)) {
-                    source.transportType = MediaStreamingTransportType.fromString(reader.getString());
+                    transportType = MediaStreamingTransportType.fromString(reader.getString());
                 } else if ("contentType".equals(fieldName)) {
-                    source.contentType = MediaStreamingContentType.fromString(reader.getString());
+                    contentType = MediaStreamingContentType.fromString(reader.getString());
                 } else if ("audioChannelType".equals(fieldName)) {
-                    source.audioChannelType = MediaStreamingAudioChannelType.fromString(reader.getString());
+                    audioChannelType = MediaStreamingAudioChannelType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return source;
+            return new MediaStreamingConfiguration(transportUrl, transportType, contentType, audioChannelType);
         });
     }
 }

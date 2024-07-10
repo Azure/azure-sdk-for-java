@@ -18,17 +18,22 @@ public final class CallTransferFailedEvent extends CallAutomationEventBase {
      * Operation context
      */
     @JsonProperty(value = "operationContext")
-    private String operationContext;
+    private final String operationContext;
 
     /*
      * The resultInfo property.
      */
     @JsonProperty(value = "resultInfo")
-    private ResultInfo resultInfo;
+    private final ResultInfo resultInfo;
 
     private CallTransferFailedEvent() {
         this.resultInfo = null;
         this.operationContext = null;
+    }
+
+    private CallTransferFailedEvent(String operationContext, ResultInfo resultInfo) {
+        this.operationContext = operationContext;
+        this.resultInfo = resultInfo;
     }
 
     /**
@@ -57,7 +62,9 @@ public final class CallTransferFailedEvent extends CallAutomationEventBase {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operationContext", operationContext);
         jsonWriter.writeJsonField("resultInfo", resultInfo);
-        super.writeFields(jsonWriter);
+        jsonWriter.writeStringField("callConnectionId", super.getCallConnectionId());
+        jsonWriter.writeStringField("serverCallId", super.getServerCallId());
+        jsonWriter.writeStringField("correlationId", super.getCorrelationId());
         return jsonWriter.writeEndObject();
     }
 
@@ -71,18 +78,32 @@ public final class CallTransferFailedEvent extends CallAutomationEventBase {
      */
     public static CallTransferFailedEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            final CallTransferFailedEvent event = new CallTransferFailedEvent();
+            String operationContext = null;
+            ResultInfo resultInfo = null;
+            String callConnectionId = null;
+            String serverCallId = null;
+            String correlationId = null;
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("resultInfo".equals(fieldName)) {
-                    event.resultInfo = ResultInfo.fromJson(reader);
+                if ("operationContext".equals(fieldName)) {
+                    operationContext = reader.getString();
+                } else if ("resultInfo".equals(fieldName)) {
+                    resultInfo = ResultInfo.fromJson(reader);
+                } else if ("callConnectionId".equals(fieldName)) {
+                    callConnectionId = reader.getString();
+                } else if ("serverCallId".equals(fieldName)) {
+                    serverCallId = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    correlationId = reader.getString();
                 } else {
-                    if (!event.readField(fieldName, reader)) {
-                        reader.skipChildren();
-                    }
+                    reader.skipChildren();
                 }
             }
+            final CallTransferFailedEvent event = new CallTransferFailedEvent(operationContext, resultInfo);
+            event.setCorrelationId(correlationId)
+                .setServerCallId(serverCallId)
+                .setCallConnectionId(callConnectionId);
             return event;
         });
     }
