@@ -3,27 +3,18 @@
 
 package com.azure.health.deidentification.testutils;
 
+import com.azure.core.test.TestMode;
+
 import java.time.Instant;
 
 public class Utils {
-
-    /**
-     * Generates a job name by appending the current timestamp in milliseconds to the specified base name.
-     *
-     * <p>Example usage:</p>
-     * <pre>
-     * {@code
-     * String jobName = generateJobName("job");
-     * System.out.println(jobName); // Output: job-1625689000000
-     * }
-     * </pre>
-     *
-     * @param baseName the base name to which the timestamp will be appended
-     * @return a new job name composed of the base name and the current timestamp in milliseconds
-     */
-    public static String generateJobName(String baseName) {
+    public static String generateJobName(String baseName, TestMode testMode) {
         long timestamp = Instant.now().toEpochMilli();
-        return baseName + "-" + timestamp;
+        String jobName = baseName + "-" + timestamp;
+        if(testMode == TestMode.RECORD || testMode == TestMode.PLAYBACK) {
+            jobName = baseName;
+        }
+        return jobName;
     }
 
 }
