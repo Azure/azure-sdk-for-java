@@ -26,7 +26,7 @@ public final class BlobStorage extends ExternalStorage {
      */
 
     public BlobStorage(String containerUrl) {
-        super(RecordingStorageType.BLOB_STORAGE);
+        super(RecordingStorageType.AZURE_BLOB_STORAGE);
         this.containerUrl = containerUrl;
     }
 
