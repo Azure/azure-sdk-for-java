@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of access policy. */
+/**
+ * Provisioning state of access policy.
+ */
 public final class AccessPolicyProvisioningState extends ExpandableStringEnum<AccessPolicyProvisioningState> {
-    /** Static value Updating for AccessPolicyProvisioningState. */
+    /**
+     * Static value Updating for AccessPolicyProvisioningState.
+     */
     public static final AccessPolicyProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Succeeded for AccessPolicyProvisioningState. */
+    /**
+     * Static value Succeeded for AccessPolicyProvisioningState.
+     */
     public static final AccessPolicyProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Deleting for AccessPolicyProvisioningState. */
+    /**
+     * Static value Deleting for AccessPolicyProvisioningState.
+     */
     public static final AccessPolicyProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Deleted for AccessPolicyProvisioningState. */
+    /**
+     * Static value Deleted for AccessPolicyProvisioningState.
+     */
     public static final AccessPolicyProvisioningState DELETED = fromString("Deleted");
 
-    /** Static value Canceled for AccessPolicyProvisioningState. */
+    /**
+     * Static value Canceled for AccessPolicyProvisioningState.
+     */
     public static final AccessPolicyProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Failed for AccessPolicyProvisioningState. */
+    /**
+     * Static value Failed for AccessPolicyProvisioningState.
+     */
     public static final AccessPolicyProvisioningState FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of AccessPolicyProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class AccessPolicyProvisioningState extends ExpandableStringEnum<Ac
 
     /**
      * Creates or finds a AccessPolicyProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AccessPolicyProvisioningState.
      */
@@ -50,7 +64,7 @@ public final class AccessPolicyProvisioningState extends ExpandableStringEnum<Ac
 
     /**
      * Gets known AccessPolicyProvisioningState values.
-     *
+     * 
      * @return known AccessPolicyProvisioningState values.
      */
     public static Collection<AccessPolicyProvisioningState> values() {

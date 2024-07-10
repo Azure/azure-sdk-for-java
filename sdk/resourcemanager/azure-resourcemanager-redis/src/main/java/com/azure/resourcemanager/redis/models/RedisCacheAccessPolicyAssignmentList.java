@@ -9,7 +9,9 @@ import com.azure.resourcemanager.redis.fluent.models.RedisCacheAccessPolicyAssig
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of access policies assignments (with properties) of a Redis cache. */
+/**
+ * List of access policies assignments (with properties) of a Redis cache.
+ */
 @Fluent
 public final class RedisCacheAccessPolicyAssignmentList {
     /*
@@ -24,13 +26,15 @@ public final class RedisCacheAccessPolicyAssignmentList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of RedisCacheAccessPolicyAssignmentList class. */
+    /**
+     * Creates an instance of RedisCacheAccessPolicyAssignmentList class.
+     */
     public RedisCacheAccessPolicyAssignmentList() {
     }
 
     /**
      * Get the value property: List of access policies assignments (with properties) of a Redis cache.
-     *
+     * 
      * @return the value value.
      */
     public List<RedisCacheAccessPolicyAssignmentInner> value() {
@@ -39,7 +43,7 @@ public final class RedisCacheAccessPolicyAssignmentList {
 
     /**
      * Set the value property: List of access policies assignments (with properties) of a Redis cache.
-     *
+     * 
      * @param value the value value to set.
      * @return the RedisCacheAccessPolicyAssignmentList object itself.
      */
@@ -50,7 +54,7 @@ public final class RedisCacheAccessPolicyAssignmentList {
 
     /**
      * Get the nextLink property: Link for next set.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class RedisCacheAccessPolicyAssignmentList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

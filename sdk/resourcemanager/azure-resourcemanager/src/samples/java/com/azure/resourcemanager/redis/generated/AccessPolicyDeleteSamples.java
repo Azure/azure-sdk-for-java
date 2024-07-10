@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-/** Samples for AccessPolicy Delete. */
+/**
+ * Samples for AccessPolicy Delete.
+ */
 public final class AccessPolicyDeleteSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCacheAccessPolicyDelete.json
+     * x-ms-original-file:
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheAccessPolicyDelete.json
      */
     /**
      * Sample code: RedisCacheAccessPolicyDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void redisCacheAccessPolicyDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .redisCaches()
+        azure.redisCaches()
             .manager()
             .serviceClient()
             .getAccessPolicies()

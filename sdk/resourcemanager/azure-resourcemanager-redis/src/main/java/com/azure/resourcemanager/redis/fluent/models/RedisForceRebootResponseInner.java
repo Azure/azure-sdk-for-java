@@ -7,7 +7,9 @@ package com.azure.resourcemanager.redis.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response to force reboot for Redis cache. */
+/**
+ * Response to force reboot for Redis cache.
+ */
 @Immutable
 public final class RedisForceRebootResponseInner {
     /*
@@ -16,13 +18,15 @@ public final class RedisForceRebootResponseInner {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of RedisForceRebootResponseInner class. */
+    /**
+     * Creates an instance of RedisForceRebootResponseInner class.
+     */
     public RedisForceRebootResponseInner() {
     }
 
     /**
      * Get the message property: Status message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -31,7 +35,7 @@ public final class RedisForceRebootResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

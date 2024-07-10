@@ -9,13 +9,14 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * All Redis Settings. Few possible keys:
- * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
- * etc.
+ * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,
+ * maxmemory-policy,notify-keyspace-events, aof-backup-enabled, aof-storage-connection-string-0,
+ * aof-storage-connection-string-1 etc.
  */
 @Fluent
 public final class RedisConfiguration {
@@ -92,6 +93,12 @@ public final class RedisConfiguration {
     private String maxclients;
 
     /*
+     * The keyspace events which should be monitored.
+     */
+    @JsonProperty(value = "notify-keyspace-events")
+    private String notifyKeyspaceEvents;
+
+    /*
      * Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity,
      * default value is SAS
      */
@@ -112,8 +119,8 @@ public final class RedisConfiguration {
     private String zonalConfiguration;
 
     /*
-     * Specifies whether the authentication is disabled. Setting this property is highly discouraged from security
-     * point of view.
+     * Specifies whether the authentication is disabled. Setting this property is highly discouraged from security point
+     * of view.
      */
     @JsonProperty(value = "authnotrequired")
     private String authnotrequired;
@@ -132,18 +139,22 @@ public final class RedisConfiguration {
 
     /*
      * All Redis Settings. Few possible keys:
-     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-     * etc.
+     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,
+     * maxmemory-policy,notify-keyspace-events, aof-backup-enabled, aof-storage-connection-string-0,
+     * aof-storage-connection-string-1 etc.
      */
-    @JsonIgnore private Map<String, String> additionalProperties;
+    @JsonIgnore
+    private Map<String, String> additionalProperties;
 
-    /** Creates an instance of RedisConfiguration class. */
+    /**
+     * Creates an instance of RedisConfiguration class.
+     */
     public RedisConfiguration() {
     }
 
     /**
      * Get the rdbBackupEnabled property: Specifies whether the rdb backup is enabled.
-     *
+     * 
      * @return the rdbBackupEnabled value.
      */
     public String rdbBackupEnabled() {
@@ -152,7 +163,7 @@ public final class RedisConfiguration {
 
     /**
      * Set the rdbBackupEnabled property: Specifies whether the rdb backup is enabled.
-     *
+     * 
      * @param rdbBackupEnabled the rdbBackupEnabled value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -164,7 +175,7 @@ public final class RedisConfiguration {
     /**
      * Get the rdbBackupFrequency property: Specifies the frequency for creating rdb backup in minutes. Valid values:
      * (15, 30, 60, 360, 720, 1440).
-     *
+     * 
      * @return the rdbBackupFrequency value.
      */
     public String rdbBackupFrequency() {
@@ -174,7 +185,7 @@ public final class RedisConfiguration {
     /**
      * Set the rdbBackupFrequency property: Specifies the frequency for creating rdb backup in minutes. Valid values:
      * (15, 30, 60, 360, 720, 1440).
-     *
+     * 
      * @param rdbBackupFrequency the rdbBackupFrequency value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -185,7 +196,7 @@ public final class RedisConfiguration {
 
     /**
      * Get the rdbBackupMaxSnapshotCount property: Specifies the maximum number of snapshots for rdb backup.
-     *
+     * 
      * @return the rdbBackupMaxSnapshotCount value.
      */
     public String rdbBackupMaxSnapshotCount() {
@@ -194,7 +205,7 @@ public final class RedisConfiguration {
 
     /**
      * Set the rdbBackupMaxSnapshotCount property: Specifies the maximum number of snapshots for rdb backup.
-     *
+     * 
      * @param rdbBackupMaxSnapshotCount the rdbBackupMaxSnapshotCount value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -205,7 +216,7 @@ public final class RedisConfiguration {
 
     /**
      * Get the rdbStorageConnectionString property: The storage account connection string for storing rdb file.
-     *
+     * 
      * @return the rdbStorageConnectionString value.
      */
     public String rdbStorageConnectionString() {
@@ -214,7 +225,7 @@ public final class RedisConfiguration {
 
     /**
      * Set the rdbStorageConnectionString property: The storage account connection string for storing rdb file.
-     *
+     * 
      * @param rdbStorageConnectionString the rdbStorageConnectionString value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -225,7 +236,7 @@ public final class RedisConfiguration {
 
     /**
      * Get the aofBackupEnabled property: Specifies whether the aof backup is enabled.
-     *
+     * 
      * @return the aofBackupEnabled value.
      */
     public String aofBackupEnabled() {
@@ -234,7 +245,7 @@ public final class RedisConfiguration {
 
     /**
      * Set the aofBackupEnabled property: Specifies whether the aof backup is enabled.
-     *
+     * 
      * @param aofBackupEnabled the aofBackupEnabled value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -245,7 +256,7 @@ public final class RedisConfiguration {
 
     /**
      * Get the aofStorageConnectionString0 property: First storage account connection string.
-     *
+     * 
      * @return the aofStorageConnectionString0 value.
      */
     public String aofStorageConnectionString0() {
@@ -254,7 +265,7 @@ public final class RedisConfiguration {
 
     /**
      * Set the aofStorageConnectionString0 property: First storage account connection string.
-     *
+     * 
      * @param aofStorageConnectionString0 the aofStorageConnectionString0 value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -265,7 +276,7 @@ public final class RedisConfiguration {
 
     /**
      * Get the aofStorageConnectionString1 property: Second storage account connection string.
-     *
+     * 
      * @return the aofStorageConnectionString1 value.
      */
     public String aofStorageConnectionString1() {
@@ -274,7 +285,7 @@ public final class RedisConfiguration {
 
     /**
      * Set the aofStorageConnectionString1 property: Second storage account connection string.
-     *
+     * 
      * @param aofStorageConnectionString1 the aofStorageConnectionString1 value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -285,7 +296,7 @@ public final class RedisConfiguration {
 
     /**
      * Get the maxfragmentationmemoryReserved property: Value in megabytes reserved for fragmentation per shard.
-     *
+     * 
      * @return the maxfragmentationmemoryReserved value.
      */
     public String maxfragmentationmemoryReserved() {
@@ -294,7 +305,7 @@ public final class RedisConfiguration {
 
     /**
      * Set the maxfragmentationmemoryReserved property: Value in megabytes reserved for fragmentation per shard.
-     *
+     * 
      * @param maxfragmentationmemoryReserved the maxfragmentationmemoryReserved value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -305,7 +316,7 @@ public final class RedisConfiguration {
 
     /**
      * Get the maxmemoryPolicy property: The eviction strategy used when your data won't fit within its memory limit.
-     *
+     * 
      * @return the maxmemoryPolicy value.
      */
     public String maxmemoryPolicy() {
@@ -314,7 +325,7 @@ public final class RedisConfiguration {
 
     /**
      * Set the maxmemoryPolicy property: The eviction strategy used when your data won't fit within its memory limit.
-     *
+     * 
      * @param maxmemoryPolicy the maxmemoryPolicy value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -325,7 +336,7 @@ public final class RedisConfiguration {
 
     /**
      * Get the maxmemoryReserved property: Value in megabytes reserved for non-cache usage per shard e.g. failover.
-     *
+     * 
      * @return the maxmemoryReserved value.
      */
     public String maxmemoryReserved() {
@@ -334,7 +345,7 @@ public final class RedisConfiguration {
 
     /**
      * Set the maxmemoryReserved property: Value in megabytes reserved for non-cache usage per shard e.g. failover.
-     *
+     * 
      * @param maxmemoryReserved the maxmemoryReserved value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -345,7 +356,7 @@ public final class RedisConfiguration {
 
     /**
      * Get the maxmemoryDelta property: Value in megabytes reserved for non-cache usage per shard e.g. failover.
-     *
+     * 
      * @return the maxmemoryDelta value.
      */
     public String maxmemoryDelta() {
@@ -354,7 +365,7 @@ public final class RedisConfiguration {
 
     /**
      * Set the maxmemoryDelta property: Value in megabytes reserved for non-cache usage per shard e.g. failover.
-     *
+     * 
      * @param maxmemoryDelta the maxmemoryDelta value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -365,7 +376,7 @@ public final class RedisConfiguration {
 
     /**
      * Get the maxclients property: The max clients config.
-     *
+     * 
      * @return the maxclients value.
      */
     public String maxclients() {
@@ -373,9 +384,29 @@ public final class RedisConfiguration {
     }
 
     /**
+     * Get the notifyKeyspaceEvents property: The keyspace events which should be monitored.
+     * 
+     * @return the notifyKeyspaceEvents value.
+     */
+    public String notifyKeyspaceEvents() {
+        return this.notifyKeyspaceEvents;
+    }
+
+    /**
+     * Set the notifyKeyspaceEvents property: The keyspace events which should be monitored.
+     * 
+     * @param notifyKeyspaceEvents the notifyKeyspaceEvents value to set.
+     * @return the RedisConfiguration object itself.
+     */
+    public RedisConfiguration withNotifyKeyspaceEvents(String notifyKeyspaceEvents) {
+        this.notifyKeyspaceEvents = notifyKeyspaceEvents;
+        return this;
+    }
+
+    /**
      * Get the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used for
      * data archive, specify SAS or ManagedIdentity, default value is SAS.
-     *
+     * 
      * @return the preferredDataArchiveAuthMethod value.
      */
     public String preferredDataArchiveAuthMethod() {
@@ -385,7 +416,7 @@ public final class RedisConfiguration {
     /**
      * Get the preferredDataPersistenceAuthMethod property: Preferred auth method to communicate to storage account used
      * for data persistence, specify SAS or ManagedIdentity, default value is SAS.
-     *
+     * 
      * @return the preferredDataPersistenceAuthMethod value.
      */
     public String preferredDataPersistenceAuthMethod() {
@@ -395,7 +426,7 @@ public final class RedisConfiguration {
     /**
      * Set the preferredDataPersistenceAuthMethod property: Preferred auth method to communicate to storage account used
      * for data persistence, specify SAS or ManagedIdentity, default value is SAS.
-     *
+     * 
      * @param preferredDataPersistenceAuthMethod the preferredDataPersistenceAuthMethod value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -406,7 +437,7 @@ public final class RedisConfiguration {
 
     /**
      * Get the zonalConfiguration property: Zonal Configuration.
-     *
+     * 
      * @return the zonalConfiguration value.
      */
     public String zonalConfiguration() {
@@ -416,7 +447,7 @@ public final class RedisConfiguration {
     /**
      * Get the authnotrequired property: Specifies whether the authentication is disabled. Setting this property is
      * highly discouraged from security point of view.
-     *
+     * 
      * @return the authnotrequired value.
      */
     public String authnotrequired() {
@@ -426,7 +457,7 @@ public final class RedisConfiguration {
     /**
      * Set the authnotrequired property: Specifies whether the authentication is disabled. Setting this property is
      * highly discouraged from security point of view.
-     *
+     * 
      * @param authnotrequired the authnotrequired value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -438,7 +469,7 @@ public final class RedisConfiguration {
     /**
      * Get the storageSubscriptionId property: SubscriptionId of the storage account for persistence (aof/rdb) using
      * ManagedIdentity.
-     *
+     * 
      * @return the storageSubscriptionId value.
      */
     public String storageSubscriptionId() {
@@ -448,7 +479,7 @@ public final class RedisConfiguration {
     /**
      * Set the storageSubscriptionId property: SubscriptionId of the storage account for persistence (aof/rdb) using
      * ManagedIdentity.
-     *
+     * 
      * @param storageSubscriptionId the storageSubscriptionId value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -460,7 +491,7 @@ public final class RedisConfiguration {
     /**
      * Get the aadEnabled property: Specifies whether AAD based authentication has been enabled or disabled for the
      * cache.
-     *
+     * 
      * @return the aadEnabled value.
      */
     public String aadEnabled() {
@@ -470,7 +501,7 @@ public final class RedisConfiguration {
     /**
      * Set the aadEnabled property: Specifies whether AAD based authentication has been enabled or disabled for the
      * cache.
-     *
+     * 
      * @param aadEnabled the aadEnabled value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -481,9 +512,10 @@ public final class RedisConfiguration {
 
     /**
      * Get the additionalProperties property: All Redis Settings. Few possible keys:
-     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-     * etc.
-     *
+     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,
+     * maxmemory-policy,notify-keyspace-events, aof-backup-enabled, aof-storage-connection-string-0,
+     * aof-storage-connection-string-1 etc.
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -493,9 +525,10 @@ public final class RedisConfiguration {
 
     /**
      * Set the additionalProperties property: All Redis Settings. Few possible keys:
-     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-     * etc.
-     *
+     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,
+     * maxmemory-policy,notify-keyspace-events, aof-backup-enabled, aof-storage-connection-string-0,
+     * aof-storage-connection-string-1 etc.
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the RedisConfiguration object itself.
      */
@@ -507,14 +540,14 @@ public final class RedisConfiguration {
     @JsonAnySetter
     void withAdditionalProperties(String key, String value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

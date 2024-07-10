@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-/** Samples for Redis FlushCache. */
+/**
+ * Samples for Redis FlushCache.
+ */
 public final class RedisFlushCacheSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCacheFlush.json
+     * x-ms-original-file:
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheFlush.json
      */
     /**
      * Sample code: RedisCacheFlush.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void redisCacheFlush(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .redisCaches()
+        azure.redisCaches()
             .manager()
             .serviceClient()
             .getRedis()

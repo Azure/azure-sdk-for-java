@@ -17,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Properties of the redis cache. */
+/**
+ * Properties of the redis cache.
+ */
 @Fluent
 public final class RedisPropertiesInner extends RedisCreateProperties {
     /*
@@ -68,13 +70,15 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
-    /** Creates an instance of RedisPropertiesInner class. */
+    /**
+     * Creates an instance of RedisPropertiesInner class.
+     */
     public RedisPropertiesInner() {
     }
 
     /**
      * Get the provisioningState property: Redis instance provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -83,7 +87,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
 
     /**
      * Get the hostname property: Redis host name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -92,7 +96,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
 
     /**
      * Get the port property: Redis non-SSL port.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -101,7 +105,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
 
     /**
      * Get the sslPort property: Redis SSL port.
-     *
+     * 
      * @return the sslPort value.
      */
     public Integer sslPort() {
@@ -111,7 +115,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
     /**
      * Get the accessKeys property: The keys of the Redis cache - not set if this object is not the response to Create
      * or Update redis cache.
-     *
+     * 
      * @return the accessKeys value.
      */
     public RedisAccessKeysInner accessKeys() {
@@ -120,7 +124,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
 
     /**
      * Get the linkedServers property: List of the linked servers associated with the cache.
-     *
+     * 
      * @return the linkedServers value.
      */
     public List<RedisLinkedServer> linkedServers() {
@@ -129,7 +133,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
 
     /**
      * Get the instances property: List of the Redis instances associated with the cache.
-     *
+     * 
      * @return the instances value.
      */
     public List<RedisInstanceDetails> instances() {
@@ -139,98 +143,124 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
     /**
      * Get the privateEndpointConnections property: List of private endpoint connection associated with the specified
      * redis cache.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withSku(Sku sku) {
         super.withSku(sku);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withSubnetId(String subnetId) {
         super.withSubnetId(subnetId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withStaticIp(String staticIp) {
         super.withStaticIp(staticIp);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withRedisConfiguration(RedisConfiguration redisConfiguration) {
         super.withRedisConfiguration(redisConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withRedisVersion(String redisVersion) {
         super.withRedisVersion(redisVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withEnableNonSslPort(Boolean enableNonSslPort) {
         super.withEnableNonSslPort(enableNonSslPort);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withReplicasPerMaster(Integer replicasPerMaster) {
         super.withReplicasPerMaster(replicasPerMaster);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withReplicasPerPrimary(Integer replicasPerPrimary) {
         super.withReplicasPerPrimary(replicasPerPrimary);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withTenantSettings(Map<String, String> tenantSettings) {
         super.withTenantSettings(tenantSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withShardCount(Integer shardCount) {
         super.withShardCount(shardCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
         super.withMinimumTlsVersion(minimumTlsVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         super.withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withUpdateChannel(UpdateChannel updateChannel) {
         super.withUpdateChannel(updateChannel);
@@ -238,8 +268,17 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RedisPropertiesInner withDisableAccessKeyAuthentication(Boolean disableAccessKeyAuthentication) {
+        super.withDisableAccessKeyAuthentication(disableAccessKeyAuthentication);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
