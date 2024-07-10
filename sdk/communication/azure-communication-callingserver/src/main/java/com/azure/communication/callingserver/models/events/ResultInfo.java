@@ -8,7 +8,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -18,19 +17,16 @@ public final class ResultInfo implements JsonSerializable<ResultInfo> {
     /*
      * The code property.
      */
-    @JsonProperty(value = "code")
     private Integer code;
 
     /*
      * The subCode property.
      */
-    @JsonProperty(value = "subCode")
     private Integer subCode;
 
     /*
      * The message property.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     private ResultInfo() {

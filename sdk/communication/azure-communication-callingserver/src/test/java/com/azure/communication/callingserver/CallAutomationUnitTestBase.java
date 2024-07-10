@@ -164,12 +164,7 @@ public class CallAutomationUnitTestBase {
         };
     }
 
-    static String serializeObject(Object o) {
-        // TODO (Anu) : Fix this (delete this method and rename serializeObject2 to serializeObject).
-        return serializeObject2(null);
-    }
-
-    static <T extends JsonSerializable<T>> String serializeObject2(JsonSerializable<T> o) {
+    static <T extends JsonSerializable<T>> String serializeObject(JsonSerializable<T> o) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
              JsonWriter writer = JsonProviders.createWriter(outputStream)) {
             o.toJson(writer);

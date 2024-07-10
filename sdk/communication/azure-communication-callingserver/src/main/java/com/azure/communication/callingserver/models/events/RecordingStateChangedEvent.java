@@ -9,9 +9,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -24,27 +21,17 @@ public final class RecordingStateChangedEvent extends CallAutomationEventBase {
     /**
      * Recording Id.
      */
-    @JsonProperty(value = "recordingId")
     private final String recordingId;
 
     /**
      * Recording state.
      */
-    @JsonProperty(value = "state")
     private final RecordingState recordingState;
 
     /**
      * Time of when it started recording.
      */
-    @JsonIgnore
     private final OffsetDateTime startDateTime;
-
-    @JsonCreator
-    private RecordingStateChangedEvent(@JsonProperty("startDateTime") String startDateTime) {
-        this.startDateTime = OffsetDateTime.parse(startDateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        recordingId = null;
-        recordingState = null;
-    }
 
     private RecordingStateChangedEvent(OffsetDateTime startDateTime, String recordingId, RecordingState recordingState) {
         this.startDateTime = startDateTime;

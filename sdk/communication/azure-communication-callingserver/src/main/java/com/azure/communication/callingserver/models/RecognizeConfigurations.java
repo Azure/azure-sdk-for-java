@@ -12,7 +12,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -23,25 +22,21 @@ public final class RecognizeConfigurations implements JsonSerializable<Recognize
     /*
      * Determines if we interrupt the prompt and start recognizing.
      */
-    @JsonProperty(value = "interruptPromptAndStartRecognition")
     private Boolean interruptPromptAndStartRecognition;
 
     /*
      * Time to wait for first input after prompt (if any).
      */
-    @JsonProperty(value = "initialSilenceTimeoutInSeconds")
     private Duration initialSilenceTimeoutInSeconds;
 
     /*
      * Target participant of DTFM tone recognition.
      */
-    @JsonProperty(value = "targetParticipant")
     private CommunicationIdentifier targetParticipant;
 
     /*
      * Defines configurations for DTMF.
      */
-    @JsonProperty(value = "dtmfConfigurations")
     private DtmfConfigurations dtmfConfigurations;
 
     /**
@@ -140,8 +135,7 @@ public final class RecognizeConfigurations implements JsonSerializable<Recognize
         jsonWriter.writeBooleanField("interruptPromptAndStartRecognition", this.interruptPromptAndStartRecognition);
         jsonWriter.writeStringField("initialSilenceTimeoutInSeconds", CoreUtils.durationToStringWithDays(initialSilenceTimeoutInSeconds));
         final CommunicationIdentifierModel participant = CommunicationIdentifierConverter.convert(this.targetParticipant);
-        // TODO: (anu): Enable this after refreshing the protocol layer.
-        // jsonWriter.writeJsonField("targetParticipant", participant);
+        jsonWriter.writeJsonField("targetParticipant", participant);
         jsonWriter.writeJsonField("dtmfConfigurations", dtmfConfigurations);
         return jsonWriter.writeEndObject();
     }
@@ -169,9 +163,8 @@ public final class RecognizeConfigurations implements JsonSerializable<Recognize
                     }
                 } else if ("targetParticipant".equals(fieldName)) {
                     source.targetParticipant = null;
-                    // TODO: (anu): Enable this after refreshing the protocol layer.
-                    // final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
-                    // source.targetParticipant = CommunicationIdentifierConverter.convert(inner);
+                    final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
+                    source.targetParticipant = CommunicationIdentifierConverter.convert(inner);
                 } else if ("dtmfConfigurations".equals(fieldName)) {
                     source.dtmfConfigurations = DtmfConfigurations.fromJson(reader);
                 } else {

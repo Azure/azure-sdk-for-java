@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -17,7 +16,6 @@ public final class FileSource extends PlaySource {
     /*
      * Uri for the audio file to be played
      */
-    @JsonProperty(value = "uri", required = true)
     private String uri;
 
     /**

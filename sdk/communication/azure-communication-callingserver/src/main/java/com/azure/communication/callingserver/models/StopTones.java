@@ -4,7 +4,6 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for StopTones. */
@@ -75,7 +74,6 @@ public final class StopTones extends ExpandableStringEnum<StopTones> {
      * @param name a name to look for.
      * @return the corresponding StopTones.
      */
-    @JsonCreator
     public static StopTones fromString(String name) {
         return fromString(name, StopTones.class);
     }

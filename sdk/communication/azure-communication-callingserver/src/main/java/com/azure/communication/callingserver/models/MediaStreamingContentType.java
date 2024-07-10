@@ -5,7 +5,6 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for MediaStreamingContentType. */
@@ -31,7 +30,6 @@ public final class MediaStreamingContentType extends ExpandableStringEnum<MediaS
      * @param name a name to look for.
      * @return the corresponding MediaStreamingContentType.
      */
-    @JsonCreator
     public static MediaStreamingContentType fromString(String name) {
         return fromString(name, MediaStreamingContentType.class);
     }

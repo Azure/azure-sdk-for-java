@@ -5,12 +5,9 @@ package com.azure.communication.callingserver.models;
 
 import com.azure.communication.callingserver.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callingserver.implementation.models.CommunicationError;
-import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponse;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,13 +52,15 @@ public final class CallingServerErrorException extends HttpResponseException {
                 @Override
                 public CallingServerErrorException create(HttpResponseException internalHeaders) {
                     CallingServerError error = null;
-                    if (internalHeaders.getValue() != null) {
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-                        CommunicationErrorResponse communicationErrorResponse = objectMapper.convertValue(
-                            internalHeaders.getValue(), CommunicationErrorResponse.class);
-                        error = convert(communicationErrorResponse.getError());
-                    }
+// TODO (anu) Sync with Alan
+//
+//                    if (internalHeaders.getValue() != null) {
+//                        ObjectMapper objectMapper = new ObjectMapper();
+//                        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+//                        CommunicationErrorResponse communicationErrorResponse = objectMapper.convertValue(
+//                            internalHeaders.getValue(), CommunicationErrorResponse.class);
+//                        error = convert(communicationErrorResponse.getError());
+//                    }
                     return new CallingServerErrorException(internalHeaders.getMessage(), internalHeaders.getResponse(), error);
                 }
             });

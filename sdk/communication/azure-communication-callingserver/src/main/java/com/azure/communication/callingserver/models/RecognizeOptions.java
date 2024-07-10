@@ -7,7 +7,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -16,32 +15,27 @@ public class RecognizeOptions implements JsonSerializable<RecognizeOptions> {
     /*
      * Determines the type of the recognition.
      */
-    @JsonProperty(value = "recognizeInputType", required = true)
     private RecognizeInputType recognizeInputType;
 
     /*
      * The source of the audio to be played for recognition.
      */
-    @JsonProperty(value = "playPrompt")
     private PlaySource playPrompt;
 
     /*
      * If set recognize can barge into other existing
      * queued-up/currently-processing requests.
      */
-    @JsonProperty(value = "stopCurrentOperations")
     private Boolean stopCurrentOperations;
 
     /*
      * Defines options for recognition.
      */
-    @JsonProperty(value = "recognizeConfiguration", required = true)
     private RecognizeConfigurations recognizeConfiguration;
 
     /*
      * The value to identify context of the operation.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**

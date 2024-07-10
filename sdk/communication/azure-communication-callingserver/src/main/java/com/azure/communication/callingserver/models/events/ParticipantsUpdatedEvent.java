@@ -10,15 +10,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /** The ParticipantsUpdatedEvent model. */
@@ -27,22 +21,7 @@ public final class ParticipantsUpdatedEvent extends CallAutomationEventBase {
     /*
      * List of current participants in the call.
      */
-    @JsonIgnore
     private List<CommunicationIdentifier> participants;
-
-    @JsonCreator
-    private ParticipantsUpdatedEvent(@JsonProperty("participants") List<Map<String, Object>> participants, Integer ignore) {
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        this.participants = participants
-            .stream()
-            .map(item -> mapper.convertValue(item, CommunicationIdentifierModel.class))
-            .collect(Collectors.toList())
-            .stream()
-            .map(CommunicationIdentifierConverter::convert)
-            .collect(Collectors.toList());
-    }
 
     private ParticipantsUpdatedEvent(List<CommunicationIdentifier> participants) {
         this.participants = participants;
@@ -66,8 +45,7 @@ public final class ParticipantsUpdatedEvent extends CallAutomationEventBase {
         jsonWriter.writeStartArray("participants");
         for (CommunicationIdentifier participant : participants) {
             final CommunicationIdentifierModel inner = CommunicationIdentifierConverter.convert(participant);
-            // TODO (anu): Enable this after refreshing the protocol layer.
-            // jsonWriter.writeJson(inner);
+            jsonWriter.writeJson(inner);
         }
         jsonWriter.writeEndArray();
         jsonWriter.writeStringField("callConnectionId", super.getCallConnectionId());
@@ -94,10 +72,8 @@ public final class ParticipantsUpdatedEvent extends CallAutomationEventBase {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("participants".equals(fieldName)) {
-                    participants = null;
-                    // TODO (anu): Enable this after refreshing the protocol layer.
-                    // event.participants = reader.readArray(CommunicationIdentifierModel::fromJson)
-                    //    .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+                    participants = reader.readArray(CommunicationIdentifierModel::fromJson)
+                        .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
                 } else if ("callConnectionId".equals(fieldName)) {
                     callConnectionId = reader.getString();
                 } else if ("serverCallId".equals(fieldName)) {

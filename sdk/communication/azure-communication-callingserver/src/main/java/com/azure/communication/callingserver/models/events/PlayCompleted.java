@@ -7,7 +7,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -17,19 +16,12 @@ public final class PlayCompleted extends CallAutomationEventBase {
     /*
      * Operation context
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
      * The resultInfo property.
      */
-    @JsonProperty(value = "resultInfo")
     private ResultInfo resultInfo;
-
-    private PlayCompleted() {
-        this.operationContext = null;
-        this.resultInfo = null;
-    }
 
     private PlayCompleted(String operationContext, ResultInfo resultInfo) {
         this.operationContext = operationContext;

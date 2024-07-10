@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -21,19 +20,16 @@ public final class DtmfConfigurations implements JsonSerializable<DtmfConfigurat
     /*
      * Time to wait between DTMF inputs to stop recognizing.
      */
-    @JsonProperty(value = "interToneTimeoutInSeconds")
     private Duration interToneTimeoutInSeconds;
 
     /*
      * Maximum number of DTMFs to be collected.
      */
-    @JsonProperty(value = "maxTonesToCollect")
     private Integer maxTonesToCollect;
 
     /*
      * List of tones that will stop recognizing.
      */
-    @JsonProperty(value = "stopTones")
     private List<StopTones> stopTones;
 
     /**

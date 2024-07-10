@@ -35,8 +35,7 @@ public class CallRecordingUnitTestBase {
     private String serializeObject(RecordingStateResponseInternal o) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
              JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            // TODO (Anu) : Fix this
-            // o.toJson(writer);
+            o.toJson(writer);
             writer.flush();
             return outputStream.toString();
         } catch (IOException e) {
