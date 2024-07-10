@@ -1229,6 +1229,8 @@ public class TableClientTest extends TableClientTestBase {
         assertEquals(expectedStatusCode, newTableClient.createEntityWithResponse(entity, null, null).getStatusCode());
     }
 
+    // TODO: Figure out why TokenCredential does not work for this test. Maybe the SP does not have the correct role
+    //  assignment? -vcolin7
     @Test
     public void setAndListAccessPolicies() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,
@@ -1269,6 +1271,8 @@ public class TableClientTest extends TableClientTestBase {
         assertEquals(id, signedIdentifier.getId());
     }
 
+    // TODO: Figure out why TokenCredential does not work for this test. Maybe the SP does not have the correct role
+    //  assignment? -vcolin7
     @Test
     public void setAndListMultipleAccessPolicies() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,

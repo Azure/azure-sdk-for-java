@@ -29,7 +29,6 @@ import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -1094,7 +1093,8 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .verify(DEFAULT_TIMEOUT);
     }
 
-    @Disabled("Encountering an issue. Needs further investigation: [Expected XML element to be 'TableServiceError' but it was: {http://schemas.microsoft.com/ado/2007/08/dataservices/metadata}error'.]")
+    // TODO: Figure out why TokenCredential does not work for this test. Maybe the SP does not have the correct role
+    //  assignment? -vcolin7
     @Test
     public void setAndListAccessPolicies() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,
@@ -1110,7 +1110,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         String id = "testPolicy";
         TableSignedIdentifier tableSignedIdentifier = new TableSignedIdentifier(id).setAccessPolicy(tableAccessPolicy);
 
-        final TableAsyncClient tableClient2 = getClientBuilder(tableClient.getTableName(), true).buildAsyncClient();
+        final TableAsyncClient tableClient2 = getClientBuilderWithConnectionString(tableClient.getTableName(), true).buildAsyncClient();
         StepVerifier.create(tableClient2.setAccessPoliciesWithResponse(Collections.singletonList(tableSignedIdentifier)))
             .assertNext(response -> assertEquals(204, response.getStatusCode()))
             .expectComplete()
@@ -1137,7 +1137,8 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .verify(DEFAULT_TIMEOUT);
     }
 
-    @Disabled("This test is encountering failures and needs investigation. Error: Status code 404, \"<?xml version=\"1.0\" encoding=\"utf-8\"?><m:error xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\"><m:code>ResourceNotFound</m:code><m:message xml:lang=\"en-US\">The specified resource does not exist.")
+    // TODO: Figure out why TokenCredential does not work for this test. Maybe the SP does not have the correct role
+    //  assignment? -vcolin7
     @Test
     public void setAndListMultipleAccessPolicies() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,
@@ -1156,12 +1157,14 @@ public class TableAsyncClientTest extends TableClientTestBase {
         tableSignedIdentifiers.add(new TableSignedIdentifier(id1).setAccessPolicy(tableAccessPolicy));
         tableSignedIdentifiers.add(new TableSignedIdentifier(id2).setAccessPolicy(tableAccessPolicy));
 
-        StepVerifier.create(tableClient.setAccessPoliciesWithResponse(tableSignedIdentifiers))
+        final TableAsyncClient tableClient2 = getClientBuilderWithConnectionString(tableClient.getTableName(), true).buildAsyncClient();
+
+        StepVerifier.create(tableClient2.setAccessPoliciesWithResponse(tableSignedIdentifiers))
             .assertNext(response -> assertEquals(204, response.getStatusCode()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
-        StepVerifier.create(tableClient.getAccessPolicies())
+        StepVerifier.create(tableClient2.getAccessPolicies())
             .assertNext(tableAccessPolicies -> {
                 assertNotNull(tableAccessPolicies);
                 assertNotNull(tableAccessPolicies.getIdentifiers());
