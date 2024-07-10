@@ -125,8 +125,8 @@ public final class ProximityPlacementGroupInner extends Resource {
     }
 
     /**
-     * Get the virtualMachineScaleSets property: A list of references to all virtual machine scale sets in the
-     * proximity placement group.
+     * Get the virtualMachineScaleSets property: A list of references to all virtual machine scale sets in the proximity
+     * placement group.
      * 
      * @return the virtualMachineScaleSets value.
      */

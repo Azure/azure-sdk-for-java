@@ -99,8 +99,7 @@ public final class RestorePointCollectionInner extends Resource {
     }
 
     /**
-     * Get the restorePoints property: A list containing all restore points created under this restore point
-     * collection.
+     * Get the restorePoints property: A list containing all restore points created under this restore point collection.
      * 
      * @return the restorePoints value.
      */

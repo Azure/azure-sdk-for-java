@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM
- * status. You can easily view the output of your console log. Azure also enables you to see a screenshot of the VM
- * from the hypervisor.
+ * Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status.
+ * You can easily view the output of your console log. Azure also enables you to see a screenshot of the VM from the
+ * hypervisor.
  */
 @Fluent
 public final class BootDiagnostics {

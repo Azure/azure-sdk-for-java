@@ -32,8 +32,8 @@ public final class ReplicationStatus {
     }
 
     /**
-     * Get the aggregatedState property: This is the aggregated replication status based on all the regional
-     * replication status flags.
+     * Get the aggregatedState property: This is the aggregated replication status based on all the regional replication
+     * status flags.
      * 
      * @return the aggregatedState value.
      */

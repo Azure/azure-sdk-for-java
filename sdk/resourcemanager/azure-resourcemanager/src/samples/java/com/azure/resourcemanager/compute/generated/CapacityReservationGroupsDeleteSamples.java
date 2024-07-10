@@ -20,8 +20,11 @@ public final class CapacityReservationGroupsDeleteSamples {
      */
     public static void
         capacityReservationGroupDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservationGroups().deleteWithResponse("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservationGroups()
+            .deleteWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +39,10 @@ public final class CapacityReservationGroupsDeleteSamples {
      */
     public static void
         capacityReservationGroupDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservationGroups().deleteWithResponse("rgcompute",
-            "a", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservationGroups()
+            .deleteWithResponse("rgcompute", "a", com.azure.core.util.Context.NONE);
     }
 }

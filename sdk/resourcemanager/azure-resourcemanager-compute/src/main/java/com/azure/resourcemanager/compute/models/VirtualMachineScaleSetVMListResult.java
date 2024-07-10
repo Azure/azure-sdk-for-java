@@ -22,8 +22,8 @@ public final class VirtualMachineScaleSetVMListResult {
     private List<VirtualMachineScaleSetVMInner> value;
 
     /*
-     * The uri to fetch the next page of Virtual Machine Scale Set VMs. Call ListNext() with this to fetch the next
-     * page of VMSS VMs
+     * The uri to fetch the next page of Virtual Machine Scale Set VMs. Call ListNext() with this to fetch the next page
+     * of VMSS VMs
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +83,9 @@ public final class VirtualMachineScaleSetVMListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model VirtualMachineScaleSetVMListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model VirtualMachineScaleSetVMListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

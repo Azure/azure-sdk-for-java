@@ -19,7 +19,10 @@ public final class GalleryImagesDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAGalleryImage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImages().delete("myResourceGroup", "myGalleryName",
-            "myGalleryImageName", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImages()
+            .delete("myResourceGroup", "myGalleryName", "myGalleryImageName", com.azure.core.util.Context.NONE);
     }
 }

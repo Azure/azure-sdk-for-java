@@ -33,9 +33,9 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     private DiffDiskSettings diffDiskSettings;
 
     /*
-     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the
-     * disk in a virtual machine image. <br><br> diskSizeGB is the number of bytes x 1024^3 for the disk and the value
-     * cannot be larger than 1023
+     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk
+     * in a virtual machine image. <br><br> diskSizeGB is the number of bytes x 1024^3 for the disk and the value cannot
+     * be larger than 1023
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
@@ -96,8 +96,8 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @return the writeAcceleratorEnabled value.
      */
@@ -106,8 +106,8 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
@@ -141,8 +141,8 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
 
     /**
      * Get the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
-     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; diskSizeGB is the number of
-     * bytes x 1024^3 for the disk and the value cannot be larger than 1023.
+     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; diskSizeGB is the number of bytes
+     * x 1024^3 for the disk and the value cannot be larger than 1023.
      * 
      * @return the diskSizeGB value.
      */
@@ -152,8 +152,8 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
 
     /**
      * Set the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
-     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; diskSizeGB is the number of
-     * bytes x 1024^3 for the disk and the value cannot be larger than 1023.
+     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; diskSizeGB is the number of bytes
+     * x 1024^3 for the disk and the value cannot be larger than 1023.
      * 
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
@@ -232,8 +232,8 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
      * (This feature is available for VMSS with Flexible OrchestrationMode only). &lt;br&gt;&lt;br&gt; Possible values:
      * &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the OS disk is deleted when VMSS Flex VM is
      * deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the OS disk is retained after VMSS Flex VM is
-     * deleted. &lt;br&gt;&lt;br&gt; The default value is set to **Delete**. For an Ephemeral OS Disk, the default
-     * value is set to **Delete**. User cannot change the delete option for Ephemeral OS Disk.
+     * deleted. &lt;br&gt;&lt;br&gt; The default value is set to **Delete**. For an Ephemeral OS Disk, the default value
+     * is set to **Delete**. User cannot change the delete option for Ephemeral OS Disk.
      * 
      * @return the deleteOption value.
      */
@@ -246,8 +246,8 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
      * (This feature is available for VMSS with Flexible OrchestrationMode only). &lt;br&gt;&lt;br&gt; Possible values:
      * &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the OS disk is deleted when VMSS Flex VM is
      * deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the OS disk is retained after VMSS Flex VM is
-     * deleted. &lt;br&gt;&lt;br&gt; The default value is set to **Delete**. For an Ephemeral OS Disk, the default
-     * value is set to **Delete**. User cannot change the delete option for Ephemeral OS Disk.
+     * deleted. &lt;br&gt;&lt;br&gt; The default value is set to **Delete**. For an Ephemeral OS Disk, the default value
+     * is set to **Delete**. User cannot change the delete option for Ephemeral OS Disk.
      * 
      * @param deleteOption the deleteOption value to set.
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.

@@ -20,8 +20,12 @@ public final class VirtualMachineImagesEdgeZoneListOffersSamples {
      */
     public static void
         virtualMachineImagesEdgeZoneListOffersMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImagesEdgeZones().listOffersWithResponse(
-            "aaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImagesEdgeZones()
+            .listOffersWithResponse("aaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +40,11 @@ public final class VirtualMachineImagesEdgeZoneListOffersSamples {
      */
     public static void
         virtualMachineImagesEdgeZoneListOffersMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImagesEdgeZones().listOffersWithResponse(
-            "aaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImagesEdgeZones()
+            .listOffersWithResponse("aaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -20,7 +20,10 @@ public final class DiskAccessesGetPrivateLinkResourcesSamples {
      */
     public static void listAllPossiblePrivateLinkResourcesUnderDiskAccessResource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskAccesses()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskAccesses()
             .getPrivateLinkResourcesWithResponse("myResourceGroup", "myDiskAccess", com.azure.core.util.Context.NONE);
     }
 }

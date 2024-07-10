@@ -14,8 +14,8 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class AvailablePatchSummary {
     /*
-     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
-     * At that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
+     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes. At
+     * that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStatus status;

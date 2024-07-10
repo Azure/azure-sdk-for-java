@@ -328,8 +328,7 @@ public final class VirtualMachineNetworkInterfaceConfiguration {
     }
 
     /**
-     * Get the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface
-     * resource.
+     * Get the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
      * 
      * @return the auxiliarySku value.
      */
@@ -338,8 +337,7 @@ public final class VirtualMachineNetworkInterfaceConfiguration {
     }
 
     /**
-     * Set the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface
-     * resource.
+     * Set the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
      * 
      * @param auxiliarySku the auxiliarySku value to set.
      * @return the VirtualMachineNetworkInterfaceConfiguration object itself.
@@ -359,8 +357,9 @@ public final class VirtualMachineNetworkInterfaceConfiguration {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property name in model VirtualMachineNetworkInterfaceConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model VirtualMachineNetworkInterfaceConfiguration"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();

@@ -19,8 +19,11 @@ public final class DedicatedHostsListByHostGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dedicatedHostListByHostGroupMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().listByHostGroup("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .listByHostGroup("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +37,10 @@ public final class DedicatedHostsListByHostGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dedicatedHostListByHostGroupMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().listByHostGroup("rgcompute", "aaaa",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .listByHostGroup("rgcompute", "aaaa", com.azure.core.util.Context.NONE);
     }
 }

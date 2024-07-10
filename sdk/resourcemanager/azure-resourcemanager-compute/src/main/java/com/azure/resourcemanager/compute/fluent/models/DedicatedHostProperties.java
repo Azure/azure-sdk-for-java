@@ -31,8 +31,8 @@ public final class DedicatedHostProperties {
     private Boolean autoReplaceOnFailure;
 
     /*
-     * A unique id generated and assigned to the dedicated host by the platform. Does not change throughout the
-     * lifetime of the host.
+     * A unique id generated and assigned to the dedicated host by the platform. Does not change throughout the lifetime
+     * of the host.
      */
     @JsonProperty(value = "hostId", access = JsonProperty.Access.WRITE_ONLY)
     private String hostId;
@@ -142,8 +142,8 @@ public final class DedicatedHostProperties {
     }
 
     /**
-     * Get the licenseType property: Specifies the software license type that will be applied to the VMs deployed on
-     * the dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
+     * Get the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
+     * dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
      * default value is: **None.**.
      * 
      * @return the licenseType value.
@@ -153,8 +153,8 @@ public final class DedicatedHostProperties {
     }
 
     /**
-     * Set the licenseType property: Specifies the software license type that will be applied to the VMs deployed on
-     * the dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
+     * Set the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
+     * dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
      * default value is: **None.**.
      * 
      * @param licenseType the licenseType value to set.

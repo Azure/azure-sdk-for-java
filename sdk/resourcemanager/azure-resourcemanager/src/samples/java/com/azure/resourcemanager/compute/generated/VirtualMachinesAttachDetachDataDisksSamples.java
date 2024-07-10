@@ -29,13 +29,16 @@ public final class VirtualMachinesAttachDetachDataDisksSamples {
      */
     public static void
         virtualMachineAttachDetachDataDisksMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().attachDetachDataDisks("rgcompute",
-            "azure-vm",
-            new AttachDetachDataDisksRequest().withDataDisksToAttach(Arrays.asList(new DataDisksToAttach().withDiskId(
-                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vmss3176_vmss3176_0_disk2_6c4f554bdafa49baa780eb2d128ff39d")))
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .attachDetachDataDisks("rgcompute", "azure-vm", new AttachDetachDataDisksRequest()
+                .withDataDisksToAttach(Arrays.asList(new DataDisksToAttach().withDiskId(
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vmss3176_vmss3176_0_disk2_6c4f554bdafa49baa780eb2d128ff39d")))
                 .withDataDisksToDetach(Arrays.asList(new DataDisksToDetach().withDiskId(
                     "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vmss3176_vmss3176_1_disk1_1a4e784bdafa49baa780eb2d128ff65x"))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -50,26 +53,33 @@ public final class VirtualMachinesAttachDetachDataDisksSamples {
      */
     public static void
         virtualMachineAttachDetachDataDisksMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().attachDetachDataDisks("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaa",
-            new AttachDetachDataDisksRequest().withDataDisksToAttach(Arrays.asList(new DataDisksToAttach().withDiskId(
-                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vmss3176_vmss3176_0_disk2_6c4f554bdafa49baa780eb2d128ff39d")
-                .withLun(1).withCaching(CachingTypes.READ_ONLY).withDeleteOption(DiskDeleteOptionTypes.DELETE)
-                .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(
-                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"))
-                .withWriteAcceleratorEnabled(true),
-                new DataDisksToAttach().withDiskId(
-                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vmss3176_vmss3176_2_disk3_7d5e664bdafa49baa780eb2d128ff38e")
-                    .withLun(2).withCaching(CachingTypes.READ_WRITE).withDeleteOption(DiskDeleteOptionTypes.DETACH)
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .attachDetachDataDisks("rgcompute", "aaaaaaaaaaaaaaaaaaaa", new AttachDetachDataDisksRequest()
+                .withDataDisksToAttach(Arrays.asList(new DataDisksToAttach().withDiskId(
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vmss3176_vmss3176_0_disk2_6c4f554bdafa49baa780eb2d128ff39d")
+                    .withLun(1)
+                    .withCaching(CachingTypes.READ_ONLY)
+                    .withDeleteOption(DiskDeleteOptionTypes.DELETE)
                     .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(
                         "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"))
-                    .withWriteAcceleratorEnabled(false)))
+                    .withWriteAcceleratorEnabled(true),
+                    new DataDisksToAttach().withDiskId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vmss3176_vmss3176_2_disk3_7d5e664bdafa49baa780eb2d128ff38e")
+                        .withLun(2)
+                        .withCaching(CachingTypes.READ_WRITE)
+                        .withDeleteOption(DiskDeleteOptionTypes.DETACH)
+                        .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(
+                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"))
+                        .withWriteAcceleratorEnabled(false)))
                 .withDataDisksToDetach(Arrays.asList(new DataDisksToDetach().withDiskId(
                     "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vmss3176_vmss3176_1_disk1_1a4e784bdafa49baa780eb2d128ff65x")
                     .withDetachOption(DiskDetachOptionTypes.FORCE_DETACH),
                     new DataDisksToDetach().withDiskId(
                         "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vmss3176_vmss3176_4_disk4_4d4e784bdafa49baa780eb2d256ff41z")
                         .withDetachOption(DiskDetachOptionTypes.FORCE_DETACH))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -30,8 +30,8 @@ public final class CloudServiceNetworkProfile {
     private CloudServiceSlotType slotType;
 
     /*
-     * The id reference of the cloud service containing the target IP with which the subject cloud service can perform
-     * a swap. This property cannot be updated once it is set. The swappable cloud service referred by this id must be
+     * The id reference of the cloud service containing the target IP with which the subject cloud service can perform a
+     * swap. This property cannot be updated once it is set. The swappable cloud service referred by this id must be
      * present otherwise an error will be thrown.
      */
     @JsonProperty(value = "swappableCloudService")
@@ -93,9 +93,9 @@ public final class CloudServiceNetworkProfile {
     }
 
     /**
-     * Get the swappableCloudService property: The id reference of the cloud service containing the target IP with
-     * which the subject cloud service can perform a swap. This property cannot be updated once it is set. The
-     * swappable cloud service referred by this id must be present otherwise an error will be thrown.
+     * Get the swappableCloudService property: The id reference of the cloud service containing the target IP with which
+     * the subject cloud service can perform a swap. This property cannot be updated once it is set. The swappable cloud
+     * service referred by this id must be present otherwise an error will be thrown.
      * 
      * @return the swappableCloudService value.
      */
@@ -104,9 +104,9 @@ public final class CloudServiceNetworkProfile {
     }
 
     /**
-     * Set the swappableCloudService property: The id reference of the cloud service containing the target IP with
-     * which the subject cloud service can perform a swap. This property cannot be updated once it is set. The
-     * swappable cloud service referred by this id must be present otherwise an error will be thrown.
+     * Set the swappableCloudService property: The id reference of the cloud service containing the target IP with which
+     * the subject cloud service can perform a swap. This property cannot be updated once it is set. The swappable cloud
+     * service referred by this id must be present otherwise an error will be thrown.
      * 
      * @param swappableCloudService the swappableCloudService value to set.
      * @return the CloudServiceNetworkProfile object itself.

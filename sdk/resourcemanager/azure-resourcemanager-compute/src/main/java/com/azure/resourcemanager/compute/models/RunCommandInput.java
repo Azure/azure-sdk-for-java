@@ -21,8 +21,8 @@ public final class RunCommandInput {
     private String commandId;
 
     /*
-     * Optional. The script to be executed. When this value is given, the given script will override the default
-     * script of the command.
+     * Optional. The script to be executed. When this value is given, the given script will override the default script
+     * of the command.
      */
     @JsonProperty(value = "script")
     private List<String> script;
@@ -108,8 +108,8 @@ public final class RunCommandInput {
      */
     public void validate() {
         if (commandId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property commandId in model RunCommandInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property commandId in model RunCommandInput"));
         }
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());

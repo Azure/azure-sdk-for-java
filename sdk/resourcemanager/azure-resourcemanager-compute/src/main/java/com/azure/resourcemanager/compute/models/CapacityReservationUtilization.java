@@ -14,8 +14,8 @@ import java.util.List;
 @Immutable
 public final class CapacityReservationUtilization {
     /*
-     * The value provides the current capacity of the VM size which was reserved successfully and for which the
-     * customer is getting billed. Minimum api-version: 2022-08-01.
+     * The value provides the current capacity of the VM size which was reserved successfully and for which the customer
+     * is getting billed. Minimum api-version: 2022-08-01.
      */
     @JsonProperty(value = "currentCapacity", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentCapacity;

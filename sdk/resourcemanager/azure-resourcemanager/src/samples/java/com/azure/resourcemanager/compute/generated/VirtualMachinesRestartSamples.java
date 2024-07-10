@@ -19,8 +19,11 @@ public final class VirtualMachinesRestartSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineRestartMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().restart("rgcompute", "aaa",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .restart("rgcompute", "aaa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +37,10 @@ public final class VirtualMachinesRestartSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineRestartMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().restart("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .restart("rgcompute", "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

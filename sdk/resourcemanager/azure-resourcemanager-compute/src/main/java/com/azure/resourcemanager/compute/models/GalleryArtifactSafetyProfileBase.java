@@ -25,8 +25,8 @@ public class GalleryArtifactSafetyProfileBase {
     }
 
     /**
-     * Get the allowDeletionOfReplicatedLocations property: Indicates whether or not removing this Gallery Image
-     * Version from replicated regions is allowed.
+     * Get the allowDeletionOfReplicatedLocations property: Indicates whether or not removing this Gallery Image Version
+     * from replicated regions is allowed.
      * 
      * @return the allowDeletionOfReplicatedLocations value.
      */
@@ -35,8 +35,8 @@ public class GalleryArtifactSafetyProfileBase {
     }
 
     /**
-     * Set the allowDeletionOfReplicatedLocations property: Indicates whether or not removing this Gallery Image
-     * Version from replicated regions is allowed.
+     * Set the allowDeletionOfReplicatedLocations property: Indicates whether or not removing this Gallery Image Version
+     * from replicated regions is allowed.
      * 
      * @param allowDeletionOfReplicatedLocations the allowDeletionOfReplicatedLocations value to set.
      * @return the GalleryArtifactSafetyProfileBase object itself.

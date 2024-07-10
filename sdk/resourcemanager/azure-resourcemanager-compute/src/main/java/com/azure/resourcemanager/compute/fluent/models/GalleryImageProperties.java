@@ -102,8 +102,6 @@ public final class GalleryImageProperties {
     private ImagePurchasePlan purchasePlan;
 
     /*
-     * The current state of the gallery or gallery artifact.
-     * 
      * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -210,8 +208,8 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Get the osType property: This property allows you to specify the type of the OS that is included in the disk
-     * when creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
+     * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when
+     * creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
      * 
      * @return the osType value.
      */
@@ -220,8 +218,8 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Set the osType property: This property allows you to specify the type of the OS that is included in the disk
-     * when creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
+     * Set the osType property: This property allows you to specify the type of the OS that is included in the disk when
+     * creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
      * 
      * @param osType the osType value to set.
      * @return the GalleryImageProperties object itself.
@@ -254,8 +252,7 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @return the hyperVGeneration value.
      */
@@ -264,8 +261,7 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the GalleryImageProperties object itself.
@@ -382,9 +378,7 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery or gallery artifact.
-     * 
-     * The provisioning state, which only appears in the response.
+     * Get the provisioningState property: The provisioning state, which only appears in the response.
      * 
      * @return the provisioningState value.
      */
@@ -439,16 +433,17 @@ public final class GalleryImageProperties {
      */
     public void validate() {
         if (osType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property osType in model GalleryImageProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property osType in model GalleryImageProperties"));
         }
         if (osState() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property osState in model GalleryImageProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property osState in model GalleryImageProperties"));
         }
         if (identifier() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property identifier in model GalleryImageProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property identifier in model GalleryImageProperties"));
         } else {
             identifier().validate();
         }

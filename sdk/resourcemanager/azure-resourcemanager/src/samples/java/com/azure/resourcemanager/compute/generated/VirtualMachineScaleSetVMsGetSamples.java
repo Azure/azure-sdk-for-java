@@ -19,7 +19,10 @@ public final class VirtualMachineScaleSetVMsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVMScaleSetVMWithVMSizeProperties(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
             .getWithResponse("myResourceGroup", "{vmss-name}", "0", null, com.azure.core.util.Context.NONE);
     }
 
@@ -34,7 +37,10 @@ public final class VirtualMachineScaleSetVMsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVMScaleSetVMWithUserData(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
             .getWithResponse("myResourceGroup", "{vmss-name}", "0", null, com.azure.core.util.Context.NONE);
     }
 }

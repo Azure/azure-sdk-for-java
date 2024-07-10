@@ -91,9 +91,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery or gallery artifact.
-     * 
-     * The provisioning state, which only appears in the response.
+     * Get the provisioningState property: The provisioning state, which only appears in the response.
      * 
      * @return the provisioningState value.
      */

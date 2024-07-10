@@ -298,8 +298,10 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
     public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
         beginCreateOrUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName,
             VirtualMachineScaleSetVMExtensionInner extensionParameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
-            extensionParameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
+                extensionParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -320,8 +322,10 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
     public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
         beginCreateOrUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName,
             VirtualMachineScaleSetVMExtensionInner extensionParameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
-            extensionParameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
+                extensionParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -605,8 +609,10 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
     public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
         beginUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName,
             VirtualMachineScaleSetVMExtensionUpdate extensionParameters, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
-            extensionParameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -626,7 +632,8 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
     public Mono<VirtualMachineScaleSetVMExtensionInner> updateAsync(String resourceGroupName, String vmScaleSetName,
         String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

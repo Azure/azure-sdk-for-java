@@ -13,13 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PatchSettings {
     /*
-     * Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated to virtual
-     * machine scale set with OrchestrationMode as Flexible.<br /><br /> Possible values are:<br /><br /> **Manual** -
-     * You control the application of patches to a virtual machine. You do this by applying patches manually inside
-     * the VM. In this mode, automatic updates are disabled; the property WindowsConfiguration.enableAutomaticUpdates
-     * must be false<br /><br /> **AutomaticByOS** - The virtual machine will automatically be updated by the OS. The
-     * property WindowsConfiguration.enableAutomaticUpdates must be true. <br /><br /> **AutomaticByPlatform** - the
-     * virtual machine will automatically updated by the platform. The properties provisionVMAgent and
+     * Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated to virtual machine
+     * scale set with OrchestrationMode as Flexible.<br /><br /> Possible values are:<br /><br /> **Manual** - You
+     * control the application of patches to a virtual machine. You do this by applying patches manually inside the VM.
+     * In this mode, automatic updates are disabled; the property WindowsConfiguration.enableAutomaticUpdates must be
+     * false<br /><br /> **AutomaticByOS** - The virtual machine will automatically be updated by the OS. The property
+     * WindowsConfiguration.enableAutomaticUpdates must be true. <br /><br /> **AutomaticByPlatform** - the virtual
+     * machine will automatically updated by the platform. The properties provisionVMAgent and
      * WindowsConfiguration.enableAutomaticUpdates must be true
      */
     @JsonProperty(value = "patchMode")
@@ -33,9 +33,9 @@ public final class PatchSettings {
     private Boolean enableHotpatching;
 
     /*
-     * Specifies the mode of VM Guest patch assessment for the IaaS virtual machine.<br /><br /> Possible values
-     * are:<br /><br /> **ImageDefault** - You control the timing of patch assessments on a virtual machine.<br /><br
-     * /> **AutomaticByPlatform** - The platform will trigger periodic patch assessments. The property provisionVMAgent
+     * Specifies the mode of VM Guest patch assessment for the IaaS virtual machine.<br /><br /> Possible values are:<br
+     * /><br /> **ImageDefault** - You control the timing of patch assessments on a virtual machine.<br /><br />
+     * **AutomaticByPlatform** - The platform will trigger periodic patch assessments. The property provisionVMAgent
      * must be true.
      */
     @JsonProperty(value = "assessmentMode")
@@ -56,13 +56,12 @@ public final class PatchSettings {
     /**
      * Get the patchMode property: Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines
      * associated to virtual machine scale set with OrchestrationMode as Flexible.&lt;br /&gt;&lt;br /&gt; Possible
-     * values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of patches to a virtual machine.
-     * You do this by applying patches manually inside the VM. In this mode, automatic updates are disabled; the
-     * property WindowsConfiguration.enableAutomaticUpdates must be false&lt;br /&gt;&lt;br /&gt; **AutomaticByOS** -
-     * The virtual machine will automatically be updated by the OS. The property
-     * WindowsConfiguration.enableAutomaticUpdates must be true. &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - the
-     * virtual machine will automatically updated by the platform. The properties provisionVMAgent and
-     * WindowsConfiguration.enableAutomaticUpdates must be true.
+     * values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of patches to a virtual machine. You
+     * do this by applying patches manually inside the VM. In this mode, automatic updates are disabled; the property
+     * WindowsConfiguration.enableAutomaticUpdates must be false&lt;br /&gt;&lt;br /&gt; **AutomaticByOS** - The virtual
+     * machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates must be
+     * true. &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - the virtual machine will automatically updated by the
+     * platform. The properties provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates must be true.
      * 
      * @return the patchMode value.
      */
@@ -73,13 +72,12 @@ public final class PatchSettings {
     /**
      * Set the patchMode property: Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines
      * associated to virtual machine scale set with OrchestrationMode as Flexible.&lt;br /&gt;&lt;br /&gt; Possible
-     * values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of patches to a virtual machine.
-     * You do this by applying patches manually inside the VM. In this mode, automatic updates are disabled; the
-     * property WindowsConfiguration.enableAutomaticUpdates must be false&lt;br /&gt;&lt;br /&gt; **AutomaticByOS** -
-     * The virtual machine will automatically be updated by the OS. The property
-     * WindowsConfiguration.enableAutomaticUpdates must be true. &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - the
-     * virtual machine will automatically updated by the platform. The properties provisionVMAgent and
-     * WindowsConfiguration.enableAutomaticUpdates must be true.
+     * values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of patches to a virtual machine. You
+     * do this by applying patches manually inside the VM. In this mode, automatic updates are disabled; the property
+     * WindowsConfiguration.enableAutomaticUpdates must be false&lt;br /&gt;&lt;br /&gt; **AutomaticByOS** - The virtual
+     * machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates must be
+     * true. &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - the virtual machine will automatically updated by the
+     * platform. The properties provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates must be true.
      * 
      * @param patchMode the patchMode value to set.
      * @return the PatchSettings object itself.
@@ -140,8 +138,8 @@ public final class PatchSettings {
     }
 
     /**
-     * Get the automaticByPlatformSettings property: Specifies additional settings for patch mode AutomaticByPlatform
-     * in VM Guest Patching on Windows.
+     * Get the automaticByPlatformSettings property: Specifies additional settings for patch mode AutomaticByPlatform in
+     * VM Guest Patching on Windows.
      * 
      * @return the automaticByPlatformSettings value.
      */
@@ -150,8 +148,8 @@ public final class PatchSettings {
     }
 
     /**
-     * Set the automaticByPlatformSettings property: Specifies additional settings for patch mode AutomaticByPlatform
-     * in VM Guest Patching on Windows.
+     * Set the automaticByPlatformSettings property: Specifies additional settings for patch mode AutomaticByPlatform in
+     * VM Guest Patching on Windows.
      * 
      * @param automaticByPlatformSettings the automaticByPlatformSettings value to set.
      * @return the PatchSettings object itself.

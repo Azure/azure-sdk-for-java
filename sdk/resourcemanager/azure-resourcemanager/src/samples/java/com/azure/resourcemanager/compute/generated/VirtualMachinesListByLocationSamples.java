@@ -20,7 +20,10 @@ public final class VirtualMachinesListByLocationSamples {
      */
     public static void listsAllTheVirtualMachinesUnderTheSpecifiedSubscriptionForTheSpecifiedLocation(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().listByLocation("eastus",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .listByLocation("eastus", com.azure.core.util.Context.NONE);
     }
 }

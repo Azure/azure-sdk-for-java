@@ -19,7 +19,10 @@ public final class CloudServiceOperatingSystemsGetOSVersionSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getCloudServiceOSVersion(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServiceOperatingSystems()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServiceOperatingSystems()
             .getOSVersionWithResponse("westus2", "WA-GUEST-OS-3.90_202010-02", com.azure.core.util.Context.NONE);
     }
 }

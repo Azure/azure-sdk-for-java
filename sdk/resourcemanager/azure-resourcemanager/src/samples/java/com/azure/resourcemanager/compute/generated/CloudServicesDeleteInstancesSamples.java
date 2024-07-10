@@ -23,8 +23,12 @@ public final class CloudServicesDeleteInstancesSamples {
      */
     public static void
         deleteCloudServiceRoleInstancesInACloudService(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServices().deleteInstances("ConstosoRG", "{cs-name}",
-            new RoleInstances().withRoleInstances(Arrays.asList("ContosoFrontend_IN_0", "ContosoBackend_IN_1")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServices()
+            .deleteInstances("ConstosoRG", "{cs-name}",
+                new RoleInstances().withRoleInstances(Arrays.asList("ContosoFrontend_IN_0", "ContosoBackend_IN_1")),
+                com.azure.core.util.Context.NONE);
     }
 }

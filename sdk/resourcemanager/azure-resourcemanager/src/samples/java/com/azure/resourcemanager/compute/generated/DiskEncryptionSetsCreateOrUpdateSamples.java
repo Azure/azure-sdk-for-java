@@ -29,17 +29,19 @@ public final class DiskEncryptionSetsCreateOrUpdateSamples {
      */
     public static void
         createADiskEncryptionSetWithKeyVaultFromADifferentTenant(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskEncryptionSets().createOrUpdate("myResourceGroup",
-            "myDiskEncryptionSet",
-            new DiskEncryptionSetInner().withLocation("West US").withIdentity(new EncryptionSetIdentity()
-                .withType(DiskEncryptionSetIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}",
-                    new VirtualMachineIdentityUserAssignedIdentities())))
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskEncryptionSets()
+            .createOrUpdate("myResourceGroup", "myDiskEncryptionSet", new DiskEncryptionSetInner()
+                .withLocation("West US")
+                .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}",
+                        new VirtualMachineIdentityUserAssignedIdentities())))
                 .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
                 .withActiveKey(new KeyForDiskEncryptionSet().withKeyUrl("fakeTokenPlaceholder"))
-                .withFederatedClientId("00000000-0000-0000-0000-000000000000"),
-            com.azure.core.util.Context.NONE);
+                .withFederatedClientId("00000000-0000-0000-0000-000000000000"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -52,15 +54,18 @@ public final class DiskEncryptionSetsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createADiskEncryptionSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskEncryptionSets().createOrUpdate("myResourceGroup",
-            "myDiskEncryptionSet",
-            new DiskEncryptionSetInner().withLocation("West US")
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskEncryptionSets()
+            .createOrUpdate("myResourceGroup", "myDiskEncryptionSet", new DiskEncryptionSetInner()
+                .withLocation("West US")
                 .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.SYSTEM_ASSIGNED))
                 .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
                 .withActiveKey(new KeyForDiskEncryptionSet().withSourceVault(new SourceVault().withId(
                     "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault"))
                     .withKeyUrl("fakeTokenPlaceholder")),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -74,13 +79,16 @@ public final class DiskEncryptionSetsCreateOrUpdateSamples {
      */
     public static void createADiskEncryptionSetWithKeyVaultFromADifferentSubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskEncryptionSets().createOrUpdate("myResourceGroup",
-            "myDiskEncryptionSet",
-            new DiskEncryptionSetInner().withLocation("West US")
-                .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.SYSTEM_ASSIGNED))
-                .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
-                .withActiveKey(new KeyForDiskEncryptionSet().withKeyUrl("fakeTokenPlaceholder")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskEncryptionSets()
+            .createOrUpdate("myResourceGroup", "myDiskEncryptionSet",
+                new DiskEncryptionSetInner().withLocation("West US")
+                    .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.SYSTEM_ASSIGNED))
+                    .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
+                    .withActiveKey(new KeyForDiskEncryptionSet().withKeyUrl("fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

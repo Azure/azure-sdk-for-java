@@ -206,8 +206,8 @@ public final class VirtualMachinePublicIpAddressConfiguration {
     }
 
     /**
-     * Get the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether
-     * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+     * Get the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether the
+     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
      * 
      * @return the publicIpAddressVersion value.
      */
@@ -216,8 +216,8 @@ public final class VirtualMachinePublicIpAddressConfiguration {
     }
 
     /**
-     * Set the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether
-     * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+     * Set the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether the
+     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
      * 
      * @param publicIpAddressVersion the publicIpAddressVersion value to set.
      * @return the VirtualMachinePublicIpAddressConfiguration object itself.
@@ -261,8 +261,9 @@ public final class VirtualMachinePublicIpAddressConfiguration {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property name in model VirtualMachinePublicIpAddressConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model VirtualMachinePublicIpAddressConfiguration"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();

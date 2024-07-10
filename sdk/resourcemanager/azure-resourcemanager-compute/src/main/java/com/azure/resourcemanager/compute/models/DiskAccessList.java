@@ -22,8 +22,8 @@ public final class DiskAccessList {
     private List<DiskAccessInner> value;
 
     /*
-     * The uri to fetch the next page of disk access resources. Call ListNext() with this to fetch the next page of
-     * disk access resources.
+     * The uri to fetch the next page of disk access resources. Call ListNext() with this to fetch the next page of disk
+     * access resources.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +83,8 @@ public final class DiskAccessList {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model DiskAccessList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model DiskAccessList"));
         } else {
             value().forEach(e -> e.validate());
         }

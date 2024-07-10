@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VirtualMachineScaleSetVMProtectionPolicy {
     /*
-     * Indicates that the virtual machine scale set VM shouldn't be considered for deletion during a scale-in
-     * operation.
+     * Indicates that the virtual machine scale set VM shouldn't be considered for deletion during a scale-in operation.
      */
     @JsonProperty(value = "protectFromScaleIn")
     private Boolean protectFromScaleIn;

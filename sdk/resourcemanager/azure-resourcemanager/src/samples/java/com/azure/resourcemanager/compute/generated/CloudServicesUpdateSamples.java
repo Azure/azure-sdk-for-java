@@ -23,8 +23,12 @@ public final class CloudServicesUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateExistingCloudServiceToAddTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServices().update("ConstosoRG", "{cs-name}",
-            new CloudServiceUpdate().withTags(mapOf("Documentation", "RestAPI")), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServices()
+            .update("ConstosoRG", "{cs-name}", new CloudServiceUpdate().withTags(mapOf("Documentation", "RestAPI")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

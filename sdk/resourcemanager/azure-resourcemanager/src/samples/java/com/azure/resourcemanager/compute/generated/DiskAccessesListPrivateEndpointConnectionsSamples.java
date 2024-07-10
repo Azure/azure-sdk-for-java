@@ -20,7 +20,10 @@ public final class DiskAccessesListPrivateEndpointConnectionsSamples {
      */
     public static void getInformationAboutAPrivateEndpointConnectionUnderADiskAccessResource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskAccesses()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskAccesses()
             .listPrivateEndpointConnections("myResourceGroup", "myDiskAccess", com.azure.core.util.Context.NONE);
     }
 }

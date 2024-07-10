@@ -25,12 +25,16 @@ public final class RestorePointCollectionsCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateARestorePointCollectionForCrossRegionCopy(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getRestorePointCollections().createOrUpdateWithResponse(
-            "myResourceGroup", "myRpc",
-            new RestorePointCollectionInner().withLocation("norwayeast").withTags(mapOf("myTag1", "tagValue1"))
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePointCollections()
+            .createOrUpdateWithResponse("myResourceGroup", "myRpc", new RestorePointCollectionInner()
+                .withLocation("norwayeast")
+                .withTags(mapOf("myTag1", "tagValue1"))
                 .withSource(new RestorePointCollectionSourceProperties().withId(
                     "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/sourceRpcName")),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -44,12 +48,16 @@ public final class RestorePointCollectionsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateARestorePointCollection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getRestorePointCollections().createOrUpdateWithResponse(
-            "myResourceGroup", "myRpc",
-            new RestorePointCollectionInner().withLocation("norwayeast").withTags(mapOf("myTag1", "tagValue1"))
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePointCollections()
+            .createOrUpdateWithResponse("myResourceGroup", "myRpc", new RestorePointCollectionInner()
+                .withLocation("norwayeast")
+                .withTags(mapOf("myTag1", "tagValue1"))
                 .withSource(new RestorePointCollectionSourceProperties().withId(
                     "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -22,8 +22,11 @@ public final class VirtualMachineScaleSetsStartSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineScaleSetStartMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().start("rgcompute",
-            "aaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .start("rgcompute", "aaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -37,9 +40,12 @@ public final class VirtualMachineScaleSetsStartSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineScaleSetStartMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().start("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaa",
-            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .start("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa",
+                new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
+                com.azure.core.util.Context.NONE);
     }
 }

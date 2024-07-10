@@ -23,10 +23,13 @@ public final class ProximityPlacementGroupsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAProximityPlacementGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getProximityPlacementGroups().updateWithResponse(
-            "myResourceGroup", "myProximityPlacementGroup",
-            new ProximityPlacementGroupUpdate().withTags(mapOf("additionalProp1", "string")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getProximityPlacementGroups()
+            .updateWithResponse("myResourceGroup", "myProximityPlacementGroup",
+                new ProximityPlacementGroupUpdate().withTags(mapOf("additionalProp1", "string")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

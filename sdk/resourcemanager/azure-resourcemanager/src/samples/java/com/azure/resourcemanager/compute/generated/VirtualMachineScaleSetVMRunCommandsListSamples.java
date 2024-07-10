@@ -19,7 +19,10 @@ public final class VirtualMachineScaleSetVMRunCommandsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listRunCommandsInVmssInstance(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMRunCommands()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMRunCommands()
             .list("myResourceGroup", "myvmScaleSet", "0", null, com.azure.core.util.Context.NONE);
     }
 }

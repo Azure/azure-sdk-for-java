@@ -19,7 +19,10 @@ public final class DiskAccessesDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteADiskAccessResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskAccesses().delete("myResourceGroup", "myDiskAccess",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskAccesses()
+            .delete("myResourceGroup", "myDiskAccess", com.azure.core.util.Context.NONE);
     }
 }

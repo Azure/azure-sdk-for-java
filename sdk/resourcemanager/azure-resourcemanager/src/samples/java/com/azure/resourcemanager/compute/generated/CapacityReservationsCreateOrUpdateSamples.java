@@ -25,11 +25,16 @@ public final class CapacityReservationsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateACapacityReservation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservations().createOrUpdate("myResourceGroup",
-            "myCapacityReservationGroup", "myCapacityReservation",
-            new CapacityReservationInner().withLocation("westus").withTags(mapOf("department", "HR"))
-                .withSku(new Sku().withName("Standard_DS1_v2").withCapacity(4L)).withZones(Arrays.asList("1")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservations()
+            .createOrUpdate("myResourceGroup", "myCapacityReservationGroup", "myCapacityReservation",
+                new CapacityReservationInner().withLocation("westus")
+                    .withTags(mapOf("department", "HR"))
+                    .withSku(new Sku().withName("Standard_DS1_v2").withCapacity(4L))
+                    .withZones(Arrays.asList("1")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

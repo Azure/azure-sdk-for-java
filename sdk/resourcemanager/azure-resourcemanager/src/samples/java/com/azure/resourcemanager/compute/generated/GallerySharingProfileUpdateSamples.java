@@ -25,9 +25,13 @@ public final class GallerySharingProfileUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void shareAGalleryToCommunity(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGallerySharingProfiles().update("myResourceGroup",
-            "myGalleryName", new SharingUpdateInner().withOperationType(SharingUpdateOperationTypes.ENABLE_COMMUNITY),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGallerySharingProfiles()
+            .update("myResourceGroup", "myGalleryName",
+                new SharingUpdateInner().withOperationType(SharingUpdateOperationTypes.ENABLE_COMMUNITY),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -41,9 +45,13 @@ public final class GallerySharingProfileUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void resetSharingProfileOfAGallery(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGallerySharingProfiles().update("myResourceGroup",
-            "myGalleryName", new SharingUpdateInner().withOperationType(SharingUpdateOperationTypes.RESET),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGallerySharingProfiles()
+            .update("myResourceGroup", "myGalleryName",
+                new SharingUpdateInner().withOperationType(SharingUpdateOperationTypes.RESET),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -57,7 +65,10 @@ public final class GallerySharingProfileUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void addSharingIdToTheSharingProfileOfAGallery(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGallerySharingProfiles()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGallerySharingProfiles()
             .update("myResourceGroup", "myGalleryName",
                 new SharingUpdateInner().withOperationType(SharingUpdateOperationTypes.ADD)
                     .withGroups(Arrays.asList(

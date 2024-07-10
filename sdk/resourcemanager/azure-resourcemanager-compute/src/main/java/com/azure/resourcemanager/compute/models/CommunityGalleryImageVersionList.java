@@ -83,8 +83,9 @@ public final class CommunityGalleryImageVersionList {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model CommunityGalleryImageVersionList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model CommunityGalleryImageVersionList"));
         } else {
             value().forEach(e -> e.validate());
         }

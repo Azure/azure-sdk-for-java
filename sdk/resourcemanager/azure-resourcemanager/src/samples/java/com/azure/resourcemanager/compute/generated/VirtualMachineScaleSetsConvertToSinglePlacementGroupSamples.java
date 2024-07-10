@@ -22,7 +22,10 @@ public final class VirtualMachineScaleSetsConvertToSinglePlacementGroupSamples {
      */
     public static void virtualMachineScaleSetConvertToSinglePlacementGroupMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
             .convertToSinglePlacementGroupWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 new VMScaleSetConvertToSinglePlacementGroupInput()
                     .withActivePlacementGroupId("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -41,7 +44,10 @@ public final class VirtualMachineScaleSetsConvertToSinglePlacementGroupSamples {
      */
     public static void virtualMachineScaleSetConvertToSinglePlacementGroupMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
             .convertToSinglePlacementGroupWithResponse("rgcompute", "aaaaaaaaaaaaa",
                 new VMScaleSetConvertToSinglePlacementGroupInput(), com.azure.core.util.Context.NONE);
     }

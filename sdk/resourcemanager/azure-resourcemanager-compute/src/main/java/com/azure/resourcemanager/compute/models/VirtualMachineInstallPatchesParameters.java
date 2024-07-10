@@ -45,8 +45,8 @@ public final class VirtualMachineInstallPatchesParameters {
     }
 
     /**
-     * Get the maximumDuration property: Specifies the maximum amount of time that the operation will run. It must be
-     * an ISO 8601-compliant duration string such as PT4H (4 hours).
+     * Get the maximumDuration property: Specifies the maximum amount of time that the operation will run. It must be an
+     * ISO 8601-compliant duration string such as PT4H (4 hours).
      * 
      * @return the maximumDuration value.
      */
@@ -55,8 +55,8 @@ public final class VirtualMachineInstallPatchesParameters {
     }
 
     /**
-     * Set the maximumDuration property: Specifies the maximum amount of time that the operation will run. It must be
-     * an ISO 8601-compliant duration string such as PT4H (4 hours).
+     * Set the maximumDuration property: Specifies the maximum amount of time that the operation will run. It must be an
+     * ISO 8601-compliant duration string such as PT4H (4 hours).
      * 
      * @param maximumDuration the maximumDuration value to set.
      * @return the VirtualMachineInstallPatchesParameters object itself.
@@ -133,8 +133,9 @@ public final class VirtualMachineInstallPatchesParameters {
      */
     public void validate() {
         if (rebootSetting() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property rebootSetting in model VirtualMachineInstallPatchesParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rebootSetting in model VirtualMachineInstallPatchesParameters"));
         }
         if (windowsParameters() != null) {
             windowsParameters().validate();

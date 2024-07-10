@@ -20,7 +20,10 @@ public final class DiskAccessesListByResourceGroupSamples {
      */
     public static void
         listAllDiskAccessResourcesInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskAccesses().listByResourceGroup("myResourceGroup",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskAccesses()
+            .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

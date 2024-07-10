@@ -20,8 +20,11 @@ public final class AvailabilitySetsListAvailableSizesSamples {
      */
     public static void
         availabilitySetListAvailableSizesMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getAvailabilitySets().listAvailableSizes("rgcompute", "aa",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
+            .listAvailableSizes("rgcompute", "aa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +39,10 @@ public final class AvailabilitySetsListAvailableSizesSamples {
      */
     public static void
         availabilitySetListAvailableSizesMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getAvailabilitySets().listAvailableSizes("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
+            .listAvailableSizes("rgcompute", "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

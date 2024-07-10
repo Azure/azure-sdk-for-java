@@ -56,8 +56,8 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
     }
 
     /**
-     * Get the osType property: This property allows you to specify the type of the OS that is included in the disk
-     * when creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
+     * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when
+     * creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
      * 
      * @return the osType value.
      */
@@ -66,8 +66,8 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
     }
 
     /**
-     * Set the osType property: This property allows you to specify the type of the OS that is included in the disk
-     * when creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
+     * Set the osType property: This property allows you to specify the type of the OS that is included in the disk when
+     * creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
      * 
      * @param osType the osType value to set.
      * @return the SharedGalleryImageInner object itself.
@@ -202,8 +202,7 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
     }
 
     /**
-     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @return the hyperVGeneration value.
      */
@@ -212,8 +211,7 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
     }
 
     /**
-     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the SharedGalleryImageInner object itself.

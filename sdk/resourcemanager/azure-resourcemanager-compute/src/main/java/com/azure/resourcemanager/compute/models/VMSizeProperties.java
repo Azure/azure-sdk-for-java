@@ -64,8 +64,8 @@ public final class VMSizeProperties {
 
     /**
      * Get the vCpusPerCore property: Specifies the vCPU to physical core ratio. When this property is not specified in
-     * the request body the default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api
-     * response of [List all available virtual machine sizes in a
+     * the request body the default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api response
+     * of [List all available virtual machine sizes in a
      * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list). **Setting this property to 1 also
      * means that hyper-threading is disabled.**.
      * 
@@ -77,8 +77,8 @@ public final class VMSizeProperties {
 
     /**
      * Set the vCpusPerCore property: Specifies the vCPU to physical core ratio. When this property is not specified in
-     * the request body the default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api
-     * response of [List all available virtual machine sizes in a
+     * the request body the default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api response
+     * of [List all available virtual machine sizes in a
      * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list). **Setting this property to 1 also
      * means that hyper-threading is disabled.**.
      * 

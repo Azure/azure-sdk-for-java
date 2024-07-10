@@ -20,11 +20,11 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetIns
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetSkuInner;
 import com.azure.resourcemanager.compute.models.ExpandTypesForGetVMScaleSets;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceStateInput;
-import com.azure.resourcemanager.compute.models.VMScaleSetConvertToSinglePlacementGroupInput;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetReimageParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdate;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceIDs;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceRequiredIDs;
+import com.azure.resourcemanager.compute.models.VMScaleSetConvertToSinglePlacementGroupInput;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;

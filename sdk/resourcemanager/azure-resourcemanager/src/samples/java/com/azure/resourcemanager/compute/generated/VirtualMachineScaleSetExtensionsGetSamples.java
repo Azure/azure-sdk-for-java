@@ -20,9 +20,12 @@ public final class VirtualMachineScaleSetExtensionsGetSamples {
      */
     public static void
         virtualMachineScaleSetExtensionGetMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetExtensions().getWithResponse(
-            "rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaa", "aaaaaaa",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetExtensions()
+            .getWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaa", "aaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -37,7 +40,11 @@ public final class VirtualMachineScaleSetExtensionsGetSamples {
      */
     public static void
         virtualMachineScaleSetExtensionGetMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetExtensions().getWithResponse(
-            "rgcompute", "a", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetExtensions()
+            .getWithResponse("rgcompute", "a", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", null,
+                com.azure.core.util.Context.NONE);
     }
 }

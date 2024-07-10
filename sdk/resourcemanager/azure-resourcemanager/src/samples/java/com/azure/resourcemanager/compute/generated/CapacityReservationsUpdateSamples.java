@@ -24,8 +24,12 @@ public final class CapacityReservationsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void capacityReservationUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservations().update("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaa", "aaa", new CapacityReservationUpdate(), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservations()
+            .update("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaa", "aaa", new CapacityReservationUpdate(),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -39,11 +43,14 @@ public final class CapacityReservationsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void capacityReservationUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservations().update("rgcompute", "aaaaaaaaaa",
-            "aaaaaaaaaaaaaaaaaaa",
-            new CapacityReservationUpdate().withTags(mapOf("key4974", "fakeTokenPlaceholder"))
-                .withSku(new Sku().withName("Standard_DS1_v2").withTier("aaa").withCapacity(7L)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservations()
+            .update("rgcompute", "aaaaaaaaaa", "aaaaaaaaaaaaaaaaaaa",
+                new CapacityReservationUpdate().withTags(mapOf("key4974", "fakeTokenPlaceholder"))
+                    .withSku(new Sku().withName("Standard_DS1_v2").withTier("aaa").withCapacity(7L)),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

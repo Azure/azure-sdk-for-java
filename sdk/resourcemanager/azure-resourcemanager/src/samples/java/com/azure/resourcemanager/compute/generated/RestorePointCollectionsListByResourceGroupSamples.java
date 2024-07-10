@@ -20,7 +20,10 @@ public final class RestorePointCollectionsListByResourceGroupSamples {
      */
     public static void
         getsTheListOfRestorePointCollectionsInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getRestorePointCollections()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePointCollections()
             .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

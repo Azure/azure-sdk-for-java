@@ -29,8 +29,8 @@ public final class DiskEncryptionSetUpdate {
     private Map<String, String> tags;
 
     /*
-     * The managed identity for the disk encryption set. It should be given permission on the key vault before it can
-     * be used to encrypt disks.
+     * The managed identity for the disk encryption set. It should be given permission on the key vault before it can be
+     * used to encrypt disks.
      */
     @JsonProperty(value = "identity")
     private EncryptionSetIdentity identity;
@@ -71,8 +71,8 @@ public final class DiskEncryptionSetUpdate {
     }
 
     /**
-     * Get the identity property: The managed identity for the disk encryption set. It should be given permission on
-     * the key vault before it can be used to encrypt disks.
+     * Get the identity property: The managed identity for the disk encryption set. It should be given permission on the
+     * key vault before it can be used to encrypt disks.
      * 
      * @return the identity value.
      */
@@ -81,8 +81,8 @@ public final class DiskEncryptionSetUpdate {
     }
 
     /**
-     * Set the identity property: The managed identity for the disk encryption set. It should be given permission on
-     * the key vault before it can be used to encrypt disks.
+     * Set the identity property: The managed identity for the disk encryption set. It should be given permission on the
+     * key vault before it can be used to encrypt disks.
      * 
      * @param identity the identity value to set.
      * @return the DiskEncryptionSetUpdate object itself.
@@ -166,8 +166,8 @@ public final class DiskEncryptionSetUpdate {
     }
 
     /**
-     * Get the federatedClientId property: Multi-tenant application client id to access key vault in a different
-     * tenant. Setting the value to 'None' will clear the property.
+     * Get the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
      * 
      * @return the federatedClientId value.
      */
@@ -176,8 +176,8 @@ public final class DiskEncryptionSetUpdate {
     }
 
     /**
-     * Set the federatedClientId property: Multi-tenant application client id to access key vault in a different
-     * tenant. Setting the value to 'None' will clear the property.
+     * Set the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
      * 
      * @param federatedClientId the federatedClientId value to set.
      * @return the DiskEncryptionSetUpdate object itself.

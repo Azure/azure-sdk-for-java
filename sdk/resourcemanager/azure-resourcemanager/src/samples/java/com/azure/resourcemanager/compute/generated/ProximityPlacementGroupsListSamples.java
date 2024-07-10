@@ -19,7 +19,10 @@ public final class ProximityPlacementGroupsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listProximityPlacementGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getProximityPlacementGroups()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getProximityPlacementGroups()
             .list(com.azure.core.util.Context.NONE);
     }
 }

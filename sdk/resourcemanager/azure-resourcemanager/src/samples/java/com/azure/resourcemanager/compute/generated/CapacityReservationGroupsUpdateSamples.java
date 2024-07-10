@@ -24,8 +24,12 @@ public final class CapacityReservationGroupsUpdateSamples {
      */
     public static void
         capacityReservationGroupUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservationGroups().updateWithResponse("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaa", new CapacityReservationGroupUpdate(), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservationGroups()
+            .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaa", new CapacityReservationGroupUpdate(),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -40,10 +44,13 @@ public final class CapacityReservationGroupsUpdateSamples {
      */
     public static void
         capacityReservationGroupUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservationGroups().updateWithResponse("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaa",
-            new CapacityReservationGroupUpdate().withTags(mapOf("key5355", "fakeTokenPlaceholder")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservationGroups()
+            .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaa",
+                new CapacityReservationGroupUpdate().withTags(mapOf("key5355", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

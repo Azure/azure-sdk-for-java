@@ -19,7 +19,10 @@ public final class VirtualMachinesSimulateEvictionSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void simulateEvictionAVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
             .simulateEvictionWithResponse("ResourceGroup", "VMName", com.azure.core.util.Context.NONE);
     }
 }

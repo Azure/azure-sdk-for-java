@@ -38,12 +38,11 @@ public final class ImageReference extends SubResource {
      * Specifies the version of the platform image or marketplace image used to create the virtual machine. The allowed
      * formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers. Specify 'latest' to use
      * the latest version of an image available at deploy time. Even if you use 'latest', the VM image will not
-     * automatically update after deploy time even if a new version becomes available. Please do not use field
-     * 'version' for gallery image deployment, gallery image should always use 'id' field for deployment, to use
-     * 'latest' version of gallery image, just set
+     * automatically update after deploy time even if a new version becomes available. Please do not use field 'version'
+     * for gallery image deployment, gallery image should always use 'id' field for deployment, to use 'latest' version
+     * of gallery image, just set
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{
-     * galleryName}/images/{imageName}'
-     * in the 'id' field without version input.
+     * galleryName}/images/{imageName}' in the 'id' field without version input.
      */
     @JsonProperty(value = "version")
     private String version;
@@ -56,8 +55,8 @@ public final class ImageReference extends SubResource {
     private String exactVersion;
 
     /*
-     * Specified the shared gallery image unique id for vm deployment. This can be fetched from shared gallery image
-     * GET call.
+     * Specified the shared gallery image unique id for vm deployment. This can be fetched from shared gallery image GET
+     * call.
      */
     @JsonProperty(value = "sharedGalleryImageId")
     private String sharedGalleryImageId;
@@ -96,8 +95,8 @@ public final class ImageReference extends SubResource {
     }
 
     /**
-     * Get the offer property: Specifies the offer of the platform image or marketplace image used to create the
-     * virtual machine.
+     * Get the offer property: Specifies the offer of the platform image or marketplace image used to create the virtual
+     * machine.
      * 
      * @return the offer value.
      */
@@ -106,8 +105,8 @@ public final class ImageReference extends SubResource {
     }
 
     /**
-     * Set the offer property: Specifies the offer of the platform image or marketplace image used to create the
-     * virtual machine.
+     * Set the offer property: Specifies the offer of the platform image or marketplace image used to create the virtual
+     * machine.
      * 
      * @param offer the offer value to set.
      * @return the ImageReference object itself.
@@ -205,8 +204,8 @@ public final class ImageReference extends SubResource {
     }
 
     /**
-     * Get the communityGalleryImageId property: Specified the community gallery image unique id for vm deployment.
-     * This can be fetched from community gallery image GET call.
+     * Get the communityGalleryImageId property: Specified the community gallery image unique id for vm deployment. This
+     * can be fetched from community gallery image GET call.
      * 
      * @return the communityGalleryImageId value.
      */
@@ -215,8 +214,8 @@ public final class ImageReference extends SubResource {
     }
 
     /**
-     * Set the communityGalleryImageId property: Specified the community gallery image unique id for vm deployment.
-     * This can be fetched from community gallery image GET call.
+     * Set the communityGalleryImageId property: Specified the community gallery image unique id for vm deployment. This
+     * can be fetched from community gallery image GET call.
      * 
      * @param communityGalleryImageId the communityGalleryImageId value to set.
      * @return the ImageReference object itself.

@@ -35,8 +35,8 @@ public final class DataDisksToAttach {
 
     /*
      * Specifies whether data disk should be deleted or detached upon VM deletion. Possible values are: **Delete.** If
-     * this value is used, the data disk is deleted when VM is deleted. **Detach.** If this value is used, the data
-     * disk is retained after VM is deleted. The default value is set to **Detach**.
+     * this value is used, the data disk is deleted when VM is deleted. **Detach.** If this value is used, the data disk
+     * is retained after VM is deleted. The default value is set to **Detach**.
      */
     @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
@@ -172,8 +172,8 @@ public final class DataDisksToAttach {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @return the writeAcceleratorEnabled value.
      */
@@ -182,8 +182,8 @@ public final class DataDisksToAttach {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the DataDisksToAttach object itself.
@@ -200,8 +200,8 @@ public final class DataDisksToAttach {
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property diskId in model DataDisksToAttach"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property diskId in model DataDisksToAttach"));
         }
         if (diskEncryptionSet() != null) {
             diskEncryptionSet().validate();

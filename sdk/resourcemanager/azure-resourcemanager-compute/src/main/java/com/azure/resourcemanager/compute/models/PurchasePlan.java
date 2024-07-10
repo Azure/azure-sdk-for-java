@@ -26,8 +26,8 @@ public final class PurchasePlan {
     private String name;
 
     /*
-     * Specifies the product of the image from the marketplace. This is the same value as Offer under the
-     * imageReference element.
+     * Specifies the product of the image from the marketplace. This is the same value as Offer under the imageReference
+     * element.
      */
     @JsonProperty(value = "product", required = true)
     private String product;
@@ -107,16 +107,16 @@ public final class PurchasePlan {
      */
     public void validate() {
         if (publisher() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property publisher in model PurchasePlan"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property publisher in model PurchasePlan"));
         }
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model PurchasePlan"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model PurchasePlan"));
         }
         if (product() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property product in model PurchasePlan"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property product in model PurchasePlan"));
         }
     }
 

@@ -20,8 +20,11 @@ public final class VirtualMachineScaleSetsListSkusSamples {
      */
     public static void
         virtualMachineScaleSetListSkusMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().listSkus("rgcompute", "aaaaaa",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .listSkus("rgcompute", "aaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +39,10 @@ public final class VirtualMachineScaleSetsListSkusSamples {
      */
     public static void
         virtualMachineScaleSetListSkusMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().listSkus("rgcompute",
-            "aaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .listSkus("rgcompute", "aaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

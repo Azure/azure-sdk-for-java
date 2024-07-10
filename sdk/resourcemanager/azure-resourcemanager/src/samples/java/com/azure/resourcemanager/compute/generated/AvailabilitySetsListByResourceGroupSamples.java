@@ -19,8 +19,11 @@ public final class AvailabilitySetsListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void availabilitySetListMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getAvailabilitySets().listByResourceGroup("rgcompute",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
+            .listByResourceGroup("rgcompute", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +37,10 @@ public final class AvailabilitySetsListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void availabilitySetListMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getAvailabilitySets().listByResourceGroup("rgcompute",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
+            .listByResourceGroup("rgcompute", com.azure.core.util.Context.NONE);
     }
 }
