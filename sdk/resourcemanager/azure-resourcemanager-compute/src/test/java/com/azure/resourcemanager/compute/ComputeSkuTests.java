@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.compute.models.ComputeResourceType;
 import com.azure.resourcemanager.compute.models.ComputeSku;
 import com.azure.resourcemanager.test.utils.TestUtilities;
@@ -99,9 +98,7 @@ public class ComputeSkuTests extends ComputeManagementTest {
     }
 
     @Test
-    @LiveOnly
     public void canListSkusByRegion() throws Exception {
-        // LiveOnly because "test timing out after latest test proxy update"
         PagedIterable<ComputeSku> skus = this.computeManager.computeSkus().listByRegion(Region.US_EAST2);
         for (ComputeSku sku : skus) {
             Assertions.assertTrue(sku.regions().contains(Region.US_EAST2));
@@ -125,14 +122,13 @@ public class ComputeSkuTests extends ComputeManagementTest {
     }
 
     @Test
-    @LiveOnly
     public void canListSkusByRegionAndResourceType() throws Exception {
-        // LiveOnly because "test timing out after latest test proxy update"
         PagedIterable<ComputeSku> skus =
             this
                 .computeManager
                 .computeSkus()
                 .listByRegionAndResourceType(Region.US_EAST2, ComputeResourceType.VIRTUALMACHINES);
+        Assertions.assertNotNull(skus);
         for (ComputeSku sku : skus) {
             Assertions.assertTrue(sku.resourceType().equals(ComputeResourceType.VIRTUALMACHINES));
             Assertions.assertTrue(sku.regions().contains(Region.US_EAST2));
