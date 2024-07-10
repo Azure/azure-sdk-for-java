@@ -12,10 +12,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.TestProxyRecordingOptions;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.util.ClientOptions;
+import com.azure.core.test.models.*;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
@@ -25,7 +22,6 @@ import com.azure.health.deidentification.models.*;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
-import com.azure.health.deidentification.testutils.Utils;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -46,19 +42,17 @@ class SyncJobOperationsTest extends TestProxyTestBase {
             .httpClient(getHttpClientOrUsePlayback(HttpClient.createDefault()))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            System.out.println("Playback mode");
             List<TestProxySanitizer> customSanitizer = new ArrayList<>();
             customSanitizer.add(new TestProxySanitizer("$..location","^(?!.*FAKE_STORAGE_ACCOUNT).*", "https://fake_storage_account_sas_uri.blob.core.windows.net/container-sdk-dev-fakeid", TestProxySanitizerType.BODY_KEY));
-            interceptorManager.removeSanitizers("AZSDK3493", "AZSDK4001", "AZSDK3430");
+            interceptorManager.removeSanitizers("AZSDK3493", "AZSDK4001", "AZSDK3430", "AZSDK2003", "AZSDK2030");
             interceptorManager.addSanitizers(customSanitizer);
             deidentificationClientbuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            System.out.println("Record mode");
             List<TestProxySanitizer> customSanitizer = new ArrayList<>();
             // sanitize value for key: "modelId" in response json body
             customSanitizer.add(new TestProxySanitizer("$..location","^(?!.*FAKE_STORAGE_ACCOUNT).*", "https://fake_storage_account_sas_uri.blob.core.windows.net/container-sdk-dev-fakeid", TestProxySanitizerType.BODY_KEY));
-            interceptorManager.removeSanitizers("AZSDK3493", "AZSDK4001", "AZSDK3430");
+            interceptorManager.removeSanitizers("AZSDK3493", "AZSDK4001", "AZSDK3430", "AZSDK2003", "AZSDK2030");
             // add sanitizer to Test Proxy Policy
             interceptorManager.addSanitizers(customSanitizer);
             deidentificationClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
@@ -71,8 +65,8 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testCreateJobReturnsExpected() {
-        String jobName = Utils.generateJobName("test0001", getTestMode());
-        JobStatus statusToWait = JobStatus.RUNNING;
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded001";
+
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
@@ -105,8 +99,8 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testCreateThenListReturnsExpected() {
-        String jobName = Utils.generateJobName("test0002", getTestMode());
-        JobStatus statusToWait = JobStatus.RUNNING;
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded002";
+
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
@@ -151,7 +145,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testJobE2EWaitUntilSuccess() {
-        String jobName = Utils.generateJobName("test00003", getTestMode());
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded003";
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
@@ -183,7 +177,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testJobE2ECancelJobThenDeleteJobDeletesJob() {
-        String jobName = Utils.generateJobName("test004", getTestMode());
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded004";
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
@@ -212,7 +206,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testJobE2ECannotAccessStorageCreateJobFails() {
-        String jobName = Utils.generateJobName("test005", getTestMode());
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded005";
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = "FAKE_STORAGE_ACCOUNT";
         List<String> extensions = new ArrayList<>();

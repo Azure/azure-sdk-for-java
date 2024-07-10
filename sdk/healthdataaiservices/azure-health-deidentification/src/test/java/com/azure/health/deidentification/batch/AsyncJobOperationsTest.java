@@ -12,8 +12,11 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.health.deidentification.DeidentificationAsyncClient;
 import com.azure.health.deidentification.DeidentificationClientBuilder;
 import com.azure.health.deidentification.models.*;
@@ -21,7 +24,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.azure.health.deidentification.testutils.Utils;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -38,9 +40,19 @@ class AsyncJobOperationsTest extends TestProxyTestBase {
     protected void beforeTest() {
         DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint")).httpClient(HttpClient.createDefault()).httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            deidentificationClientbuilder.httpClient(interceptorManager.getPlaybackClient()).credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            List<TestProxySanitizer> customSanitizer = new ArrayList<>();
+            customSanitizer.add(new TestProxySanitizer("$..location","^(?!.*FAKE_STORAGE_ACCOUNT).*", "https://fake_storage_account_sas_uri.blob.core.windows.net/container-sdk-dev-fakeid", TestProxySanitizerType.BODY_KEY));
+            interceptorManager.removeSanitizers("AZSDK3493", "AZSDK4001", "AZSDK3430", "AZSDK2003", "AZSDK2030");
+            interceptorManager.addSanitizers(customSanitizer);
+            deidentificationClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            deidentificationClientbuilder.addPolicy(interceptorManager.getRecordPolicy()).credential(new DefaultAzureCredentialBuilder().build());
+            List<TestProxySanitizer> customSanitizer = new ArrayList<>();
+            customSanitizer.add(new TestProxySanitizer("$..location","^(?!.*FAKE_STORAGE_ACCOUNT).*", "https://fake_storage_account_sas_uri.blob.core.windows.net/container-sdk-dev-fakeid", TestProxySanitizerType.BODY_KEY));
+            interceptorManager.removeSanitizers("AZSDK3493", "AZSDK4001", "AZSDK3430", "AZSDK2003", "AZSDK2030");
+            interceptorManager.addSanitizers(customSanitizer);
+            deidentificationClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             deidentificationClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
@@ -49,7 +61,7 @@ class AsyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testCreateJobReturnsExpected() {
-        String jobName = Utils.generateJobName("test06");
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded006";
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
@@ -76,7 +88,7 @@ class AsyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testCreateThenListReturnsExpected() {
-        String jobName = Utils.generateJobName("test07");
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded007";
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
@@ -107,15 +119,15 @@ class AsyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testJobE2EWaitUntilSuccess() {
-        String jobName = Utils.generateJobName("test08");
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded008";
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
         DeidentificationJob job = new DeidentificationJob(new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions), new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER), OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
-
-        DeidentificationJob result = deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitForCompletion().getValue();
+        PollerFlux<DeidentificationJob, DeidentificationJob> poller = setPlaybackPollerFluxPollInterval(deidentificationAsyncClient.beginCreateJob(jobName, job));
+        DeidentificationJob result = poller.getSyncPoller().waitForCompletion().getValue();
 
         assertEquals(JobStatus.SUCCEEDED, result.getStatus());
 
@@ -132,7 +144,7 @@ class AsyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testJobE2ECancelJobThenDeleteJobDeletesJob() {
-        String jobName = Utils.generateJobName("test09");
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded009";
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
@@ -156,7 +168,7 @@ class AsyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testJobE2ECannotAccessStorageCreateJobFails() {
-        String jobName = Utils.generateJobName("test10");
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded0010";
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = "FAKE_STORAGE_ACCOUNT";
         List<String> extensions = new ArrayList<>();
