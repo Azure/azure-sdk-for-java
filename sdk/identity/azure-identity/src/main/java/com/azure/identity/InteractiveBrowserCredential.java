@@ -186,7 +186,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
     }
 
     /**
-     * Interactively authenticates a user via the default browser.
+     * Interactively authenticates a user via the default browser. This method will always generate a challenge to the
+     * user.
      *
      * @param request The details of the authentication request.
      *
@@ -203,7 +204,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
     }
 
     /**
-     * Interactively authenticates a user via the default browser.
+     * Interactively authenticates a user via the default browser. This method will always generate a challenge to the
+     * user.
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via

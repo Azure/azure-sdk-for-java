@@ -187,7 +187,7 @@ public class DeviceCodeCredential implements TokenCredential {
      *
      * <p> The credential acquires a verification URL and code from the Microsoft Entra ID. The user must
      * browse to the URL, enter the code, and authenticate with Microsoft Entra ID. If the user authenticates
-     * successfully, the credential receives an access token. </p>
+     * successfully, the credential receives an access token. This method will always generate a challenge to the user.</p>
      *
      * @param request The details of the authentication request.
      *
@@ -207,7 +207,7 @@ public class DeviceCodeCredential implements TokenCredential {
      *
      * <p> The credential acquires a verification URL and code from the Microsoft Entra ID. The user must
      * browse to the URL, enter the code, and authenticate with Microsoft Entra ID. If the user authenticates
-     * successfully, the credential receives an access token. </p>
+     * successfully, the credential receives an access token. This method will always generate a challenge to the user.</p>
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was configured via
