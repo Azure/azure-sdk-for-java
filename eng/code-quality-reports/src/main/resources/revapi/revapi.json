@@ -504,13 +504,13 @@
           "ignore": true,
           "code": "java.method.added",
           "new": "method void com.azure.core.credential.AccessToken::<init>(java.lang.String, java.time.OffsetDateTime, java.time.OffsetDateTime)",
-          "justification": "ADD YOUR EXPLANATION FOR THE NECESSITY OF THIS CHANGE"
+          "justification": "Added a new constructor to the AccessToken class."
         },
         {
           "ignore": true,
           "code": "java.method.added",
           "new": "method java.time.OffsetDateTime com.azure.core.credential.AccessToken::getRefreshAt()",
-          "justification": "ADD YOUR EXPLANATION FOR THE NECESSITY OF THIS CHANGE"
+          "justification": "Added getRefreshAt method to AccessToken class."
         }
       ]
     }
