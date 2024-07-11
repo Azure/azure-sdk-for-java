@@ -100,7 +100,9 @@ public class BlobClientConfiguration {
     }
 
     @Bean
-    @ConditionalOnAnyProperty(prefixes = {AzureStorageBlobProperties.PREFIX, AzureStorageProperties.PREFIX}, name = {"connection-string"})
+    @ConditionalOnAnyProperty(
+        prefixes = {AzureStorageBlobProperties.PREFIX, AzureStorageProperties.PREFIX},
+        name = {"connection-string"})
     StaticConnectionStringProvider<AzureServiceType.StorageBlob> staticStorageBlobConnectionStringProvider(
         AzureStorageBlobProperties properties) {
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_BLOB, properties.getConnectionString());

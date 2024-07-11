@@ -18,9 +18,10 @@ public class AzureCosmosPropertiesWithConnectionDetailsClassWithConnectionDetail
     private final AzureGlobalProperties globalProperties;
     private final AzureCosmosConnectionDetails connectionDetails;
 
-    public AzureCosmosPropertiesWithConnectionDetailsClassWithConnectionDetailsBeanConfiguration(Environment environment,
-                                                                                                 AzureGlobalProperties globalProperties,
-                                                                                                 AzureCosmosConnectionDetails connectionDetails) {
+    public AzureCosmosPropertiesWithConnectionDetailsClassWithConnectionDetailsBeanConfiguration(
+        Environment environment,
+        AzureGlobalProperties globalProperties,
+        AzureCosmosConnectionDetails connectionDetails) {
         this.environment = environment;
         this.globalProperties = globalProperties;
         this.connectionDetails = connectionDetails;

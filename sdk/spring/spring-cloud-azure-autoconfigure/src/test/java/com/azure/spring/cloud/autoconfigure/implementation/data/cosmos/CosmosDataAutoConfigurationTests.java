@@ -98,9 +98,8 @@ class CosmosDataAutoConfigurationTests {
     void cosmosTemplateExistsAndUsesIt() {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             this.contextRunner
-                .withBean(AzureGlobalProperties.class, this::globalProperties)
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-                .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
+                .withBean(AzureGlobalProperties.class, this::globalProperties)
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
                     "spring.cloud.azure.cosmos.database=test"
@@ -137,9 +136,8 @@ class CosmosDataAutoConfigurationTests {
     void hasResponseDiagnosticsProcessorWhenEnableQueryMetrics() {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             this.contextRunner
-                .withBean(AzureGlobalProperties.class, this::globalProperties)
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-                .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
+                .withBean(AzureGlobalProperties.class, this::globalProperties)
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
                     "spring.cloud.azure.cosmos.database=test",
@@ -161,9 +159,8 @@ class CosmosDataAutoConfigurationTests {
     void testWithEnableAuditing() {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             this.contextRunner
-                .withBean(AzureGlobalProperties.class, this::globalProperties)
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-                .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
+                .withBean(AzureGlobalProperties.class, this::globalProperties)
                 .withUserConfiguration(UserAuditingConfiguration.class)
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
