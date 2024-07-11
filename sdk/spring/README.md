@@ -244,6 +244,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][codeofcondu
 
 This project collects usage data and sends it to Microsoft to help improve our products and services. Read our [privacy][privacy-statement] statement to learn more.
 
+test pipeline.
 
 
 [spring-contributing]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/CONTRIBUTING.md
