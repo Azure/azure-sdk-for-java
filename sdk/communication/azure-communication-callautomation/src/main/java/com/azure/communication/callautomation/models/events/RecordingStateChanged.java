@@ -61,9 +61,9 @@ public final class RecordingStateChanged extends CallAutomationEventBase {
     }
 
     /**
-     * Get the recordingState property: Recording State.
+     * Get the recordingKind property: Recording Kind.
      *
-     * @return the recordingState value.
+     * @return the recordingKind value.
      */
     public RecordingKind getRecordingKind() {
         return recordingKind;
