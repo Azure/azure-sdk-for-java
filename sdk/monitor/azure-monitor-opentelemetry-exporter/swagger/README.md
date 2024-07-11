@@ -21,4 +21,6 @@ In order to use the latest version of autorest, update the `use` directive in th
 use: '@autorest/java@4.1.29'
 ```
 
-After the code has been updated, copy the generated models to the appropriate package under `implementation/models/`.
+After the code has been updated, copy the generated models from ` sdk/monitor/azure-monitor-opentelemetry-exporter/src/main/java/com/azure/monitor/opentelemetry/exporter/models/` to the appropriate package under ` sdk/monitor/azure-monitor-opentelemetry-exporter/src/main/java/com/azure/monitor/opentelemetry/exporter/implementation/models/`.
+And then delete ` sdk/monitor/azure-monitor-opentelemetry-exporter/src/main/java/com/azure/monitor/opentelemetry/exporter/models/` folder afterwards.
+

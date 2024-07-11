@@ -18,8 +18,7 @@ import java.util.List;
 @Fluent
 public final class TelemetryExceptionDetails implements JsonSerializable<TelemetryExceptionDetails> {
     /*
-     * In case exception is nested (outer exception contains inner one), the id and outerId properties are used to
-     * represent the nesting.
+     * In case exception is nested (outer exception contains inner one), the id and outerId properties are used to represent the nesting.
      */
     private Integer id;
 
@@ -39,8 +38,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
     private String message;
 
     /*
-     * Indicates if full exception stack is provided in the exception. The stack may be trimmed, such as in the case of
-     * a StackOverflow exception.
+     * Indicates if full exception stack is provided in the exception. The stack may be trimmed, such as in the case of a StackOverflow exception.
      */
     private Boolean hasFullStack;
 

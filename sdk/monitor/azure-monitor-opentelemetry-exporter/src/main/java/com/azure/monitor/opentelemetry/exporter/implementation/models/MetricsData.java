@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public final class MetricsData extends MonitorDomain {
     /*
-     * List of metrics. Only one metric in the list is currently supported by Application Insights storage. If multiple
-     * data points were sent only the first one will be used.
+     * List of metrics. Only one metric in the list is currently supported by Application Insights storage. If multiple data points were sent only the first one will be used.
      */
     private List<MetricDataPoint> metrics;
 

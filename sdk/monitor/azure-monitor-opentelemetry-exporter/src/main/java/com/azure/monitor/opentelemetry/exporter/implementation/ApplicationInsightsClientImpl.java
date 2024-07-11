@@ -27,9 +27,8 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.monitor.opentelemetry.exporter.models.ExportResult;
 import com.azure.monitor.opentelemetry.exporter.models.ExportResultException;
 import com.azure.monitor.opentelemetry.exporter.models.TelemetryItem;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
+import reactor.core.publisher.Mono;
 
 /**
  * Initializes a new instance of the ApplicationInsightsClient type.
@@ -47,7 +46,7 @@ public final class ApplicationInsightsClientImpl {
 
     /**
      * Gets Breeze endpoint: https://dc.services.visualstudio.com.
-     *
+     * 
      * @return the host value.
      */
     public String getHost() {
@@ -61,7 +60,7 @@ public final class ApplicationInsightsClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -75,7 +74,7 @@ public final class ApplicationInsightsClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -84,7 +83,7 @@ public final class ApplicationInsightsClientImpl {
 
     /**
      * Initializes an instance of ApplicationInsightsClient client.
-     *
+     * 
      * @param host Breeze endpoint: https://dc.services.visualstudio.com.
      */
     ApplicationInsightsClientImpl(String host) {
@@ -94,7 +93,7 @@ public final class ApplicationInsightsClientImpl {
 
     /**
      * Initializes an instance of ApplicationInsightsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param host Breeze endpoint: https://dc.services.visualstudio.com.
      */
@@ -104,7 +103,7 @@ public final class ApplicationInsightsClientImpl {
 
     /**
      * Initializes an instance of ApplicationInsightsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param host Breeze endpoint: https://dc.services.visualstudio.com.
@@ -135,9 +134,9 @@ public final class ApplicationInsightsClientImpl {
 
     /**
      * Track telemetry events
-     *
+     * 
      * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
-     *
+     * 
      * @param body The list of telemetry events to track.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ExportResultException thrown if the request is rejected by server.
@@ -154,9 +153,9 @@ public final class ApplicationInsightsClientImpl {
 
     /**
      * Track telemetry events
-     *
+     * 
      * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
-     *
+     * 
      * @param body The list of telemetry events to track.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,9 +173,9 @@ public final class ApplicationInsightsClientImpl {
 
     /**
      * Track telemetry events
-     *
+     * 
      * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
-     *
+     * 
      * @param body The list of telemetry events to track.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ExportResultException thrown if the request is rejected by server.
@@ -191,9 +190,9 @@ public final class ApplicationInsightsClientImpl {
 
     /**
      * Track telemetry events
-     *
+     * 
      * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
-     *
+     * 
      * @param body The list of telemetry events to track.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

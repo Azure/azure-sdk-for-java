@@ -5,7 +5,6 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,8 +20,7 @@ import java.util.Map;
 @Fluent
 public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
     /*
-     * Envelope version. For internal use only. By assigning this the default, it will not be serialized within the
-     * payload unless changed to a value other than #1.
+     * Envelope version. For internal use only. By assigning this the default, it will not be serialized within the payload unless changed to a value other than #1.
      */
     private Integer version;
 
@@ -32,12 +30,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
     private String name;
 
     /*
-     * Event date time when telemetry item was created. This is the wall clock time on the client when the event was
-     * generated. There is no guarantee that the client's time is accurate. This field must be formatted in UTC ISO 8601
-     * format, with a trailing 'Z' character, as described publicly on https://en.wikipedia.org/wiki/ISO_8601#UTC. Note:
-     * the number of decimal seconds digits provided are variable (and unspecified). Consumers should handle this, i.e.
-     * managed code consumers should not use format 'O' for parsing as it specifies a fixed length. Example:
-     * 2009-06-15T13:45:30.0000000Z.
+     * Event date time when telemetry item was created. This is the wall clock time on the client when the event was generated. There is no guarantee that the client's time is accurate. This field must be formatted in UTC ISO 8601 format, with a trailing 'Z' character, as described publicly on https://en.wikipedia.org/wiki/ISO_8601#UTC. Note: the number of decimal seconds digits provided are variable (and unspecified). Consumers should handle this, i.e. managed code consumers should not use format 'O' for parsing as it specifies a fixed length. Example: 2009-06-15T13:45:30.0000000Z.
      */
     private OffsetDateTime time;
 
@@ -285,8 +278,8 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
                 if ("name".equals(fieldName)) {
                     deserializedTelemetryItem.name = reader.getString();
                 } else if ("time".equals(fieldName)) {
-                    deserializedTelemetryItem.time = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedTelemetryItem.time
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("ver".equals(fieldName)) {
                     deserializedTelemetryItem.version = reader.getNullable(JsonReader::getInt);
                 } else if ("sampleRate".equals(fieldName)) {

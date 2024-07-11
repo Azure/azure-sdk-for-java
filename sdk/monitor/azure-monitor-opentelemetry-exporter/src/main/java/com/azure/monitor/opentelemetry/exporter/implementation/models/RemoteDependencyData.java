@@ -19,14 +19,12 @@ import java.util.Map;
 @Fluent
 public final class RemoteDependencyData extends MonitorDomain {
     /*
-     * Identifier of a dependency call instance. Used for correlation with the request telemetry item corresponding to
-     * this dependency call.
+     * Identifier of a dependency call instance. Used for correlation with the request telemetry item corresponding to this dependency call.
      */
     private String id;
 
     /*
-     * Name of the command initiated with this dependency call. Low cardinality value. Examples are stored procedure
-     * name and URL path template.
+     * Name of the command initiated with this dependency call. Low cardinality value. Examples are stored procedure name and URL path template.
      */
     private String name;
 
@@ -41,8 +39,7 @@ public final class RemoteDependencyData extends MonitorDomain {
     private String data;
 
     /*
-     * Dependency type name. Very low cardinality value for logical grouping of dependencies and interpretation of other
-     * fields like commandName and resultCode. Examples are SQL, Azure table, and HTTP.
+     * Dependency type name. Very low cardinality value for logical grouping of dependencies and interpretation of other fields like commandName and resultCode. Examples are SQL, Azure table, and HTTP.
      */
     private String type;
 

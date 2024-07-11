@@ -30,8 +30,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
     private SeverityLevel severityLevel;
 
     /*
-     * Identifier of where the exception was thrown in code. Used for exceptions grouping. Typically a combination of
-     * exception type and a function from the call stack.
+     * Identifier of where the exception was thrown in code. Used for exceptions grouping. Typically a combination of exception type and a function from the call stack.
      */
     private String problemId;
 
