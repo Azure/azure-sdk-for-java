@@ -651,9 +651,7 @@ public final class OpenAIClient {
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param chatCompletionsOptions The configuration information for a chat completions request.
-     * Completions support a wide variety of tasks and generate text that continues from or "completes"
-     * provided prompt data.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -666,12 +664,12 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChatCompletions getChatCompletions(String deploymentOrModelName,
-        ChatCompletionsOptions chatCompletionsOptions) {
+    public ChatCompletions getChatCompletions(String deploymentOrModelName, ChatCompletionsOptions body) {
         // Generated convenience method for getChatCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions),
-            requestOptions).getValue().toObject(ChatCompletions.class);
+        return getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(body), requestOptions)
+            .getValue()
+            .toObject(ChatCompletions.class);
     }
 
     /**
@@ -1481,8 +1479,7 @@ public final class OpenAIClient {
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param speechGenerationOptions A representation of the request options that control the behavior of a
-     * text-to-speech operation.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1493,11 +1490,10 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData generateSpeechFromText(String deploymentOrModelName,
-        SpeechGenerationOptions speechGenerationOptions) {
+    public BinaryData generateSpeechFromText(String deploymentOrModelName, SpeechGenerationOptions body) {
         // Generated convenience method for generateSpeechFromTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return generateSpeechFromTextWithResponse(deploymentOrModelName, BinaryData.fromObject(speechGenerationOptions),
-            requestOptions).getValue();
+        return generateSpeechFromTextWithResponse(deploymentOrModelName, BinaryData.fromObject(body), requestOptions)
+            .getValue();
     }
 }

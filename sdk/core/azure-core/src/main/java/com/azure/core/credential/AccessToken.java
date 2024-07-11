@@ -34,6 +34,7 @@ import java.time.OffsetDateTime;
 public class AccessToken {
     private final String token;
     private final OffsetDateTime expiresAt;
+    private final OffsetDateTime refreshAt;
 
     /**
      * Creates an access token instance.
@@ -44,6 +45,20 @@ public class AccessToken {
     public AccessToken(String token, OffsetDateTime expiresAt) {
         this.token = token;
         this.expiresAt = expiresAt;
+        this.refreshAt = null;
+    }
+
+    /**
+     * Creates an access token instance.
+     *
+     * @param token the token string.
+     * @param expiresAt the expiration time.
+     * @param refreshAt the next token refresh time.
+     */
+    public AccessToken(String token, OffsetDateTime expiresAt, OffsetDateTime refreshAt) {
+        this.token = token;
+        this.expiresAt = expiresAt;
+        this.refreshAt = refreshAt;
     }
 
     /**
@@ -62,6 +77,19 @@ public class AccessToken {
      */
     public OffsetDateTime getExpiresAt() {
         return expiresAt;
+    }
+
+    /**
+     * Gets the time when the token should refresh next, in UTC.
+     *
+     * <p>Note: This value can be null as it is not always provided by the service. When it is provided,
+     * it overrides the default refresh offset used by the
+     * {@link com.azure.core.http.policy.BearerTokenAuthenticationPolicy} to proactively refresh the token.</p>
+     *
+     * @return The time when the token should refresh next, in UTC.
+     */
+    public OffsetDateTime getRefreshAt() {
+        return refreshAt;
     }
 
     /**

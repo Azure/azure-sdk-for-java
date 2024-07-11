@@ -18,8 +18,6 @@ extends:
       - stage:
         displayName: 'Partner Release'
         variables:
-          - name: BuildToolScripts
-            value: $(Pipeline.Workspace)/azure-sdk-build-tools/scripts
           - name: Artifacts
             value: $(Pipeline.Workspace)/artifacts
           - name: EsrpArtifacts
@@ -87,7 +85,6 @@ extends:
               ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
               OutputDirectory: $(EsrpArtifacts)
               Target: EsrpRelease
-              BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
               JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
               ShouldPublish: ${{ parameters.ShouldPublish }}
               StageOnly: false
