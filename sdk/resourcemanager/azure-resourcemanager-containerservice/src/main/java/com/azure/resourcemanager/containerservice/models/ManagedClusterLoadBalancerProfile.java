@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -38,8 +39,8 @@ public final class ManagedClusterLoadBalancerProfile {
     private List<ResourceReference> effectiveOutboundIPs;
 
     /*
-     * The desired number of allocated SNAT ports per VM. Allowed values are in the range of 0 to 64000 (inclusive).
-     * The default value is 0 which results in Azure dynamically allocating ports.
+     * The desired number of allocated SNAT ports per VM. Allowed values are in the range of 0 to 64000 (inclusive). The
+     * default value is 0 which results in Azure dynamically allocating ports.
      */
     @JsonProperty(value = "allocatedOutboundPorts")
     private Integer allocatedOutboundPorts;
@@ -71,7 +72,7 @@ public final class ManagedClusterLoadBalancerProfile {
 
     /**
      * Get the managedOutboundIPs property: Desired managed outbound IPs for the cluster load balancer.
-     * 
+     *
      * @return the managedOutboundIPs value.
      */
     public ManagedClusterLoadBalancerProfileManagedOutboundIPs managedOutboundIPs() {
@@ -80,7 +81,7 @@ public final class ManagedClusterLoadBalancerProfile {
 
     /**
      * Set the managedOutboundIPs property: Desired managed outbound IPs for the cluster load balancer.
-     * 
+     *
      * @param managedOutboundIPs the managedOutboundIPs value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
@@ -92,7 +93,7 @@ public final class ManagedClusterLoadBalancerProfile {
 
     /**
      * Get the outboundIpPrefixes property: Desired outbound IP Prefix resources for the cluster load balancer.
-     * 
+     *
      * @return the outboundIpPrefixes value.
      */
     public ManagedClusterLoadBalancerProfileOutboundIpPrefixes outboundIpPrefixes() {
@@ -101,7 +102,7 @@ public final class ManagedClusterLoadBalancerProfile {
 
     /**
      * Set the outboundIpPrefixes property: Desired outbound IP Prefix resources for the cluster load balancer.
-     * 
+     *
      * @param outboundIpPrefixes the outboundIpPrefixes value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
@@ -113,7 +114,7 @@ public final class ManagedClusterLoadBalancerProfile {
 
     /**
      * Get the outboundIPs property: Desired outbound IP resources for the cluster load balancer.
-     * 
+     *
      * @return the outboundIPs value.
      */
     public ManagedClusterLoadBalancerProfileOutboundIPs outboundIPs() {
@@ -122,7 +123,7 @@ public final class ManagedClusterLoadBalancerProfile {
 
     /**
      * Set the outboundIPs property: Desired outbound IP resources for the cluster load balancer.
-     * 
+     *
      * @param outboundIPs the outboundIPs value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
@@ -133,7 +134,7 @@ public final class ManagedClusterLoadBalancerProfile {
 
     /**
      * Get the effectiveOutboundIPs property: The effective outbound IP resources of the cluster load balancer.
-     * 
+     *
      * @return the effectiveOutboundIPs value.
      */
     public List<ResourceReference> effectiveOutboundIPs() {
@@ -142,7 +143,7 @@ public final class ManagedClusterLoadBalancerProfile {
 
     /**
      * Set the effectiveOutboundIPs property: The effective outbound IP resources of the cluster load balancer.
-     * 
+     *
      * @param effectiveOutboundIPs the effectiveOutboundIPs value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
@@ -152,10 +153,9 @@ public final class ManagedClusterLoadBalancerProfile {
     }
 
     /**
-     * Get the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are
-     * in the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating
-     * ports.
-     * 
+     * Get the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are in
+     * the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating ports.
+     *
      * @return the allocatedOutboundPorts value.
      */
     public Integer allocatedOutboundPorts() {
@@ -163,10 +163,9 @@ public final class ManagedClusterLoadBalancerProfile {
     }
 
     /**
-     * Set the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are
-     * in the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating
-     * ports.
-     * 
+     * Set the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are in
+     * the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating ports.
+     *
      * @param allocatedOutboundPorts the allocatedOutboundPorts value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
@@ -178,7 +177,7 @@ public final class ManagedClusterLoadBalancerProfile {
     /**
      * Get the idleTimeoutInMinutes property: Desired outbound flow idle timeout in minutes. Allowed values are in the
      * range of 4 to 120 (inclusive). The default value is 30 minutes.
-     * 
+     *
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -188,7 +187,7 @@ public final class ManagedClusterLoadBalancerProfile {
     /**
      * Set the idleTimeoutInMinutes property: Desired outbound flow idle timeout in minutes. Allowed values are in the
      * range of 4 to 120 (inclusive). The default value is 30 minutes.
-     * 
+     *
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
@@ -200,7 +199,7 @@ public final class ManagedClusterLoadBalancerProfile {
     /**
      * Get the enableMultipleStandardLoadBalancers property: Enable multiple standard load balancers per AKS cluster or
      * not.
-     * 
+     *
      * @return the enableMultipleStandardLoadBalancers value.
      */
     public Boolean enableMultipleStandardLoadBalancers() {
@@ -210,7 +209,7 @@ public final class ManagedClusterLoadBalancerProfile {
     /**
      * Set the enableMultipleStandardLoadBalancers property: Enable multiple standard load balancers per AKS cluster or
      * not.
-     * 
+     *
      * @param enableMultipleStandardLoadBalancers the enableMultipleStandardLoadBalancers value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
@@ -222,7 +221,7 @@ public final class ManagedClusterLoadBalancerProfile {
 
     /**
      * Get the backendPoolType property: The type of the managed inbound Load Balancer BackendPool.
-     * 
+     *
      * @return the backendPoolType value.
      */
     public BackendPoolType backendPoolType() {
@@ -231,7 +230,7 @@ public final class ManagedClusterLoadBalancerProfile {
 
     /**
      * Set the backendPoolType property: The type of the managed inbound Load Balancer BackendPool.
-     * 
+     *
      * @param backendPoolType the backendPoolType value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
@@ -242,7 +241,7 @@ public final class ManagedClusterLoadBalancerProfile {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

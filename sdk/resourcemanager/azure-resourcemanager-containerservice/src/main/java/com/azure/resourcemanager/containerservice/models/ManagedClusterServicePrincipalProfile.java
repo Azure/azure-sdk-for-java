@@ -78,8 +78,9 @@ public final class ManagedClusterServicePrincipalProfile {
      */
     public void validate() {
         if (clientId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property clientId in model ManagedClusterServicePrincipalProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientId in model ManagedClusterServicePrincipalProfile"));
         }
     }
 

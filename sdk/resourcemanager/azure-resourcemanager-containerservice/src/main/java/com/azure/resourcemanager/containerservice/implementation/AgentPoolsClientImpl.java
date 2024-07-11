@@ -37,9 +37,10 @@ import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolAvailab
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolUpgradeProfileInner;
 import com.azure.resourcemanager.containerservice.models.AgentPoolListResult;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in AgentPoolsClient.
@@ -57,7 +58,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Initializes an instance of AgentPoolsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     AgentPoolsClientImpl(ContainerServiceManagementClientImpl client) {
@@ -157,11 +158,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Aborts last operation running on agent pool.
-     * 
+     *
      * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
      * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -191,7 +192,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.abortLatestOperation(this.client.getEndpoint(), apiVersion,
@@ -201,11 +202,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Aborts last operation running on agent pool.
-     * 
+     *
      * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
      * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -236,7 +237,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.abortLatestOperation(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -245,11 +246,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Aborts last operation running on agent pool.
-     * 
+     *
      * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
      * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -269,11 +270,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Aborts last operation running on agent pool.
-     * 
+     *
      * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
      * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -295,11 +296,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Aborts last operation running on agent pool.
-     * 
+     *
      * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
      * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -316,11 +317,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Aborts last operation running on agent pool.
-     * 
+     *
      * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
      * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -339,11 +340,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Aborts last operation running on agent pool.
-     * 
+     *
      * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
      * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -360,11 +361,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Aborts last operation running on agent pool.
-     * 
+     *
      * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
      * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -383,11 +384,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Aborts last operation running on agent pool.
-     * 
+     *
      * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
      * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -402,11 +403,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Aborts last operation running on agent pool.
-     * 
+     *
      * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
      * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -423,7 +424,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets a list of agent pools in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -449,7 +450,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -461,7 +462,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets a list of agent pools in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -489,7 +490,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -501,7 +502,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets a list of agent pools in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -517,7 +518,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets a list of agent pools in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -534,7 +535,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets a list of agent pools in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -549,7 +550,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets a list of agent pools in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -565,7 +566,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets the specified managed cluster agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -596,7 +597,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -606,7 +607,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets the specified managed cluster agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -638,7 +639,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -647,7 +648,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets the specified managed cluster agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -664,7 +665,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets the specified managed cluster agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -682,7 +683,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets the specified managed cluster agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -698,7 +699,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -734,7 +735,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -745,7 +746,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -782,7 +783,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -791,7 +792,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -812,7 +813,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -835,7 +836,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -854,7 +855,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -874,7 +875,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -893,7 +894,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -913,7 +914,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -931,7 +932,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -950,7 +951,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -980,7 +981,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
@@ -990,7 +991,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1021,7 +1022,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -1030,7 +1031,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1049,7 +1050,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1071,7 +1072,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1088,7 +1089,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1106,7 +1107,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1123,7 +1124,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1142,7 +1143,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1157,7 +1158,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1173,7 +1174,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets the upgrade profile for an agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1204,7 +1205,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getUpgradeProfile(this.client.getEndpoint(), apiVersion,
@@ -1214,7 +1215,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets the upgrade profile for an agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1246,7 +1247,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getUpgradeProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1255,7 +1256,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets the upgrade profile for an agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1273,7 +1274,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets the upgrade profile for an agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1291,7 +1292,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets the upgrade profile for an agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1308,10 +1309,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets a list of supported Kubernetes versions for the specified agent pool.
-     * 
+     *
      * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
      * details about the version lifecycle.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1338,7 +1339,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getAvailableAgentPoolVersions(this.client.getEndpoint(), apiVersion,
@@ -1348,10 +1349,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets a list of supported Kubernetes versions for the specified agent pool.
-     * 
+     *
      * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
      * details about the version lifecycle.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1379,7 +1380,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getAvailableAgentPoolVersions(this.client.getEndpoint(), apiVersion,
@@ -1388,10 +1389,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets a list of supported Kubernetes versions for the specified agent pool.
-     * 
+     *
      * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
      * details about the version lifecycle.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1408,10 +1409,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets a list of supported Kubernetes versions for the specified agent pool.
-     * 
+     *
      * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
      * details about the version lifecycle.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1428,10 +1429,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Gets a list of supported Kubernetes versions for the specified agent pool.
-     * 
+     *
      * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
      * details about the version lifecycle.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1447,11 +1448,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     * 
+     *
      * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1481,7 +1482,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.upgradeNodeImageVersion(this.client.getEndpoint(), apiVersion,
@@ -1491,11 +1492,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     * 
+     *
      * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1526,7 +1527,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.upgradeNodeImageVersion(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1535,11 +1536,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     * 
+     *
      * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1559,11 +1560,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     * 
+     *
      * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1585,11 +1586,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     * 
+     *
      * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1606,11 +1607,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     * 
+     *
      * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1629,11 +1630,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     * 
+     *
      * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1651,11 +1652,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     * 
+     *
      * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1674,11 +1675,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     * 
+     *
      * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1694,11 +1695,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     * 
+     *
      * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -1716,10 +1717,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1744,10 +1743,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

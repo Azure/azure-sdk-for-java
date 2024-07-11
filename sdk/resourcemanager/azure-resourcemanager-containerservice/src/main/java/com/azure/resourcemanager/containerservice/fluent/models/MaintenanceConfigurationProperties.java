@@ -9,6 +9,7 @@ import com.azure.resourcemanager.containerservice.models.MaintenanceWindow;
 import com.azure.resourcemanager.containerservice.models.TimeInWeek;
 import com.azure.resourcemanager.containerservice.models.TimeSpan;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -17,8 +18,6 @@ import java.util.List;
 @Fluent
 public final class MaintenanceConfigurationProperties {
     /*
-     * Time slots during the week when planned maintenance is allowed to proceed.
-     * 
      * If two array entries specify the same day of the week, the applied configuration is the union of times in both
      * entries.
      */
@@ -44,11 +43,9 @@ public final class MaintenanceConfigurationProperties {
     }
 
     /**
-     * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
-     * 
-     * If two array entries specify the same day of the week, the applied configuration is the union of times in both
-     * entries.
-     * 
+     * Get the timeInWeek property: If two array entries specify the same day of the week, the applied configuration is
+     * the union of times in both entries.
+     *
      * @return the timeInWeek value.
      */
     public List<TimeInWeek> timeInWeek() {
@@ -56,11 +53,9 @@ public final class MaintenanceConfigurationProperties {
     }
 
     /**
-     * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
-     * 
-     * If two array entries specify the same day of the week, the applied configuration is the union of times in both
-     * entries.
-     * 
+     * Set the timeInWeek property: If two array entries specify the same day of the week, the applied configuration is
+     * the union of times in both entries.
+     *
      * @param timeInWeek the timeInWeek value to set.
      * @return the MaintenanceConfigurationProperties object itself.
      */
@@ -71,7 +66,7 @@ public final class MaintenanceConfigurationProperties {
 
     /**
      * Get the notAllowedTime property: Time slots on which upgrade is not allowed.
-     * 
+     *
      * @return the notAllowedTime value.
      */
     public List<TimeSpan> notAllowedTime() {
@@ -80,7 +75,7 @@ public final class MaintenanceConfigurationProperties {
 
     /**
      * Set the notAllowedTime property: Time slots on which upgrade is not allowed.
-     * 
+     *
      * @param notAllowedTime the notAllowedTime value to set.
      * @return the MaintenanceConfigurationProperties object itself.
      */
@@ -91,7 +86,7 @@ public final class MaintenanceConfigurationProperties {
 
     /**
      * Get the maintenanceWindow property: Maintenance window for the maintenance configuration.
-     * 
+     *
      * @return the maintenanceWindow value.
      */
     public MaintenanceWindow maintenanceWindow() {
@@ -100,7 +95,7 @@ public final class MaintenanceConfigurationProperties {
 
     /**
      * Set the maintenanceWindow property: Maintenance window for the maintenance configuration.
-     * 
+     *
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the MaintenanceConfigurationProperties object itself.
      */
@@ -111,7 +106,7 @@ public final class MaintenanceConfigurationProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

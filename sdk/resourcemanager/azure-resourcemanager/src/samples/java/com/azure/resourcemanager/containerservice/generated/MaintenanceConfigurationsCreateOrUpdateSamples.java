@@ -13,6 +13,7 @@ import com.azure.resourcemanager.containerservice.models.TimeInWeek;
 import com.azure.resourcemanager.containerservice.models.TimeSpan;
 import com.azure.resourcemanager.containerservice.models.Type;
 import com.azure.resourcemanager.containerservice.models.WeekDay;
+
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -23,16 +24,19 @@ import java.util.Arrays;
 public final class MaintenanceConfigurationsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
      * MaintenanceConfigurationsCreate_Update.json
      */
     /**
      * Sample code: Create/Update Maintenance Configuration.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createUpdateMaintenanceConfiguration(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getMaintenanceConfigurations()
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getMaintenanceConfigurations()
             .createOrUpdateWithResponse("rg1", "clustername1", "default", new MaintenanceConfigurationInner()
                 .withTimeInWeek(
                     Arrays.asList(new TimeInWeek().withDay(WeekDay.MONDAY).withHourSlots(Arrays.asList(1, 2))))
@@ -43,26 +47,33 @@ public final class MaintenanceConfigurationsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
      * MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
      */
     /**
      * Sample code: Create/Update Maintenance Configuration with Maintenance Window.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createUpdateMaintenanceConfigurationWithMaintenanceWindow(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getMaintenanceConfigurations().createOrUpdateWithResponse(
-            "rg1", "clustername1", "aksManagedAutoUpgradeSchedule",
-            new MaintenanceConfigurationInner().withMaintenanceWindow(new MaintenanceWindow()
-                .withSchedule(new Schedule().withRelativeMonthly(new RelativeMonthlySchedule().withIntervalMonths(3)
-                    .withWeekIndex(Type.FIRST).withDayOfWeek(WeekDay.MONDAY)))
-                .withDurationHours(10).withUtcOffset("+05:30").withStartDate(LocalDate.parse("2023-01-01"))
-                .withStartTime("08:30")
-                .withNotAllowedDates(Arrays.asList(
-                    new DateSpan().withStart(LocalDate.parse("2023-02-18")).withEnd(LocalDate.parse("2023-02-25")),
-                    new DateSpan().withStart(LocalDate.parse("2023-12-23")).withEnd(LocalDate.parse("2024-01-05"))))),
-            com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getMaintenanceConfigurations()
+            .createOrUpdateWithResponse("rg1", "clustername1", "aksManagedAutoUpgradeSchedule",
+                new MaintenanceConfigurationInner().withMaintenanceWindow(new MaintenanceWindow()
+                    .withSchedule(new Schedule().withRelativeMonthly(new RelativeMonthlySchedule().withIntervalMonths(3)
+                        .withWeekIndex(Type.FIRST)
+                        .withDayOfWeek(WeekDay.MONDAY)))
+                    .withDurationHours(10)
+                    .withUtcOffset("+05:30")
+                    .withStartDate(LocalDate.parse("2023-01-01"))
+                    .withStartTime("08:30")
+                    .withNotAllowedDates(Arrays.asList(
+                        new DateSpan().withStart(LocalDate.parse("2023-02-18")).withEnd(LocalDate.parse("2023-02-25")),
+                        new DateSpan().withStart(LocalDate.parse("2023-12-23"))
+                            .withEnd(LocalDate.parse("2024-01-05"))))),
+                com.azure.core.util.Context.NONE);
     }
 }

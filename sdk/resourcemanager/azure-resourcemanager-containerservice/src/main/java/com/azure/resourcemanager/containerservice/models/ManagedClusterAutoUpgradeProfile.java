@@ -13,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagedClusterAutoUpgradeProfile {
     /*
-     * The upgrade channel for auto upgrade. The default is 'none'.
-     * 
      * For more information see [setting the AKS cluster auto-upgrade
      * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
      */
@@ -22,8 +20,6 @@ public final class ManagedClusterAutoUpgradeProfile {
     private UpgradeChannel upgradeChannel;
 
     /*
-     * Node OS Upgrade Channel
-     * 
      * Manner in which the OS on your nodes is updated. The default is NodeImage.
      */
     @JsonProperty(value = "nodeOSUpgradeChannel")
@@ -36,9 +32,7 @@ public final class ManagedClusterAutoUpgradeProfile {
     }
 
     /**
-     * Get the upgradeChannel property: The upgrade channel for auto upgrade. The default is 'none'.
-     * 
-     * For more information see [setting the AKS cluster auto-upgrade
+     * Get the upgradeChannel property: For more information see [setting the AKS cluster auto-upgrade
      * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
      * 
      * @return the upgradeChannel value.
@@ -48,9 +42,7 @@ public final class ManagedClusterAutoUpgradeProfile {
     }
 
     /**
-     * Set the upgradeChannel property: The upgrade channel for auto upgrade. The default is 'none'.
-     * 
-     * For more information see [setting the AKS cluster auto-upgrade
+     * Set the upgradeChannel property: For more information see [setting the AKS cluster auto-upgrade
      * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
      * 
      * @param upgradeChannel the upgradeChannel value to set.
@@ -62,9 +54,7 @@ public final class ManagedClusterAutoUpgradeProfile {
     }
 
     /**
-     * Get the nodeOSUpgradeChannel property: Node OS Upgrade Channel
-     * 
-     * Manner in which the OS on your nodes is updated. The default is NodeImage.
+     * Get the nodeOSUpgradeChannel property: Manner in which the OS on your nodes is updated. The default is NodeImage.
      * 
      * @return the nodeOSUpgradeChannel value.
      */
@@ -73,9 +63,7 @@ public final class ManagedClusterAutoUpgradeProfile {
     }
 
     /**
-     * Set the nodeOSUpgradeChannel property: Node OS Upgrade Channel
-     * 
-     * Manner in which the OS on your nodes is updated. The default is NodeImage.
+     * Set the nodeOSUpgradeChannel property: Manner in which the OS on your nodes is updated. The default is NodeImage.
      * 
      * @param nodeOSUpgradeChannel the nodeOSUpgradeChannel value to set.
      * @return the ManagedClusterAutoUpgradeProfile object itself.

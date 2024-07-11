@@ -20,8 +20,6 @@ public final class RelativeMonthlySchedule {
     private int intervalMonths;
 
     /*
-     * The week index.
-     * 
      * Specifies on which week of the month the dayOfWeek applies.
      */
     @JsonProperty(value = "weekIndex", required = true)
@@ -60,9 +58,7 @@ public final class RelativeMonthlySchedule {
     }
 
     /**
-     * Get the weekIndex property: The week index.
-     * 
-     * Specifies on which week of the month the dayOfWeek applies.
+     * Get the weekIndex property: Specifies on which week of the month the dayOfWeek applies.
      * 
      * @return the weekIndex value.
      */
@@ -71,9 +67,7 @@ public final class RelativeMonthlySchedule {
     }
 
     /**
-     * Set the weekIndex property: The week index.
-     * 
-     * Specifies on which week of the month the dayOfWeek applies.
+     * Set the weekIndex property: Specifies on which week of the month the dayOfWeek applies.
      * 
      * @param weekIndex the weekIndex value to set.
      * @return the RelativeMonthlySchedule object itself.
@@ -110,12 +104,14 @@ public final class RelativeMonthlySchedule {
      */
     public void validate() {
         if (weekIndex() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property weekIndex in model RelativeMonthlySchedule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property weekIndex in model RelativeMonthlySchedule"));
         }
         if (dayOfWeek() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dayOfWeek in model RelativeMonthlySchedule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dayOfWeek in model RelativeMonthlySchedule"));
         }
     }
 

@@ -104,7 +104,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.post(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -148,7 +148,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-02-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.post(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,

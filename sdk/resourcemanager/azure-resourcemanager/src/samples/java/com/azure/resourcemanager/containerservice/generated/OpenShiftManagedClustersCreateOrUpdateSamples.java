@@ -15,6 +15,7 @@ import com.azure.resourcemanager.containerservice.models.OpenShiftManagedCluster
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterIdentityProvider;
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterMasterPoolProfile;
 import com.azure.resourcemanager.containerservice.models.OpenShiftRouterProfile;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,32 +31,45 @@ public final class OpenShiftManagedClustersCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create/Update OpenShift Managed Cluster.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createUpdateOpenShiftManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getOpenShiftManagedClusters().createOrUpdate("rg1",
-            "clustername1",
-            new OpenShiftManagedClusterInner().withLocation("location1")
-                .withTags(mapOf("archv2", "", "tier", "production")).withOpenShiftVersion("v3.11")
-                .withNetworkProfile(new NetworkProfile().withVnetCidr("10.0.0.0/8"))
-                .withRouterProfiles(Arrays.asList(new OpenShiftRouterProfile().withName("default")))
-                .withMasterPoolProfile(new OpenShiftManagedClusterMasterPoolProfile().withName("master").withCount(3)
-                    .withVmSize(OpenShiftContainerServiceVMSize.STANDARD_D4S_V3).withSubnetCidr("10.0.0.0/24")
-                    .withOsType(OSType.LINUX))
-                .withAgentPoolProfiles(Arrays.asList(
-                    new OpenShiftManagedClusterAgentPoolProfile().withName("infra").withCount(2)
-                        .withVmSize(OpenShiftContainerServiceVMSize.STANDARD_D4S_V3).withSubnetCidr("10.0.0.0/24")
-                        .withOsType(OSType.LINUX).withRole(OpenShiftAgentPoolProfileRole.INFRA),
-                    new OpenShiftManagedClusterAgentPoolProfile().withName("compute").withCount(4)
-                        .withVmSize(OpenShiftContainerServiceVMSize.STANDARD_D4S_V3).withSubnetCidr("10.0.0.0/24")
-                        .withOsType(OSType.LINUX).withRole(OpenShiftAgentPoolProfileRole.COMPUTE)))
-                .withAuthProfile(new OpenShiftManagedClusterAuthProfile().withIdentityProviders(
-                    Arrays.asList(new OpenShiftManagedClusterIdentityProvider().withName("Azure AD")
-                        .withProvider(new OpenShiftManagedClusterAadIdentityProvider().withClientId("clientId")
-                            .withSecret("fakeTokenPlaceholder").withTenantId("tenantId")
-                            .withCustomerAdminGroupId("customerAdminGroupId"))))),
-            com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getOpenShiftManagedClusters()
+            .createOrUpdate("rg1", "clustername1",
+                new OpenShiftManagedClusterInner().withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withOpenShiftVersion("v3.11")
+                    .withNetworkProfile(new NetworkProfile().withVnetCidr("10.0.0.0/8"))
+                    .withRouterProfiles(Arrays.asList(new OpenShiftRouterProfile().withName("default")))
+                    .withMasterPoolProfile(new OpenShiftManagedClusterMasterPoolProfile().withName("master")
+                        .withCount(3)
+                        .withVmSize(OpenShiftContainerServiceVMSize.STANDARD_D4S_V3)
+                        .withSubnetCidr("10.0.0.0/24")
+                        .withOsType(OSType.LINUX))
+                    .withAgentPoolProfiles(Arrays.asList(
+                        new OpenShiftManagedClusterAgentPoolProfile().withName("infra")
+                            .withCount(2)
+                            .withVmSize(OpenShiftContainerServiceVMSize.STANDARD_D4S_V3)
+                            .withSubnetCidr("10.0.0.0/24")
+                            .withOsType(OSType.LINUX)
+                            .withRole(OpenShiftAgentPoolProfileRole.INFRA),
+                        new OpenShiftManagedClusterAgentPoolProfile().withName("compute")
+                            .withCount(4)
+                            .withVmSize(OpenShiftContainerServiceVMSize.STANDARD_D4S_V3)
+                            .withSubnetCidr("10.0.0.0/24")
+                            .withOsType(OSType.LINUX)
+                            .withRole(OpenShiftAgentPoolProfileRole.COMPUTE)))
+                    .withAuthProfile(new OpenShiftManagedClusterAuthProfile().withIdentityProviders(
+                        Arrays.asList(new OpenShiftManagedClusterIdentityProvider().withName("Azure AD")
+                            .withProvider(new OpenShiftManagedClusterAadIdentityProvider().withClientId("clientId")
+                                .withSecret("fakeTokenPlaceholder")
+                                .withTenantId("tenantId")
+                                .withCustomerAdminGroupId("customerAdminGroupId"))))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

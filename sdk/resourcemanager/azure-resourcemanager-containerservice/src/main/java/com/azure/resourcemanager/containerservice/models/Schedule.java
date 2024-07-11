@@ -84,8 +84,8 @@ public final class Schedule {
     }
 
     /**
-     * Get the absoluteMonthly property: For schedules like: 'recur every month on the 15th' or 'recur every 3 months
-     * on the 20th'.
+     * Get the absoluteMonthly property: For schedules like: 'recur every month on the 15th' or 'recur every 3 months on
+     * the 20th'.
      * 
      * @return the absoluteMonthly value.
      */
@@ -94,8 +94,8 @@ public final class Schedule {
     }
 
     /**
-     * Set the absoluteMonthly property: For schedules like: 'recur every month on the 15th' or 'recur every 3 months
-     * on the 20th'.
+     * Set the absoluteMonthly property: For schedules like: 'recur every month on the 15th' or 'recur every 3 months on
+     * the 20th'.
      * 
      * @param absoluteMonthly the absoluteMonthly value to set.
      * @return the Schedule object itself.

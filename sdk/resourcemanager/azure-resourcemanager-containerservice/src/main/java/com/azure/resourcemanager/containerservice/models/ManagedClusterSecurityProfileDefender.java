@@ -34,8 +34,8 @@ public final class ManagedClusterSecurityProfileDefender {
 
     /**
      * Get the logAnalyticsWorkspaceResourceId property: Resource ID of the Log Analytics workspace to be associated
-     * with Microsoft Defender. When Microsoft Defender is enabled, this field is required and must be a valid
-     * workspace resource ID. When Microsoft Defender is disabled, leave the field empty.
+     * with Microsoft Defender. When Microsoft Defender is enabled, this field is required and must be a valid workspace
+     * resource ID. When Microsoft Defender is disabled, leave the field empty.
      * 
      * @return the logAnalyticsWorkspaceResourceId value.
      */
@@ -45,8 +45,8 @@ public final class ManagedClusterSecurityProfileDefender {
 
     /**
      * Set the logAnalyticsWorkspaceResourceId property: Resource ID of the Log Analytics workspace to be associated
-     * with Microsoft Defender. When Microsoft Defender is enabled, this field is required and must be a valid
-     * workspace resource ID. When Microsoft Defender is disabled, leave the field empty.
+     * with Microsoft Defender. When Microsoft Defender is enabled, this field is required and must be a valid workspace
+     * resource ID. When Microsoft Defender is disabled, leave the field empty.
      * 
      * @param logAnalyticsWorkspaceResourceId the logAnalyticsWorkspaceResourceId value to set.
      * @return the ManagedClusterSecurityProfileDefender object itself.
