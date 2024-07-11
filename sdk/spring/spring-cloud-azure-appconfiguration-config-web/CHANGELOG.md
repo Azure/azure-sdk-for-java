@@ -1,6 +1,6 @@
 # Release History
 
-## 5.14.0-beta.1 (Unreleased)
+## 5.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,11 @@
 
 ### Bugs Fixed
 
-* Removes final from App Configuration refresh endpoints, which caused errors when creating Spring AOP Aspects.
-
 ### Other Changes
+
+## 5.14.0 (2024-07-05)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#5140-2024-07-05) for more details.
 
 ## 5.13.0 (2024-06-06)
 
