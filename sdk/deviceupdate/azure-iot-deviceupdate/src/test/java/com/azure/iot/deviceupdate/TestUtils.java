@@ -19,8 +19,6 @@ import com.azure.identity.EnvironmentCredentialBuilder;
 public class TestUtils {
     public static TokenCredential getCredential(TestMode testMode) {
         switch (testMode) {
-            case PLAYBACK:
-                return new MockTokenCredential();
             case RECORD:
                 return new DefaultAzureCredentialBuilder().build();
             case LIVE:
@@ -52,8 +50,8 @@ public class TestUtils {
 
                 return builder.build();
             default:
-                // Cannot reach here.
-                return null;
+                // On PLAYBACK mode
+                return new MockTokenCredential();
         }
     }
 }
