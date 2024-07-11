@@ -11,12 +11,13 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The Match model. */
+/**
+ * The Match model.
+ */
 @Fluent
 public final class Match implements JsonSerializable<Match> {
     /*
-     * If a well known item is recognized, a decimal number denoting the confidence level between 0 and 1 will be
-     * returned.
+     * If a well known item is recognized, a decimal number denoting the confidence level between 0 and 1 will be returned.
      */
     private double confidenceScore;
 
@@ -35,13 +36,16 @@ public final class Match implements JsonSerializable<Match> {
      */
     private int length;
 
-    /** Creates an instance of Match class. */
-    public Match() {}
+    /**
+     * Creates an instance of Match class.
+     */
+    public Match() {
+    }
 
     /**
      * Get the confidenceScore property: If a well known item is recognized, a decimal number denoting the confidence
      * level between 0 and 1 will be returned.
-     *
+     * 
      * @return the confidenceScore value.
      */
     public double getConfidenceScore() {
@@ -51,7 +55,7 @@ public final class Match implements JsonSerializable<Match> {
     /**
      * Set the confidenceScore property: If a well known item is recognized, a decimal number denoting the confidence
      * level between 0 and 1 will be returned.
-     *
+     * 
      * @param confidenceScore the confidenceScore value to set.
      * @return the Match object itself.
      */
@@ -62,7 +66,7 @@ public final class Match implements JsonSerializable<Match> {
 
     /**
      * Get the text property: Entity text as appears in the request.
-     *
+     * 
      * @return the text value.
      */
     public String getText() {
@@ -71,7 +75,7 @@ public final class Match implements JsonSerializable<Match> {
 
     /**
      * Set the text property: Entity text as appears in the request.
-     *
+     * 
      * @param text the text value to set.
      * @return the Match object itself.
      */
@@ -82,7 +86,7 @@ public final class Match implements JsonSerializable<Match> {
 
     /**
      * Get the offset property: Start position for the entity match text.
-     *
+     * 
      * @return the offset value.
      */
     public int getOffset() {
@@ -91,7 +95,7 @@ public final class Match implements JsonSerializable<Match> {
 
     /**
      * Set the offset property: Start position for the entity match text.
-     *
+     * 
      * @param offset the offset value to set.
      * @return the Match object itself.
      */
@@ -102,7 +106,7 @@ public final class Match implements JsonSerializable<Match> {
 
     /**
      * Get the length property: Length for the entity match text.
-     *
+     * 
      * @return the length value.
      */
     public int getLength() {
@@ -111,7 +115,7 @@ public final class Match implements JsonSerializable<Match> {
 
     /**
      * Set the length property: Length for the entity match text.
-     *
+     * 
      * @param length the length value to set.
      * @return the Match object itself.
      */
@@ -120,6 +124,9 @@ public final class Match implements JsonSerializable<Match> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -132,35 +139,34 @@ public final class Match implements JsonSerializable<Match> {
 
     /**
      * Reads an instance of Match from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of Match if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     *     JSON null.
+     * JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Match.
      */
     public static Match fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Match deserializedMatch = new Match();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            Match deserializedMatch = new Match();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("confidenceScore".equals(fieldName)) {
-                            deserializedMatch.confidenceScore = reader.getDouble();
-                        } else if ("text".equals(fieldName)) {
-                            deserializedMatch.text = reader.getString();
-                        } else if ("offset".equals(fieldName)) {
-                            deserializedMatch.offset = reader.getInt();
-                        } else if ("length".equals(fieldName)) {
-                            deserializedMatch.length = reader.getInt();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("confidenceScore".equals(fieldName)) {
+                    deserializedMatch.confidenceScore = reader.getDouble();
+                } else if ("text".equals(fieldName)) {
+                    deserializedMatch.text = reader.getString();
+                } else if ("offset".equals(fieldName)) {
+                    deserializedMatch.offset = reader.getInt();
+                } else if ("length".equals(fieldName)) {
+                    deserializedMatch.length = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedMatch;
-                });
+            return deserializedMatch;
+        });
     }
 }

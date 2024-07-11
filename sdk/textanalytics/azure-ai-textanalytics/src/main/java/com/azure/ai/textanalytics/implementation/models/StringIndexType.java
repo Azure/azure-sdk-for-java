@@ -33,15 +33,16 @@ public final class StringIndexType extends ExpandableStringEnum<StringIndexType>
 
     /**
      * Creates a new instance of StringIndexType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public StringIndexType() {}
+    public StringIndexType() {
+    }
 
     /**
      * Creates or finds a StringIndexType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StringIndexType.
      */
@@ -51,7 +52,7 @@ public final class StringIndexType extends ExpandableStringEnum<StringIndexType>
 
     /**
      * Gets known StringIndexType values.
-     *
+     * 
      * @return known StringIndexType values.
      */
     public static Collection<StringIndexType> values() {

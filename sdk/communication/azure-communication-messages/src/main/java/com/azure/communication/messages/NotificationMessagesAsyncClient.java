@@ -75,7 +75,7 @@ public final class NotificationMessagesAsyncClient {
      * }
      * }</pre>
      *
-     * @param body Body parameter.
+     * @param notificationContent Details of the message to send.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -86,8 +86,8 @@ public final class NotificationMessagesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> sendWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.sendWithResponseAsync(body, requestOptions);
+    public Mono<Response<BinaryData>> sendWithResponse(BinaryData notificationContent, RequestOptions requestOptions) {
+        return this.serviceClient.sendWithResponseAsync(notificationContent, requestOptions);
     }
 
     /**
@@ -115,7 +115,7 @@ public final class NotificationMessagesAsyncClient {
     /**
      * Sends a notification message from Business to User.
      *
-     * @param body Body parameter.
+     * @param notificationContent Details of the message to send.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -126,10 +126,10 @@ public final class NotificationMessagesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendMessageResult> send(NotificationContent body) {
+    public Mono<SendMessageResult> send(NotificationContent notificationContent) {
         // Generated convenience method for sendWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return sendWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+        return sendWithResponse(BinaryData.fromObject(notificationContent), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SendMessageResult.class));
     }
 

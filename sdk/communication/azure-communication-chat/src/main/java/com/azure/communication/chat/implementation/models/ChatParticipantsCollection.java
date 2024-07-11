@@ -5,24 +5,26 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Collection of participants belong to a particular thread.
  */
 @Fluent
-public final class ChatParticipantsCollection {
+public final class ChatParticipantsCollection implements JsonSerializable<ChatParticipantsCollection> {
     /*
      * Chat participants.
      */
-    @JsonProperty(value = "value", required = true)
     private List<ChatParticipant> value;
 
     /*
      * If there are more chat participants that can be retrieved, the next link will be populated.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -59,5 +61,45 @@ public final class ChatParticipantsCollection {
      */
     public String getNextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatParticipantsCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatParticipantsCollection if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatParticipantsCollection.
+     */
+    public static ChatParticipantsCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChatParticipantsCollection deserializedChatParticipantsCollection = new ChatParticipantsCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ChatParticipant> value = reader.readArray(reader1 -> ChatParticipant.fromJson(reader1));
+                    deserializedChatParticipantsCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedChatParticipantsCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChatParticipantsCollection;
+        });
     }
 }

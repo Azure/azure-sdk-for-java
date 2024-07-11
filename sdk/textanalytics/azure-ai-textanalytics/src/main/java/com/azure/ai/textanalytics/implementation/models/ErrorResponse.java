@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Error response. */
+/**
+ * Error response.
+ */
 @Fluent
 public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     /*
@@ -19,12 +21,15 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
      */
     private Error error;
 
-    /** Creates an instance of ErrorResponse class. */
-    public ErrorResponse() {}
+    /**
+     * Creates an instance of ErrorResponse class.
+     */
+    public ErrorResponse() {
+    }
 
     /**
      * Get the error property: The error object.
-     *
+     * 
      * @return the error value.
      */
     public Error getError() {
@@ -33,7 +38,7 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
 
     /**
      * Set the error property: The error object.
-     *
+     * 
      * @param error the error value to set.
      * @return the ErrorResponse object itself.
      */
@@ -42,6 +47,9 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -51,29 +59,28 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
 
     /**
      * Reads an instance of ErrorResponse from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ErrorResponse if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ErrorResponse.
      */
     public static ErrorResponse fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ErrorResponse deserializedErrorResponse = new ErrorResponse();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            ErrorResponse deserializedErrorResponse = new ErrorResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("error".equals(fieldName)) {
-                            deserializedErrorResponse.error = Error.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("error".equals(fieldName)) {
+                    deserializedErrorResponse.error = Error.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedErrorResponse;
-                });
+            return deserializedErrorResponse;
+        });
     }
 }

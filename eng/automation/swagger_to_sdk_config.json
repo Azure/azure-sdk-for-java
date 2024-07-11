@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/documentation/sdkautomation/SwaggerToSdkConfigSchema.json",
   "initOptions": {
     "initScript": {
-      "path": "./eng/mgmt/automation/init.sh",
+      "path": "./eng/automation/init.sh",
       "envs": [
         "JAVA_HOME_11_X64"
       ]
@@ -10,12 +10,16 @@
   },
   "generateOptions": {
     "generateScript": {
-      "path": "./eng/mgmt/automation/generate.py"
+      "path": "./eng/automation/generate.py",
+      "logPrefix": "Java-Sdk-Automation",
+      "stderr": {
+        "showInComment": "(\\[GENERATE\\]\\[Error\\]|\\[COMPILE\\] Maven build fail|ExternalError).*"
+      }
     }
   },
   "artifactOptions": {
     "installInstructionScript": {
-      "path": "./eng/mgmt/automation/install_instruction.py"
+      "path": "./eng/automation/install_instruction.py"
     }
   },
   "advancedOptions": {
