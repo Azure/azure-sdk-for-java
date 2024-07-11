@@ -3,26 +3,21 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.storage.blob;
 
-import com.azure.spring.cloud.core.resource.AzureStorageBlobProtocolResolver;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.AzureStorageConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobPropertiesConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Import;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Spring Resource with Azure Storage Blob support.
  *
- *  @since 4.0.0
+ * @since 4.0.0
  */
-@ConditionalOnClass({ AzureStorageBlobProtocolResolver.class })
-@Conditional(AzureStorageBlobAutoConfigurationCondition.class)
+@Import({
+    AzureStorageConfiguration.class,
+    AzureStorageBlobPropertiesConfiguration.class,
+    AzureStorageBlobProtocolResolverConfiguration.class
+})
 public class AzureStorageBlobResourceAutoConfiguration {
-
-    @Bean
-    @ConditionalOnMissingBean
-    AzureStorageBlobProtocolResolver azureStorageBlobProtocolResolver() {
-        return new AzureStorageBlobProtocolResolver();
-    }
 
 }

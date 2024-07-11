@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.testcontainers.implementation.service.connection.storage;
 
-import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.AzureStorageBlobConnectionDetails;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.AzureStorageQueueConnectionDetails;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionSource;
