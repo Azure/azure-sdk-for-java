@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The ClassificationResult model. */
+/**
+ * The ClassificationResult model.
+ */
 @Fluent
 public final class ClassificationResult implements JsonSerializable<ClassificationResult> {
     /*
@@ -24,12 +26,15 @@ public final class ClassificationResult implements JsonSerializable<Classificati
      */
     private double confidenceScore;
 
-    /** Creates an instance of ClassificationResult class. */
-    public ClassificationResult() {}
+    /**
+     * Creates an instance of ClassificationResult class.
+     */
+    public ClassificationResult() {
+    }
 
     /**
      * Get the category property: Classification type.
-     *
+     * 
      * @return the category value.
      */
     public String getCategory() {
@@ -38,7 +43,7 @@ public final class ClassificationResult implements JsonSerializable<Classificati
 
     /**
      * Set the category property: Classification type.
-     *
+     * 
      * @param category the category value to set.
      * @return the ClassificationResult object itself.
      */
@@ -49,7 +54,7 @@ public final class ClassificationResult implements JsonSerializable<Classificati
 
     /**
      * Get the confidenceScore property: Confidence score between 0 and 1 of the recognized class.
-     *
+     * 
      * @return the confidenceScore value.
      */
     public double getConfidenceScore() {
@@ -58,7 +63,7 @@ public final class ClassificationResult implements JsonSerializable<Classificati
 
     /**
      * Set the confidenceScore property: Confidence score between 0 and 1 of the recognized class.
-     *
+     * 
      * @param confidenceScore the confidenceScore value to set.
      * @return the ClassificationResult object itself.
      */
@@ -67,6 +72,9 @@ public final class ClassificationResult implements JsonSerializable<Classificati
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -77,31 +85,30 @@ public final class ClassificationResult implements JsonSerializable<Classificati
 
     /**
      * Reads an instance of ClassificationResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ClassificationResult if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ClassificationResult.
      */
     public static ClassificationResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ClassificationResult deserializedClassificationResult = new ClassificationResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            ClassificationResult deserializedClassificationResult = new ClassificationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("category".equals(fieldName)) {
-                            deserializedClassificationResult.category = reader.getString();
-                        } else if ("confidenceScore".equals(fieldName)) {
-                            deserializedClassificationResult.confidenceScore = reader.getDouble();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("category".equals(fieldName)) {
+                    deserializedClassificationResult.category = reader.getString();
+                } else if ("confidenceScore".equals(fieldName)) {
+                    deserializedClassificationResult.confidenceScore = reader.getDouble();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedClassificationResult;
-                });
+            return deserializedClassificationResult;
+        });
     }
 }

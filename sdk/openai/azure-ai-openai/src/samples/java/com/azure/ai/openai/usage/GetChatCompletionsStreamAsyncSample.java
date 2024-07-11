@@ -68,7 +68,7 @@ public class GetChatCompletionsStreamAsyncSample {
                  */
 
                 if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
-                    return null;
+                    return "";
                 }
 
                 ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();

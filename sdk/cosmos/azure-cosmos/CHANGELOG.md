@@ -7,8 +7,10 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where `contactedRegions` shows the wrong region in a multi region account if no preferred regions are specified. - See [PR 41045](https://github.com/Azure/azure-sdk-for-java/pull/41045)
 
 #### Other Changes
+* Added metrics and tracing for ReadMany operations. - See [PR 41042](https://github.com/Azure/azure-sdk-for-java/pull/41042)
 
 ### 4.62.0 (2024-07-02)
 

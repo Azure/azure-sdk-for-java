@@ -83,6 +83,7 @@ add the direct dependency to your project as follows.
 ### Prerequisites
 
 * [Java Development Kit (JDK) with version 8 or above][jdk]
+  * Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 * [Azure subscription][azure_subscription]
 * [Azure AI Search service][search]
 * To create a new search service, you can use the [Azure portal][create_search_service_docs],

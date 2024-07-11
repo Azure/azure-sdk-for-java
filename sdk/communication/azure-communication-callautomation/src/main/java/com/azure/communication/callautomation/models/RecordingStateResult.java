@@ -18,6 +18,8 @@ public final class RecordingStateResult {
      */
     private final String recordingId;
 
+    private final RecordingKind recordingKind;
+
     private final RecordingState recordingState;
 
     /**
@@ -27,6 +29,15 @@ public final class RecordingStateResult {
      */
     public String getRecordingId() {
         return this.recordingId;
+    }
+
+    /**
+     * Get the RecordingKind property: The recording kind status of the recording.
+     *
+     * @return the recordingKind value.
+     */
+    public RecordingKind getRecordingKind() {
+        return this.recordingKind;
     }
 
     /**
@@ -44,6 +55,7 @@ public final class RecordingStateResult {
      */
     public RecordingStateResult() {
         this.recordingId = null;
+        this.recordingKind = null;
         this.recordingState = null;
     }
 
@@ -54,6 +66,7 @@ public final class RecordingStateResult {
      */
     RecordingStateResult(RecordingStateResponseInternal recordingStateResponseInternal) {
         this.recordingId = recordingStateResponseInternal.getRecordingId();
+        this.recordingKind = RecordingKind.fromString(recordingStateResponseInternal.getRecordingKind().toString());
         this.recordingState = RecordingState.fromString(recordingStateResponseInternal.getRecordingState().toString());
     }
 }
