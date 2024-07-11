@@ -17,22 +17,14 @@ public class MixedRealityStsClientTests extends MixedRealityStsClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private MixedRealityStsClient client;
 
-    private void initializeClient(HttpClient httpClient) {
-        client = new MixedRealityStsClientBuilder()
-            .accountId(super.getAccountId())
-            .accountDomain(super.getAccountDomain())
-            .pipeline(super.getHttpPipeline(httpClient))
-            .buildClient();
-    }
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getToken(HttpClient httpClient) {
         // arrange
-        initializeClient(httpClient);
+        client = getClientBuilder(httpClient).buildClient();
 
         // act
-        AccessToken actual = this.client.getToken();
+        AccessToken actual = client.getToken();
 
         // assert
         assertNotNull(actual);
@@ -44,10 +36,10 @@ public class MixedRealityStsClientTests extends MixedRealityStsClientTestBase {
     @MethodSource("getHttpClients")
     public void getTokenWithResponse(HttpClient httpClient) {
         // arrange
-        initializeClient(httpClient);
+        client = getClientBuilder(httpClient).buildClient();
 
         // act
-        Response<AccessToken> actualResponse = this.client.getTokenWithResponse(Context.NONE);
+        Response<AccessToken> actualResponse = client.getTokenWithResponse(Context.NONE);
 
         // assert
         assertNotNull(actualResponse);

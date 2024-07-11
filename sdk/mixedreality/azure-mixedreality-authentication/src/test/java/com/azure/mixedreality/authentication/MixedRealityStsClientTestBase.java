@@ -5,10 +5,6 @@ package com.azure.mixedreality.authentication;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
@@ -31,25 +27,18 @@ import java.util.Collections;
 import java.util.List;
 
 public class MixedRealityStsClientTestBase extends TestProxyTestBase {
+    // NOT REAL ACCOUNT DETAILS
+    private static final String PLAYBACK_ACCOUNT_DOMAIN = "mixedreality.azure.com";
+    private static final String PLAYBACK_ACCOUNT_ID = "f5b3e69f-1e1b-46a5-a718-aea58a7a0f8e";
+
     public static final String INVALID_DUMMY_TOKEN = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJlbWFpbCI6IkJvYkBjb250b"
         + "3NvLmNvbSIsImdpdmVuX25hbWUiOiJCb2IiLCJpc3MiOiJodHRwOi8vRGVmYXVsdC5Jc3N1ZXIuY29tIiwiYXVkIjoiaHR0cDovL0RlZm"
         + "F1bHQuQXVkaWVuY2UuY29tIiwiaWF0IjoiMTYwNzk3ODY4MyIsIm5iZiI6IjE2MDc5Nzg2ODMiLCJleHAiOiIxNjA3OTc4OTgzIn0.";
-    private final String accountDomain = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ACCOUNT_DOMAIN");
-    private final String accountId = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ACCOUNT_ID");
 
-    // NOT REAL ACCOUNT DETAILS
-    private final String playbackAccountDomain = "mixedreality.azure.com";
-    private final String playbackAccountId = "f5b3e69f-1e1b-46a5-a718-aea58a7a0f8e";
-
-    HttpPipeline getHttpPipeline(HttpClient httpClient) {
-        String accountDomain = getAccountDomain();
-        TokenCredential credential;
-
+    TokenCredential getTokenCredential() {
         switch (getTestMode()) {
             case RECORD:
-                credential = new DefaultAzureCredentialBuilder().build();
-
-                break;
+                return new DefaultAzureCredentialBuilder().build();
             case LIVE:
                 Configuration config = Configuration.getGlobalConfiguration();
                 ChainedTokenCredentialBuilder chainedTokenCredentialBuilder = new ChainedTokenCredentialBuilder()
@@ -76,55 +65,41 @@ public class MixedRealityStsClientTestBase extends TestProxyTestBase {
                         .build());
                 }
 
-                credential = chainedTokenCredentialBuilder.build();
-
-                break;
+                return chainedTokenCredentialBuilder.build();
             default:
                 // On PLAYBACK mode
-                credential = new MockTokenCredential();
-
-                break;
+                return new MockTokenCredential();
         }
+    }
 
-        String endpoint = AuthenticationEndpoint.constructFromDomain(accountDomain);
-        String authenticationScope = AuthenticationEndpoint.constructScope(endpoint);
-
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new BearerTokenAuthenticationPolicy(credential, authenticationScope));
-
+    MixedRealityStsClientBuilder getClientBuilder(HttpClient httpClient) {
         if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
             List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-            customSanitizers.add(new TestProxySanitizer("$..AccessToken", null, INVALID_DUMMY_TOKEN,
-                TestProxySanitizerType.BODY_KEY));
-            interceptorManager.addSanitizers(customSanitizers);
-        }
+            customSanitizers.add(
+                new TestProxySanitizer("$..AccessToken", null, INVALID_DUMMY_TOKEN, TestProxySanitizerType.BODY_KEY));
 
-        if (interceptorManager.isRecordMode()) {
-            policies.add(interceptorManager.getRecordPolicy());
+            interceptorManager.addSanitizers(customSanitizers);
         }
 
         if (interceptorManager.isPlaybackMode()) {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
             customMatchers.add(new BodilessMatcher());
             customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("X-MRC-CV")));
+
             interceptorManager.addMatchers(customMatchers);
         }
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .build();
-    }
+        MixedRealityStsClientBuilder clientBuilder = new MixedRealityStsClientBuilder()
+            .accountId(Configuration.getGlobalConfiguration().get("MIXEDREALITY_ACCOUNT_ID", PLAYBACK_ACCOUNT_ID))
+            .accountDomain(
+                Configuration.getGlobalConfiguration().get("MIXEDREALITY_ACCOUNT_DOMAIN",PLAYBACK_ACCOUNT_DOMAIN))
+            .credential(getTokenCredential())
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
-    String getAccountDomain() {
-        return interceptorManager.isPlaybackMode()
-            ? this.playbackAccountDomain
-            : this.accountDomain;
-    }
+        if (interceptorManager.isRecordMode()) {
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        }
 
-    String getAccountId() {
-        return interceptorManager.isPlaybackMode()
-            ? this.playbackAccountId
-            : this.accountId;
+        return clientBuilder;
     }
 }

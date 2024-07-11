@@ -16,22 +16,14 @@ public class MixedRealityStsAsyncClientTests extends MixedRealityStsClientTestBa
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private MixedRealityStsAsyncClient client;
 
-    private void initializeClient(HttpClient httpClient) {
-        client = new MixedRealityStsClientBuilder()
-            .accountId(super.getAccountId())
-            .accountDomain(super.getAccountDomain())
-            .pipeline(super.getHttpPipeline(httpClient))
-            .buildAsyncClient();
-    }
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getToken(HttpClient httpClient) {
         // arrange
-        initializeClient(httpClient);
+        client = getClientBuilder(httpClient).buildAsyncClient();
 
         // act
-        StepVerifier.create(this.client.getToken())
+        StepVerifier.create(client.getToken())
             .assertNext(actual -> {
                 // assert
                 assertNotNull(actual);
@@ -45,10 +37,10 @@ public class MixedRealityStsAsyncClientTests extends MixedRealityStsClientTestBa
     @MethodSource("getHttpClients")
     public void getTokenWithResponse(HttpClient httpClient) {
         // arrange
-        initializeClient(httpClient);
+        client = getClientBuilder(httpClient).buildAsyncClient();
 
         // act
-        StepVerifier.create(this.client.getTokenWithResponse())
+        StepVerifier.create(client.getTokenWithResponse())
             .assertNext(actualResponse -> {
                 // assert
                 assertNotNull(actualResponse);
