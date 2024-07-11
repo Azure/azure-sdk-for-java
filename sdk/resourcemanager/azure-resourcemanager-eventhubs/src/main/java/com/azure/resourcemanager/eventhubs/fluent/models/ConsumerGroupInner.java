@@ -7,16 +7,15 @@ package com.azure.resourcemanager.eventhubs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
-/** Single item in List or Get Consumer group operation. */
+/**
+ * Single item in List or Get Consumer group operation.
+ */
 @Fluent
 public final class ConsumerGroupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConsumerGroupInner.class);
-
     /*
      * Single item in List or Get Consumer group operation
      */
@@ -34,6 +33,12 @@ public final class ConsumerGroupInner extends ProxyResource {
      */
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
+
+    /**
+     * Creates an instance of ConsumerGroupInner class.
+     */
+    public ConsumerGroupInner() {
+    }
 
     /**
      * Get the innerProperties property: Single item in List or Get Consumer group operation.

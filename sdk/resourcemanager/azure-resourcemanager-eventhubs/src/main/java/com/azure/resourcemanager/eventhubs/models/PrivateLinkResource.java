@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.PrivateLinkResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** Information of the private link resource. */
+/**
+ * Information of the private link resource.
+ */
 @Fluent
 public final class PrivateLinkResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResource.class);
-
     /*
      * Properties of the private link resource.
      */
@@ -39,6 +38,12 @@ public final class PrivateLinkResource {
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /**
+     * Creates an instance of PrivateLinkResource class.
+     */
+    public PrivateLinkResource() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the private link resource.

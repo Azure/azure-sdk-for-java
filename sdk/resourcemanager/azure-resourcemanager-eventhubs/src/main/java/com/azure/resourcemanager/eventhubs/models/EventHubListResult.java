@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.EventhubInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The result of the List EventHubs operation. */
+/**
+ * The result of the List EventHubs operation.
+ */
 @Fluent
 public final class EventHubListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubListResult.class);
-
     /*
      * Result of the List EventHubs operation.
      */
@@ -23,11 +22,16 @@ public final class EventHubListResult {
     private List<EventhubInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of EventHubs.
+     * Link to the next set of results. Not empty if Value contains incomplete list of EventHubs.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /**
+     * Creates an instance of EventHubListResult class.
+     */
+    public EventHubListResult() {
+    }
 
     /**
      * Get the value property: Result of the List EventHubs operation.

@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.ConsumerGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The result to the List Consumer Group operation. */
+/**
+ * The result to the List Consumer Group operation.
+ */
 @Fluent
 public final class ConsumerGroupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConsumerGroupListResult.class);
-
     /*
      * Result of the List Consumer Group operation.
      */
@@ -23,11 +22,16 @@ public final class ConsumerGroupListResult {
     private List<ConsumerGroupInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of Consumer Group
+     * Link to the next set of results. Not empty if Value contains incomplete list of Consumer Group
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /**
+     * Creates an instance of ConsumerGroupListResult class.
+     */
+    public ConsumerGroupListResult() {
+    }
 
     /**
      * Get the value property: Result of the List Consumer Group operation.
