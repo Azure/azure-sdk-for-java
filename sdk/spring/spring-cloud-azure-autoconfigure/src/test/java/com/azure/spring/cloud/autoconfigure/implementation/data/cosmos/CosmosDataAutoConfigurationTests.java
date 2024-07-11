@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.data.cosmos;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.spring.cloud.autoconfigure.implementation.cosmos.AzureCosmosConnectionDetails;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.config.CosmosConfig;

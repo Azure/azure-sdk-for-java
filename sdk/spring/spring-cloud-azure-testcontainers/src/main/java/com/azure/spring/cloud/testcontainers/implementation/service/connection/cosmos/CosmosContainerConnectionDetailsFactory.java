@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.testcontainers.implementation.service.connection.cosmos;
 
 import com.azure.cosmos.ConnectionMode;
-import com.azure.spring.cloud.autoconfigure.implementation.cosmos.AzureCosmosConnectionDetails;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosConnectionDetails;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionSource;
 import org.testcontainers.containers.CosmosDBEmulatorContainer;

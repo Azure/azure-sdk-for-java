@@ -3,8 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.data.cosmos;
 
-import com.azure.spring.cloud.autoconfigure.implementation.cosmos.AzureCosmosAutoConfigurationCondition;
-import com.azure.spring.cloud.autoconfigure.implementation.cosmos.AzureCosmosConnectionDetails;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
@@ -13,7 +12,6 @@ import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -24,7 +22,6 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({ CosmosTemplate.class })
-@Conditional(AzureCosmosAutoConfigurationCondition.class)
 @Import(CosmosDataDiagnosticsConfiguration.class)
 public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
 

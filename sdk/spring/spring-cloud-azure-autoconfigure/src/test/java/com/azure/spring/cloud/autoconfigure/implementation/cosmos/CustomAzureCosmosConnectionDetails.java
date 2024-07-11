@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.cosmos;
 
 import com.azure.cosmos.ConnectionMode;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosConnectionDetails;
 
 public class CustomAzureCosmosConnectionDetails implements AzureCosmosConnectionDetails {
 
