@@ -167,7 +167,7 @@ public final class ChatAsyncClient {
         context = context == null ? Context.NONE : context;
         try {
             return this.chatClient.createChatThreadWithResponseAsync(
-                CreateChatThreadOptionsConverter.convert(options), options.getIdempotencyToken(), context)
+                CreateChatThreadOptionsConverter.convert(options), context)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .map(result -> new SimpleResponse<CreateChatThreadResult>(
                         result, CreateChatThreadResultConverter.convert(result.getValue())));

@@ -494,6 +494,13 @@
           "justification": "Migration to azure-json"
         },
         {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
+          "new" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
+          "justification": "Migration to azure-json"
+        },
+        {
           "code" : "java.method.returnTypeTypeParametersChanged",
           "old" : "method java.util.List<com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner> com.azure.resourcemanager.compute.models.SecurityPostureReference::excludeExtensions()",
           "new" : "method java.util.List<java.lang.String> com.azure.resourcemanager.compute.models.SecurityPostureReference::excludeExtensions()",
