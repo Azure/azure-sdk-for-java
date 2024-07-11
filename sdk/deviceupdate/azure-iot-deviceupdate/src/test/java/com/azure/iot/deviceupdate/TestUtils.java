@@ -20,9 +20,9 @@ public class TestUtils {
     public static TokenCredential getCredential(TestMode testMode) {
         switch (testMode) {
             case PLAYBACK:
-                 return new MockTokenCredential();
+                return new MockTokenCredential();
             case RECORD:
-                 return new DefaultAzureCredentialBuilder().build();
+                return new DefaultAzureCredentialBuilder().build();
             case LIVE:
                 Configuration config = Configuration.getGlobalConfiguration();
 
