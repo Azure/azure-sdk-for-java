@@ -73,13 +73,12 @@ public class MixedRealityStsClientTestBase extends TestProxyTestBase {
     }
 
     MixedRealityStsClientBuilder getClientBuilder(HttpClient httpClient) {
-        if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
-            List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-            customSanitizers.add(
-                new TestProxySanitizer("$..AccessToken", null, INVALID_DUMMY_TOKEN, TestProxySanitizerType.BODY_KEY));
-
-            interceptorManager.addSanitizers(customSanitizers);
-        }
+        MixedRealityStsClientBuilder clientBuilder = new MixedRealityStsClientBuilder()
+            .accountId(Configuration.getGlobalConfiguration().get("MIXEDREALITY_ACCOUNT_ID", PLAYBACK_ACCOUNT_ID))
+            .accountDomain(
+                Configuration.getGlobalConfiguration().get("MIXEDREALITY_ACCOUNT_DOMAIN", PLAYBACK_ACCOUNT_DOMAIN))
+            .credential(getTokenCredential())
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (interceptorManager.isPlaybackMode()) {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
@@ -87,17 +86,20 @@ public class MixedRealityStsClientTestBase extends TestProxyTestBase {
             customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("X-MRC-CV")));
 
             interceptorManager.addMatchers(customMatchers);
+        } else {
+            clientBuilder.endpoint(Configuration.getGlobalConfiguration().get("MIXEDREALITY_SERVICE_ENDPOINT"));
+
+            if (interceptorManager.isRecordMode()) {
+                clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+            }
         }
 
-        MixedRealityStsClientBuilder clientBuilder = new MixedRealityStsClientBuilder()
-            .accountId(Configuration.getGlobalConfiguration().get("MIXEDREALITY_ACCOUNT_ID", PLAYBACK_ACCOUNT_ID))
-            .accountDomain(
-                Configuration.getGlobalConfiguration().get("MIXEDREALITY_ACCOUNT_DOMAIN",PLAYBACK_ACCOUNT_DOMAIN))
-            .credential(getTokenCredential())
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+        if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
+            List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+            customSanitizers.add(
+                new TestProxySanitizer("$..AccessToken", null, INVALID_DUMMY_TOKEN, TestProxySanitizerType.BODY_KEY));
 
-        if (interceptorManager.isRecordMode()) {
-            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+            interceptorManager.addSanitizers(customSanitizers);
         }
 
         return clientBuilder;

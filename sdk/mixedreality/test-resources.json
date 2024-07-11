@@ -50,6 +50,10 @@
     "MIXEDREALITY_ACCOUNT_KEY": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.MixedReality/remoteRenderingAccounts', variables('arrAccountName')), variables('arrApiVersion')).primaryKey]"
+    },
+    "MIXEDREALITY_SERVICE_ENDPOINT": {
+      "type": "string",
+      "value": "[concat('https://remoterendering.', parameters('location'), '.mixedreality.azure.com')]"
     }
   }
 }
