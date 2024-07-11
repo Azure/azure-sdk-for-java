@@ -60,6 +60,9 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         .get("DISPATCHER_ENDPOINT",
             "https://incomingcalldispatcher.azurewebsites.net");
     protected static final String DISPATCHER_CALLBACK = DISPATCHER_ENDPOINT + "/api/servicebuscallback/events";
+    protected static final String TRANSPORT_URL = Configuration.getGlobalConfiguration()
+        .get("TRANSPORT_URL",
+            "https://REDACTED");
     protected static final String BOT_APP_ID = Configuration.getGlobalConfiguration()
         .get("BOT_APP_ID", "REDACTED-bedb-REDACTED-b8c6-REDACTED");
 
@@ -72,7 +75,8 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         .add("botAppId")
         .add("ivrContext")
         .add("incomingCallContext")
-        .add("serverCallId");
+        .add("serverCallId")
+        .add("transportUrl");
 
     protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
