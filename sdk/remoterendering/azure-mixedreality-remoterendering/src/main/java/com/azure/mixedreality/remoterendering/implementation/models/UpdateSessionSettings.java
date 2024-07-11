@@ -4,39 +4,81 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Settings used to update the session. */
-@Fluent
-public final class UpdateSessionSettings {
+/**
+ * Settings used to update the session.
+ */
+@Immutable
+public final class UpdateSessionSettings implements JsonSerializable<UpdateSessionSettings> {
     /*
-     * Update to the time the session will run after it reached the 'Ready'
-     * state. It has to be larger than the current value of maxLeaseTimeMinutes
-     * and less than 1440.
+     * Update to the time the session will run after it reached the 'Ready' state. It has to be larger than the current
+     * value of maxLeaseTimeMinutes and less than 1440.
      */
-    @JsonProperty(value = "maxLeaseTimeMinutes", required = true)
-    private int maxLeaseTimeMinutes;
+    private final int maxLeaseTimeMinutes;
 
     /**
      * Creates an instance of UpdateSessionSettings class.
-     *
+     * 
      * @param maxLeaseTimeMinutes the maxLeaseTimeMinutes value to set.
      */
-    @JsonCreator
-    public UpdateSessionSettings(
-            @JsonProperty(value = "maxLeaseTimeMinutes", required = true) int maxLeaseTimeMinutes) {
+    public UpdateSessionSettings(int maxLeaseTimeMinutes) {
         this.maxLeaseTimeMinutes = maxLeaseTimeMinutes;
     }
 
     /**
      * Get the maxLeaseTimeMinutes property: Update to the time the session will run after it reached the 'Ready' state.
      * It has to be larger than the current value of maxLeaseTimeMinutes and less than 1440.
-     *
+     * 
      * @return the maxLeaseTimeMinutes value.
      */
     public int getMaxLeaseTimeMinutes() {
         return this.maxLeaseTimeMinutes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("maxLeaseTimeMinutes", this.maxLeaseTimeMinutes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateSessionSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateSessionSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateSessionSettings.
+     */
+    public static UpdateSessionSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean maxLeaseTimeMinutesFound = false;
+            int maxLeaseTimeMinutes = 0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxLeaseTimeMinutes".equals(fieldName)) {
+                    maxLeaseTimeMinutes = reader.getInt();
+                    maxLeaseTimeMinutesFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (maxLeaseTimeMinutesFound) {
+                return new UpdateSessionSettings(maxLeaseTimeMinutes);
+            }
+            throw new IllegalStateException("Missing required property: maxLeaseTimeMinutes");
+        });
     }
 }
