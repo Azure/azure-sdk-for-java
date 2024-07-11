@@ -3,23 +3,20 @@
 
 package com.azure.iot.deviceupdate;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
+
+import static com.azure.iot.deviceupdate.TestUtils.getCredential;
 
 public class DeviceManagementClientSyncStackTests extends TestProxyTestBase {
     protected DeviceManagementClient deviceManagementClient;
@@ -27,25 +24,18 @@ public class DeviceManagementClientSyncStackTests extends TestProxyTestBase {
 
     @Override
     protected void beforeTest() {
-        DeviceManagementClientBuilder deviceManagementClientbuilder =
-            new DeviceManagementClientBuilder()
-                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", TestData.ACCOUNT_ENDPOINT))
-                .instanceId(Configuration.getGlobalConfiguration().get("INSTANCEID", TestData.INSTANCE_ID))
-                .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            deviceManagementClientbuilder
-                .httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()))
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            deviceManagementClientbuilder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            deviceManagementClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        DeviceManagementClientBuilder clientBuilder = new DeviceManagementClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", TestData.ACCOUNT_ENDPOINT))
+            .instanceId(Configuration.getGlobalConfiguration().get("INSTANCEID", TestData.INSTANCE_ID))
+            .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder.httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
+        } else if (interceptorManager.isRecordMode()) {
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
-        deviceManagementClient = deviceManagementClientbuilder.buildClient();
 
+        deviceManagementClient = clientBuilder.credential(getCredential(getTestMode())).buildClient();
         requestOptions = new RequestOptions();
     }
 
