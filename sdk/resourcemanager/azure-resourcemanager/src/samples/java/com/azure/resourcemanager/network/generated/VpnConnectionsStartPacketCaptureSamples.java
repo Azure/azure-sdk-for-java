@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.models.VpnConnectionPacketCaptureStartParameters;
+
 import java.util.Arrays;
 
 /**
@@ -12,11 +13,12 @@ import java.util.Arrays;
  */
 public final class VpnConnectionsStartPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VpnConnectionStartPacketCaptureFilterData.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * VpnConnectionStartPacketCaptureFilterData.json
      */
     /**
      * Sample code: Start packet capture on vpn connection with filter.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -33,11 +35,12 @@ public final class VpnConnectionsStartPacketCaptureSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VpnConnectionStartPacketCapture.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * VpnConnectionStartPacketCapture.json
      */
     /**
      * Sample code: Start packet capture on vpn connection without filter.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

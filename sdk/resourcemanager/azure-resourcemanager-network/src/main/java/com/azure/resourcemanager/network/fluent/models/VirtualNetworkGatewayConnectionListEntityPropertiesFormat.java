@@ -18,6 +18,7 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionP
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionStatus;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -158,7 +159,8 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     private Boolean expressRouteGatewayBypass;
 
     /*
-     * Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     * Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass)
+     * must be enabled.
      */
     @JsonProperty(value = "enablePrivateLinkFastPath")
     private Boolean enablePrivateLinkFastPath;
@@ -171,7 +173,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the authorizationKey property: The authorizationKey.
-     * 
+     *
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -180,7 +182,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the authorizationKey property: The authorizationKey.
-     * 
+     *
      * @param authorizationKey the authorizationKey value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -191,7 +193,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the virtualNetworkGateway1 property: The reference to virtual network gateway resource.
-     * 
+     *
      * @return the virtualNetworkGateway1 value.
      */
     public VirtualNetworkConnectionGatewayReference virtualNetworkGateway1() {
@@ -200,7 +202,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the virtualNetworkGateway1 property: The reference to virtual network gateway resource.
-     * 
+     *
      * @param virtualNetworkGateway1 the virtualNetworkGateway1 value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -212,7 +214,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the virtualNetworkGateway2 property: The reference to virtual network gateway resource.
-     * 
+     *
      * @return the virtualNetworkGateway2 value.
      */
     public VirtualNetworkConnectionGatewayReference virtualNetworkGateway2() {
@@ -221,7 +223,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the virtualNetworkGateway2 property: The reference to virtual network gateway resource.
-     * 
+     *
      * @param virtualNetworkGateway2 the virtualNetworkGateway2 value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -233,7 +235,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the localNetworkGateway2 property: The reference to local network gateway resource.
-     * 
+     *
      * @return the localNetworkGateway2 value.
      */
     public VirtualNetworkConnectionGatewayReference localNetworkGateway2() {
@@ -242,7 +244,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the localNetworkGateway2 property: The reference to local network gateway resource.
-     * 
+     *
      * @param localNetworkGateway2 the localNetworkGateway2 value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -254,7 +256,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the connectionType property: Gateway connection type.
-     * 
+     *
      * @return the connectionType value.
      */
     public VirtualNetworkGatewayConnectionType connectionType() {
@@ -263,7 +265,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the connectionType property: Gateway connection type.
-     * 
+     *
      * @param connectionType the connectionType value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -275,7 +277,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the connectionProtocol property: Connection protocol used for this connection.
-     * 
+     *
      * @return the connectionProtocol value.
      */
     public VirtualNetworkGatewayConnectionProtocol connectionProtocol() {
@@ -284,7 +286,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the connectionProtocol property: Connection protocol used for this connection.
-     * 
+     *
      * @param connectionProtocol the connectionProtocol value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -296,7 +298,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the routingWeight property: The routing weight.
-     * 
+     *
      * @return the routingWeight value.
      */
     public Integer routingWeight() {
@@ -305,7 +307,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the routingWeight property: The routing weight.
-     * 
+     *
      * @param routingWeight the routingWeight value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -316,7 +318,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the connectionMode property: The connection mode for this connection.
-     * 
+     *
      * @return the connectionMode value.
      */
     public VirtualNetworkGatewayConnectionMode connectionMode() {
@@ -325,7 +327,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the connectionMode property: The connection mode for this connection.
-     * 
+     *
      * @param connectionMode the connectionMode value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -337,7 +339,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the sharedKey property: The IPSec shared key.
-     * 
+     *
      * @return the sharedKey value.
      */
     public String sharedKey() {
@@ -346,7 +348,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the sharedKey property: The IPSec shared key.
-     * 
+     *
      * @param sharedKey the sharedKey value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -357,7 +359,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the connectionStatus property: Virtual Network Gateway connection status.
-     * 
+     *
      * @return the connectionStatus value.
      */
     public VirtualNetworkGatewayConnectionStatus connectionStatus() {
@@ -366,7 +368,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the tunnelConnectionStatus property: Collection of all tunnels' connection health status.
-     * 
+     *
      * @return the tunnelConnectionStatus value.
      */
     public List<TunnelConnectionHealth> tunnelConnectionStatus() {
@@ -375,7 +377,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the egressBytesTransferred property: The egress bytes transferred in this connection.
-     * 
+     *
      * @return the egressBytesTransferred value.
      */
     public Long egressBytesTransferred() {
@@ -384,7 +386,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the ingressBytesTransferred property: The ingress bytes transferred in this connection.
-     * 
+     *
      * @return the ingressBytesTransferred value.
      */
     public Long ingressBytesTransferred() {
@@ -393,7 +395,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the peer property: The reference to peerings resource.
-     * 
+     *
      * @return the peer value.
      */
     public SubResource peer() {
@@ -402,7 +404,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the peer property: The reference to peerings resource.
-     * 
+     *
      * @param peer the peer value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -413,7 +415,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the enableBgp property: EnableBgp flag.
-     * 
+     *
      * @return the enableBgp value.
      */
     public Boolean enableBgp() {
@@ -422,7 +424,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the enableBgp property: EnableBgp flag.
-     * 
+     *
      * @param enableBgp the enableBgp value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -434,7 +436,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     /**
      * Get the gatewayCustomBgpIpAddresses property: GatewayCustomBgpIpAddresses to be used for virtual network gateway
      * Connection.
-     * 
+     *
      * @return the gatewayCustomBgpIpAddresses value.
      */
     public List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses() {
@@ -444,7 +446,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     /**
      * Set the gatewayCustomBgpIpAddresses property: GatewayCustomBgpIpAddresses to be used for virtual network gateway
      * Connection.
-     * 
+     *
      * @param gatewayCustomBgpIpAddresses the gatewayCustomBgpIpAddresses value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -456,7 +458,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     * 
+     *
      * @return the usePolicyBasedTrafficSelectors value.
      */
     public Boolean usePolicyBasedTrafficSelectors() {
@@ -465,7 +467,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     * 
+     *
      * @param usePolicyBasedTrafficSelectors the usePolicyBasedTrafficSelectors value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -477,7 +479,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the ipsecPolicies property: The IPSec Policies to be considered by this connection.
-     * 
+     *
      * @return the ipsecPolicies value.
      */
     public List<IpsecPolicy> ipsecPolicies() {
@@ -486,7 +488,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the ipsecPolicies property: The IPSec Policies to be considered by this connection.
-     * 
+     *
      * @param ipsecPolicies the ipsecPolicies value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -498,7 +500,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
-     * 
+     *
      * @return the trafficSelectorPolicies value.
      */
     public List<TrafficSelectorPolicy> trafficSelectorPolicies() {
@@ -507,7 +509,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
-     * 
+     *
      * @param trafficSelectorPolicies the trafficSelectorPolicies value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -519,7 +521,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the virtual network gateway connection resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -528,7 +530,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual network gateway connection resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -537,7 +539,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Get the expressRouteGatewayBypass property: Bypass ExpressRoute Gateway for data forwarding.
-     * 
+     *
      * @return the expressRouteGatewayBypass value.
      */
     public Boolean expressRouteGatewayBypass() {
@@ -546,7 +548,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Set the expressRouteGatewayBypass property: Bypass ExpressRoute Gateway for data forwarding.
-     * 
+     *
      * @param expressRouteGatewayBypass the expressRouteGatewayBypass value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -559,7 +561,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     /**
      * Get the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
      * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
-     * 
+     *
      * @return the enablePrivateLinkFastPath value.
      */
     public Boolean enablePrivateLinkFastPath() {
@@ -569,7 +571,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     /**
      * Set the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
      * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
-     * 
+     *
      * @param enablePrivateLinkFastPath the enablePrivateLinkFastPath value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
      */
@@ -581,7 +583,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

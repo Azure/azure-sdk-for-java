@@ -9,7 +9,6 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortInner;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkAdminState;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsBillingType;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsEncapsulation;
-
 import java.util.Arrays;
 
 /**
@@ -17,11 +16,13 @@ import java.util.Arrays;
  */
 public final class ExpressRoutePortsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ExpressRoutePortUpdateLink.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRoutePortUpdateLink.
+     * json
      */
     /**
      * Sample code: ExpressRoutePortUpdateLink.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRoutePortUpdateLink(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -39,11 +40,12 @@ public final class ExpressRoutePortsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ExpressRoutePortCreate.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRoutePortCreate.json
      */
     /**
      * Sample code: ExpressRoutePortCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRoutePortCreate(com.azure.resourcemanager.AzureResourceManager azure) {

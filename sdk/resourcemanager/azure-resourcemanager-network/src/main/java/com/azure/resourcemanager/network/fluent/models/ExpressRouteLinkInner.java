@@ -20,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ExpressRouteLinkInner extends SubResource {
     /*
-     * ExpressRouteLink Resource Properties
-     * 
      * ExpressRouteLink properties.
      */
     @JsonProperty(value = "properties")
@@ -46,9 +44,7 @@ public final class ExpressRouteLinkInner extends SubResource {
     }
 
     /**
-     * Get the innerProperties property: ExpressRouteLink Resource Properties
-     * 
-     * ExpressRouteLink properties.
+     * Get the innerProperties property: ExpressRouteLink properties.
      * 
      * @return the innerProperties value.
      */
@@ -181,9 +177,7 @@ public final class ExpressRouteLinkInner extends SubResource {
     }
 
     /**
-     * Get the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration.
-     * 
-     * MacSec configuration.
+     * Get the macSecConfig property: MacSec configuration.
      * 
      * @return the macSecConfig value.
      */
@@ -192,9 +186,7 @@ public final class ExpressRouteLinkInner extends SubResource {
     }
 
     /**
-     * Set the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration.
-     * 
-     * MacSec configuration.
+     * Set the macSecConfig property: MacSec configuration.
      * 
      * @param macSecConfig the macSecConfig value to set.
      * @return the ExpressRouteLinkInner object itself.

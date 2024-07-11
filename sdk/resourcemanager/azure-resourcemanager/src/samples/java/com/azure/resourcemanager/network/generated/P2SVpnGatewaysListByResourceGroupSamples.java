@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class P2SVpnGatewaysListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/P2SVpnGatewayListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * P2SVpnGatewayListByResourceGroup.json
      */
     /**
      * Sample code: P2SVpnGatewayListByResourceGroup.

@@ -11,6 +11,7 @@ import com.azure.resourcemanager.network.models.PropagatedRouteTable;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VpnLinkConnectionMode;
+
 import java.util.Arrays;
 
 /**
@@ -18,11 +19,12 @@ import java.util.Arrays;
  */
 public final class VpnConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VpnConnectionPut.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnConnectionPut.json
      */
     /**
      * Sample code: VpnConnectionPut.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnConnectionPut(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -23,8 +23,6 @@ import java.util.Map;
 @Fluent
 public final class ExpressRoutePortInner extends Resource {
     /*
-     * ExpressRoutePort Properties
-     * 
      * ExpressRoutePort properties.
      */
     @JsonProperty(value = "properties")
@@ -55,9 +53,7 @@ public final class ExpressRoutePortInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: ExpressRoutePort Properties
-     * 
-     * ExpressRoutePort properties.
+     * Get the innerProperties property: ExpressRoutePort properties.
      * 
      * @return the innerProperties value.
      */
@@ -240,9 +236,7 @@ public final class ExpressRoutePortInner extends Resource {
     }
 
     /**
-     * Get the links property: ExpressRouteLink Sub-Resources
-     * 
-     * The set of physical links of the ExpressRoutePort resource.
+     * Get the links property: The set of physical links of the ExpressRoutePort resource.
      * 
      * @return the links value.
      */
@@ -251,9 +245,7 @@ public final class ExpressRoutePortInner extends Resource {
     }
 
     /**
-     * Set the links property: ExpressRouteLink Sub-Resources
-     * 
-     * The set of physical links of the ExpressRoutePort resource.
+     * Set the links property: The set of physical links of the ExpressRoutePort resource.
      * 
      * @param links the links value to set.
      * @return the ExpressRoutePortInner object itself.

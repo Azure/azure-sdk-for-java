@@ -32,9 +32,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.VpnLinkConnectionsClient;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkConnectionInner;
 import com.azure.resourcemanager.network.models.ListVpnSiteLinkConnectionsResult;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in VpnLinkConnectionsClient.
@@ -52,7 +53,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Initializes an instance of VpnLinkConnectionsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VpnLinkConnectionsClientImpl(NetworkManagementClientImpl client) {
@@ -111,7 +112,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Resets the VpnLink connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -146,7 +147,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resetConnection(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -156,7 +157,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Resets the VpnLink connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -192,7 +193,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resetConnection(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -201,7 +202,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Resets the VpnLink connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -222,7 +223,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Resets the VpnLink connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -245,7 +246,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Resets the VpnLink connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -264,7 +265,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Resets the VpnLink connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -285,7 +286,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Resets the VpnLink connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -304,7 +305,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Resets the VpnLink connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -325,7 +326,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Resets the VpnLink connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -342,7 +343,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Resets the VpnLink connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -360,7 +361,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -395,7 +396,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getIkeSas(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -405,7 +406,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -441,7 +442,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getIkeSas(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -450,7 +451,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -471,7 +472,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -494,7 +495,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -513,7 +514,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -533,7 +534,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -552,7 +553,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -572,7 +573,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -590,7 +591,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -609,7 +610,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -640,7 +641,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -653,7 +654,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -685,7 +686,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -697,7 +698,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -716,7 +717,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -737,7 +738,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -755,7 +756,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -774,10 +775,8 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -804,10 +803,8 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -37,9 +37,10 @@ import com.azure.resourcemanager.network.fluent.models.VpnConnectionInner;
 import com.azure.resourcemanager.network.models.ListVpnConnectionsResult;
 import com.azure.resourcemanager.network.models.VpnConnectionPacketCaptureStartParameters;
 import com.azure.resourcemanager.network.models.VpnConnectionPacketCaptureStopParameters;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in VpnConnectionsClient.
@@ -57,7 +58,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Initializes an instance of VpnConnectionsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VpnConnectionsClientImpl(NetworkManagementClientImpl client) {
@@ -146,7 +147,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Retrieves the details of a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -176,7 +177,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -186,7 +187,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Retrieves the details of a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -217,7 +218,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, gatewayName,
@@ -226,7 +227,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Retrieves the details of a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -243,7 +244,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Retrieves the details of a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -261,7 +262,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Retrieves the details of a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -277,7 +278,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -314,7 +315,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         } else {
             vpnConnectionParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -324,7 +325,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -362,7 +363,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         } else {
             vpnConnectionParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -371,7 +372,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -393,7 +394,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -417,7 +418,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -436,7 +437,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -457,7 +458,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -476,7 +477,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -496,7 +497,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -514,7 +515,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -534,7 +535,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Deletes a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -564,7 +565,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -574,7 +575,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Deletes a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -605,7 +606,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -614,7 +615,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Deletes a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -633,7 +634,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Deletes a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -655,7 +656,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Deletes a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -672,7 +673,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Deletes a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -690,7 +691,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Deletes a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -707,7 +708,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Deletes a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -726,7 +727,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Deletes a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -741,7 +742,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Deletes a vpn connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
@@ -757,7 +758,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Starts packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -793,7 +794,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -804,7 +805,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Starts packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -842,7 +843,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.startPacketCapture(this.client.getEndpoint(), resourceGroupName, gatewayName, vpnConnectionName,
@@ -851,7 +852,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Starts packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -873,7 +874,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Starts packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -894,7 +895,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Starts packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -919,7 +920,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Starts packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -938,7 +939,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Starts packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -959,7 +960,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Starts packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -979,7 +980,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Starts packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -998,7 +999,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Starts packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1020,7 +1021,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Starts packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1037,7 +1038,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Starts packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1057,7 +1058,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Stops packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1092,7 +1093,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stopPacketCapture(this.client.getEndpoint(), resourceGroupName, gatewayName,
@@ -1102,7 +1103,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Stops packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1139,7 +1140,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.stopPacketCapture(this.client.getEndpoint(), resourceGroupName, gatewayName, vpnConnectionName,
@@ -1148,7 +1149,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Stops packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1169,7 +1170,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Stops packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1190,7 +1191,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Stops packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1214,7 +1215,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Stops packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1233,7 +1234,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Stops packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1253,7 +1254,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Stops packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1272,7 +1273,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Stops packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1290,7 +1291,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Stops packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1311,7 +1312,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Stops packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1328,7 +1329,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Stops packet capture on Vpn connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param vpnConnectionName The name of the vpn connection.
@@ -1347,7 +1348,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Retrieves all vpn connections for a particular virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1374,7 +1375,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByVpnGateway(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1386,7 +1387,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Retrieves all vpn connections for a particular virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -1414,7 +1415,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1426,7 +1427,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Retrieves all vpn connections for a particular virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1443,7 +1444,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Retrieves all vpn connections for a particular virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -1462,7 +1463,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Retrieves all vpn connections for a particular virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1478,7 +1479,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Retrieves all vpn connections for a particular virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -1496,10 +1497,8 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1525,10 +1524,8 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

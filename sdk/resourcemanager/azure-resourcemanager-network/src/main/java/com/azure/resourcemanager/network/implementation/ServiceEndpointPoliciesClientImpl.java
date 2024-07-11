@@ -39,9 +39,10 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in ServiceEndpointPoliciesClient.
@@ -60,7 +61,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Initializes an instance of ServiceEndpointPoliciesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ServiceEndpointPoliciesClientImpl(NetworkManagementClientImpl client) {
@@ -153,7 +154,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Deletes the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,7 +181,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -190,7 +191,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Deletes the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param context The context to associate with this operation.
@@ -218,7 +219,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, serviceEndpointPolicyName, apiVersion,
@@ -227,7 +228,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Deletes the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +246,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Deletes the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param context The context to associate with this operation.
@@ -266,7 +267,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Deletes the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,7 +282,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Deletes the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param context The context to associate with this operation.
@@ -298,7 +299,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Deletes the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -314,7 +315,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Deletes the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param context The context to associate with this operation.
@@ -331,7 +332,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Deletes the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -345,7 +346,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Deletes the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param context The context to associate with this operation.
@@ -360,7 +361,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets the specified service Endpoint Policies in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param expand Expands referenced resources.
@@ -389,7 +390,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -399,7 +400,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets the specified service Endpoint Policies in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param expand Expands referenced resources.
@@ -429,7 +430,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, serviceEndpointPolicyName,
@@ -438,7 +439,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets the specified service Endpoint Policies in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -457,7 +458,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets the specified service Endpoint Policies in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param expand Expands referenced resources.
@@ -476,7 +477,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets the specified service Endpoint Policies in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -493,7 +494,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Creates or updates a service Endpoint Policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -526,7 +527,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -536,7 +537,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Creates or updates a service Endpoint Policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -570,7 +571,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceEndpointPolicyName,
@@ -579,7 +580,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Creates or updates a service Endpoint Policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -600,7 +601,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Creates or updates a service Endpoint Policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -623,7 +624,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Creates or updates a service Endpoint Policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -640,7 +641,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Creates or updates a service Endpoint Policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -660,7 +661,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Creates or updates a service Endpoint Policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -678,7 +679,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Creates or updates a service Endpoint Policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -697,7 +698,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Creates or updates a service Endpoint Policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -714,7 +715,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Creates or updates a service Endpoint Policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -732,7 +733,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Updates tags of a service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to update service endpoint policy tags.
@@ -765,7 +766,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -775,7 +776,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Updates tags of a service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to update service endpoint policy tags.
@@ -809,7 +810,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, serviceEndpointPolicyName, apiVersion,
@@ -818,7 +819,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Updates tags of a service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to update service endpoint policy tags.
@@ -836,7 +837,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Updates tags of a service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to update service endpoint policy tags.
@@ -854,7 +855,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Updates tags of a service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to update service endpoint policy tags.
@@ -872,7 +873,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets all the service endpoint policies in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the service endpoint policies in a subscription along with {@link PagedResponse} on successful
@@ -888,7 +889,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -900,7 +901,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets all the service endpoint policies in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -918,7 +919,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -928,7 +929,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets all the service endpoint policies in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the service endpoint policies in a subscription as paginated response with {@link PagedFlux}.
@@ -940,7 +941,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets all the service endpoint policies in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -955,7 +956,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets all the service endpoint policies in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the service endpoint policies in a subscription as paginated response with {@link PagedIterable}.
@@ -967,7 +968,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets all the service endpoint policies in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -981,7 +982,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets all service endpoint Policies in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1004,7 +1005,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1016,7 +1017,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets all service endpoint Policies in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1040,7 +1041,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1052,7 +1053,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets all service endpoint Policies in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1067,7 +1068,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets all service endpoint Policies in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1083,7 +1084,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets all service endpoint Policies in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1097,7 +1098,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Gets all service endpoint Policies in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1112,10 +1113,8 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1140,10 +1139,8 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1169,10 +1166,8 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1199,10 +1194,8 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

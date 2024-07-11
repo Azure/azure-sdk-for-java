@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.VirtualHubRouteTableV2Inner;
 import com.azure.resourcemanager.network.models.VirtualHubRouteV2;
+
 import java.util.Arrays;
 
 /**
@@ -13,11 +14,13 @@ import java.util.Arrays;
  */
 public final class VirtualHubRouteTableV2SCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualHubRouteTableV2Put.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualHubRouteTableV2Put.
+     * json
      */
     /**
      * Sample code: VirtualHubRouteTableV2Put.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualHubRouteTableV2Put(com.azure.resourcemanager.AzureResourceManager azure) {

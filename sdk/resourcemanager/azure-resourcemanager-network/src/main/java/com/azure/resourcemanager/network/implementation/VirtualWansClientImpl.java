@@ -39,9 +39,10 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in VirtualWansClient.
@@ -60,7 +61,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Initializes an instance of VirtualWansClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualWansClientImpl(NetworkManagementClientImpl client) {
@@ -152,7 +153,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Retrieves the details of a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,7 +179,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -188,7 +189,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Retrieves the details of a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being retrieved.
      * @param context The context to associate with this operation.
@@ -215,7 +216,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, virtualWanName, apiVersion,
@@ -224,7 +225,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Retrieves the details of a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,7 +241,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Retrieves the details of a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being retrieved.
      * @param context The context to associate with this operation.
@@ -257,7 +258,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Retrieves the details of a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,7 +273,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being created or updated.
      * @param wanParameters Parameters supplied to create or update VirtualWAN.
@@ -304,7 +305,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
         } else {
             wanParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -314,7 +315,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being created or updated.
      * @param wanParameters Parameters supplied to create or update VirtualWAN.
@@ -347,7 +348,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
         } else {
             wanParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -356,7 +357,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being created or updated.
      * @param wanParameters Parameters supplied to create or update VirtualWAN.
@@ -376,7 +377,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being created or updated.
      * @param wanParameters Parameters supplied to create or update VirtualWAN.
@@ -398,7 +399,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being created or updated.
      * @param wanParameters Parameters supplied to create or update VirtualWAN.
@@ -415,7 +416,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being created or updated.
      * @param wanParameters Parameters supplied to create or update VirtualWAN.
@@ -433,7 +434,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being created or updated.
      * @param wanParameters Parameters supplied to create or update VirtualWAN.
@@ -451,7 +452,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being created or updated.
      * @param wanParameters Parameters supplied to create or update VirtualWAN.
@@ -470,7 +471,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being created or updated.
      * @param wanParameters Parameters supplied to create or update VirtualWAN.
@@ -487,7 +488,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being created or updated.
      * @param wanParameters Parameters supplied to create or update VirtualWAN.
@@ -505,7 +506,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Updates a VirtualWAN tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being updated.
      * @param wanParameters Parameters supplied to Update VirtualWAN tags.
@@ -537,7 +538,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
         } else {
             wanParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -547,7 +548,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Updates a VirtualWAN tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being updated.
      * @param wanParameters Parameters supplied to Update VirtualWAN tags.
@@ -580,7 +581,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
         } else {
             wanParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -589,7 +590,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Updates a VirtualWAN tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being updated.
      * @param wanParameters Parameters supplied to Update VirtualWAN tags.
@@ -607,7 +608,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Updates a VirtualWAN tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being updated.
      * @param wanParameters Parameters supplied to Update VirtualWAN tags.
@@ -625,7 +626,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Updates a VirtualWAN tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being updated.
      * @param wanParameters Parameters supplied to Update VirtualWAN tags.
@@ -641,7 +642,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Deletes a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -666,7 +667,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -676,7 +677,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Deletes a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being deleted.
      * @param context The context to associate with this operation.
@@ -703,7 +704,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -712,7 +713,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Deletes a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -729,7 +730,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Deletes a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being deleted.
      * @param context The context to associate with this operation.
@@ -749,7 +750,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Deletes a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -764,7 +765,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Deletes a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being deleted.
      * @param context The context to associate with this operation.
@@ -781,7 +782,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Deletes a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -797,7 +798,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Deletes a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being deleted.
      * @param context The context to associate with this operation.
@@ -814,7 +815,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Deletes a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -828,7 +829,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Deletes a VirtualWAN.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being deleted.
      * @param context The context to associate with this operation.
@@ -843,7 +844,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Lists all the VirtualWANs in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -865,7 +866,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -877,7 +878,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Lists all the VirtualWANs in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -901,7 +902,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -913,7 +914,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Lists all the VirtualWANs in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -928,7 +929,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Lists all the VirtualWANs in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -944,7 +945,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Lists all the VirtualWANs in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -958,7 +959,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Lists all the VirtualWANs in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -973,7 +974,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Lists all the VirtualWANs in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualWANs along with {@link PagedResponse} on successful completion of
@@ -989,7 +990,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -1001,7 +1002,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Lists all the VirtualWANs in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1019,7 +1020,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -1029,7 +1030,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Lists all the VirtualWANs in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedFlux}.
@@ -1041,7 +1042,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Lists all the VirtualWANs in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1056,7 +1057,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Lists all the VirtualWANs in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedIterable}.
@@ -1068,7 +1069,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Lists all the VirtualWANs in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1082,10 +1083,8 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1112,10 +1111,8 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1142,10 +1139,8 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1170,10 +1165,8 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanI
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

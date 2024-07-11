@@ -37,11 +37,12 @@ import com.azure.resourcemanager.network.fluent.models.BgpConnectionInner;
 import com.azure.resourcemanager.network.models.ListVirtualHubBgpConnectionResults;
 import com.azure.resourcemanager.network.models.PeerRoute;
 import com.fasterxml.jackson.core.type.TypeReference;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in VirtualHubBgpConnectionsClient.
@@ -59,7 +60,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Initializes an instance of VirtualHubBgpConnectionsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualHubBgpConnectionsClientImpl(NetworkManagementClientImpl client) {
@@ -145,7 +146,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves the details of a Virtual Hub Bgp Connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -175,7 +176,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -185,7 +186,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves the details of a Virtual Hub Bgp Connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -216,7 +217,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -225,7 +226,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves the details of a Virtual Hub Bgp Connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -242,7 +243,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves the details of a Virtual Hub Bgp Connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -260,7 +261,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves the details of a Virtual Hub Bgp Connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -276,7 +277,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -312,7 +313,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -322,7 +323,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -359,7 +360,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -368,7 +369,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -389,7 +390,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -413,7 +414,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -432,7 +433,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -452,7 +453,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -471,7 +472,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -491,7 +492,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -509,7 +510,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -528,7 +529,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -558,7 +559,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -568,7 +569,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -599,7 +600,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -608,7 +609,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -628,7 +629,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -650,7 +651,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -667,7 +668,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -685,7 +686,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -702,7 +703,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -721,7 +722,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -736,7 +737,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -752,7 +753,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves the details of all VirtualHubBgpConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -778,7 +779,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -790,7 +791,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves the details of all VirtualHubBgpConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -817,7 +818,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -829,7 +830,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves the details of all VirtualHubBgpConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -845,7 +846,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves the details of all VirtualHubBgpConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -862,7 +863,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves the details of all VirtualHubBgpConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -877,7 +878,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves the details of all VirtualHubBgpConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -893,7 +894,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -924,7 +925,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listLearnedRoutes(this.client.getEndpoint(), resourceGroupName, hubName,
@@ -934,7 +935,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -966,7 +967,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listLearnedRoutes(this.client.getEndpoint(), resourceGroupName, hubName, connectionName,
@@ -975,7 +976,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -997,7 +998,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1021,7 +1022,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1038,7 +1039,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1056,7 +1057,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1074,7 +1075,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1093,7 +1094,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1110,7 +1111,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1128,7 +1129,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1159,7 +1160,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAdvertisedRoutes(this.client.getEndpoint(), resourceGroupName, hubName,
@@ -1169,7 +1170,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1201,7 +1202,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAdvertisedRoutes(this.client.getEndpoint(), resourceGroupName, hubName, connectionName,
@@ -1210,7 +1211,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1232,7 +1233,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1257,7 +1258,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1274,7 +1275,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1292,7 +1293,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1310,7 +1311,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1329,7 +1330,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1346,7 +1347,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1364,10 +1365,8 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1391,10 +1390,8 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

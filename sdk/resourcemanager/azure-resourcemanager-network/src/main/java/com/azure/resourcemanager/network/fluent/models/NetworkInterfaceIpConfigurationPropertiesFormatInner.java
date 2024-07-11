@@ -50,13 +50,15 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     private List<InboundNatRuleInner> loadBalancerInboundNatRules;
 
     /*
-     * Private IP address of the IP configuration. It can be a single IP address or a CIDR block in the format <address>/<prefix-length>.
+     * Private IP address of the IP configuration. It can be a single IP address or a CIDR block in the format
+     * <address>/<prefix-length>.
      */
     @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
     /*
-     * The private IP address prefix length. If specified and the allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
+     * The private IP address prefix length. If specified and the allocation method is dynamic, the service will
+     * allocate a CIDR block instead of a single IP address.
      */
     @JsonProperty(value = "privateIPAddressPrefixLength")
     private Integer privateIpAddressPrefixLength;

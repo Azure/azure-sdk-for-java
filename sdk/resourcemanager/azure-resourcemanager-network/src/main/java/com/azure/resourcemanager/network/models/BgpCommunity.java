@@ -27,7 +27,8 @@ public final class BgpCommunity {
     private String communityName;
 
     /*
-     * The value of the bgp community. For more information: https://docs.microsoft.com/en-us/azure/expressroute/expressroute-routing.
+     * The value of the bgp community. For more information:
+     * https://docs.microsoft.com/en-us/azure/expressroute/expressroute-routing.
      */
     @JsonProperty(value = "communityValue")
     private String communityValue;

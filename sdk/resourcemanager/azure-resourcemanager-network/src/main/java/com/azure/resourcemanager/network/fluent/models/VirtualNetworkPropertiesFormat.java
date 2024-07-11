@@ -12,6 +12,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -62,7 +63,8 @@ public final class VirtualNetworkPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * Indicates if DDoS protection is enabled for all the protected resources in the virtual network. It requires a DDoS protection plan associated with the resource.
+     * Indicates if DDoS protection is enabled for all the protected resources in the virtual network. It requires a
+     * DDoS protection plan associated with the resource.
      */
     @JsonProperty(value = "enableDdosProtection")
     private Boolean enableDdosProtection;
@@ -112,7 +114,7 @@ public final class VirtualNetworkPropertiesFormat {
     /**
      * Get the addressSpace property: The AddressSpace that contains an array of IP address ranges that can be used by
      * subnets.
-     * 
+     *
      * @return the addressSpace value.
      */
     public AddressSpace addressSpace() {
@@ -122,7 +124,7 @@ public final class VirtualNetworkPropertiesFormat {
     /**
      * Set the addressSpace property: The AddressSpace that contains an array of IP address ranges that can be used by
      * subnets.
-     * 
+     *
      * @param addressSpace the addressSpace value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -134,7 +136,7 @@ public final class VirtualNetworkPropertiesFormat {
     /**
      * Get the dhcpOptions property: The dhcpOptions that contains an array of DNS servers available to VMs deployed in
      * the virtual network.
-     * 
+     *
      * @return the dhcpOptions value.
      */
     public DhcpOptions dhcpOptions() {
@@ -144,7 +146,7 @@ public final class VirtualNetworkPropertiesFormat {
     /**
      * Set the dhcpOptions property: The dhcpOptions that contains an array of DNS servers available to VMs deployed in
      * the virtual network.
-     * 
+     *
      * @param dhcpOptions the dhcpOptions value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -155,7 +157,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Get the flowTimeoutInMinutes property: The FlowTimeout value (in minutes) for the Virtual Network.
-     * 
+     *
      * @return the flowTimeoutInMinutes value.
      */
     public Integer flowTimeoutInMinutes() {
@@ -164,7 +166,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Set the flowTimeoutInMinutes property: The FlowTimeout value (in minutes) for the Virtual Network.
-     * 
+     *
      * @param flowTimeoutInMinutes the flowTimeoutInMinutes value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -175,7 +177,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Get the subnets property: A list of subnets in a Virtual Network.
-     * 
+     *
      * @return the subnets value.
      */
     public List<SubnetInner> subnets() {
@@ -184,7 +186,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Set the subnets property: A list of subnets in a Virtual Network.
-     * 
+     *
      * @param subnets the subnets value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -195,7 +197,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Get the virtualNetworkPeerings property: A list of peerings in a Virtual Network.
-     * 
+     *
      * @return the virtualNetworkPeerings value.
      */
     public List<VirtualNetworkPeeringInner> virtualNetworkPeerings() {
@@ -204,7 +206,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Set the virtualNetworkPeerings property: A list of peerings in a Virtual Network.
-     * 
+     *
      * @param virtualNetworkPeerings the virtualNetworkPeerings value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -216,7 +218,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Get the resourceGuid property: The resourceGuid property of the Virtual Network resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -225,7 +227,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual network resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -235,7 +237,7 @@ public final class VirtualNetworkPropertiesFormat {
     /**
      * Get the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources in
      * the virtual network. It requires a DDoS protection plan associated with the resource.
-     * 
+     *
      * @return the enableDdosProtection value.
      */
     public Boolean enableDdosProtection() {
@@ -245,7 +247,7 @@ public final class VirtualNetworkPropertiesFormat {
     /**
      * Set the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources in
      * the virtual network. It requires a DDoS protection plan associated with the resource.
-     * 
+     *
      * @param enableDdosProtection the enableDdosProtection value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -257,7 +259,7 @@ public final class VirtualNetworkPropertiesFormat {
     /**
      * Get the enableVmProtection property: Indicates if VM protection is enabled for all the subnets in the virtual
      * network.
-     * 
+     *
      * @return the enableVmProtection value.
      */
     public Boolean enableVmProtection() {
@@ -267,7 +269,7 @@ public final class VirtualNetworkPropertiesFormat {
     /**
      * Set the enableVmProtection property: Indicates if VM protection is enabled for all the subnets in the virtual
      * network.
-     * 
+     *
      * @param enableVmProtection the enableVmProtection value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -278,7 +280,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Get the ddosProtectionPlan property: The DDoS protection plan associated with the virtual network.
-     * 
+     *
      * @return the ddosProtectionPlan value.
      */
     public SubResource ddosProtectionPlan() {
@@ -287,7 +289,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Set the ddosProtectionPlan property: The DDoS protection plan associated with the virtual network.
-     * 
+     *
      * @param ddosProtectionPlan the ddosProtectionPlan value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -299,7 +301,7 @@ public final class VirtualNetworkPropertiesFormat {
     /**
      * Get the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a prefix
      * in this VNET.
-     * 
+     *
      * @return the bgpCommunities value.
      */
     public VirtualNetworkBgpCommunities bgpCommunities() {
@@ -309,7 +311,7 @@ public final class VirtualNetworkPropertiesFormat {
     /**
      * Set the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a prefix
      * in this VNET.
-     * 
+     *
      * @param bgpCommunities the bgpCommunities value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -321,7 +323,7 @@ public final class VirtualNetworkPropertiesFormat {
     /**
      * Get the encryption property: Indicates if encryption is enabled on virtual network and if VM without encryption
      * is allowed in encrypted VNet.
-     * 
+     *
      * @return the encryption value.
      */
     public VirtualNetworkEncryption encryption() {
@@ -331,7 +333,7 @@ public final class VirtualNetworkPropertiesFormat {
     /**
      * Set the encryption property: Indicates if encryption is enabled on virtual network and if VM without encryption
      * is allowed in encrypted VNet.
-     * 
+     *
      * @param encryption the encryption value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -342,7 +344,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Get the ipAllocations property: Array of IpAllocation which reference this VNET.
-     * 
+     *
      * @return the ipAllocations value.
      */
     public List<SubResource> ipAllocations() {
@@ -351,7 +353,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Set the ipAllocations property: Array of IpAllocation which reference this VNET.
-     * 
+     *
      * @param ipAllocations the ipAllocations value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -362,7 +364,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Get the flowLogs property: A collection of references to flow log resources.
-     * 
+     *
      * @return the flowLogs value.
      */
     public List<FlowLogInner> flowLogs() {
@@ -371,7 +373,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

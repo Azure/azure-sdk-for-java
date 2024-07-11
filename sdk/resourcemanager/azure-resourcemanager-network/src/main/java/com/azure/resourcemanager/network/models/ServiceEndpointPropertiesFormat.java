@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -18,6 +20,12 @@ public final class ServiceEndpointPropertiesFormat {
      */
     @JsonProperty(value = "service")
     private String service;
+
+    /*
+     * SubResource as network identifier.
+     */
+    @JsonProperty(value = "networkIdentifier")
+    private SubResource networkIdentifier;
 
     /*
      * A list of locations.
@@ -39,7 +47,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Get the service property: The type of the endpoint service.
-     * 
+     *
      * @return the service value.
      */
     public String service() {
@@ -48,7 +56,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Set the service property: The type of the endpoint service.
-     * 
+     *
      * @param service the service value to set.
      * @return the ServiceEndpointPropertiesFormat object itself.
      */
@@ -58,8 +66,28 @@ public final class ServiceEndpointPropertiesFormat {
     }
 
     /**
+     * Get the networkIdentifier property: SubResource as network identifier.
+     *
+     * @return the networkIdentifier value.
+     */
+    public SubResource networkIdentifier() {
+        return this.networkIdentifier;
+    }
+
+    /**
+     * Set the networkIdentifier property: SubResource as network identifier.
+     *
+     * @param networkIdentifier the networkIdentifier value to set.
+     * @return the ServiceEndpointPropertiesFormat object itself.
+     */
+    public ServiceEndpointPropertiesFormat withNetworkIdentifier(SubResource networkIdentifier) {
+        this.networkIdentifier = networkIdentifier;
+        return this;
+    }
+
+    /**
      * Get the locations property: A list of locations.
-     * 
+     *
      * @return the locations value.
      */
     public List<String> locations() {
@@ -68,7 +96,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Set the locations property: A list of locations.
-     * 
+     *
      * @param locations the locations value to set.
      * @return the ServiceEndpointPropertiesFormat object itself.
      */
@@ -79,7 +107,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the service endpoint resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -88,7 +116,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

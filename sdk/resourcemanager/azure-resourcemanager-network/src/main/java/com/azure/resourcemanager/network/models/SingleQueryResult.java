@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,8 @@ public final class SingleQueryResult {
     private FirewallPolicyIdpsSignatureSeverity severity;
 
     /*
-     * Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound, 2 - Any, 3 - Internal, 4 - InternalOutbound
+     * Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound, 2 - Any, 3 - Internal, 4 -
+     * InternalOutbound
      */
     @JsonProperty(value = "direction")
     private FirewallPolicyIdpsSignatureDirection direction;
@@ -87,7 +89,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the signatureId property: The ID of the signature.
-     * 
+     *
      * @return the signatureId value.
      */
     public Integer signatureId() {
@@ -96,7 +98,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the signatureId property: The ID of the signature.
-     * 
+     *
      * @param signatureId the signatureId value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -107,7 +109,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the mode property: The current mode enforced, 0 - Disabled, 1 - Alert, 2 -Deny.
-     * 
+     *
      * @return the mode value.
      */
     public FirewallPolicyIdpsSignatureMode mode() {
@@ -116,7 +118,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the mode property: The current mode enforced, 0 - Disabled, 1 - Alert, 2 -Deny.
-     * 
+     *
      * @param mode the mode value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -127,7 +129,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the severity property: Describes the severity of signature: 1 - High, 2 - Medium, 3 - Low.
-     * 
+     *
      * @return the severity value.
      */
     public FirewallPolicyIdpsSignatureSeverity severity() {
@@ -136,7 +138,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the severity property: Describes the severity of signature: 1 - High, 2 - Medium, 3 - Low.
-     * 
+     *
      * @param severity the severity value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -148,7 +150,7 @@ public final class SingleQueryResult {
     /**
      * Get the direction property: Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound,
      * 2 - Any, 3 - Internal, 4 - InternalOutbound.
-     * 
+     *
      * @return the direction value.
      */
     public FirewallPolicyIdpsSignatureDirection direction() {
@@ -158,7 +160,7 @@ public final class SingleQueryResult {
     /**
      * Set the direction property: Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound,
      * 2 - Any, 3 - Internal, 4 - InternalOutbound.
-     * 
+     *
      * @param direction the direction value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -169,7 +171,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the group property: Describes the groups the signature belongs to.
-     * 
+     *
      * @return the group value.
      */
     public String group() {
@@ -178,7 +180,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the group property: Describes the groups the signature belongs to.
-     * 
+     *
      * @param group the group value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -189,7 +191,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the description property: Describes what is the signature enforces.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -198,7 +200,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the description property: Describes what is the signature enforces.
-     * 
+     *
      * @param description the description value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -209,7 +211,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the protocol property: Describes the protocol the signatures is being enforced in.
-     * 
+     *
      * @return the protocol value.
      */
     public String protocol() {
@@ -218,7 +220,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the protocol property: Describes the protocol the signatures is being enforced in.
-     * 
+     *
      * @param protocol the protocol value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -229,7 +231,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the sourcePorts property: Describes the list of source ports related to this signature.
-     * 
+     *
      * @return the sourcePorts value.
      */
     public List<String> sourcePorts() {
@@ -238,7 +240,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the sourcePorts property: Describes the list of source ports related to this signature.
-     * 
+     *
      * @param sourcePorts the sourcePorts value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -249,7 +251,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the destinationPorts property: Describes the list of destination ports related to this signature.
-     * 
+     *
      * @return the destinationPorts value.
      */
     public List<String> destinationPorts() {
@@ -258,7 +260,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the destinationPorts property: Describes the list of destination ports related to this signature.
-     * 
+     *
      * @param destinationPorts the destinationPorts value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -269,7 +271,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the lastUpdated property: Describes the last updated time of the signature (provided from 3rd party vendor).
-     * 
+     *
      * @return the lastUpdated value.
      */
     public String lastUpdated() {
@@ -278,7 +280,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the lastUpdated property: Describes the last updated time of the signature (provided from 3rd party vendor).
-     * 
+     *
      * @param lastUpdated the lastUpdated value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -289,7 +291,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the inheritedFromParentPolicy property: Describes if this override is inherited from base policy or not.
-     * 
+     *
      * @return the inheritedFromParentPolicy value.
      */
     public Boolean inheritedFromParentPolicy() {
@@ -298,7 +300,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the inheritedFromParentPolicy property: Describes if this override is inherited from base policy or not.
-     * 
+     *
      * @param inheritedFromParentPolicy the inheritedFromParentPolicy value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -309,7 +311,7 @@ public final class SingleQueryResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

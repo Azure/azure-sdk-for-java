@@ -34,9 +34,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.SecurityAdminConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.models.SecurityAdminConfigurationInner;
 import com.azure.resourcemanager.network.models.SecurityAdminConfigurationListResult;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in SecurityAdminConfigurationsClient.
@@ -54,7 +55,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Initializes an instance of SecurityAdminConfigurationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     SecurityAdminConfigurationsClientImpl(NetworkManagementClientImpl client) {
@@ -125,7 +126,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -158,7 +159,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -170,7 +171,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -204,7 +205,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -216,7 +217,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -238,7 +239,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -256,7 +257,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -280,7 +281,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,7 +298,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -319,7 +320,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Retrieves a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -352,7 +353,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -362,7 +363,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Retrieves a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -396,7 +397,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -405,7 +406,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Retrieves a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -423,7 +424,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Retrieves a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -441,7 +442,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Retrieves a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -458,7 +459,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Creates or updates a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -499,7 +500,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
         } else {
             securityAdminConfiguration.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -510,7 +511,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Creates or updates a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -552,7 +553,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
         } else {
             securityAdminConfiguration.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -561,7 +562,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Creates or updates a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -581,7 +582,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Creates or updates a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -602,7 +603,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Creates or updates a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -621,7 +622,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Deletes a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -655,7 +656,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -666,7 +667,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Deletes a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -701,7 +702,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -710,7 +711,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Deletes a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -732,7 +733,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Deletes a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -753,7 +754,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Deletes a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -777,7 +778,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Deletes a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -795,7 +796,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Deletes a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -816,7 +817,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Deletes a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -836,7 +837,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Deletes a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -854,7 +855,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Deletes a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -875,7 +876,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Deletes a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -891,7 +892,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Deletes a network manager security admin configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -910,10 +911,8 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -938,10 +937,8 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

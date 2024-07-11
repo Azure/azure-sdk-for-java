@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.models.TagsObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,11 +14,12 @@ import java.util.Map;
  */
 public final class VpnGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VpnGatewayUpdateTags.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnGatewayUpdateTags.json
      */
     /**
      * Sample code: VpnGatewayUpdate.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnGatewayUpdate(com.azure.resourcemanager.AzureResourceManager azure) {

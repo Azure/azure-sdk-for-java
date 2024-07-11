@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PublicIpAddressesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/PublicIpAddressGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PublicIpAddressGet.json
      */
     /**
      * Sample code: Get public IP address.

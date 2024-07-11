@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.generated;
 import com.azure.resourcemanager.network.fluent.models.RouteFilterRuleInner;
 import com.azure.resourcemanager.network.models.Access;
 import com.azure.resourcemanager.network.models.RouteFilterRuleType;
+
 import java.util.Arrays;
 
 /**
@@ -14,11 +15,12 @@ import java.util.Arrays;
  */
 public final class RouteFilterRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/RouteFilterRuleCreate.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteFilterRuleCreate.json
      */
     /**
      * Sample code: RouteFilterRuleCreate.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeFilterRuleCreate(com.azure.resourcemanager.AzureResourceManager azure) {

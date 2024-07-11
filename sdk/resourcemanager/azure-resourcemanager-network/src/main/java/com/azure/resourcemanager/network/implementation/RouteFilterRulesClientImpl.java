@@ -34,9 +34,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.RouteFilterRulesClient;
 import com.azure.resourcemanager.network.fluent.models.RouteFilterRuleInner;
 import com.azure.resourcemanager.network.models.RouteFilterRuleListResult;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in RouteFilterRulesClient.
@@ -54,7 +55,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Initializes an instance of RouteFilterRulesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     RouteFilterRulesClientImpl(NetworkManagementClientImpl client) {
@@ -121,7 +122,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Deletes the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -152,7 +153,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, routeFilterName,
@@ -162,7 +163,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Deletes the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -194,7 +195,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, routeFilterName, ruleName, apiVersion,
@@ -203,7 +204,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Deletes the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -222,7 +223,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Deletes the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -244,7 +245,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Deletes the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -261,7 +262,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Deletes the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -279,7 +280,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Deletes the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -296,7 +297,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Deletes the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -314,7 +315,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Deletes the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -329,7 +330,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Deletes the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -345,7 +346,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Gets the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -377,7 +378,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, routeFilterName, ruleName,
@@ -387,7 +388,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Gets the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -420,7 +421,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, routeFilterName, ruleName, apiVersion,
@@ -429,7 +430,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Gets the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -446,7 +447,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Gets the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -464,7 +465,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Gets the specified rule from a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -480,7 +481,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Creates or updates a route in the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -518,7 +519,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
         } else {
             routeFilterRuleParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -529,7 +530,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Creates or updates a route in the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -568,7 +569,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
         } else {
             routeFilterRuleParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, routeFilterName, ruleName,
@@ -577,7 +578,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Creates or updates a route in the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -599,7 +600,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Creates or updates a route in the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -623,7 +624,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Creates or updates a route in the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -643,7 +644,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Creates or updates a route in the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -665,7 +666,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Creates or updates a route in the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -684,7 +685,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Creates or updates a route in the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -704,7 +705,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Creates or updates a route in the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -722,7 +723,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Creates or updates a route in the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -742,7 +743,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Gets all RouteFilterRules in a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -770,7 +771,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByRouteFilter(this.client.getEndpoint(), resourceGroupName,
@@ -782,7 +783,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Gets all RouteFilterRules in a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param context The context to associate with this operation.
@@ -811,7 +812,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -823,7 +824,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Gets all RouteFilterRules in a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -839,7 +840,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Gets all RouteFilterRules in a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param context The context to associate with this operation.
@@ -857,7 +858,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Gets all RouteFilterRules in a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -872,7 +873,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Gets all RouteFilterRules in a route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param context The context to associate with this operation.
@@ -889,10 +890,8 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -918,10 +917,8 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

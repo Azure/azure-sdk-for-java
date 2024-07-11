@@ -42,9 +42,10 @@ import com.azure.resourcemanager.network.models.VpnGatewayPacketCaptureStopParam
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in VpnGatewaysClient.
@@ -63,7 +64,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Initializes an instance of VpnGatewaysClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VpnGatewaysClientImpl(NetworkManagementClientImpl client) {
@@ -183,7 +184,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Retrieves the details of a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,7 +210,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(),
@@ -219,7 +220,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Retrieves the details of a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -246,7 +247,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -255,7 +256,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Retrieves the details of a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,7 +272,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Retrieves the details of a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -288,7 +289,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Retrieves the details of a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,7 +304,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -336,7 +337,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
         } else {
             vpnGatewayParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -346,7 +347,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -380,7 +381,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
         } else {
             vpnGatewayParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -389,7 +390,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -409,7 +410,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -431,7 +432,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -448,7 +449,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -467,7 +468,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -485,7 +486,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -504,7 +505,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -521,7 +522,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -539,7 +540,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -572,7 +573,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
         } else {
             vpnGatewayParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -582,7 +583,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -616,7 +617,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
         } else {
             vpnGatewayParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -625,7 +626,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -645,7 +646,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -667,7 +668,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -684,7 +685,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -702,7 +703,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -720,7 +721,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -739,7 +740,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -755,7 +756,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -773,7 +774,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -798,7 +799,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -808,7 +809,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -835,7 +836,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -844,7 +845,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -861,7 +862,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -881,7 +882,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -896,7 +897,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -913,7 +914,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -928,7 +929,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -945,7 +946,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -959,7 +960,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -974,7 +975,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Resets the primary of the vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
@@ -1001,7 +1002,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reset(this.client.getEndpoint(), resourceGroupName, gatewayName,
@@ -1011,7 +1012,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Resets the primary of the vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
@@ -1039,7 +1040,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reset(this.client.getEndpoint(), resourceGroupName, gatewayName, ipConfigurationId, apiVersion,
@@ -1048,7 +1049,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Resets the primary of the vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
@@ -1068,7 +1069,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Resets the primary of the vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1088,7 +1089,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Resets the primary of the vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
@@ -1110,7 +1111,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Resets the primary of the vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1127,7 +1128,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Resets the primary of the vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
@@ -1145,7 +1146,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Resets the primary of the vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
@@ -1162,7 +1163,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Resets the primary of the vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1179,7 +1180,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Resets the primary of the vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
@@ -1198,7 +1199,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Resets the primary of the vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1214,7 +1215,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Resets the primary of the vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
@@ -1232,7 +1233,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
@@ -1262,7 +1263,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startPacketCapture(this.client.getEndpoint(), resourceGroupName,
@@ -1272,7 +1273,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
@@ -1303,7 +1304,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.startPacketCapture(this.client.getEndpoint(), resourceGroupName, gatewayName, apiVersion,
@@ -1312,7 +1313,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
@@ -1332,7 +1333,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1352,7 +1353,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
@@ -1374,7 +1375,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1391,7 +1392,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
@@ -1409,7 +1410,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
@@ -1427,7 +1428,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1444,7 +1445,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
@@ -1463,7 +1464,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1479,7 +1480,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
@@ -1497,7 +1498,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
@@ -1527,7 +1528,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stopPacketCapture(this.client.getEndpoint(), resourceGroupName, gatewayName,
@@ -1537,7 +1538,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
@@ -1568,7 +1569,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.stopPacketCapture(this.client.getEndpoint(), resourceGroupName, gatewayName, apiVersion,
@@ -1577,7 +1578,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
@@ -1597,7 +1598,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1617,7 +1618,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
@@ -1639,7 +1640,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1655,7 +1656,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
@@ -1673,7 +1674,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
@@ -1691,7 +1692,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1708,7 +1709,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
@@ -1727,7 +1728,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1743,7 +1744,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
@@ -1761,7 +1762,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Lists all the VpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1783,7 +1784,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -1795,7 +1796,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Lists all the VpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1819,7 +1820,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1831,7 +1832,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Lists all the VpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1846,7 +1847,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Lists all the VpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1862,7 +1863,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Lists all the VpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1876,7 +1877,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Lists all the VpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1891,7 +1892,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Lists all the VpnGateways in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnGateways along with {@link PagedResponse} on successful completion of
@@ -1907,7 +1908,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -1919,7 +1920,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Lists all the VpnGateways in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1937,7 +1938,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -1947,7 +1948,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Lists all the VpnGateways in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnGateways as paginated response with {@link PagedFlux}.
@@ -1959,7 +1960,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Lists all the VpnGateways in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1974,7 +1975,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Lists all the VpnGateways in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnGateways as paginated response with {@link PagedIterable}.
@@ -1986,7 +1987,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Lists all the VpnGateways in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2000,10 +2001,8 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2030,10 +2029,8 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2060,10 +2057,8 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2088,10 +2083,8 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

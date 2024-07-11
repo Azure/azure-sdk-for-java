@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPolicyRuleCollectionGroupsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicyRuleCollectionGroupList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * FirewallPolicyRuleCollectionGroupList.json
      */
     /**
      * Sample code: List all FirewallPolicyRuleCollectionGroups for a given FirewallPolicy.
@@ -26,7 +27,8 @@ public final class FirewallPolicyRuleCollectionGroupsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * FirewallPolicyRuleCollectionGroupWithIpGroupsList.json
      */
     /**
      * Sample code: List all FirewallPolicyRuleCollectionGroups with IpGroups for a given FirewallPolicy.
@@ -43,7 +45,8 @@ public final class FirewallPolicyRuleCollectionGroupsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * FirewallPolicyRuleCollectionGroupWithWebCategoriesList.json
      */
     /**
      * Sample code: List all FirewallPolicyRuleCollectionGroup With Web Categories.

@@ -11,7 +11,8 @@ import com.azure.resourcemanager.network.fluent.models.DdosCustomPolicyInner;
  */
 public final class DdosCustomPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/DdosCustomPolicyCreate.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/DdosCustomPolicyCreate.json
      */
     /**
      * Sample code: Create DDoS custom policy.

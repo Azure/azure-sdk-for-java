@@ -45,9 +45,10 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in VirtualHubsClient.
@@ -66,7 +67,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Initializes an instance of VirtualHubsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualHubsClientImpl(NetworkManagementClientImpl client) {
@@ -192,7 +193,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Retrieves the details of a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -218,7 +219,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(),
@@ -228,7 +229,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Retrieves the details of a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -255,7 +256,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -264,7 +265,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Retrieves the details of a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,7 +281,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Retrieves the details of a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -297,7 +298,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Retrieves the details of a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -312,7 +313,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
@@ -345,7 +346,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -355,7 +356,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
@@ -389,7 +390,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -398,7 +399,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
@@ -418,7 +419,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
@@ -440,7 +441,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
@@ -457,7 +458,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
@@ -476,7 +477,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
@@ -494,7 +495,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
@@ -513,7 +514,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
@@ -530,7 +531,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to create or update VirtualHub.
@@ -548,7 +549,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Updates VirtualHub tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to update VirtualHub tags.
@@ -581,7 +582,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -591,7 +592,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Updates VirtualHub tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to update VirtualHub tags.
@@ -625,7 +626,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -634,7 +635,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Updates VirtualHub tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to update VirtualHub tags.
@@ -652,7 +653,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Updates VirtualHub tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to update VirtualHub tags.
@@ -670,7 +671,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Updates VirtualHub tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to update VirtualHub tags.
@@ -687,7 +688,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Deletes a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -712,7 +713,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -722,7 +723,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Deletes a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -749,7 +750,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -758,7 +759,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Deletes a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -775,7 +776,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Deletes a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -795,7 +796,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Deletes a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -810,7 +811,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Deletes a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -827,7 +828,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Deletes a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -843,7 +844,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Deletes a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -860,7 +861,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Deletes a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -874,7 +875,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Deletes a VirtualHub.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -889,7 +890,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Lists all the VirtualHubs in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -911,7 +912,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -923,7 +924,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Lists all the VirtualHubs in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -947,7 +948,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -959,7 +960,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Lists all the VirtualHubs in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -974,7 +975,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Lists all the VirtualHubs in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -990,7 +991,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Lists all the VirtualHubs in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1004,7 +1005,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Lists all the VirtualHubs in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1019,7 +1020,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Lists all the VirtualHubs in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs along with {@link PagedResponse} on successful completion of
@@ -1035,7 +1036,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -1047,7 +1048,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Lists all the VirtualHubs in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1065,7 +1066,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -1075,7 +1076,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Lists all the VirtualHubs in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs as paginated response with {@link PagedFlux}.
@@ -1087,7 +1088,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Lists all the VirtualHubs in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1102,7 +1103,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Lists all the VirtualHubs in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs as paginated response with {@link PagedIterable}.
@@ -1114,7 +1115,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Lists all the VirtualHubs in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1128,7 +1129,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
@@ -1159,7 +1160,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (effectiveRoutesParameters != null) {
             effectiveRoutesParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getEffectiveVirtualHubRoutes(this.client.getEndpoint(),
@@ -1170,7 +1171,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
@@ -1202,7 +1203,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (effectiveRoutesParameters != null) {
             effectiveRoutesParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getEffectiveVirtualHubRoutes(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1211,7 +1212,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
@@ -1234,7 +1235,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1256,7 +1257,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
@@ -1281,7 +1282,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1300,7 +1301,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
@@ -1323,7 +1324,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
@@ -1343,7 +1344,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1363,7 +1364,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
@@ -1383,7 +1384,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1400,7 +1401,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
@@ -1419,7 +1420,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
@@ -1453,7 +1454,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             getInboundRoutesParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getInboundRoutes(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1463,7 +1464,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
@@ -1498,7 +1499,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             getInboundRoutesParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getInboundRoutes(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -1507,7 +1508,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
@@ -1530,7 +1531,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
@@ -1555,7 +1556,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
@@ -1575,7 +1576,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
@@ -1596,7 +1597,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
@@ -1615,7 +1616,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
@@ -1635,7 +1636,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
@@ -1652,7 +1653,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the inbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
@@ -1670,7 +1671,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
@@ -1704,7 +1705,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             getOutboundRoutesParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1715,7 +1716,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
@@ -1750,7 +1751,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             getOutboundRoutesParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getOutboundRoutes(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -1759,7 +1760,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
@@ -1782,7 +1783,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
@@ -1807,7 +1808,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
@@ -1827,7 +1828,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
@@ -1848,7 +1849,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
@@ -1867,7 +1868,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
@@ -1888,7 +1889,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
@@ -1905,7 +1906,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Gets the outbound routes configured for the Virtual Hub on a particular connection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
@@ -1923,10 +1924,8 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1953,10 +1952,8 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1983,10 +1980,8 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2011,10 +2006,8 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

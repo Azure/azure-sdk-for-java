@@ -34,9 +34,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.RouteMapsClient;
 import com.azure.resourcemanager.network.fluent.models.RouteMapInner;
 import com.azure.resourcemanager.network.models.ListRouteMapsResult;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in RouteMapsClient.
@@ -54,7 +55,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Initializes an instance of RouteMapsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     RouteMapsClientImpl(NetworkManagementClientImpl client) {
@@ -122,7 +123,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Retrieves the details of a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -153,7 +154,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (routeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -163,7 +164,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Retrieves the details of a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -195,7 +196,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (routeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -204,7 +205,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Retrieves the details of a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -221,7 +222,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Retrieves the details of a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -239,7 +240,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Retrieves the details of a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -255,7 +256,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -293,7 +294,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         } else {
             routeMapParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -303,7 +304,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -342,7 +343,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         } else {
             routeMapParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -351,7 +352,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -372,7 +373,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -395,7 +396,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -414,7 +415,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -435,7 +436,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -454,7 +455,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -475,7 +476,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -493,7 +494,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -513,7 +514,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Deletes a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -543,7 +544,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (routeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -553,7 +554,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Deletes a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -584,7 +585,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (routeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -593,7 +594,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Deletes a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -613,7 +614,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Deletes a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -635,7 +636,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Deletes a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -652,7 +653,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Deletes a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -670,7 +671,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Deletes a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -687,7 +688,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Deletes a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -706,7 +707,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Deletes a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -721,7 +722,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Deletes a RouteMap.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -737,7 +738,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Retrieves the details of all RouteMaps.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group'.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -763,7 +764,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -775,7 +776,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Retrieves the details of all RouteMaps.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group'.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param context The context to associate with this operation.
@@ -803,7 +804,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -815,7 +816,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Retrieves the details of all RouteMaps.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group'.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -832,7 +833,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Retrieves the details of all RouteMaps.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group'.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param context The context to associate with this operation.
@@ -850,7 +851,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Retrieves the details of all RouteMaps.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group'.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -866,7 +867,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Retrieves the details of all RouteMaps.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteMap's resource group'.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param context The context to associate with this operation.
@@ -883,10 +884,8 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -911,10 +910,8 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

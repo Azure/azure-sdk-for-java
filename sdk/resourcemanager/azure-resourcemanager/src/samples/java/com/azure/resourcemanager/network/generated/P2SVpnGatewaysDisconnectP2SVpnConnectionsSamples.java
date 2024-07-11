@@ -12,7 +12,8 @@ import java.util.Arrays;
  */
 public final class P2SVpnGatewaysDisconnectP2SVpnConnectionsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/P2sVpnGatewaysDisconnectP2sVpnConnections.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * P2sVpnGatewaysDisconnectP2sVpnConnections.json
      */
     /**
      * Sample code: Disconnect VpnConnections from P2sVpn Gateway.

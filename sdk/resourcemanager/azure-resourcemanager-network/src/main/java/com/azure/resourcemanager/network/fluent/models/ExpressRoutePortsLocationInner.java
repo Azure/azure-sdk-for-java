@@ -20,8 +20,6 @@ import java.util.Map;
 @Fluent
 public final class ExpressRoutePortsLocationInner extends Resource {
     /*
-     * ExpressRoutePorts Location Properties
-     * 
      * ExpressRoutePort peering location properties.
      */
     @JsonProperty(value = "properties")
@@ -40,9 +38,7 @@ public final class ExpressRoutePortsLocationInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: ExpressRoutePorts Location Properties
-     * 
-     * ExpressRoutePort peering location properties.
+     * Get the innerProperties property: ExpressRoutePort peering location properties.
      * 
      * @return the innerProperties value.
      */

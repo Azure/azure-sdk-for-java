@@ -38,7 +38,8 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     private ApplicationGatewayCookieBasedAffinity cookieBasedAffinity;
 
     /*
-     * Request timeout in seconds. Application Gateway will fail the request if response is not received within RequestTimeout. Acceptable values are from 1 second to 86400 seconds.
+     * Request timeout in seconds. Application Gateway will fail the request if response is not received within
+     * RequestTimeout. Acceptable values are from 1 second to 86400 seconds.
      */
     @JsonProperty(value = "requestTimeout")
     private Integer requestTimeout;
@@ -92,7 +93,8 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     private Boolean probeEnabled;
 
     /*
-     * Path which should be used as a prefix for all HTTP requests. Null means no path will be prefixed. Default value is null.
+     * Path which should be used as a prefix for all HTTP requests. Null means no path will be prefixed. Default value
+     * is null.
      */
     @JsonProperty(value = "path")
     private String path;

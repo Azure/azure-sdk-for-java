@@ -12,6 +12,7 @@ import com.azure.resourcemanager.network.models.Parameter;
 import com.azure.resourcemanager.network.models.RouteMapActionType;
 import com.azure.resourcemanager.network.models.RouteMapMatchCondition;
 import com.azure.resourcemanager.network.models.RouteMapRule;
+
 import java.util.Arrays;
 
 /**
@@ -19,11 +20,12 @@ import java.util.Arrays;
  */
 public final class RouteMapsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/RouteMapPut.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteMapPut.json
      */
     /**
      * Sample code: RouteMapPut.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeMapPut(com.azure.resourcemanager.AzureResourceManager azure) {

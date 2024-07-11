@@ -32,7 +32,7 @@ public final class PublicIpDdosProtectionStatusResultInner {
     private IsWorkloadProtected isWorkloadProtected;
 
     /*
-     *  DDoS protection plan Resource Id of a if IP address is protected through a plan.
+     * DDoS protection plan Resource Id of a if IP address is protected through a plan.
      */
     @JsonProperty(value = "ddosProtectionPlanId")
     private String ddosProtectionPlanId;
