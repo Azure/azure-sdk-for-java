@@ -499,6 +499,16 @@
           "old" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
           "new" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
           "justification": "Migration to azure-json"
+        },
+        {
+          "code" : "java.missing.oldSuperType",
+          "old" : "class com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters",
+          "justification": "Class inherits from 'com.azure.core.management.SubResource' which was not found in the supplied archives of the old API. Analysis may be incorrect."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters::withId(java.lang.String)",
+          "justification": "Method was removed."
         }
       ]
     }
