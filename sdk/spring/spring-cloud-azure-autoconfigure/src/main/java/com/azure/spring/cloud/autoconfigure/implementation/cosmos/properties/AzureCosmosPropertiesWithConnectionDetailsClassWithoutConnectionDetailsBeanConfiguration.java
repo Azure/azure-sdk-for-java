@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 @ConditionalOnClass({CosmosClientBuilder.class, ConnectionDetails.class})
-@ConditionalOnMissingBean(ConnectionDetails.class)
+@ConditionalOnMissingBean(AzureCosmosConnectionDetails.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.cosmos.enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.cosmos", name = "endpoint")
 public class AzureCosmosPropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration {

@@ -3,11 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.cosmos;
 
-import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosPropertiesWithConnectionDetailsClassWithConnectionDetailsBeanConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosPropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosPropertiesWithoutConnectionDetailsClassConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosPropertiesConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -16,12 +13,9 @@ import org.springframework.context.annotation.Import;
  * @since 4.0.0
  */
 @Import({
-    AzureCosmosPropertiesWithConnectionDetailsClassWithConnectionDetailsBeanConfiguration.class,
-    AzureCosmosPropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration.class,
-    AzureCosmosPropertiesWithoutConnectionDetailsClassConfiguration.class,
+    AzureCosmosPropertiesConfiguration.class,
     CosmosClientConfiguration.class
 })
-@EnableConfigurationProperties
 public class AzureCosmosAutoConfiguration {
 
 }
