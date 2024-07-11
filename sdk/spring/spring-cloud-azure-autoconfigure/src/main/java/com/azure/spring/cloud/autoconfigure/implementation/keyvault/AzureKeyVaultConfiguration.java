@@ -10,8 +10,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.keyvault.AzureKeyVaultUtils.DEFAULT_KEY_VAULT_PROPERTIES_BEAN_NAME;
-
 /**
  * Configuration for Azure Key Vault support.
  *
@@ -24,7 +22,7 @@ public class AzureKeyVaultConfiguration extends AzureServiceConfigurationBase {
         super(azureProperties);
     }
 
-    @Bean(name = DEFAULT_KEY_VAULT_PROPERTIES_BEAN_NAME)
+    @Bean
     @ConfigurationProperties(AzureKeyVaultProperties.PREFIX)
     AzureKeyVaultProperties azureKeyVaultProperties() {
         return loadProperties(getAzureGlobalProperties(), new AzureKeyVaultProperties());
