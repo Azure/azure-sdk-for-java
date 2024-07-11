@@ -271,8 +271,21 @@
           </execution>
           <!-- Ensure we compile with Java 17 -->
           <execution>
+            <id>compile-17</id>
             <goals>
               <goal>compile</goal>
+            </goals>
+            <configuration>
+              <release>17</release>
+              <compilerArgs>
+                <arg>-parameters</arg> <!-- https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention -->
+              </compilerArgs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>testCompile-17</id>
+            <goals>
+              <goal>testCompile</goal>
             </goals>
             <configuration>
               <release>17</release>
