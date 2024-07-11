@@ -23,7 +23,7 @@ public class EncryptionUtils {
     }
 
     public static byte[] serializeJsonToByteArray(CosmosItemSerializer itemSerializer, Object object) {
-        return toByteArray(Utils.serializeJsonToByteBuffer(itemSerializer, object, null));
+        return toByteArray(Utils.serializeJsonToByteBuffer(itemSerializer, object, null, false));
     }
 
     public static ObjectMapper getSimpleObjectMapper() {
