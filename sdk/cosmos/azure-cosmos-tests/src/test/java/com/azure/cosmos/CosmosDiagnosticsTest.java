@@ -45,8 +45,6 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.CosmosReadManyRequestOptions;
-import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -88,7 +86,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -240,11 +237,22 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void gatewayDiagnostics() throws Exception {
+        CosmosClient testClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true)
+            .userAgentSuffix(USER_AGENT_SUFFIX_GATEWAY_CLIENT)
+            .gatewayMode()
+            .buildClient();
 
+        CosmosContainer testContainer =
+            testClient
+                .getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                .getContainer(cosmosAsyncContainer.getId());
         // Adding a delay to allow async VM instance metadata initialization to complete
         Thread.sleep(2000);
         InternalObjectNode internalObjectNode = getInternalObjectNode();
-        CosmosItemResponse<InternalObjectNode> createResponse = containerGateway.createItem(internalObjectNode);
+        CosmosItemResponse<InternalObjectNode> createResponse = testContainer.createItem(internalObjectNode);
         String diagnostics = createResponse.getDiagnostics().toString();
         logger.info("DIAGNOSTICS: {}", diagnostics);
         assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
@@ -366,14 +374,27 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void directDiagnostics() throws Exception {
+        CosmosClient testClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true)
+            .userAgentSuffix(USER_AGENT_SUFFIX_DIRECT_CLIENT)
+            .directMode()
+            .buildClient();
+
+        CosmosContainer testContainer =
+            testClient
+                .getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                .getContainer(cosmosAsyncContainer.getId());
+
         InternalObjectNode internalObjectNode = getInternalObjectNode();
-        CosmosItemResponse<InternalObjectNode> createResponse = containerDirect.createItem(internalObjectNode);
+        CosmosItemResponse<InternalObjectNode> createResponse = testContainer.createItem(internalObjectNode);
         validateDirectModeDiagnosticsOnSuccess(createResponse.getDiagnostics(), directClient, this.directClientUserAgent);
         validateChannelAcquisitionContext(createResponse.getDiagnostics(), false);
 
         // validate that on failed operation request timeline is populated
         try {
-            containerDirect.createItem(internalObjectNode);
+            testContainer.createItem(internalObjectNode);
             fail("expected 409");
         } catch (CosmosException e) {
             validateDirectModeDiagnosticsOnException(e, this.directClientUserAgent);
