@@ -2,7 +2,7 @@
 ``` yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/applicationinsights/data-plane/Monitor.Exporters/preview/v2.1/swagger.json
 java: true
-output-folder: ../implementation
+output-folder: ../src/main/java/com/azure/monitor/opentelemetry/exporter/implementation
 namespace: com.azure.monitor.opentelemetry.exporter
 generate-client-interfaces: false
 service-interface-as-public: true

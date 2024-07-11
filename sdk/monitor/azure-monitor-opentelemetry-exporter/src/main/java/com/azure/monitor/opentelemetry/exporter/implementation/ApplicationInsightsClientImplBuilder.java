@@ -16,8 +16,8 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -30,6 +30,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -177,7 +178,7 @@ public final class ApplicationInsightsClientImplBuilder implements HttpTrait<App
 
     /**
      * Sets Breeze endpoint: https://dc.services.visualstudio.com.
-     * 
+     *
      * @param host the host value.
      * @return the ApplicationInsightsClientImplBuilder.
      */
@@ -195,7 +196,7 @@ public final class ApplicationInsightsClientImplBuilder implements HttpTrait<App
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the ApplicationInsightsClientImplBuilder.
      */
@@ -213,7 +214,7 @@ public final class ApplicationInsightsClientImplBuilder implements HttpTrait<App
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the ApplicationInsightsClientImplBuilder.
      */
@@ -225,7 +226,7 @@ public final class ApplicationInsightsClientImplBuilder implements HttpTrait<App
 
     /**
      * Builds an instance of ApplicationInsightsClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of ApplicationInsightsClientImpl.
      */
     @Generated
