@@ -499,6 +499,13 @@
           "old" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
           "new" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
           "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code": "java.class.nowFinal",
+          "old" : ".*? com\\.azure\\.resourcemanager\\.eventhubs\\.models.*",
+          "new" : ".*? com\\.azure\\.resourcemanager\\.eventhubs\\.models.*",
+          "justification": "Class is now final."
         }
       ]
     }
