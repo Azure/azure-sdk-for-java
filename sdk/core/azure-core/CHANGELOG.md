@@ -1,15 +1,9 @@
 # Release History
 
-## 1.50.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.50.0 (2024-07-11))
 
 ### Bugs Fixed
 - Fixed `SyncRestProxy` to return `InputStream` instead of `Mono<InputStream>`. ([#40982](https://github.com/Azure/azure-sdk-for-java/pull/40982))
-
-### Other Changes
 
 ## 1.49.1 (2024-06-06)
 

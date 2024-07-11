@@ -1,14 +1,12 @@
 # Release History
 
-## 1.16.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.15.2 (2024-07-11)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Netty version logging (#40733)[https://github.com/Azure/azure-sdk-for-java/pull/40733]
 
 ## 1.15.1 (2024-06-06)
 

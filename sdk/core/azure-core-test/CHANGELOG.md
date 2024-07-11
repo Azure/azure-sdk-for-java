@@ -1,14 +1,11 @@
 # Release History
 
-## 1.27.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
+## 1.26.1 (2024-07-11)
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to `1.49.2`.
 
 ## 1.26.0 (2024-06-06)
 
