@@ -72,16 +72,12 @@ class QuickPulseDataSender implements Runnable {
                     }
                 }
 
-//                String etagValue = networkHelper.getEtagHeaderValue(response);
-//                ArrayList<QuickPulseConfiguration.OpenTelMetricInfo> otelMetrics = quickPulseConfiguration.parseMetrics(response);
-//                quickPulseConfiguration.updateConfig(etagValue, otelMetrics);
-
-
-
             }
+            /* Debugging purposes
             System.out.println("POST*********************");
             System.out.println("ETAG: " + quickPulseConfiguration.getEtag());
             System.out.println("METRICS: " + quickPulseConfiguration.getMetrics());
+            */
         }
     }
 

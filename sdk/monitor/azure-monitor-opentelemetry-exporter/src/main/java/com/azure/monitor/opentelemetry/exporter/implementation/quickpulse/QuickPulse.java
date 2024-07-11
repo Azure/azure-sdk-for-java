@@ -25,7 +25,8 @@ import java.util.function.Supplier;
 
 public class QuickPulse {
 
-    static final int QP_INVARIANT_VERSION = 1;
+    //change this back to 1
+    static final int QP_INVARIANT_VERSION = 5;
 
     private volatile QuickPulseDataCollector collector;
 

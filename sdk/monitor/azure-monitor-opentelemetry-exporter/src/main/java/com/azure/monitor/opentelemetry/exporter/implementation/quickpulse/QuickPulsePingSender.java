@@ -81,9 +81,11 @@ class QuickPulsePingSender {
     }
 
     QuickPulseHeaderInfo ping(String redirectedEndpoint) {
+        /* Debugging purposes
         System.out.println("PING*********************");
         System.out.println("ETAG: " + quickPulseConfiguration.getEtag());
         System.out.println("METRICS: " + quickPulseConfiguration.getMetrics());
+        */
         String instrumentationKey = getInstrumentationKey();
         if (Strings.isNullOrEmpty(instrumentationKey)) {
             // Quick Pulse Ping uri will be null when the instrumentation key is null. When that happens,

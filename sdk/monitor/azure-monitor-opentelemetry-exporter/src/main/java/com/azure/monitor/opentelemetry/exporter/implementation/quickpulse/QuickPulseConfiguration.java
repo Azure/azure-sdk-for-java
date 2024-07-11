@@ -40,25 +40,6 @@ public class QuickPulseConfiguration {
     }
 
     public synchronized ConcurrentHashMap<String, OpenTelMetricInfo> getMetrics() {
-
-        if (this.metrics.isEmpty()) {
-            OpenTelMetricInfo metric = new OpenTelMetricInfo();
-            metric.setId("my_gauge");
-            metric.setAggregation("Avg");
-            metric.setTelemetryType("Metric");
-            metric.setProjection("my_gauge");
-
-            OpenTelMetricInfo metric2 = new OpenTelMetricInfo();
-            metric2.setId("MyFruitCounter");
-            metric2.setAggregation("Avg");
-            metric2.setTelemetryType("Metric");
-            metric2.setProjection("MyFruitCounter");
-
-            ConcurrentHashMap<String, OpenTelMetricInfo> sampleMetrics = new ConcurrentHashMap<>();
-            sampleMetrics.put("my_gauge", metric);
-            sampleMetrics.put("MyFruitCounter", metric2);
-            return sampleMetrics;
-        }
         return this.metrics;
     }
 
@@ -81,9 +62,13 @@ public class QuickPulseConfiguration {
         try {
 
             String responseBody = response.getBodyAsString().block();
+            if (responseBody == null || responseBody.isEmpty()) {
+                return new ConcurrentHashMap<String, OpenTelMetricInfo>();
+            }
             JsonNode rootNode = objectMapper.readTree(responseBody);
-            System.out.println("Metrics :" + rootNode.get("Metrics"));
+            //System.out.println("Metrics :" + rootNode.get("Metrics")); Debugging purposes
             JsonNode metricsNode = rootNode.get("Metrics");
+
             if (metricsNode instanceof ArrayNode) {
                 ArrayNode metricsArray = (ArrayNode) metricsNode;
                 for (JsonNode metricNode : metricsArray) {
@@ -91,8 +76,16 @@ public class QuickPulseConfiguration {
                     metric.setId(metricNode.get("Id").asText());
                     metric.setAggregation(metricNode.get("Aggregation").asText());
                     metric.setTelemetryType(metricNode.get("TelemetryType").asText());
-                    metric.setProjection(metricNode.get("Projection").asText());
-                    requestedMetrics.put(metricNode.get("Projection").asText(), metric);
+                    String projection = metricNode.get("Projection").asText();
+                    metric.setProjection(projection);
+                    if (Objects.equals(metricNode.get("TelemetryType").asText(), "Event")) {
+                        int dotIndex = projection.indexOf(".");
+                        if (dotIndex != -1) {
+                            projection = projection.substring(dotIndex + 1);
+                        }
+                    }
+                    metric.setProjection(projection);
+                    requestedMetrics.put(projection, metric);
 
                 }
             }
@@ -102,6 +95,11 @@ public class QuickPulseConfiguration {
         }
         return new ConcurrentHashMap<String, OpenTelMetricInfo>();
 
+    }
+
+    public synchronized void reset() {
+        this.setEtag(null);
+        this.metrics.clear();
     }
 
     class OpenTelMetricInfo {

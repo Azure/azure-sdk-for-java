@@ -115,13 +115,7 @@ final class QuickPulseDataCollector {
             MonitorDomain data2 = telemetryItem.getData().getBaseData();
             MetricsData metricsData = (MetricsData) data2;
             MetricDataPoint point = metricsData.getMetrics().get(0);
-//            System.out.println("SDK Metric Data Length: " + metricsData.getMetrics().size());
-//            System.out.println("SDK Metric Name: " + point.getName());
-//            System.out.println("SDK Metric Value: " + point.getValue());
-//            System.out.println("SDK Metric attributes: " + metricsData.getProperties());
             this.metricsStorage.addMetric(point.getName(), point.getValue());
-            //System.out.println("SDK Metric Type: " + point.getType());
-            // metricsStorage.addMetric(point.getName(), point.getValue());
         }
 
     }
@@ -152,20 +146,6 @@ final class QuickPulseDataCollector {
         } else if (data instanceof TelemetryExceptionData) {
             addException((TelemetryExceptionData) data, itemCount);
         }
-//        else {
-//            if (Objects.equals(telemetryItem.getResource().getAttribute(AttributeKey.stringKey("telemetry.sdk.name")), "opentelemetry")) {
-//                MonitorDomain data2 = telemetryItem.getData().getBaseData();
-//                MetricsData metricsData = (MetricsData) data2;
-//                MetricDataPoint point = metricsData.getMetrics().get(0);
-//                System.out.println("SDK Metric Data Length: " + metricsData.getMetrics().size());
-//                System.out.println("SDK Metric Name: " + point.getName());
-//                System.out.println("SDK Metric Value: " + point.getValue());
-//                System.out.println("SDK Metric attributes: " + metricsData.getProperties());
-//                //System.out.println("SDK Metric Type: " + point.getType());
-//            }
-//
-//
-//        }
     }
 
     boolean isEnabled() {
@@ -491,12 +471,7 @@ final class QuickPulseDataCollector {
                     processedMetrics.add(processedMetric);
                 }
 
-                //change to desired time limit for metrics
-                System.out.println("***************");
-                System.out.println("METRIC: " + key + " LAST TIMESTAMP: " + value.getLastTimestamp() + " CURRENT TIME: " + LocalDateTime.now() + " DIFFERENCE: " + ChronoUnit.SECONDS.between(LocalDateTime.now(), value.getLastTimestamp()));
                 if (ChronoUnit.SECONDS.between(value.getLastTimestamp(), LocalDateTime.now()) > 5) {
-                    System.out.println("***************");
-                    System.out.println("REMOVING METRIC: " + key);
                     iterator.remove();
 
                 }

@@ -80,22 +80,6 @@ final class QuickPulseNetworkHelper {
                 String qpStatus = header.getValue();
                 if ("true".equalsIgnoreCase(qpStatus)) {
                     status = QuickPulseStatus.QP_IS_ON;
-//                    String headName = headers.get(QPS_CONFIGURATION_ETAG_HEADER_NAME).getName();
-//                    String headValue = headers.get(QPS_CONFIGURATION_ETAG_HEADER_NAME).getValue();
-//                    System.out.println("************************");
-//                    System.out.println(headName + ": "  + headValue);
-//                    System.out.println("************************");
-//                    System.out.println("Destructuring Body: ");
-//                    String responseBody = response.getBodyAsString().block();
-//
-//                    try {
-//                        JsonNode rootNode = objectMapper.readTree(responseBody);
-//                        System.out.println("Metrics :" + rootNode.get("Metrics"));
-//                    }
-//                    catch (Exception e) {
-//                        System.out.println("Error: " + e);
-//                    }
-
                 } else {
                     status = QuickPulseStatus.QP_IS_OFF;
                 }
