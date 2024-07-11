@@ -5,7 +5,7 @@ matrix:
       testScenario: readtofile
       sync: true
       sizeBytes: 1024
-      parallel: 50
+      parallelRuns: 50
       faults: true
       durationMin: 10
       imageBuildDir: "../../.."
@@ -15,7 +15,7 @@ matrix:
       testScenario: readtofile
       sync: false
       sizeBytes: 1024
-      parallel: 50
+      parallelRuns: 50
       faults: true
       durationMin: 10
       imageBuildDir: "../../.."
@@ -25,7 +25,7 @@ matrix:
       testScenario: readtofile
       sync: false
       sizeBytes: "52428800"
-      parallel: 10
+      parallelRuns: 10
       faults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -35,7 +35,7 @@ matrix:
       testScenario: read
       sync: true
       sizeBytes: 1024
-      parallel: 50
+      parallelRuns: 50
       faults: true
       durationMin: 10
       imageBuildDir: "../../.."
@@ -45,7 +45,7 @@ matrix:
       testScenario: read
       sync: false
       sizeBytes: 1024
-      parallel: 50
+      parallelRuns: 50
       faults: true
       durationMin: 10
       imageBuildDir: "../../.."
@@ -55,7 +55,7 @@ matrix:
       testScenario: read
       sync: false
       sizeBytes: "52428800"
-      parallel: 10
+      parallelRuns: 10
       faults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -65,7 +65,7 @@ matrix:
       testScenario: openinputstream
       sync: true
       sizeBytes: 1024
-      parallel: 50
+      parallelRuns: 50
       faults: true
       durationMin: 10
       imageBuildDir: "../../.."
@@ -75,7 +75,7 @@ matrix:
       testScenario: openinputstream
       sync: true
       sizeBytes: "52428800"
-      parallel: 10
+      parallelRuns: 10
       faults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -85,7 +85,7 @@ matrix:
       testScenario: append
       sync: true
       sizeBytes: 1024
-      parallel: 50
+      parallelRuns: 50
       faults: true
       requestFaulted: true
       durationMin: 10
@@ -96,7 +96,7 @@ matrix:
       testScenario: append
       sync: false
       sizeBytes: 1024
-      parallel: 50
+      parallelRuns: 50
       faults: true
       requestFaulted: true
       durationMin: 10
@@ -107,7 +107,7 @@ matrix:
       testScenario: append
       sync: true
       sizeBytes: "26214400"
-      parallel: 10
+      parallelRuns: 10
       faults: true
       requestFaulted: true
       durationMin: 25
@@ -118,7 +118,7 @@ matrix:
       testScenario: datalakeoutputstream
       sync: true
       sizeBytes: 1024
-      parallel: 50
+      parallelRuns: 50
       faults: true
       requestFaulted: true
       durationMin: 10
@@ -129,7 +129,7 @@ matrix:
       testScenario: datalakeoutputstream
       sync: true
       sizeBytes: "26214400"
-      parallel: 10
+      parallelRuns: 10
       faults: true
       requestFaulted: true
       durationMin: 25
@@ -140,7 +140,7 @@ matrix:
       testScenario: flush
       sync: true
       sizeBytes: 1024
-      parallel: 10
+      parallelRuns: 10
       faults: true
       requestFaulted: true
       durationMin: 25
@@ -151,7 +151,7 @@ matrix:
       testScenario: flush
       sync: false
       sizeBytes: 1024
-      parallel: 10
+      parallelRuns: 10
       faults: true
       requestFaulted: true
       durationMin: 25
@@ -162,7 +162,7 @@ matrix:
       testScenario: flush
       sync: true
       sizeBytes: "26214400"
-      parallel: 10
+      parallelRuns: 10
       faults: true
       requestFaulted: true
       durationMin: 25
@@ -173,7 +173,7 @@ matrix:
       testScenario: upload
       sync: true
       sizeBytes: 1024
-      parallel: 50
+      parallelRuns: 50
       faults: true
       requestFaulted: true
       durationMin: 10
@@ -184,7 +184,7 @@ matrix:
       testScenario: read
       sync: false
       sizeBytes: 1024
-      parallel: 50
+      parallelRuns: 50
       faults: true
       requestFaulted: true
       durationMin: 10
@@ -195,7 +195,7 @@ matrix:
       testScenario: upload
       sync: true
       sizeBytes: "26214400"
-      parallel: 10
+      parallelRuns: 10
       faults: true
       requestFaulted: true
       durationMin: 10
@@ -206,7 +206,7 @@ matrix:
       testScenario: uploadfromfile
       sync: true
       sizeBytes: 1024
-      parallel: 50
+      parallelRuns: 50
       faults: true
       requestFaulted: true
       durationMin: 10
@@ -217,7 +217,7 @@ matrix:
       testScenario: uploadfromfile
       sync: true
       sizeBytes: "52428800"
-      parallel: 25
+      parallelRuns: 25
       faults: true
       requestFaulted: true
       durationMin: 10
