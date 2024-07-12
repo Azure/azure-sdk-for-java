@@ -342,8 +342,8 @@ public final class CallMedia {
      * @return Response for successful update transcription request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateTranscriptionWithResponse(String locale, String speechRecognitionModelEndpointId, Context context) {
-        return callMediaAsync.updateTranscriptionWithResponseInternal(locale, speechRecognitionModelEndpointId, context).block();
+    public Response<Void> updateTranscriptionWithResponse(String locale, String speechRecognitionModelEndpointId, String operationContext, Context context) {
+        return callMediaAsync.updateTranscriptionWithResponseInternal(locale, speechRecognitionModelEndpointId, operationContext, context).block();
     }
 
     /**

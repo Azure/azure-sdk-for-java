@@ -909,7 +909,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateTranscription(String locale) {
-        return updateTranscriptionWithResponse(locale, null).then();
+        return updateTranscriptionWithResponse(locale, null, null).then();
     }
 
     /**
@@ -921,7 +921,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateTranscription(String locale, String speechRecognitionModelEndpointId) {
-        return updateTranscriptionWithResponse(locale, speechRecognitionModelEndpointId).then();
+        return updateTranscriptionWithResponse(locale, speechRecognitionModelEndpointId, null).then();
     }
 
      /**
@@ -931,8 +931,8 @@ public final class CallMediaAsync {
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateTranscriptionWithResponse(String locale, String speechRecognitionModelEndpointId) {
-        return withContext(context -> updateTranscriptionWithResponseInternal(locale, speechRecognitionModelEndpointId, context));
+    public Mono<Response<Void>> updateTranscriptionWithResponse(String locale, String speechRecognitionModelEndpointId, String operationContext) {
+        return withContext(context -> updateTranscriptionWithResponseInternal(locale, speechRecognitionModelEndpointId, operationContext, context));
     }
 
     Mono<Response<Void>> updateTranscriptionWithResponseInternal(String locale, Context context) {
@@ -947,12 +947,13 @@ public final class CallMediaAsync {
         }
     }
 
-    Mono<Response<Void>> updateTranscriptionWithResponseInternal(String locale, String speechRecognitionModelEndpointId, Context context) {
+    Mono<Response<Void>> updateTranscriptionWithResponseInternal(String locale, String speechRecognitionModelEndpointId, String operationContext, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             UpdateTranscriptionRequestInternal request = new UpdateTranscriptionRequestInternal();
             request.setLocale(locale);
             request.setSpeechRecognitionModelEndpointId(speechRecognitionModelEndpointId);
+            request.setOperationContext(operationContext);
             return contentsInternal
                 .updateTranscriptionWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {

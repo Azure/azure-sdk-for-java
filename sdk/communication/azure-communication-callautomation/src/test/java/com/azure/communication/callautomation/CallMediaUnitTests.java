@@ -245,13 +245,19 @@ public class CallMediaUnitTests {
 
     @Test
     public void updateTranscriptionSpeechModelWithResponseTest() {
-        Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", "customEndpoint", Context.NONE);
+        Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", "customEndpoint", null, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void updateTranscriptionOperationContextWithResponseTest() {
+        Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", "customEndpoint", "unittestoperationcontext", Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
     @Test
     public void updateTranscriptionWithResponse() {
-        Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", null, Context.NONE);
+        Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", null, null, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 

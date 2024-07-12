@@ -20,6 +20,12 @@ public final class StopMediaStreamingRequest {
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
+    /*
+     * The value to identify context of the operation.
+     */
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
+
     /**
      * Creates an instance of StopMediaStreamingRequest class.
      */
@@ -49,6 +55,26 @@ public final class StopMediaStreamingRequest {
      */
     public StopMediaStreamingRequest setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: The value to identify context of the operation.
+     * 
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: The value to identify context of the operation.
+     * 
+     * @param operationContext the operationContext value to set.
+     * @return the StopMediaStreamingRequest object itself.
+     */
+    public StopMediaStreamingRequest setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 }

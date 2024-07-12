@@ -16,6 +16,11 @@ public final class StopMediaStreamingOptions {
      */
     private String operationCallbackUrl;
 
+    /*
+     * The value to identify context of the operation.
+     */
+    private String operationContext;
+
     /**
      * Creates an instance of StopMediaStreamingOptions class.
      */
@@ -45,6 +50,26 @@ public final class StopMediaStreamingOptions {
      */
     public StopMediaStreamingOptions setOperationCallbackUrl(String operationCallbackUrl) {
         this.operationCallbackUrl = operationCallbackUrl;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: The value to identify context of the operation.
+     * 
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: The value to identify context of the operation.
+     * 
+     * @param operationContext the operationContext value to set.
+     * @return the StopMediaStreamingOptions object itself.
+     */
+    public StopMediaStreamingOptions setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 }

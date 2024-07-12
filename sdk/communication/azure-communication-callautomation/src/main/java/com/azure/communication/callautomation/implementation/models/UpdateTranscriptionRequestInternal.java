@@ -24,6 +24,12 @@ public final class UpdateTranscriptionRequestInternal {
     @JsonProperty(value = "speechRecognitionModelEndpointId")
     private String speechRecognitionModelEndpointId;
 
+    /*
+     * The value to identify context of the operation.
+     */
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
+
     /**
      * Creates an instance of UpdateTranscriptionRequestInternal class.
      */
@@ -68,6 +74,26 @@ public final class UpdateTranscriptionRequestInternal {
     public UpdateTranscriptionRequestInternal
         setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
         this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: The value to identify context of the operation.
+     * 
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: The value to identify context of the operation.
+     * 
+     * @param operationContext the operationContext value to set.
+     * @return the UpdateTranscriptionRequestInternal object itself.
+     */
+    public UpdateTranscriptionRequestInternal setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 }
