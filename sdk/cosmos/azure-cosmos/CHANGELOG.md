@@ -3,6 +3,7 @@
 ### 4.63.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added optional id validation to prevent documents with invalid char '/' in id property to be created. - See [PR 41108](https://github.com/Azure/azure-sdk-for-java/pull/41108)
 * Added support for specifying a set of custom diagnostic correlation ids in the request options. - See [PR 40835](https://github.com/Azure/azure-sdk-for-java/pull/40835)
 
 #### Breaking Changes

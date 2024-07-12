@@ -402,7 +402,7 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ByteBuffer serializeJsonToByteBuffer(SqlQuerySpec sqlQuerySpec) {
         sqlQuerySpec.populatePropertyBag();
-        return sqlQuerySpec.getJsonSerializable().serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
+        return sqlQuerySpec.getJsonSerializable().serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null, false);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
