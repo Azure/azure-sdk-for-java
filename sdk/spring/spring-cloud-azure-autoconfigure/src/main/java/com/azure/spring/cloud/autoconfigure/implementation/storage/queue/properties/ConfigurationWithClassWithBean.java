@@ -1,4 +1,4 @@
-package com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties;
+package com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageProperties;
@@ -13,28 +13,29 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
 @ConditionalOnClass(ConnectionDetails.class)
-@ConditionalOnBean(AzureStorageBlobConnectionDetails.class)
-public class AzureStorageBlobPropertiesWithConnectionDetailsClassWithConnectionDetailsBeanConfiguration {
+@ConditionalOnBean(AzureStorageQueueConnectionDetails.class)
+public class ConfigurationWithClassWithBean {
     private final Environment environment;
-    private final AzureStorageBlobConnectionDetails connectionDetails;
+    private final AzureStorageQueueConnectionDetails connectionDetails;
 
-    public AzureStorageBlobPropertiesWithConnectionDetailsClassWithConnectionDetailsBeanConfiguration(
+    public ConfigurationWithClassWithBean(
         Environment environment,
-        AzureStorageBlobConnectionDetails connectionDetails) {
+        AzureStorageQueueConnectionDetails connectionDetails) {
         this.environment = environment;
         this.connectionDetails = connectionDetails;
     }
 
     @Bean
-    AzureStorageBlobProperties azureStorageBlobProperties(
+    AzureStorageQueueProperties azureStorageQueueProperties(
         @Qualifier("azureStorageProperties") AzureStorageProperties azureStorageProperties) {
-        AzureStorageBlobProperties propertiesLoadFromServiceCommonProperties = AzureServicePropertiesUtils
-            .loadServiceCommonProperties(azureStorageProperties, new AzureStorageBlobProperties());
-        BindResult<AzureStorageBlobProperties> bindResult = Binder.get(environment)
-            .bind(AzureStorageBlobProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromServiceCommonProperties));
-        AzureStorageBlobProperties properties = bindResult.isBound() ? bindResult.get() :
+        AzureStorageQueueProperties propertiesLoadFromServiceCommonProperties = AzureServicePropertiesUtils
+            .loadServiceCommonProperties(azureStorageProperties, new AzureStorageQueueProperties());
+        BindResult<AzureStorageQueueProperties> bindResult = Binder.get(environment)
+            .bind(AzureStorageQueueProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromServiceCommonProperties));
+        AzureStorageQueueProperties properties = bindResult.isBound() ? bindResult.get() :
             propertiesLoadFromServiceCommonProperties;
         properties.setConnectionString(connectionDetails.getConnectionString());
+        properties.setEndpoint(connectionDetails.getEndpoint());
         return properties;
 
     }

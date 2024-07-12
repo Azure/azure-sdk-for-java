@@ -23,10 +23,10 @@ import org.springframework.core.env.Environment;
 @ConditionalOnAnyProperty(
     prefixes = {"spring.cloud.azure.storage.queue", "spring.cloud.azure.storage"},
     name = {"account-name", "endpoint", "connection-string"})
-public class AzureStorageQueuePropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration {
+public class ConfigurationWithClassWithoutBean {
     Environment environment;
 
-    public AzureStorageQueuePropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration(
+    public ConfigurationWithClassWithoutBean(
         Environment environment) {
         this.environment = environment;
     }

@@ -23,10 +23,10 @@ import org.springframework.core.env.Environment;
 @ConditionalOnAnyProperty(
     prefixes = {"spring.cloud.azure.storage.blob", "spring.cloud.azure.storage"},
     name = {"account-name", "endpoint", "connection-string"})
-public class AzureStorageBlobPropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration {
+public class ConfigurationWithClassWithoutBean {
     private final Environment environment;
 
-    public AzureStorageBlobPropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration(
+    public ConfigurationWithClassWithoutBean(
         Environment environment) {
         this.environment = environment;
     }

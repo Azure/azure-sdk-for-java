@@ -1,4 +1,4 @@
-package com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties;
+package com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
@@ -11,17 +11,17 @@ import org.springframework.context.annotation.Bean;
 
 @ConditionalOnMissingClass("org.springframework.boot.autoconfigure.service.connection.ConnectionDetails")
 @ConditionalOnProperty(
-    value = { "spring.cloud.azure.storage.blob.enabled",  "spring.cloud.azure.storage.enabled" },
+    value = { "spring.cloud.azure.storage.queue.enabled",  "spring.cloud.azure.storage.enabled" },
     havingValue = "true",
     matchIfMissing = true)
 @ConditionalOnAnyProperty(
-    prefixes = { "spring.cloud.azure.storage.blob", "spring.cloud.azure.storage" },
+    prefixes = { "spring.cloud.azure.storage.queue", "spring.cloud.azure.storage" },
     name = { "account-name", "endpoint", "connection-string" })
-public class AzureStorageBlobPropertiesWithoutConnectionDetailsClassConfiguration {
+public class ConfigurationWithoutClass {
 
     @Bean
-    @ConfigurationProperties(AzureStorageBlobProperties.PREFIX)
-    AzureStorageBlobProperties azureStorageBlobProperties(@Qualifier("azureStorageProperties") AzureStorageProperties azureStorageProperties) {
-        return AzureServicePropertiesUtils.loadServiceCommonProperties(azureStorageProperties, new AzureStorageBlobProperties());
+    @ConfigurationProperties(AzureStorageQueueProperties.PREFIX)
+    AzureStorageQueueProperties azureStorageQueueProperties(@Qualifier("azureStorageProperties") AzureStorageProperties azureStorageProperties) {
+        return AzureServicePropertiesUtils.loadServiceCommonProperties(azureStorageProperties, new AzureStorageQueueProperties());
     }
 }

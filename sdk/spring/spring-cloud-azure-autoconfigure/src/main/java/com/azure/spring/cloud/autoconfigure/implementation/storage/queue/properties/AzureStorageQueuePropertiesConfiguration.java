@@ -7,9 +7,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Import;
 
 @Import({
-    AzureStorageQueuePropertiesWithConnectionDetailsClassWithConnectionDetailsBeanConfiguration.class,
-    AzureStorageQueuePropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration.class,
-    AzureStorageQueuePropertiesWithoutConnectionDetailsClassConfiguration.class
+    ConfigurationWithClassWithBean.class,
+    ConfigurationWithClassWithoutBean.class,
+    ConfigurationWithoutClass.class
 })
 @EnableConfigurationProperties
 public class AzureStorageQueuePropertiesConfiguration {

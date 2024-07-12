@@ -18,11 +18,11 @@ import org.springframework.core.env.Environment;
 @ConditionalOnMissingBean(AzureCosmosConnectionDetails.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.cosmos.enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.cosmos", name = "endpoint")
-public class AzureCosmosPropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration {
+public class ConfigurationWithClassWithoutBean {
     private final Environment environment;
     private final AzureGlobalProperties globalProperties;
 
-    public AzureCosmosPropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration(
+    public ConfigurationWithClassWithoutBean(
         Environment environment,
         AzureGlobalProperties globalProperties) {
         this.environment = environment;

@@ -7,9 +7,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Import;
 
 @Import({
-    AzureCosmosPropertiesWithConnectionDetailsClassWithConnectionDetailsBeanConfiguration.class,
-    AzureCosmosPropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration.class,
-    AzureCosmosPropertiesWithoutConnectionDetailsClassConfiguration.class
+    ConfigurationWithClassWithBean.class,
+    ConfigurationWithClassWithoutBean.class,
+    ConfigurationWithoutClass.class
 })
 @EnableConfigurationProperties
 public class AzureCosmosPropertiesConfiguration {

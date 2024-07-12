@@ -14,12 +14,12 @@ import org.springframework.core.env.Environment;
 
 @ConditionalOnClass({CosmosClientBuilder.class, ConnectionDetails.class})
 @ConditionalOnBean(AzureCosmosConnectionDetails.class)
-public class AzureCosmosPropertiesWithConnectionDetailsClassWithConnectionDetailsBeanConfiguration {
+public class ConfigurationWithClassWithBean {
     private final Environment environment;
     private final AzureGlobalProperties globalProperties;
     private final AzureCosmosConnectionDetails connectionDetails;
 
-    public AzureCosmosPropertiesWithConnectionDetailsClassWithConnectionDetailsBeanConfiguration(
+    public ConfigurationWithClassWithBean(
         Environment environment,
         AzureGlobalProperties globalProperties,
         AzureCosmosConnectionDetails connectionDetails) {
