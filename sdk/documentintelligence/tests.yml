@@ -3,6 +3,7 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
+    UseFederatedAuth: true
     ServiceDirectory: documentintelligence
     timeoutInMinutes: 150 # how long to run the job before automatically cancelling
     Artifacts:
@@ -10,7 +11,11 @@ extends:
         groupId: com.azure
         safeName: azureaidocumentintelligence
     CloudConfig:
-      Public:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-        Location: 'centraluseuap'
-    SupportedClouds: 'Public'
+      CanaryPreview:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+        ServiceConnection: azure-sdk-tests
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzurePublicMsft.json
+        Location: 'eastus'
+    Clouds: 'CanaryPreview'
+    SupportedClouds: 'CanaryPreview'
