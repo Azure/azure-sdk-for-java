@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetails;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.Bean;
@@ -29,9 +30,10 @@ public class AzureStorageBlobPropertiesWithConnectionDetailsClassWithConnectionD
         @Qualifier("azureStorageProperties") AzureStorageProperties azureStorageProperties) {
         AzureStorageBlobProperties propertiesLoadFromServiceCommonProperties = AzureServicePropertiesUtils
             .loadServiceCommonProperties(azureStorageProperties, new AzureStorageBlobProperties());
-        AzureStorageBlobProperties properties = Binder.get(environment)
-            .bind(AzureStorageBlobProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromServiceCommonProperties))
-            .get();
+        BindResult<AzureStorageBlobProperties> bindResult = Binder.get(environment)
+            .bind(AzureStorageBlobProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromServiceCommonProperties));
+        AzureStorageBlobProperties properties = bindResult.isBound() ? bindResult.get() :
+            propertiesLoadFromServiceCommonProperties;
         properties.setConnectionString(connectionDetails.getConnectionString());
         return properties;
 

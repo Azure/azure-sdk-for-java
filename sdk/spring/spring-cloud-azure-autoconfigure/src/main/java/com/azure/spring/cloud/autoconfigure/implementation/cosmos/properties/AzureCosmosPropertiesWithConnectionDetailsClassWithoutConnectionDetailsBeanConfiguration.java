@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetails;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.Bean;
@@ -32,8 +33,8 @@ public class AzureCosmosPropertiesWithConnectionDetailsClassWithoutConnectionDet
     AzureCosmosProperties azureCosmosProperties() {
         AzureCosmosProperties propertiesLoadFromGlobalProperties =
             AzureGlobalPropertiesUtils.loadProperties(globalProperties, new AzureCosmosProperties());
-        return Binder.get(environment)
-            .bind(AzureCosmosProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromGlobalProperties))
-            .get();
+        BindResult<AzureCosmosProperties> bindResult = Binder.get(environment)
+            .bind(AzureCosmosProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromGlobalProperties));
+        return bindResult.isBound() ? bindResult.get() : propertiesLoadFromGlobalProperties;
     }
 }
