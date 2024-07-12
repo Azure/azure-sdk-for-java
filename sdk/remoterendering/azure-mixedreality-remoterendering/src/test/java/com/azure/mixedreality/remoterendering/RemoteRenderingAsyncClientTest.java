@@ -3,6 +3,7 @@
 
 package com.azure.mixedreality.remoterendering;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -103,7 +104,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         StepVerifier.create(poller).expectErrorMatches(error -> {
             // Error accessing connected storage account due to insufficient permissions. Check if the Mixed Reality resource has correct permissions assigned
-            return (error instanceof ErrorResponseException)
+            return (error instanceof HttpResponseException)
                 && error.getMessage().contains(RESPONSE_CODE_403)
                 && error.getMessage().toLowerCase(Locale.ROOT).contains("storage")
                 && error.getMessage().toLowerCase(Locale.ROOT).contains("permissions");
@@ -165,7 +166,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(firstExpectedLeaseTimeMinutes)).setSize(RenderingSessionSize.STANDARD);
 
-        String sessionId = getRandomId("asyncSessionTest");
+        String sessionId = getRandomId("asyncSessionTest2");
 
         PollerFlux<RenderingSession, RenderingSession> sessionPoller = setPollerFluxPollInterval(client
             .beginSession(sessionId, options));

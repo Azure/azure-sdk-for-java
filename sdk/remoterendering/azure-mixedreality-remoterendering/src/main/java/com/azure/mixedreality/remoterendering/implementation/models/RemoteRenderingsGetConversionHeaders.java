@@ -5,26 +5,43 @@
 package com.azure.mixedreality.remoterendering.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The RemoteRenderingsGetConversionHeaders model. */
+/**
+ * The RemoteRenderingsGetConversionHeaders model.
+ */
 @Fluent
 public final class RemoteRenderingsGetConversionHeaders {
     /*
      * The Retry-After property.
      */
-    @JsonProperty(value = "Retry-After")
     private Integer retryAfter;
 
     /*
      * The MS-CV property.
      */
-    @JsonProperty(value = "MS-CV")
     private String msCV;
+
+    private static final HttpHeaderName MS_CV = HttpHeaderName.fromString("MS-CV");
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of RemoteRenderingsGetConversionHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public RemoteRenderingsGetConversionHeaders(HttpHeaders rawHeaders) {
+        String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
+        if (retryAfter != null) {
+            this.retryAfter = Integer.parseInt(retryAfter);
+        }
+        this.msCV = rawHeaders.getValue(MS_CV);
+    }
 
     /**
      * Get the retryAfter property: The Retry-After property.
-     *
+     * 
      * @return the retryAfter value.
      */
     public Integer getRetryAfter() {
@@ -33,7 +50,7 @@ public final class RemoteRenderingsGetConversionHeaders {
 
     /**
      * Set the retryAfter property: The Retry-After property.
-     *
+     * 
      * @param retryAfter the retryAfter value to set.
      * @return the RemoteRenderingsGetConversionHeaders object itself.
      */
@@ -44,7 +61,7 @@ public final class RemoteRenderingsGetConversionHeaders {
 
     /**
      * Get the msCV property: The MS-CV property.
-     *
+     * 
      * @return the msCV value.
      */
     public String getMsCV() {
@@ -53,7 +70,7 @@ public final class RemoteRenderingsGetConversionHeaders {
 
     /**
      * Set the msCV property: The MS-CV property.
-     *
+     * 
      * @param msCV the msCV value to set.
      * @return the RemoteRenderingsGetConversionHeaders object itself.
      */
