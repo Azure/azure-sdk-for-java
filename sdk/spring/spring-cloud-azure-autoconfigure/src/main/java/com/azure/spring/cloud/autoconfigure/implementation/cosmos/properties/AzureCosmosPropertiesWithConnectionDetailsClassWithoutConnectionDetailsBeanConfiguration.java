@@ -8,24 +8,32 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetails;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 
 @ConditionalOnClass({CosmosClientBuilder.class, ConnectionDetails.class})
 @ConditionalOnMissingBean(AzureCosmosConnectionDetails.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.cosmos.enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.cosmos", name = "endpoint")
 public class AzureCosmosPropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration {
+    private final Environment environment;
     private final AzureGlobalProperties globalProperties;
 
     public AzureCosmosPropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration(
+        Environment environment,
         AzureGlobalProperties globalProperties) {
+        this.environment = environment;
         this.globalProperties = globalProperties;
     }
 
     @Bean
-    @ConfigurationProperties(AzureCosmosProperties.PREFIX)
     AzureCosmosProperties azureCosmosProperties() {
-        return AzureGlobalPropertiesUtils.loadProperties(globalProperties, new AzureCosmosProperties());
+        AzureCosmosProperties propertiesLoadFromGlobalProperties =
+            AzureGlobalPropertiesUtils.loadProperties(globalProperties, new AzureCosmosProperties());
+        return Binder.get(environment)
+            .bind(AzureCosmosProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromGlobalProperties))
+            .get();
     }
 }

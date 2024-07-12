@@ -8,8 +8,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetails;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 
 @ConditionalOnClass(ConnectionDetails.class)
 @ConditionalOnMissingBean(AzureStorageBlobConnectionDetails.class)
@@ -21,14 +23,21 @@ import org.springframework.context.annotation.Bean;
     prefixes = {"spring.cloud.azure.storage.blob", "spring.cloud.azure.storage"},
     name = {"account-name", "endpoint", "connection-string"})
 public class AzureStorageBlobPropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration {
+    private final Environment environment;
+
+    public AzureStorageBlobPropertiesWithConnectionDetailsClassWithoutConnectionDetailsBeanConfiguration(
+        Environment environment) {
+        this.environment = environment;
+    }
 
     @Bean
-    @ConfigurationProperties(AzureStorageBlobProperties.PREFIX)
     AzureStorageBlobProperties azureStorageBlobProperties(
         @Qualifier("azureStorageProperties") AzureStorageProperties azureStorageProperties) {
-        return AzureServicePropertiesUtils
+        AzureStorageBlobProperties propertiesLoadFromServiceCommonProperties = AzureServicePropertiesUtils
             .loadServiceCommonProperties(azureStorageProperties, new AzureStorageBlobProperties());
-
+        return Binder.get(environment)
+            .bind(AzureStorageBlobProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromServiceCommonProperties))
+            .get();
     }
 
 }
