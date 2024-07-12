@@ -499,18 +499,6 @@
           "old" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
           "new" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
           "justification": "Migration to azure-json"
-        },
-        {
-          "ignore": true,
-          "code": "java.method.added",
-          "new": "method void com.azure.core.credential.AccessToken::<init>(java.lang.String, java.time.OffsetDateTime, java.time.OffsetDateTime)",
-          "justification": "Added a new constructor to the AccessToken class."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.added",
-          "new": "method java.time.OffsetDateTime com.azure.core.credential.AccessToken::getRefreshAt()",
-          "justification": "Added getRefreshAt method to AccessToken class."
         }
       ]
     }
