@@ -11,6 +11,7 @@ import com.azure.communication.callingserver.implementation.models.Communication
 import com.azure.communication.callingserver.implementation.models.MicrosoftTeamsUserIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.common.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +25,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     private final String testTeamsUserId = "Microsoft Teams User Id";
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithoutKindCommunicationUser() {
         CommunicationUserIdentifierModel communicationUserIdentifierModel = new CommunicationUserIdentifierModel()
             .setId(testUserId);
@@ -40,6 +42,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithKindCommunicationUser() {
         CommunicationUserIdentifierModel communicationUserIdentifierModel = new CommunicationUserIdentifierModel()
             .setId(testUserId);
@@ -58,6 +61,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithKindCommunicationUserNoId() {
         CommunicationUserIdentifierModel communicationUserIdentifierModel = new CommunicationUserIdentifierModel();
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
@@ -73,6 +77,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithoutKindCommunicationUserNoId() {
         CommunicationUserIdentifierModel communicationUserIdentifierModel = new CommunicationUserIdentifierModel();
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
@@ -87,6 +92,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithKindButNoCommunicationUser() {
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
             .setKind(CommunicationIdentifierModelKind.COMMUNICATION_USER)
@@ -102,6 +108,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithoutKindPhoneNumber() {
         PhoneNumberIdentifierModel phoneNumberIdentifierModel = new PhoneNumberIdentifierModel()
             .setValue(testPhoneNumber);
@@ -118,6 +125,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithKindPhoneNumber() {
         PhoneNumberIdentifierModel phoneNumberIdentifierModel = new PhoneNumberIdentifierModel()
             .setValue(testPhoneNumber);
@@ -136,6 +144,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithKindButNoPhoneNumber() {
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
             .setKind(CommunicationIdentifierModelKind.PHONE_NUMBER)
@@ -151,6 +160,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithKindPhoneNumberNoPhoneValue() {
         PhoneNumberIdentifierModel phoneNumberIdentifierModel = new PhoneNumberIdentifierModel();
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
@@ -166,6 +176,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithoutKindPhoneNumberNoPhoneValue() {
         PhoneNumberIdentifierModel phoneNumberIdentifierModel = new PhoneNumberIdentifierModel();
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
@@ -180,6 +191,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithoutKindMicrosoftTeamsUser() {
         MicrosoftTeamsUserIdentifierModel microsoftTeamsUserIdentifierModel = new MicrosoftTeamsUserIdentifierModel()
             .setUserId(testTeamsUserId)
@@ -200,6 +212,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithKindMicrosoftTeamsUser() {
         MicrosoftTeamsUserIdentifierModel microsoftTeamsUserIdentifierModel = new MicrosoftTeamsUserIdentifierModel()
             .setUserId(testTeamsUserId)
@@ -222,6 +235,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithKindMicrosoftTeamsUserNoUserId() {
         MicrosoftTeamsUserIdentifierModel microsoftTeamsUserIdentifierModel = new MicrosoftTeamsUserIdentifierModel()
             .setCloud(CommunicationCloudEnvironmentModel.GCCH)
@@ -239,6 +253,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithoutKindMicrosoftTeamsUserNoUserId() {
         MicrosoftTeamsUserIdentifierModel microsoftTeamsUserIdentifierModel = new MicrosoftTeamsUserIdentifierModel()
             .setCloud(CommunicationCloudEnvironmentModel.GCCH)
@@ -255,6 +270,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithKindMicrosoftTeamsUserNoCloudEnv() {
         MicrosoftTeamsUserIdentifierModel microsoftTeamsUserIdentifierModel = new MicrosoftTeamsUserIdentifierModel()
             .setUserId(testTeamsUserId)
@@ -272,6 +288,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithoutKindMicrosoftTeamsUserNoCloudEnv() {
         MicrosoftTeamsUserIdentifierModel microsoftTeamsUserIdentifierModel = new MicrosoftTeamsUserIdentifierModel()
             .setUserId(testTeamsUserId)
@@ -288,6 +305,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithKindMicrosoftTeamsUserNoRawId() {
         MicrosoftTeamsUserIdentifierModel microsoftTeamsUserIdentifierModel = new MicrosoftTeamsUserIdentifierModel()
             .setUserId(testTeamsUserId)
@@ -305,6 +323,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithoutKindMicrosoftTeamsUserNoRawId() {
         MicrosoftTeamsUserIdentifierModel microsoftTeamsUserIdentifierModel = new MicrosoftTeamsUserIdentifierModel()
             .setUserId(testTeamsUserId)
@@ -321,6 +340,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithKindUnknownAndRawId() {
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
             .setKind(CommunicationIdentifierModelKind.UNKNOWN);
@@ -333,6 +353,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithoutKindUnknownAndRawId() {
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel();
 
@@ -344,6 +365,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void convertWithMultipleTypes() {
         CommunicationUserIdentifierModel communicationUserIdentifierModel = new CommunicationUserIdentifierModel()
             .setId(testUserId);
