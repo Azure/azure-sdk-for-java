@@ -252,7 +252,8 @@ public class EventHubMessageSerializerTest {
     @Test
     public void deserializesNullBinaryDataBody() {
 
-        final Message message = getMessage(null, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
+        final Message message = getMessage(null, "messageId", SEQUENCE_NUMBER,
+            OFFSET, Date.from(ENQUEUED_TIME));
 
         // Act
         final EventData eventData = serializer.deserialize(message, EventData.class);

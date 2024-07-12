@@ -70,26 +70,15 @@ public final class TestUtils {
      * Creates a mock message with the contents provided.
      */
     static Message getMessage(byte[] contents, String messageTrackingValue) {
-        final Message message = getMessage(contents, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
-
-        message.getMessageAnnotations().getValue()
-            .put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
-
-        message.getApplicationProperties().getValue().putAll(APPLICATION_PROPERTIES);
-
-        if (!CoreUtils.isNullOrEmpty(messageTrackingValue)) {
-            message.getApplicationProperties().getValue().put(MESSAGE_ID, messageTrackingValue);
-        }
-
-        message.getApplicationProperties().getValue().put(PARTITION_KEY, PARTITION_KEY);
-
-        return message;
+        return getMessage(contents, messageTrackingValue, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
     }
 
     /**
      * Creates a message with the required system properties set.
      */
-    static Message getMessage(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
+    static Message getMessage(byte[] contents, String messageTrackingValue, Long sequenceNumber, Long offsetNumber,
+                              Date enqueuedTime) {
+
         final Map<Symbol, Object> systemProperties = new HashMap<>();
         systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), offsetNumber);
         systemProperties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), enqueuedTime);
@@ -107,6 +96,9 @@ public final class TestUtils {
         }
 
         message.setBody(body);
+
+        message.getApplicationProperties().getValue().putAll(APPLICATION_PROPERTIES);
+        message.getApplicationProperties().getValue().put(MESSAGE_ID, messageTrackingValue);
 
         return message;
     }
