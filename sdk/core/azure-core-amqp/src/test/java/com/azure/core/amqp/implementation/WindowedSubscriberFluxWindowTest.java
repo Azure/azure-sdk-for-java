@@ -397,7 +397,10 @@ public final class WindowedSubscriberFluxWindowTest {
         upstream.subscribe(subscriber);
 
         EnqueueResult<Integer> r = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
-        final Flux<Integer> windowFlux = r.getWindowFlux().take(cancelAfter);
+        // Starting from reactor-core-3.6.x, if we use take(n:0) to take none, downstream will be 'completed' without
+        // 'canceling' upstream. To make it cancel upstream, use take(n:0, limitRequest:false).
+        // https://github.com/reactor/reactor-core/issues/3839
+        final Flux<Integer> windowFlux = r.getWindowFlux().take(cancelAfter, false);
 
         StepVerifier.create(windowFlux).verifyComplete();
 
