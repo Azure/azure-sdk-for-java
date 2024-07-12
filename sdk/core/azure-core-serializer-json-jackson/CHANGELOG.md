@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.14 (2024-07-11)
+## 1.4.14 (2024-07-12)
 ### Other Changes
 
 #### Dependency Updates

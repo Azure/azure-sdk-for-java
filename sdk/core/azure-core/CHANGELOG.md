@@ -1,6 +1,6 @@
 # Release History
 
-## 1.50.0 (2024-07-11)
+## 1.50.0 (2024-07-12)
 
 ### Features Added
 - Added support for `getRefreshAt()` functionality to `AccessToken` to get the time at which the token should be refreshed. ([#40982](https://github.com/Azure/azure-sdk-for-java/pull/41038))

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.9.7 (2024-07-11)
+## 2.9.7 (2024-07-12)
 
 ### Bugs Fixed
 - Removing duplicate ReactorSession::closeAsync call in session-endpoint error-handler. (#40667)[https://github.com/Azure/azure-sdk-for-java/pull/40667]
