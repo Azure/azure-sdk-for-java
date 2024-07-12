@@ -7,7 +7,10 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The common request options for operations. This class should be used with the addPolicy method in the {@link com.azure.cosmos.CosmosClientBuilder}
@@ -32,6 +35,8 @@ public final class CosmosRequestOptions {
     private Boolean indexMetricsEnabled;
     private Integer maxPrefetchPageCount;
     private String queryName;
+    private Set<String> keywordIdentifiers;
+    private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
 
     /**
      * Sets the CosmosEndToEndLatencyPolicyConfig.
@@ -221,6 +226,21 @@ public final class CosmosRequestOptions {
     }
 
     /**
+     * Sets the keywordIdentifiers.
+     *
+     * @param keywordIdentifiers the keywordIdentifiers.
+     * @return current CosmosCommonRequestOptions.
+     */
+    public CosmosRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        if (keywordIdentifiers != null) {
+            this.keywordIdentifiers = Collections.unmodifiableSet(keywordIdentifiers);
+        } else {
+            this.keywordIdentifiers = EMPTY_KEYWORD_IDENTIFIERS;
+        }
+        return this;
+    }
+
+    /**
      * Gets the max item count.
      *
      * @return the max item count.
@@ -374,5 +394,14 @@ public final class CosmosRequestOptions {
      */
     public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig(){
         return this.endToEndOperationLatencyConfig;
+    }
+
+    /**
+     * Gets the keywordIdentifiers.
+     *
+     * @return the keywordIdentifiers.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return this.keywordIdentifiers;
     }
 }

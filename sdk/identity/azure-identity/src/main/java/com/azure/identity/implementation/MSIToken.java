@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -44,6 +45,8 @@ public final class MSIToken extends AccessToken {
     @JsonProperty(value = "expires_in")
     private String expiresIn;
 
+    private String refreshIn;
+
 
     /**
      * Creates an access token instance.
@@ -57,7 +60,8 @@ public final class MSIToken extends AccessToken {
         @JsonProperty(value = "access_token") String token,
         @JsonProperty(value = "expires_on") String expiresOn,
         @JsonProperty(value = "expires_in") String expiresIn) {
-        super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)));
+        super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)),
+            inferManagedIdentityRefreshInValue(EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn))));
         this.accessToken = token;
         this.expiresOn = expiresOn;
         this.expiresIn = expiresIn;
@@ -101,5 +105,18 @@ public final class MSIToken extends AccessToken {
             LOGGER.verbose(e.getMessage());
         }
         throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateToParse));
+    }
+
+    private static OffsetDateTime inferManagedIdentityRefreshInValue(OffsetDateTime expiresOn) {
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+
+        if (expiresOn.isAfter(now.plus(Duration.ofHours(2)))) {
+            // Calculate the duration between now and expiresOn
+            Duration duration = Duration.between(now, expiresOn);
+            // Return the midpoint between now and expiresOn by dividing the duration by 2
+            // The division operation snaps to the floor in case of an odd number duration (i.e., it truncates any decimal part)
+            return expiresOn.minus(duration.dividedBy(2));
+        }
+        return null;
     }
 }

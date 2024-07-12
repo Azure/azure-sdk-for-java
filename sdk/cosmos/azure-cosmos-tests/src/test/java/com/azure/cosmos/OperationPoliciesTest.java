@@ -75,8 +75,9 @@ public class OperationPoliciesTest extends TestSuiteBase {
     private static final String INDEX_METRICS = "indexMetricsEnabled";
     private static final String MAX_PREFETCH_PAGE_COUNT = "maxPrefetchPageCount";
     private static final String QUERY_NAME = "queryName";
-    private static final String[] optionLabels = {E2E_TIMEOUT, CONSISTENCY_LEVEL, CONTENT_RESPONSE_ON_WRITE, NON_IDEMPOTENT_WRITE_RETRIES, BYPASS_CACHE, THROUGHPUT_CONTROL_GROUP_NAME, REQUEST_CHARGE_THRESHOLD, SCAN_IN_QUERY, EXCLUDE_REGIONS, MAX_DEGREE_OF_PARALLELISM, MAX_BUFFERED_ITEM_COUNT, RESPONSE_CONTINUATION_TOKEN_LIMIT_KB, MAX_ITEM_COUNT, QUERY_METRICS, INDEX_METRICS, MAX_PREFETCH_PAGE_COUNT, QUERY_NAME};
-    private static final String[] initialOptions = {"20", "Session", "true", "false", "false", "default", "2000", "false", "East US 2", "2", "100", "200", "30", "false", "false", "10", "QueryName"};
+    private static final String KEYWORD_IDENTIFIERS = "keywordIdentifiers";
+    private static final String[] optionLabels = {E2E_TIMEOUT, CONSISTENCY_LEVEL, CONTENT_RESPONSE_ON_WRITE, NON_IDEMPOTENT_WRITE_RETRIES, BYPASS_CACHE, THROUGHPUT_CONTROL_GROUP_NAME, REQUEST_CHARGE_THRESHOLD, SCAN_IN_QUERY, EXCLUDE_REGIONS, MAX_DEGREE_OF_PARALLELISM, MAX_BUFFERED_ITEM_COUNT, RESPONSE_CONTINUATION_TOKEN_LIMIT_KB, MAX_ITEM_COUNT, QUERY_METRICS, INDEX_METRICS, MAX_PREFETCH_PAGE_COUNT, QUERY_NAME, KEYWORD_IDENTIFIERS};
+    private static final String[] initialOptions = {"20", "Session", "true", "false", "false", "default", "2000", "false", "East US 2", "2", "100", "200", "30", "false", "false", "10", "QueryName", "59409493805"};
 
     @Factory(dataProvider = "clientBuildersWithApplyPolicies")
     public OperationPoliciesTest(CosmosClientBuilder clientBuilder) {
@@ -101,8 +102,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 .setDedicatedGatewayRequestOptions(new DedicatedGatewayRequestOptions()
                     .setIntegratedCacheBypassed(Boolean.parseBoolean(prop.getProperty(BYPASS_CACHE))))
                 .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
-                .setExcludeRegions(new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(","))));
-
+                .setExcludeRegions(new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(","))))
+                .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))));
         }
     }
 
@@ -126,7 +127,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 .setIndexMetricsEnabled(Boolean.parseBoolean(prop.getProperty(INDEX_METRICS)))
                 .setMaxPrefetchPageCount(Integer.parseInt(prop.getProperty(MAX_PREFETCH_PAGE_COUNT)))
                 .setQueryName(prop.getProperty(QUERY_NAME))
-                .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)));
+                .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)))
+                .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))));
         }
     }
 
@@ -143,6 +145,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     .setResponseContinuationTokenLimitInKb(Integer.parseInt(prop.getProperty(RESPONSE_CONTINUATION_TOKEN_LIMIT_KB)))
                     .setQueryMetricsEnabled(Boolean.parseBoolean(prop.getProperty(QUERY_METRICS)))
                     .setIndexMetricsEnabled(Boolean.parseBoolean(prop.getProperty(INDEX_METRICS)))
+                    .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))))
                     .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)));
         }
     }
@@ -150,7 +153,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
     private static void createBulkOptions(String operationType, String spanName, CosmosRequestOptions cosmosRequestOptions) {
         if (operationType.equals("Batch") && spanName.contains("nonTransactionalBatch")) {
                 cosmosRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
-                    .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME));
+                    .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
+                    .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))));
         }
     }
 
@@ -160,7 +164,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
                     .setDiagnosticsThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
                     .setMaxPrefetchPageCount(Integer.parseInt(prop.getProperty(MAX_PREFETCH_PAGE_COUNT)))
-                    .setMaxItemCount(Integer.parseInt(prop.getProperty(MAX_ITEM_COUNT)));
+                    .setMaxItemCount(Integer.parseInt(prop.getProperty(MAX_ITEM_COUNT)))
+                    .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))));
         }
     }
 
@@ -231,8 +236,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
     @DataProvider(name = "changedOptions")
     private String[][] createChangedOptions() {
         return new String[][] {
-            { "8", "ConsistentPrefix", "true", "false", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "false", "true", "20", "QueryNameChanged" },
-            { "4", "Eventual", "false", "true", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "true", "false", "20", "QueryNameChanged" },
+            { "8", "ConsistentPrefix", "true", "false", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "false", "true", "20", "QueryNameChanged", "112" },
+            { "4", "Eventual", "false", "true", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "true", "false", "20", "QueryNameChanged", "221" },
             initialOptions
         };
     }
@@ -679,6 +684,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
        assertThat(requestOptions.getThroughputControlGroupName()).isEqualTo(options[5]);
        assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(options[6]));
        assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
+       assertThat(requestOptions.getKeywordIdentifiers()).isEqualTo(new HashSet<>(Arrays.asList(options[17].split(","))));
     }
 
     private void validateOptions(String[] options, CosmosBatchResponse response) {
@@ -687,6 +693,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase(Locale.ROOT)).isEqualTo(options[1].toUpperCase(Locale.ROOT));
         assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(options[6]));
         assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
+        assertThat(requestOptions.getKeywordIdentifiers()).isEqualTo(new HashSet<>(Arrays.asList(options[17].split(","))));
     }
 
     private void validateOptions(String[] options, CosmosBulkItemResponse response) {
@@ -694,6 +701,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             response.getCosmosDiagnostics().getDiagnosticsContext());
         assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
         assertThat(requestOptions.getThroughputControlGroupName()).isEqualTo(options[5]);
+        assertThat(requestOptions.getKeywordIdentifiers()).isEqualTo(new HashSet<>(Arrays.asList(options[17].split(","))));
     }
 
     private void validateOptions(String[] changedOptions, FeedResponse<InternalObjectNode> response, boolean isChangeFeed, boolean isReadMany) {
@@ -734,6 +742,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             assertThat(requestOptions.isIndexMetricsEnabled()).isEqualTo(Boolean.parseBoolean(changedOptions[14]));
             assertThat(requestOptions.getQueryNameOrDefault("")).isEqualTo(changedOptions[16]);
         }
+        assertThat(requestOptions.getKeywordIdentifiers()).isEqualTo(new HashSet<>(Arrays.asList(changedOptions[17].split(","))));
     }
 
     private void changeProperties(String[] values) {
