@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
@@ -32,8 +35,8 @@ public class ConfigurationWithClassWithBean {
             .loadServiceCommonProperties(azureStorageProperties, new AzureStorageQueueProperties());
         BindResult<AzureStorageQueueProperties> bindResult = Binder.get(environment)
             .bind(AzureStorageQueueProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromServiceCommonProperties));
-        AzureStorageQueueProperties properties = bindResult.isBound() ? bindResult.get() :
-            propertiesLoadFromServiceCommonProperties;
+        AzureStorageQueueProperties properties = bindResult.isBound() ? bindResult.get()
+            : propertiesLoadFromServiceCommonProperties;
         properties.setConnectionString(connectionDetails.getConnectionString());
         properties.setEndpoint(connectionDetails.getEndpoint());
         return properties;

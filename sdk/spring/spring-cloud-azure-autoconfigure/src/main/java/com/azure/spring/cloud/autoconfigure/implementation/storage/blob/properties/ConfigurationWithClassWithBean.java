@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
@@ -32,8 +35,8 @@ public class ConfigurationWithClassWithBean {
             .loadServiceCommonProperties(azureStorageProperties, new AzureStorageBlobProperties());
         BindResult<AzureStorageBlobProperties> bindResult = Binder.get(environment)
             .bind(AzureStorageBlobProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromServiceCommonProperties));
-        AzureStorageBlobProperties properties = bindResult.isBound() ? bindResult.get() :
-            propertiesLoadFromServiceCommonProperties;
+        AzureStorageBlobProperties properties = bindResult.isBound() ? bindResult.get()
+            : propertiesLoadFromServiceCommonProperties;
         properties.setConnectionString(connectionDetails.getConnectionString());
         return properties;
 
