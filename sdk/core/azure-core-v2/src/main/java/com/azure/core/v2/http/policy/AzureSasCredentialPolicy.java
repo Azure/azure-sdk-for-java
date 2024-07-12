@@ -26,10 +26,6 @@ import java.util.Objects;
  * pipeline. The requess sent by the pipeline will then include the SAS appended to its query string.</p>
  * <p>
  * <!-- src_embed com.azure.core.http.policy.AzureSasCredentialPolicy.constructor -->
- * <pre>
- * AzureSasCredential credential = new AzureSasCredential&#40;&quot;my_sas&quot;&#41;;
- * AzureSasCredentialPolicy policy = new AzureSasCredentialPolicy&#40;credential&#41;;
- * </pre>
  * <!-- end com.azure.core.http.policy.AzureSasCredentialPolicy.constructor -->
  *
  * @see com.azure.core.http.policy

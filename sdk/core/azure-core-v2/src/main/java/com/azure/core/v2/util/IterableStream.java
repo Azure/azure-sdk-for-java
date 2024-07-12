@@ -18,16 +18,6 @@ import java.util.stream.StreamSupport;
  * </p>
  *
  * <!-- src_embed com.azure.core.util.iterableStream.stream -->
- * <pre>
- * &#47;&#47; process the stream
- * myIterableStream.stream&#40;&#41;.forEach&#40;resp -&gt; &#123;
- *     if &#40;resp.getStatusCode&#40;&#41; == HttpURLConnection.HTTP_OK&#41; &#123;
- *         System.out.printf&#40;&quot;Response headers are %s. Url %s%n&quot;, resp.getDeserializedHeaders&#40;&#41;,
- *             resp.getRequest&#40;&#41;.getUrl&#40;&#41;&#41;;
- *         resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %d%n&quot;, value&#41;&#41;;
- *     &#125;
- * &#125;&#41;;
- * </pre>
  * <!-- end com.azure.core.util.iterableStream.stream -->
  *
  * <p>
@@ -35,16 +25,6 @@ import java.util.stream.StreamSupport;
  * </p>
  *
  * <!-- src_embed com.azure.core.util.iterableStream.iterator.while -->
- * <pre>
- * &#47;&#47; Iterate over iterator
- * for &#40;PagedResponseBase&lt;String, Integer&gt; resp : myIterableStream&#41; &#123;
- *     if &#40;resp.getStatusCode&#40;&#41; == HttpURLConnection.HTTP_OK&#41; &#123;
- *         System.out.printf&#40;&quot;Response headers are %s. Url %s%n&quot;, resp.getDeserializedHeaders&#40;&#41;,
- *             resp.getRequest&#40;&#41;.getUrl&#40;&#41;&#41;;
- *         resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %d%n&quot;, value&#41;&#41;;
- *     &#125;
- * &#125;
- * </pre>
  * <!-- end com.azure.core.util.iterableStream.iterator.while -->
  *
  * <p>
@@ -52,16 +32,6 @@ import java.util.stream.StreamSupport;
  * </p>
  *
  * <!-- src_embed com.azure.core.util.iterableStream.stream.filter -->
- * <pre>
- * &#47;&#47; process the stream
- * myIterableStream.stream&#40;&#41;.filter&#40;resp -&gt; resp.getStatusCode&#40;&#41; == HttpURLConnection.HTTP_OK&#41;
- *     .limit&#40;10&#41;
- *     .forEach&#40;resp -&gt; &#123;
- *         System.out.printf&#40;&quot;Response headers are %s. Url %s%n&quot;, resp.getDeserializedHeaders&#40;&#41;,
- *             resp.getRequest&#40;&#41;.getUrl&#40;&#41;&#41;;
- *         resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %d%n&quot;, value&#41;&#41;;
- *     &#125;&#41;;
- * </pre>
  * <!-- end com.azure.core.util.iterableStream.stream.filter -->
  *
  * @param <T> The type of value in this {@link Iterable}.

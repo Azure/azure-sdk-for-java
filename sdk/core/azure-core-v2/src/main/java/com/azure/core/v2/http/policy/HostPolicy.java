@@ -26,9 +26,6 @@ import java.net.MalformedURLException;
  * all requests will have their host set to "www.example.com" by the {@code HostPolicy}.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.HostPolicy.constructor -->
- * <pre>
- * HostPolicy hostPolicy = new HostPolicy&#40;&quot;www.example.com&quot;&#41;;
- * </pre>
  * <!-- end com.azure.core.http.policy.HostPolicy.constructor -->
  *
  * @see HttpPipelinePolicy

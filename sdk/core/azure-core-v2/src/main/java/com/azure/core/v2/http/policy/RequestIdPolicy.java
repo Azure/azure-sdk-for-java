@@ -27,12 +27,6 @@ import java.util.Objects;
  * requests will have their request id set in the 'x-ms-my-custom-request-id' header by the {@code RequestIdPolicy}.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.RequestIdPolicy.constructor -->
- * <pre>
- * &#47;&#47; Using the default header name
- * RequestIdPolicy defaultPolicy = new RequestIdPolicy&#40;&#41;;
- * &#47;&#47; Using a custom header name
- * RequestIdPolicy customRequestIdPolicy = new RequestIdPolicy&#40;&quot;x-ms-my-custom-request-id&quot;&#41;;
- * </pre>
  * <!-- end com.azure.core.http.policy.RequestIdPolicy.constructor -->
  *
  * @see com.azure.core.http.policy

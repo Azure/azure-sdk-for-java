@@ -29,9 +29,6 @@ import io.clientcore.core.credential.KeyCredential;
  * </p>
  *
  * <!-- src_embed com.azure.core.credential.azureKeyCredential -->
- * <pre>
- * AzureKeyCredential azureKeyCredential = new AzureKeyCredential&#40;&quot;AZURE-SERVICE-KEY&quot;&#41;;
- * </pre>
  * <!-- end com.azure.core.credential.azureKeyCredential -->
  *
  * @see com.azure.core.credential

@@ -26,9 +26,6 @@ import java.net.MalformedURLException;
  * "https" by the {@code ProtocolPolicy}.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.ProtocolPolicy.constructor -->
- * <pre>
- * ProtocolPolicy protocolPolicy = new ProtocolPolicy&#40;&quot;https&quot;, true&#41;;
- * </pre>
  * <!-- end com.azure.core.http.policy.ProtocolPolicy.constructor -->
  *
  * @see com.azure.core.http.policy
