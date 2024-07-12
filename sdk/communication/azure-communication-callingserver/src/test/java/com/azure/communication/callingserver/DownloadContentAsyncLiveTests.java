@@ -10,6 +10,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -41,6 +42,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadMetadataWithConnectionStringAsyncClient(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataWithConnectionStringAsyncClient");
@@ -53,6 +55,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadMetadataWithTokenCredentialAsyncClient(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataWithTokenCredentialAsyncClient");
@@ -75,6 +78,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadMetadataRetryingAsync(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataRetryingAsync");
@@ -93,6 +97,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadVideoAsync(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadVideoAsync");
@@ -118,6 +123,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadToFileAsync(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileAsync");
@@ -158,6 +164,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadToFileRetryingAsync(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileRetryingAsync");
@@ -194,6 +201,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadContent404Async(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadContent404Async");
