@@ -15,6 +15,7 @@ import com.azure.communication.callingserver.models.TransferCallResult;
 import com.azure.communication.callingserver.models.TransferToParticipantCallOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.AbstractMap.SimpleEntry;

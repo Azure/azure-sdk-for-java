@@ -24,6 +24,7 @@ import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.core.http.HttpRange;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import reactor.core.publisher.Flux;

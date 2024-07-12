@@ -10,6 +10,7 @@ import com.azure.communication.callingserver.models.events.ParticipantsUpdatedEv
 import com.azure.communication.callingserver.models.events.PlayCompleted;
 import com.azure.communication.callingserver.models.events.PlayFailed;
 import com.azure.communication.callingserver.models.events.RecordingStateChangedEvent;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
