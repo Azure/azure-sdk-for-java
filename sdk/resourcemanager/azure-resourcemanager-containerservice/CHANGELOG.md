@@ -2,6 +2,10 @@
 
 ## 2.41.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- `models.OSOptionProperty` was removed.
+
 ### Other Changes
 
 #### Dependency Updates
