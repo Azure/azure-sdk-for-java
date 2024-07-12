@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.communication.callautomation.models.RecordingState;
+import com.azure.communication.callautomation.models.RecordingKind;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -26,6 +27,11 @@ public final class RecordingStateChanged extends CallAutomationEventBase {
      * Recording state.
      */
     private RecordingState recordingState;
+
+    /**
+     * Recording kind.
+     */
+    private RecordingKind recordingKind;
 
     /**
      * Time of when it started recording.
@@ -52,6 +58,15 @@ public final class RecordingStateChanged extends CallAutomationEventBase {
      */
     public RecordingState getRecordingState() {
         return recordingState;
+    }
+
+    /**
+     * Get the recordingKind property: Recording Kind.
+     *
+     * @return the recordingKind value.
+     */
+    public RecordingKind getRecordingKind() {
+        return recordingKind;
     }
 
     /**
