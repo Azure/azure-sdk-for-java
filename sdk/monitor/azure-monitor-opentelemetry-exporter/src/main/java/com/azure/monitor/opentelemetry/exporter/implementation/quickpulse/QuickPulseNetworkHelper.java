@@ -95,9 +95,10 @@ final class QuickPulseNetworkHelper {
         return new QuickPulseHeaderInfo(status, serviceEndpointRedirect, servicePollingIntervalHint);
     }
 
-    String getEtagHeaderValue(HttpResponse response){
+    String getEtagHeaderValue(HttpResponse response) {
         HttpHeaders headers = response.getHeaders();
-        return headers.get(QPS_CONFIGURATION_ETAG_HEADER_NAME).getValue();
+        HttpHeader etagHeader = headers.get(QPS_CONFIGURATION_ETAG_HEADER_NAME);
+        return etagHeader != null ? etagHeader.getValue() : null;
     }
 
 }
