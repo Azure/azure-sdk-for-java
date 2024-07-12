@@ -44,6 +44,7 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void playFileWithResponseTest() {
         StepVerifier.create(
             callMedia.playWithResponse(playSource,
@@ -53,6 +54,7 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void playFileToAllWithResponseTest() {
         StepVerifier.create(
                 callMedia.playToAllWithResponse(playSource, playOptions))
@@ -61,6 +63,7 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void cancelAllOperationsWithResponse() {
         StepVerifier.create(
                 callMedia.cancelAllMediaOperationsWithResponse())
@@ -69,6 +72,7 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void recognizeWithResponse() {
         RecognizeOptions recognizeOptions = new RecognizeOptions(RecognizeInputType.DTMF, new RecognizeConfigurations());
         StepVerifier.create(

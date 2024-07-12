@@ -38,6 +38,7 @@ public class DownloadContentUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadTo() throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         callRecording.downloadTo(AMS_ENDPOINT, stream);
@@ -47,6 +48,7 @@ public class DownloadContentUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadToWithResponse() throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         Response<Void> response = callRecording.downloadToWithResponse(AMS_ENDPOINT, stream, null, Context.NONE);

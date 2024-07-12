@@ -36,6 +36,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void missingTokenCredentialTest() throws NullPointerException {
         builder
             .endpoint(MOCK_URL)
@@ -44,6 +45,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void missingUrlTest()
         throws NullPointerException {
         builder
@@ -53,6 +55,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void nullPipelineTest() {
         assertThrows(NullPointerException.class, () -> builder
             .connectionString(MOCK_CONNECTION_STRING)
@@ -61,6 +64,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void nullCustomPolicyTest() {
         assertThrows(NullPointerException.class, () -> builder
             .connectionString(MOCK_CONNECTION_STRING)
@@ -69,6 +73,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void nullConfigurationTest() {
         assertThrows(NullPointerException.class, () -> builder
             .connectionString(MOCK_CONNECTION_STRING)
@@ -77,6 +82,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void nullHttpLogOptionsTest() {
         assertThrows(NullPointerException.class, () -> builder
             .connectionString(MOCK_CONNECTION_STRING)
@@ -85,6 +91,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void nullRetryPolicyTest() {
         assertThrows(
             NullPointerException.class, () -> builder
@@ -94,6 +101,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void buildPipelineForClient() {
         CallAutomationAsyncClient callAutomationAsyncClient = builder
             .connectionString(MOCK_CONNECTION_STRING)
@@ -104,6 +112,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void setHttpLogOptions() {
         HttpLogOptions options = new HttpLogOptions().setApplicationId(APPLICATION_ID);
         CallAutomationAsyncClient callAutomationAsyncClient = builder
@@ -115,6 +124,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void setClientOptions() {
         ClientOptions options = new ClientOptions().setApplicationId(APPLICATION_ID);
         CallAutomationAsyncClient callAutomationAsyncClient = builder
@@ -126,6 +136,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void noClientOptionsNoPipeline() {
         CallAutomationAsyncClient callAutomationAsyncClient = builder
             .connectionString(MOCK_CONNECTION_STRING)
@@ -135,6 +146,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void addPolicy() {
         AzureKeyCredential credential = new AzureKeyCredential("key");
         CallAutomationAsyncClient callAutomationAsyncClient =
@@ -149,6 +161,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void argumentExceptionOnConnectionStringAndEndpoint() {
         assertThrows(IllegalArgumentException.class,
             () -> builder
@@ -159,6 +172,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void argumentExceptionOnEmptyConnectionString() {
         assertThrows(NullPointerException.class,
             () -> builder
@@ -168,6 +182,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void argumentExceptionOnConnectionStringAndAzureKeyCredential() {
         AzureKeyCredential credential = new AzureKeyCredential("key");
         assertThrows(
@@ -179,6 +194,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void argumentExceptionOnConnectionStringAndTokenCredential() {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         assertThrows(
@@ -190,6 +206,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void argumentExceptionOnAzureKeyCredentialAndTokenCredential() {
         AzureKeyCredential credential = new AzureKeyCredential("key");
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
@@ -202,6 +219,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void noPipelineWithToken() {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         CallAutomationAsyncClient callAutomationAsyncClient = builder
@@ -214,6 +232,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void noCredential() {
         assertThrows(
             IllegalArgumentException.class, () -> builder
@@ -223,6 +242,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void noEndpoint() {
         assertThrows(
             NullPointerException.class, () -> builder
@@ -231,6 +251,7 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void bothRetryOptionsAndRetryPolicySet() {
         assertThrows(IllegalStateException.class, () -> builder
             .connectionString(MOCK_CONNECTION_STRING)

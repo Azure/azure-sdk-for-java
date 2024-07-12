@@ -44,6 +44,7 @@ public class CallMediaUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void playFileWithResponseTest() {
         Response<Void> response = callMedia.playWithResponse(playSource,
             Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions, Context.NONE);
@@ -51,18 +52,21 @@ public class CallMediaUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void playFileToAllWithResponseTest() {
         Response<Void> response = callMedia.playToAllWithResponse(playSource, playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void cancelAllOperationsWithResponse() {
         Response<Void> response = callMedia.cancelAllMediaOperationsWithResponse(Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void recognizeWithResponseTest() {
         RecognizeOptions recognizeOptions = new RecognizeOptions(RecognizeInputType.DTMF, new RecognizeConfigurations());
         Response<Void> response = callMedia.recognizeWithResponse(recognizeOptions, Context.NONE);

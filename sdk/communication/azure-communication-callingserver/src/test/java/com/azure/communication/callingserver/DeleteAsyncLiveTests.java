@@ -21,6 +21,7 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void deleteRecordingWithConnectionStringAsyncClient(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecordingWithConnectionStringAsyncClient");
@@ -33,6 +34,7 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void deleteRecordingWithTokenCredentialAsyncClient(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecordingWithTokenCredentialAsyncClient");
@@ -53,6 +55,7 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void deleteRecording401Async(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingInvalidTokenCredential(httpClient);
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
@@ -69,6 +72,7 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void deleteRecording404Async(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");

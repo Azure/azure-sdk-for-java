@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBase {
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void createCall() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
@@ -39,6 +40,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void createCallWithResponse() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
@@ -59,6 +61,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void answerCall() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
@@ -72,6 +75,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void answerCallWithResponse() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
@@ -88,6 +92,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void redirectCall() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
@@ -100,6 +105,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void redirectCallWithResponse() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
@@ -116,6 +122,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void rejectCall() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
@@ -127,6 +134,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void rejectCallWithResponse() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(

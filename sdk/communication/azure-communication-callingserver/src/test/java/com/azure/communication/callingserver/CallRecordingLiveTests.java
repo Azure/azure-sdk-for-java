@@ -26,6 +26,7 @@ public class CallRecordingLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void recordingOperations(HttpClient httpClient) {
         CallAutomationClient client = getCallingServerClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("recordingOperations", next))

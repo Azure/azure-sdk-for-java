@@ -35,6 +35,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadMetadataWithConnectionStringClient(HttpClient httpClient) throws UnsupportedEncodingException {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationClient conversationClient = setupClient(builder, "downloadMetadataWithConnectionStringClient");
@@ -46,6 +47,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadMetadataWithTokenCredentialClient(HttpClient httpClient) throws UnsupportedEncodingException {
         CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
         CallAutomationClient conversationClient = setupClient(builder, "downloadMetadataWithTokenCredentialClient");
@@ -69,6 +71,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadVideo(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationClient conversationClient = setupClient(builder, "downloadVideo");
@@ -96,6 +99,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadContent404(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationClient conversationClient = setupClient(builder, "downloadContent404");
@@ -109,6 +113,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadContentWrongUrl(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationClient conversationClient = setupClient(builder, "downloadContentWrongUrl");
@@ -129,6 +134,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadContentStreamFailure(HttpClient httpClient) throws IOException {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationClient conversationClient = setupClient(builder, "downloadContent404");

@@ -27,6 +27,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void recordingOperationsTest() {
         CallAutomationAsyncClient callingServerClient = CallAutomationUnitTestBase.getCallAutomationAsyncClient(
             recordingOperationsResponses
