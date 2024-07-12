@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * that enables users to sign in to applications and services using a web browser.
  * With interactive browser authentication, the user is directed to a sign-in webpage and is prompted to enter their
  * credentials. After the user successfully authenticates, Microsoft Entra ID issues a
- * security token that the application can use to authorize the user's access to its resources.For more information refer to the
+ * security token that the application can use to authorize the user's access to its resources. For more information refer to the
  * <a href="https://aka.ms/azsdk/java/identity/interactivebrowsercredential/docs">interactive browser authentication
  * documentation</a>.</p>
 
