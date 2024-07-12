@@ -8,10 +8,9 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
@@ -42,15 +41,12 @@ final class CustomValidationPolicy implements HttpPipelinePolicy {
                 .map(CustomValidationPolicy::ungzip);
         asyncBytes.subscribe(
             value -> {
-                ObjectMapper objectMapper = createObjectMapper();
-                try (MappingIterator<TelemetryItem> i =
-                         objectMapper.readerFor(TelemetryItem.class).readValues(value)) {
-                    while (i.hasNext()) {
-                        actualTelemetryItems.add(i.next());
-                    }
-                    countDown.countDown();
+                try (JsonReader jsonReader = JsonProviders.createReader(value)) {
+                    actualTelemetryItems.add(TelemetryItem.fromJson(jsonReader));
                 } catch (Exception e) {
                     throw new RuntimeException(e);
+                } finally {
+                    countDown.countDown();
                 }
             });
         return next.process();
@@ -80,13 +76,5 @@ final class CustomValidationPolicy implements HttpPipelinePolicy {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static ObjectMapper createObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        // handle JSR-310 (java 8) dates with Jackson by configuring ObjectMapper to use this
-        // dependency and not (de)serialize Instant as timestamps that it does by default
-        objectMapper.findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        return objectMapper;
     }
 }

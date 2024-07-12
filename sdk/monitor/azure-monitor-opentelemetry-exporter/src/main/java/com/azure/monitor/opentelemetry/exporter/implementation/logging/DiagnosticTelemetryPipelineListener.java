@@ -4,23 +4,20 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.logging;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.ResponseError;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineRequest;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.INGESTION_ERROR;
-import static java.util.Collections.singleton;
 
 public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineListener {
 
@@ -117,6 +114,16 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
 
     public static String getErrorMessageFromCredentialRelatedResponse(
         int responseCode, String responseBody) {
+        try (JsonReader jsonReader = JsonProviders.createReader(responseBody)) {
+            jsonReader.read
+            ResponseError responseError = ResponseError.fromJson(jsonReader);
+        } catch (Exception e) {
+            return "Ingestion service returned "
+                + responseCode
+                + ", but could not parse response as json: "
+                + responseBody;
+        }
+
         JsonNode jsonNode;
         try {
             jsonNode = new ObjectMapper().readTree(responseBody);
