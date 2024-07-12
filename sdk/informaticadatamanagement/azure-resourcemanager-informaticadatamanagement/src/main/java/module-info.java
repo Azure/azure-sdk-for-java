@@ -8,7 +8,7 @@ module com.azure.resourcemanager.informaticadatamanagement {
     exports com.azure.resourcemanager.informaticadatamanagement.fluent;
     exports com.azure.resourcemanager.informaticadatamanagement.fluent.models;
     exports com.azure.resourcemanager.informaticadatamanagement.models;
-    opens com.azure.resourcemanager.informaticadatamanagement.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.informaticadatamanagement.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.informaticadatamanagement.implementation.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.informaticadatamanagement.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.informaticadatamanagement.models to com.azure.core;
+    opens com.azure.resourcemanager.informaticadatamanagement.implementation.models to com.azure.core;
 }
