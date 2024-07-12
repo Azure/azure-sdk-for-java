@@ -7,7 +7,7 @@ parameters:
   default: not-specified
 - name: Clouds
   type: string
-  default: 'Public, Int'
+  default: 'Public'
 - name: TestMode
   type: string
   default: 'LIVE'
@@ -38,11 +38,6 @@ parameters:
       SubscriptionConfigurations:
         - $(sub-config-communication-services-cloud-test-resources-common)
         - $(sub-config-communication-services-cloud-test-resources-java)
-    Int:
-      SubscriptionConfigurations:
-        - $(sub-config-communication-int-test-resources-common)
-        - $(sub-config-communication-int-test-resources-java)
-
       # This only affects the phone-numbers package
       MatrixReplace:
         - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
