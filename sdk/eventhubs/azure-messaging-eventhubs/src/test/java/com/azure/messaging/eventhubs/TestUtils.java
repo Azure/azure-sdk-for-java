@@ -36,7 +36,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Contains helper methods for working with AMQP messages
  */
 public final class TestUtils {
-    private static final MessageSerializer MESSAGE_SERIALIZER = new EventHubMessageSerializer();
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
 
     // System and application properties from the generated test message.
@@ -71,30 +70,18 @@ public final class TestUtils {
      * Creates a mock message with the contents provided.
      */
     static Message getMessage(byte[] contents, String messageTrackingValue) {
-        return getMessage(contents, messageTrackingValue, Collections.emptyMap());
-    }
-
-    /**
-     * Creates a message with the given contents, default system properties, and adds a {@code messageTrackingValue} in
-     * the application properties. Useful for helping filter messages.
-     */
-    static Message getMessage(byte[] contents, String messageTrackingValue, Map<String, String> additionalProperties) {
         final Message message = getMessage(contents, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
 
         message.getMessageAnnotations().getValue()
             .put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
 
-        Map<String, Object> applicationProperties = new HashMap<>(APPLICATION_PROPERTIES);
+        message.getApplicationProperties().getValue().putAll(APPLICATION_PROPERTIES);
 
         if (!CoreUtils.isNullOrEmpty(messageTrackingValue)) {
-            applicationProperties.put(MESSAGE_ID, messageTrackingValue);
+            message.getApplicationProperties().getValue().put(MESSAGE_ID, messageTrackingValue);
         }
 
-        if (additionalProperties != null) {
-            applicationProperties.putAll(additionalProperties);
-        }
-
-        message.setApplicationProperties(new ApplicationProperties(applicationProperties));
+        message.getApplicationProperties().getValue().put(PARTITION_KEY, PARTITION_KEY);
 
         return message;
     }
@@ -122,14 +109,6 @@ public final class TestUtils {
         message.setBody(body);
 
         return message;
-    }
-
-    /**
-     * Creates an EventData with the received properties set.
-     */
-    public static EventData getEventData(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
-        final Message message = getMessage(contents, sequenceNumber, offsetNumber, enqueuedTime);
-        return MESSAGE_SERIALIZER.deserialize(message, EventData.class);
     }
 
     public static List<EventData> getEvents(int numberOfEvents, String messageTrackingValue) {
