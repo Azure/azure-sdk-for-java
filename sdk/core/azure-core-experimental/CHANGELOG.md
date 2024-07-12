@@ -6,7 +6,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-core` from `1.49.0` to `1.49.2`.
+- Upgraded `azure-core` from `1.49.1` to `1.50.0`.
 
 ## 1.0.0-beta.51 (2024-06-06)
 
