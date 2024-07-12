@@ -499,6 +499,11 @@
           "old" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
           "new" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
           "justification": "Migration to azure-json"
+        },
+        {
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.containerservice.models.OSOptionProperty",
+          "justification": "Class was removed."
         }
       ]
     }
