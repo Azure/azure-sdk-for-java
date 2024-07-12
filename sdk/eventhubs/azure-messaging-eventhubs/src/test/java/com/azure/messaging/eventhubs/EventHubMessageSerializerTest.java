@@ -65,7 +65,7 @@ public class EventHubMessageSerializerTest {
      */
     @Test
     public void cannotDeserializeObject() {
-        final Message message = getMessage("hello-world".getBytes(UTF_8));
+        final Message message = getMessage("hello-world".getBytes(UTF_8), "messageId");
         assertThrows(IllegalArgumentException.class, () -> serializer.deserialize(message, EventHubAsyncClient.class));
     }
 
@@ -80,7 +80,7 @@ public class EventHubMessageSerializerTest {
         systemPropertiesMap.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), ENQUEUED_TIME);
         systemPropertiesMap.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), SEQUENCE_NUMBER);
 
-        final Message message = getMessage("hello-world".getBytes(UTF_8));
+        final Message message = getMessage("hello-world".getBytes(UTF_8), "messageId");
 
         // Act
         final EventData eventData = serializer.deserialize(message, EventData.class);

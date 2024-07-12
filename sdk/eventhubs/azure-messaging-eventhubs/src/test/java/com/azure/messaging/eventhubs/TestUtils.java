@@ -70,13 +70,6 @@ public final class TestUtils {
     /**
      * Creates a mock message with the contents provided.
      */
-    static Message getMessage(byte[] contents) {
-        return getMessage(contents, null);
-    }
-
-    /**
-     * Creates a mock message with the contents provided.
-     */
     static Message getMessage(byte[] contents, String messageTrackingValue) {
         return getMessage(contents, messageTrackingValue, Collections.emptyMap());
     }
