@@ -26,9 +26,6 @@ import java.net.MalformedURLException;
  * by the {@code PortPolicy}.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.PortPolicy.constructor -->
- * <pre>
- * PortPolicy portPolicy = new PortPolicy&#40;8080, true&#41;;
- * </pre>
  * <!-- end com.azure.core.http.policy.PortPolicy.constructor -->
  *
  * @see com.azure.core.http.policy

@@ -25,15 +25,6 @@ import java.util.ServiceLoader;
  * be executed after the retry policy. The list of policies can then be used to build an HTTP pipeline.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.HttpPolicyProviders.usage -->
- * <pre>
- * List&lt;HttpPipelinePolicy&gt; policies = new ArrayList&lt;&gt;&#40;&#41;;
- * &#47;&#47; Add policies that should be executed before the retry policy
- * HttpPolicyProviders.addBeforeRetryPolicies&#40;policies&#41;;
- * &#47;&#47; Add the retry policy
- * policies.add&#40;new RetryPolicy&#40;&#41;&#41;;
- * &#47;&#47; Add policies that should be executed after the retry policy
- * HttpPolicyProviders.addAfterRetryPolicies&#40;policies&#41;;
- * </pre>
  * <!-- end com.azure.core.http.policy.HttpPolicyProviders.usage -->
  *
  * @see com.azure.core.http.policy

@@ -16,35 +16,6 @@ import java.util.Objects;
  * <strong>Code sample</strong>
  * </p>
  * <!-- src_embed com.azure.core.util.Option -->
- * <pre>
- * &#47;&#47; An Option with non-null-value.
- * Option&lt;String&gt; skuOption = Option.of&#40;&quot;basic&quot;&#41;;
- * if &#40;skuOption.isInitialized&#40;&#41;&#41; &#123;
- *     &#47;&#47; Option.isInitialized&#40;&#41; returns true because option is initialized with a non-null value.
- *     System.out.println&#40;skuOption.getValue&#40;&#41;&#41;; &#47;&#47; print: &quot;basic&quot;
- * &#125;
- *
- * &#47;&#47; An Option with null-value.
- * Option&lt;String&gt; descriptionOption = Option.of&#40;null&#41;;
- * if &#40;descriptionOption.isInitialized&#40;&#41;&#41; &#123;
- *     &#47;&#47; Option.isInitialized&#40;&#41; returns true because option is initialized with an explicit null-value.
- *     System.out.println&#40;skuOption.getValue&#40;&#41;&#41;; &#47;&#47; print: null
- * &#125;
- *
- * &#47;&#47; An Option with no-value.
- * Option&lt;String&gt; uninitializedOption = Option.uninitialized&#40;&#41;;
- * if &#40;!uninitializedOption.isInitialized&#40;&#41;&#41; &#123;
- *     &#47;&#47; Option.isInitialized&#40;&#41; returns false because option is uninitialized.
- *     System.out.println&#40;&quot;not initialized&quot;&#41;;
- * &#125;
- *
- * &#47;&#47; Attempting to access the value when an option has no-value will throw 'NoSuchElementException'
- * try &#123;
- *     uninitializedOption.getValue&#40;&#41;;
- * &#125; catch &#40;NoSuchElementException exception&#41; &#123;
- *     System.out.println&#40;exception.getMessage&#40;&#41;&#41;; &#47;&#47; print: 'No value initialized'
- * &#125;
- * </pre>
  * <!-- end com.azure.core.util.Option -->
  *
  * @param <T> The value type.

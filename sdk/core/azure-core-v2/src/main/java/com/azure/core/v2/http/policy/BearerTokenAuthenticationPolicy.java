@@ -32,11 +32,6 @@ import java.util.Objects;
  * Authorization header with the bearer token.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.BearerTokenAuthenticationPolicy.constructor -->
- * <pre>
- * TokenCredential credential = new BasicAuthenticationCredential&#40;&quot;username&quot;, &quot;password&quot;&#41;;
- * BearerTokenAuthenticationPolicy policy = new BearerTokenAuthenticationPolicy&#40;credential,
- *     &quot;https:&#47;&#47;management.azure.com&#47;.default&quot;&#41;;
- * </pre>
  * <!-- end com.azure.core.http.policy.BearerTokenAuthenticationPolicy.constructor -->
  *
  * @see HttpPipelinePolicy

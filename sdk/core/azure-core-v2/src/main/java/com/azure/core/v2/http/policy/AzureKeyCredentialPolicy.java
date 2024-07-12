@@ -26,10 +26,6 @@ import java.util.Objects;
  * key as its value.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.AzureKeyCredentialPolicy.constructor -->
- * <pre>
- * AzureKeyCredential credential = new AzureKeyCredential&#40;&quot;my_key&quot;&#41;;
- * AzureKeyCredentialPolicy policy = new AzureKeyCredentialPolicy&#40;&quot;my_header&quot;, credential&#41;;
- * </pre>
  * <!-- end com.azure.core.http.policy.AzureKeyCredentialPolicy.constructor -->
  *
  * @see com.azure.core.http.policy

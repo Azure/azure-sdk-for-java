@@ -127,20 +127,6 @@ public interface Tracer {
      *
      * <p>Starts a tracing span with provided method name and explicit parent span</p>
      * <!-- src_embed com.azure.core.util.tracing.start#name -->
-     * <pre>
-     * &#47;&#47; start a new tracing span with given name and parent context implicitly propagated
-     * &#47;&#47; in io.opentelemetry.context.Context.current&#40;&#41;
-     *
-     * Throwable throwable = null;
-     * Context span = tracer.start&#40;&quot;keyvault.setsecret&quot;, Context.NONE&#41;;
-     * try &#123;
-     *     doWork&#40;&#41;;
-     * &#125; catch &#40;Throwable ex&#41; &#123;
-     *     throwable = ex;
-     * &#125; finally &#123;
-     *     tracer.end&#40;null, throwable, span&#41;;
-     * &#125;
-     * </pre>
      * <!-- end com.azure.core.util.tracing.start#name -->
      *
      * @param methodName Name of the method triggering the span creation.
@@ -161,19 +147,6 @@ public interface Tracer {
      *
      * <p>Starts a tracing span with provided method name and explicit parent span</p>
      * <!-- src_embed com.azure.core.util.tracing.start#options -->
-     * <pre>
-     * &#47;&#47; start a new CLIENT tracing span with the given start options and explicit parent context
-     * StartSpanOptions options = new StartSpanOptions&#40;SpanKind.CLIENT&#41;
-     *     .setAttribute&#40;&quot;key&quot;, &quot;value&quot;&#41;;
-     * Context spanFromOptions = tracer.start&#40;&quot;keyvault.setsecret&quot;, options, Context.NONE&#41;;
-     * try &#123;
-     *     doWork&#40;&#41;;
-     * &#125; catch &#40;Throwable ex&#41; &#123;
-     *     throwable = ex;
-     * &#125; finally &#123;
-     *     tracer.end&#40;null, throwable, spanFromOptions&#41;;
-     * &#125;
-     * </pre>
      * <!-- end com.azure.core.util.tracing.start#options -->
      *
      * @param methodName Name of the method triggering the span creation.
@@ -307,34 +280,16 @@ public interface Tracer {
      * <p>Completes the tracing span with unset status</p>
      *
      * <!-- src_embed com.azure.core.util.tracing.end#success -->
-     * <pre>
-     * Context messageSpan = tracer.start&#40;&quot;ServiceBus.message&quot;, new StartSpanOptions&#40;SpanKind.PRODUCER&#41;, Context.NONE&#41;;
-     * tracer.end&#40;null, null, messageSpan&#41;;
-     * </pre>
      * <!-- end com.azure.core.util.tracing.end#success -->
      *
      * <p>Completes the tracing span with provided error message</p>
      *
      * <!-- src_embed com.azure.core.util.tracing.end#errorStatus -->
-     * <pre>
-     * Context span = tracer.start&#40;&quot;ServiceBus.send&quot;, new StartSpanOptions&#40;SpanKind.CLIENT&#41;, Context.NONE&#41;;
-     * tracer.end&#40;&quot;amqp:not-found&quot;, null, span&#41;;
-     * </pre>
      * <!-- end com.azure.core.util.tracing.end#errorStatus -->
      *
      * <p>Completes the tracing span with provided exception</p>
      *
      * <!-- src_embed com.azure.core.util.tracing.end#exception -->
-     * <pre>
-     * Context sendSpan = tracer.start&#40;&quot;ServiceBus.send&quot;, new StartSpanOptions&#40;SpanKind.CLIENT&#41;, Context.NONE&#41;;
-     * try &#40;AutoCloseable scope = tracer.makeSpanCurrent&#40;sendSpan&#41;&#41; &#123;
-     *     doWork&#40;&#41;;
-     * &#125; catch &#40;Throwable ex&#41; &#123;
-     *     throwable = ex;
-     * &#125; finally &#123;
-     *     tracer.end&#40;null, throwable, sendSpan&#41;;
-     * &#125;
-     * </pre>
      * <!-- end com.azure.core.util.tracing.end#exception -->
      *
      * @param errorMessage The error message that occurred during the call, or {@code null} if no error.
@@ -349,10 +304,6 @@ public interface Tracer {
     /**
      * Adds metadata to the current span. If no span information is found in the context, then no metadata is added.
      * <!-- src_embed com.azure.core.util.tracing.set-attribute#string -->
-     * <pre>
-     * span = tracer.start&#40;&quot;EventHubs.process&quot;, Context.NONE&#41;;
-     * tracer.setAttribute&#40;&quot;bar&quot;, &quot;baz&quot;, span&#41;;
-     * </pre>
      * <!-- end com.azure.core.util.tracing.set-attribute#string -->
      *
      * @param key Name of the metadata.
@@ -366,10 +317,6 @@ public interface Tracer {
      * Sets long attribute.
      *
      * <!-- src_embed com.azure.core.util.tracing.set-attribute#int -->
-     * <pre>
-     * Context span = tracer.start&#40;&quot;EventHubs.process&quot;, Context.NONE&#41;;
-     * tracer.setAttribute&#40;&quot;foo&quot;, 42, span&#41;;
-     * </pre>
      * <!-- end com.azure.core.util.tracing.set-attribute#int -->
      * @param key attribute name
      * @param value atteribute value
@@ -486,25 +433,6 @@ public interface Tracer {
      *
      * <p>Extracts the corresponding span context information from a valid diagnostic id</p>
      * <!-- src_embed com.azure.core.util.tracing.start#remote-parent-extract -->
-     * <pre>
-     * Context parentContext = tracer.extractContext&#40;name -&gt; &#123;
-     *     Object value = messageProperties.get&#40;name&#41;;
-     *     return value instanceof String ? &#40;String&#41; value : null;
-     * &#125;&#41;;
-     *
-     * StartSpanOptions remoteParentOptions = new StartSpanOptions&#40;SpanKind.CONSUMER&#41;
-     *     .setRemoteParent&#40;parentContext&#41;;
-     *
-     * Context spanWithRemoteParent = tracer.start&#40;&quot;EventHubs.process&quot;, remoteParentOptions, Context.NONE&#41;;
-     *
-     * try &#40;AutoCloseable scope = tracer.makeSpanCurrent&#40;spanWithRemoteParent&#41;&#41; &#123;
-     *     doWork&#40;&#41;;
-     * &#125; catch &#40;Throwable ex&#41; &#123;
-     *     throwable = ex;
-     * &#125; finally &#123;
-     *     tracer.end&#40;null, throwable, spanWithRemoteParent&#41;;
-     * &#125;
-     * </pre>
      * <!-- end com.azure.core.util.tracing.start#remote-parent-extract -->
      *
      * @param headerGetter Unique identifier for the trace information of the span and todo.
@@ -519,19 +447,6 @@ public interface Tracer {
      * Injects tracing context.
      *
      * <!-- src_embed com.azure.core.util.tracing.injectContext -->
-     * <pre>
-     * Context httpSpan = tracer.start&#40;&quot;HTTP GET&quot;, new StartSpanOptions&#40;SpanKind.CLIENT&#41;, methodSpan&#41;;
-     * tracer.injectContext&#40;&#40;headerName, headerValue&#41; -&gt; request.setHeader&#40;headerName, headerValue&#41;, httpSpan&#41;;
-     *
-     * try &#40;AutoCloseable scope = tracer.makeSpanCurrent&#40;httpSpan&#41;&#41; &#123;
-     *     HttpResponse response = getResponse&#40;request&#41;;
-     *     httpResponseCode = response.getStatusCode&#40;&#41;;
-     * &#125; catch &#40;Throwable ex&#41; &#123;
-     *     throwable = ex;
-     * &#125; finally &#123;
-     *     tracer.end&#40;httpResponseCode, throwable, httpSpan&#41;;
-     * &#125;
-     * </pre>
      * <!-- end com.azure.core.util.tracing.injectContext -->
      * @param headerSetter callback to set context with.
      * @param context trace context instance
@@ -601,10 +516,6 @@ public interface Tracer {
      * Any other Object value type and null values will be silently ignored.</p>
      *
      * <!-- src_embed com.azure.core.util.tracing.addEvent -->
-     * <pre>
-     * Context span = tracer.start&#40;&quot;Cosmos.getItem&quot;, Context.NONE&#41;;
-     * tracer.addEvent&#40;&quot;trying another endpoint&quot;, Collections.singletonMap&#40;&quot;endpoint&quot;, &quot;westus3&quot;&#41;, OffsetDateTime.now&#40;&#41;, span&#41;;
-     * </pre>
      * <!-- end com.azure.core.util.tracing.addEvent -->
      *
      * @param name the name of the event.
@@ -623,16 +534,6 @@ public interface Tracer {
      * @param context Context with span.
      *
      * <!-- src_embed com.azure.core.util.tracing.makeCurrent -->
-     * <pre>
-     * Context span = tracer.start&#40;&quot;EventHubs.process&quot;, new StartSpanOptions&#40;SpanKind.CONSUMER&#41;, Context.NONE&#41;;
-     * try &#40;AutoCloseable scope = tracer.makeSpanCurrent&#40;span&#41;&#41; &#123;
-     *     doWork&#40;&#41;;
-     * &#125; catch &#40;Throwable ex&#41; &#123;
-     *     throwable = ex;
-     * &#125; finally &#123;
-     *     tracer.end&#40;null, throwable, span&#41;;
-     * &#125;
-     * </pre>
      * <!-- end com.azure.core.util.tracing.makeCurrent -->
      *
      * @return Closeable that should be closed in the same thread with try-with-resource statement.
@@ -655,20 +556,6 @@ public interface Tracer {
      * Checks if tracer is enabled.
      *
      * <!-- src_embed com.azure.core.util.tracing.isEnabled -->
-     * <pre>
-     * if &#40;!tracer.isEnabled&#40;&#41;&#41; &#123;
-     *     doWork&#40;&#41;;
-     * &#125; else &#123;
-     *     Context span = tracer.start&#40;&quot;span&quot;, Context.NONE&#41;;
-     *     try &#123;
-     *         doWork&#40;&#41;;
-     *     &#125; catch &#40;Throwable ex&#41; &#123;
-     *         throwable = ex;
-     *     &#125; finally &#123;
-     *         tracer.end&#40;null, throwable, span&#41;;
-     *     &#125;
-     * &#125;
-     * </pre>
      * <!-- end com.azure.core.util.tracing.isEnabled -->
      *
      * @return true if tracer is enabled, false otherwise.

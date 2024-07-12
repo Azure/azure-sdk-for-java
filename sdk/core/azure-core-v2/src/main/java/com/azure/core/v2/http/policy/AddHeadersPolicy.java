@@ -24,13 +24,6 @@ import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
  * the pipeline and the requests sent will include the headers specified in the {@code AddHeadersPolicy}.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.AddHeaderPolicy.constructor -->
- * <pre>
- * HttpHeaders headers = new HttpHeaders&#40;&#41;;
- * headers.put&#40;&quot;User-Agent&quot;, &quot;MyApp&#47;1.0&quot;&#41;;
- * headers.put&#40;&quot;Content-Type&quot;, &quot;application&#47;json&quot;&#41;;
- *
- * new AddHeadersPolicy&#40;headers&#41;;
- * </pre>
  * <!-- end com.azure.core.http.policy.AddHeaderPolicy.constructor -->
  *
  * @see com.azure.core.http.policy

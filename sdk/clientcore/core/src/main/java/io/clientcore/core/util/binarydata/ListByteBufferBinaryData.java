@@ -11,6 +11,7 @@ import io.clientcore.core.util.serializer.ObjectSerializer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -66,8 +67,12 @@ public final class ListByteBufferBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromBytes(toBytes(), type);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        try {
+            return serializer.deserializeFromBytes(toBytes(), type);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override

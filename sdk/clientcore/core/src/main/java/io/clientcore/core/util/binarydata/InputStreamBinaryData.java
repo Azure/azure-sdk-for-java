@@ -83,8 +83,12 @@ public final class InputStreamBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromBytes(toBytes(), type);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        try {
+            return serializer.deserializeFromBytes(toBytes(), type);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override

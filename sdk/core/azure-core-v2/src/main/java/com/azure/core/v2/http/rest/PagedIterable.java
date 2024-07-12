@@ -22,15 +22,6 @@ import java.util.stream.Stream;
  * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.PagedIterable.streamByPage -->
- * <pre>
- * &#47;&#47; process the streamByPage
- * pagedIterableResponse.streamByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
- *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
- *         resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
- *     resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %d %n&quot;, value&#41;&#41;;
- * &#125;&#41;;
- *
- * </pre>
  * <!-- end com.azure.core.http.rest.PagedIterable.streamByPage -->
  *
  * <p>
@@ -38,14 +29,6 @@ import java.util.stream.Stream;
  * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.PagedIterable.iterableByPage -->
- * <pre>
- * &#47;&#47; process the iterableByPage
- * pagedIterableResponse.iterableByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
- *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
- *         resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
- *     resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %d %n&quot;, value&#41;&#41;;
- * &#125;&#41;;
- * </pre>
  * <!-- end com.azure.core.http.rest.PagedIterable.iterableByPage -->
  *
  * <p>
@@ -53,14 +36,6 @@ import java.util.stream.Stream;
  * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.PagedIterable.iterableByPage.while -->
- * <pre>
- * &#47;&#47; iterate over each page
- * for &#40;PagedResponse&lt;Integer&gt; resp : pagedIterableResponse.iterableByPage&#40;&#41;&#41; &#123;
- *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
- *         resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
- *     resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %d %n&quot;, value&#41;&#41;;
- * &#125;
- * </pre>
  * <!-- end com.azure.core.http.rest.PagedIterable.iterableByPage.while -->
  *
  * <p>
@@ -68,13 +43,6 @@ import java.util.stream.Stream;
  * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.PagedIterable.pagesWithContinuationToken -->
- * <pre>
- * String continuationToken = getContinuationToken&#40;&#41;;
- * pagedIterable
- *     .iterableByPage&#40;continuationToken&#41;
- *     .forEach&#40;page -&gt; System.out.printf&#40;&quot;Processing page containing item values: %s%n&quot;,
- *         page.getElements&#40;&#41;.stream&#40;&#41;.map&#40;String::valueOf&#41;.collect&#40;Collectors.joining&#40;&quot;, &quot;&#41;&#41;&#41;&#41;;
- * </pre>
  * <!-- end com.azure.core.http.rest.PagedIterable.pagesWithContinuationToken -->
  *
  * @param <T> The type of value contained in this {@link IterableStream}.
@@ -91,13 +59,6 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      *
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.core.http.rest.PagedIterable.singlepage.instantiation -->
-     * <pre>
-     * &#47;&#47; A supplier that fetches the first page of data from source&#47;service
-     * Supplier&lt;PagedResponse&lt;Integer&gt;&gt; firstPageRetrieverFunction = &#40;&#41; -&gt; getFirstPage&#40;&#41;;
-     *
-     * PagedIterable&lt;Integer&gt; pagedIterableInstance = new PagedIterable&lt;&gt;&#40;firstPageRetrieverFunction,
-     *     nextPageRetriever&#41;;
-     * </pre>
      * <!-- end com.azure.core.http.rest.PagedIterable.singlepage.instantiation -->
      * @param firstPageRetriever Supplier that retrieves the first page.
      */
@@ -110,13 +71,6 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      *
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize -->
-     * <pre>
-     * &#47;&#47; A function that fetches the single page of data from a source&#47;service.
-     * Function&lt;Integer, Mono&lt;PagedResponse&lt;Integer&gt;&gt;&gt; singlePageRetriever = pageSize -&gt;
-     *     getFirstPageWithSize&#40;pageSize&#41;;
-     *
-     * PagedFlux&lt;Integer&gt; singlePageFluxWithPageSize = new PagedFlux&lt;Integer&gt;&#40;singlePageRetriever&#41;;
-     * </pre>
      * <!-- end com.azure.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize -->
      * @param firstPageRetriever Function that retrieves the first page.
      */
@@ -131,17 +85,6 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      *
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.core.http.rest.PagedIterable.instantiation -->
-     * <pre>
-     * &#47;&#47; A supplier that fetches the first page of data from source&#47;service
-     * Supplier&lt;PagedResponse&lt;Integer&gt;&gt; firstPageRetriever = &#40;&#41; -&gt; getFirstPage&#40;&#41;;
-     *
-     * &#47;&#47; A function that fetches subsequent pages of data from source&#47;service given a continuation token
-     * Function&lt;String, PagedResponse&lt;Integer&gt;&gt; nextPageRetriever =
-     *     continuationToken -&gt; getNextPage&#40;continuationToken&#41;;
-     *
-     * PagedIterable&lt;Integer&gt; pagedIterable = new PagedIterable&lt;&gt;&#40;firstPageRetriever,
-     *     nextPageRetriever&#41;;
-     * </pre>
      * <!-- end com.azure.core.http.rest.PagedIterable.instantiation -->
     
      * @param firstPageRetriever Supplier that retrieves the first page
@@ -161,16 +104,6 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      * Creates an instance of {@link PagedIterable} that is capable of retrieving multiple pages with of a given page size.
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.core.http.rest.PagedIterable.instantiationWithPageSize -->
-     * <pre>
-     * &#47;&#47; A function that fetches the first page of data from a source&#47;service.
-     * Function&lt;Integer, PagedResponse&lt;Integer&gt;&gt; firstPageRetriever = pageSize -&gt; getPage&#40;pageSize&#41;;
-     *
-     * &#47;&#47; A function that fetches subsequent pages of data from a source&#47;service given a continuation token.
-     * BiFunction&lt;String, Integer, PagedResponse&lt;Integer&gt;&gt; nextPageRetriever = &#40;continuationToken, pageSize&#41; -&gt;
-     *     getPage&#40;continuationToken, pageSize&#41;;
-     *
-     * PagedIterable&lt;Integer&gt; pagedIterableWithPageSize = new PagedIterable&lt;&gt;&#40;firstPageRetriever, nextPageRetriever&#41;;
-     * </pre>
      * <!-- end com.azure.core.http.rest.PagedIterable.instantiationWithPageSize -->
      * @param firstPageRetriever Function that retrieves the first page.
      * @param nextPageRetriever BiFunction that retrieves the next page given a continuation token and page size.

@@ -18,20 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * </p>
  *
  * <!-- src_embed com.azure.core.util.serializer.constructor -->
- * <pre>
- * &#47;&#47; Construct a TypeReference&lt;T&gt; for a Java generic type.
- * &#47;&#47; This pattern should only be used for generic types, for classes use the createInstance factory method.
- * TypeReference&lt;Map&lt;String, Object&gt;&gt; typeReference = new TypeReference&lt;Map&lt;String, Object&gt;&gt;&#40;&#41; &#123; &#125;;
- * </pre>
  * <!-- end com.azure.core.util.serializer.constructor -->
  *
  * <!-- src_embed com.azure.core.util.serializer.createInstance#class -->
- * <pre>
- * &#47;&#47; Construct a TypeReference&lt;T&gt; for a Java class.
- * &#47;&#47; This pattern should only be used for non-generic classes when possible, use the constructor for generic
- * &#47;&#47; class when possible.
- * TypeReference&lt;Integer&gt; typeReference = TypeReference.createInstance&#40;int.class&#41;;
- * </pre>
  * <!-- end com.azure.core.util.serializer.createInstance#class -->
  *
  * @param <T> The type being represented.

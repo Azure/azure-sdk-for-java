@@ -68,10 +68,6 @@
  * </p>
  *
  * <!-- src_embed com.azure.core.credential.azureSasCredential -->
- * <pre>
- * AzureSasCredential azureSasCredential =
- *     new AzureSasCredential&#40;&quot;AZURE-SERVICE-SAS-KEY&quot;&#41;;
- * </pre>
  * <!-- end com.azure.core.credential.azureSasCredential -->
  *
  * <br>
@@ -100,9 +96,6 @@
  * </p>
  *
  * <!-- src_embed com.azure.core.credential.azureKeyCredential -->
- * <pre>
- * AzureKeyCredential azureKeyCredential = new AzureKeyCredential&#40;&quot;AZURE-SERVICE-KEY&quot;&#41;;
- * </pre>
  * <!-- end com.azure.core.credential.azureKeyCredential -->
  *
  * @see com.azure.core.v2.credential.AzureKeyCredential

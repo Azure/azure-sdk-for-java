@@ -30,9 +30,6 @@ import io.clientcore.core.util.Context;
  * {@code UserAgentPolicy}.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.UserAgentPolicy.constructor -->
- * <pre>
- * UserAgentPolicy userAgentPolicy = new UserAgentPolicy&#40;&quot;MyApp&#47;1.0&quot;&#41;;
- * </pre>
  * <!-- end com.azure.core.http.policy.UserAgentPolicy.constructor -->
  *
  * @see com.azure.core.http.policy

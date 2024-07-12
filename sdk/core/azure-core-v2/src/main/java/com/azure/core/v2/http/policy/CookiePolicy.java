@@ -35,9 +35,6 @@ import java.util.Map;
  * and added to subsequent requests to the same server.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.CookiePolicy.constructor -->
- * <pre>
- * CookiePolicy cookiePolicy = new CookiePolicy&#40;&#41;;
- * </pre>
  * <!-- end com.azure.core.http.policy.CookiePolicy.constructor -->
  *
  * @see com.azure.core.http.policy

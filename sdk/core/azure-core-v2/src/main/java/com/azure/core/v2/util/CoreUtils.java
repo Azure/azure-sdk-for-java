@@ -11,6 +11,8 @@ import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.configuration.Configuration;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -674,5 +676,30 @@ public final class CoreUtils {
         } else {
             return OffsetDateTime.from(temporal);
         }
+    }
+
+    /**
+     * Helper method to create an instance of {@link ParameterizedType}.
+     * @param rawType The raw type.
+     * @param typeArguments The type arguments.
+     * @return The instance of {@link ParameterizedType}.
+     */
+    public static ParameterizedType getParameterizedType(Type rawType, Type... typeArguments) {
+        return new ParameterizedType() {
+            @Override
+            public Type[] getActualTypeArguments() {
+                return typeArguments;
+            }
+
+            @Override
+            public Type getRawType() {
+                return rawType;
+            }
+
+            @Override
+            public Type getOwnerType() {
+                return null;
+            }
+        };
     }
 }
