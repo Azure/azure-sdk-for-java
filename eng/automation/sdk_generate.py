@@ -288,7 +288,7 @@ def main():
                 try:
                     os.chdir(sdk_root)
                     os.system(
-                        "git add eng/versioning eng/mgmt pom.xml {0} {1}".format(
+                        "git add eng/versioning eng/automation pom.xml {0} {1}".format(
                             CI_FILE_FORMAT.format(service), POM_FILE_FORMAT.format(service)
                         )
                     )
