@@ -5,5 +5,6 @@ extends:
   parameters:
     PackageName: azure-communication-callautomation
     SafeName: azurecommunicationcallautomation
+    UseFederatedAuth: true
     Clouds: 'Public'
     TestMode: 'LIVE'

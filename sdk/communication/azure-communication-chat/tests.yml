@@ -5,3 +5,4 @@ extends:
   parameters:
     PackageName: azure-communication-chat
     SafeName: azurecommunicationchat
+    UseFederatedAuth: true
