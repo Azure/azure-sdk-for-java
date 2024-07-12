@@ -2,6 +2,10 @@
 
 ## 2.41.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Removed the supper class `com.azure.core.management.SubResource` from `FirewallPacketCaptureParameters`.
+
 ### Other Changes
 
 #### Dependency Updates
