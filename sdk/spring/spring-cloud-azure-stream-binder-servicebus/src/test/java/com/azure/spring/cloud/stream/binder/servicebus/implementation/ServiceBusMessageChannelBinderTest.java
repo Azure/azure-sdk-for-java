@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.stream.binder.servicebus.implementation;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
@@ -12,6 +13,8 @@ import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainer
 import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.cloud.stream.binder.BinderHeaders;
@@ -21,14 +24,18 @@ import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.ErrorMessage;
+import org.springframework.messaging.support.GenericMessage;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
@@ -37,6 +44,8 @@ class ServiceBusMessageChannelBinderTest {
 
     @Mock
     private ConsumerDestination consumerDestination;
+    @Captor
+    private ArgumentCaptor<DeadLetterOptions> captor;
 
     private final ServiceBusExtendedBindingProperties extendedBindingProperties =
         new ServiceBusExtendedBindingProperties();
@@ -116,6 +125,25 @@ class ServiceBusMessageChannelBinderTest {
         assertThat(containerProperties.getAutoComplete()).isEqualTo(serviceBusConsumerProperties.getAutoComplete());
         assertThat(containerProperties.getRetry().getTryTimeout()).isEqualTo(serviceBusConsumerProperties.getRetry().getTryTimeout());
 
+    }
+
+    @Test
+    public void testReasonAndDescriptionAreUsedWhenCallDeadLetter() {
+        String deadLetterReason = "testDeadLetterReason";
+        String deadLetterErrorDescription = "testDeadLetterErrorDescription";
+        ServiceBusReceivedMessageContext context = mock(ServiceBusReceivedMessageContext.class);
+        ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(null, null);
+        binder.deadLetter("testDestination", createTestMessage(context), deadLetterReason, deadLetterErrorDescription);
+        verify(context).deadLetter(captor.capture());
+        assertEquals(deadLetterReason, captor.getValue().getDeadLetterReason());
+        assertEquals(deadLetterErrorDescription, captor.getValue().getDeadLetterErrorDescription());
+    }
+
+    private Message<String> createTestMessage(ServiceBusReceivedMessageContext context) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, context);
+        MessageHeaders headers = new MessageHeaders(map);
+        return new GenericMessage<>("testPayload", headers);
     }
 
     private void prepareConsumerProperties() {
