@@ -13,12 +13,18 @@ jobs:
   - job: 'BuildAndValidate'
     displayName: 'Build and Validate'
 
-    variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
+    templateContext:
+      outputs:
+        - output: pipelineArtifact
+          displayName: 'Capture repo state for analysis'
+          targetPath: '$(System.DefaultWorkingDirectory)'
+          artifactName: 'repository'
+          sbomEnabled: false
 
     pool:
-      name: azsdk-pool-mms-ubuntu-2004-general
-      vmImage: MMSUbuntu20.04
+      name: $(LINUXPOOL)
+      image: $(LINUXVMIMAGE)
+      os: linux
 
     strategy:
       matrix:
@@ -54,7 +60,6 @@ jobs:
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           JobType: 'Build and Validate'
-          Artifacts: ${{ parameters.Artifacts }}
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
@@ -85,11 +90,7 @@ jobs:
             -Artifacts ('${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}' | ConvertFrom-Json)
             -InformationAction Continue
 
-      - publish: $(Build.ArtifactStagingDirectory)
-        displayName: 'Publish Artifacts $(ArtifactName)'
-        artifact: '$(ArtifactName)'
-
-      - publish: $(System.DefaultWorkingDirectory)
-        condition: and(eq(variables['CaptureRepositoryOnFailure'], 'true'), failed())
-        displayName: 'Capture repo state for analysis'
-        artifact: repository
+      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+        parameters:
+          ArtifactPath: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: '$(ArtifactName)'

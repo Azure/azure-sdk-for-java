@@ -80,7 +80,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: keyvault
-    EnableBatchRelease: true
     AdditionalLintingOptions: '-DcreateSourcesJar=false'
     Artifacts:
       - name: azure-security-keyvault-administration
@@ -95,6 +94,7 @@ extends:
         groupId: com.azure
         safeName: azuresecuritykeyvaultjca
         releaseInBatch: ${{ parameters.release_azuresecuritykeyvaultjca }}
+        skipPublishDocMs: true
       - name: azure-security-keyvault-keys
         groupId: com.azure
         safeName: azuresecuritykeyvaultkeys
@@ -108,4 +108,6 @@ extends:
         groupId: com.azure
         # required by the above perf library
       - name: perf-test-core
+        groupId: com.azure
+      - name: azure-aot-graalvm-perf
         groupId: com.azure

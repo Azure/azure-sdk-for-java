@@ -2,18 +2,12 @@ parameters:
   - name: SDKType
     type: string
     default: client
-  - name: ServiceDirectory
-    type: string
-    default: 'not-specified' # Set a default that breaks in obvious ways.
-  - name: TestPipeline
-    type: boolean
-    default: false
   - name: Artifacts
     type: object
     default: []
-  - name: AdditionalModules
-    type: object
-    default: []
+  - name: TestPipeline
+    type: boolean
+    default: false
   - name: PreTestSteps
     type: object
     default: []
@@ -43,12 +37,39 @@ jobs:
   - job:
     condition: ne(variables['Skip.Test'], 'true')
 
-    pool:
-      name: 'azsdk-pool-mms-ubuntu-2004-general'
-      vmImage: 'MMSUbuntu20.04'
-
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
+      # Convert artifact parameter objects to json and set them as variables to be used in
+      # pipeline jobs/stages. By setting these as a variable once we save thousands of lines
+      # of yaml in extreme cases. This helps us stay under the devops max yaml size limits.
+      - name: ArtifactsJson
+        value: '${{ convertToJson(parameters.Artifacts) }}'
+
+    pool:
+      name: $(LINUXPOOL)
+      image: $(LINUXVMIMAGE)
+      os: linux
+
+    templateContext:
+      outputs:
+        - output: pipelineArtifact
+          artifactName: 'repository-$(System.JobName)'
+          targetPath: '$(System.DefaultWorkingDirectory)'
+          displayName: 'Capture repo state for analysis'
+          condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
+          sbomEnabled: false
+
+        - ${{ each versionOverride in parameters.VersionOverrides }}:
+          # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
+          # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
+          # during testing if tests failed, and linting reports.
+          - output: pipelineArtifact
+            artifactName: 'troubleshooting-vo-${{ versionOverride }}-troubleshooting-$(System.StageName)-$(System.JobName)'
+            targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
+            displayName: 'Capture troubleshooting artifacts for version override ${{ versionOverride }}'
+            condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
+            sbomEnabled: false
 
     steps:
       - pwsh: |
@@ -58,12 +79,8 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
           CheckoutRecordings: true
-          SDKType: ${{ parameters.SDKType }}
-          OSVmImage: 'MMSUbuntu20.04'
+          OS: $(LINUXVMIMAGE)
 
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
@@ -90,8 +107,6 @@ jobs:
       - ${{ each versionOverride in parameters.VersionOverrides }}:
         - template: /eng/pipelines/templates/steps/build-and-test.yml
           parameters:
-            SDKType: ${{ parameters.SDKType }}
-            ServiceDirectory: ${{ parameters.ServiceDirectory }}
             ParallelTestPlayback: 'true'
             TestGoals: ${{ parameters.TestGoals }}
             TestOptions: ${{ parameters.TestOptions }}
@@ -104,6 +119,4 @@ jobs:
             Write-Host "##vso[task.setvariable variable=FirstTestOverrideRan]true"
           displayName: "Reset version override changes"
 
-      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
-
-      - template: /eng/common/testproxy/publish-proxy-logs.yml
+      - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
