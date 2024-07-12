@@ -200,7 +200,7 @@ public class Configs {
     // a public API for it as well.
     public static final String PREVENT_INVALID_ID_CHARS = "COSMOS.PREVENT_INVALID_ID_CHARS";
     public static final String PREVENT_INVALID_ID_CHARS_VARIABLE = "COSMOS_PREVENT_INVALID_ID_CHARS";
-    public static final boolean DEFAULT_PREVENT_INVALID_ID_CHARS = true;
+    public static final boolean DEFAULT_PREVENT_INVALID_ID_CHARS = false;
 
 
     // Metrics
@@ -390,7 +390,7 @@ public class Configs {
             return!Boolean.valueOf(valueFromEnvVariable);
         }
 
-        return !DEFAULT_PREVENT_INVALID_ID_CHARS;
+        return DEFAULT_PREVENT_INVALID_ID_CHARS;
     }
 
     public static int getMaxHttpRequestTimeout() {
