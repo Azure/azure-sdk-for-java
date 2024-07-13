@@ -755,8 +755,7 @@ public final class CallMediaAsync {
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
                 .setOperationContext(options.getOperationContext())
                 .setOperationCallbackUri(options.getOperationCallbackUrl());
-            if(options.getPlaySource() != null)
-            {
+            if (options.getPlaySource() != null) {
                 request.setPlaySourceInfo(convertPlaySourceToPlaySourceInternal(options.getPlaySource()));
             }
 
