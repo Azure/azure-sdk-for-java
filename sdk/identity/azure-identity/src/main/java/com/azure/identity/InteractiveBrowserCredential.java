@@ -38,7 +38,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *     <li>Go to Microsoft Entra ID in Azure portal and find your app registration.</li>
  *     <li>Navigate to the Authentication section.</li>
  *     <li>Under Suggested Redirected URIs, check the URI that ends with /common/oauth2/nativeclient.</li>
- *     <li>Under Authentication->Advanced setetings, enable "Allow public client flows."</li>
+ *     <li>Under Authentication->Advanced settings, enable "Allow public client flows."</li>
  * </ol>
  *
  * <p>These steps will let the application authenticate, but it still won't have permission to log you into
