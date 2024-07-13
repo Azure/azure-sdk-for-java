@@ -904,6 +904,7 @@ public final class CallMediaAsync {
      * Updates transcription language
      * @param speechRecognitionModelEndpointId Defines custom model endpoint.
      * @param locale Defines new locale for transcription.
+     * @param operationContext operational context.
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

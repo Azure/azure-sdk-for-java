@@ -339,6 +339,7 @@ public final class CallMedia {
      * @param locale Defines new locale for transcription.
      * @param speechRecognitionModelEndpointId Defines custom model endpoint.
      * @param context Context
+     * @param operationContext operational context.
      * @return Response for successful update transcription request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
