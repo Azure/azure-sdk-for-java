@@ -28,11 +28,11 @@
     },
     "trainingDataContainer": {
       "type": "string",
-      "defaultValue": "trainingdata"
+      "defaultValue": "trainingdata-v3"
     },
     "selectionMarkTrainingDataContainer": {
       "type": "string",
-      "defaultValue": "selectionmark"
+      "defaultValue": "selectionmark-v3"
     },
     "blobResourceId": {
       "type": "string",
@@ -71,7 +71,7 @@
     },
     "multiPageTestingDataContainer": {
       "type": "string",
-      "defaultValue": "multipage-training-data"
+      "defaultValue": "multipage-training-data-v3"
     },
     "multiPageTestingDataSasProperties": {
       "type": "object",
@@ -122,10 +122,6 @@
     "DOCUMENTINTELLIGENCE_ENDPOINT": {
       "type": "string",
       "value": "[concat('https://', parameters('baseName'), parameters('cognitiveServicesEndpointSuffix'), '/')]"
-    },
-    "DOCUMENTINTELLIGENCE_API_KEY": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('baseName')), '2023-10-01-preview').key1]"
     },
     "DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL": {
       "type": "string",

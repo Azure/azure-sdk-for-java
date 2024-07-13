@@ -517,8 +517,6 @@
 # PRLabel: %Load Testing
 /sdk/loadtesting/                                    @Harshan01 @prativen
 
-/sdk/loganalytics/microsoft-azure-loganalytics/      @ischrei
-
 # ServiceLabel: %Logic App
 # ServiceOwners:                                     @Azure/azure-logicapps-team
 
@@ -868,10 +866,10 @@
 # ######## Eng Sys ########
 
 /eng/                                                @hallipr @weshaggard @benbp @JimSuplizio
+/eng/automation/                                     @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
 /eng/bomgenerator/                                   @vcolin7 @alzimmermsft @srnagar @jonathangiles
 /eng/code-quality-reports/                           @mssfang @JonathanGiles @alzimmermsft @srnagar
 /eng/common/                                         @Azure/azure-sdk-eng
-/eng/mgmt/                                           @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
 /eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
 /eng/versioning/                                     @alzimmermsft @samvaity @g2vinay @JimSuplizio
 /eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan

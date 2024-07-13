@@ -4,102 +4,86 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-/** The properties of a rendering session. */
-@Fluent
-public final class SessionProperties {
+/**
+ * The properties of a rendering session.
+ */
+@Immutable
+public final class SessionProperties implements JsonSerializable<SessionProperties> {
     /*
      * The ID of the session supplied when the session was created.
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
+    private final String id;
 
     /*
-     * The TCP port at which the Azure Remote Rendering Inspector tool is
-     * hosted.
+     * The TCP port at which the Azure Remote Rendering Inspector tool is hosted.
      */
-    @JsonProperty(value = "arrInspectorPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer arrInspectorPort;
 
     /*
      * The TCP port used for the handshake when establishing a connection.
      */
-    @JsonProperty(value = "handshakePort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer handshakePort;
 
     /*
-     * Amount of time in minutes the session is or was in the 'Ready' state.
-     * Time is rounded down to a full minute.
+     * Amount of time in minutes the session is or was in the 'Ready' state. Time is rounded down to a full minute.
      */
-    @JsonProperty(value = "elapsedTimeMinutes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer elapsedTimeMinutes;
 
     /*
      * The hostname under which the rendering session is reachable.
      */
-    @JsonProperty(value = "hostname", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
-     * The time in minutes the session will run after reaching the 'Ready'
-     * state.
+     * The time in minutes the session will run after reaching the 'Ready' state.
      */
-    @JsonProperty(value = "maxLeaseTimeMinutes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxLeaseTimeMinutes;
 
     /*
-     * The size of the server used for the rendering session. The size impacts
-     * the number of polygons the server can render. Refer to
-     * https://docs.microsoft.com/azure/remote-rendering/reference/vm-sizes for
-     * details.
+     * The size of the server used for the rendering session. The size impacts the number of polygons the server can
+     * render. Refer to https://docs.microsoft.com/azure/remote-rendering/reference/vm-sizes for details.
      */
-    @JsonProperty(value = "size", required = true)
-    private SessionSize size;
+    private final SessionSize size;
 
     /*
-     * The status of the rendering session. Terminal states are 'Error',
-     * 'Expired', and 'Stopped'.
+     * The status of the rendering session. Terminal states are 'Error', 'Expired', and 'Stopped'.
      */
-    @JsonProperty(value = "status", required = true)
-    private SessionStatus status;
+    private final SessionStatus status;
 
     /*
-     * The computational power of the rendering session GPU measured in
-     * teraflops.
+     * The computational power of the rendering session GPU measured in teraflops.
      */
-    @JsonProperty(value = "teraflops", access = JsonProperty.Access.WRITE_ONLY)
     private Float teraflops;
 
     /*
-     * The error object containing details about the rendering session startup
-     * failure.
+     * The error object containing details about the rendering session startup failure.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private Error error;
 
     /*
-     * The time when the rendering session was created. Date and time in ISO
-     * 8601 format.
+     * The time when the rendering session was created. Date and time in ISO 8601 format.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /**
      * Creates an instance of SessionProperties class.
-     *
+     * 
      * @param id the id value to set.
      * @param size the size value to set.
      * @param status the status value to set.
      */
-    @JsonCreator
-    public SessionProperties(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "size", required = true) SessionSize size,
-            @JsonProperty(value = "status", required = true) SessionStatus status) {
+    public SessionProperties(String id, SessionSize size, SessionStatus status) {
         this.id = id;
         this.size = size;
         this.status = status;
@@ -107,7 +91,7 @@ public final class SessionProperties {
 
     /**
      * Get the id property: The ID of the session supplied when the session was created.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -116,7 +100,7 @@ public final class SessionProperties {
 
     /**
      * Get the arrInspectorPort property: The TCP port at which the Azure Remote Rendering Inspector tool is hosted.
-     *
+     * 
      * @return the arrInspectorPort value.
      */
     public Integer getArrInspectorPort() {
@@ -125,7 +109,7 @@ public final class SessionProperties {
 
     /**
      * Get the handshakePort property: The TCP port used for the handshake when establishing a connection.
-     *
+     * 
      * @return the handshakePort value.
      */
     public Integer getHandshakePort() {
@@ -135,7 +119,7 @@ public final class SessionProperties {
     /**
      * Get the elapsedTimeMinutes property: Amount of time in minutes the session is or was in the 'Ready' state. Time
      * is rounded down to a full minute.
-     *
+     * 
      * @return the elapsedTimeMinutes value.
      */
     public Integer getElapsedTimeMinutes() {
@@ -144,7 +128,7 @@ public final class SessionProperties {
 
     /**
      * Get the hostname property: The hostname under which the rendering session is reachable.
-     *
+     * 
      * @return the hostname value.
      */
     public String getHostname() {
@@ -153,7 +137,7 @@ public final class SessionProperties {
 
     /**
      * Get the maxLeaseTimeMinutes property: The time in minutes the session will run after reaching the 'Ready' state.
-     *
+     * 
      * @return the maxLeaseTimeMinutes value.
      */
     public Integer getMaxLeaseTimeMinutes() {
@@ -164,7 +148,7 @@ public final class SessionProperties {
      * Get the size property: The size of the server used for the rendering session. The size impacts the number of
      * polygons the server can render. Refer to https://docs.microsoft.com/azure/remote-rendering/reference/vm-sizes for
      * details.
-     *
+     * 
      * @return the size value.
      */
     public SessionSize getSize() {
@@ -174,7 +158,7 @@ public final class SessionProperties {
     /**
      * Get the status property: The status of the rendering session. Terminal states are 'Error', 'Expired', and
      * 'Stopped'.
-     *
+     * 
      * @return the status value.
      */
     public SessionStatus getStatus() {
@@ -183,7 +167,7 @@ public final class SessionProperties {
 
     /**
      * Get the teraflops property: The computational power of the rendering session GPU measured in teraflops.
-     *
+     * 
      * @return the teraflops value.
      */
     public Float getTeraflops() {
@@ -192,7 +176,7 @@ public final class SessionProperties {
 
     /**
      * Get the error property: The error object containing details about the rendering session startup failure.
-     *
+     * 
      * @return the error value.
      */
     public Error getError() {
@@ -201,10 +185,110 @@ public final class SessionProperties {
 
     /**
      * Get the creationTime property: The time when the rendering session was created. Date and time in ISO 8601 format.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime getCreationTime() {
         return this.creationTime;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("size", this.size == null ? null : this.size.toString());
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SessionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SessionProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SessionProperties.
+     */
+    public static SessionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean idFound = false;
+            String id = null;
+            boolean sizeFound = false;
+            SessionSize size = null;
+            boolean statusFound = false;
+            SessionStatus status = null;
+            Integer arrInspectorPort = null;
+            Integer handshakePort = null;
+            Integer elapsedTimeMinutes = null;
+            String hostname = null;
+            Integer maxLeaseTimeMinutes = null;
+            Float teraflops = null;
+            Error error = null;
+            OffsetDateTime creationTime = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                    idFound = true;
+                } else if ("size".equals(fieldName)) {
+                    size = SessionSize.fromString(reader.getString());
+                    sizeFound = true;
+                } else if ("status".equals(fieldName)) {
+                    status = SessionStatus.fromString(reader.getString());
+                    statusFound = true;
+                } else if ("arrInspectorPort".equals(fieldName)) {
+                    arrInspectorPort = reader.getNullable(JsonReader::getInt);
+                } else if ("handshakePort".equals(fieldName)) {
+                    handshakePort = reader.getNullable(JsonReader::getInt);
+                } else if ("elapsedTimeMinutes".equals(fieldName)) {
+                    elapsedTimeMinutes = reader.getNullable(JsonReader::getInt);
+                } else if ("hostname".equals(fieldName)) {
+                    hostname = reader.getString();
+                } else if ("maxLeaseTimeMinutes".equals(fieldName)) {
+                    maxLeaseTimeMinutes = reader.getNullable(JsonReader::getInt);
+                } else if ("teraflops".equals(fieldName)) {
+                    teraflops = reader.getNullable(JsonReader::getFloat);
+                } else if ("error".equals(fieldName)) {
+                    error = Error.fromJson(reader);
+                } else if ("creationTime".equals(fieldName)) {
+                    creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (idFound && sizeFound && statusFound) {
+                SessionProperties deserializedSessionProperties = new SessionProperties(id, size, status);
+                deserializedSessionProperties.arrInspectorPort = arrInspectorPort;
+                deserializedSessionProperties.handshakePort = handshakePort;
+                deserializedSessionProperties.elapsedTimeMinutes = elapsedTimeMinutes;
+                deserializedSessionProperties.hostname = hostname;
+                deserializedSessionProperties.maxLeaseTimeMinutes = maxLeaseTimeMinutes;
+                deserializedSessionProperties.teraflops = teraflops;
+                deserializedSessionProperties.error = error;
+                deserializedSessionProperties.creationTime = creationTime;
+
+                return deserializedSessionProperties;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!idFound) {
+                missingProperties.add("id");
+            }
+            if (!sizeFound) {
+                missingProperties.add("size");
+            }
+            if (!statusFound) {
+                missingProperties.add("status");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

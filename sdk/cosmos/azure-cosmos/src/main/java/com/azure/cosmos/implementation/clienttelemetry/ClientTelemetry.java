@@ -273,7 +273,8 @@ public class ClientTelemetry {
                         ByteBuffer byteBuffer =
                             InternalObjectNode.serializeJsonToByteBuffer(this.clientTelemetryInfo,
                                 CosmosItemSerializer.DEFAULT_SERIALIZER,
-                                null);
+                                null,
+                                false);
                         byte[] tempBuffer = RxDocumentServiceRequest.toByteArray(byteBuffer);
                         Map<String, String> headers = new HashMap<>();
                         String date = Utils.nowAsRFC1123();

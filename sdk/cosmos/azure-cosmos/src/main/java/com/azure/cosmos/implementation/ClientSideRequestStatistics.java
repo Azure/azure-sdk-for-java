@@ -61,6 +61,7 @@ public class ClientSideRequestStatistics {
 
     private double samplingRateSnapshot = 1;
     private long approximateInsertionCountInBloomFilter = 0;
+    private Set<String> keywordIdentifiers;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
@@ -82,6 +83,7 @@ public class ClientSideRequestStatistics {
         this.userAgent = diagnosticsClientContext.getUserAgent();
         this.samplingRateSnapshot = 1;
         this.approximateInsertionCountInBloomFilter = 0;
+        this.keywordIdentifiers = new HashSet<>();
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -106,6 +108,7 @@ public class ClientSideRequestStatistics {
         this.userAgent = toBeCloned.userAgent;
         this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
         this.approximateInsertionCountInBloomFilter = toBeCloned.approximateInsertionCountInBloomFilter;
+        this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
     }
 
     @JsonIgnore
@@ -178,6 +181,7 @@ public class ClientSideRequestStatistics {
             if (excludedRegions != null && !excludedRegions.isEmpty()) {
                 storeResponseStatistics.excludedRegions = String.join(", ", excludedRegions);
             }
+            this.keywordIdentifiers = request.requestContext.getKeywordIdentifiers();
         }
 
         synchronized (this) {
@@ -218,6 +222,7 @@ public class ClientSideRequestStatistics {
             if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
                 locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
                 this.approximateInsertionCountInBloomFilter = rxDocumentServiceRequest.requestContext.getApproximateBloomFilterInsertionCount();
+                this.keywordIdentifiers = rxDocumentServiceRequest.requestContext.getKeywordIdentifiers();
             }
             this.recordRetryContextEndTime();
 
@@ -483,7 +488,7 @@ public class ClientSideRequestStatistics {
         }
     }
 
-    private Instant extractRequestStartTime(StoreResultDiagnostics storeResultDiagnostics){
+    private Instant extractRequestStartTime(StoreResultDiagnostics storeResultDiagnostics) {
         if (storeResultDiagnostics == null
             || storeResultDiagnostics.getStoreResponseDiagnostics() == null) {
             return null;
@@ -555,7 +560,7 @@ public class ClientSideRequestStatistics {
         this.locationEndpointsContacted = locationEndpointsContacted;
     }
 
-    public MetadataDiagnosticsContext getMetadataDiagnosticsContext(){
+    public MetadataDiagnosticsContext getMetadataDiagnosticsContext() {
         return this.metadataDiagnosticsContext;
     }
 
@@ -681,7 +686,9 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> locationToLocationSpecificHealthContext;
 
-        public String getExcludedRegions() { return this.excludedRegions; }
+        public String getExcludedRegions() {
+            return this.excludedRegions;
+        }
 
         public StoreResultDiagnostics getStoreResult() {
             return storeResult;
@@ -703,9 +710,13 @@ public class ClientSideRequestStatistics {
             return requestOperationType;
         }
 
-        public String getRegionName() { return regionName; }
+        public String getRegionName() {
+            return regionName;
+        }
 
-        public String getRequestSessionToken() { return requestSessionToken; }
+        public String getRequestSessionToken() {
+            return requestSessionToken;
+        }
 
         public Set<String> getSessionTokenEvaluationResults() {
             return sessionTokenEvaluationResults;
@@ -729,6 +740,7 @@ public class ClientSideRequestStatistics {
 
             return Duration.between(requestStartTimeUTC, requestResponseTimeUTC);
         }
+
     }
 
     public static class ClientSideRequestStatisticsSerializer extends StdSerializer<ClientSideRequestStatistics> {
@@ -762,6 +774,9 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("gatewayStatisticsList", statistics.gatewayStatisticsList);
             generator.writeObjectField("samplingRateSnapshot", statistics.samplingRateSnapshot);
             generator.writeNumberField("bloomFilterInsertionCountSnapshot", statistics.approximateInsertionCountInBloomFilter);
+            if (statistics.keywordIdentifiers != null && !statistics.keywordIdentifiers.isEmpty()) {
+                generator.writeObjectField("keywordIdentifiers", statistics.keywordIdentifiers);
+            }
 
             try {
                 CosmosDiagnosticsSystemUsageSnapshot systemInformation = fetchSystemInformation();
@@ -938,7 +953,7 @@ public class ClientSideRequestStatistics {
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
             private static final long serialVersionUID = 1L;
 
-            public GatewayStatisticsSerializer(){
+            public GatewayStatisticsSerializer() {
                 super(GatewayStatistics.class);
             }
 

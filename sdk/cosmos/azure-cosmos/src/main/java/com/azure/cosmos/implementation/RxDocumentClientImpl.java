@@ -929,7 +929,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Database, OperationType.Create);
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = database.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
+            ByteBuffer byteBuffer = database.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null, false);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1336,7 +1336,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Create);
 
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
+            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null, false);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1389,7 +1389,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String path = Utils.joinPath(collection.getSelfLink(), null);
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Replace);
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
+            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null, false);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1837,7 +1837,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null) {
             trackingId = options.getTrackingId();
         }
-        ByteBuffer content = InternalObjectNode.serializeJsonToByteBuffer(document, options.getEffectiveItemSerializer(), trackingId);
+        ByteBuffer content = InternalObjectNode.serializeJsonToByteBuffer(document, options.getEffectiveItemSerializer(), trackingId, true);
         Instant serializationEndTimeUTC = Instant.now();
 
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -1860,6 +1860,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         if (requestRetryPolicy != null) {
@@ -1914,6 +1915,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
@@ -1924,6 +1926,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (options != null) {
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         // note: calling onBeforeSendRequest is a cheap operation which injects a CosmosDiagnostics
@@ -2833,7 +2836,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
-        ByteBuffer content = document.serializeJsonToByteBuffer(options.getEffectiveItemSerializer(), onAfterSerialization);
+        ByteBuffer content = document.serializeJsonToByteBuffer(options.getEffectiveItemSerializer(), onAfterSerialization, false);
         Instant serializationEndTime = Instant.now();
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics =
             new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -2853,6 +2856,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         if (retryPolicyInstance != null) {
@@ -3028,6 +3032,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         if (retryPolicyInstance != null) {
@@ -3181,6 +3186,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                     () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
                 request.requestContext.setExcludeRegions(options.getExcludedRegions());
+                request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
             }
 
             if (retryPolicyInstance != null) {
@@ -3337,6 +3343,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
@@ -4444,6 +4451,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             if (options != null) {
                 request.requestContext.setExcludeRegions(options.getExcludedRegions());
+                request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
             }
 
             if (retryPolicy != null) {
@@ -6488,6 +6496,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                     feedOperationContextForCircuitBreakerForHedgedRequest.setIsRequestHedged(true);
                     clonedRequest.requestContext.setFeedOperationContext(feedOperationContextForCircuitBreakerForHedgedRequest);
+
+                    clonedRequest.requestContext.setKeywordIdentifiers(req.requestContext.getKeywordIdentifiers());
 
                     // Non-Transient errors are mapped to a value - this ensures the firstWithValue
                     // operator below will complete the composite Mono for both successful values

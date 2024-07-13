@@ -63,8 +63,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
         return getModelAdminClientBuilder(
             buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
-            serviceVersion,
-            true)
+            serviceVersion
+        )
             .buildAsyncClient();
     }
 
@@ -97,6 +97,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
 
     @ParameterizedTest(name = TestUtils.DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void deleteModelValidModelIdWithResponse(HttpClient httpClient,
                                                     DocumentIntelligenceServiceVersion serviceVersion) {
 
@@ -138,6 +139,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
      */
     @ParameterizedTest(name = TestUtils.DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginCreateComposedModel(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
 
         client = getModelAdminAsyncClient(httpClient, serviceVersion);
@@ -179,6 +181,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
      */
     @ParameterizedTest(name = TestUtils.DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginBuildModel(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdminAsyncClient(httpClient, serviceVersion);
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
@@ -199,6 +202,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
      */
     @ParameterizedTest(name = TestUtils.DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginCopy(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdminAsyncClient(httpClient, serviceVersion);
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
@@ -298,6 +302,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
     @RecordWithoutRequestBody
     @ParameterizedTest(name = TestUtils.DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginBuildClassifier(HttpClient httpClient,
                                      DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdminAsyncClient(httpClient, serviceVersion);
@@ -338,6 +343,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
     @RecordWithoutRequestBody
     @ParameterizedTest(name = TestUtils.DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginBuildClassifierWithJsonL(HttpClient httpClient,
                                               DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdminAsyncClient(httpClient, serviceVersion);

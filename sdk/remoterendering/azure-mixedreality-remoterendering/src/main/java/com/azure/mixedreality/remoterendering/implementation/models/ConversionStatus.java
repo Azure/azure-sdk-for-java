@@ -5,38 +5,61 @@
 package com.azure.mixedreality.remoterendering.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConversionStatus. */
+/**
+ * The status of the conversion. Terminal states are 'Cancelled', 'Failed', and 'Succeeded'.
+ */
 public final class ConversionStatus extends ExpandableStringEnum<ConversionStatus> {
-    /** Static value NotStarted for ConversionStatus. */
+    /**
+     * The conversion was created but hasn't started.
+     */
     public static final ConversionStatus NOT_STARTED = fromString("NotStarted");
 
-    /** Static value Running for ConversionStatus. */
+    /**
+     * The conversion is running.
+     */
     public static final ConversionStatus RUNNING = fromString("Running");
 
-    /** Static value Cancelled for ConversionStatus. */
+    /**
+     * The conversion was cancelled. This is a terminal state.
+     */
     public static final ConversionStatus CANCELLED = fromString("Cancelled");
 
-    /** Static value Failed for ConversionStatus. */
+    /**
+     * The conversion has failed. Check the 'error' field for more details. This is a terminal state.
+     */
     public static final ConversionStatus FAILED = fromString("Failed");
 
-    /** Static value Succeeded for ConversionStatus. */
+    /**
+     * The conversion has succeeded. Check the 'output' field for output asset location. This is a terminal state.
+     */
     public static final ConversionStatus SUCCEEDED = fromString("Succeeded");
 
     /**
+     * Creates a new instance of ConversionStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConversionStatus() {
+    }
+
+    /**
      * Creates or finds a ConversionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConversionStatus.
      */
-    @JsonCreator
     public static ConversionStatus fromString(String name) {
         return fromString(name, ConversionStatus.class);
     }
 
-    /** @return known ConversionStatus values. */
+    /**
+     * Gets known ConversionStatus values.
+     * 
+     * @return known ConversionStatus values.
+     */
     public static Collection<ConversionStatus> values() {
         return values(ConversionStatus.class);
     }

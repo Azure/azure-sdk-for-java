@@ -141,6 +141,8 @@ implements IDocumentQueryExecutionContext<T> {
         }
         request.requestContext.setExcludeRegions(
             qryOptAccessor.getImpl(cosmosQueryRequestOptions).getExcludedRegions());
+        request.requestContext.setKeywordIdentifiers(
+            qryOptAccessor.getImpl(cosmosQueryRequestOptions).getKeywordIdentifiers());
 
         request.requestContext.setIsRequestCancelledOnTimeout(this.isQueryCancelledOnTimeout);
         return request;
@@ -336,6 +338,7 @@ implements IDocumentQueryExecutionContext<T> {
             if (endToEndOperationLatencyConfig != null) {
                 executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
             }
+            executeQueryRequest.requestContext.setKeywordIdentifiers(qryOptAccessor.getImpl(cosmosQueryRequestOptions).getKeywordIdentifiers());
 
             executeQueryRequest.setPartitionKeyDefinition(qryOptAccessor.getPartitionKeyDefinition(this.cosmosQueryRequestOptions));
 

@@ -24,6 +24,7 @@ import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.core.http.HttpRange;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import reactor.core.publisher.Flux;
@@ -47,6 +48,7 @@ public class DownloadContentAsyncUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadStream() {
         StepVerifier.create(
             callRecording.downloadStream(AMS_ENDPOINT)
@@ -57,6 +59,7 @@ public class DownloadContentAsyncUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadStreamWithResponse() {
         StepVerifier.create(
             callRecording.downloadStreamWithResponse(
@@ -69,6 +72,7 @@ public class DownloadContentAsyncUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadStreamWithResponseThrowException() {
         CallAutomationAsyncClient callingServerClient =
             CallAutomationUnitTestBase.getCallAutomationAsyncClient(new ArrayList<>(
@@ -84,6 +88,7 @@ public class DownloadContentAsyncUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadToWithResponse() throws IOException {
         String fileName = "./" + UUID.randomUUID().toString().replace("-", "") + ".txt";
         Path path = FileSystems.getDefault().getPath(fileName);

@@ -22,6 +22,7 @@ import com.azure.cosmos.util.Beta;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
@@ -45,6 +46,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private CosmosItemSerializer customSerializer;
     private PartitionKeyDefinition partitionKeyDefinition;
     private String collectionRid;
+    private Set<String> keywordIdentifiers;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
         this.continuationState = toBeCloned.continuationState;
@@ -64,6 +66,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.customSerializer = toBeCloned.customSerializer;
         this.collectionRid = toBeCloned.collectionRid;
         this.partitionKeyDefinition = toBeCloned.partitionKeyDefinition;
+        this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
     }
 
     public CosmosChangeFeedRequestOptionsImpl(
@@ -347,6 +350,15 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.collectionRid = collectionRid;
     }
 
+    public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
+    }
+
+    @Override
+    public Set<String> getKeywordIdentifiers() {
+        return this.keywordIdentifiers;
+    }
+
     @Override
     public void override(CosmosRequestOptions cosmosRequestOptions) {
         this.maxItemCount = overrideOption(cosmosRequestOptions.getMaxItemCount(), this.maxItemCount);
@@ -354,6 +366,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.excludeRegions = overrideOption(cosmosRequestOptions.getExcludedRegions(), this.excludeRegions);
         this.throughputControlGroupName = overrideOption(cosmosRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
         this.thresholds = overrideOption(cosmosRequestOptions.getDiagnosticsThresholds(), this.thresholds);
+        this.keywordIdentifiers = overrideOption(cosmosRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
     }
 
 }

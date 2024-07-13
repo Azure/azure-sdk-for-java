@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.net.URI;
@@ -51,6 +52,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
     private AtomicBoolean isRequestCancelledOnTimeout = null;
     private volatile List<String> excludeRegions;
+    private volatile Set<String> keywordIdentifiers;
     private volatile long approximateBloomFilterInsertionCount;
     private final Set<String> sessionTokenEvaluationResults = ConcurrentHashMap.newKeySet();
     private volatile List<String> unavailableRegionsForPartition;
@@ -198,6 +200,14 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     public void setFeedOperationContext(FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker) {
         this.feedOperationContextForCircuitBreaker = feedOperationContextForCircuitBreaker;
+    }
+
+    public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
+    }
+
+    public Set<String> getKeywordIdentifiers() {
+        return keywordIdentifiers;
     }
 
     public long getApproximateBloomFilterInsertionCount() {
