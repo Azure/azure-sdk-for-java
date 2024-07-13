@@ -723,7 +723,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hold(CommunicationIdentifier targetParticipant) {
-        return holdInternal(targetParticipant, Context.NONE).then();
+        return holdWithResponse(new HoldOptions(targetParticipant)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -734,34 +734,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hold(CommunicationIdentifier targetParticipant, PlaySource playSource) {
-        return holdInternal(targetParticipant, playSource, Context.NONE).then();
-    }
-
-    Mono<Response<Void>> holdInternal(CommunicationIdentifier targetParticipant, Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
-            HoldRequest request = new HoldRequest()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant));
-
-            return contentsInternal
-                .holdWithResponseAsync(callConnectionId, request, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<Void>> holdInternal(CommunicationIdentifier targetParticipant, PlaySource playSource, Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
-            HoldRequest request = new HoldRequest()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
-                .setPlaySourceInfo(convertPlaySourceToPlaySourceInternal(playSource));
-
-            return contentsInternal
-                .holdWithResponseAsync(callConnectionId, request, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return holdWithResponse(new HoldOptions(targetParticipant).setPlaySource(playSource)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -780,9 +753,12 @@ public final class CallMediaAsync {
             context = context == null ? Context.NONE : context;
             HoldRequest request = new HoldRequest()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
-                .setPlaySourceInfo(convertPlaySourceToPlaySourceInternal(options.getPlaySource()))
                 .setOperationContext(options.getOperationContext())
                 .setOperationCallbackUri(options.getOperationCallbackUrl());
+            if(options.getPlaySource() != null)
+            {
+                request.setPlaySourceInfo(convertPlaySourceToPlaySourceInternal(options.getPlaySource()));
+            }
 
             return contentsInternal
                 .holdWithResponseAsync(callConnectionId, request, context);
