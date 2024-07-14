@@ -3959,14 +3959,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             @Override
             public Mono<RxDocumentServiceRequest> addPartitionLevelUnavailableRegionsOnRequest(RxDocumentServiceRequest request, CosmosQueryRequestOptions queryRequestOptions) {
 
-                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryRequestOptionsAccessor
-                    = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
-
-                request.requestContext.setPerPartitionCircuitBreakerDisabledForRequest(queryRequestOptionsAccessor.isPerPartitionCircuitBreakerDisabled(queryRequestOptions));
-
                 if (RxDocumentClientImpl.this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
 
-                    String collectionRid = queryRequestOptionsAccessor.getCollectionRid(queryRequestOptions);
+                    String collectionRid = RxDocumentClientImpl.qryOptAccessor.getCollectionRid(queryRequestOptions);
 
                     checkNotNull(collectionRid, "Argument 'collectionRid' cannot be null!");
 
@@ -3974,7 +3969,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         .flatMap(collectionRoutingMapValueHolder -> {
 
                             if (collectionRoutingMapValueHolder.v == null) {
-                                return Mono.error(new NotFoundException("collectionRoutingMap could not be found!"));
+                                return Mono.error(new CollectionRoutingMapNotFoundException("Argument 'collectionRoutingMapValueHolder.v' cannot be null!"));
                             }
 
                             RxDocumentClientImpl.this.addPartitionLevelUnavailableRegionsForFeedRequest(request, queryRequestOptions, collectionRoutingMapValueHolder.v);
@@ -6754,27 +6749,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         public void reset() {
             this.createdDiagnostics.clear();
             this.isMerged.set(false);
-        }
-    }
-
-    private static class CollectionRoutingMapNotFoundException extends CosmosException {
-
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Instantiates a new Invalid partition exception.
-         *
-         * @param msg the msg
-         */
-        public CollectionRoutingMapNotFoundException(String msg) {
-            super(HttpConstants.StatusCodes.NOTFOUND, msg);
-            setSubStatus();
-        }
-
-        private void setSubStatus() {
-            this.getResponseHeaders().put(
-                WFConstants.BackendHeaders.SUB_STATUS,
-                Integer.toString(HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS));
         }
     }
 }

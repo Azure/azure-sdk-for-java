@@ -304,10 +304,6 @@ public class ImplementationBridgeHelpers {
             void setCollectionRid(CosmosQueryRequestOptions options, String collectionRid);
 
             String getCollectionRid(CosmosQueryRequestOptions options);
-
-            boolean isPerPartitionCircuitBreakerDisabled(CosmosQueryRequestOptions options);
-
-            void disablePerPartitionCircuitBreaker(CosmosQueryRequestOptions options);
         }
     }
 

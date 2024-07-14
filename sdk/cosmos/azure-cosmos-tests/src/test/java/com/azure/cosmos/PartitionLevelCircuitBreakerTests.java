@@ -2042,7 +2042,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             15);
     }
 
-
     @Test(groups = {"circuit-breaker-read-all-read-many"}, dataProvider = "readManyTestConfigs", timeOut = 4 * TIMEOUT)
     public void readManyOperationHitsTerminalExceptionAcrossKRegions(
         String testId,

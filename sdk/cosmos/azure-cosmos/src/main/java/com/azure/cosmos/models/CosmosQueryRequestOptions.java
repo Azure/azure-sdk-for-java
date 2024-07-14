@@ -522,15 +522,6 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
-    CosmosQueryRequestOptions disablePerPartitionCircuitBreaking() {
-        this.actualRequestOptions.setPerPartitionCircuitBreakingDisabled(true);
-        return this;
-    }
-
-    boolean isPerPartitionCircuitBreakingDisabled() {
-        return this.actualRequestOptions.isPerPartitionCircuitBreakingDisabled();
-    }
-
     /**
      * Sets the custom ids.
      *
@@ -667,16 +658,6 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public String getCollectionRid(CosmosQueryRequestOptions options) {
                     return options.actualRequestOptions.getCollectionRid();
-                }
-
-                @Override
-                public boolean isPerPartitionCircuitBreakerDisabled(CosmosQueryRequestOptions options) {
-                    return options.actualRequestOptions.isPerPartitionCircuitBreakingDisabled();
-                }
-
-                @Override
-                public void disablePerPartitionCircuitBreaker(CosmosQueryRequestOptions options) {
-                    options.actualRequestOptions.setPerPartitionCircuitBreakingDisabled(true);
                 }
             });
     }

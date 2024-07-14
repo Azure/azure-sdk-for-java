@@ -318,7 +318,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             return false;
         }
 
-        if (request.requestContext.isPerPartitionCircuitBreakerDisabledForRequest()) {
+        // could be a possible scenario when end-to-end timeout set on the operation is negative
+        // failing the operation with a NullPointerException would suppress the real issue in this case
+        // so when request is null - circuit breaking is effectively disabled
+        if (request == null) {
             return false;
         }
 

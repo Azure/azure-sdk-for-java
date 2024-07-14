@@ -174,6 +174,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
                 case HealthyTentative:
                     return this.partitionLevelCircuitBreakerConfig.getConsecutiveExceptionCountToleratedForWrites() / 2;
                 case Healthy:
+                case Unavailable:
                     return 0;
                 default:
                     throw new IllegalStateException("Unsupported health status: " + status);
