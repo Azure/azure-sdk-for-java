@@ -74,7 +74,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private static Scheduler scheduler;
     private static Map<String, IntegrationTestEventData> testEventData;
-    private List<Closeable> toClose = new ArrayList<>();
+    private List<AutoCloseable> toClose = new ArrayList<>();
     protected String testName;
 
     protected IntegrationTestBase(ClientLogger logger) {
@@ -103,7 +103,7 @@ public abstract class IntegrationTestBase extends TestBase {
         beforeTest();
     }
 
-    protected <T extends Closeable> T toClose(T closeable) {
+    protected <T extends AutoCloseable> T toClose(T closeable) {
         toClose.add(closeable);
         return closeable;
     }
