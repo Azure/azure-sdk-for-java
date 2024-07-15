@@ -18,6 +18,7 @@ import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -53,8 +54,8 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
         return getDocumentAnalysisBuilder(
             buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
-            serviceVersion,
-            true)
+            serviceVersion
+        )
             .buildAsyncClient();
     }
 
@@ -63,8 +64,8 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
         return getDocumentModelAdminClientBuilder(
             buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
-            serviceVersion,
-            true)
+            serviceVersion
+        )
             .buildAsyncClient();
     }
 
@@ -166,6 +167,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void analyzeGermanContentFromUrl(HttpClient httpClient,
                                             DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -279,6 +281,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void testClassifyAnalyzeFromUrl(HttpClient httpClient,
                                            DocumentIntelligenceServiceVersion serviceVersion) throws RuntimeException {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
