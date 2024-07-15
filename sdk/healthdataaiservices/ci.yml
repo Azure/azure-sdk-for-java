@@ -1,5 +1,4 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
-
 trigger:
   branches:
     include:
@@ -8,11 +7,10 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/healthdataaiservices/ci.yml
-      - sdk/healthdataaiservices/azure-health-deidentification/
+      - sdk/healthdataaiservices/
     exclude:
       - sdk/healthdataaiservices/pom.xml
-      - sdk/healthdataaiservices/azure-health-deidentification/pom.xml
+      - sdk/healthdataaiservices/azure-ai-healthdataaiservices/pom.xml
 
 pr:
   branches:
@@ -23,18 +21,16 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/healthdataaiservices/ci.yml
-      - sdk/healthdataaiservices/azure-health-deidentification/
+      - sdk/healthdataaiservices/
     exclude:
       - sdk/healthdataaiservices/pom.xml
-      - sdk/healthdataaiservices/azure-health-deidentification/pom.xml
+      - sdk/healthdataaiservices/azure-ai-healthdataaiservices/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: healthdataaiservices
-    EnableBatchRelease: true
     Artifacts:
-      - name: azure-health-deidentification
+      - name: azure-ai-healthdataaiservices
         groupId: com.azure
-        safeName: azurehealthdeidentification
+        safeName: azureaihealthdataaiservices
