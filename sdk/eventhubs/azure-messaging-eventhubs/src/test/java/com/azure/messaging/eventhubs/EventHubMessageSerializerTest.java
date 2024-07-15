@@ -23,6 +23,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.APPLICATION_PROPERTIES;
 import static com.azure.messaging.eventhubs.TestUtils.ENQUEUED_TIME;
+import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_ID;
 import static com.azure.messaging.eventhubs.TestUtils.OFFSET;
 import static com.azure.messaging.eventhubs.TestUtils.OTHER_SYSTEM_PROPERTY;
 import static com.azure.messaging.eventhubs.TestUtils.PARTITION_KEY;
@@ -80,7 +81,8 @@ public class EventHubMessageSerializerTest {
         systemPropertiesMap.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), ENQUEUED_TIME);
         systemPropertiesMap.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), SEQUENCE_NUMBER);
 
-        final Message message = getMessage("hello-world".getBytes(UTF_8), "messageId");
+        final String messageId = "the-message-id";
+        final Message message = getMessage("hello-world".getBytes(UTF_8), messageId);
 
         // Act
         final EventData eventData = serializer.deserialize(message, EventData.class);
@@ -103,17 +105,22 @@ public class EventHubMessageSerializerTest {
         // Verify that the message annotations in the raw AMQP message also match the ones in getSystemProperties()
         Assertions.assertTrue(eventData.getSystemProperties().containsKey(OTHER_SYSTEM_PROPERTY));
         final Object otherPropertyValue = eventData.getSystemProperties().get(OTHER_SYSTEM_PROPERTY);
-        Assertions.assertTrue(otherPropertyValue instanceof Boolean);
+        Assertions.assertInstanceOf(Boolean.class, otherPropertyValue);
         Assertions.assertTrue((Boolean) otherPropertyValue);
 
         final AmqpAnnotatedMessage amqpMessage = eventData.getRawAmqpMessage();
         Assertions.assertTrue(amqpMessage.getMessageAnnotations().containsKey(OTHER_SYSTEM_PROPERTY));
         final Object otherPropertyValue2 = amqpMessage.getMessageAnnotations().get(OTHER_SYSTEM_PROPERTY);
-        Assertions.assertTrue(otherPropertyValue2 instanceof Boolean);
+        Assertions.assertInstanceOf(Boolean.class, otherPropertyValue2);
         Assertions.assertTrue((Boolean) otherPropertyValue2);
 
         // Verifying our application properties are the same.
-        Assertions.assertEquals(APPLICATION_PROPERTIES.size(), eventData.getProperties().size());
+        // messageTrackingValue of 'messageId' is added to the application properties when creating event data.
+        final int expectedNumber = APPLICATION_PROPERTIES.size() + 1;
+        Assertions.assertEquals(expectedNumber, eventData.getProperties().size());
+
+        Assertions.assertEquals(messageId, eventData.getProperties().get(MESSAGE_ID));
+
         APPLICATION_PROPERTIES.forEach((key, value) -> {
             Assertions.assertTrue(eventData.getProperties().containsKey(key));
             Assertions.assertEquals(value, eventData.getProperties().get(key));
