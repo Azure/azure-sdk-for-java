@@ -39,6 +39,8 @@ import com.azure.resourcemanager.dataprotection.models.AzureBackupRehydrationReq
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreRequest;
 import com.azure.resourcemanager.dataprotection.models.BackupInstanceResourceList;
 import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreRequestObject;
+import com.azure.resourcemanager.dataprotection.models.StopProtectionRequest;
+import com.azure.resourcemanager.dataprotection.models.SuspendBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.SyncBackupInstanceRequest;
 import com.azure.resourcemanager.dataprotection.models.TriggerBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.ValidateCrossRegionRestoreRequestObject;
@@ -107,6 +109,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
+            @HeaderParam("x-ms-authorization-auxiliary") String xMsAuthorizationAuxiliary,
             @BodyParam("application/json") BackupInstanceResourceInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -117,8 +120,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
-            @PathParam("backupInstanceName") String backupInstanceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("backupInstanceName") String backupInstanceName,
+            @HeaderParam("x-ms-authorization-auxiliary") String xMsAuthorizationAuxiliary,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/backup")
@@ -190,6 +194,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
+            @HeaderParam("x-ms-authorization-auxiliary") String xMsAuthorizationAuxiliary,
             @BodyParam("application/json") AzureBackupRestoreRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -221,7 +226,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-authorization-auxiliary") String xMsAuthorizationAuxiliary,
+            @BodyParam("application/json") StopProtectionRequest parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/suspendBackups")
@@ -231,7 +238,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-authorization-auxiliary") String xMsAuthorizationAuxiliary,
+            @BodyParam("application/json") SuspendBackupRequest parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/sync")
@@ -548,6 +557,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -555,7 +565,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName, BackupInstanceResourceInner parameters) {
+        String backupInstanceName, BackupInstanceResourceInner parameters, String xMsAuthorizationAuxiliary) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -583,8 +593,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, accept,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName,
+                xMsAuthorizationAuxiliary, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -595,6 +605,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -603,7 +614,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName, BackupInstanceResourceInner parameters, Context context) {
+        String backupInstanceName, BackupInstanceResourceInner parameters, String xMsAuthorizationAuxiliary,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -631,8 +643,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName,
+            xMsAuthorizationAuxiliary, parameters, accept, context);
     }
 
     /**
@@ -642,6 +654,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -649,9 +662,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupInstanceResourceInner>, BackupInstanceResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
+        String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters,
+        String xMsAuthorizationAuxiliary) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, parameters, xMsAuthorizationAuxiliary);
         return this.client.<BackupInstanceResourceInner, BackupInstanceResourceInner>getLroResult(mono,
             this.client.getHttpPipeline(), BackupInstanceResourceInner.class, BackupInstanceResourceInner.class,
             this.client.getContext());
@@ -664,6 +678,30 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of backupInstanceResource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BackupInstanceResourceInner>, BackupInstanceResourceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters) {
+        final String xMsAuthorizationAuxiliary = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, parameters, xMsAuthorizationAuxiliary);
+        return this.client.<BackupInstanceResourceInner, BackupInstanceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BackupInstanceResourceInner.class, BackupInstanceResourceInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Create or update a backup instance in a backup vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -673,10 +711,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupInstanceResourceInner>, BackupInstanceResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters,
-        Context context) {
+        String xMsAuthorizationAuxiliary, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, parameters, xMsAuthorizationAuxiliary, context);
         return this.client.<BackupInstanceResourceInner, BackupInstanceResourceInner>getLroResult(mono,
             this.client.getHttpPipeline(), BackupInstanceResourceInner.class, BackupInstanceResourceInner.class,
             context);
@@ -697,7 +735,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInstanceResourceInner>, BackupInstanceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
+        final String xMsAuthorizationAuxiliary = null;
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters,
+                xMsAuthorizationAuxiliary)
             .getSyncPoller();
     }
 
@@ -708,6 +749,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -717,8 +759,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInstanceResourceInner>, BackupInstanceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters,
-        Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
+        String xMsAuthorizationAuxiliary, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters,
+                xMsAuthorizationAuxiliary, context)
             .getSyncPoller();
     }
 
@@ -729,6 +773,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -736,9 +781,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupInstanceResourceInner> createOrUpdateAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName, BackupInstanceResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        String backupInstanceName, BackupInstanceResourceInner parameters, String xMsAuthorizationAuxiliary) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters,
+            xMsAuthorizationAuxiliary).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -748,6 +793,27 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backupInstanceResource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BackupInstanceResourceInner> createOrUpdateAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, BackupInstanceResourceInner parameters) {
+        final String xMsAuthorizationAuxiliary = null;
+        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters,
+            xMsAuthorizationAuxiliary).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create or update a backup instance in a backup vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -756,9 +822,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupInstanceResourceInner> createOrUpdateAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName, BackupInstanceResourceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        String backupInstanceName, BackupInstanceResourceInner parameters, String xMsAuthorizationAuxiliary,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters,
+            xMsAuthorizationAuxiliary, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -776,7 +843,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInstanceResourceInner createOrUpdate(String resourceGroupName, String vaultName,
         String backupInstanceName, BackupInstanceResourceInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters).block();
+        final String xMsAuthorizationAuxiliary = null;
+        return createOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters,
+            xMsAuthorizationAuxiliary).block();
     }
 
     /**
@@ -786,6 +855,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -794,8 +864,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInstanceResourceInner createOrUpdate(String resourceGroupName, String vaultName,
-        String backupInstanceName, BackupInstanceResourceInner parameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).block();
+        String backupInstanceName, BackupInstanceResourceInner parameters, String xMsAuthorizationAuxiliary,
+        Context context) {
+        return createOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters,
+            xMsAuthorizationAuxiliary, context).block();
     }
 
     /**
@@ -804,6 +876,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -811,7 +884,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName) {
+        String backupInstanceName, String xMsAuthorizationAuxiliary) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -834,7 +907,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName,
+                xMsAuthorizationAuxiliary, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -844,6 +918,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -852,7 +927,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context) {
+        String backupInstanceName, String xMsAuthorizationAuxiliary, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -875,7 +950,28 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, vaultName, backupInstanceName, accept, context);
+            resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary, accept, context);
+    }
+
+    /**
+     * Delete a backup instance in a backup vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, String xMsAuthorizationAuxiliary) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -892,8 +988,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName,
         String backupInstanceName) {
+        final String xMsAuthorizationAuxiliary = null;
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, vaultName, backupInstanceName);
+            = deleteWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -904,6 +1001,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -912,10 +1010,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context) {
+        String backupInstanceName, String xMsAuthorizationAuxiliary, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, xMsAuthorizationAuxiliary, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -934,7 +1032,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
         String backupInstanceName) {
-        return this.beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName).getSyncPoller();
+        final String xMsAuthorizationAuxiliary = null;
+        return this.beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary)
+            .getSyncPoller();
     }
 
     /**
@@ -943,6 +1043,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -951,8 +1052,29 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName, context).getSyncPoller();
+        String backupInstanceName, String xMsAuthorizationAuxiliary, Context context) {
+        return this
+            .beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Delete a backup instance in a backup vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+        String xMsAuthorizationAuxiliary) {
+        return beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -968,7 +1090,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String backupInstanceName) {
-        return beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName).last()
+        final String xMsAuthorizationAuxiliary = null;
+        return beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -978,6 +1101,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -986,8 +1110,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String backupInstanceName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName, context).last()
+        String xMsAuthorizationAuxiliary, Context context) {
+        return beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary, context)
+            .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1003,7 +1128,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, String backupInstanceName) {
-        deleteAsync(resourceGroupName, vaultName, backupInstanceName).block();
+        final String xMsAuthorizationAuxiliary = null;
+        deleteAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary).block();
     }
 
     /**
@@ -1012,14 +1138,16 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
-        deleteAsync(resourceGroupName, vaultName, backupInstanceName, context).block();
+    public void delete(String resourceGroupName, String vaultName, String backupInstanceName,
+        String xMsAuthorizationAuxiliary, Context context) {
+        deleteAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary, context).block();
     }
 
     /**
@@ -2397,6 +2525,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2404,7 +2533,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> triggerRestoreWithResponseAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName, AzureBackupRestoreRequest parameters) {
+        String backupInstanceName, AzureBackupRestoreRequest parameters, String xMsAuthorizationAuxiliary) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2432,8 +2561,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.triggerRestore(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, accept,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName,
+                xMsAuthorizationAuxiliary, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2444,6 +2573,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2452,7 +2582,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> triggerRestoreWithResponseAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName, AzureBackupRestoreRequest parameters, Context context) {
+        String backupInstanceName, AzureBackupRestoreRequest parameters, String xMsAuthorizationAuxiliary,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2480,8 +2611,32 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.triggerRestore(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName,
+            xMsAuthorizationAuxiliary, parameters, accept, context);
+    }
+
+    /**
+     * Triggers restore for a BackupInstance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
+        beginTriggerRestoreAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+            AzureBackupRestoreRequest parameters, String xMsAuthorizationAuxiliary) {
+        Mono<Response<Flux<ByteBuffer>>> mono = triggerRestoreWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, parameters, xMsAuthorizationAuxiliary);
+        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -2500,8 +2655,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
         beginTriggerRestoreAsync(String resourceGroupName, String vaultName, String backupInstanceName,
             AzureBackupRestoreRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = triggerRestoreWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
+        final String xMsAuthorizationAuxiliary = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = triggerRestoreWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, parameters, xMsAuthorizationAuxiliary);
         return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
             this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
             this.client.getContext());
@@ -2514,6 +2670,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2523,10 +2680,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
         beginTriggerRestoreAsync(String resourceGroupName, String vaultName, String backupInstanceName,
-            AzureBackupRestoreRequest parameters, Context context) {
+            AzureBackupRestoreRequest parameters, String xMsAuthorizationAuxiliary, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = triggerRestoreWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = triggerRestoreWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, parameters, xMsAuthorizationAuxiliary, context);
         return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
             this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
             context);
@@ -2547,7 +2704,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginTriggerRestore(
         String resourceGroupName, String vaultName, String backupInstanceName, AzureBackupRestoreRequest parameters) {
-        return this.beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
+        final String xMsAuthorizationAuxiliary = null;
+        return this
+            .beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters,
+                xMsAuthorizationAuxiliary)
             .getSyncPoller();
     }
 
@@ -2558,6 +2718,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2567,8 +2728,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginTriggerRestore(
         String resourceGroupName, String vaultName, String backupInstanceName, AzureBackupRestoreRequest parameters,
-        Context context) {
-        return this.beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
+        String xMsAuthorizationAuxiliary, Context context) {
+        return this
+            .beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters,
+                xMsAuthorizationAuxiliary, context)
             .getSyncPoller();
     }
 
@@ -2579,6 +2742,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2586,9 +2750,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationJobExtendedInfoInner> triggerRestoreAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName, AzureBackupRestoreRequest parameters) {
-        return beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        String backupInstanceName, AzureBackupRestoreRequest parameters, String xMsAuthorizationAuxiliary) {
+        return beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters,
+            xMsAuthorizationAuxiliary).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2598,6 +2762,27 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationJobExtendedInfoInner> triggerRestoreAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupRestoreRequest parameters) {
+        final String xMsAuthorizationAuxiliary = null;
+        return beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters,
+            xMsAuthorizationAuxiliary).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Triggers restore for a BackupInstance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2606,9 +2791,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationJobExtendedInfoInner> triggerRestoreAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName, AzureBackupRestoreRequest parameters, Context context) {
-        return beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        String backupInstanceName, AzureBackupRestoreRequest parameters, String xMsAuthorizationAuxiliary,
+        Context context) {
+        return beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters,
+            xMsAuthorizationAuxiliary, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2626,7 +2812,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner triggerRestore(String resourceGroupName, String vaultName,
         String backupInstanceName, AzureBackupRestoreRequest parameters) {
-        return triggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters).block();
+        final String xMsAuthorizationAuxiliary = null;
+        return triggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters,
+            xMsAuthorizationAuxiliary).block();
     }
 
     /**
@@ -2636,6 +2824,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2644,8 +2833,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner triggerRestore(String resourceGroupName, String vaultName,
-        String backupInstanceName, AzureBackupRestoreRequest parameters, Context context) {
-        return triggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).block();
+        String backupInstanceName, AzureBackupRestoreRequest parameters, String xMsAuthorizationAuxiliary,
+        Context context) {
+        return triggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters,
+            xMsAuthorizationAuxiliary, context).block();
     }
 
     /**
@@ -3104,6 +3295,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3111,7 +3304,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopProtectionWithResponseAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName) {
+        String backupInstanceName, String xMsAuthorizationAuxiliary, StopProtectionRequest parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -3131,10 +3324,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter backupInstanceName is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stopProtection(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, backupInstanceName, this.client.getApiVersion(), accept, context))
+                resourceGroupName, vaultName, backupInstanceName, this.client.getApiVersion(),
+                xMsAuthorizationAuxiliary, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3144,6 +3341,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3152,7 +3351,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopProtectionWithResponseAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context) {
+        String backupInstanceName, String xMsAuthorizationAuxiliary, StopProtectionRequest parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -3172,10 +3372,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter backupInstanceName is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.stopProtection(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            vaultName, backupInstanceName, this.client.getApiVersion(), accept, context);
+            vaultName, backupInstanceName, this.client.getApiVersion(), xMsAuthorizationAuxiliary, parameters, accept,
+            context);
     }
 
     /**
@@ -3184,6 +3388,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3191,9 +3397,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopProtectionAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = stopProtectionWithResponseAsync(resourceGroupName, vaultName, backupInstanceName);
+        String backupInstanceName, String xMsAuthorizationAuxiliary, StopProtectionRequest parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = stopProtectionWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, xMsAuthorizationAuxiliary, parameters);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -3204,6 +3410,30 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginStopProtectionAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
+        final String xMsAuthorizationAuxiliary = null;
+        final StopProtectionRequest parameters = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = stopProtectionWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, xMsAuthorizationAuxiliary, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * This operation will stop protection of a backup instance and data will be held forever.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3212,10 +3442,11 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopProtectionAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context) {
+        String backupInstanceName, String xMsAuthorizationAuxiliary, StopProtectionRequest parameters,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = stopProtectionWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = stopProtectionWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, xMsAuthorizationAuxiliary, parameters, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -3234,7 +3465,12 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStopProtection(String resourceGroupName, String vaultName,
         String backupInstanceName) {
-        return this.beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName).getSyncPoller();
+        final String xMsAuthorizationAuxiliary = null;
+        final StopProtectionRequest parameters = null;
+        return this
+            .beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary,
+                parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -3243,6 +3479,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3251,8 +3489,32 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStopProtection(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context) {
-        return this.beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName, context).getSyncPoller();
+        String backupInstanceName, String xMsAuthorizationAuxiliary, StopProtectionRequest parameters,
+        Context context) {
+        return this
+            .beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary,
+                parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * This operation will stop protection of a backup instance and data will be held forever.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> stopProtectionAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+        String xMsAuthorizationAuxiliary, StopProtectionRequest parameters) {
+        return beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary,
+            parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3268,8 +3530,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopProtectionAsync(String resourceGroupName, String vaultName, String backupInstanceName) {
-        return beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        final String xMsAuthorizationAuxiliary = null;
+        final StopProtectionRequest parameters = null;
+        return beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary,
+            parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3278,6 +3542,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3286,9 +3552,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopProtectionAsync(String resourceGroupName, String vaultName, String backupInstanceName,
-        Context context) {
-        return beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        String xMsAuthorizationAuxiliary, StopProtectionRequest parameters, Context context) {
+        return beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary,
+            parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3303,7 +3569,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName) {
-        stopProtectionAsync(resourceGroupName, vaultName, backupInstanceName).block();
+        final String xMsAuthorizationAuxiliary = null;
+        final StopProtectionRequest parameters = null;
+        stopProtectionAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary, parameters)
+            .block();
     }
 
     /**
@@ -3312,14 +3581,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
-        stopProtectionAsync(resourceGroupName, vaultName, backupInstanceName, context).block();
+    public void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName,
+        String xMsAuthorizationAuxiliary, StopProtectionRequest parameters, Context context) {
+        stopProtectionAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary, parameters,
+            context).block();
     }
 
     /**
@@ -3329,6 +3602,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3336,7 +3611,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> suspendBackupsWithResponseAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName) {
+        String backupInstanceName, String xMsAuthorizationAuxiliary, SuspendBackupRequest parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -3356,10 +3631,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter backupInstanceName is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.suspendBackups(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, backupInstanceName, this.client.getApiVersion(), accept, context))
+                resourceGroupName, vaultName, backupInstanceName, this.client.getApiVersion(),
+                xMsAuthorizationAuxiliary, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3370,6 +3649,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3378,7 +3659,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> suspendBackupsWithResponseAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context) {
+        String backupInstanceName, String xMsAuthorizationAuxiliary, SuspendBackupRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -3398,10 +3679,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter backupInstanceName is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.suspendBackups(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            vaultName, backupInstanceName, this.client.getApiVersion(), accept, context);
+            vaultName, backupInstanceName, this.client.getApiVersion(), xMsAuthorizationAuxiliary, parameters, accept,
+            context);
     }
 
     /**
@@ -3411,6 +3696,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3418,9 +3705,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginSuspendBackupsAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = suspendBackupsWithResponseAsync(resourceGroupName, vaultName, backupInstanceName);
+        String backupInstanceName, String xMsAuthorizationAuxiliary, SuspendBackupRequest parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = suspendBackupsWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, xMsAuthorizationAuxiliary, parameters);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -3432,6 +3719,31 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginSuspendBackupsAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
+        final String xMsAuthorizationAuxiliary = null;
+        final SuspendBackupRequest parameters = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = suspendBackupsWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, xMsAuthorizationAuxiliary, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
+     * latest Recovery point, which will be retained forever).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3440,10 +3752,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginSuspendBackupsAsync(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context) {
+        String backupInstanceName, String xMsAuthorizationAuxiliary, SuspendBackupRequest parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = suspendBackupsWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = suspendBackupsWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, xMsAuthorizationAuxiliary, parameters, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -3463,7 +3775,12 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspendBackups(String resourceGroupName, String vaultName,
         String backupInstanceName) {
-        return this.beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName).getSyncPoller();
+        final String xMsAuthorizationAuxiliary = null;
+        final SuspendBackupRequest parameters = null;
+        return this
+            .beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary,
+                parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -3473,6 +3790,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3481,8 +3800,32 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspendBackups(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context) {
-        return this.beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName, context).getSyncPoller();
+        String backupInstanceName, String xMsAuthorizationAuxiliary, SuspendBackupRequest parameters, Context context) {
+        return this
+            .beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary,
+                parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
+     * latest Recovery point, which will be retained forever).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> suspendBackupsAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+        String xMsAuthorizationAuxiliary, SuspendBackupRequest parameters) {
+        return beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary,
+            parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3499,8 +3842,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> suspendBackupsAsync(String resourceGroupName, String vaultName, String backupInstanceName) {
-        return beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        final String xMsAuthorizationAuxiliary = null;
+        final SuspendBackupRequest parameters = null;
+        return beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary,
+            parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3510,6 +3855,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3518,9 +3865,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> suspendBackupsAsync(String resourceGroupName, String vaultName, String backupInstanceName,
-        Context context) {
-        return beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        String xMsAuthorizationAuxiliary, SuspendBackupRequest parameters, Context context) {
+        return beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary,
+            parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3536,7 +3883,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName) {
-        suspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName).block();
+        final String xMsAuthorizationAuxiliary = null;
+        final SuspendBackupRequest parameters = null;
+        suspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary, parameters)
+            .block();
     }
 
     /**
@@ -3546,14 +3896,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
-        suspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName, context).block();
+    public void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName,
+        String xMsAuthorizationAuxiliary, SuspendBackupRequest parameters, Context context) {
+        suspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName, xMsAuthorizationAuxiliary, parameters,
+            context).block();
     }
 
     /**
@@ -3776,7 +4130,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     private Mono<Void> syncBackupInstanceAsync(String resourceGroupName, String vaultName, String backupInstanceName,
         SyncBackupInstanceRequest parameters, Context context) {
         return beginSyncBackupInstanceAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4035,7 +4390,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     private Mono<OperationJobExtendedInfoInner> validateForRestoreAsync(String resourceGroupName, String vaultName,
         String backupInstanceName, ValidateRestoreRequestObject parameters, Context context) {
         return beginValidateForRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4078,9 +4434,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4105,9 +4459,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

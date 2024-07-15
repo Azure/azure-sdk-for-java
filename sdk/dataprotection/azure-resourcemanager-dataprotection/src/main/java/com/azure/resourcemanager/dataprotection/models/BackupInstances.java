@@ -83,12 +83,14 @@ public interface BackupInstances {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+    void delete(String resourceGroupName, String vaultName, String backupInstanceName, String xMsAuthorizationAuxiliary,
+        Context context);
 
     /**
      * Trigger adhoc backup.
@@ -290,6 +292,7 @@ public interface BackupInstances {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -297,7 +300,7 @@ public interface BackupInstances {
      * @return operationJobExtendedInfo.
      */
     OperationJobExtendedInfo triggerRestore(String resourceGroupName, String vaultName, String backupInstanceName,
-        AzureBackupRestoreRequest parameters, Context context);
+        AzureBackupRestoreRequest parameters, String xMsAuthorizationAuxiliary, Context context);
 
     /**
      * This operation will resume backups for backup instance.
@@ -367,12 +370,15 @@ public interface BackupInstances {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+    void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName,
+        String xMsAuthorizationAuxiliary, StopProtectionRequest parameters, Context context);
 
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
@@ -394,12 +400,15 @@ public interface BackupInstances {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+    void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName,
+        String xMsAuthorizationAuxiliary, SuspendBackupRequest parameters, Context context);
 
     /**
      * Sync backup instance again in case of failure
@@ -500,12 +509,13 @@ public interface BackupInstances {
      * Delete a backup instance in a backup vault.
      * 
      * @param id the resource ID.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, String xMsAuthorizationAuxiliary, Context context);
 
     /**
      * Begins definition for a new BackupInstanceResource resource.

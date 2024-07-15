@@ -16,6 +16,8 @@ import com.azure.resourcemanager.dataprotection.fluent.models.OperationJobExtend
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRehydrationRequest;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreRequest;
 import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreRequestObject;
+import com.azure.resourcemanager.dataprotection.models.StopProtectionRequest;
+import com.azure.resourcemanager.dataprotection.models.SuspendBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.SyncBackupInstanceRequest;
 import com.azure.resourcemanager.dataprotection.models.TriggerBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.ValidateCrossRegionRestoreRequestObject;
@@ -106,6 +108,7 @@ public interface BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,7 +118,7 @@ public interface BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupInstanceResourceInner>, BackupInstanceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters,
-        Context context);
+        String xMsAuthorizationAuxiliary, Context context);
 
     /**
      * Create or update a backup instance in a backup vault.
@@ -140,6 +143,7 @@ public interface BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -148,7 +152,7 @@ public interface BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BackupInstanceResourceInner createOrUpdate(String resourceGroupName, String vaultName, String backupInstanceName,
-        BackupInstanceResourceInner parameters, Context context);
+        BackupInstanceResourceInner parameters, String xMsAuthorizationAuxiliary, Context context);
 
     /**
      * Delete a backup instance in a backup vault.
@@ -171,6 +175,7 @@ public interface BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -179,7 +184,7 @@ public interface BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context);
+        String backupInstanceName, String xMsAuthorizationAuxiliary, Context context);
 
     /**
      * Delete a backup instance in a backup vault.
@@ -200,13 +205,15 @@ public interface BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+    void delete(String resourceGroupName, String vaultName, String backupInstanceName, String xMsAuthorizationAuxiliary,
+        Context context);
 
     /**
      * Trigger adhoc backup.
@@ -583,6 +590,7 @@ public interface BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -592,7 +600,7 @@ public interface BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginTriggerRestore(
         String resourceGroupName, String vaultName, String backupInstanceName, AzureBackupRestoreRequest parameters,
-        Context context);
+        String xMsAuthorizationAuxiliary, Context context);
 
     /**
      * Triggers restore for a BackupInstance.
@@ -617,6 +625,7 @@ public interface BackupInstancesClient {
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -625,7 +634,7 @@ public interface BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationJobExtendedInfoInner triggerRestore(String resourceGroupName, String vaultName, String backupInstanceName,
-        AzureBackupRestoreRequest parameters, Context context);
+        AzureBackupRestoreRequest parameters, String xMsAuthorizationAuxiliary, Context context);
 
     /**
      * This operation will resume backups for backup instance.
@@ -764,6 +773,8 @@ public interface BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -772,7 +783,7 @@ public interface BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStopProtection(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context);
+        String backupInstanceName, String xMsAuthorizationAuxiliary, StopProtectionRequest parameters, Context context);
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
@@ -793,13 +804,16 @@ public interface BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+    void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName,
+        String xMsAuthorizationAuxiliary, StopProtectionRequest parameters, Context context);
 
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
@@ -824,6 +838,8 @@ public interface BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -832,7 +848,7 @@ public interface BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSuspendBackups(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context);
+        String backupInstanceName, String xMsAuthorizationAuxiliary, SuspendBackupRequest parameters, Context context);
 
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
@@ -855,13 +871,16 @@ public interface BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+    void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName,
+        String xMsAuthorizationAuxiliary, SuspendBackupRequest parameters, Context context);
 
     /**
      * Sync backup instance again in case of failure

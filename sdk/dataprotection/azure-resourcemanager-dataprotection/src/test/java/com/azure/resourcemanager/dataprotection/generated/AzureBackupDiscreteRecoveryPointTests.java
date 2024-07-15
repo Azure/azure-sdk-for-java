@@ -16,66 +16,87 @@ public final class AzureBackupDiscreteRecoveryPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBackupDiscreteRecoveryPoint model = BinaryData.fromString(
-            "{\"objectType\":\"AzureBackupDiscreteRecoveryPoint\",\"friendlyName\":\"flsjc\",\"recoveryPointDataStoresDetails\":[{\"creationTime\":\"2021-08-12T16:31:07Z\",\"expiryTime\":\"2021-11-09T19:03:51Z\",\"id\":\"bgofeljag\",\"metaData\":\"mqhldvrii\",\"state\":\"jnalghf\",\"type\":\"tvsexsowuel\",\"visible\":true,\"rehydrationExpiryTime\":\"2021-09-24T19:31:57Z\",\"rehydrationStatus\":\"DELETED\"},{\"creationTime\":\"2021-10-26T13:34:39Z\",\"expiryTime\":\"2021-01-10T01:08:15Z\",\"id\":\"zkw\",\"metaData\":\"g\",\"state\":\"spughftqsxhq\",\"type\":\"j\",\"visible\":true,\"rehydrationExpiryTime\":\"2021-02-11T20:49:23Z\",\"rehydrationStatus\":\"FAILED\"},{\"creationTime\":\"2021-06-03T19:27:08Z\",\"expiryTime\":\"2021-09-02T09:16:09Z\",\"id\":\"uufzdmsyqtfihw\",\"metaData\":\"otzi\",\"state\":\"amvpphoszqzudph\",\"type\":\"mvdk\",\"visible\":false,\"rehydrationExpiryTime\":\"2021-08-12T04:12:29Z\",\"rehydrationStatus\":\"CREATE_IN_PROGRESS\"},{\"creationTime\":\"2021-07-20T08:38:57Z\",\"expiryTime\":\"2021-08-10T10:10:57Z\",\"id\":\"yhmtnvyqiat\",\"metaData\":\"wp\",\"state\":\"p\",\"type\":\"cjaesgvvs\",\"visible\":true,\"rehydrationExpiryTime\":\"2021-05-25T22:54:02Z\",\"rehydrationStatus\":\"COMPLETED\"}],\"recoveryPointTime\":\"2021-03-09T01:56:14Z\",\"policyName\":\"hwyg\",\"policyVersion\":\"vdnkfxusem\",\"recoveryPointId\":\"zrmuhapfcqdps\",\"recoveryPointType\":\"qvpsvuoymg\",\"retentionTagName\":\"elvezrypq\",\"retentionTagVersion\":\"feo\",\"expiryTime\":\"2021-08-09T08:39:34Z\",\"recoveryPointState\":\"Partial\"}")
+            "{\"objectType\":\"AzureBackupDiscreteRecoveryPoint\",\"friendlyName\":\"ldsyuuximerqfob\",\"recoveryPointDataStoresDetails\":[{\"creationTime\":\"2021-04-12T06:30:25Z\",\"expiryTime\":\"2021-10-07T08:54:51Z\",\"id\":\"utwpfhp\",\"metaData\":\"m\",\"state\":\"skdsnfdsdoakg\",\"type\":\"lmkk\",\"visible\":true,\"rehydrationExpiryTime\":\"2020-12-20T17:30:39Z\",\"rehydrationStatus\":\"DELETE_IN_PROGRESS\"},{\"creationTime\":\"2021-05-16T03:51:54Z\",\"expiryTime\":\"2021-07-06T21:17:30Z\",\"id\":\"sttwvogvbbe\",\"metaData\":\"cngqqmoakufgmjz\",\"state\":\"rdgrtw\",\"type\":\"nuuzkopbm\",\"visible\":false,\"rehydrationExpiryTime\":\"2021-08-21T07:56:19Z\",\"rehydrationStatus\":\"CREATE_IN_PROGRESS\"},{\"creationTime\":\"2021-07-25T01:07:20Z\",\"expiryTime\":\"2021-12-03T00:28:31Z\",\"id\":\"iuiefozbhdmsm\",\"metaData\":\"zqhof\",\"state\":\"maequiahxicslfa\",\"type\":\"z\",\"visible\":true,\"rehydrationExpiryTime\":\"2021-07-09T22:00:16Z\",\"rehydrationStatus\":\"CREATE_IN_PROGRESS\"},{\"creationTime\":\"2021-10-10T06:29:17Z\",\"expiryTime\":\"2021-01-11T10:09:18Z\",\"id\":\"ccsphkaivwi\",\"metaData\":\"scywuggwoluhc\",\"state\":\"wem\",\"type\":\"i\",\"visible\":false,\"rehydrationExpiryTime\":\"2021-01-14T04:14:03Z\",\"rehydrationStatus\":\"FAILED\"}],\"recoveryPointTime\":\"2021-02-08T08:17:57Z\",\"policyName\":\"swe\",\"policyVersion\":\"qwdxggicc\",\"recoveryPointId\":\"xqhuexm\",\"recoveryPointType\":\"tlstvlzywem\",\"retentionTagName\":\"rncsdtclu\",\"retentionTagVersion\":\"ypbsfgytguslfead\",\"expiryTime\":\"2021-10-11T19:56:34Z\",\"recoveryPointState\":\"Partial\"}")
             .toObject(AzureBackupDiscreteRecoveryPoint.class);
-        Assertions.assertEquals("flsjc", model.friendlyName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-12T16:31:07Z"),
+        Assertions.assertEquals("ldsyuuximerqfob", model.friendlyName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T06:30:25Z"),
             model.recoveryPointDataStoresDetails().get(0).creationTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T19:03:51Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-07T08:54:51Z"),
             model.recoveryPointDataStoresDetails().get(0).expiryTime());
-        Assertions.assertEquals("bgofeljag", model.recoveryPointDataStoresDetails().get(0).id());
-        Assertions.assertEquals("mqhldvrii", model.recoveryPointDataStoresDetails().get(0).metadata());
-        Assertions.assertEquals("jnalghf", model.recoveryPointDataStoresDetails().get(0).state());
-        Assertions.assertEquals("tvsexsowuel", model.recoveryPointDataStoresDetails().get(0).type());
+        Assertions.assertEquals("utwpfhp", model.recoveryPointDataStoresDetails().get(0).id());
+        Assertions.assertEquals("m", model.recoveryPointDataStoresDetails().get(0).metadata());
+        Assertions.assertEquals("skdsnfdsdoakg", model.recoveryPointDataStoresDetails().get(0).state());
+        Assertions.assertEquals("lmkk", model.recoveryPointDataStoresDetails().get(0).type());
         Assertions.assertEquals(true, model.recoveryPointDataStoresDetails().get(0).visible());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-09T01:56:14Z"), model.recoveryPointTime());
-        Assertions.assertEquals("hwyg", model.policyName());
-        Assertions.assertEquals("vdnkfxusem", model.policyVersion());
-        Assertions.assertEquals("zrmuhapfcqdps", model.recoveryPointId());
-        Assertions.assertEquals("qvpsvuoymg", model.recoveryPointType());
-        Assertions.assertEquals("elvezrypq", model.retentionTagName());
-        Assertions.assertEquals("feo", model.retentionTagVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T08:17:57Z"), model.recoveryPointTime());
+        Assertions.assertEquals("swe", model.policyName());
+        Assertions.assertEquals("qwdxggicc", model.policyVersion());
+        Assertions.assertEquals("xqhuexm", model.recoveryPointId());
+        Assertions.assertEquals("tlstvlzywem", model.recoveryPointType());
+        Assertions.assertEquals("rncsdtclu", model.retentionTagName());
+        Assertions.assertEquals("ypbsfgytguslfead", model.retentionTagVersion());
         Assertions.assertEquals(RecoveryPointCompletionState.PARTIAL, model.recoveryPointState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBackupDiscreteRecoveryPoint model = new AzureBackupDiscreteRecoveryPoint().withFriendlyName("flsjc")
-            .withRecoveryPointDataStoresDetails(Arrays.asList(
-                new RecoveryPointDataStoreDetails().withCreationTime(OffsetDateTime.parse("2021-08-12T16:31:07Z"))
-                    .withExpiryTime(OffsetDateTime.parse("2021-11-09T19:03:51Z")).withId("bgofeljag")
-                    .withMetadata("mqhldvrii").withState("jnalghf").withType("tvsexsowuel").withVisible(true),
-                new RecoveryPointDataStoreDetails().withCreationTime(OffsetDateTime.parse("2021-10-26T13:34:39Z"))
-                    .withExpiryTime(OffsetDateTime.parse("2021-01-10T01:08:15Z")).withId("zkw").withMetadata("g")
-                    .withState("spughftqsxhq").withType("j").withVisible(true),
-                new RecoveryPointDataStoreDetails().withCreationTime(OffsetDateTime.parse("2021-06-03T19:27:08Z"))
-                    .withExpiryTime(OffsetDateTime.parse("2021-09-02T09:16:09Z")).withId("uufzdmsyqtfihw")
-                    .withMetadata("otzi").withState("amvpphoszqzudph").withType("mvdk").withVisible(false),
-                new RecoveryPointDataStoreDetails().withCreationTime(OffsetDateTime.parse("2021-07-20T08:38:57Z"))
-                    .withExpiryTime(OffsetDateTime.parse("2021-08-10T10:10:57Z")).withId("yhmtnvyqiat")
-                    .withMetadata("wp").withState("p").withType("cjaesgvvs").withVisible(true)))
-            .withRecoveryPointTime(OffsetDateTime.parse("2021-03-09T01:56:14Z")).withPolicyName("hwyg")
-            .withPolicyVersion("vdnkfxusem").withRecoveryPointId("zrmuhapfcqdps").withRecoveryPointType("qvpsvuoymg")
-            .withRetentionTagName("elvezrypq").withRetentionTagVersion("feo")
-            .withRecoveryPointState(RecoveryPointCompletionState.PARTIAL);
+        AzureBackupDiscreteRecoveryPoint model
+            = new AzureBackupDiscreteRecoveryPoint().withFriendlyName("ldsyuuximerqfob")
+                .withRecoveryPointDataStoresDetails(Arrays.asList(
+                    new RecoveryPointDataStoreDetails().withCreationTime(OffsetDateTime.parse("2021-04-12T06:30:25Z"))
+                        .withExpiryTime(OffsetDateTime.parse("2021-10-07T08:54:51Z"))
+                        .withId("utwpfhp")
+                        .withMetadata("m")
+                        .withState("skdsnfdsdoakg")
+                        .withType("lmkk")
+                        .withVisible(true),
+                    new RecoveryPointDataStoreDetails().withCreationTime(OffsetDateTime.parse("2021-05-16T03:51:54Z"))
+                        .withExpiryTime(OffsetDateTime.parse("2021-07-06T21:17:30Z"))
+                        .withId("sttwvogvbbe")
+                        .withMetadata("cngqqmoakufgmjz")
+                        .withState("rdgrtw")
+                        .withType("nuuzkopbm")
+                        .withVisible(false),
+                    new RecoveryPointDataStoreDetails().withCreationTime(OffsetDateTime.parse("2021-07-25T01:07:20Z"))
+                        .withExpiryTime(OffsetDateTime.parse("2021-12-03T00:28:31Z"))
+                        .withId("iuiefozbhdmsm")
+                        .withMetadata("zqhof")
+                        .withState("maequiahxicslfa")
+                        .withType("z")
+                        .withVisible(true),
+                    new RecoveryPointDataStoreDetails().withCreationTime(OffsetDateTime.parse("2021-10-10T06:29:17Z"))
+                        .withExpiryTime(OffsetDateTime.parse("2021-01-11T10:09:18Z"))
+                        .withId("ccsphkaivwi")
+                        .withMetadata("scywuggwoluhc")
+                        .withState("wem")
+                        .withType("i")
+                        .withVisible(false)))
+                .withRecoveryPointTime(OffsetDateTime.parse("2021-02-08T08:17:57Z"))
+                .withPolicyName("swe")
+                .withPolicyVersion("qwdxggicc")
+                .withRecoveryPointId("xqhuexm")
+                .withRecoveryPointType("tlstvlzywem")
+                .withRetentionTagName("rncsdtclu")
+                .withRetentionTagVersion("ypbsfgytguslfead")
+                .withRecoveryPointState(RecoveryPointCompletionState.PARTIAL);
         model = BinaryData.fromObject(model).toObject(AzureBackupDiscreteRecoveryPoint.class);
-        Assertions.assertEquals("flsjc", model.friendlyName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-12T16:31:07Z"),
+        Assertions.assertEquals("ldsyuuximerqfob", model.friendlyName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T06:30:25Z"),
             model.recoveryPointDataStoresDetails().get(0).creationTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T19:03:51Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-07T08:54:51Z"),
             model.recoveryPointDataStoresDetails().get(0).expiryTime());
-        Assertions.assertEquals("bgofeljag", model.recoveryPointDataStoresDetails().get(0).id());
-        Assertions.assertEquals("mqhldvrii", model.recoveryPointDataStoresDetails().get(0).metadata());
-        Assertions.assertEquals("jnalghf", model.recoveryPointDataStoresDetails().get(0).state());
-        Assertions.assertEquals("tvsexsowuel", model.recoveryPointDataStoresDetails().get(0).type());
+        Assertions.assertEquals("utwpfhp", model.recoveryPointDataStoresDetails().get(0).id());
+        Assertions.assertEquals("m", model.recoveryPointDataStoresDetails().get(0).metadata());
+        Assertions.assertEquals("skdsnfdsdoakg", model.recoveryPointDataStoresDetails().get(0).state());
+        Assertions.assertEquals("lmkk", model.recoveryPointDataStoresDetails().get(0).type());
         Assertions.assertEquals(true, model.recoveryPointDataStoresDetails().get(0).visible());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-09T01:56:14Z"), model.recoveryPointTime());
-        Assertions.assertEquals("hwyg", model.policyName());
-        Assertions.assertEquals("vdnkfxusem", model.policyVersion());
-        Assertions.assertEquals("zrmuhapfcqdps", model.recoveryPointId());
-        Assertions.assertEquals("qvpsvuoymg", model.recoveryPointType());
-        Assertions.assertEquals("elvezrypq", model.retentionTagName());
-        Assertions.assertEquals("feo", model.retentionTagVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T08:17:57Z"), model.recoveryPointTime());
+        Assertions.assertEquals("swe", model.policyName());
+        Assertions.assertEquals("qwdxggicc", model.policyVersion());
+        Assertions.assertEquals("xqhuexm", model.recoveryPointId());
+        Assertions.assertEquals("tlstvlzywem", model.recoveryPointType());
+        Assertions.assertEquals("rncsdtclu", model.retentionTagName());
+        Assertions.assertEquals("ypbsfgytguslfead", model.retentionTagVersion());
         Assertions.assertEquals(RecoveryPointCompletionState.PARTIAL, model.recoveryPointState());
     }
 }

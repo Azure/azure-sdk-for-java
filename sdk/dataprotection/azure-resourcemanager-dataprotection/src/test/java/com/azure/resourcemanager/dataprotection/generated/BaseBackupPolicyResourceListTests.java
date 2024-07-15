@@ -15,22 +15,22 @@ public final class BaseBackupPolicyResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BaseBackupPolicyResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"jsllrmv\",\"d\",\"watkpnpulexxb\"]},\"id\":\"wtruwiqzbqjvsovm\",\"name\":\"okacspk\",\"type\":\"lhzdobp\"},{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"flbvvnchrkcciwwz\",\"uqkhrsajiwku\"]},\"id\":\"oskg\",\"name\":\"sauuimj\",\"type\":\"vxieduugidyj\"}],\"nextLink\":\"f\"}")
+            "{\"value\":[{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"gcpo\"]},\"id\":\"maajrmvdjwzrlo\",\"name\":\"mcl\",\"type\":\"hijco\"},{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"tbzaqsqsycbkbfk\",\"ukdkexxppofmxa\"]},\"id\":\"fjpgddtocjjxhvp\",\"name\":\"o\",\"type\":\"exhd\"}],\"nextLink\":\"i\"}")
             .toObject(BaseBackupPolicyResourceList.class);
-        Assertions.assertEquals("f", model.nextLink());
-        Assertions.assertEquals("jsllrmv", model.value().get(0).properties().datasourceTypes().get(0));
+        Assertions.assertEquals("i", model.nextLink());
+        Assertions.assertEquals("gcpo", model.value().get(0).properties().datasourceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BaseBackupPolicyResourceList model = new BaseBackupPolicyResourceList().withNextLink("f")
+        BaseBackupPolicyResourceList model = new BaseBackupPolicyResourceList().withNextLink("i")
             .withValue(Arrays.asList(
+                new BaseBackupPolicyResourceInner()
+                    .withProperties(new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("gcpo"))),
                 new BaseBackupPolicyResourceInner().withProperties(
-                    new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("jsllrmv", "d", "watkpnpulexxb"))),
-                new BaseBackupPolicyResourceInner().withProperties(
-                    new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("flbvvnchrkcciwwz", "uqkhrsajiwku")))));
+                    new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("tbzaqsqsycbkbfk", "ukdkexxppofmxa")))));
         model = BinaryData.fromObject(model).toObject(BaseBackupPolicyResourceList.class);
-        Assertions.assertEquals("f", model.nextLink());
-        Assertions.assertEquals("jsllrmv", model.value().get(0).properties().datasourceTypes().get(0));
+        Assertions.assertEquals("i", model.nextLink());
+        Assertions.assertEquals("gcpo", model.value().get(0).properties().datasourceTypes().get(0));
     }
 }

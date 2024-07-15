@@ -6,41 +6,36 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * AzureBackupRule
  * 
  * Azure backup rule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AzureBackupRule")
 @Fluent
 public final class AzureBackupRule extends BasePolicyRule {
     /*
-     * BackupParameters
-     * 
+     * The objectType property.
+     */
+    private String objectType = "AzureBackupRule";
+
+    /*
      * BackupParameters base
      */
-    @JsonProperty(value = "backupParameters")
     private BackupParameters backupParameters;
 
     /*
-     * DataStoreInfoBase
-     * 
      * DataStoreInfo base
      */
-    @JsonProperty(value = "dataStore", required = true)
     private DataStoreInfoBase dataStore;
 
     /*
-     * TriggerContext
-     * 
      * Trigger context
      */
-    @JsonProperty(value = "trigger", required = true)
     private TriggerContext trigger;
 
     /**
@@ -50,9 +45,17 @@ public final class AzureBackupRule extends BasePolicyRule {
     }
 
     /**
-     * Get the backupParameters property: BackupParameters
+     * Get the objectType property: The objectType property.
      * 
-     * BackupParameters base.
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
+     * Get the backupParameters property: BackupParameters base.
      * 
      * @return the backupParameters value.
      */
@@ -61,9 +64,7 @@ public final class AzureBackupRule extends BasePolicyRule {
     }
 
     /**
-     * Set the backupParameters property: BackupParameters
-     * 
-     * BackupParameters base.
+     * Set the backupParameters property: BackupParameters base.
      * 
      * @param backupParameters the backupParameters value to set.
      * @return the AzureBackupRule object itself.
@@ -74,9 +75,7 @@ public final class AzureBackupRule extends BasePolicyRule {
     }
 
     /**
-     * Get the dataStore property: DataStoreInfoBase
-     * 
-     * DataStoreInfo base.
+     * Get the dataStore property: DataStoreInfo base.
      * 
      * @return the dataStore value.
      */
@@ -85,9 +84,7 @@ public final class AzureBackupRule extends BasePolicyRule {
     }
 
     /**
-     * Set the dataStore property: DataStoreInfoBase
-     * 
-     * DataStoreInfo base.
+     * Set the dataStore property: DataStoreInfo base.
      * 
      * @param dataStore the dataStore value to set.
      * @return the AzureBackupRule object itself.
@@ -98,9 +95,7 @@ public final class AzureBackupRule extends BasePolicyRule {
     }
 
     /**
-     * Get the trigger property: TriggerContext
-     * 
-     * Trigger context.
+     * Get the trigger property: Trigger context.
      * 
      * @return the trigger value.
      */
@@ -109,9 +104,7 @@ public final class AzureBackupRule extends BasePolicyRule {
     }
 
     /**
-     * Set the trigger property: TriggerContext
-     * 
-     * Trigger context.
+     * Set the trigger property: Trigger context.
      * 
      * @param trigger the trigger value to set.
      * @return the AzureBackupRule object itself.
@@ -142,18 +135,67 @@ public final class AzureBackupRule extends BasePolicyRule {
             backupParameters().validate();
         }
         if (dataStore() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dataStore in model AzureBackupRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dataStore in model AzureBackupRule"));
         } else {
             dataStore().validate();
         }
         if (trigger() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property trigger in model AzureBackupRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property trigger in model AzureBackupRule"));
         } else {
             trigger().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureBackupRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeJsonField("dataStore", this.dataStore);
+        jsonWriter.writeJsonField("trigger", this.trigger);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeJsonField("backupParameters", this.backupParameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBackupRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBackupRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureBackupRule.
+     */
+    public static AzureBackupRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBackupRule deserializedAzureBackupRule = new AzureBackupRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureBackupRule.withName(reader.getString());
+                } else if ("dataStore".equals(fieldName)) {
+                    deserializedAzureBackupRule.dataStore = DataStoreInfoBase.fromJson(reader);
+                } else if ("trigger".equals(fieldName)) {
+                    deserializedAzureBackupRule.trigger = TriggerContext.fromJson(reader);
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureBackupRule.objectType = reader.getString();
+                } else if ("backupParameters".equals(fieldName)) {
+                    deserializedAzureBackupRule.backupParameters = BackupParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBackupRule;
+        });
+    }
 }

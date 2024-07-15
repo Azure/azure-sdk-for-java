@@ -27,12 +27,14 @@ public final class DataProtectionOperationsImpl implements DataProtectionOperati
 
     public PagedIterable<ClientDiscoveryValueForSingleApi> list() {
         PagedIterable<ClientDiscoveryValueForSingleApiInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ClientDiscoveryValueForSingleApi> list(Context context) {
         PagedIterable<ClientDiscoveryValueForSingleApiInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
     }
 
     private DataProtectionOperationsClient serviceClient() {

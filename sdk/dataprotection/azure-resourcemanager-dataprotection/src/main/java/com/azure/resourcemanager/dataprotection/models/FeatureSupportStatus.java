@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class FeatureSupportStatus extends ExpandableStringEnum<FeatureSupp
      * @param name a name to look for.
      * @return the corresponding FeatureSupportStatus.
      */
-    @JsonCreator
     public static FeatureSupportStatus fromString(String name) {
         return fromString(name, FeatureSupportStatus.class);
     }

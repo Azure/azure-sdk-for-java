@@ -15,18 +15,18 @@ public final class DppIdentityDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DppIdentityDetails model = BinaryData.fromString(
-            "{\"principalId\":\"c\",\"tenantId\":\"ierhhbcsglummaj\",\"type\":\"aodxo\",\"userAssignedIdentities\":{\"k\":{\"principalId\":\"9ee9357f-5f86-4b09-9a16-2440282261c6\",\"clientId\":\"7e7ed872-25e0-499d-a76b-ad1816b4d61c\"},\"okaj\":{\"principalId\":\"543ba9ae-e5d2-4f58-8097-c9453e823024\",\"clientId\":\"14d1aeb7-3231-4ef5-af26-a2478b765d4a\"},\"pimexgstxgcpodg\":{\"principalId\":\"5c6fe70b-4c7a-4820-b2a7-9ddb65bcd8d7\",\"clientId\":\"22f5ed58-b035-4e9a-8b5f-2bebb70ea26a\"}}}")
+            "{\"principalId\":\"s\",\"tenantId\":\"zgvfcjrwz\",\"type\":\"xjtfelluwfzit\",\"userAssignedIdentities\":{\"fpjkjlxofp\":{\"principalId\":\"8bb659e2-2ce2-4de5-bc14-a4cde36bd913\",\"clientId\":\"16abffdb-8073-4e68-83de-878b11556247\"},\"pfxxy\":{\"principalId\":\"ccd32279-3aa9-4385-a4be-44ea0615327c\",\"clientId\":\"1ce8837f-bd3b-444f-936c-1e677a497b6c\"},\"i\":{\"principalId\":\"ff25809d-ad5c-450f-8ca7-b006cf8031ea\",\"clientId\":\"68e687d2-eb59-411d-8f9e-b5fcd4753f22\"}}}")
             .toObject(DppIdentityDetails.class);
-        Assertions.assertEquals("aodxo", model.type());
+        Assertions.assertEquals("xjtfelluwfzit", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DppIdentityDetails model = new DppIdentityDetails().withType("aodxo")
-            .withUserAssignedIdentities(mapOf("k", new UserAssignedIdentity(), "okaj", new UserAssignedIdentity(),
-                "pimexgstxgcpodg", new UserAssignedIdentity()));
+        DppIdentityDetails model = new DppIdentityDetails().withType("xjtfelluwfzit")
+            .withUserAssignedIdentities(mapOf("fpjkjlxofp", new UserAssignedIdentity(), "pfxxy",
+                new UserAssignedIdentity(), "i", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(DppIdentityDetails.class);
-        Assertions.assertEquals("aodxo", model.type());
+        Assertions.assertEquals("xjtfelluwfzit", model.type());
     }
 
     // Use "Map.of" if available

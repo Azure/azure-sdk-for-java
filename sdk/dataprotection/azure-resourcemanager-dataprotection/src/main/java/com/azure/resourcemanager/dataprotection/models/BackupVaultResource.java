@@ -64,18 +64,14 @@ public interface BackupVaultResource {
     SystemData systemData();
 
     /**
-     * Gets the identity property: DppIdentityDetails
-     * 
-     * Input Managed Identity Details.
+     * Gets the identity property: Input Managed Identity Details.
      * 
      * @return the identity value.
      */
     DppIdentityDetails identity();
 
     /**
-     * Gets the properties property: BackupVault
-     * 
-     * BackupVaultResource properties.
+     * Gets the properties property: BackupVaultResource properties.
      * 
      * @return the properties value.
      */
@@ -165,13 +161,9 @@ public interface BackupVaultResource {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: BackupVault
+             * Specifies the properties property: BackupVaultResource properties.
              * 
-             * BackupVaultResource properties.
-             * 
-             * @param properties BackupVault
-             * 
-             * BackupVaultResource properties.
+             * @param properties BackupVaultResource properties.
              * @return the next definition stage.
              */
             WithCreate withProperties(BackupVault properties);
@@ -181,8 +173,8 @@ public interface BackupVaultResource {
          * The stage of the BackupVaultResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithEtag, DefinitionStages.WithIdentity {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithEtag,
+            DefinitionStages.WithIdentity, DefinitionStages.WithXMsAuthorizationAuxiliary {
             /**
              * Executes the create request.
              * 
@@ -230,16 +222,25 @@ public interface BackupVaultResource {
          */
         interface WithIdentity {
             /**
-             * Specifies the identity property: DppIdentityDetails
+             * Specifies the identity property: Input Managed Identity Details.
              * 
-             * Input Managed Identity Details.
-             * 
-             * @param identity DppIdentityDetails
-             * 
-             * Input Managed Identity Details.
+             * @param identity Input Managed Identity Details.
              * @return the next definition stage.
              */
             WithCreate withIdentity(DppIdentityDetails identity);
+        }
+
+        /**
+         * The stage of the BackupVaultResource definition allowing to specify xMsAuthorizationAuxiliary.
+         */
+        interface WithXMsAuthorizationAuxiliary {
+            /**
+             * Specifies the xMsAuthorizationAuxiliary property: The xMsAuthorizationAuxiliary parameter.
+             * 
+             * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+             * @return the next definition stage.
+             */
+            WithCreate withXMsAuthorizationAuxiliary(String xMsAuthorizationAuxiliary);
         }
     }
 
@@ -253,7 +254,8 @@ public interface BackupVaultResource {
     /**
      * The template for BackupVaultResource update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties,
+        UpdateStages.WithXMsAuthorizationAuxiliary {
         /**
          * Executes the update request.
          * 
@@ -292,13 +294,9 @@ public interface BackupVaultResource {
          */
         interface WithIdentity {
             /**
-             * Specifies the identity property: DppIdentityDetails
+             * Specifies the identity property: Input Managed Identity Details.
              * 
-             * Input Managed Identity Details.
-             * 
-             * @param identity DppIdentityDetails
-             * 
-             * Input Managed Identity Details.
+             * @param identity Input Managed Identity Details.
              * @return the next definition stage.
              */
             Update withIdentity(DppIdentityDetails identity);
@@ -315,6 +313,19 @@ public interface BackupVaultResource {
              * @return the next definition stage.
              */
             Update withProperties(PatchBackupVaultInput properties);
+        }
+
+        /**
+         * The stage of the BackupVaultResource update allowing to specify xMsAuthorizationAuxiliary.
+         */
+        interface WithXMsAuthorizationAuxiliary {
+            /**
+             * Specifies the xMsAuthorizationAuxiliary property: The xMsAuthorizationAuxiliary parameter.
+             * 
+             * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+             * @return the next definition stage.
+             */
+            Update withXMsAuthorizationAuxiliary(String xMsAuthorizationAuxiliary);
         }
     }
 

@@ -104,7 +104,8 @@ public interface BackupInstanceResource {
          * The stage of the BackupInstanceResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties,
+            DefinitionStages.WithXMsAuthorizationAuxiliary {
             /**
              * Executes the create request.
              * 
@@ -146,6 +147,19 @@ public interface BackupInstanceResource {
              */
             WithCreate withProperties(BackupInstance properties);
         }
+
+        /**
+         * The stage of the BackupInstanceResource definition allowing to specify xMsAuthorizationAuxiliary.
+         */
+        interface WithXMsAuthorizationAuxiliary {
+            /**
+             * Specifies the xMsAuthorizationAuxiliary property: The xMsAuthorizationAuxiliary parameter.
+             * 
+             * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+             * @return the next definition stage.
+             */
+            WithCreate withXMsAuthorizationAuxiliary(String xMsAuthorizationAuxiliary);
+        }
     }
 
     /**
@@ -158,7 +172,8 @@ public interface BackupInstanceResource {
     /**
      * The template for BackupInstanceResource update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithXMsAuthorizationAuxiliary {
         /**
          * Executes the update request.
          * 
@@ -203,6 +218,19 @@ public interface BackupInstanceResource {
              * @return the next definition stage.
              */
             Update withProperties(BackupInstance properties);
+        }
+
+        /**
+         * The stage of the BackupInstanceResource update allowing to specify xMsAuthorizationAuxiliary.
+         */
+        interface WithXMsAuthorizationAuxiliary {
+            /**
+             * Specifies the xMsAuthorizationAuxiliary property: The xMsAuthorizationAuxiliary parameter.
+             * 
+             * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+             * @return the next definition stage.
+             */
+            Update withXMsAuthorizationAuxiliary(String xMsAuthorizationAuxiliary);
         }
     }
 
@@ -280,13 +308,15 @@ public interface BackupInstanceResource {
      * Triggers restore for a BackupInstance.
      * 
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operationJobExtendedInfo.
      */
-    OperationJobExtendedInfo triggerRestore(AzureBackupRestoreRequest parameters, Context context);
+    OperationJobExtendedInfo triggerRestore(AzureBackupRestoreRequest parameters, String xMsAuthorizationAuxiliary,
+        Context context);
 
     /**
      * This operation will resume backups for backup instance.
@@ -335,12 +365,14 @@ public interface BackupInstanceResource {
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
      * 
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void stopProtection(Context context);
+    void stopProtection(String xMsAuthorizationAuxiliary, StopProtectionRequest parameters, Context context);
 
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
@@ -355,12 +387,14 @@ public interface BackupInstanceResource {
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
      * 
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void suspendBackups(Context context);
+    void suspendBackups(String xMsAuthorizationAuxiliary, SuspendBackupRequest parameters, Context context);
 
     /**
      * Sync backup instance again in case of failure

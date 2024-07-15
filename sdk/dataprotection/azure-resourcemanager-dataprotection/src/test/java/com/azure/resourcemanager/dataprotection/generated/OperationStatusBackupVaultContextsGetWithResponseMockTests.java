@@ -6,55 +6,38 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.OperationResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class OperationStatusBackupVaultContextsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"endTime\":\"2021-01-02T07:09:13Z\",\"id\":\"vblbjednljlageua\",\"name\":\"xuns\",\"properties\":{\"objectType\":\"OperationExtendedInfo\"},\"startTime\":\"2021-09-27T06:19:05Z\",\"status\":\"ppxynenls\"}";
+            = "{\"endTime\":\"2021-09-21T01:20:37Z\",\"id\":\"stmjlxrri\",\"name\":\"zapeewchpx\",\"properties\":{\"objectType\":\"OperationExtendedInfo\"},\"startTime\":\"2021-02-02T07:23:35Z\",\"status\":\"uziycsl\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        DataProtectionManager manager = DataProtectionManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataProtectionManager manager = DataProtectionManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         OperationResource response = manager.operationStatusBackupVaultContexts()
-            .getWithResponse("hhvjhh", "akz", "bbjjidjksyxk", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("jrkambtrnegvmnv", "q", "qvldspastjbkkd", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-02T07:09:13Z"), response.endTime());
-        Assertions.assertEquals("vblbjednljlageua", response.id());
-        Assertions.assertEquals("xuns", response.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T06:19:05Z"), response.startTime());
-        Assertions.assertEquals("ppxynenls", response.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-21T01:20:37Z"), response.endTime());
+        Assertions.assertEquals("stmjlxrri", response.id());
+        Assertions.assertEquals("zapeewchpx", response.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-02T07:23:35Z"), response.startTime());
+        Assertions.assertEquals("uziycsl", response.status());
     }
 }

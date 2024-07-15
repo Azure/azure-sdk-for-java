@@ -6,7 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * DatasourceSet
@@ -14,54 +18,46 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * DatasourceSet details of datasource to be backed up.
  */
 @Fluent
-public final class DatasourceSet {
+public final class DatasourceSet implements JsonSerializable<DatasourceSet> {
     /*
      * DatasourceType of the resource.
      */
-    @JsonProperty(value = "datasourceType")
     private String datasourceType;
 
     /*
      * Type of Datasource object, used to initialize the right inherited type
      */
-    @JsonProperty(value = "objectType")
     private String objectType;
 
     /*
      * Full ARM ID of the resource. For azure resources, this is ARM ID. For non azure resources, this will be the ID
      * created by backup service via Fabric/Vault.
      */
-    @JsonProperty(value = "resourceID", required = true)
     private String resourceId;
 
     /*
      * Location of datasource.
      */
-    @JsonProperty(value = "resourceLocation")
     private String resourceLocation;
 
     /*
      * Unique identifier of the resource in the context of parent.
      */
-    @JsonProperty(value = "resourceName")
     private String resourceName;
 
     /*
      * Resource Type of Datasource.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * Uri of the resource.
      */
-    @JsonProperty(value = "resourceUri")
     private String resourceUri;
 
     /*
      * Properties specific to data source set
      */
-    @JsonProperty(value = "resourceProperties")
     private BaseResourceProperties resourceProperties;
 
     /**
@@ -239,8 +235,8 @@ public final class DatasourceSet {
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property resourceId in model DatasourceSet"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property resourceId in model DatasourceSet"));
         }
         if (resourceProperties() != null) {
             resourceProperties().validate();
@@ -248,4 +244,62 @@ public final class DatasourceSet {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatasourceSet.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceID", this.resourceId);
+        jsonWriter.writeStringField("datasourceType", this.datasourceType);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("resourceLocation", this.resourceLocation);
+        jsonWriter.writeStringField("resourceName", this.resourceName);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        jsonWriter.writeJsonField("resourceProperties", this.resourceProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatasourceSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatasourceSet if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatasourceSet.
+     */
+    public static DatasourceSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatasourceSet deserializedDatasourceSet = new DatasourceSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceID".equals(fieldName)) {
+                    deserializedDatasourceSet.resourceId = reader.getString();
+                } else if ("datasourceType".equals(fieldName)) {
+                    deserializedDatasourceSet.datasourceType = reader.getString();
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedDatasourceSet.objectType = reader.getString();
+                } else if ("resourceLocation".equals(fieldName)) {
+                    deserializedDatasourceSet.resourceLocation = reader.getString();
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedDatasourceSet.resourceName = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedDatasourceSet.resourceType = reader.getString();
+                } else if ("resourceUri".equals(fieldName)) {
+                    deserializedDatasourceSet.resourceUri = reader.getString();
+                } else if ("resourceProperties".equals(fieldName)) {
+                    deserializedDatasourceSet.resourceProperties = BaseResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatasourceSet;
+        });
+    }
 }

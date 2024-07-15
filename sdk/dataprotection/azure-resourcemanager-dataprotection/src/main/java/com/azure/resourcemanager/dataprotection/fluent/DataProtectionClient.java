@@ -145,6 +145,13 @@ public interface DataProtectionClient {
     FetchCrossRegionRestoreJobsOperationsClient getFetchCrossRegionRestoreJobsOperations();
 
     /**
+     * Gets the BackupInstancesExtensionRoutingsClient object to access its operations.
+     * 
+     * @return the BackupInstancesExtensionRoutingsClient object.
+     */
+    BackupInstancesExtensionRoutingsClient getBackupInstancesExtensionRoutings();
+
+    /**
      * Gets the JobsClient object to access its operations.
      * 
      * @return the JobsClient object.

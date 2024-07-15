@@ -6,7 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * PolicyInfo
@@ -14,23 +18,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Policy Info in backupInstance.
  */
 @Fluent
-public final class PolicyInfo {
+public final class PolicyInfo implements JsonSerializable<PolicyInfo> {
     /*
      * The policyId property.
      */
-    @JsonProperty(value = "policyId", required = true)
     private String policyId;
 
     /*
      * The policyVersion property.
      */
-    @JsonProperty(value = "policyVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String policyVersion;
 
     /*
      * Policy parameters for the backup instance
      */
-    @JsonProperty(value = "policyParameters")
     private PolicyParameters policyParameters;
 
     /**
@@ -95,8 +96,8 @@ public final class PolicyInfo {
      */
     public void validate() {
         if (policyId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property policyId in model PolicyInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property policyId in model PolicyInfo"));
         }
         if (policyParameters() != null) {
             policyParameters().validate();
@@ -104,4 +105,46 @@ public final class PolicyInfo {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PolicyInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyId", this.policyId);
+        jsonWriter.writeJsonField("policyParameters", this.policyParameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyInfo if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PolicyInfo.
+     */
+    public static PolicyInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyInfo deserializedPolicyInfo = new PolicyInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyId".equals(fieldName)) {
+                    deserializedPolicyInfo.policyId = reader.getString();
+                } else if ("policyVersion".equals(fieldName)) {
+                    deserializedPolicyInfo.policyVersion = reader.getString();
+                } else if ("policyParameters".equals(fieldName)) {
+                    deserializedPolicyInfo.policyParameters = PolicyParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyInfo;
+        });
+    }
 }

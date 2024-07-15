@@ -117,8 +117,10 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGuardProxyName") String resourceGuardProxyName,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") UnlockDeleteRequest parameters,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("x-ms-authorization-auxiliary") String xMsAuthorizationAuxiliary,
+            @BodyParam("application/json") UnlockDeleteRequest parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -704,6 +706,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -711,7 +714,8 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UnlockDeleteResponseInner>> unlockDeleteWithResponseAsync(String resourceGroupName,
-        String vaultName, String resourceGuardProxyName, UnlockDeleteRequest parameters) {
+        String vaultName, String resourceGuardProxyName, UnlockDeleteRequest parameters,
+        String xMsAuthorizationAuxiliary) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -739,8 +743,8 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.unlockDelete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, resourceGuardProxyName, this.client.getApiVersion(), parameters, accept,
-                context))
+                resourceGroupName, vaultName, resourceGuardProxyName, this.client.getApiVersion(),
+                xMsAuthorizationAuxiliary, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -751,6 +755,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -759,7 +764,8 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UnlockDeleteResponseInner>> unlockDeleteWithResponseAsync(String resourceGroupName,
-        String vaultName, String resourceGuardProxyName, UnlockDeleteRequest parameters, Context context) {
+        String vaultName, String resourceGuardProxyName, UnlockDeleteRequest parameters,
+        String xMsAuthorizationAuxiliary, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -787,7 +793,8 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.unlockDelete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            vaultName, resourceGuardProxyName, this.client.getApiVersion(), parameters, accept, context);
+            vaultName, resourceGuardProxyName, this.client.getApiVersion(), xMsAuthorizationAuxiliary, parameters,
+            accept, context);
     }
 
     /**
@@ -805,8 +812,9 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UnlockDeleteResponseInner> unlockDeleteAsync(String resourceGroupName, String vaultName,
         String resourceGuardProxyName, UnlockDeleteRequest parameters) {
-        return unlockDeleteWithResponseAsync(resourceGroupName, vaultName, resourceGuardProxyName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final String xMsAuthorizationAuxiliary = null;
+        return unlockDeleteWithResponseAsync(resourceGroupName, vaultName, resourceGuardProxyName, parameters,
+            xMsAuthorizationAuxiliary).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -816,6 +824,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
      * @param parameters Request body for operation.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -824,9 +833,10 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UnlockDeleteResponseInner> unlockDeleteWithResponse(String resourceGroupName, String vaultName,
-        String resourceGuardProxyName, UnlockDeleteRequest parameters, Context context) {
-        return unlockDeleteWithResponseAsync(resourceGroupName, vaultName, resourceGuardProxyName, parameters, context)
-            .block();
+        String resourceGuardProxyName, UnlockDeleteRequest parameters, String xMsAuthorizationAuxiliary,
+        Context context) {
+        return unlockDeleteWithResponseAsync(resourceGroupName, vaultName, resourceGuardProxyName, parameters,
+            xMsAuthorizationAuxiliary, context).block();
     }
 
     /**
@@ -844,16 +854,15 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UnlockDeleteResponseInner unlockDelete(String resourceGroupName, String vaultName,
         String resourceGuardProxyName, UnlockDeleteRequest parameters) {
-        return unlockDeleteWithResponse(resourceGroupName, vaultName, resourceGuardProxyName, parameters, Context.NONE)
-            .getValue();
+        final String xMsAuthorizationAuxiliary = null;
+        return unlockDeleteWithResponse(resourceGroupName, vaultName, resourceGuardProxyName, parameters,
+            xMsAuthorizationAuxiliary, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -879,9 +888,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
