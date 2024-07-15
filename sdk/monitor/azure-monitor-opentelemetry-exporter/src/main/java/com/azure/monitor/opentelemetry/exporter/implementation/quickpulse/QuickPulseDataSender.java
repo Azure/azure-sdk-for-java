@@ -64,8 +64,8 @@ class QuickPulseDataSender implements Runnable {
                             break;
                     }
                 }
-            } catch (Exception e) {
-                logger.error("QuickPulseDataSender failed to send a request", e);
+            } catch (Throwable t) {
+                logger.error("QuickPulseDataSender failed to send a request", t);
             }
         }
     }
