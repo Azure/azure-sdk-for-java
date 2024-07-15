@@ -67,8 +67,9 @@ class CBSChannelTest extends IntegrationTestBase {
     private AmqpRetryOptions retryOptions;
     private ReactorProvider reactorProvider;
     private ReactorHandlerProvider handlerProvider;
-    private AmqpLinkProvider linkProvider = new AmqpLinkProvider();
+    private final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
     private String tokenAudience;
+    private AutoCloseable closeable;
 
     CBSChannelTest() {
         super(new ClientLogger(CBSChannelTest.class));
@@ -83,7 +84,7 @@ class CBSChannelTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        MockitoAnnotations.initMocks(this);
+        closeable = MockitoAnnotations.openMocks(this);
 
         connectionProperties = TestUtils.getConnectionStringProperties();
         azureTokenManagerProvider = new AzureTokenManagerProvider(CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
@@ -107,6 +108,14 @@ class CBSChannelTest extends IntegrationTestBase {
 
         if (connection != null) {
             connection.dispose();
+        }
+
+        if (closeable != null) {
+            try {
+                closeable.close();
+            } catch (Exception e) {
+                logger.logThrowableAsWarning(e);
+            }
         }
     }
 
