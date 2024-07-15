@@ -24,7 +24,7 @@
   documents are projected in the index (or indexes).
 - Added support for "narrow" types in `SearchFieldDataType`. This allows for specifying smaller types for vector fields
   to reduce storage costs and improve querying performance.
-- Added support for `SearchIndexerDataIndetity`, which allows for specifying the identity for the data source for the 
+- Added support for `SearchIndexerDataIdentity`, which allows for specifying the identity for the data source for the 
   indexer.
 - `SearchField` and `SearchableField` now support `stored` and `vectorEncodingFormat` configurations. `stored` allows
   for specifying behaviors on how the index will retain vector data (enabling the ability to reduce storage costs), and
