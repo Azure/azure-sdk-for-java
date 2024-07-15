@@ -4,9 +4,9 @@
 package com.azure.messaging.webpubsub.models;
 
 /**
- * Defines values for ClientEndpointType
+ * Defines values for ClientType
  */
-public enum ClientEndpointType {
+public enum ClientType {
     /**
      * Default WebPubSub Client Endpoint. E.g: <code>wss://exampleHost.com/client/hubs/exampleHub</code>
      */
@@ -18,23 +18,23 @@ public enum ClientEndpointType {
     MQTT("mqtt");
 
     /**
-     * The actual serialized value for a ClientEndpointType.
+     * The actual serialized value for a ClientType.
      */
     private final String value;
 
-    ClientEndpointType(String value) {
+    ClientType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ClientEndpointType instance.
+     * Parses a serialized value to a ClientType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed ClientEndpointType object, or null if unable to parse.
+     * @return the parsed ClientType object, or null if unable to parse.
      */
-    public static ClientEndpointType fromString(String value) {
-        ClientEndpointType[] items = ClientEndpointType.values();
-        for (ClientEndpointType item : items) {
+    public static ClientType fromString(String value) {
+        ClientType[] items = ClientType.values();
+        for (ClientType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

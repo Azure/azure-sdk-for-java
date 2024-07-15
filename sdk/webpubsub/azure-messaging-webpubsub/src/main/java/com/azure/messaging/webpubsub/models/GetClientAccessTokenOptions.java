@@ -20,13 +20,13 @@ public final class GetClientAccessTokenOptions {
     private String userId;
     private List<String> roles;
     private List<String> groups;
-    private ClientEndpointType clientEndpointType;
+    private ClientType clientType;
 
     /**
      * Creates an instance of GetClientAccessTokenOptions.
      */
     public GetClientAccessTokenOptions() {
-        this.clientEndpointType = ClientEndpointType.DEFAULT;
+        this.clientType = ClientType.DEFAULT;
     }
 
     /**
@@ -130,18 +130,18 @@ public final class GetClientAccessTokenOptions {
      *
      * @return The same instance of this type, modified based on the value provided in this set method.
      */
-    public ClientEndpointType getClientEndpointType() {
-        return clientEndpointType;
+    public ClientType getClientType() {
+        return clientType;
     }
 
     /**
      * Specifies the endpoint type of the client. Default type is <code>default</code>
      *
-     * @param clientEndpointType The endpoint type of client
+     * @param clientType The endpoint type of client
      * @return The same instance of this type, modified based on the value provided in this set method.
      */
-    public GetClientAccessTokenOptions setClientEndpointType(final ClientEndpointType clientEndpointType) {
-        this.clientEndpointType = clientEndpointType;
+    public GetClientAccessTokenOptions setClientType(final ClientType clientType) {
+        this.clientType = clientType;
         return this;
     }
 

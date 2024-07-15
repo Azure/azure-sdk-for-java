@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added a `clientEndpointType` option to `GenerateClientTokenOptions` to specify the type of client endpoint
+- Added a `clientType` option to `GenerateClientTokenOptions` to specify the type of client endpoint
   when generating token. This option can be used to generate token and client connection URL for a specific client endpoint type, such as `Default` or `MQTT`.
 - Added a `addConnectionsToGroups` method to `WebPubSubServiceClient` and `WebPubSubServiceAsyncClient` to add filtered connections to multiple groups.
 - Migrated serialization to `azure-json` which offers implementation agnostic serialization, providing support for
