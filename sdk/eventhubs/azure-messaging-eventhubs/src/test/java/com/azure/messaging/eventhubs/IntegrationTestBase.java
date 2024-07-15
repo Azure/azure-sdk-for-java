@@ -50,8 +50,6 @@ import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
  * Test base for running integration tests.
  */
 public abstract class IntegrationTestBase extends TestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(IntegrationTestBase.class);
-
     // The number of partitions we create in test-resources.json.
     // Partitions 0 and 1 are used for consume-only operations. 2, 3, and 4 are used to publish or consume events.
     protected static final int NUMBER_OF_PARTITIONS = 5;
