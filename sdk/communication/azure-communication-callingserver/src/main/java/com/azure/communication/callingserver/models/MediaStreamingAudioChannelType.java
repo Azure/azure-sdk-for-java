@@ -5,7 +5,6 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for MediaStreamingAudioChannelType. */
@@ -17,17 +16,32 @@ public final class MediaStreamingAudioChannelType extends ExpandableStringEnum<M
     public static final MediaStreamingAudioChannelType UNMIXED = fromString("unmixed");
 
     /**
+     * Creates a new instance of {@link MediaStreamingAudioChannelType} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link MediaStreamingAudioChannelType} which doesn't
+     * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MediaStreamingAudioChannelType() {
+    }
+
+    /**
      * Creates or finds a MediaStreamingAudioChannelType from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding MediaStreamingAudioChannelType.
      */
-    @JsonCreator
     public static MediaStreamingAudioChannelType fromString(String name) {
         return fromString(name, MediaStreamingAudioChannelType.class);
     }
 
-    /** @return known MediaStreamingAudioChannelType values. */
+    /**
+     * Gets known MediaStreamingAudioChannelType values.
+     *
+     * @return known MediaStreamingAudioChannelType values.
+     */
     public static Collection<MediaStreamingAudioChannelType> values() {
         return values(MediaStreamingAudioChannelType.class);
     }

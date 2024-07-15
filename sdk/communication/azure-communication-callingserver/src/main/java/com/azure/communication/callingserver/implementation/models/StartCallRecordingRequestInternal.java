@@ -5,51 +5,57 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The request payload start for call recording operation with call locator. */
+/**
+ * The request payload start for call recording operation with call locator.
+ */
 @Fluent
-public final class StartCallRecordingRequestInternal {
+public final class StartCallRecordingRequestInternal implements JsonSerializable<StartCallRecordingRequestInternal> {
     /*
      * The call locator.
      */
-    @JsonProperty(value = "callLocator", required = true)
     private CallLocatorInternal callLocator;
 
     /*
      * The uri to send notifications to.
      */
-    @JsonProperty(value = "recordingStateCallbackUri")
     private String recordingStateCallbackUri;
 
     /*
      * The content type of call recording.
      */
-    @JsonProperty(value = "recordingContentType")
     private RecordingContentInternal recordingContentType;
 
     /*
      * The channel type of call recording.
      */
-    @JsonProperty(value = "recordingChannelType")
     private RecordingChannelInternal recordingChannelType;
 
     /*
      * The format type of call recording.
      */
-    @JsonProperty(value = "recordingFormatType")
     private RecordingFormatInternal recordingFormatType;
 
     /*
      * The channel affinity of call recording.
      */
-    @JsonProperty(value = "channelAffinity")
     private List<ChannelAffinityInternal> channelAffinity;
 
     /**
+     * Creates an instance of StartCallRecordingRequestInternal class.
+     */
+    public StartCallRecordingRequestInternal() {
+    }
+
+    /**
      * Get the callLocator property: The call locator.
-     *
+     * 
      * @return the callLocator value.
      */
     public CallLocatorInternal getCallLocator() {
@@ -58,7 +64,7 @@ public final class StartCallRecordingRequestInternal {
 
     /**
      * Set the callLocator property: The call locator.
-     *
+     * 
      * @param callLocator the callLocator value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
@@ -69,7 +75,7 @@ public final class StartCallRecordingRequestInternal {
 
     /**
      * Get the recordingStateCallbackUri property: The uri to send notifications to.
-     *
+     * 
      * @return the recordingStateCallbackUri value.
      */
     public String getRecordingStateCallbackUri() {
@@ -78,7 +84,7 @@ public final class StartCallRecordingRequestInternal {
 
     /**
      * Set the recordingStateCallbackUri property: The uri to send notifications to.
-     *
+     * 
      * @param recordingStateCallbackUri the recordingStateCallbackUri value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
@@ -89,7 +95,7 @@ public final class StartCallRecordingRequestInternal {
 
     /**
      * Get the recordingContentType property: The content type of call recording.
-     *
+     * 
      * @return the recordingContentType value.
      */
     public RecordingContentInternal getRecordingContentType() {
@@ -98,7 +104,7 @@ public final class StartCallRecordingRequestInternal {
 
     /**
      * Set the recordingContentType property: The content type of call recording.
-     *
+     * 
      * @param recordingContentType the recordingContentType value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
@@ -109,7 +115,7 @@ public final class StartCallRecordingRequestInternal {
 
     /**
      * Get the recordingChannelType property: The channel type of call recording.
-     *
+     * 
      * @return the recordingChannelType value.
      */
     public RecordingChannelInternal getRecordingChannelType() {
@@ -118,7 +124,7 @@ public final class StartCallRecordingRequestInternal {
 
     /**
      * Set the recordingChannelType property: The channel type of call recording.
-     *
+     * 
      * @param recordingChannelType the recordingChannelType value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
@@ -129,7 +135,7 @@ public final class StartCallRecordingRequestInternal {
 
     /**
      * Get the recordingFormatType property: The format type of call recording.
-     *
+     * 
      * @return the recordingFormatType value.
      */
     public RecordingFormatInternal getRecordingFormatType() {
@@ -138,7 +144,7 @@ public final class StartCallRecordingRequestInternal {
 
     /**
      * Set the recordingFormatType property: The format type of call recording.
-     *
+     * 
      * @param recordingFormatType the recordingFormatType value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
@@ -149,7 +155,7 @@ public final class StartCallRecordingRequestInternal {
 
     /**
      * Get the channelAffinity property: The channel affinity of call recording.
-     *
+     * 
      * @return the channelAffinity value.
      */
     public List<ChannelAffinityInternal> getChannelAffinity() {
@@ -158,12 +164,74 @@ public final class StartCallRecordingRequestInternal {
 
     /**
      * Set the channelAffinity property: The channel affinity of call recording.
-     *
+     * 
      * @param channelAffinity the channelAffinity value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
     public StartCallRecordingRequestInternal setChannelAffinity(List<ChannelAffinityInternal> channelAffinity) {
         this.channelAffinity = channelAffinity;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("callLocator", this.callLocator);
+        jsonWriter.writeStringField("recordingStateCallbackUri", this.recordingStateCallbackUri);
+        jsonWriter.writeStringField("recordingContentType",
+            this.recordingContentType == null ? null : this.recordingContentType.toString());
+        jsonWriter.writeStringField("recordingChannelType",
+            this.recordingChannelType == null ? null : this.recordingChannelType.toString());
+        jsonWriter.writeStringField("recordingFormatType",
+            this.recordingFormatType == null ? null : this.recordingFormatType.toString());
+        jsonWriter.writeArrayField("channelAffinity", this.channelAffinity,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StartCallRecordingRequestInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StartCallRecordingRequestInternal if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StartCallRecordingRequestInternal.
+     */
+    public static StartCallRecordingRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StartCallRecordingRequestInternal deserializedStartCallRecordingRequestInternal
+                = new StartCallRecordingRequestInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("callLocator".equals(fieldName)) {
+                    deserializedStartCallRecordingRequestInternal.callLocator = CallLocatorInternal.fromJson(reader);
+                } else if ("recordingStateCallbackUri".equals(fieldName)) {
+                    deserializedStartCallRecordingRequestInternal.recordingStateCallbackUri = reader.getString();
+                } else if ("recordingContentType".equals(fieldName)) {
+                    deserializedStartCallRecordingRequestInternal.recordingContentType
+                        = RecordingContentInternal.fromString(reader.getString());
+                } else if ("recordingChannelType".equals(fieldName)) {
+                    deserializedStartCallRecordingRequestInternal.recordingChannelType
+                        = RecordingChannelInternal.fromString(reader.getString());
+                } else if ("recordingFormatType".equals(fieldName)) {
+                    deserializedStartCallRecordingRequestInternal.recordingFormatType
+                        = RecordingFormatInternal.fromString(reader.getString());
+                } else if ("channelAffinity".equals(fieldName)) {
+                    List<ChannelAffinityInternal> channelAffinity
+                        = reader.readArray(reader1 -> ChannelAffinityInternal.fromJson(reader1));
+                    deserializedStartCallRecordingRequestInternal.channelAffinity = channelAffinity;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStartCallRecordingRequestInternal;
+        });
     }
 }

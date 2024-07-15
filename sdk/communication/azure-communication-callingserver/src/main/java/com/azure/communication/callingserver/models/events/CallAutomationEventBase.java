@@ -3,28 +3,25 @@
 
 package com.azure.communication.callingserver.models.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonSerializable;
 
 /** The base event interface. */
-public abstract class CallAutomationEventBase {
+public abstract class CallAutomationEventBase implements JsonSerializable<CallAutomationEventBase> {
     /*
      * Call connection ID.
      */
-    @JsonProperty(value = "callConnectionId")
-    private final String callConnectionId;
+    private String callConnectionId;
 
     /*
      * Server call ID.
      */
-    @JsonProperty(value = "serverCallId")
-    private final String serverCallId;
+    private String serverCallId;
 
     /*
      * Correlation ID for event to call correlation. Also called ChainId for
      * skype chain ID.
      */
-    @JsonProperty(value = "correlationId")
-    private final String correlationId;
+    private String correlationId;
 
     CallAutomationEventBase() {
         this.serverCallId = null;
@@ -58,5 +55,20 @@ public abstract class CallAutomationEventBase {
      */
     public String getCorrelationId() {
         return this.correlationId;
+    }
+
+    CallAutomationEventBase setServerCallId(String serverCallId) {
+        this.serverCallId = serverCallId;
+        return this;
+    }
+
+    CallAutomationEventBase setCallConnectionId(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
+        return this;
+    }
+
+    CallAutomationEventBase setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
+        return this;
     }
 }

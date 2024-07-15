@@ -16,6 +16,18 @@ public final class RecordingContent extends ExpandableStringEnum<RecordingConten
     public static final RecordingContent AUDIO_VIDEO = fromString("audioVideo");
 
     /**
+     * Creates a new instance of {@link RecordingContent} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link RecordingContent} which doesn't
+     * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecordingContent() {
+    }
+
+    /**
      * Creates or finds a RecordingContent from its string representation.
      *
      * @param name a name to look for.
@@ -25,7 +37,11 @@ public final class RecordingContent extends ExpandableStringEnum<RecordingConten
         return fromString(name, RecordingContent.class);
     }
 
-    /** @return known RecordingContent values. */
+    /**
+     * Gets known RecordingContent values.
+     *
+     * @return known RecordingContent values.
+     */
     public static Collection<RecordingContent> values() {
         return values(RecordingContent.class);
     }

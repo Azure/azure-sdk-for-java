@@ -5,26 +5,36 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AcsCallParticipantInternal model. */
+/**
+ * The AcsCallParticipantInternal model.
+ */
 @Fluent
-public final class AcsCallParticipantInternal {
+public final class AcsCallParticipantInternal implements JsonSerializable<AcsCallParticipantInternal> {
     /*
      * Communication identifier of the participant
      */
-    @JsonProperty(value = "identifier")
     private CommunicationIdentifierModel identifier;
 
     /*
      * Is participant muted
      */
-    @JsonProperty(value = "isMuted")
     private Boolean isMuted;
 
     /**
+     * Creates an instance of AcsCallParticipantInternal class.
+     */
+    public AcsCallParticipantInternal() {
+    }
+
+    /**
      * Get the identifier property: Communication identifier of the participant.
-     *
+     * 
      * @return the identifier value.
      */
     public CommunicationIdentifierModel getIdentifier() {
@@ -33,7 +43,7 @@ public final class AcsCallParticipantInternal {
 
     /**
      * Set the identifier property: Communication identifier of the participant.
-     *
+     * 
      * @param identifier the identifier value to set.
      * @return the AcsCallParticipantInternal object itself.
      */
@@ -44,7 +54,7 @@ public final class AcsCallParticipantInternal {
 
     /**
      * Get the isMuted property: Is participant muted.
-     *
+     * 
      * @return the isMuted value.
      */
     public Boolean isMuted() {
@@ -53,12 +63,51 @@ public final class AcsCallParticipantInternal {
 
     /**
      * Set the isMuted property: Is participant muted.
-     *
+     * 
      * @param isMuted the isMuted value to set.
      * @return the AcsCallParticipantInternal object itself.
      */
     public AcsCallParticipantInternal setIsMuted(Boolean isMuted) {
         this.isMuted = isMuted;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identifier", this.identifier);
+        jsonWriter.writeBooleanField("isMuted", this.isMuted);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsCallParticipantInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsCallParticipantInternal if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsCallParticipantInternal.
+     */
+    public static AcsCallParticipantInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsCallParticipantInternal deserializedAcsCallParticipantInternal = new AcsCallParticipantInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identifier".equals(fieldName)) {
+                    deserializedAcsCallParticipantInternal.identifier = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("isMuted".equals(fieldName)) {
+                    deserializedAcsCallParticipantInternal.isMuted = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsCallParticipantInternal;
+        });
     }
 }

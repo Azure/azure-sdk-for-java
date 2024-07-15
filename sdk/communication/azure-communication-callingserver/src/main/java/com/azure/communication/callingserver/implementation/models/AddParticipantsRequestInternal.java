@@ -5,42 +5,50 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The AddParticipantsRequestInternal model. */
+/**
+ * The AddParticipantsRequestInternal model.
+ */
 @Fluent
-public final class AddParticipantsRequestInternal {
+public final class AddParticipantsRequestInternal implements JsonSerializable<AddParticipantsRequestInternal> {
     /*
-     * The source caller Id that's shown to the PSTN participant being invited.
-     * Required only when inviting a PSTN participant.
+     * The source caller Id that's shown to the PSTN participant being invited. Required only when inviting a PSTN
+     * participant.
      */
-    @JsonProperty(value = "sourceCallerId")
     private PhoneNumberIdentifierModel sourceCallerId;
 
     /*
      * The participants to invite.
      */
-    @JsonProperty(value = "participantsToAdd", required = true)
     private List<CommunicationIdentifierModel> participantsToAdd;
 
     /*
      * Gets or sets the timeout to wait for the invited participant to pickup.
      * The maximum value of this is 180 seconds
      */
-    @JsonProperty(value = "invitationTimeoutInSeconds")
     private Integer invitationTimeoutInSeconds;
 
     /*
      * The operation context.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
+
+    /**
+     * Creates an instance of AddParticipantsRequestInternal class.
+     */
+    public AddParticipantsRequestInternal() {
+    }
 
     /**
      * Get the sourceCallerId property: The source caller Id that's shown to the PSTN participant being invited.
      * Required only when inviting a PSTN participant.
-     *
+     * 
      * @return the sourceCallerId value.
      */
     public PhoneNumberIdentifierModel getSourceCallerId() {
@@ -50,7 +58,7 @@ public final class AddParticipantsRequestInternal {
     /**
      * Set the sourceCallerId property: The source caller Id that's shown to the PSTN participant being invited.
      * Required only when inviting a PSTN participant.
-     *
+     * 
      * @param sourceCallerId the sourceCallerId value to set.
      * @return the AddParticipantsRequestInternal object itself.
      */
@@ -61,7 +69,7 @@ public final class AddParticipantsRequestInternal {
 
     /**
      * Get the participantsToAdd property: The participants to invite.
-     *
+     * 
      * @return the participantsToAdd value.
      */
     public List<CommunicationIdentifierModel> getParticipantsToAdd() {
@@ -70,7 +78,7 @@ public final class AddParticipantsRequestInternal {
 
     /**
      * Set the participantsToAdd property: The participants to invite.
-     *
+     * 
      * @param participantsToAdd the participantsToAdd value to set.
      * @return the AddParticipantsRequestInternal object itself.
      */
@@ -81,8 +89,9 @@ public final class AddParticipantsRequestInternal {
 
     /**
      * Get the invitationTimeoutInSeconds property: Gets or sets the timeout to wait for the invited participant to
-     * pickup. The maximum value of this is 180 seconds.
-     *
+     * pickup.
+     * The maximum value of this is 180 seconds.
+     * 
      * @return the invitationTimeoutInSeconds value.
      */
     public Integer getInvitationTimeoutInSeconds() {
@@ -91,8 +100,9 @@ public final class AddParticipantsRequestInternal {
 
     /**
      * Set the invitationTimeoutInSeconds property: Gets or sets the timeout to wait for the invited participant to
-     * pickup. The maximum value of this is 180 seconds.
-     *
+     * pickup.
+     * The maximum value of this is 180 seconds.
+     * 
      * @param invitationTimeoutInSeconds the invitationTimeoutInSeconds value to set.
      * @return the AddParticipantsRequestInternal object itself.
      */
@@ -103,7 +113,7 @@ public final class AddParticipantsRequestInternal {
 
     /**
      * Get the operationContext property: The operation context.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -112,12 +122,64 @@ public final class AddParticipantsRequestInternal {
 
     /**
      * Set the operationContext property: The operation context.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the AddParticipantsRequestInternal object itself.
      */
     public AddParticipantsRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("participantsToAdd", this.participantsToAdd,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("sourceCallerId", this.sourceCallerId);
+        jsonWriter.writeNumberField("invitationTimeoutInSeconds", this.invitationTimeoutInSeconds);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddParticipantsRequestInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddParticipantsRequestInternal if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AddParticipantsRequestInternal.
+     */
+    public static AddParticipantsRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddParticipantsRequestInternal deserializedAddParticipantsRequestInternal
+                = new AddParticipantsRequestInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("participantsToAdd".equals(fieldName)) {
+                    List<CommunicationIdentifierModel> participantsToAdd
+                        = reader.readArray(reader1 -> CommunicationIdentifierModel.fromJson(reader1));
+                    deserializedAddParticipantsRequestInternal.participantsToAdd = participantsToAdd;
+                } else if ("sourceCallerId".equals(fieldName)) {
+                    deserializedAddParticipantsRequestInternal.sourceCallerId
+                        = PhoneNumberIdentifierModel.fromJson(reader);
+                } else if ("invitationTimeoutInSeconds".equals(fieldName)) {
+                    deserializedAddParticipantsRequestInternal.invitationTimeoutInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedAddParticipantsRequestInternal.operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddParticipantsRequestInternal;
+        });
     }
 }

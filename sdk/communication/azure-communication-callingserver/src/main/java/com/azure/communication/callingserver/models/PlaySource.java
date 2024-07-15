@@ -4,16 +4,21 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonSerializable;
 
 /** The PlaySource model. */
 @Fluent
-public abstract class PlaySource {
+public abstract class PlaySource implements JsonSerializable<PlaySource> {
     /*
      * Defines the identifier to be used for caching related media
      */
-    @JsonProperty(value = "playSourceId")
     private String playSourceId;
+
+    /**
+     * Creates a PlaySource.
+     */
+    public PlaySource() {
+    }
 
     /**
      * Get the playSourceId property: Defines the identifier to be used for caching related media.

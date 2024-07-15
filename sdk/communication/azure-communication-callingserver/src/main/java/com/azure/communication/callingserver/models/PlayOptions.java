@@ -5,7 +5,7 @@ package com.azure.communication.callingserver.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** The PlayOptionsInternal model. */
+/** The PlayOptions model. */
 @Fluent
 public final class PlayOptions {
     /*
@@ -18,6 +18,11 @@ public final class PlayOptions {
      */
     private String operationContext;
 
+    /**
+     * Creates a PlayOptions.
+     */
+    public PlayOptions() {
+    }
     /**
      * Get the loop property: The option to play the provided audio source in loop when set to true.
      *

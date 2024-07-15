@@ -4,18 +4,24 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** Channel affinity for a participant. */
 @Fluent
-public final class ChannelAffinity {
+public final class ChannelAffinity implements JsonSerializable<ChannelAffinity> {
     /*
      * Channel number to which bitstream from a particular participant will be
      * written.
      */
-    @JsonProperty(value = "channel")
     private final Integer channel;
 
     /*
@@ -23,7 +29,6 @@ public final class ChannelAffinity {
      * the channel
      * represented by the channel number.
      */
-    @JsonProperty(value = "participant")
     private final CommunicationIdentifier participant;
 
     /**
@@ -54,5 +59,43 @@ public final class ChannelAffinity {
      */
     public CommunicationIdentifier getParticipant() {
         return this.participant;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("channel", channel);
+        jsonWriter.writeJsonField("participant", CommunicationIdentifierConverter.convert(participant));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ParticipantsUpdated from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ParticipantsUpdated if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ParticipantsUpdated.
+     */
+    public static ChannelAffinity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Integer channel = null;
+            CommunicationIdentifier participant = null;
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("channel".equals(fieldName)) {
+                    channel = reader.getNullable(JsonReader::getInt);
+                } else if ("participant".equals(fieldName)) {
+                    participant = CommunicationIdentifierConverter.convert(CommunicationIdentifierModel.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new ChannelAffinity(channel, participant);
+        });
     }
 }

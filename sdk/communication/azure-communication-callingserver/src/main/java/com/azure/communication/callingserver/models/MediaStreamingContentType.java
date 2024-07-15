@@ -5,7 +5,6 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for MediaStreamingContentType. */
@@ -14,17 +13,32 @@ public final class MediaStreamingContentType extends ExpandableStringEnum<MediaS
     public static final MediaStreamingContentType AUDIO = fromString("audio");
 
     /**
+     * Creates a new instance of {@link MediaStreamingContentType} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link MediaStreamingContentType} which doesn't
+     * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MediaStreamingContentType() {
+    }
+
+    /**
      * Creates or finds a MediaStreamingContentType from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding MediaStreamingContentType.
      */
-    @JsonCreator
     public static MediaStreamingContentType fromString(String name) {
         return fromString(name, MediaStreamingContentType.class);
     }
 
-    /** @return known MediaStreamingContentType values. */
+    /**
+     * Gets known MediaStreamingContentType values.
+     *
+     * @return known MediaStreamingContentType values.
+     */
     public static Collection<MediaStreamingContentType> values() {
         return values(MediaStreamingContentType.class);
     }

@@ -4,7 +4,6 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for StopTones. */
@@ -58,17 +57,32 @@ public final class StopTones extends ExpandableStringEnum<StopTones> {
     public static final StopTones ASTERISK = fromString("asterisk");
 
     /**
+     * Creates a new instance of {@link StopTones} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link StopTones} which doesn't
+     * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StopTones() {
+    }
+
+    /**
      * Creates or finds a StopTones from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding StopTones.
      */
-    @JsonCreator
     public static StopTones fromString(String name) {
         return fromString(name, StopTones.class);
     }
 
-    /** @return known StopTones values. */
+    /**
+     * Gets known StopTones values.
+     *
+     * @return known StopTones values.
+     */
     public static Collection<StopTones> values() {
         return values(StopTones.class);
     }

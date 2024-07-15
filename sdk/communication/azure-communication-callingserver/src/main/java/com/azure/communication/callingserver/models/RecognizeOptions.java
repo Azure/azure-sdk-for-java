@@ -3,39 +3,39 @@
 
 package com.azure.communication.callingserver.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** Options to configure the Recognize operation **/
-public class RecognizeOptions {
+public class RecognizeOptions implements JsonSerializable<RecognizeOptions> {
     /*
      * Determines the type of the recognition.
      */
-    @JsonProperty(value = "recognizeInputType", required = true)
     private RecognizeInputType recognizeInputType;
 
     /*
      * The source of the audio to be played for recognition.
      */
-    @JsonProperty(value = "playPrompt")
     private PlaySource playPrompt;
 
     /*
      * If set recognize can barge into other existing
      * queued-up/currently-processing requests.
      */
-    @JsonProperty(value = "stopCurrentOperations")
     private Boolean stopCurrentOperations;
 
     /*
      * Defines options for recognition.
      */
-    @JsonProperty(value = "recognizeConfiguration", required = true)
     private RecognizeConfigurations recognizeConfiguration;
 
     /*
      * The value to identify context of the operation.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
@@ -150,4 +150,52 @@ public class RecognizeOptions {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recognizeInputType", this.recognizeInputType == null ? null : this.recognizeInputType.toString());
+        jsonWriter.writeJsonField("playPrompt", playPrompt);
+        jsonWriter.writeBooleanField("stopCurrentOperations", stopCurrentOperations);
+        jsonWriter.writeJsonField("recognizeConfiguration", recognizeConfiguration);
+        jsonWriter.writeStringField("operationContext", operationContext);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecognizeConfigurations from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecognizeConfigurations if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecognizeConfigurations.
+     */
+    public static RecognizeOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecognizeInputType recognizeInputType = null;
+            Boolean stopCurrentOperations = null;
+            RecognizeConfigurations recognizeConfiguration = null;
+            String operationContext = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("recognizeInputType".equals(fieldName)) {
+                    recognizeInputType = RecognizeInputType.fromString(reader.getString());
+                } else if ("stopCurrentOperations".equals(fieldName)) {
+                    stopCurrentOperations = reader.getNullable(JsonReader::getBoolean);
+                } else if ("recognizeConfiguration".equals(fieldName)) {
+                    recognizeConfiguration = RecognizeConfigurations.fromJson(reader);
+                } else if ("operationContext".equals(fieldName)) {
+                    operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new RecognizeOptions(recognizeInputType, recognizeConfiguration)
+                .setStopCurrentOperations(stopCurrentOperations)
+                .setOperationContext(operationContext);
+        });
+    }
 }

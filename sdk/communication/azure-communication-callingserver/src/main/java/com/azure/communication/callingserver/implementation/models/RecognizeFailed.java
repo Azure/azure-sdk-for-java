@@ -4,52 +4,62 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The RecognizeFailed model. */
-@Fluent
-public final class RecognizeFailed {
+/**
+ * The RecognizeFailed model.
+ */
+@Immutable
+public final class RecognizeFailed implements JsonSerializable<RecognizeFailed> {
     /*
-     * Operation context
+     * The operationContext property.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
-     * Defines the code, sub-code and message for the operation
+     * The resultInformation property.
      */
-    @JsonProperty(value = "resultInfo")
-    private ResultInformation resultInfo;
+    private ResultInformation resultInformation;
 
     /*
-     * The type property.
+     * Used to determine the version of the event.
      */
-    @JsonProperty(value = "type")
-    private AcsEventTypeInternal type;
+    private String version;
 
     /*
      * Call connection ID.
      */
-    @JsonProperty(value = "callConnectionId")
     private String callConnectionId;
 
     /*
      * Server call ID.
      */
-    @JsonProperty(value = "serverCallId")
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
-    @JsonProperty(value = "correlationId")
     private String correlationId;
 
+    /*
+     * The public event namespace used as the "type" property in the CloudEvent.
+     */
+    private String publicEventType;
+
     /**
-     * Get the operationContext property: Operation context.
-     *
+     * Creates an instance of RecognizeFailed class.
+     */
+    public RecognizeFailed() {
+    }
+
+    /**
+     * Get the operationContext property: The operationContext property.
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -57,59 +67,26 @@ public final class RecognizeFailed {
     }
 
     /**
-     * Set the operationContext property: Operation context.
-     *
-     * @param operationContext the operationContext value to set.
-     * @return the RecognizeFailed object itself.
+     * Get the resultInformation property: The resultInformation property.
+     * 
+     * @return the resultInformation value.
      */
-    public RecognizeFailed setOperationContext(String operationContext) {
-        this.operationContext = operationContext;
-        return this;
+    public ResultInformation getResultInformation() {
+        return this.resultInformation;
     }
 
     /**
-     * Get the resultInfo property: Defines the code, sub-code and message for the operation.
-     *
-     * @return the resultInfo value.
+     * Get the version property: Used to determine the version of the event.
+     * 
+     * @return the version value.
      */
-    public ResultInformation getResultInfo() {
-        return this.resultInfo;
-    }
-
-    /**
-     * Set the resultInfo property: Defines the code, sub-code and message for the operation.
-     *
-     * @param resultInfo the resultInfo value to set.
-     * @return the RecognizeFailed object itself.
-     */
-    public RecognizeFailed setResultInfo(ResultInformation resultInfo) {
-        this.resultInfo = resultInfo;
-        return this;
-    }
-
-    /**
-     * Get the type property: The type property.
-     *
-     * @return the type value.
-     */
-    public AcsEventTypeInternal getType() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: The type property.
-     *
-     * @param type the type value to set.
-     * @return the RecognizeFailed object itself.
-     */
-    public RecognizeFailed setType(AcsEventTypeInternal type) {
-        this.type = type;
-        return this;
+    public String getVersion() {
+        return this.version;
     }
 
     /**
      * Get the callConnectionId property: Call connection ID.
-     *
+     * 
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
@@ -117,19 +94,8 @@ public final class RecognizeFailed {
     }
 
     /**
-     * Set the callConnectionId property: Call connection ID.
-     *
-     * @param callConnectionId the callConnectionId value to set.
-     * @return the RecognizeFailed object itself.
-     */
-    public RecognizeFailed setCallConnectionId(String callConnectionId) {
-        this.callConnectionId = callConnectionId;
-        return this;
-    }
-
-    /**
      * Get the serverCallId property: Server call ID.
-     *
+     * 
      * @return the serverCallId value.
      */
     public String getServerCallId() {
@@ -137,20 +103,9 @@ public final class RecognizeFailed {
     }
 
     /**
-     * Set the serverCallId property: Server call ID.
-     *
-     * @param serverCallId the serverCallId value to set.
-     * @return the RecognizeFailed object itself.
-     */
-    public RecognizeFailed setServerCallId(String serverCallId) {
-        this.serverCallId = serverCallId;
-        return this;
-    }
-
-    /**
      * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
      * ID.
-     *
+     * 
      * @return the correlationId value.
      */
     public String getCorrelationId() {
@@ -158,14 +113,58 @@ public final class RecognizeFailed {
     }
 
     /**
-     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
-     *
-     * @param correlationId the correlationId value to set.
-     * @return the RecognizeFailed object itself.
+     * Get the publicEventType property: The public event namespace used as the "type" property in the CloudEvent.
+     * 
+     * @return the publicEventType value.
      */
-    public RecognizeFailed setCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
-        return this;
+    public String getPublicEventType() {
+        return this.publicEventType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecognizeFailed from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecognizeFailed if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecognizeFailed.
+     */
+    public static RecognizeFailed fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecognizeFailed deserializedRecognizeFailed = new RecognizeFailed();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationContext".equals(fieldName)) {
+                    deserializedRecognizeFailed.operationContext = reader.getString();
+                } else if ("resultInformation".equals(fieldName)) {
+                    deserializedRecognizeFailed.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("version".equals(fieldName)) {
+                    deserializedRecognizeFailed.version = reader.getString();
+                } else if ("callConnectionId".equals(fieldName)) {
+                    deserializedRecognizeFailed.callConnectionId = reader.getString();
+                } else if ("serverCallId".equals(fieldName)) {
+                    deserializedRecognizeFailed.serverCallId = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedRecognizeFailed.correlationId = reader.getString();
+                } else if ("publicEventType".equals(fieldName)) {
+                    deserializedRecognizeFailed.publicEventType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecognizeFailed;
+        });
     }
 }

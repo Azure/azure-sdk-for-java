@@ -5,26 +5,42 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecognitionType. */
+/**
+ * Determines the sub-type of the recognize operation.
+ * In case of cancel operation the this field is not set and is returned empty.
+ */
 public final class RecognitionType extends ExpandableStringEnum<RecognitionType> {
-    /** Static value dtmf for RecognitionType. */
+    /**
+     * Static value dtmf for RecognitionType.
+     */
     public static final RecognitionType DTMF = fromString("dtmf");
 
     /**
+     * Creates a new instance of RecognitionType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecognitionType() {
+    }
+
+    /**
      * Creates or finds a RecognitionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecognitionType.
      */
-    @JsonCreator
     public static RecognitionType fromString(String name) {
         return fromString(name, RecognitionType.class);
     }
 
-    /** @return known RecognitionType values. */
+    /**
+     * Gets known RecognitionType values.
+     * 
+     * @return known RecognitionType values.
+     */
     public static Collection<RecognitionType> values() {
         return values(RecognitionType.class);
     }

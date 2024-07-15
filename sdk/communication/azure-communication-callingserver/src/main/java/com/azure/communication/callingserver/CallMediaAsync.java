@@ -6,16 +6,13 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.implementation.ContentsImpl;
 import com.azure.communication.callingserver.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callingserver.implementation.models.DtmfConfigurationsInternal;
 import com.azure.communication.callingserver.implementation.models.FileSourceInternal;
 import com.azure.communication.callingserver.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callingserver.implementation.models.PlayRequest;
 import com.azure.communication.callingserver.implementation.models.PlaySourceInternal;
 import com.azure.communication.callingserver.implementation.models.PlaySourceTypeInternal;
-import com.azure.communication.callingserver.implementation.models.RecognizeConfigurationsInternal;
 import com.azure.communication.callingserver.implementation.models.RecognizeInputTypeInternal;
 import com.azure.communication.callingserver.implementation.models.RecognizeRequest;
-import com.azure.communication.callingserver.implementation.models.StopTonesInternal;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.DtmfConfigurations;
 import com.azure.communication.callingserver.models.FileSource;
@@ -134,10 +131,10 @@ public class CallMediaAsync {
             context = context == null ? Context.NONE : context;
 
             RecognizeConfigurations recognizeConfigurations = recognizeOptions.getRecognizeConfiguration();
-            DtmfConfigurationsInternal dtmfConfigurationsInternal = null;
+            com.azure.communication.callingserver.implementation.models.DtmfOptions dtmfConfigurationsInternal = null;
             if (recognizeConfigurations.getDtmfConfigurations() != null) {
                 DtmfConfigurations dtmfConfigurations = recognizeConfigurations.getDtmfConfigurations();
-                dtmfConfigurationsInternal = new DtmfConfigurationsInternal()
+                dtmfConfigurationsInternal = new com.azure.communication.callingserver.implementation.models.DtmfOptions()
                     .setMaxTonesToCollect(dtmfConfigurations.getMaxTonesToCollect());
 
                 if (dtmfConfigurations.getInterToneTimeoutInSeconds() != null) {
@@ -146,14 +143,14 @@ public class CallMediaAsync {
                 if (dtmfConfigurations.getStopTones() != null) {
                     dtmfConfigurationsInternal
                         .setStopTones(dtmfConfigurations.getStopTones().stream()
-                            .map(stopTones -> StopTonesInternal.fromString(stopTones.toString()))
+                            .map(stopTones -> com.azure.communication.callingserver.implementation.models.Tone.fromString(stopTones.toString()))
                             .collect(Collectors.toList()));
 
                 }
             }
-            RecognizeConfigurationsInternal recognizeConfigurationsInternal = new RecognizeConfigurationsInternal()
-                .setDtmfConfigurations(dtmfConfigurationsInternal)
-                .setInterruptPromptAndStartRecognition(recognizeConfigurations.isInterruptPromptAndStartRecognition())
+            com.azure.communication.callingserver.implementation.models.RecognizeOptions recognizeConfigurationsInternal = new com.azure.communication.callingserver.implementation.models.RecognizeOptions()
+                .setDtmfOptions(dtmfConfigurationsInternal)
+                .setInterruptPrompt(recognizeConfigurations.isInterruptPromptAndStartRecognition())
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(recognizeConfigurations.getTargetParticipant()));
             if (recognizeConfigurations.getInitialSilenceTimeoutInSeconds() != null) {
                 recognizeConfigurationsInternal.setInitialSilenceTimeoutInSeconds((int) recognizeConfigurations.getInitialSilenceTimeoutInSeconds().getSeconds());
@@ -168,8 +165,8 @@ public class CallMediaAsync {
             }
             RecognizeRequest recognizeRequest = new RecognizeRequest()
                 .setRecognizeInputType(RecognizeInputTypeInternal.fromString(recognizeOptions.getRecognizeInputType().toString()))
-                .setRecognizeConfiguration(recognizeConfigurationsInternal)
-                .setStopCurrentOperations(recognizeOptions.isStopCurrentOperations())
+                .setRecognizeOptions(recognizeConfigurationsInternal)
+                .setInterruptCallMediaOperation(recognizeOptions.isStopCurrentOperations())
                 .setPlayPrompt(playSourceInternal)
                 .setOperationContext(recognizeOptions.getOperationContext());
 

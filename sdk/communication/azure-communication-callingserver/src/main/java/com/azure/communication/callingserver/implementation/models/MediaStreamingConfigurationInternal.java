@@ -5,38 +5,47 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The MediaStreamingConfigurationInternal model. */
+/**
+ * The MediaStreamingConfigurationInternal model.
+ */
 @Fluent
-public final class MediaStreamingConfigurationInternal {
+public final class MediaStreamingConfigurationInternal
+    implements JsonSerializable<MediaStreamingConfigurationInternal> {
     /*
      * Transport URL for media streaming
      */
-    @JsonProperty(value = "transportUrl", required = true)
     private String transportUrl;
 
     /*
-     * The type of tranport to be used for media streaming, eg. Websocket
+     * The type of transport to be used for media streaming, eg. Websocket
      */
-    @JsonProperty(value = "transportType", required = true)
     private MediaStreamingTransportTypeInternal transportType;
 
     /*
      * Content type to stream, eg. audio, audio/video
      */
-    @JsonProperty(value = "contentType", required = true)
     private MediaStreamingContentTypeInternal contentType;
 
     /*
      * Audio channel type to stream, eg. unmixed audio, mixed audio
      */
-    @JsonProperty(value = "audioChannelType", required = true)
     private MediaStreamingAudioChannelTypeInternal audioChannelType;
 
     /**
+     * Creates an instance of MediaStreamingConfigurationInternal class.
+     */
+    public MediaStreamingConfigurationInternal() {
+    }
+
+    /**
      * Get the transportUrl property: Transport URL for media streaming.
-     *
+     * 
      * @return the transportUrl value.
      */
     public String getTransportUrl() {
@@ -45,7 +54,7 @@ public final class MediaStreamingConfigurationInternal {
 
     /**
      * Set the transportUrl property: Transport URL for media streaming.
-     *
+     * 
      * @param transportUrl the transportUrl value to set.
      * @return the MediaStreamingConfigurationInternal object itself.
      */
@@ -55,8 +64,8 @@ public final class MediaStreamingConfigurationInternal {
     }
 
     /**
-     * Get the transportType property: The type of tranport to be used for media streaming, eg. Websocket.
-     *
+     * Get the transportType property: The type of transport to be used for media streaming, eg. Websocket.
+     * 
      * @return the transportType value.
      */
     public MediaStreamingTransportTypeInternal getTransportType() {
@@ -64,8 +73,8 @@ public final class MediaStreamingConfigurationInternal {
     }
 
     /**
-     * Set the transportType property: The type of tranport to be used for media streaming, eg. Websocket.
-     *
+     * Set the transportType property: The type of transport to be used for media streaming, eg. Websocket.
+     * 
      * @param transportType the transportType value to set.
      * @return the MediaStreamingConfigurationInternal object itself.
      */
@@ -76,7 +85,7 @@ public final class MediaStreamingConfigurationInternal {
 
     /**
      * Get the contentType property: Content type to stream, eg. audio, audio/video.
-     *
+     * 
      * @return the contentType value.
      */
     public MediaStreamingContentTypeInternal getContentType() {
@@ -85,7 +94,7 @@ public final class MediaStreamingConfigurationInternal {
 
     /**
      * Set the contentType property: Content type to stream, eg. audio, audio/video.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the MediaStreamingConfigurationInternal object itself.
      */
@@ -96,7 +105,7 @@ public final class MediaStreamingConfigurationInternal {
 
     /**
      * Get the audioChannelType property: Audio channel type to stream, eg. unmixed audio, mixed audio.
-     *
+     * 
      * @return the audioChannelType value.
      */
     public MediaStreamingAudioChannelTypeInternal getAudioChannelType() {
@@ -105,13 +114,64 @@ public final class MediaStreamingConfigurationInternal {
 
     /**
      * Set the audioChannelType property: Audio channel type to stream, eg. unmixed audio, mixed audio.
-     *
+     * 
      * @param audioChannelType the audioChannelType value to set.
      * @return the MediaStreamingConfigurationInternal object itself.
      */
-    public MediaStreamingConfigurationInternal setAudioChannelType(
-            MediaStreamingAudioChannelTypeInternal audioChannelType) {
+    public MediaStreamingConfigurationInternal
+        setAudioChannelType(MediaStreamingAudioChannelTypeInternal audioChannelType) {
         this.audioChannelType = audioChannelType;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("transportUrl", this.transportUrl);
+        jsonWriter.writeStringField("transportType", this.transportType == null ? null : this.transportType.toString());
+        jsonWriter.writeStringField("contentType", this.contentType == null ? null : this.contentType.toString());
+        jsonWriter.writeStringField("audioChannelType",
+            this.audioChannelType == null ? null : this.audioChannelType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaStreamingConfigurationInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaStreamingConfigurationInternal if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MediaStreamingConfigurationInternal.
+     */
+    public static MediaStreamingConfigurationInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaStreamingConfigurationInternal deserializedMediaStreamingConfigurationInternal
+                = new MediaStreamingConfigurationInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transportUrl".equals(fieldName)) {
+                    deserializedMediaStreamingConfigurationInternal.transportUrl = reader.getString();
+                } else if ("transportType".equals(fieldName)) {
+                    deserializedMediaStreamingConfigurationInternal.transportType
+                        = MediaStreamingTransportTypeInternal.fromString(reader.getString());
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedMediaStreamingConfigurationInternal.contentType
+                        = MediaStreamingContentTypeInternal.fromString(reader.getString());
+                } else if ("audioChannelType".equals(fieldName)) {
+                    deserializedMediaStreamingConfigurationInternal.audioChannelType
+                        = MediaStreamingAudioChannelTypeInternal.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaStreamingConfigurationInternal;
+        });
     }
 }

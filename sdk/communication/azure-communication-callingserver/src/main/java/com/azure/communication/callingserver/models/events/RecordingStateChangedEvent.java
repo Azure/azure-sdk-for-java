@@ -5,10 +5,12 @@ package com.azure.communication.callingserver.models.events;
 
 import com.azure.communication.callingserver.models.RecordingState;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -19,26 +21,22 @@ public final class RecordingStateChangedEvent extends CallAutomationEventBase {
     /**
      * Recording Id.
      */
-    @JsonProperty(value = "recordingId")
     private final String recordingId;
 
     /**
      * Recording state.
      */
-    @JsonProperty(value = "state")
     private final RecordingState recordingState;
 
     /**
      * Time of when it started recording.
      */
-    @JsonIgnore
     private final OffsetDateTime startDateTime;
 
-    @JsonCreator
-    private RecordingStateChangedEvent(@JsonProperty("startDateTime") String startDateTime) {
-        this.startDateTime = OffsetDateTime.parse(startDateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        recordingId = null;
-        recordingState = null;
+    private RecordingStateChangedEvent(OffsetDateTime startDateTime, String recordingId, RecordingState recordingState) {
+        this.startDateTime = startDateTime;
+        this.recordingId = recordingId;
+        this.recordingState = recordingState;
     }
 
     /**
@@ -66,5 +64,66 @@ public final class RecordingStateChangedEvent extends CallAutomationEventBase {
      */
     public OffsetDateTime getStartDateTime() {
         return startDateTime;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recordingId", recordingId);
+        jsonWriter.writeStringField("state", recordingState == null ? null : recordingState.toString());
+        jsonWriter.writeStringField("startDateTime", startDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        jsonWriter.writeStringField("callConnectionId", super.getCallConnectionId());
+        jsonWriter.writeStringField("serverCallId", super.getServerCallId());
+        jsonWriter.writeStringField("correlationId", super.getCorrelationId());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecordingStateChangedEvent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecordingStateChangedEvent if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecordingStateChangedEvent.
+     */
+    public static RecordingStateChangedEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String recordingId = null;
+            RecordingState recordingState = null;
+            OffsetDateTime startDateTime = null;
+            String callConnectionId = null;
+            String serverCallId = null;
+            String correlationId = null;
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("recordingId".equals(fieldName)) {
+                    recordingId = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    recordingState = RecordingState.fromString(reader.getString());
+                } else if ("startDateTime".equals(fieldName)) {
+                    String value = reader.getString();
+                    if (!CoreUtils.isNullOrEmpty(value)) {
+                        startDateTime = OffsetDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                    }
+                } else if ("callConnectionId".equals(fieldName)) {
+                    callConnectionId = reader.getString();
+                } else if ("serverCallId".equals(fieldName)) {
+                    serverCallId = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    correlationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            final RecordingStateChangedEvent event = new RecordingStateChangedEvent(startDateTime, recordingId, recordingState);
+            event.setCorrelationId(correlationId)
+                .setServerCallId(serverCallId)
+                .setCallConnectionId(callConnectionId);
+            return event;
+        });
     }
 }

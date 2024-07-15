@@ -5,20 +5,31 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The RemoveParticipantsResponseInternal model. */
+/**
+ * The RemoveParticipantsResponseInternal model.
+ */
 @Fluent
-public final class RemoveParticipantsResponseInternal {
+public final class RemoveParticipantsResponseInternal implements JsonSerializable<RemoveParticipantsResponseInternal> {
     /*
      * The operation context provided by client.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
+     * Creates an instance of RemoveParticipantsResponseInternal class.
+     */
+    public RemoveParticipantsResponseInternal() {
+    }
+
+    /**
      * Get the operationContext property: The operation context provided by client.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -27,12 +38,49 @@ public final class RemoveParticipantsResponseInternal {
 
     /**
      * Set the operationContext property: The operation context provided by client.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the RemoveParticipantsResponseInternal object itself.
      */
     public RemoveParticipantsResponseInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemoveParticipantsResponseInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemoveParticipantsResponseInternal if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RemoveParticipantsResponseInternal.
+     */
+    public static RemoveParticipantsResponseInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemoveParticipantsResponseInternal deserializedRemoveParticipantsResponseInternal
+                = new RemoveParticipantsResponseInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationContext".equals(fieldName)) {
+                    deserializedRemoveParticipantsResponseInternal.operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemoveParticipantsResponseInternal;
+        });
     }
 }

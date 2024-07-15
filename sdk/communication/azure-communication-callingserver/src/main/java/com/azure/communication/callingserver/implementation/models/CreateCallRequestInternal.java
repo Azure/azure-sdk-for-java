@@ -5,45 +5,52 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The CreateCallRequestInternal model. */
+/**
+ * The CreateCallRequestInternal model.
+ */
 @Fluent
-public final class CreateCallRequestInternal {
+public final class CreateCallRequestInternal implements JsonSerializable<CreateCallRequestInternal> {
     /*
      * The targets of the call.
      */
-    @JsonProperty(value = "targets", required = true)
     private List<CommunicationIdentifierModel> targets;
 
     /*
      * The source of the call.
      */
-    @JsonProperty(value = "source", required = true)
     private CallSourceInternal source;
 
     /*
      * The subject.
      */
-    @JsonProperty(value = "subject")
     private String subject;
 
     /*
      * The callback URI.
      */
-    @JsonProperty(value = "callbackUri", required = true)
     private String callbackUri;
 
     /*
      * Media Streaming Configuration.
      */
-    @JsonProperty(value = "mediaStreamingConfiguration")
     private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
 
     /**
+     * Creates an instance of CreateCallRequestInternal class.
+     */
+    public CreateCallRequestInternal() {
+    }
+
+    /**
      * Get the targets property: The targets of the call.
-     *
+     * 
      * @return the targets value.
      */
     public List<CommunicationIdentifierModel> getTargets() {
@@ -52,7 +59,7 @@ public final class CreateCallRequestInternal {
 
     /**
      * Set the targets property: The targets of the call.
-     *
+     * 
      * @param targets the targets value to set.
      * @return the CreateCallRequestInternal object itself.
      */
@@ -63,7 +70,7 @@ public final class CreateCallRequestInternal {
 
     /**
      * Get the source property: The source of the call.
-     *
+     * 
      * @return the source value.
      */
     public CallSourceInternal getSource() {
@@ -72,7 +79,7 @@ public final class CreateCallRequestInternal {
 
     /**
      * Set the source property: The source of the call.
-     *
+     * 
      * @param source the source value to set.
      * @return the CreateCallRequestInternal object itself.
      */
@@ -83,7 +90,7 @@ public final class CreateCallRequestInternal {
 
     /**
      * Get the subject property: The subject.
-     *
+     * 
      * @return the subject value.
      */
     public String getSubject() {
@@ -92,7 +99,7 @@ public final class CreateCallRequestInternal {
 
     /**
      * Set the subject property: The subject.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the CreateCallRequestInternal object itself.
      */
@@ -103,7 +110,7 @@ public final class CreateCallRequestInternal {
 
     /**
      * Get the callbackUri property: The callback URI.
-     *
+     * 
      * @return the callbackUri value.
      */
     public String getCallbackUri() {
@@ -112,7 +119,7 @@ public final class CreateCallRequestInternal {
 
     /**
      * Set the callbackUri property: The callback URI.
-     *
+     * 
      * @param callbackUri the callbackUri value to set.
      * @return the CreateCallRequestInternal object itself.
      */
@@ -123,7 +130,7 @@ public final class CreateCallRequestInternal {
 
     /**
      * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
+     * 
      * @return the mediaStreamingConfiguration value.
      */
     public MediaStreamingConfigurationInternal getMediaStreamingConfiguration() {
@@ -132,13 +139,65 @@ public final class CreateCallRequestInternal {
 
     /**
      * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
+     * 
      * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setMediaStreamingConfiguration(
-            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
+    public CreateCallRequestInternal
+        setMediaStreamingConfiguration(MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
         this.mediaStreamingConfiguration = mediaStreamingConfiguration;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("targets", this.targets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeStringField("callbackUri", this.callbackUri);
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeJsonField("mediaStreamingConfiguration", this.mediaStreamingConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateCallRequestInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateCallRequestInternal if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateCallRequestInternal.
+     */
+    public static CreateCallRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateCallRequestInternal deserializedCreateCallRequestInternal = new CreateCallRequestInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targets".equals(fieldName)) {
+                    List<CommunicationIdentifierModel> targets
+                        = reader.readArray(reader1 -> CommunicationIdentifierModel.fromJson(reader1));
+                    deserializedCreateCallRequestInternal.targets = targets;
+                } else if ("source".equals(fieldName)) {
+                    deserializedCreateCallRequestInternal.source = CallSourceInternal.fromJson(reader);
+                } else if ("callbackUri".equals(fieldName)) {
+                    deserializedCreateCallRequestInternal.callbackUri = reader.getString();
+                } else if ("subject".equals(fieldName)) {
+                    deserializedCreateCallRequestInternal.subject = reader.getString();
+                } else if ("mediaStreamingConfiguration".equals(fieldName)) {
+                    deserializedCreateCallRequestInternal.mediaStreamingConfiguration
+                        = MediaStreamingConfigurationInternal.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateCallRequestInternal;
+        });
     }
 }

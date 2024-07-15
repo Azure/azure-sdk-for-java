@@ -5,27 +5,37 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The remove participant by identifier request. */
+/**
+ * The remove participant by identifier request.
+ */
 @Fluent
-public final class RemoveParticipantsRequestInternal {
+public final class RemoveParticipantsRequestInternal implements JsonSerializable<RemoveParticipantsRequestInternal> {
     /*
      * The participants to invite.
      */
-    @JsonProperty(value = "participantsToRemove", required = true)
     private List<CommunicationIdentifierModel> participantsToRemove;
 
     /*
      * The operation context.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
+     * Creates an instance of RemoveParticipantsRequestInternal class.
+     */
+    public RemoveParticipantsRequestInternal() {
+    }
+
+    /**
      * Get the participantsToRemove property: The participants to invite.
-     *
+     * 
      * @return the participantsToRemove value.
      */
     public List<CommunicationIdentifierModel> getParticipantsToRemove() {
@@ -34,19 +44,19 @@ public final class RemoveParticipantsRequestInternal {
 
     /**
      * Set the participantsToRemove property: The participants to invite.
-     *
+     * 
      * @param participantsToRemove the participantsToRemove value to set.
      * @return the RemoveParticipantsRequestInternal object itself.
      */
-    public RemoveParticipantsRequestInternal setParticipantsToRemove(
-            List<CommunicationIdentifierModel> participantsToRemove) {
+    public RemoveParticipantsRequestInternal
+        setParticipantsToRemove(List<CommunicationIdentifierModel> participantsToRemove) {
         this.participantsToRemove = participantsToRemove;
         return this;
     }
 
     /**
      * Get the operationContext property: The operation context.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -55,12 +65,56 @@ public final class RemoveParticipantsRequestInternal {
 
     /**
      * Set the operationContext property: The operation context.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the RemoveParticipantsRequestInternal object itself.
      */
     public RemoveParticipantsRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("participantsToRemove", this.participantsToRemove,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemoveParticipantsRequestInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemoveParticipantsRequestInternal if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RemoveParticipantsRequestInternal.
+     */
+    public static RemoveParticipantsRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemoveParticipantsRequestInternal deserializedRemoveParticipantsRequestInternal
+                = new RemoveParticipantsRequestInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("participantsToRemove".equals(fieldName)) {
+                    List<CommunicationIdentifierModel> participantsToRemove
+                        = reader.readArray(reader1 -> CommunicationIdentifierModel.fromJson(reader1));
+                    deserializedRemoveParticipantsRequestInternal.participantsToRemove = participantsToRemove;
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedRemoveParticipantsRequestInternal.operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemoveParticipantsRequestInternal;
+        });
     }
 }

@@ -16,6 +16,18 @@ public final class CallLocatorKind extends ExpandableStringEnum<CallLocatorKind>
     public static final CallLocatorKind SERVER_CALL_LOCATOR = fromString("serverCallLocator");
 
     /**
+     * Creates a new instance of {@link CallLocatorKind} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link CallLocatorKind} which doesn't
+     * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CallLocatorKind() {
+    }
+
+    /**
      * Creates or finds a CallLocatorKind from its string representation.
      *
      * @param name a name to look for.
@@ -25,7 +37,11 @@ public final class CallLocatorKind extends ExpandableStringEnum<CallLocatorKind>
         return fromString(name, CallLocatorKind.class);
     }
 
-    /** @return known CallLocatorKind values. */
+    /**
+     * Gets known CallLocatorKind values.
+     *
+     * @return known CallLocatorKind values.
+     */
     public static Collection<CallLocatorKind> values() {
         return values(CallLocatorKind.class);
     }

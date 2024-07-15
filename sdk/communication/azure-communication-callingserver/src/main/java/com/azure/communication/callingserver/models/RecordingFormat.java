@@ -19,6 +19,18 @@ public final class RecordingFormat extends ExpandableStringEnum<RecordingFormat>
     public static final RecordingFormat MP4 = fromString("mp4");
 
     /**
+     * Creates a new instance of {@link RecordingState} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link RecordingFormat} which doesn't
+     * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecordingFormat() {
+    }
+
+    /**
      * Creates or finds a RecordingFormat from its string representation.
      *
      * @param name a name to look for.
@@ -28,7 +40,11 @@ public final class RecordingFormat extends ExpandableStringEnum<RecordingFormat>
         return fromString(name, RecordingFormat.class);
     }
 
-    /** @return known RecordingFormat values. */
+    /**
+     * Gets known RecordingFormat values.
+     *
+     * @return known RecordingFormat values.
+     */
     public static Collection<RecordingFormat> values() {
         return values(RecordingFormat.class);
     }

@@ -5,40 +5,48 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The PlayRequest model. */
+/**
+ * The PlayRequest model.
+ */
 @Fluent
-public final class PlayRequest {
+public final class PlayRequest implements JsonSerializable<PlayRequest> {
     /*
      * The source of the audio to be played.
      */
-    @JsonProperty(value = "playSourceInfo", required = true)
     private PlaySourceInternal playSourceInfo;
 
     /*
      * The list of call participants play provided audio to.
      * Plays to everyone in the call when not provided.
      */
-    @JsonProperty(value = "playTo")
     private List<CommunicationIdentifierModel> playTo;
 
     /*
      * Defines options for playing the audio.
      */
-    @JsonProperty(value = "playOptions")
     private PlayOptionsInternal playOptions;
 
     /*
      * The value to identify context of the operation.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
+     * Creates an instance of PlayRequest class.
+     */
+    public PlayRequest() {
+    }
+
+    /**
      * Get the playSourceInfo property: The source of the audio to be played.
-     *
+     * 
      * @return the playSourceInfo value.
      */
     public PlaySourceInternal getPlaySourceInfo() {
@@ -47,7 +55,7 @@ public final class PlayRequest {
 
     /**
      * Set the playSourceInfo property: The source of the audio to be played.
-     *
+     * 
      * @param playSourceInfo the playSourceInfo value to set.
      * @return the PlayRequest object itself.
      */
@@ -57,9 +65,9 @@ public final class PlayRequest {
     }
 
     /**
-     * Get the playTo property: The list of call participants play provided audio to. Plays to everyone in the call when
-     * not provided.
-     *
+     * Get the playTo property: The list of call participants play provided audio to.
+     * Plays to everyone in the call when not provided.
+     * 
      * @return the playTo value.
      */
     public List<CommunicationIdentifierModel> getPlayTo() {
@@ -67,9 +75,9 @@ public final class PlayRequest {
     }
 
     /**
-     * Set the playTo property: The list of call participants play provided audio to. Plays to everyone in the call when
-     * not provided.
-     *
+     * Set the playTo property: The list of call participants play provided audio to.
+     * Plays to everyone in the call when not provided.
+     * 
      * @param playTo the playTo value to set.
      * @return the PlayRequest object itself.
      */
@@ -80,7 +88,7 @@ public final class PlayRequest {
 
     /**
      * Get the playOptions property: Defines options for playing the audio.
-     *
+     * 
      * @return the playOptions value.
      */
     public PlayOptionsInternal getPlayOptions() {
@@ -89,7 +97,7 @@ public final class PlayRequest {
 
     /**
      * Set the playOptions property: Defines options for playing the audio.
-     *
+     * 
      * @param playOptions the playOptions value to set.
      * @return the PlayRequest object itself.
      */
@@ -100,7 +108,7 @@ public final class PlayRequest {
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -109,12 +117,60 @@ public final class PlayRequest {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the PlayRequest object itself.
      */
     public PlayRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("playSourceInfo", this.playSourceInfo);
+        jsonWriter.writeArrayField("playTo", this.playTo, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("playOptions", this.playOptions);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlayRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlayRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PlayRequest.
+     */
+    public static PlayRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlayRequest deserializedPlayRequest = new PlayRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("playSourceInfo".equals(fieldName)) {
+                    deserializedPlayRequest.playSourceInfo = PlaySourceInternal.fromJson(reader);
+                } else if ("playTo".equals(fieldName)) {
+                    List<CommunicationIdentifierModel> playTo
+                        = reader.readArray(reader1 -> CommunicationIdentifierModel.fromJson(reader1));
+                    deserializedPlayRequest.playTo = playTo;
+                } else if ("playOptions".equals(fieldName)) {
+                    deserializedPlayRequest.playOptions = PlayOptionsInternal.fromJson(reader);
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedPlayRequest.operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlayRequest;
+        });
     }
 }

@@ -22,6 +22,12 @@ public class DownloadToFileOptions {
     private boolean overwrite;
 
     /**
+     * Creates options for the downloadTo operations.
+     */
+    public DownloadToFileOptions() {
+    }
+
+    /**
      * Get the ParallelDownloadOptions
      * @return ParallelDownloadOptions
      */

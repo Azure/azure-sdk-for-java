@@ -5,38 +5,47 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The transfer call to participant request. */
+/**
+ * The transfer call to participant request.
+ */
 @Fluent
-public final class TransferToParticipantRequestInternal {
+public final class TransferToParticipantRequestInternal
+    implements JsonSerializable<TransferToParticipantRequestInternal> {
     /*
      * The identity of the target where call should be transferred to.
      */
-    @JsonProperty(value = "targetParticipant", required = true)
     private CommunicationIdentifierModel targetParticipant;
 
     /*
      * The caller ID of the transferee when transferring to PSTN.
      */
-    @JsonProperty(value = "transfereeCallerId")
     private PhoneNumberIdentifierModel transfereeCallerId;
 
     /*
      * The user to user information.
      */
-    @JsonProperty(value = "userToUserInformation")
     private String userToUserInformation;
 
     /*
      * The operation context.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
+     * Creates an instance of TransferToParticipantRequestInternal class.
+     */
+    public TransferToParticipantRequestInternal() {
+    }
+
+    /**
      * Get the targetParticipant property: The identity of the target where call should be transferred to.
-     *
+     * 
      * @return the targetParticipant value.
      */
     public CommunicationIdentifierModel getTargetParticipant() {
@@ -45,7 +54,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Set the targetParticipant property: The identity of the target where call should be transferred to.
-     *
+     * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
@@ -56,7 +65,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Get the transfereeCallerId property: The caller ID of the transferee when transferring to PSTN.
-     *
+     * 
      * @return the transfereeCallerId value.
      */
     public PhoneNumberIdentifierModel getTransfereeCallerId() {
@@ -65,7 +74,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Set the transfereeCallerId property: The caller ID of the transferee when transferring to PSTN.
-     *
+     * 
      * @param transfereeCallerId the transfereeCallerId value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
@@ -76,7 +85,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Get the userToUserInformation property: The user to user information.
-     *
+     * 
      * @return the userToUserInformation value.
      */
     public String getUserToUserInformation() {
@@ -85,7 +94,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Set the userToUserInformation property: The user to user information.
-     *
+     * 
      * @param userToUserInformation the userToUserInformation value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
@@ -96,7 +105,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Get the operationContext property: The operation context.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -105,12 +114,61 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Set the operationContext property: The operation context.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
     public TransferToParticipantRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("targetParticipant", this.targetParticipant);
+        jsonWriter.writeJsonField("transfereeCallerId", this.transfereeCallerId);
+        jsonWriter.writeStringField("userToUserInformation", this.userToUserInformation);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TransferToParticipantRequestInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TransferToParticipantRequestInternal if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TransferToParticipantRequestInternal.
+     */
+    public static TransferToParticipantRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TransferToParticipantRequestInternal deserializedTransferToParticipantRequestInternal
+                = new TransferToParticipantRequestInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetParticipant".equals(fieldName)) {
+                    deserializedTransferToParticipantRequestInternal.targetParticipant
+                        = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("transfereeCallerId".equals(fieldName)) {
+                    deserializedTransferToParticipantRequestInternal.transfereeCallerId
+                        = PhoneNumberIdentifierModel.fromJson(reader);
+                } else if ("userToUserInformation".equals(fieldName)) {
+                    deserializedTransferToParticipantRequestInternal.userToUserInformation = reader.getString();
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedTransferToParticipantRequestInternal.operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTransferToParticipantRequestInternal;
+        });
     }
 }

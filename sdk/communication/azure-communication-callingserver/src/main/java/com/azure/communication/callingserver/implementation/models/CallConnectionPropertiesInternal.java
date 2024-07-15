@@ -5,63 +5,67 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The CallConnectionPropertiesInternal model. */
+/**
+ * The CallConnectionPropertiesInternal model.
+ */
 @Fluent
-public final class CallConnectionPropertiesInternal {
+public final class CallConnectionPropertiesInternal implements JsonSerializable<CallConnectionPropertiesInternal> {
     /*
      * The call connection id.
      */
-    @JsonProperty(value = "callConnectionId")
     private String callConnectionId;
 
     /*
      * The server call id.
      */
-    @JsonProperty(value = "serverCallId")
     private String serverCallId;
 
     /*
      * The source of the call.
      */
-    @JsonProperty(value = "source")
     private CallSourceInternal source;
 
     /*
      * The targets of the call.
      */
-    @JsonProperty(value = "targets")
     private List<CommunicationIdentifierModel> targets;
 
     /*
      * The state of the call connection.
      */
-    @JsonProperty(value = "callConnectionState")
     private CallConnectionStateModelInternal callConnectionState;
 
     /*
      * The subject.
      */
-    @JsonProperty(value = "subject")
     private String subject;
 
     /*
      * The callback URI.
      */
-    @JsonProperty(value = "callbackUri")
     private String callbackUri;
 
     /*
      * SubscriptionId for media streaming
      */
-    @JsonProperty(value = "mediaSubscriptionId")
     private String mediaSubscriptionId;
 
     /**
+     * Creates an instance of CallConnectionPropertiesInternal class.
+     */
+    public CallConnectionPropertiesInternal() {
+    }
+
+    /**
      * Get the callConnectionId property: The call connection id.
-     *
+     * 
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
@@ -70,7 +74,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the callConnectionId property: The call connection id.
-     *
+     * 
      * @param callConnectionId the callConnectionId value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -81,7 +85,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Get the serverCallId property: The server call id.
-     *
+     * 
      * @return the serverCallId value.
      */
     public String getServerCallId() {
@@ -90,7 +94,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the serverCallId property: The server call id.
-     *
+     * 
      * @param serverCallId the serverCallId value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -101,7 +105,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Get the source property: The source of the call.
-     *
+     * 
      * @return the source value.
      */
     public CallSourceInternal getSource() {
@@ -110,7 +114,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the source property: The source of the call.
-     *
+     * 
      * @param source the source value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -121,7 +125,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Get the targets property: The targets of the call.
-     *
+     * 
      * @return the targets value.
      */
     public List<CommunicationIdentifierModel> getTargets() {
@@ -130,7 +134,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the targets property: The targets of the call.
-     *
+     * 
      * @param targets the targets value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -141,7 +145,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Get the callConnectionState property: The state of the call connection.
-     *
+     * 
      * @return the callConnectionState value.
      */
     public CallConnectionStateModelInternal getCallConnectionState() {
@@ -150,19 +154,19 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the callConnectionState property: The state of the call connection.
-     *
+     * 
      * @param callConnectionState the callConnectionState value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesInternal setCallConnectionState(
-            CallConnectionStateModelInternal callConnectionState) {
+    public CallConnectionPropertiesInternal
+        setCallConnectionState(CallConnectionStateModelInternal callConnectionState) {
         this.callConnectionState = callConnectionState;
         return this;
     }
 
     /**
      * Get the subject property: The subject.
-     *
+     * 
      * @return the subject value.
      */
     public String getSubject() {
@@ -171,7 +175,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the subject property: The subject.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -182,7 +186,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Get the callbackUri property: The callback URI.
-     *
+     * 
      * @return the callbackUri value.
      */
     public String getCallbackUri() {
@@ -191,7 +195,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the callbackUri property: The callback URI.
-     *
+     * 
      * @param callbackUri the callbackUri value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -202,7 +206,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Get the mediaSubscriptionId property: SubscriptionId for media streaming.
-     *
+     * 
      * @return the mediaSubscriptionId value.
      */
     public String getMediaSubscriptionId() {
@@ -211,12 +215,74 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the mediaSubscriptionId property: SubscriptionId for media streaming.
-     *
+     * 
      * @param mediaSubscriptionId the mediaSubscriptionId value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
     public CallConnectionPropertiesInternal setMediaSubscriptionId(String mediaSubscriptionId) {
         this.mediaSubscriptionId = mediaSubscriptionId;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("callConnectionId", this.callConnectionId);
+        jsonWriter.writeStringField("serverCallId", this.serverCallId);
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeArrayField("targets", this.targets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("callConnectionState",
+            this.callConnectionState == null ? null : this.callConnectionState.toString());
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeStringField("callbackUri", this.callbackUri);
+        jsonWriter.writeStringField("mediaSubscriptionId", this.mediaSubscriptionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CallConnectionPropertiesInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CallConnectionPropertiesInternal if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CallConnectionPropertiesInternal.
+     */
+    public static CallConnectionPropertiesInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CallConnectionPropertiesInternal deserializedCallConnectionPropertiesInternal
+                = new CallConnectionPropertiesInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("callConnectionId".equals(fieldName)) {
+                    deserializedCallConnectionPropertiesInternal.callConnectionId = reader.getString();
+                } else if ("serverCallId".equals(fieldName)) {
+                    deserializedCallConnectionPropertiesInternal.serverCallId = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedCallConnectionPropertiesInternal.source = CallSourceInternal.fromJson(reader);
+                } else if ("targets".equals(fieldName)) {
+                    List<CommunicationIdentifierModel> targets
+                        = reader.readArray(reader1 -> CommunicationIdentifierModel.fromJson(reader1));
+                    deserializedCallConnectionPropertiesInternal.targets = targets;
+                } else if ("callConnectionState".equals(fieldName)) {
+                    deserializedCallConnectionPropertiesInternal.callConnectionState
+                        = CallConnectionStateModelInternal.fromString(reader.getString());
+                } else if ("subject".equals(fieldName)) {
+                    deserializedCallConnectionPropertiesInternal.subject = reader.getString();
+                } else if ("callbackUri".equals(fieldName)) {
+                    deserializedCallConnectionPropertiesInternal.callbackUri = reader.getString();
+                } else if ("mediaSubscriptionId".equals(fieldName)) {
+                    deserializedCallConnectionPropertiesInternal.mediaSubscriptionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCallConnectionPropertiesInternal;
+        });
     }
 }

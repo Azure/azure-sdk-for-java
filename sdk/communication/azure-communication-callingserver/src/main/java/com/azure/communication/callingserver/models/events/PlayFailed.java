@@ -4,7 +4,11 @@
 package com.azure.communication.callingserver.models.events;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The PlayFailed model. */
 @Immutable
@@ -12,19 +16,18 @@ public final class PlayFailed extends CallAutomationEventBase {
     /*
      * Operation context
      */
-    @JsonProperty(value = "operationContext")
-    private final String operationContext;
+    private String operationContext;
 
     /*
      * The resultInfo property.
      */
-    @JsonProperty(value = "resultInfo")
-    private final ResultInfo resultInfo;
+    private ResultInfo resultInfo;
 
-    private PlayFailed() {
-        this.operationContext = null;
-        this.resultInfo = null;
+    private PlayFailed(String operationContext, ResultInfo resultInfo) {
+        this.operationContext = operationContext;
+        this.resultInfo = resultInfo;
     }
+
     /**
      * Get the operationContext property: Operation context.
      *
@@ -41,5 +44,59 @@ public final class PlayFailed extends CallAutomationEventBase {
      */
     public ResultInfo getResultInfo() {
         return this.resultInfo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationContext", operationContext);
+        jsonWriter.writeJsonField("resultInfo", resultInfo);
+        jsonWriter.writeStringField("callConnectionId", super.getCallConnectionId());
+        jsonWriter.writeStringField("serverCallId", super.getServerCallId());
+        jsonWriter.writeStringField("correlationId", super.getCorrelationId());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlayFailed from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlayFailed if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PlayFailed.
+     */
+    public static PlayFailed fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String operationContext = null;
+            ResultInfo resultInfo = null;
+            String callConnectionId = null;
+            String serverCallId = null;
+            String correlationId = null;
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("operationContext".equals(fieldName)) {
+                    operationContext = reader.getString();
+                } else if ("resultInfo".equals(fieldName)) {
+                    resultInfo = ResultInfo.fromJson(reader);
+                } else if ("callConnectionId".equals(fieldName)) {
+                    callConnectionId = reader.getString();
+                } else if ("serverCallId".equals(fieldName)) {
+                    serverCallId = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    correlationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            final PlayFailed event = new PlayFailed(operationContext, resultInfo);
+            event.setCorrelationId(correlationId)
+                .setServerCallId(serverCallId)
+                .setCallConnectionId(callConnectionId);
+            return event;
+        });
     }
 }
