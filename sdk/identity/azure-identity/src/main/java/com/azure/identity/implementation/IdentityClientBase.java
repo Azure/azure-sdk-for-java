@@ -211,11 +211,12 @@ public abstract class IdentityClientBase {
             credential = ClientCredentialFactory.createFromSecret(clientSecret);
         } else if (certificate != null || certificatePath != null) {
             try {
-                if (certificatePassword == null) {
-                    byte[] pemCertificateBytes = getCertificateBytes();
 
-                    List<X509Certificate> x509CertificateList = CertificateUtil.publicKeyFromPem(pemCertificateBytes);
-                    PrivateKey privateKey = CertificateUtil.privateKeyFromPem(pemCertificateBytes);
+                byte[] certificateBytes = getCertificateBytes();
+                if (CertificateUtil.isPem(certificateBytes)) {
+
+                    List<X509Certificate> x509CertificateList = CertificateUtil.publicKeyFromPem(certificateBytes);
+                    PrivateKey privateKey = CertificateUtil.privateKeyFromPem(certificateBytes);
                     if (x509CertificateList.size() == 1) {
                         credential = ClientCredentialFactory.createFromCertificate(
                             privateKey, x509CertificateList.get(0));
