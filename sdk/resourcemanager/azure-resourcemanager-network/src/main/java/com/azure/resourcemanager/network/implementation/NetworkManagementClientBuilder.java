@@ -20,7 +20,8 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = { NetworkManagementClientImpl.class })
 public final class NetworkManagementClientBuilder {
     /*
-     * The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms
+     * part of the URI for every service call.
      */
     private String subscriptionId;
 

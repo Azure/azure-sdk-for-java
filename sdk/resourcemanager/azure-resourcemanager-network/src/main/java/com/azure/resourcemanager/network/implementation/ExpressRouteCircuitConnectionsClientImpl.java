@@ -34,10 +34,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitConnectionsClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitConnectionInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitConnectionListResult;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in ExpressRouteCircuitConnectionsClient.
@@ -55,7 +54,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Initializes an instance of ExpressRouteCircuitConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExpressRouteCircuitConnectionsClientImpl(NetworkManagementClientImpl client) {
@@ -122,7 +121,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -156,7 +155,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, circuitName,
@@ -166,7 +165,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -201,7 +200,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, circuitName, peeringName, connectionName,
@@ -210,7 +209,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -231,7 +230,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -254,7 +253,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -272,7 +271,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -292,7 +291,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -311,7 +310,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -331,7 +330,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -347,7 +346,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -365,7 +364,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Gets the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -400,7 +399,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, circuitName, peeringName,
@@ -410,7 +409,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Gets the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -446,7 +445,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, circuitName, peeringName, connectionName,
@@ -455,7 +454,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Gets the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -475,7 +474,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Gets the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -495,7 +494,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Gets the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -513,7 +512,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -557,7 +556,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
         } else {
             expressRouteCircuitConnectionParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, circuitName,
@@ -568,7 +567,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -613,7 +612,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
         } else {
             expressRouteCircuitConnectionParameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, circuitName, peeringName,
@@ -623,7 +622,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -649,7 +648,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -678,7 +677,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -703,7 +702,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -729,7 +728,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -752,7 +751,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -776,7 +775,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -798,7 +797,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -821,7 +820,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Gets all global reach connections associated with a private peering in an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -852,7 +851,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, circuitName, peeringName,
@@ -864,7 +863,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Gets all global reach connections associated with a private peering in an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -896,7 +895,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -908,7 +907,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Gets all global reach connections associated with a private peering in an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -927,7 +926,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Gets all global reach connections associated with a private peering in an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -947,7 +946,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Gets all global reach connections associated with a private peering in an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -965,7 +964,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Gets all global reach connections associated with a private peering in an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -984,10 +983,8 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1013,10 +1010,8 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

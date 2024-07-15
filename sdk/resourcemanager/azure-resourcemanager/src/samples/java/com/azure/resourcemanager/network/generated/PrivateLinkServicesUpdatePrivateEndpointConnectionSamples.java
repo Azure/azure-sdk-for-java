@@ -12,7 +12,8 @@ import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionStat
  */
 public final class PrivateLinkServicesUpdatePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/PrivateLinkServiceUpdatePrivateEndpointConnection.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * PrivateLinkServiceUpdatePrivateEndpointConnection.json
      */
     /**
      * Sample code: approve or reject private end point connection for a private link service.

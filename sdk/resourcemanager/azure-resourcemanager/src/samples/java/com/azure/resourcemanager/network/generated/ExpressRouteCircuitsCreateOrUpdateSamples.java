@@ -10,7 +10,6 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuitServiceProvid
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitSku;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitSkuFamily;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitSkuTier;
-
 import java.util.Arrays;
 
 /**
@@ -18,11 +17,13 @@ import java.util.Arrays;
  */
 public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ExpressRouteCircuitCreate.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRouteCircuitCreate.
+     * json
      */
     /**
      * Sample code: Create ExpressRouteCircuit.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createExpressRouteCircuit(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -46,11 +47,12 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ExpressRouteCircuitCreateOnExpressRoutePort.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * ExpressRouteCircuitCreateOnExpressRoutePort.json
      */
     /**
      * Sample code: Create ExpressRouteCircuit on ExpressRoutePort.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

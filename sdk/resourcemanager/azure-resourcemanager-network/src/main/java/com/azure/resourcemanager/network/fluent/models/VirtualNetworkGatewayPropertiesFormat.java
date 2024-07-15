@@ -80,13 +80,15 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private Boolean disableIpSecReplayProtection;
 
     /*
-     * The reference to the LocalNetworkGateway resource which represents local network site having default routes. Assign Null value in case of removing existing default site setting.
+     * The reference to the LocalNetworkGateway resource which represents local network site having default routes.
+     * Assign Null value in case of removing existing default site setting.
      */
     @JsonProperty(value = "gatewayDefaultSite")
     private SubResource gatewayDefaultSite;
 
     /*
-     * The reference to the VirtualNetworkGatewaySku resource which represents the SKU selected for Virtual network gateway.
+     * The reference to the VirtualNetworkGatewaySku resource which represents the SKU selected for Virtual network
+     * gateway.
      */
     @JsonProperty(value = "sku")
     private VirtualNetworkGatewaySku sku;
@@ -98,7 +100,8 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private VpnClientConfiguration vpnClientConfiguration;
 
     /*
-     * The reference to the VirtualNetworkGatewayPolicyGroup resource which represents the available VirtualNetworkGatewayPolicyGroup for the gateway.
+     * The reference to the VirtualNetworkGatewayPolicyGroup resource which represents the available
+     * VirtualNetworkGatewayPolicyGroup for the gateway.
      */
     @JsonProperty(value = "virtualNetworkGatewayPolicyGroups")
     private List<VirtualNetworkGatewayPolicyGroup> virtualNetworkGatewayPolicyGroups;
@@ -110,7 +113,8 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private BgpSettings bgpSettings;
 
     /*
-     * The reference to the address space resource which represents the custom routes address space specified by the customer for virtual network gateway and VpnClient.
+     * The reference to the address space resource which represents the custom routes address space specified by the
+     * customer for virtual network gateway and VpnClient.
      */
     @JsonProperty(value = "customRoutes")
     private AddressSpace customRoutes;
@@ -164,13 +168,15 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private Boolean allowVirtualWanTraffic;
 
     /*
-     * Configure this gateway to accept traffic from other Azure Virtual Networks. This configuration does not support connectivity to Azure Virtual WAN.
+     * Configure this gateway to accept traffic from other Azure Virtual Networks. This configuration does not support
+     * connectivity to Azure Virtual WAN.
      */
     @JsonProperty(value = "allowRemoteVnetTraffic")
     private Boolean allowRemoteVnetTraffic;
 
     /*
-     * Property to indicate if the Express Route Gateway serves traffic when there are multiple Express Route Gateways in the vnet
+     * Property to indicate if the Express Route Gateway serves traffic when there are multiple Express Route Gateways
+     * in the vnet
      */
     @JsonProperty(value = "adminState")
     private AdminState adminState;

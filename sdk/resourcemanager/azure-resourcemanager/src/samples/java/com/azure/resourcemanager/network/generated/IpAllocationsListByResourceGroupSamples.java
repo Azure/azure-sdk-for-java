@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class IpAllocationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/IpAllocationListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * IpAllocationListByResourceGroup.json
      */
     /**
      * Sample code: List IpAllocations in resource group.

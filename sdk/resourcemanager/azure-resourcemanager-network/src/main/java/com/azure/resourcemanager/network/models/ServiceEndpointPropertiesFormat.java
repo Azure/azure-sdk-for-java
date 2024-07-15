@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -18,6 +19,12 @@ public final class ServiceEndpointPropertiesFormat {
      */
     @JsonProperty(value = "service")
     private String service;
+
+    /*
+     * SubResource as network identifier.
+     */
+    @JsonProperty(value = "networkIdentifier")
+    private SubResource networkIdentifier;
 
     /*
      * A list of locations.
@@ -54,6 +61,26 @@ public final class ServiceEndpointPropertiesFormat {
      */
     public ServiceEndpointPropertiesFormat withService(String service) {
         this.service = service;
+        return this;
+    }
+
+    /**
+     * Get the networkIdentifier property: SubResource as network identifier.
+     * 
+     * @return the networkIdentifier value.
+     */
+    public SubResource networkIdentifier() {
+        return this.networkIdentifier;
+    }
+
+    /**
+     * Set the networkIdentifier property: SubResource as network identifier.
+     * 
+     * @param networkIdentifier the networkIdentifier value to set.
+     * @return the ServiceEndpointPropertiesFormat object itself.
+     */
+    public ServiceEndpointPropertiesFormat withNetworkIdentifier(SubResource networkIdentifier) {
+        this.networkIdentifier = networkIdentifier;
         return this;
     }
 

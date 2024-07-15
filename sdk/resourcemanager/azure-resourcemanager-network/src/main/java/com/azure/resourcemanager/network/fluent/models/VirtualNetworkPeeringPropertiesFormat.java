@@ -21,13 +21,15 @@ import java.util.List;
 @Fluent
 public final class VirtualNetworkPeeringPropertiesFormat {
     /*
-     * Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network space.
+     * Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network
+     * space.
      */
     @JsonProperty(value = "allowVirtualNetworkAccess")
     private Boolean allowVirtualNetworkAccess;
 
     /*
-     * Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote virtual network.
+     * Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote
+     * virtual network.
      */
     @JsonProperty(value = "allowForwardedTraffic")
     private Boolean allowForwardedTraffic;
@@ -39,13 +41,17 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     private Boolean allowGatewayTransit;
 
     /*
-     * If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway.
+     * If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on
+     * remote peering is also true, virtual network will use gateways of remote virtual network for transit. Only one
+     * peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway.
      */
     @JsonProperty(value = "useRemoteGateways")
     private Boolean useRemoteGateways;
 
     /*
-     * The reference to the remote virtual network. The remote virtual network can be in the same or different region (preview). See here to register for the preview and learn more (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
+     * The reference to the remote virtual network. The remote virtual network can be in the same or different region
+     * (preview). See here to register for the preview and learn more
+     * (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
      */
     @JsonProperty(value = "remoteVirtualNetwork")
     private SubResource remoteVirtualNetwork;

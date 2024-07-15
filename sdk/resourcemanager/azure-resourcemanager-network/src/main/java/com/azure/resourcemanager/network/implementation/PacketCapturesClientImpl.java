@@ -176,7 +176,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -226,7 +226,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), resourceGroupName, networkWatcherName, packetCaptureName,
@@ -429,7 +429,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -472,7 +472,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, networkWatcherName, packetCaptureName,
@@ -565,7 +565,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -608,7 +608,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkWatcherName, packetCaptureName,
@@ -793,7 +793,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stop(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -836,7 +836,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.stop(this.client.getEndpoint(), resourceGroupName, networkWatcherName, packetCaptureName,
@@ -1021,7 +1021,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getStatus(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -1064,7 +1064,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getStatus(this.client.getEndpoint(), resourceGroupName, networkWatcherName, packetCaptureName,
@@ -1254,7 +1254,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -1295,7 +1295,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

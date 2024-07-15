@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualApplianceSitesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkVirtualApplianceSiteDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * NetworkVirtualApplianceSiteDelete.json
      */
     /**
      * Sample code: Delete Network Virtual Appliance Site.

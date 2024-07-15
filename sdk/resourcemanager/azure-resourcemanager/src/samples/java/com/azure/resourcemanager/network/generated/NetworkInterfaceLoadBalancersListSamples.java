@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfaceLoadBalancersListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkInterfaceLoadBalancerList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * NetworkInterfaceLoadBalancerList.json
      */
     /**
      * Sample code: NetworkInterfaceLoadBalancerList.

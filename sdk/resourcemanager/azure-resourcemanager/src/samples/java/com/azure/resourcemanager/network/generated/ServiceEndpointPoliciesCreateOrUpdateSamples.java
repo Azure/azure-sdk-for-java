@@ -13,7 +13,9 @@ import java.util.Arrays;
  */
 public final class ServiceEndpointPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ServiceEndpointPolicyCreate.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ServiceEndpointPolicyCreate.
+     * json
      */
     /**
      * Sample code: Create service endpoint policy.
@@ -30,7 +32,8 @@ public final class ServiceEndpointPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ServiceEndpointPolicyCreateWithDefinition.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * ServiceEndpointPolicyCreateWithDefinition.json
      */
     /**
      * Sample code: Create service endpoint policy with definition.

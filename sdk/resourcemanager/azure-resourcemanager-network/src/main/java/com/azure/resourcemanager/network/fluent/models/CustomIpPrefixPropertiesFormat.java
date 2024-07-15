@@ -11,7 +11,6 @@ import com.azure.resourcemanager.network.models.CustomIpPrefixType;
 import com.azure.resourcemanager.network.models.Geo;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -117,7 +116,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the asn property: The ASN for CIDR advertising. Should be an integer as string.
-     *
+     * 
      * @return the asn value.
      */
     public String asn() {
@@ -126,7 +125,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the asn property: The ASN for CIDR advertising. Should be an integer as string.
-     *
+     * 
      * @param asn the asn value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -137,7 +136,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
-     *
+     * 
      * @return the cidr value.
      */
     public String cidr() {
@@ -146,7 +145,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
-     *
+     * 
      * @param cidr the cidr value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -157,7 +156,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the signedMessage property: Signed message for WAN validation.
-     *
+     * 
      * @return the signedMessage value.
      */
     public String signedMessage() {
@@ -166,7 +165,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the signedMessage property: Signed message for WAN validation.
-     *
+     * 
      * @param signedMessage the signedMessage value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -177,7 +176,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the authorizationMessage property: Authorization message for WAN validation.
-     *
+     * 
      * @return the authorizationMessage value.
      */
     public String authorizationMessage() {
@@ -186,7 +185,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the authorizationMessage property: Authorization message for WAN validation.
-     *
+     * 
      * @param authorizationMessage the authorizationMessage value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -197,7 +196,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the customIpPrefixParent property: The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
-     *
+     * 
      * @return the customIpPrefixParent value.
      */
     public SubResource customIpPrefixParent() {
@@ -206,7 +205,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the customIpPrefixParent property: The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
-     *
+     * 
      * @param customIpPrefixParent the customIpPrefixParent value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -217,7 +216,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the childCustomIpPrefixes property: The list of all Children for IPv6 /48 CustomIpPrefix.
-     *
+     * 
      * @return the childCustomIpPrefixes value.
      */
     public List<SubResource> childCustomIpPrefixes() {
@@ -226,7 +225,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the commissionedState property: The commissioned state of the Custom IP Prefix.
-     *
+     * 
      * @return the commissionedState value.
      */
     public CommissionedState commissionedState() {
@@ -235,7 +234,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the commissionedState property: The commissioned state of the Custom IP Prefix.
-     *
+     * 
      * @param commissionedState the commissionedState value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -246,7 +245,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the expressRouteAdvertise property: Whether to do express route advertise.
-     *
+     * 
      * @return the expressRouteAdvertise value.
      */
     public Boolean expressRouteAdvertise() {
@@ -255,7 +254,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the expressRouteAdvertise property: Whether to do express route advertise.
-     *
+     * 
      * @param expressRouteAdvertise the expressRouteAdvertise value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -266,7 +265,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the geo property: The Geo for CIDR advertising. Should be an Geo code.
-     *
+     * 
      * @return the geo value.
      */
     public Geo geo() {
@@ -275,7 +274,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the geo property: The Geo for CIDR advertising. Should be an Geo code.
-     *
+     * 
      * @param geo the geo value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -286,7 +285,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the noInternetAdvertise property: Whether to Advertise the range to Internet.
-     *
+     * 
      * @return the noInternetAdvertise value.
      */
     public Boolean noInternetAdvertise() {
@@ -295,7 +294,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the noInternetAdvertise property: Whether to Advertise the range to Internet.
-     *
+     * 
      * @param noInternetAdvertise the noInternetAdvertise value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -306,7 +305,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the prefixType property: Type of custom IP prefix. Should be Singular, Parent, or Child.
-     *
+     * 
      * @return the prefixType value.
      */
     public CustomIpPrefixType prefixType() {
@@ -315,7 +314,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the prefixType property: Type of custom IP prefix. Should be Singular, Parent, or Child.
-     *
+     * 
      * @param prefixType the prefixType value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -326,7 +325,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the publicIpPrefixes property: The list of all referenced PublicIpPrefixes.
-     *
+     * 
      * @return the publicIpPrefixes value.
      */
     public List<SubResource> publicIpPrefixes() {
@@ -335,7 +334,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the custom IP prefix resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -344,7 +343,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the failedReason property: The reason why resource is in failed state.
-     *
+     * 
      * @return the failedReason value.
      */
     public String failedReason() {
@@ -353,7 +352,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the custom IP prefix resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -362,7 +361,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

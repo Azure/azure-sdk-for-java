@@ -75,7 +75,8 @@ public final class NetworkInterfacePropertiesFormatInner {
     private Boolean vnetEncryptionSupported;
 
     /*
-     * If the network interface is configured for accelerated networking. Not applicable to VM sizes which require accelerated networking.
+     * If the network interface is configured for accelerated networking. Not applicable to VM sizes which require
+     * accelerated networking.
      */
     @JsonProperty(value = "enableAcceleratedNetworking")
     private Boolean enableAcceleratedNetworking;

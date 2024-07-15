@@ -25,10 +25,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.FirewallPolicyDeploymentsClient;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in FirewallPolicyDeploymentsClient.
@@ -46,7 +45,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
 
     /**
      * Initializes an instance of FirewallPolicyDeploymentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FirewallPolicyDeploymentsClientImpl(NetworkManagementClientImpl client) {
@@ -75,7 +74,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,7 +101,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deploy(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -112,7 +111,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param context The context to associate with this operation.
@@ -140,7 +139,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deploy(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -149,7 +148,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,7 +165,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param context The context to associate with this operation.
@@ -186,7 +185,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,7 +200,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param context The context to associate with this operation.
@@ -218,7 +217,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -234,7 +233,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param context The context to associate with this operation.
@@ -251,7 +250,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,7 +264,7 @@ public final class FirewallPolicyDeploymentsClientImpl implements FirewallPolicy
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param context The context to associate with this operation.

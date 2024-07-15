@@ -42,7 +42,8 @@ public final class PrivateEndpointPropertiesInner {
     private List<PrivateLinkServiceConnection> privateLinkServiceConnections;
 
     /*
-     * A grouping of information about the connection to the remote resource. Used when the network admin does not have access to approve connections to the remote resource.
+     * A grouping of information about the connection to the remote resource. Used when the network admin does not have
+     * access to approve connections to the remote resource.
      */
     @JsonProperty(value = "manualPrivateLinkServiceConnections")
     private List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections;
@@ -60,7 +61,8 @@ public final class PrivateEndpointPropertiesInner {
     private List<ApplicationSecurityGroupInner> applicationSecurityGroups;
 
     /*
-     * A list of IP configurations of the private endpoint. This will be used to map to the First Party Service's endpoints.
+     * A list of IP configurations of the private endpoint. This will be used to map to the First Party Service's
+     * endpoints.
      */
     @JsonProperty(value = "ipConfigurations")
     private List<PrivateEndpointIpConfiguration> ipConfigurations;

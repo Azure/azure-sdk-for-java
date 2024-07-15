@@ -62,7 +62,8 @@ public final class VirtualNetworkPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * Indicates if DDoS protection is enabled for all the protected resources in the virtual network. It requires a DDoS protection plan associated with the resource.
+     * Indicates if DDoS protection is enabled for all the protected resources in the virtual network. It requires a
+     * DDoS protection plan associated with the resource.
      */
     @JsonProperty(value = "enableDdosProtection")
     private Boolean enableDdosProtection;

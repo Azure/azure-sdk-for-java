@@ -11,7 +11,8 @@ import com.azure.resourcemanager.network.fluent.models.NetworkManagerConnectionI
  */
 public final class SubscriptionNetworkManagerConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerConnectionSubscriptionPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * NetworkManagerConnectionSubscriptionPut.json
      */
     /**
      * Sample code: Create or Update Subscription Network Manager Connection.

@@ -23,7 +23,8 @@ public final class ActiveConnectivityConfigurationsListResultInner {
     private List<ActiveConnectivityConfiguration> value;
 
     /*
-     * When present, the value can be passed to a subsequent query call (together with the same query and scopes used in the current request) to retrieve the next page of data.
+     * When present, the value can be passed to a subsequent query call (together with the same query and scopes used in
+     * the current request) to retrieve the next page of data.
      */
     @JsonProperty(value = "skipToken")
     private String skipToken;

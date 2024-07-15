@@ -26,13 +26,15 @@ public final class ConnectionMonitorEndpoint {
     private EndpointType type;
 
     /*
-     * Resource ID of the connection monitor endpoint are supported for AzureVM, AzureVMSS, AzureVNet, AzureSubnet, MMAWorkspaceMachine, MMAWorkspaceNetwork, AzureArcVM endpoint type.
+     * Resource ID of the connection monitor endpoint are supported for AzureVM, AzureVMSS, AzureVNet, AzureSubnet,
+     * MMAWorkspaceMachine, MMAWorkspaceNetwork, AzureArcVM endpoint type.
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
-     * Address of the connection monitor endpoint. Supported for AzureVM, ExternalAddress, ArcMachine, MMAWorkspaceMachine endpoint type.
+     * Address of the connection monitor endpoint. Supported for AzureVM, ExternalAddress, ArcMachine,
+     * MMAWorkspaceMachine endpoint type.
      */
     @JsonProperty(value = "address")
     private String address;
@@ -44,7 +46,8 @@ public final class ConnectionMonitorEndpoint {
     private ConnectionMonitorEndpointFilter filter;
 
     /*
-     * Endpoint scope defines which target resource to monitor in case of compound resource endpoints like VMSS, AzureSubnet, AzureVNet, MMAWorkspaceNetwork, AzureArcNetwork.
+     * Endpoint scope defines which target resource to monitor in case of compound resource endpoints like VMSS,
+     * AzureSubnet, AzureVNet, MMAWorkspaceNetwork, AzureArcNetwork.
      */
     @JsonProperty(value = "scope")
     private ConnectionMonitorEndpointScope scope;
@@ -56,13 +59,15 @@ public final class ConnectionMonitorEndpoint {
     private CoverageLevel coverageLevel;
 
     /*
-     * Location details is optional and only being used for 'AzureArcNetwork' type endpoints, which contains region details.
+     * Location details is optional and only being used for 'AzureArcNetwork' type endpoints, which contains region
+     * details.
      */
     @JsonProperty(value = "locationDetails")
     private ConnectionMonitorEndpointLocationDetails locationDetails;
 
     /*
-     * Subscription ID for connection monitor endpoint. It's an optional parameter which is being used for 'AzureArcNetwork' type endpoint.
+     * Subscription ID for connection monitor endpoint. It's an optional parameter which is being used for
+     * 'AzureArcNetwork' type endpoint.
      */
     @JsonProperty(value = "subscriptionId")
     private String subscriptionId;

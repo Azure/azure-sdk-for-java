@@ -19,8 +19,6 @@ import java.util.Map;
 @Fluent
 public final class NetworkVirtualApplianceSkuInner extends Resource {
     /*
-     * Network Virtual Appliance Sku Properties
-     * 
      * NetworkVirtualApplianceSku properties.
      */
     @JsonProperty(value = "properties")
@@ -45,9 +43,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Network Virtual Appliance Sku Properties
-     * 
-     * NetworkVirtualApplianceSku properties.
+     * Get the innerProperties property: NetworkVirtualApplianceSku properties.
      * 
      * @return the innerProperties value.
      */

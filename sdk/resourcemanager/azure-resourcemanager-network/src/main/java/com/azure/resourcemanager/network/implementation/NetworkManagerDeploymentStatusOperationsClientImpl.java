@@ -112,7 +112,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -160,7 +160,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,

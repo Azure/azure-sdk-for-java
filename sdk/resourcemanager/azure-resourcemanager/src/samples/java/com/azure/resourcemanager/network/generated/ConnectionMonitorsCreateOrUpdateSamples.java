@@ -26,7 +26,8 @@ import java.util.Arrays;
  */
 public final class ConnectionMonitorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkWatcherConnectionMonitorCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * NetworkWatcherConnectionMonitorCreate.json
      */
     /**
      * Sample code: Create connection monitor V1.
@@ -56,7 +57,8 @@ public final class ConnectionMonitorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkWatcherConnectionMonitorCreateWithArcNetwork.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * NetworkWatcherConnectionMonitorCreateWithArcNetwork.json
      */
     /**
      * Sample code: Create connection monitor with Arc Network.
@@ -99,7 +101,8 @@ public final class ConnectionMonitorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkWatcherConnectionMonitorV2Create.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * NetworkWatcherConnectionMonitorV2Create.json
      */
     /**
      * Sample code: Create connection monitor V2.

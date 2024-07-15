@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -36,7 +35,7 @@ public final class ListVpnSiteLinksResult {
 
     /**
      * Get the value property: List of VpnSitesLinks.
-     *
+     * 
      * @return the value value.
      */
     public List<VpnSiteLinkInner> value() {
@@ -45,7 +44,7 @@ public final class ListVpnSiteLinksResult {
 
     /**
      * Set the value property: List of VpnSitesLinks.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListVpnSiteLinksResult object itself.
      */
@@ -56,7 +55,7 @@ public final class ListVpnSiteLinksResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +64,7 @@ public final class ListVpnSiteLinksResult {
 
     /**
      * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListVpnSiteLinksResult object itself.
      */
@@ -76,7 +75,7 @@ public final class ListVpnSiteLinksResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

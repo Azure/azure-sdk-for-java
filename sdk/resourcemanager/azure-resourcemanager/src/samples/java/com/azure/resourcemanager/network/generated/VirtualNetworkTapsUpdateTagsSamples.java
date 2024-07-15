@@ -13,7 +13,9 @@ import java.util.Map;
  */
 public final class VirtualNetworkTapsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkTapUpdateTags.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkTapUpdateTags.
+     * json
      */
     /**
      * Sample code: Update virtual network tap tags.

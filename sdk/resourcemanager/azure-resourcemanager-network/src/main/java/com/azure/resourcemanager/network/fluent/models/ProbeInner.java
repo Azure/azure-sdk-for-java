@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.models.ProbeNoHealthyBackendsBehavior;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,7 +24,8 @@ public final class ProbeInner extends SubResource {
     private ProbePropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of probes used by the load balancer. This name can be used to access the resource.
+     * The name of the resource that is unique within the set of probes used by the load balancer. This name can be used
+     * to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -187,6 +189,31 @@ public final class ProbeInner extends SubResource {
             this.innerProperties = new ProbePropertiesFormat();
         }
         this.innerProperties().withIntervalInSeconds(intervalInSeconds);
+        return this;
+    }
+
+    /**
+     * Get the noHealthyBackendsBehavior property: Determines how new connections are handled by the load balancer when
+     * all backend instances are probed down.
+     * 
+     * @return the noHealthyBackendsBehavior value.
+     */
+    public ProbeNoHealthyBackendsBehavior noHealthyBackendsBehavior() {
+        return this.innerProperties() == null ? null : this.innerProperties().noHealthyBackendsBehavior();
+    }
+
+    /**
+     * Set the noHealthyBackendsBehavior property: Determines how new connections are handled by the load balancer when
+     * all backend instances are probed down.
+     * 
+     * @param noHealthyBackendsBehavior the noHealthyBackendsBehavior value to set.
+     * @return the ProbeInner object itself.
+     */
+    public ProbeInner withNoHealthyBackendsBehavior(ProbeNoHealthyBackendsBehavior noHealthyBackendsBehavior) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProbePropertiesFormat();
+        }
+        this.innerProperties().withNoHealthyBackendsBehavior(noHealthyBackendsBehavior);
         return this;
     }
 
