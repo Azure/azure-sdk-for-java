@@ -5,9 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
-import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
@@ -29,7 +27,6 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -110,8 +107,10 @@ public final class TestUtils {
 
         message.setBody(body);
 
-        message.getApplicationProperties().getValue().putAll(APPLICATION_PROPERTIES);
-        message.getApplicationProperties().getValue().put(MESSAGE_ID, messageTrackingValue);
+        final Map<String, Object> applicationProperties = new HashMap<>(APPLICATION_PROPERTIES);
+        applicationProperties.put(MESSAGE_ID, messageTrackingValue);
+
+        message.setApplicationProperties(new ApplicationProperties(applicationProperties));
 
         return message;
     }
