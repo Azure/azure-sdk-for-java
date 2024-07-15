@@ -10,7 +10,7 @@ trigger:
       - sdk/healthdataaiservices/
     exclude:
       - sdk/healthdataaiservices/pom.xml
-      - sdk/healthdataaiservices/azure-ai-healthdataaiservices/pom.xml
+      - sdk/healthdataaiservices/azure-health-deidentification/pom.xml
 
 pr:
   branches:
@@ -24,13 +24,13 @@ pr:
       - sdk/healthdataaiservices/
     exclude:
       - sdk/healthdataaiservices/pom.xml
-      - sdk/healthdataaiservices/azure-ai-healthdataaiservices/pom.xml
+      - sdk/healthdataaiservices/azure-health-deidentification/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: healthdataaiservices
     Artifacts:
-      - name: azure-ai-healthdataaiservices
+      - name: azure-health-deidentification
         groupId: com.azure
         safeName: azureaihealthdataaiservices
