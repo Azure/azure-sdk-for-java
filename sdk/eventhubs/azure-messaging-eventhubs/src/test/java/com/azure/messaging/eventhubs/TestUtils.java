@@ -55,6 +55,7 @@ public final class TestUtils {
     static final String PARTITION_KEY = "a-partition-key";
     static final Long SEQUENCE_NUMBER = 1025L;
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
+    static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
 
     // An application property key used to identify that the request belongs to a test set.
@@ -94,6 +95,7 @@ public final class TestUtils {
         systemProperties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), enqueuedTime);
         systemProperties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME), sequenceNumber);
         systemProperties.put(getSymbol(PARTITION_KEY_ANNOTATION_NAME), PARTITION_KEY);
+        systemProperties.put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
 
         final Message message = Proton.message();
         message.setMessageAnnotations(new MessageAnnotations(systemProperties));
