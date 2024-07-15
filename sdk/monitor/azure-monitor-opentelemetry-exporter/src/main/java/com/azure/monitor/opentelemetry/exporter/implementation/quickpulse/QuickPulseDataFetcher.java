@@ -96,7 +96,7 @@ class QuickPulseDataFetcher {
             request.setBody(buildPostEntity(counters));
 
             if (!sendQueue.offer(request)) {
-                logger.error("Quick Pulse send queue is full");
+                logger.verbose("Quick Pulse send queue is full");
             }
         } catch (Throwable e) {
             if (e instanceof Error) {
