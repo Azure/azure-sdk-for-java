@@ -7,14 +7,20 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 class QuickPulseDataSender implements Runnable {
 
     private static final ClientLogger logger = new ClientLogger(QuickPulseCoordinator.class);
 
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
+    private QuickPulseConfiguration quickPulseConfiguration = QuickPulseConfiguration.getInstance();
     private final HttpPipeline httpPipeline;
     private volatile QuickPulseHeaderInfo quickPulseHeaderInfo;
     private long lastValidTransmission = 0;
@@ -57,6 +63,11 @@ class QuickPulseDataSender implements Runnable {
                         case QP_IS_ON:
                             lastValidTransmission = sendTime;
                             this.quickPulseHeaderInfo = quickPulseHeaderInfo;
+                            String etagValue = networkHelper.getEtagHeaderValue(response);
+                            if (!Objects.equals(etagValue, quickPulseConfiguration.getEtag())) {
+                                ConcurrentHashMap<String, QuickPulseConfiguration.OpenTelMetricInfo> otelMetrics = quickPulseConfiguration.parseMetrics(response);
+                                quickPulseConfiguration.updateConfig(etagValue, otelMetrics);
+                            }
                             break;
 
                         case ERROR:
@@ -64,9 +75,15 @@ class QuickPulseDataSender implements Runnable {
                             break;
                     }
                 }
+
             } catch (Throwable t) {
                 logger.error("QuickPulseDataSender failed to send a request", t);
             }
+            /* Debugging purposes
+            System.out.println("POST*********************");
+            System.out.println("ETAG: " + quickPulseConfiguration.getEtag());
+            System.out.println("METRICS: " + quickPulseConfiguration.getMetrics());
+            */
         }
     }
 

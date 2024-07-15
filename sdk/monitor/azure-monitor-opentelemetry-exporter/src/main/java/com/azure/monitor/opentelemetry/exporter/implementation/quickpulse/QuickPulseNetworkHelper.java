@@ -10,6 +10,10 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 import java.util.Date;
 
@@ -26,11 +30,14 @@ final class QuickPulseNetworkHelper {
     private static final String QPS_MACHINE_NAME_HEADER = "x-ms-qps-machine-name";
     private static final String QPS_ROLE_NAME_HEADER = "x-ms-qps-role-name";
     private static final String QPS_INVARIANT_VERSION_HEADER = "x-ms-qps-invariant-version";
+    private static final String QPS_CONFIGURATION_ETAG_HEADER = "x-ms-qps-configuration-etag";
     private static final HttpHeaderName QPS_ROLE_NAME_HEADER_NAME = HttpHeaderName.fromString(QPS_ROLE_NAME_HEADER);
     private static final HttpHeaderName QPS_MACHINE_NAME_HEADER_NAME = HttpHeaderName.fromString(QPS_MACHINE_NAME_HEADER);
     private static final HttpHeaderName QPS_STREAM_ID_HEADER_NAME = HttpHeaderName.fromString(QPS_STREAM_ID_HEADER);
     private static final HttpHeaderName QPS_INSTANCE_NAME_HEADER_NAME = HttpHeaderName.fromString(QPS_INSTANCE_NAME_HEADER);
     private static final HttpHeaderName QPS_INVARIANT_VERSION_HEADER_NAME = HttpHeaderName.fromString(QPS_INVARIANT_VERSION_HEADER);
+    private static final HttpHeaderName QPS_CONFIGURATION_ETAG_HEADER_NAME = HttpHeaderName.fromString(QPS_CONFIGURATION_ETAG_HEADER);
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     HttpRequest buildPingRequest(
         Date currentDate,
@@ -40,7 +47,7 @@ final class QuickPulseNetworkHelper {
         String roleName,
         String instanceName) {
 
-        HttpRequest request = buildRequest(currentDate, address);
+        HttpRequest request = buildRequest(currentDate, address, "");
         request.setHeader(QPS_ROLE_NAME_HEADER_NAME, roleName);
         request.setHeader(QPS_MACHINE_NAME_HEADER_NAME, machineName);
         request.setHeader(QPS_STREAM_ID_HEADER_NAME, quickPulseId);
@@ -49,11 +56,12 @@ final class QuickPulseNetworkHelper {
         return request;
     }
 
-    HttpRequest buildRequest(Date currentDate, String address) {
+    HttpRequest buildRequest(Date currentDate, String address, String etag) {
         long ticks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, address);
         request.setHeader(HttpHeaderName.fromString(HEADER_TRANSMISSION_TIME), String.valueOf(ticks));
+        request.setHeader(QPS_CONFIGURATION_ETAG_HEADER_NAME, etag);
         return request;
     }
 
@@ -86,4 +94,11 @@ final class QuickPulseNetworkHelper {
         }
         return new QuickPulseHeaderInfo(status, serviceEndpointRedirect, servicePollingIntervalHint);
     }
+
+    String getEtagHeaderValue(HttpResponse response) {
+        HttpHeaders headers = response.getHeaders();
+        HttpHeader etagHeader = headers.get(QPS_CONFIGURATION_ETAG_HEADER_NAME);
+        return etagHeader != null ? etagHeader.getValue() : null;
+    }
+
 }

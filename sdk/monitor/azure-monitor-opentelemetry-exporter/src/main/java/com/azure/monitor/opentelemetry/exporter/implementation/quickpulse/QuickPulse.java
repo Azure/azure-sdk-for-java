@@ -5,13 +5,18 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.HostName;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ThreadPoolUtils;
+import io.opentelemetry.api.common.AttributeKey;
 import reactor.util.annotation.Nullable;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -20,7 +25,8 @@ import java.util.function.Supplier;
 
 public class QuickPulse {
 
-    static final int QP_INVARIANT_VERSION = 1;
+    //change this back to 1
+    static final int QP_INVARIANT_VERSION = 5;
 
     private volatile QuickPulseDataCollector collector;
 
@@ -74,6 +80,17 @@ public class QuickPulse {
     public void add(TelemetryItem telemetryItem) {
         if (collector != null) {
             collector.add(telemetryItem);
+        }
+    }
+
+    public void add(TelemetryItem telemetryItem, Boolean isOtelMetric) {
+        if (collector != null){
+            if(isOtelMetric){
+                collector.addOtelMetric(telemetryItem);
+
+            }else{
+                collector.add(telemetryItem);
+            }
         }
     }
 

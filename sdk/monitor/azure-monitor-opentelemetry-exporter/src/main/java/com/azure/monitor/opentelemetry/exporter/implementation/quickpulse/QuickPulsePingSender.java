@@ -18,7 +18,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.util.annotation.Nullable;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
@@ -45,6 +49,7 @@ class QuickPulsePingSender {
 
     private final HttpPipeline httpPipeline;
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
+    private QuickPulseConfiguration quickPulseConfiguration = QuickPulseConfiguration.getInstance();
     private volatile QuickPulseEnvelope pingEnvelope; // cached for performance
 
     private final Supplier<URL> endpointUrl;
@@ -76,6 +81,11 @@ class QuickPulsePingSender {
     }
 
     QuickPulseHeaderInfo ping(String redirectedEndpoint) {
+        /* Debugging purposes
+        System.out.println("PING*********************");
+        System.out.println("ETAG: " + quickPulseConfiguration.getEtag());
+        System.out.println("METRICS: " + quickPulseConfiguration.getMetrics());
+        */
         String instrumentationKey = getInstrumentationKey();
         if (Strings.isNullOrEmpty(instrumentationKey)) {
             // Quick Pulse Ping uri will be null when the instrumentation key is null. When that happens,
@@ -111,6 +121,11 @@ class QuickPulsePingSender {
                     case QP_IS_OFF:
                     case QP_IS_ON:
                         lastValidTransmission = sendTime;
+                        String etagValue = networkHelper.getEtagHeaderValue(response);
+                        if (!Objects.equals(etagValue, quickPulseConfiguration.getEtag())) {
+                            ConcurrentHashMap<String, QuickPulseConfiguration.OpenTelMetricInfo> otelMetrics = quickPulseConfiguration.parseMetrics(response);
+                            quickPulseConfiguration.updateConfig(etagValue, otelMetrics);
+                        }
                         operationLogger.recordSuccess();
                         return quickPulseHeaderInfo;
 
@@ -126,6 +141,8 @@ class QuickPulsePingSender {
             }
         } finally {
             if (response != null) {
+
+
                 // need to consume the body or close the response, otherwise get netty ByteBuf leak
                 // warnings:
                 // io.netty.util.ResourceLeakDetector - LEAK: ByteBuf.release() was not called before
