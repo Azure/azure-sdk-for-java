@@ -40,7 +40,7 @@ public class DeployOptions {
 
     /**
      * Specifies whether to restart site after deployment.
-     *
+     * <p>
      * By default, any OneDeploy call will restart the site. This behavior can be altered by this option.
      *
      * @param restartSite whether to restart side after deployment
@@ -60,7 +60,7 @@ public class DeployOptions {
 
     /**
      * Specifies whether to perform clean deployment.
-     *
+     * <p>
      * By default {@code type=zip} and {@code type=war&path=webapps/<appname>} performs clean deployment.
      * All other types of artifacts will be deployed incrementally.
      * The default behavior for any artifact type can be changed by this option.
@@ -83,7 +83,7 @@ public class DeployOptions {
 
     /**
      * Specifies whether to have {@link KuduDeploymentResult#deploymentId()} to track deployment progress.
-     *
+     * <p>
      * This option only takes effect when used in
      * {@link SupportsOneDeploy#pushDeploy(DeployType, java.io.File, DeployOptions)}.
      *

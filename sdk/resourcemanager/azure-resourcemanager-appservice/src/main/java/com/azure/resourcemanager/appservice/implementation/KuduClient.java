@@ -149,7 +149,10 @@ class KuduClient {
             @QueryParam("restart") Boolean restart,
             @QueryParam("clean") Boolean clean,
             @QueryParam("isAsync") Boolean isAsync,
-            @QueryParam("trackDeploymentProgress") Boolean trackDeploymentProgress);
+            @QueryParam("trackDeploymentProgress") Boolean trackDeploymentProgress,
+            @QueryParam("RemoteBuild") Boolean remoteBuild,
+            @QueryParam("deployer") String deployer
+        );
 
         @Get("api/settings")
         Mono<Map<String, String>> settings(@HostParam("$host") String host);
@@ -299,7 +302,7 @@ class KuduClient {
                            InputStream file, long length,
                            String path, Boolean restart, Boolean clean) {
         Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
-        return retryOnError(service.deploy(host, flux, length, type, path, restart, clean, false, false))
+        return retryOnError(service.deploy(host, flux, length, type, path, restart, clean, false, false, null, null))
             .then();
     }
 
@@ -308,7 +311,29 @@ class KuduClient {
                            String path, Boolean restart, Boolean clean) throws IOException {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
         return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
-            type, path, restart, clean, false, false))
+            type, path, restart, clean, false, false, null, null))
+            .then()
+            .doFinally(ignored -> {
+                try {
+                    fileChannel.close();
+                } catch (IOException e) {
+                    logger.logThrowableAsError(e);
+                }
+            });
+    }
+
+    Mono<Void> deployFlexConsumptionAsync(InputStream file, long length) {
+        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
+        return retryOnError(service.deploy(host, flux, length, null, null, null, null, null, null,
+            false, "JavaSDK"))
+            .then();
+    }
+
+    Mono<Void> deployFlexConsumptionAsync(File file) throws IOException {
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
+        return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
+            null, null, null, null, null, null,
+            false, "JavaSDK"))
             .then()
             .doFinally(ignored -> {
                 try {
@@ -325,7 +350,7 @@ class KuduClient {
 
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
         return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
-            type, path, restart, clean, true, trackDeployment))
+            type, path, restart, clean, true, trackDeployment, null, null))
             .map(response -> {
                 HttpHeader deploymentIdHeader = response.getHeaders().get("SCM-DEPLOYMENT-ID");
                 if (trackDeploymentProgress && (deploymentIdHeader == null || deploymentIdHeader.getValue() == null

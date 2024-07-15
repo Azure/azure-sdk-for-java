@@ -24,13 +24,13 @@ public final class FunctionsScaleAndConcurrency {
      * The maximum number of instances for the function app.
      */
     @JsonProperty(value = "maximumInstanceCount")
-    private Float maximumInstanceCount;
+    private Long maximumInstanceCount;
 
     /*
      * Set the amount of memory allocated to each instance of the function app in MB. CPU and network bandwidth are allocated proportionally.
      */
     @JsonProperty(value = "instanceMemoryMB")
-    private Float instanceMemoryMB;
+    private Long instanceMemoryMB;
 
     /*
      * Scale and concurrency settings for the function app triggers.
@@ -70,7 +70,7 @@ public final class FunctionsScaleAndConcurrency {
      * @return the maximumInstanceCount value.
      */
     public Float maximumInstanceCount() {
-        return this.maximumInstanceCount;
+        return this.maximumInstanceCount == null ? null : this.maximumInstanceCount.floatValue();
     }
 
     /**
@@ -80,7 +80,7 @@ public final class FunctionsScaleAndConcurrency {
      * @return the FunctionsScaleAndConcurrency object itself.
      */
     public FunctionsScaleAndConcurrency withMaximumInstanceCount(Float maximumInstanceCount) {
-        this.maximumInstanceCount = maximumInstanceCount;
+        this.maximumInstanceCount = maximumInstanceCount == null ? null : maximumInstanceCount.longValue();
         return this;
     }
 
@@ -91,7 +91,7 @@ public final class FunctionsScaleAndConcurrency {
      * @return the instanceMemoryMB value.
      */
     public Float instanceMemoryMB() {
-        return this.instanceMemoryMB;
+        return this.instanceMemoryMB == null ? null : this.instanceMemoryMB.floatValue();
     }
 
     /**
@@ -102,7 +102,7 @@ public final class FunctionsScaleAndConcurrency {
      * @return the FunctionsScaleAndConcurrency object itself.
      */
     public FunctionsScaleAndConcurrency withInstanceMemoryMB(Float instanceMemoryMB) {
-        this.instanceMemoryMB = instanceMemoryMB;
+        this.instanceMemoryMB = instanceMemoryMB == null ? null : instanceMemoryMB.longValue();
         return this;
     }
 

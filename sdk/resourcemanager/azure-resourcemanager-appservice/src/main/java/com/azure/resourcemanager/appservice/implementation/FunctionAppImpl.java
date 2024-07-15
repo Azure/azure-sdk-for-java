@@ -644,6 +644,20 @@ class FunctionAppImpl
     }
 
     @Override
+    public Mono<Void> deployAsync(File file) {
+        try {
+            return kuduClient.deployFlexConsumptionAsync(file);
+        } catch (IOException e) {
+            return Mono.error(e);
+        }
+    }
+
+    @Override
+    public void deploy(File file) {
+        deployAsync(file).block();
+    }
+
+    @Override
     public void beforeGroupCreateOrUpdate() {
         // special handling for Function App on ACA
         if (isFunctionAppOnACA()) {
