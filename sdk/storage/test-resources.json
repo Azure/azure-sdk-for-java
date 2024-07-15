@@ -123,7 +123,7 @@
                 },
                 "accessTier": "Hot",
                 "minimumTlsVersion": "TLS1_2",
-                "allowBlobPublicAccess": true
+                "allowBlobPublicAccess": false
             }
         },
       {
@@ -215,7 +215,7 @@
                 },
                 "accessTier": "Hot",
                 "minimumTlsVersion": "TLS1_2",
-                "allowBlobPublicAccess": true
+                "allowBlobPublicAccess": false
             }
         },
         {
@@ -249,7 +249,7 @@
             },
             "accessTier": "Hot",
             "minimumTlsVersion": "TLS1_2",
-            "allowBlobPublicAccess": true
+            "allowBlobPublicAccess": false
           }
         },
         {
@@ -315,7 +315,7 @@
                 },
                 "accessTier": "Hot",
                 "minimumTlsVersion": "TLS1_2",
-                "allowBlobPublicAccess": true
+                "allowBlobPublicAccess": false
             }
         },
         {
@@ -349,7 +349,7 @@
             },
             "accessTier": "Hot",
             "minimumTlsVersion": "TLS1_2",
-            "allowBlobPublicAccess": true
+            "allowBlobPublicAccess": false
           }
         },
         {
@@ -395,7 +395,7 @@
                 },
                 "accessTier": "Hot",
                 "minimumTlsVersion": "TLS1_2",
-                "allowBlobPublicAccess": true
+                "allowBlobPublicAccess": false
             }
         },
         {
@@ -444,7 +444,7 @@
             },
             "accessTier": "Hot",
             "minimumTlsVersion": "TLS1_2",
-            "allowBlobPublicAccess": true
+            "allowBlobPublicAccess": false
           }
         },
         {
@@ -488,7 +488,7 @@
                     "keySource": "Microsoft.Storage"
                 },
                 "minimumTlsVersion": "TLS1_2",
-                "allowBlobPublicAccess": true
+                "allowBlobPublicAccess": false
             }
         },
         {
