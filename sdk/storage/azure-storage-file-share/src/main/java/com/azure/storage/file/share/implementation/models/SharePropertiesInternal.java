@@ -123,6 +123,21 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
     private Boolean enableSnapshotVirtualDirectoryAccess;
 
     /*
+     * The PaidBurstingEnabled property.
+     */
+    private Boolean paidBurstingEnabled;
+
+    /*
+     * The PaidBurstingMaxIops property.
+     */
+    private Long paidBurstingMaxIops;
+
+    /*
+     * The PaidBurstingMaxBandwidthMibps property.
+     */
+    private Long paidBurstingMaxBandwidthMibps;
+
+    /*
      * Dictionary of <string>
      */
     private Map<String, String> metadata;
@@ -545,6 +560,66 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
     }
 
     /**
+     * Get the paidBurstingEnabled property: The PaidBurstingEnabled property.
+     * 
+     * @return the paidBurstingEnabled value.
+     */
+    public Boolean isPaidBurstingEnabled() {
+        return this.paidBurstingEnabled;
+    }
+
+    /**
+     * Set the paidBurstingEnabled property: The PaidBurstingEnabled property.
+     * 
+     * @param paidBurstingEnabled the paidBurstingEnabled value to set.
+     * @return the SharePropertiesInternal object itself.
+     */
+    public SharePropertiesInternal setPaidBurstingEnabled(Boolean paidBurstingEnabled) {
+        this.paidBurstingEnabled = paidBurstingEnabled;
+        return this;
+    }
+
+    /**
+     * Get the paidBurstingMaxIops property: The PaidBurstingMaxIops property.
+     * 
+     * @return the paidBurstingMaxIops value.
+     */
+    public Long getPaidBurstingMaxIops() {
+        return this.paidBurstingMaxIops;
+    }
+
+    /**
+     * Set the paidBurstingMaxIops property: The PaidBurstingMaxIops property.
+     * 
+     * @param paidBurstingMaxIops the paidBurstingMaxIops value to set.
+     * @return the SharePropertiesInternal object itself.
+     */
+    public SharePropertiesInternal setPaidBurstingMaxIops(Long paidBurstingMaxIops) {
+        this.paidBurstingMaxIops = paidBurstingMaxIops;
+        return this;
+    }
+
+    /**
+     * Get the paidBurstingMaxBandwidthMibps property: The PaidBurstingMaxBandwidthMibps property.
+     * 
+     * @return the paidBurstingMaxBandwidthMibps value.
+     */
+    public Long getPaidBurstingMaxBandwidthMibps() {
+        return this.paidBurstingMaxBandwidthMibps;
+    }
+
+    /**
+     * Set the paidBurstingMaxBandwidthMibps property: The PaidBurstingMaxBandwidthMibps property.
+     * 
+     * @param paidBurstingMaxBandwidthMibps the paidBurstingMaxBandwidthMibps value to set.
+     * @return the SharePropertiesInternal object itself.
+     */
+    public SharePropertiesInternal setPaidBurstingMaxBandwidthMibps(Long paidBurstingMaxBandwidthMibps) {
+        this.paidBurstingMaxBandwidthMibps = paidBurstingMaxBandwidthMibps;
+        return this;
+    }
+
+    /**
      * Get the metadata property: Dictionary of &lt;string&gt;.
      * 
      * @return the metadata value.
@@ -595,6 +670,9 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
         xmlWriter.writeStringElement("RootSquash", this.rootSquash == null ? null : this.rootSquash.toString());
         xmlWriter.writeBooleanElement("EnableSnapshotVirtualDirectoryAccess",
             this.enableSnapshotVirtualDirectoryAccess);
+        xmlWriter.writeBooleanElement("PaidBurstingEnabled", this.paidBurstingEnabled);
+        xmlWriter.writeNumberElement("PaidBurstingMaxIops", this.paidBurstingMaxIops);
+        xmlWriter.writeNumberElement("PaidBurstingMaxBandwidthMibps", this.paidBurstingMaxBandwidthMibps);
         if (this.metadata != null) {
             xmlWriter.writeStartElement("Metadata");
             for (Map.Entry<String, String> entry : this.metadata.entrySet()) {
@@ -687,6 +765,15 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
                 } else if ("EnableSnapshotVirtualDirectoryAccess".equals(elementName.getLocalPart())) {
                     deserializedSharePropertiesInternal.enableSnapshotVirtualDirectoryAccess
                         = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("PaidBurstingEnabled".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.paidBurstingEnabled
+                        = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("PaidBurstingMaxIops".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.paidBurstingMaxIops
+                        = reader.getNullableElement(Long::parseLong);
+                } else if ("PaidBurstingMaxBandwidthMibps".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.paidBurstingMaxBandwidthMibps
+                        = reader.getNullableElement(Long::parseLong);
                 } else if ("Metadata".equals(elementName.getLocalPart())) {
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         if (deserializedSharePropertiesInternal.metadata == null) {

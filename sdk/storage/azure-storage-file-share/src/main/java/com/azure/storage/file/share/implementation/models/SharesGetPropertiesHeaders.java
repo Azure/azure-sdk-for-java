@@ -38,6 +38,11 @@ public final class SharesGetPropertiesHeaders {
     private LeaseStatusType xMsLeaseStatus;
 
     /*
+     * The x-ms-share-paid-bursting-enabled property.
+     */
+    private Boolean xMsSharePaidBurstingEnabled;
+
+    /*
      * The x-ms-lease-state property.
      */
     private LeaseStateType xMsLeaseState;
@@ -88,6 +93,16 @@ public final class SharesGetPropertiesHeaders {
     private Integer xMsShareQuota;
 
     /*
+     * The x-ms-share-paid-bursting-max-iops property.
+     */
+    private Long xMsSharePaidBurstingMaxIops;
+
+    /*
+     * The x-ms-share-paid-bursting-max-bandwidth-mibps property.
+     */
+    private Long xMsSharePaidBurstingMaxBandwidthMibps;
+
+    /*
      * The x-ms-access-tier property.
      */
     private String xMsAccessTier;
@@ -134,6 +149,9 @@ public final class SharesGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_LEASE_STATUS = HttpHeaderName.fromString("x-ms-lease-status");
 
+    private static final HttpHeaderName X_MS_SHARE_PAID_BURSTING_ENABLED
+        = HttpHeaderName.fromString("x-ms-share-paid-bursting-enabled");
+
     private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
 
     private static final HttpHeaderName X_MS_ROOT_SQUASH = HttpHeaderName.fromString("x-ms-root-squash");
@@ -151,6 +169,12 @@ public final class SharesGetPropertiesHeaders {
         = HttpHeaderName.fromString("x-ms-share-provisioned-bandwidth-mibps");
 
     private static final HttpHeaderName X_MS_SHARE_QUOTA = HttpHeaderName.fromString("x-ms-share-quota");
+
+    private static final HttpHeaderName X_MS_SHARE_PAID_BURSTING_MAX_IOPS
+        = HttpHeaderName.fromString("x-ms-share-paid-bursting-max-iops");
+
+    private static final HttpHeaderName X_MS_SHARE_PAID_BURSTING_MAX_BANDWIDTH_MIBPS
+        = HttpHeaderName.fromString("x-ms-share-paid-bursting-max-bandwidth-mibps");
 
     private static final HttpHeaderName X_MS_ACCESS_TIER = HttpHeaderName.fromString("x-ms-access-tier");
 
@@ -182,6 +206,10 @@ public final class SharesGetPropertiesHeaders {
         String xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
         if (xMsLeaseStatus != null) {
             this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
+        }
+        String xMsSharePaidBurstingEnabled = rawHeaders.getValue(X_MS_SHARE_PAID_BURSTING_ENABLED);
+        if (xMsSharePaidBurstingEnabled != null) {
+            this.xMsSharePaidBurstingEnabled = Boolean.parseBoolean(xMsSharePaidBurstingEnabled);
         }
         String xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
         if (xMsLeaseState != null) {
@@ -220,6 +248,15 @@ public final class SharesGetPropertiesHeaders {
         String xMsShareQuota = rawHeaders.getValue(X_MS_SHARE_QUOTA);
         if (xMsShareQuota != null) {
             this.xMsShareQuota = Integer.parseInt(xMsShareQuota);
+        }
+        String xMsSharePaidBurstingMaxIops = rawHeaders.getValue(X_MS_SHARE_PAID_BURSTING_MAX_IOPS);
+        if (xMsSharePaidBurstingMaxIops != null) {
+            this.xMsSharePaidBurstingMaxIops = Long.parseLong(xMsSharePaidBurstingMaxIops);
+        }
+        String xMsSharePaidBurstingMaxBandwidthMibps
+            = rawHeaders.getValue(X_MS_SHARE_PAID_BURSTING_MAX_BANDWIDTH_MIBPS);
+        if (xMsSharePaidBurstingMaxBandwidthMibps != null) {
+            this.xMsSharePaidBurstingMaxBandwidthMibps = Long.parseLong(xMsSharePaidBurstingMaxBandwidthMibps);
         }
         this.xMsAccessTier = rawHeaders.getValue(X_MS_ACCESS_TIER);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
@@ -308,6 +345,26 @@ public final class SharesGetPropertiesHeaders {
      */
     public SharesGetPropertiesHeaders setXMsLeaseStatus(LeaseStatusType xMsLeaseStatus) {
         this.xMsLeaseStatus = xMsLeaseStatus;
+        return this;
+    }
+
+    /**
+     * Get the xMsSharePaidBurstingEnabled property: The x-ms-share-paid-bursting-enabled property.
+     * 
+     * @return the xMsSharePaidBurstingEnabled value.
+     */
+    public Boolean isXMsSharePaidBurstingEnabled() {
+        return this.xMsSharePaidBurstingEnabled;
+    }
+
+    /**
+     * Set the xMsSharePaidBurstingEnabled property: The x-ms-share-paid-bursting-enabled property.
+     * 
+     * @param xMsSharePaidBurstingEnabled the xMsSharePaidBurstingEnabled value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setXMsSharePaidBurstingEnabled(Boolean xMsSharePaidBurstingEnabled) {
+        this.xMsSharePaidBurstingEnabled = xMsSharePaidBurstingEnabled;
         return this;
     }
 
@@ -532,6 +589,49 @@ public final class SharesGetPropertiesHeaders {
      */
     public SharesGetPropertiesHeaders setXMsShareQuota(Integer xMsShareQuota) {
         this.xMsShareQuota = xMsShareQuota;
+        return this;
+    }
+
+    /**
+     * Get the xMsSharePaidBurstingMaxIops property: The x-ms-share-paid-bursting-max-iops property.
+     * 
+     * @return the xMsSharePaidBurstingMaxIops value.
+     */
+    public Long getXMsSharePaidBurstingMaxIops() {
+        return this.xMsSharePaidBurstingMaxIops;
+    }
+
+    /**
+     * Set the xMsSharePaidBurstingMaxIops property: The x-ms-share-paid-bursting-max-iops property.
+     * 
+     * @param xMsSharePaidBurstingMaxIops the xMsSharePaidBurstingMaxIops value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setXMsSharePaidBurstingMaxIops(Long xMsSharePaidBurstingMaxIops) {
+        this.xMsSharePaidBurstingMaxIops = xMsSharePaidBurstingMaxIops;
+        return this;
+    }
+
+    /**
+     * Get the xMsSharePaidBurstingMaxBandwidthMibps property: The x-ms-share-paid-bursting-max-bandwidth-mibps
+     * property.
+     * 
+     * @return the xMsSharePaidBurstingMaxBandwidthMibps value.
+     */
+    public Long getXMsSharePaidBurstingMaxBandwidthMibps() {
+        return this.xMsSharePaidBurstingMaxBandwidthMibps;
+    }
+
+    /**
+     * Set the xMsSharePaidBurstingMaxBandwidthMibps property: The x-ms-share-paid-bursting-max-bandwidth-mibps
+     * property.
+     * 
+     * @param xMsSharePaidBurstingMaxBandwidthMibps the xMsSharePaidBurstingMaxBandwidthMibps value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders
+        setXMsSharePaidBurstingMaxBandwidthMibps(Long xMsSharePaidBurstingMaxBandwidthMibps) {
+        this.xMsSharePaidBurstingMaxBandwidthMibps = xMsSharePaidBurstingMaxBandwidthMibps;
         return this;
     }
 
