@@ -355,11 +355,7 @@ public final class JavaDocCodeSnippets {
 
         DeviceCodeCredentialBuilder builder = new DeviceCodeCredentialBuilder()
             .clientId(clientId)
-            .tenantId(tenantId)
-            .challengeConsumer(challenge -> {
-                // Display the challenge message to the user.
-                System.out.println(challenge.getMessage());
-            });
+            .tenantId(tenantId);
         if (authenticationRecord != null) {
             // As we have a record, configure the builder to use it.
             builder.authenticationRecord(authenticationRecord);
