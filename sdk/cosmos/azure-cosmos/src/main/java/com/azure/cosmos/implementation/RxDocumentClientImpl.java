@@ -1872,11 +1872,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
-        if (pointOperationContextForCircuitBreaker != null) {
-            MetadataDiagnosticsContext metadataDiagnosticsContext = pointOperationContextForCircuitBreaker.getMetadataDiagnosticsContext();
-            diagnosticsAccessor.mergeMetadataDiagnosticContext(request.requestContext.cosmosDiagnostics, metadataDiagnosticsContext);
-        }
-
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
         return addPartitionKeyInformation(request, content, document, options, collectionObs);
     }
@@ -2615,6 +2610,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         retryPolicyInstance.onBeforeSendRequest(request);
                     }
 
+                    if (pointOperationContextForCircuitBreaker != null) {
+                        MetadataDiagnosticsContext metadataDiagnosticsContext = pointOperationContextForCircuitBreaker.getMetadataDiagnosticsContext();
+                        diagnosticsAccessor.mergeMetadataDiagnosticContext(request.requestContext.cosmosDiagnostics, metadataDiagnosticsContext);
+                    }
+
                     return upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options));
                 })
                 .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
@@ -2859,17 +2859,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
-        if (retryPolicyInstance != null) {
-            retryPolicyInstance.onBeforeSendRequest(request);
-        }
-
         SerializationDiagnosticsContext serializationDiagnosticsContext =
             BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
-
-        if (pointOperationContextForCircuitBreaker != null) {
-            MetadataDiagnosticsContext metadataDiagnosticsContext = pointOperationContextForCircuitBreaker.getMetadataDiagnosticsContext();
-            diagnosticsAccessor.mergeMetadataDiagnosticContext(request.requestContext.cosmosDiagnostics, metadataDiagnosticsContext);
-        }
 
         if (serializationDiagnosticsContext != null) {
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
@@ -2892,6 +2883,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 if (retryPolicyInstance != null) {
                     retryPolicyInstance.onBeforeSendRequest(request);
+                }
+
+                if (pointOperationContextForCircuitBreaker != null) {
+                    MetadataDiagnosticsContext metadataDiagnosticsContext = pointOperationContextForCircuitBreaker.getMetadataDiagnosticsContext();
+                    diagnosticsAccessor.mergeMetadataDiagnosticContext(request.requestContext.cosmosDiagnostics, metadataDiagnosticsContext);
                 }
 
                 return replace(request, retryPolicyInstance);
@@ -3046,11 +3042,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
-        if (pointOperationContextForCircuitBreaker != null) {
-            MetadataDiagnosticsContext metadataDiagnosticsContext = pointOperationContextForCircuitBreaker.getMetadataDiagnosticsContext();
-            diagnosticsAccessor.mergeMetadataDiagnosticContext(request.requestContext.cosmosDiagnostics, metadataDiagnosticsContext);
-        }
-
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(
             BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
@@ -3072,6 +3063,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 if (retryPolicyInstance != null) {
                     retryPolicyInstance.onBeforeSendRequest(request);
+                }
+
+                if (pointOperationContextForCircuitBreaker != null) {
+                    MetadataDiagnosticsContext metadataDiagnosticsContext = pointOperationContextForCircuitBreaker.getMetadataDiagnosticsContext();
+                    diagnosticsAccessor.mergeMetadataDiagnosticContext(request.requestContext.cosmosDiagnostics, metadataDiagnosticsContext);
                 }
 
                 return patch(request, retryPolicyInstance);
@@ -3189,22 +3185,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
             }
 
-            if (retryPolicyInstance != null) {
-                retryPolicyInstance.onBeforeSendRequest(request);
-            }
-
-            if (pointOperationContextForCircuitBreaker != null) {
-                MetadataDiagnosticsContext metadataDiagnosticsContext = pointOperationContextForCircuitBreaker.getMetadataDiagnosticsContext();
-                diagnosticsAccessor.mergeMetadataDiagnosticContext(request.requestContext.cosmosDiagnostics, metadataDiagnosticsContext);
-            }
-
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(
                 BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                 request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(
                 request, null, internalObjectNode, options, collectionObs);
-
 
             return requestObs
                     .flatMap(req -> {
@@ -3216,6 +3202,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         if (retryPolicyInstance != null) {
                             retryPolicyInstance.onBeforeSendRequest(request);
+                        }
+
+                        if (pointOperationContextForCircuitBreaker != null) {
+                            MetadataDiagnosticsContext metadataDiagnosticsContext = pointOperationContextForCircuitBreaker.getMetadataDiagnosticsContext();
+                            diagnosticsAccessor.mergeMetadataDiagnosticContext(request.requestContext.cosmosDiagnostics, metadataDiagnosticsContext);
                         }
 
                         return this.delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options));
@@ -3358,6 +3349,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 if (retryPolicyInstance != null) {
                     retryPolicyInstance.onBeforeSendRequest(request);
+                }
+
+                if (pointOperationContextForCircuitBreaker != null) {
+                    MetadataDiagnosticsContext metadataDiagnosticsContext
+                        = pointOperationContextForCircuitBreaker.getMetadataDiagnosticsContext();
+
+                    diagnosticsAccessor.mergeMetadataDiagnosticContext(request.requestContext.cosmosDiagnostics, metadataDiagnosticsContext);
                 }
 
                 return this.read(req, retryPolicyInstance)

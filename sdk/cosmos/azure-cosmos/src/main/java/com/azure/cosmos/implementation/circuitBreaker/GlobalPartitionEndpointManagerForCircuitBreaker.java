@@ -95,7 +95,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
             isFailureThresholdBreached.set(partitionLevelLocationUnavailabilityInfoAsVal.handleException(
                 partitionKeyRangeWrapperAsKey,
-                collectionLink,
                 failedLocation,
                 request.isReadOnlyRequest()));
 
@@ -362,7 +361,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
         private boolean handleException(
             PartitionKeyRangeWrapper partitionKeyRangeWrapper,
-            String collectionLink,
             URI locationWithException,
             boolean isReadOnlyRequest) {
 
