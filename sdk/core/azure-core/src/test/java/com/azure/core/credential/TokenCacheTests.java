@@ -183,7 +183,7 @@ public class TokenCacheTests {
 
         cache.getTokenSync(new TokenRequestContext(), false);
 
-        sleep(33000);
+        sleep(40000);
 
         cache.getTokenSync(new TokenRequestContext(), false);
 
