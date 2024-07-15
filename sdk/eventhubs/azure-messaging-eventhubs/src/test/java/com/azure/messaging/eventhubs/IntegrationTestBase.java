@@ -130,19 +130,6 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     /**
-     * Gets the test mode for this API test. If AZURE_TEST_MODE equals {@link TestMode#RECORD} and Event Hubs connection
-     * string is set, then we return {@link TestMode#RECORD}. Otherwise, {@link TestMode#PLAYBACK} is returned.
-     */
-    @Override
-    public TestMode getTestMode() {
-        if (super.getTestMode() == TestMode.PLAYBACK) {
-            return TestMode.PLAYBACK;
-        }
-
-        return CoreUtils.isNullOrEmpty(TestUtils.getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
-    }
-
-    /**
      * Gets the configured ProxyConfiguration from environment variables.
      */
     protected ProxyOptions getProxyConfiguration() {
