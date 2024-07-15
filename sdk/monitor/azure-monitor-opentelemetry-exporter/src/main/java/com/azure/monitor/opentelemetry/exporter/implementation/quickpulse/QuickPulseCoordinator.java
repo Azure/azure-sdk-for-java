@@ -59,9 +59,9 @@ final class QuickPulseCoordinator implements Runnable {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             logger.error("QuickPulseCoordinator was interrupted", e);
-        } catch (Exception exception) {
+        } catch (Throwable t) {
             // Not supposed to happen
-            logger.error("QuickPulseCoordinator failed", exception);
+            logger.error("QuickPulseCoordinator failed", t);
         }
     }
     @SuppressWarnings("try")
