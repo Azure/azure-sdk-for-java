@@ -88,12 +88,10 @@ public class SampleFollowupCommunicationAsync {
      */
     public static void main(final String[] args) throws InterruptedException {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
-        String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
-        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint);
-        if (apiKey != null && !apiKey.equals("")) {
-            clientBuilder = clientBuilder.credential(new AzureKeyCredential(apiKey));
-        }
+        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint).credential(credential);
+
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 
         PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient

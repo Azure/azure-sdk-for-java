@@ -81,11 +81,11 @@ public class SampleCriticalResultInferenceSync {
     public static void main(final String[] args) throws InterruptedException {
         // BEGIN: com.azure.health.insights.radiologyinsights.buildsyncclient
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
-        String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         RadiologyInsightsClient radiologyInsightsClient = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
-                .credential(new AzureKeyCredential(apiKey)).buildClient();
+                .credential(credential).buildClient();
         // END: com.azure.health.insights.radiologyinsights.buildsyncclient
 
         // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync

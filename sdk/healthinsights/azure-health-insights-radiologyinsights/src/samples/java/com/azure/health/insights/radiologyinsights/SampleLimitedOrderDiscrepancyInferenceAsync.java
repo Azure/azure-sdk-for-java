@@ -48,32 +48,32 @@ import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
- * with the Radiology Insights service. It will initialize an asynchronous 
- * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the 
- * results and display the Critical Results extracted by the Radiology Insights service.  
- * 
+ * The SampleCriticalResultInferenceAsync class processes a sample radiology document
+ * with the Radiology Insights service. It will initialize an asynchronous
+ * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the
+ * results and display the Critical Results extracted by the Radiology Insights service.
+ *
  */
 public class SampleLimitedOrderDiscrepancyInferenceAsync {
 
     private static final String DOC_CONTENT = "\\nHISTORY: male with a history of tuberous sclerosis presenting with epigastric pain and diffuse tenderness. "
             + "The patient was found to have pericholecystic haziness on CT; evaluation for acute cholecystitis."
-            + "\\n\\nTECHNIQUE: Ultrasound evaluation of the abdomen was performed. " 
-            + "\\n\\nFINDINGS:"  
-            + "\\n\\nThe liver is elongated, measuring 19.3 cm craniocaudally, and is homogeneous in echotexture without evidence of focal mass lesion. " 
-            + "The liver contour is smooth on high resolution images. "  
-            + "There is no appreciable intra- or extrahepatic biliary ductal dilatation, with the visualized extrahepatic bile duct measuring up to 6 mm. " 
+            + "\\n\\nTECHNIQUE: Ultrasound evaluation of the abdomen was performed. "
+            + "\\n\\nFINDINGS:"
+            + "\\n\\nThe liver is elongated, measuring 19.3 cm craniocaudally, and is homogeneous in echotexture without evidence of focal mass lesion. "
+            + "The liver contour is smooth on high resolution images. "
+            + "There is no appreciable intra- or extrahepatic biliary ductal dilatation, with the visualized extrahepatic bile duct measuring up to 6 mm. "
             + "There are multiple shadowing gallstones, including within the gallbladder neck, which do not appear particularly mobile. "
             + "In addition, there is thickening of the gallbladder wall up to approximately 7 mm with probable mild mural edema. "
-            + "There is no pericholecystic fluid. No sonographic Murphy's sign was elicited; however the patient reportedly received pain medications in the emergency department. "  
-            + "\\n\\nThe pancreatic head, body and visualized portions of the tail are unremarkable. The spleen is normal in size, measuring 9.9 cm in length." 
+            + "There is no pericholecystic fluid. No sonographic Murphy's sign was elicited; however the patient reportedly received pain medications in the emergency department. "
+            + "\\n\\nThe pancreatic head, body and visualized portions of the tail are unremarkable. The spleen is normal in size, measuring 9.9 cm in length."
             + "\\n\\nThe kidneys are normal in size. The right kidney measures 11.5 x 5.2 x 4.3 cm and the left kidney measuring 11.8 x 5.3 x 5.1 cm. "
             + "There are again multiple bilateral echogenic renal masses consistent with angiomyolipomas, in keeping with the patient's history of tuberous sclerosis. "
             + "The largest echogenic mass on the right is located in the upper pole and measures 1.2 x 1.3 x 1.3 cm. "
             + "The largest echogenic mass on the left is located within the renal sinus and measures approximately 2.6 x 2.7 x 4.6 cm. "
             + "Additional indeterminate renal lesions are present bilaterally and are better characterized on CT. There is no hydronephrosis."
             + "\\n\\nNo ascites is identified within the upper abdomen.\\n\\nThe visualized portions of the upper abdominal aorta and IVC are normal in caliber.";
-    
+
     /**
      * The main method is the entry point for the application. It initializes and uses
      * the RadiologyInsightsAsyncClient to perform Radiology Insights operations.
@@ -82,19 +82,17 @@ public class SampleLimitedOrderDiscrepancyInferenceAsync {
      */
     public static void main(final String[] args) throws InterruptedException {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
-        String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
-        
-        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint);
-        if (apiKey != null && !apiKey.equals("")) {
-            clientBuilder = clientBuilder.credential(new AzureKeyCredential(apiKey));
-        }
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint).credential(credential);
+
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 
         PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
-        
+
         CountDownLatch latch = new CountDownLatch(1);
-        
+
         asyncPoller
             .takeUntil(isComplete)
             .doFinally(signal -> {
@@ -196,7 +194,7 @@ public class SampleLimitedOrderDiscrepancyInferenceAsync {
         // Parse the string to LocalDateTime
         LocalDateTime dateTime = LocalDateTime.parse("1959-11-11T19:00:00+00:00", formatter);
         patientDetails.setBirthDate(dateTime.toLocalDate());
-        
+
         patientRecord.setDetails(patientDetails);
 
         PatientEncounter encounter = new PatientEncounter("encounterid1");

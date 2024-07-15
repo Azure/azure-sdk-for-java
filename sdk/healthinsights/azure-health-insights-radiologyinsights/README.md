@@ -35,7 +35,7 @@ For more information about creating the resource or how to get the location and 
 
 In order to interact with the Health Insights Radiology Insights service, you'll need to create an instance of the [`RadiologyInsightsClient`][radiology_insights_client_class] class.  You can either use the **DefaultAzureCredential** or an **API key** to instantiate a client object.
 
-For both authentication methods you need an **endpoint**, which you can obtain from the resource information in the [Azure Portal][azure_portal]. Alternatively, you can use the [Azure CLI][azure_cli] snippet below to get the endpoint from the Health Insights resource.
+You need an **endpoint**, which you can obtain from the resource information in the [Azure Portal][azure_portal]. Alternatively, you can use the [Azure CLI][azure_cli] snippet below to get the endpoint from the Health Insights resource.
 
 ```bash
 az cognitiveservices account show --resource-group <your-resource-group-name> --name <your-resource-name> | jq -r .properties.endpoint
@@ -55,31 +55,13 @@ RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilde
 RadiologyInsightsClient radiologyInsightsClient = clientBuilder.buildClient();
 ```
 
-####Authenticating with an API Key
-
-##### Get an API Key
-
-You can obtain the API key (and the endpoint) from the resource information in the [Azure Portal][azure_portal]. Alternatively, you can use the [Azure CLI][azure_cli] snippet below to get the API key from the Health Insights resource.
-
-```bash
-az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
-```
-
-##### Create a RadiologyInsightsClient with an API Key Credential
-
-Once you have the value for the API key, you can pass it as a string into an instance of **AzureKeyCredential**. Use the key as the credential parameter
-to authenticate the client. You may choose to build a **synchronous** or **asynchronous** client.
-
 Build a **synchronous** client:
 
 ```java com.azure.health.insights.radiologyinsights.buildsyncclient
 String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
-String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
+DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
-RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint);
-if (apiKey != null && !apiKey.equals("")) {
-    clientBuilder = clientBuilder.credential(new AzureKeyCredential(apiKey));
-}
+RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint).credential(credential);
 RadiologyInsightsClient radiologyInsightsClient = clientBuilder.buildClient();
 ```
 
@@ -87,12 +69,9 @@ Build an **asynchronous** client:
 
 ```java com.azure.health.insights.radiologyinsights.buildasyncclient
 String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
-String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
+DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
-RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint);
-if (apiKey != null && !apiKey.equals("")) {
-    clientBuilder = clientBuilder.credential(new AzureKeyCredential(apiKey));
-}
+RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint).credential(credential);
 RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 ```
 
@@ -781,7 +760,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/
 [package]: https://central.sonatype.com/artifact/com.azure/azure-health-insights-radiologyinsights
 [samples_location]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples
-[azure_credential]: https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential?view=azure-java-stable
+[azure_credential]: https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential
 
 ![Impressions]: https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fhealthinsights%2Fazure-health-insights-radiologyinsights%2FREADME.png
 
