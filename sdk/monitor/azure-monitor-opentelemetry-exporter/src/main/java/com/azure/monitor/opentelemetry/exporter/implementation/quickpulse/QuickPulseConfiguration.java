@@ -15,10 +15,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class QuickPulseConfiguration {
     private static final ClientLogger logger = new ClientLogger(QuickPulseDataFetcher.class);
-    private static QuickPulseConfiguration instance = new QuickPulseConfiguration();
+    private static volatile QuickPulseConfiguration instance = new QuickPulseConfiguration();
     private  AtomicReference<String> etag = new AtomicReference<>();
     private ConcurrentHashMap<String, OpenTelMetricInfo> metrics = new ConcurrentHashMap<>();
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final Object lock = new Object();
 
 
     private QuickPulseConfiguration() {
@@ -26,31 +27,35 @@ public class QuickPulseConfiguration {
 
     public static synchronized QuickPulseConfiguration getInstance() {
         if (instance == null) {
-            instance = new QuickPulseConfiguration();
+            synchronized (lock) {
+                if (instance == null) {
+                    instance = new QuickPulseConfiguration();
+                }
+            }
         }
         return instance;
     }
 
     public synchronized String getEtag() {
-        return this.etag.get();
+        return instance.etag.get();
     }
 
     public synchronized void setEtag(String etag) {
-        this.etag.set(etag);
+        instance.etag.set(etag);
     }
 
     public synchronized ConcurrentHashMap<String, OpenTelMetricInfo> getMetrics() {
-        return this.metrics;
+        return instance.metrics;
     }
 
     public synchronized void setMetrics(ConcurrentHashMap<String, OpenTelMetricInfo> metrics) {
-        this.metrics = metrics;
+        instance.metrics = metrics;
     }
 
     public synchronized void updateConfig(String etagValue, ConcurrentHashMap<String, OpenTelMetricInfo> otelMetrics) {
-        if (!Objects.equals(this.getEtag(), etagValue)){
-            this.setEtag(etagValue);
-            this.setMetrics(otelMetrics);
+        if (!Objects.equals(instance.getEtag(), etagValue)){
+            instance.setEtag(etagValue);
+            instance.setMetrics(otelMetrics);
         }
 
     }
@@ -98,8 +103,8 @@ public class QuickPulseConfiguration {
     }
 
     public synchronized void reset() {
-        this.setEtag(null);
-        this.metrics.clear();
+        instance.setEtag(null);
+        instance.setMetrics(new ConcurrentHashMap<String, OpenTelMetricInfo>());
     }
 
     class OpenTelMetricInfo {

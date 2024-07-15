@@ -5,6 +5,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
@@ -37,6 +38,8 @@ public class QuickPulse {
         @Nullable String roleName,
         @Nullable String roleInstance,
         boolean useNormalizedValueForNonNormalizedCpuPercentage,
+        QuickPulseMetricReader quickPulseMetricReader,
+        MetricDataMapper metricDataMapper,
         String sdkVersion) {
 
         QuickPulse quickPulse = new QuickPulse();
@@ -60,6 +63,8 @@ public class QuickPulse {
                     roleName,
                     roleInstance,
                     useNormalizedValueForNonNormalizedCpuPercentage,
+                    quickPulseMetricReader,
+                    metricDataMapper,
                     sdkVersion);
             });
         // the condition below will always be false, but by referencing the executor it ensures the
@@ -101,6 +106,8 @@ public class QuickPulse {
         @Nullable String roleName,
         @Nullable String roleInstance,
         boolean useNormalizedValueForNonNormalizedCpuPercentage,
+        QuickPulseMetricReader quickPulseMetricReader,
+        MetricDataMapper metricDataMapper,
         String sdkVersion) {
 
         String quickPulseId = UUID.randomUUID().toString().replace("-", "");
@@ -151,6 +158,13 @@ public class QuickPulse {
                 .build();
 
         QuickPulseCoordinator coordinator = new QuickPulseCoordinator(coordinatorInitData);
+
+        QuickPulseMetricReceiver quickPulseMetricReceiver = new QuickPulseMetricReceiver(quickPulseMetricReader, metricDataMapper, collector);
+
+        Thread metricReceiverThread =
+            new Thread(quickPulseMetricReceiver, QuickPulseMetricReceiver.class.getSimpleName());
+        metricReceiverThread.setDaemon(true);
+        metricReceiverThread.start();
 
         Thread senderThread =
             new Thread(quickPulseDataSender, QuickPulseDataSender.class.getSimpleName());

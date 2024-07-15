@@ -39,9 +39,9 @@ class QuickPulseNetworkHelperTest {
         HttpResponse response = mock(HttpResponse.class);
         HttpHeaders headers = new HttpHeaders();
         HttpHeaderName QPS_CONFIGURATION_ETAG_HEADER_NAME = HttpHeaderName.fromString("x-ms-qps-configuration-etag");
-        headers.add(QPS_CONFIGURATION_ETAG_HEADER_NAME, "0::randometag::2::");
+        headers.add(QPS_CONFIGURATION_ETAG_HEADER_NAME, "0::randometag::1::");
         Mockito.doReturn(headers).when(response).getHeaders();
         String result = new QuickPulseNetworkHelper().getEtagHeaderValue(response);
-        assertThat(result).isEqualTo("0::randometag::2::");
+        assertThat(result).isEqualTo("0::randometag::1::");
     }
 }

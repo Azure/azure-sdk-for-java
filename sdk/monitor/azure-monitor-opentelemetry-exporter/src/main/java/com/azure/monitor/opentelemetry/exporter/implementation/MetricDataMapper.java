@@ -72,20 +72,20 @@ public class MetricDataMapper {
         this.captureHttpServer4xxAsError = captureHttpServer4xxAsError;
     }
 
-    public void mapMetrics(MetricData metricData, Consumer<TelemetryItem> breezeConsumer, Consumer<TelemetryItem> quickPulseConsumer) {
+    public void mapMetrics(MetricData metricData, Consumer<TelemetryItem> quickPulseConsumer) {
         MetricDataType type = metricData.getType();
         if (type == DOUBLE_SUM
             || type == DOUBLE_GAUGE
             || type == LONG_SUM
             || type == LONG_GAUGE
             || type == HISTOGRAM) {
-            boolean isPreAggregatedStandardMetric =
-                OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.contains(metricData.getName());
-            if (isPreAggregatedStandardMetric) {
-                List<TelemetryItem> preAggregatedStandardMetrics =
-                    convertOtelMetricToAzureMonitorMetric(metricData, true);
-                preAggregatedStandardMetrics.forEach(breezeConsumer::accept);
-            }
+//            boolean isPreAggregatedStandardMetric =
+//                OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.contains(metricData.getName());
+//            if (isPreAggregatedStandardMetric) {
+//                List<TelemetryItem> preAggregatedStandardMetrics =
+//                    convertOtelMetricToAzureMonitorMetric(metricData, true);
+//                preAggregatedStandardMetrics.forEach(breezeConsumer::accept);
+//            }
 
             // DO NOT emit unstable metrics from the OpenTelemetry auto instrumentation libraries
             // custom metrics are always emitted
@@ -95,7 +95,7 @@ public class MetricDataMapper {
             }
             List<TelemetryItem> stableOtelMetrics = convertOtelMetricToAzureMonitorMetric(metricData, false);
             stableOtelMetrics.forEach(quickPulseConsumer::accept);
-            stableOtelMetrics.forEach(breezeConsumer::accept);
+            //stableOtelMetrics.forEach(breezeConsumer::accept);
         } else {
             logger.warning("metric data type {} is not supported yet.", metricData.getType());
         }

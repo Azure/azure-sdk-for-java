@@ -94,7 +94,7 @@ final class QuickPulseDataCollector {
     }
 
 
-    void addOtelMetric(TelemetryItem telemetryItem){
+    synchronized void addOtelMetric(TelemetryItem telemetryItem){
         if (!isEnabled()) {
             // quick pulse is not enabled or quick pulse data sender is not enabled
             return;

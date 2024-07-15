@@ -54,6 +54,7 @@ class QuickPulseDataSender implements Runnable {
                 if (networkHelper.isSuccess(response)) {
                     QuickPulseHeaderInfo quickPulseHeaderInfo =
                         networkHelper.getQuickPulseHeaderInfo(response);
+                    QuickPulseMetricReceiver.setQuickPulseHeaderInfo(quickPulseHeaderInfo);
                     switch (quickPulseHeaderInfo.getQuickPulseStatus()) {
                         case QP_IS_OFF:
                         case QP_IS_ON:
