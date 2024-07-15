@@ -197,7 +197,7 @@ public abstract class IntegrationTestBase extends TestBase {
             .scheduler(scheduler);
 
         if (useCredentials) {
-            final ConnectionStringProperties properties = getConnectionStringProperties();
+            final ConnectionStringProperties properties = TestUtils.getConnectionStringProperties();
             final String fqdn = properties.getEndpoint().getHost();
             final String eventHubName = properties.getEntityPath();
 
@@ -214,14 +214,6 @@ public abstract class IntegrationTestBase extends TestBase {
         } else {
             return builder.connectionString(TestUtils.getConnectionString());
         }
-    }
-
-    protected static ConnectionStringProperties getConnectionStringProperties() {
-        return new ConnectionStringProperties(TestUtils.getConnectionString(false));
-    }
-
-    protected static ConnectionStringProperties getConnectionStringProperties(boolean withSas) {
-        return new ConnectionStringProperties(TestUtils.getConnectionString(withSas));
     }
 
     /**

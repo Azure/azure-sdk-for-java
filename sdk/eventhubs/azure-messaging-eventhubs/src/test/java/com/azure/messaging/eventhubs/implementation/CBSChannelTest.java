@@ -85,7 +85,7 @@ class CBSChannelTest extends IntegrationTestBase {
     protected void beforeTest() {
         MockitoAnnotations.initMocks(this);
 
-        connectionProperties = getConnectionStringProperties();
+        connectionProperties = TestUtils.getConnectionStringProperties();
         azureTokenManagerProvider = new AzureTokenManagerProvider(CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
             connectionProperties.getEndpoint().getHost(), ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
         tokenAudience = azureTokenManagerProvider.getScopesFromResource(connectionProperties.getEntityPath());

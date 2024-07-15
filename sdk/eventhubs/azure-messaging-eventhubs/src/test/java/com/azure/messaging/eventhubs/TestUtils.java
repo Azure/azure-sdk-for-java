@@ -151,6 +151,14 @@ public final class TestUtils {
             && expectedValue.equals(event.getProperties().get(MESSAGE_ID));
     }
 
+    public static ConnectionStringProperties getConnectionStringProperties() {
+        return new ConnectionStringProperties(getConnectionString(false));
+    }
+
+    public static ConnectionStringProperties getConnectionStringProperties(boolean withSas) {
+        return new ConnectionStringProperties(getConnectionString(withSas));
+    }
+
     static String getConnectionString() {
         return getConnectionString(false);
     }
