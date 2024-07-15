@@ -39,7 +39,7 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         producer = toClose(new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .retry(RETRY_OPTIONS)
             .buildAsyncProducerClient());
     }
@@ -212,7 +212,7 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retry(RETRY_OPTIONS)
             .transportType(AmqpTransportType.AMQP)
-            .connectionString(getConnectionString(true))
+            .connectionString(TestUtils.getConnectionString(true))
             .buildAsyncProducerClient());
 
         StepVerifier.create(eventHubAsyncClient.getEventHubProperties())

@@ -166,7 +166,7 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void sendAndReceiveEventByAzureSasCredential() {
-        Assumptions.assumeTrue(getConnectionString(true) != null,
+        Assumptions.assumeTrue(TestUtils.getConnectionString(true) != null,
                 "SAS was not set. Can't run test scenario.");
 
         ConnectionStringProperties properties = getConnectionStringProperties(true);

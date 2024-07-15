@@ -33,7 +33,7 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         producer = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .retry(RETRY_OPTIONS)
             .buildProducerClient();
     }

@@ -60,7 +60,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
     @Override
     protected void beforeTest() {
-        this.hubClient = toClose(new EventHubClientBuilder().connectionString(getConnectionString())
+        this.hubClient = toClose(new EventHubClientBuilder().connectionString(TestUtils.getConnectionString())
             .buildClient());
 
         List<String> allIds = new ArrayList<>();
@@ -93,7 +93,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         final int queueSize = 10;
 
         producer = toClose(new EventHubBufferedProducerClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .retryOptions(RETRY_OPTIONS)
             .onSendBatchFailed(failed -> {
                 anyFailures.set(true);
@@ -158,7 +158,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         final int queueSize = 10;
 
         producer = new EventHubBufferedProducerClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .retryOptions(RETRY_OPTIONS)
             .onSendBatchFailed(failed -> {
                 anyFailures.set(true);

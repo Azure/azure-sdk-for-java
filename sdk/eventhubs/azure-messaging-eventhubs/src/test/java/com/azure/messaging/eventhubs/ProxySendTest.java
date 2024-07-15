@@ -82,7 +82,7 @@ class ProxySendTest extends IntegrationTestBase {
         builder = new EventHubClientBuilder()
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .connectionString(getConnectionString());
+            .connectionString(TestUtils.getConnectionString());
     }
 
     /**

@@ -66,7 +66,7 @@ class ProxySelectorTest extends IntegrationTestBase {
         });
 
         final EventHubConsumerAsyncClient consumer = toClose(new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .retry(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
