@@ -21,7 +21,12 @@ public final class GalleriesUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateASimpleGallery(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleries().update("myResourceGroup", "myGalleryName",
-            new GalleryUpdate().withDescription("This is the gallery description."), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleries()
+            .update("myResourceGroup", "myGalleryName",
+                new GalleryUpdate().withDescription("This is the gallery description."),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -20,8 +20,11 @@ public final class VirtualMachinesPerformMaintenanceSamples {
      */
     public static void
         virtualMachinePerformMaintenanceMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().performMaintenance("rgcompute",
-            "aaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .performMaintenance("rgcompute", "aaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +39,10 @@ public final class VirtualMachinesPerformMaintenanceSamples {
      */
     public static void
         virtualMachinePerformMaintenanceMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().performMaintenance("rgcompute",
-            "aaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .performMaintenance("rgcompute", "aaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

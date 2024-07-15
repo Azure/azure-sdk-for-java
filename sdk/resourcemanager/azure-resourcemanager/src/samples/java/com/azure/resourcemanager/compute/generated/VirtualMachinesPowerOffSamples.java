@@ -19,8 +19,11 @@ public final class VirtualMachinesPowerOffSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachinePowerOffMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().powerOff("rgcompute",
-            "aaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .powerOff("rgcompute", "aaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +37,10 @@ public final class VirtualMachinesPowerOffSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachinePowerOffMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().powerOff("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaa", true, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .powerOff("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", true, com.azure.core.util.Context.NONE);
     }
 }

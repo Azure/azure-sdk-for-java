@@ -344,8 +344,10 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
     public SyncPoller<PollResult<GalleryApplicationVersionInner>, GalleryApplicationVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String galleryName, String galleryApplicationName,
         String galleryApplicationVersionName, GalleryApplicationVersionInner galleryApplicationVersion) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName,
-            galleryApplicationVersionName, galleryApplicationVersion).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName,
+                galleryApplicationVersionName, galleryApplicationVersion)
+            .getSyncPoller();
     }
 
     /**
@@ -372,8 +374,10 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         String resourceGroupName, String galleryName, String galleryApplicationName,
         String galleryApplicationVersionName, GalleryApplicationVersionInner galleryApplicationVersion,
         Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName,
-            galleryApplicationVersionName, galleryApplicationVersion, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName,
+                galleryApplicationVersionName, galleryApplicationVersion, context)
+            .getSyncPoller();
     }
 
     /**
@@ -680,8 +684,10 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
     public SyncPoller<PollResult<GalleryApplicationVersionInner>, GalleryApplicationVersionInner> beginUpdate(
         String resourceGroupName, String galleryName, String galleryApplicationName,
         String galleryApplicationVersionName, GalleryApplicationVersionUpdate galleryApplicationVersion) {
-        return this.beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName,
-            galleryApplicationVersionName, galleryApplicationVersion).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName,
+                galleryApplicationVersion)
+            .getSyncPoller();
     }
 
     /**
@@ -707,8 +713,10 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         String resourceGroupName, String galleryName, String galleryApplicationName,
         String galleryApplicationVersionName, GalleryApplicationVersionUpdate galleryApplicationVersion,
         Context context) {
-        return this.beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName,
-            galleryApplicationVersionName, galleryApplicationVersion, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName,
+                galleryApplicationVersion, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1158,8 +1166,10 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName,
         String galleryApplicationName, String galleryApplicationVersionName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName,
-            galleryApplicationVersionName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -1179,7 +1189,8 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
     public Mono<Void> deleteAsync(String resourceGroupName, String galleryName, String galleryApplicationName,
         String galleryApplicationVersionName) {
         return beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1416,9 +1427,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1447,9 +1456,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

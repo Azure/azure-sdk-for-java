@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.CloudServiceRoleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -22,8 +23,8 @@ public final class CloudServiceRoleListResult {
     private List<CloudServiceRoleInner> value;
 
     /*
-     * The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink
-     * is null to fetch all the resources.
+     * The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink is
+     * null to fetch all the resources.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -36,7 +37,7 @@ public final class CloudServiceRoleListResult {
 
     /**
      * Get the value property: The list of resources.
-     * 
+     *
      * @return the value value.
      */
     public List<CloudServiceRoleInner> value() {
@@ -45,7 +46,7 @@ public final class CloudServiceRoleListResult {
 
     /**
      * Set the value property: The list of resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the CloudServiceRoleListResult object itself.
      */
@@ -57,7 +58,7 @@ public final class CloudServiceRoleListResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of resources. Use this to get the next page of
      * resources. Do this till nextLink is null to fetch all the resources.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -67,7 +68,7 @@ public final class CloudServiceRoleListResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of resources. Use this to get the next page of
      * resources. Do this till nextLink is null to fetch all the resources.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the CloudServiceRoleListResult object itself.
      */
@@ -78,13 +79,14 @@ public final class CloudServiceRoleListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model CloudServiceRoleListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model CloudServiceRoleListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

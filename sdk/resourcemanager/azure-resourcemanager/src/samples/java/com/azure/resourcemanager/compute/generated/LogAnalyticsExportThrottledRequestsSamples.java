@@ -25,11 +25,18 @@ public final class LogAnalyticsExportThrottledRequestsSamples {
     public static void
         exportLogsWhichContainAllThrottledApiRequestsMadeToComputeResourceProviderWithinTheGivenTimePeriod(
             com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getLogAnalytics().exportThrottledRequests("westus",
-            new ThrottledRequestsInput().withBlobContainerSasUri("https://somesasuri")
-                .withFromTime(OffsetDateTime.parse("2018-01-21T01:54:06.862601Z"))
-                .withToTime(OffsetDateTime.parse("2018-01-23T01:54:06.862601Z")).withGroupByOperationName(true)
-                .withGroupByResourceName(false).withGroupByClientApplicationId(false).withGroupByUserAgent(false),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getLogAnalytics()
+            .exportThrottledRequests("westus",
+                new ThrottledRequestsInput().withBlobContainerSasUri("https://somesasuri")
+                    .withFromTime(OffsetDateTime.parse("2018-01-21T01:54:06.862601Z"))
+                    .withToTime(OffsetDateTime.parse("2018-01-23T01:54:06.862601Z"))
+                    .withGroupByOperationName(true)
+                    .withGroupByResourceName(false)
+                    .withGroupByClientApplicationId(false)
+                    .withGroupByUserAgent(false),
+                com.azure.core.util.Context.NONE);
     }
 }

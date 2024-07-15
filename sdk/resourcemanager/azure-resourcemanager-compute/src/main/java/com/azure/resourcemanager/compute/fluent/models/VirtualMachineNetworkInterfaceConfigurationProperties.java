@@ -333,8 +333,7 @@ public final class VirtualMachineNetworkInterfaceConfigurationProperties {
     }
 
     /**
-     * Get the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface
-     * resource.
+     * Get the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
      * 
      * @return the auxiliarySku value.
      */
@@ -343,8 +342,7 @@ public final class VirtualMachineNetworkInterfaceConfigurationProperties {
     }
 
     /**
-     * Set the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface
-     * resource.
+     * Set the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
      * 
      * @param auxiliarySku the auxiliarySku value to set.
      * @return the VirtualMachineNetworkInterfaceConfigurationProperties object itself.
@@ -365,8 +363,9 @@ public final class VirtualMachineNetworkInterfaceConfigurationProperties {
             dnsSettings().validate();
         }
         if (ipConfigurations() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ipConfigurations in model VirtualMachineNetworkInterfaceConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ipConfigurations in model VirtualMachineNetworkInterfaceConfigurationProperties"));
         } else {
             ipConfigurations().forEach(e -> e.validate());
         }

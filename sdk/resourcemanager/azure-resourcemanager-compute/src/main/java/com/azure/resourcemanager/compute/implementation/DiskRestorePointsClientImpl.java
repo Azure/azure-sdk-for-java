@@ -626,8 +626,10 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(String resourceGroupName,
         String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName,
         GrantAccessData grantAccessData) {
-        return this.beginGrantAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
-            diskRestorePointName, grantAccessData).getSyncPoller();
+        return this
+            .beginGrantAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+                diskRestorePointName, grantAccessData)
+            .getSyncPoller();
     }
 
     /**
@@ -648,8 +650,10 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(String resourceGroupName,
         String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName,
         GrantAccessData grantAccessData, Context context) {
-        return this.beginGrantAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
-            diskRestorePointName, grantAccessData, context).getSyncPoller();
+        return this
+            .beginGrantAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+                diskRestorePointName, grantAccessData, context)
+            .getSyncPoller();
     }
 
     /**
@@ -888,8 +892,10 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName,
         String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName) {
-        return this.beginRevokeAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
-            diskRestorePointName).getSyncPoller();
+        return this
+            .beginRevokeAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+                diskRestorePointName)
+            .getSyncPoller();
     }
 
     /**
@@ -908,8 +914,10 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName,
         String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName, Context context) {
-        return this.beginRevokeAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
-            diskRestorePointName, context).getSyncPoller();
+        return this
+            .beginRevokeAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+                diskRestorePointName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -991,9 +999,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1021,9 +1027,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

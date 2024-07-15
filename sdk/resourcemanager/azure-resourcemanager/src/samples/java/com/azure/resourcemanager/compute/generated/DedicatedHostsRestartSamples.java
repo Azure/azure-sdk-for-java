@@ -19,7 +19,10 @@ public final class DedicatedHostsRestartSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void restartDedicatedHost(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().restart("myResourceGroup",
-            "myDedicatedHostGroup", "myHost", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .restart("myResourceGroup", "myDedicatedHostGroup", "myHost", com.azure.core.util.Context.NONE);
     }
 }

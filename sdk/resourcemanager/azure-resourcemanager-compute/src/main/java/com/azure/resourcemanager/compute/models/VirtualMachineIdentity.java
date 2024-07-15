@@ -15,8 +15,7 @@ import java.util.Map;
 @Fluent
 public final class VirtualMachineIdentity {
     /*
-     * The principal id of virtual machine identity. This property will only be provided for a system assigned
-     * identity.
+     * The principal id of virtual machine identity. This property will only be provided for a system assigned identity.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
@@ -37,8 +36,8 @@ public final class VirtualMachineIdentity {
     private ResourceIdentityType type;
 
     /*
-     * The list of user identities associated with the Virtual Machine. The user identity dictionary key references
-     * will be ARM resource ids in the form:
+     * The list of user identities associated with the Virtual Machine. The user identity dictionary key references will
+     * be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
      * userAssignedIdentities/{identityName}'.
      */
@@ -63,8 +62,8 @@ public final class VirtualMachineIdentity {
     }
 
     /**
-     * Get the tenantId property: The tenant id associated with the virtual machine. This property will only be
-     * provided for a system assigned identity.
+     * Get the tenantId property: The tenant id associated with the virtual machine. This property will only be provided
+     * for a system assigned identity.
      * 
      * @return the tenantId value.
      */
@@ -73,9 +72,9 @@ public final class VirtualMachineIdentity {
     }
 
     /**
-     * Get the type property: The type of identity used for the virtual machine. The type 'SystemAssigned,
-     * UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type
-     * 'None' will remove any identities from the virtual machine.
+     * Get the type property: The type of identity used for the virtual machine. The type 'SystemAssigned, UserAssigned'
+     * includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove
+     * any identities from the virtual machine.
      * 
      * @return the type value.
      */
@@ -84,9 +83,9 @@ public final class VirtualMachineIdentity {
     }
 
     /**
-     * Set the type property: The type of identity used for the virtual machine. The type 'SystemAssigned,
-     * UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type
-     * 'None' will remove any identities from the virtual machine.
+     * Set the type property: The type of identity used for the virtual machine. The type 'SystemAssigned, UserAssigned'
+     * includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove
+     * any identities from the virtual machine.
      * 
      * @param type the type value to set.
      * @return the VirtualMachineIdentity object itself.

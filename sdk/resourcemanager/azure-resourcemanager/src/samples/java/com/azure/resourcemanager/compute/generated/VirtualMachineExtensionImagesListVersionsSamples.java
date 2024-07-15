@@ -20,8 +20,12 @@ public final class VirtualMachineExtensionImagesListVersionsSamples {
      */
     public static void
         virtualMachineExtensionImageListVersionsMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineExtensionImages().listVersionsWithResponse(
-            "aaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaa", null, null, null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineExtensionImages()
+            .listVersionsWithResponse("aaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaa", null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,8 +40,11 @@ public final class VirtualMachineExtensionImagesListVersionsSamples {
      */
     public static void
         virtualMachineExtensionImageListVersionsMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineExtensionImages().listVersionsWithResponse(
-            "aaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaa", 22,
-            "a", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineExtensionImages()
+            .listVersionsWithResponse("aaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaa",
+                "aaaaaaaaaaaaaaaaaaaaaaaaa", 22, "a", com.azure.core.util.Context.NONE);
     }
 }

@@ -19,7 +19,10 @@ public final class SshPublicKeysGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAnSshPublicKey(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSshPublicKeys()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSshPublicKeys()
             .getByResourceGroupWithResponse("myResourceGroup", "mySshPublicKeyName", com.azure.core.util.Context.NONE);
     }
 }

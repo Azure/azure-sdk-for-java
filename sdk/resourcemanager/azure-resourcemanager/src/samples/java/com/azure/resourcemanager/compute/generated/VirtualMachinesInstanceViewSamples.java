@@ -19,7 +19,10 @@ public final class VirtualMachinesInstanceViewSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualMachineInstanceView(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
             .instanceViewWithResponse("myResourceGroup", "myVM", com.azure.core.util.Context.NONE);
     }
 
@@ -35,7 +38,10 @@ public final class VirtualMachinesInstanceViewSamples {
      */
     public static void getInstanceViewOfAVirtualMachinePlacedOnADedicatedHostGroupThroughAutomaticPlacement(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
             .instanceViewWithResponse("myResourceGroup", "myVM", com.azure.core.util.Context.NONE);
     }
 }

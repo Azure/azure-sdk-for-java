@@ -12,6 +12,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
+
 import java.time.Duration;
 
 /**
@@ -28,7 +29,7 @@ public final class ComputeManagementClientBuilder {
     /**
      * Sets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the ComputeManagementClientBuilder.
      */
@@ -44,7 +45,7 @@ public final class ComputeManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param endpoint the endpoint value.
      * @return the ComputeManagementClientBuilder.
      */
@@ -60,7 +61,7 @@ public final class ComputeManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     * 
+     *
      * @param environment the environment value.
      * @return the ComputeManagementClientBuilder.
      */
@@ -76,7 +77,7 @@ public final class ComputeManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the ComputeManagementClientBuilder.
      */
@@ -92,7 +93,7 @@ public final class ComputeManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     * 
+     *
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the ComputeManagementClientBuilder.
      */
@@ -108,7 +109,7 @@ public final class ComputeManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the ComputeManagementClientBuilder.
      */
@@ -119,17 +120,19 @@ public final class ComputeManagementClientBuilder {
 
     /**
      * Builds an instance of ComputeManagementClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of ComputeManagementClientImpl.
      */
     public ComputeManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
             : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
         Duration localDefaultPollInterval
             = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter = (serializerAdapter != null) ? serializerAdapter
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         ComputeManagementClientImpl client = new ComputeManagementClientImpl(localPipeline, localSerializerAdapter,
             localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);

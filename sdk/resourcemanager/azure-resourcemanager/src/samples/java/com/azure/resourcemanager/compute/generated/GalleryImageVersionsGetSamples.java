@@ -21,8 +21,12 @@ public final class GalleryImageVersionsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAGalleryImageVersionWithVhdAsASource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().getWithResponse("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,8 +40,12 @@ public final class GalleryImageVersionsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAGalleryImageVersion(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().getWithResponse("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -52,9 +60,12 @@ public final class GalleryImageVersionsGetSamples {
      */
     public static void
         getAGalleryImageVersionWithReplicationStatus(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().getWithResponse("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0", ReplicationStatusTypes.REPLICATION_STATUS,
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                ReplicationStatusTypes.REPLICATION_STATUS, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -69,7 +80,11 @@ public final class GalleryImageVersionsGetSamples {
      */
     public static void
         getAGalleryImageVersionWithSnapshotsAsASource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().getWithResponse("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", null,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -86,8 +86,8 @@ public final class EncryptionSettingsCollection {
 
     /**
      * Get the encryptionSettingsVersion property: Describes what type of encryption is used for the disks. Once this
-     * field is set, it cannot be overwritten. '1.0' corresponds to Azure Disk Encryption with AAD app.'1.1'
-     * corresponds to Azure Disk Encryption.
+     * field is set, it cannot be overwritten. '1.0' corresponds to Azure Disk Encryption with AAD app.'1.1' corresponds
+     * to Azure Disk Encryption.
      * 
      * @return the encryptionSettingsVersion value.
      */
@@ -97,8 +97,8 @@ public final class EncryptionSettingsCollection {
 
     /**
      * Set the encryptionSettingsVersion property: Describes what type of encryption is used for the disks. Once this
-     * field is set, it cannot be overwritten. '1.0' corresponds to Azure Disk Encryption with AAD app.'1.1'
-     * corresponds to Azure Disk Encryption.
+     * field is set, it cannot be overwritten. '1.0' corresponds to Azure Disk Encryption with AAD app.'1.1' corresponds
+     * to Azure Disk Encryption.
      * 
      * @param encryptionSettingsVersion the encryptionSettingsVersion value to set.
      * @return the EncryptionSettingsCollection object itself.

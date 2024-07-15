@@ -20,7 +20,10 @@ public final class DedicatedHostGroupsListSamples {
      */
     public static void
         dedicatedHostGroupListBySubscriptionMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
             .list(com.azure.core.util.Context.NONE);
     }
 
@@ -36,7 +39,10 @@ public final class DedicatedHostGroupsListSamples {
      */
     public static void
         dedicatedHostGroupListBySubscriptionMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
             .list(com.azure.core.util.Context.NONE);
     }
 }

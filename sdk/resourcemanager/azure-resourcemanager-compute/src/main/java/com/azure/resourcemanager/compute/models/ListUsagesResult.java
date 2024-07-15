@@ -22,8 +22,8 @@ public final class ListUsagesResult {
     private List<UsageInner> value;
 
     /*
-     * The URI to fetch the next page of compute resource usage information. Call ListNext() with this to fetch the
-     * next page of compute resource usage information.
+     * The URI to fetch the next page of compute resource usage information. Call ListNext() with this to fetch the next
+     * page of compute resource usage information.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +83,8 @@ public final class ListUsagesResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model ListUsagesResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model ListUsagesResult"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -25,13 +25,18 @@ public final class VirtualMachineRunCommandsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateARunCommand(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineRunCommands()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineRunCommands()
             .update("myResourceGroup", "myVM", "myRunCommand", new VirtualMachineRunCommandUpdate()
                 .withSource(new VirtualMachineRunCommandScriptSource()
                     .withScript("Write-Host Hello World! ; Remove-Item C:\test\testFile.txt"))
                 .withParameters(Arrays.asList(new RunCommandInputParameter().withName("param1").withValue("value1"),
                     new RunCommandInputParameter().withName("param2").withValue("value2")))
-                .withAsyncExecution(false).withRunAsUser("user1").withRunAsPassword("fakeTokenPlaceholder")
+                .withAsyncExecution(false)
+                .withRunAsUser("user1")
+                .withRunAsPassword("fakeTokenPlaceholder")
                 .withTimeoutInSeconds(3600)
                 .withOutputBlobUri("https://mystorageaccount.blob.core.windows.net/myscriptoutputcontainer/outputUri")
                 .withErrorBlobUri("https://mystorageaccount.blob.core.windows.net/mycontainer/MyScriptError.txt")

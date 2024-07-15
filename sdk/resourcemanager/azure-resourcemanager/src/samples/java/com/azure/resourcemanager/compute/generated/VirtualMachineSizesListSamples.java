@@ -19,8 +19,11 @@ public final class VirtualMachineSizesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineSizesListMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineSizes().list("._..",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineSizes()
+            .list("._..", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +37,10 @@ public final class VirtualMachineSizesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineSizesListMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineSizes().list("-e",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineSizes()
+            .list("-e", com.azure.core.util.Context.NONE);
     }
 }

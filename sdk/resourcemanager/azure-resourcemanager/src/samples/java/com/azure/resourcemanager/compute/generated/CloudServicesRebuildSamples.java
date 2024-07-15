@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.resourcemanager.compute.models.RoleInstances;
+
 import java.util.Arrays;
 
 /**
@@ -18,13 +19,17 @@ public final class CloudServicesRebuildSamples {
      */
     /**
      * Sample code: Rebuild Cloud Service Role Instances in a Cloud Service.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
         rebuildCloudServiceRoleInstancesInACloudService(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServices().rebuild("ConstosoRG", "{cs-name}",
-            new RoleInstances().withRoleInstances(Arrays.asList("ContosoFrontend_IN_0", "ContosoBackend_IN_1")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServices()
+            .rebuild("ConstosoRG", "{cs-name}",
+                new RoleInstances().withRoleInstances(Arrays.asList("ContosoFrontend_IN_0", "ContosoBackend_IN_1")),
+                com.azure.core.util.Context.NONE);
     }
 }

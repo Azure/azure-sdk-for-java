@@ -1634,8 +1634,10 @@ public final class DiskAccessesClientImpl implements InnerSupportsGet<DiskAccess
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginUpdateAPrivateEndpointConnection(String resourceGroupName, String diskAccessName,
             String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
-        return this.beginUpdateAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
-            privateEndpointConnectionName, privateEndpointConnection).getSyncPoller();
+        return this
+            .beginUpdateAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
+                privateEndpointConnectionName, privateEndpointConnection)
+            .getSyncPoller();
     }
 
     /**
@@ -1660,8 +1662,10 @@ public final class DiskAccessesClientImpl implements InnerSupportsGet<DiskAccess
         beginUpdateAPrivateEndpointConnection(String resourceGroupName, String diskAccessName,
             String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
             Context context) {
-        return this.beginUpdateAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
-            privateEndpointConnectionName, privateEndpointConnection, context).getSyncPoller();
+        return this
+            .beginUpdateAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
+                privateEndpointConnectionName, privateEndpointConnection, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2064,8 +2068,10 @@ public final class DiskAccessesClientImpl implements InnerSupportsGet<DiskAccess
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnection(String resourceGroupName,
         String diskAccessName, String privateEndpointConnectionName) {
-        return this.beginDeleteAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
-            privateEndpointConnectionName).getSyncPoller();
+        return this
+            .beginDeleteAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
+                privateEndpointConnectionName)
+            .getSyncPoller();
     }
 
     /**
@@ -2085,8 +2091,10 @@ public final class DiskAccessesClientImpl implements InnerSupportsGet<DiskAccess
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnection(String resourceGroupName,
         String diskAccessName, String privateEndpointConnectionName, Context context) {
-        return this.beginDeleteAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
-            privateEndpointConnectionName, context).getSyncPoller();
+        return this
+            .beginDeleteAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
+                privateEndpointConnectionName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2331,9 +2339,7 @@ public final class DiskAccessesClientImpl implements InnerSupportsGet<DiskAccess
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2361,9 +2367,7 @@ public final class DiskAccessesClientImpl implements InnerSupportsGet<DiskAccess
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2391,9 +2395,7 @@ public final class DiskAccessesClientImpl implements InnerSupportsGet<DiskAccess
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2419,9 +2421,7 @@ public final class DiskAccessesClientImpl implements InnerSupportsGet<DiskAccess
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2448,9 +2448,7 @@ public final class DiskAccessesClientImpl implements InnerSupportsGet<DiskAccess
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2478,9 +2476,7 @@ public final class DiskAccessesClientImpl implements InnerSupportsGet<DiskAccess
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

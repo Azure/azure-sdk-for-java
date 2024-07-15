@@ -19,8 +19,11 @@ public final class DedicatedHostsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dedicatedHostDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().delete("rgcompute", "aaaaaa",
-            "aaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .delete("rgcompute", "aaaaaa", "aaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +37,10 @@ public final class DedicatedHostsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dedicatedHostDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().delete("rgcompute", "aaaaaaaaaaaaaaa",
-            "aaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .delete("rgcompute", "aaaaaaaaaaaaaaa", "aaaaa", com.azure.core.util.Context.NONE);
     }
 }

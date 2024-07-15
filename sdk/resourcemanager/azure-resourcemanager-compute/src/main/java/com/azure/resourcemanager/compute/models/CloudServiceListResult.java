@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.CloudServiceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -22,8 +23,8 @@ public final class CloudServiceListResult {
     private List<CloudServiceInner> value;
 
     /*
-     * The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink
-     * is null to fetch all the resources.
+     * The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink is
+     * null to fetch all the resources.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -36,7 +37,7 @@ public final class CloudServiceListResult {
 
     /**
      * Get the value property: The list of resources.
-     * 
+     *
      * @return the value value.
      */
     public List<CloudServiceInner> value() {
@@ -45,7 +46,7 @@ public final class CloudServiceListResult {
 
     /**
      * Set the value property: The list of resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the CloudServiceListResult object itself.
      */
@@ -57,7 +58,7 @@ public final class CloudServiceListResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of resources. Use this to get the next page of
      * resources. Do this till nextLink is null to fetch all the resources.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -67,7 +68,7 @@ public final class CloudServiceListResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of resources. Use this to get the next page of
      * resources. Do this till nextLink is null to fetch all the resources.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the CloudServiceListResult object itself.
      */
@@ -78,13 +79,13 @@ public final class CloudServiceListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model CloudServiceListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model CloudServiceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

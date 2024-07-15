@@ -117,8 +117,8 @@ public final class WindowsConfiguration {
     }
 
     /**
-     * Get the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
-     * Possible values can be
+     * Get the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time". Possible
+     * values can be
      * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id) value
      * from time zones returned by
      * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
@@ -130,8 +130,8 @@ public final class WindowsConfiguration {
     }
 
     /**
-     * Set the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
-     * Possible values can be
+     * Set the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time". Possible
+     * values can be
      * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id) value
      * from time zones returned by
      * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).

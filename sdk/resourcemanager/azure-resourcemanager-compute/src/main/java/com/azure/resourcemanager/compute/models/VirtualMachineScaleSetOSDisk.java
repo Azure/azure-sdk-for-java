@@ -49,9 +49,9 @@ public final class VirtualMachineScaleSetOSDisk {
     private DiffDiskSettings diffDiskSettings;
 
     /*
-     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the
-     * disk in a virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3 for the disk and the
-     * value cannot be larger than 1023.
+     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk
+     * in a virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3 for the disk and the value
+     * cannot be larger than 1023.
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
@@ -140,8 +140,8 @@ public final class VirtualMachineScaleSetOSDisk {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @return the writeAcceleratorEnabled value.
      */
@@ -150,8 +150,8 @@ public final class VirtualMachineScaleSetOSDisk {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the VirtualMachineScaleSetOSDisk object itself.
@@ -163,8 +163,8 @@ public final class VirtualMachineScaleSetOSDisk {
 
     /**
      * Get the createOption property: Specifies how the virtual machines in the scale set should be created. The only
-     * allowed value is: **FromImage.** This value is used when you are using an image to create the virtual machine.
-     * If you are using a platform image, you also use the imageReference element described above. If you are using a
+     * allowed value is: **FromImage.** This value is used when you are using an image to create the virtual machine. If
+     * you are using a platform image, you also use the imageReference element described above. If you are using a
      * marketplace image, you also use the plan element previously described.
      * 
      * @return the createOption value.
@@ -175,8 +175,8 @@ public final class VirtualMachineScaleSetOSDisk {
 
     /**
      * Set the createOption property: Specifies how the virtual machines in the scale set should be created. The only
-     * allowed value is: **FromImage.** This value is used when you are using an image to create the virtual machine.
-     * If you are using a platform image, you also use the imageReference element described above. If you are using a
+     * allowed value is: **FromImage.** This value is used when you are using an image to create the virtual machine. If
+     * you are using a platform image, you also use the imageReference element described above. If you are using a
      * marketplace image, you also use the plan element previously described.
      * 
      * @param createOption the createOption value to set.
@@ -322,8 +322,8 @@ public final class VirtualMachineScaleSetOSDisk {
      * (This feature is available for VMSS with Flexible OrchestrationMode only). &lt;br&gt;&lt;br&gt; Possible values:
      * &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the OS disk is deleted when VMSS Flex VM is
      * deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the OS disk is retained after VMSS Flex VM is
-     * deleted. &lt;br&gt;&lt;br&gt; The default value is set to **Delete**. For an Ephemeral OS Disk, the default
-     * value is set to **Delete**. User cannot change the delete option for Ephemeral OS Disk.
+     * deleted. &lt;br&gt;&lt;br&gt; The default value is set to **Delete**. For an Ephemeral OS Disk, the default value
+     * is set to **Delete**. User cannot change the delete option for Ephemeral OS Disk.
      * 
      * @return the deleteOption value.
      */
@@ -336,8 +336,8 @@ public final class VirtualMachineScaleSetOSDisk {
      * (This feature is available for VMSS with Flexible OrchestrationMode only). &lt;br&gt;&lt;br&gt; Possible values:
      * &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the OS disk is deleted when VMSS Flex VM is
      * deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the OS disk is retained after VMSS Flex VM is
-     * deleted. &lt;br&gt;&lt;br&gt; The default value is set to **Delete**. For an Ephemeral OS Disk, the default
-     * value is set to **Delete**. User cannot change the delete option for Ephemeral OS Disk.
+     * deleted. &lt;br&gt;&lt;br&gt; The default value is set to **Delete**. For an Ephemeral OS Disk, the default value
+     * is set to **Delete**. User cannot change the delete option for Ephemeral OS Disk.
      * 
      * @param deleteOption the deleteOption value to set.
      * @return the VirtualMachineScaleSetOSDisk object itself.
@@ -354,8 +354,9 @@ public final class VirtualMachineScaleSetOSDisk {
      */
     public void validate() {
         if (createOption() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property createOption in model VirtualMachineScaleSetOSDisk"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property createOption in model VirtualMachineScaleSetOSDisk"));
         }
         if (diffDiskSettings() != null) {
             diffDiskSettings().validate();

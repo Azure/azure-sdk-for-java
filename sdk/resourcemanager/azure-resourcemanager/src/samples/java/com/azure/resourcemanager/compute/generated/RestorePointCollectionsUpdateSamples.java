@@ -24,12 +24,15 @@ public final class RestorePointCollectionsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void restorePointCollectionUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getRestorePointCollections().updateWithResponse("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaa",
-            new RestorePointCollectionUpdate().withTags(mapOf("key8536", "fakeTokenPlaceholder"))
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePointCollections()
+            .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaa", new RestorePointCollectionUpdate()
+                .withTags(mapOf("key8536", "fakeTokenPlaceholder"))
                 .withSource(new RestorePointCollectionSourceProperties().withId(
                     "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -43,8 +46,12 @@ public final class RestorePointCollectionsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void restorePointCollectionUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getRestorePointCollections().updateWithResponse("rgcompute",
-            "aaaaaaaaaaaaaaaaaa", new RestorePointCollectionUpdate(), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePointCollections()
+            .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaa", new RestorePointCollectionUpdate(),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

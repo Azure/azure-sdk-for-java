@@ -19,8 +19,12 @@ public final class DedicatedHostGroupsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAnUltraSSDEnabledDedicatedHostGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups().getByResourceGroupWithResponse(
-            "myResourceGroup", "myDedicatedHostGroup", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
+            .getByResourceGroupWithResponse("myResourceGroup", "myDedicatedHostGroup", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +38,11 @@ public final class DedicatedHostGroupsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createADedicatedHostGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups().getByResourceGroupWithResponse(
-            "myResourceGroup", "myDedicatedHostGroup", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
+            .getByResourceGroupWithResponse("myResourceGroup", "myDedicatedHostGroup", null,
+                com.azure.core.util.Context.NONE);
     }
 }

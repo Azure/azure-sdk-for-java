@@ -27,8 +27,8 @@ public final class CloudServiceProperties {
     private String configuration;
 
     /*
-     * Specifies a URL that refers to the location of the service configuration in the Blob service. The service
-     * package URL can be Shared Access Signature (SAS) URI from any storage account.
+     * Specifies a URL that refers to the location of the service configuration in the Blob service. The service package
+     * URL can be Shared Access Signature (SAS) URI from any storage account.
      * This is a write-only property and is not returned in GET calls.
      */
     @JsonProperty(value = "configurationUrl")
@@ -201,9 +201,9 @@ public final class CloudServiceProperties {
     }
 
     /**
-     * Get the allowModelOverride property: (Optional) Indicates whether the role sku properties
-     * (roleProfile.roles.sku) specified in the model/template should override the role instance count and vm size
-     * specified in the .cscfg and .csdef respectively.
+     * Get the allowModelOverride property: (Optional) Indicates whether the role sku properties (roleProfile.roles.sku)
+     * specified in the model/template should override the role instance count and vm size specified in the .cscfg and
+     * .csdef respectively.
      * The default value is `false`.
      * 
      * @return the allowModelOverride value.
@@ -213,9 +213,9 @@ public final class CloudServiceProperties {
     }
 
     /**
-     * Set the allowModelOverride property: (Optional) Indicates whether the role sku properties
-     * (roleProfile.roles.sku) specified in the model/template should override the role instance count and vm size
-     * specified in the .cscfg and .csdef respectively.
+     * Set the allowModelOverride property: (Optional) Indicates whether the role sku properties (roleProfile.roles.sku)
+     * specified in the model/template should override the role instance count and vm size specified in the .cscfg and
+     * .csdef respectively.
      * The default value is `false`.
      * 
      * @param allowModelOverride the allowModelOverride value to set.

@@ -20,7 +20,10 @@ public final class VirtualMachineScaleSetRollingUpgradesStartOSUpgradeSamples {
      */
     public static void virtualMachineScaleSetRollingUpgradeStartOSUpgradeMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetRollingUpgrades()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetRollingUpgrades()
             .startOSUpgrade("rgcompute", "aaaa", com.azure.core.util.Context.NONE);
     }
 
@@ -36,7 +39,10 @@ public final class VirtualMachineScaleSetRollingUpgradesStartOSUpgradeSamples {
      */
     public static void virtualMachineScaleSetRollingUpgradeStartOSUpgradeMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetRollingUpgrades()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetRollingUpgrades()
             .startOSUpgrade("rgcompute", "aaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

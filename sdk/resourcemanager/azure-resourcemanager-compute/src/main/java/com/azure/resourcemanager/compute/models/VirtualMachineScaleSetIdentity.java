@@ -15,8 +15,8 @@ import java.util.Map;
 @Fluent
 public final class VirtualMachineScaleSetIdentity {
     /*
-     * The principal id of virtual machine scale set identity. This property will only be provided for a system
-     * assigned identity.
+     * The principal id of virtual machine scale set identity. This property will only be provided for a system assigned
+     * identity.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
@@ -74,8 +74,8 @@ public final class VirtualMachineScaleSetIdentity {
 
     /**
      * Get the type property: The type of identity used for the virtual machine scale set. The type 'SystemAssigned,
-     * UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type
-     * 'None' will remove any identities from the virtual machine scale set.
+     * UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None'
+     * will remove any identities from the virtual machine scale set.
      * 
      * @return the type value.
      */
@@ -85,8 +85,8 @@ public final class VirtualMachineScaleSetIdentity {
 
     /**
      * Set the type property: The type of identity used for the virtual machine scale set. The type 'SystemAssigned,
-     * UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type
-     * 'None' will remove any identities from the virtual machine scale set.
+     * UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None'
+     * will remove any identities from the virtual machine scale set.
      * 
      * @param type the type value to set.
      * @return the VirtualMachineScaleSetIdentity object itself.

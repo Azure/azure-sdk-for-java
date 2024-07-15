@@ -82,12 +82,13 @@ public final class CopyCompletionError {
      */
     public void validate() {
         if (errorCode() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property errorCode in model CopyCompletionError"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property errorCode in model CopyCompletionError"));
         }
         if (errorMessage() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property errorMessage in model CopyCompletionError"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property errorMessage in model CopyCompletionError"));
         }
     }
 

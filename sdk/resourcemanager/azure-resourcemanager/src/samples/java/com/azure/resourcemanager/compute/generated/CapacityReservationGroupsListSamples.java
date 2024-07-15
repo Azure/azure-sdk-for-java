@@ -23,8 +23,12 @@ public final class CapacityReservationGroupsListSamples {
      */
     public static void
         listCapacityReservationGroupsInSubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservationGroups().list(
-            ExpandTypesForGetCapacityReservationGroups.VIRTUAL_MACHINES_REF, null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservationGroups()
+            .list(ExpandTypesForGetCapacityReservationGroups.VIRTUAL_MACHINES_REF, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -39,7 +43,10 @@ public final class CapacityReservationGroupsListSamples {
      */
     public static void listCapacityReservationGroupsWithResourceIdsOnlyInSubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservationGroups().list(null,
-            ResourceIdOptionsForGetCapacityReservationGroups.ALL, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservationGroups()
+            .list(null, ResourceIdOptionsForGetCapacityReservationGroups.ALL, com.azure.core.util.Context.NONE);
     }
 }

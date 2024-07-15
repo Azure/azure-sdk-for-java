@@ -20,7 +20,10 @@ public final class VirtualMachineScaleSetsListByLocationSamples {
      */
     public static void listsAllTheVMScaleSetsUnderTheSpecifiedSubscriptionForTheSpecifiedLocation(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().listByLocation("eastus",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .listByLocation("eastus", com.azure.core.util.Context.NONE);
     }
 }

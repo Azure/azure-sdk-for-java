@@ -19,7 +19,10 @@ public final class AvailabilitySetsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAvailabilitySetsInASubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getAvailabilitySets().list("virtualMachines\\$ref",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
+            .list("virtualMachines\\$ref", com.azure.core.util.Context.NONE);
     }
 }

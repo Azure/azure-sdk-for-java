@@ -10,6 +10,7 @@ import com.azure.resourcemanager.compute.models.CapacityReservationGroupInstance
 import com.azure.resourcemanager.compute.models.ResourceSharingProfile;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Map;
 
@@ -27,8 +28,8 @@ public final class CapacityReservationGroupInner extends Resource {
     private CapacityReservationGroupProperties innerProperties;
 
     /*
-     * Availability Zones to use for this capacity reservation group. The zones can be assigned only during creation.
-     * If not provided, the group supports only regional resources in the region. If provided, enforces each capacity
+     * Availability Zones to use for this capacity reservation group. The zones can be assigned only during creation. If
+     * not provided, the group supports only regional resources in the region. If provided, enforces each capacity
      * reservation in the group to be in one of the zones.
      */
     @JsonProperty(value = "zones")
@@ -42,7 +43,7 @@ public final class CapacityReservationGroupInner extends Resource {
 
     /**
      * Get the innerProperties property: capacity reservation group Properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private CapacityReservationGroupProperties innerProperties() {
@@ -53,7 +54,7 @@ public final class CapacityReservationGroupInner extends Resource {
      * Get the zones property: Availability Zones to use for this capacity reservation group. The zones can be assigned
      * only during creation. If not provided, the group supports only regional resources in the region. If provided,
      * enforces each capacity reservation in the group to be in one of the zones.
-     * 
+     *
      * @return the zones value.
      */
     public List<String> zones() {
@@ -64,7 +65,7 @@ public final class CapacityReservationGroupInner extends Resource {
      * Set the zones property: Availability Zones to use for this capacity reservation group. The zones can be assigned
      * only during creation. If not provided, the group supports only regional resources in the region. If provided,
      * enforces each capacity reservation in the group to be in one of the zones.
-     * 
+     *
      * @param zones the zones value to set.
      * @return the CapacityReservationGroupInner object itself.
      */
@@ -94,7 +95,7 @@ public final class CapacityReservationGroupInner extends Resource {
     /**
      * Get the capacityReservations property: A list of all capacity reservation resource ids that belong to capacity
      * reservation group.
-     * 
+     *
      * @return the capacityReservations value.
      */
     public List<SubResourceReadOnly> capacityReservations() {
@@ -104,7 +105,7 @@ public final class CapacityReservationGroupInner extends Resource {
     /**
      * Get the virtualMachinesAssociated property: A list of references to all virtual machines associated to the
      * capacity reservation group.
-     * 
+     *
      * @return the virtualMachinesAssociated value.
      */
     public List<SubResourceReadOnly> virtualMachinesAssociated() {
@@ -114,7 +115,7 @@ public final class CapacityReservationGroupInner extends Resource {
     /**
      * Get the instanceView property: The capacity reservation group instance view which has the list of instance views
      * for all the capacity reservations that belong to the capacity reservation group.
-     * 
+     *
      * @return the instanceView value.
      */
     public CapacityReservationGroupInstanceView instanceView() {
@@ -127,7 +128,7 @@ public final class CapacityReservationGroupInner extends Resource {
      * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
      * established between the AAD tenants. **Note:** Minimum api-version: 2024-03-01. Please refer to
      * https://aka.ms/computereservationsharing for more details.
-     * 
+     *
      * @return the sharingProfile value.
      */
     public ResourceSharingProfile sharingProfile() {
@@ -140,7 +141,7 @@ public final class CapacityReservationGroupInner extends Resource {
      * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
      * established between the AAD tenants. **Note:** Minimum api-version: 2024-03-01. Please refer to
      * https://aka.ms/computereservationsharing for more details.
-     * 
+     *
      * @param sharingProfile the sharingProfile value to set.
      * @return the CapacityReservationGroupInner object itself.
      */
@@ -154,7 +155,7 @@ public final class CapacityReservationGroupInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

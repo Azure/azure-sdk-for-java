@@ -40,8 +40,8 @@ public final class UserArtifactManage {
     }
 
     /**
-     * Get the install property: Required. The path and arguments to install the gallery application. This is limited
-     * to 4096 characters.
+     * Get the install property: Required. The path and arguments to install the gallery application. This is limited to
+     * 4096 characters.
      * 
      * @return the install value.
      */
@@ -50,8 +50,8 @@ public final class UserArtifactManage {
     }
 
     /**
-     * Set the install property: Required. The path and arguments to install the gallery application. This is limited
-     * to 4096 characters.
+     * Set the install property: Required. The path and arguments to install the gallery application. This is limited to
+     * 4096 characters.
      * 
      * @param install the install value to set.
      * @return the UserArtifactManage object itself.
@@ -84,9 +84,9 @@ public final class UserArtifactManage {
     }
 
     /**
-     * Get the update property: Optional. The path and arguments to update the gallery application. If not present,
-     * then update operation will invoke remove command on the previous version and install command on the current
-     * version of the gallery application. This is limited to 4096 characters.
+     * Get the update property: Optional. The path and arguments to update the gallery application. If not present, then
+     * update operation will invoke remove command on the previous version and install command on the current version of
+     * the gallery application. This is limited to 4096 characters.
      * 
      * @return the update value.
      */
@@ -95,9 +95,9 @@ public final class UserArtifactManage {
     }
 
     /**
-     * Set the update property: Optional. The path and arguments to update the gallery application. If not present,
-     * then update operation will invoke remove command on the previous version and install command on the current
-     * version of the gallery application. This is limited to 4096 characters.
+     * Set the update property: Optional. The path and arguments to update the gallery application. If not present, then
+     * update operation will invoke remove command on the previous version and install command on the current version of
+     * the gallery application. This is limited to 4096 characters.
      * 
      * @param update the update value to set.
      * @return the UserArtifactManage object itself.
@@ -114,12 +114,12 @@ public final class UserArtifactManage {
      */
     public void validate() {
         if (install() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property install in model UserArtifactManage"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property install in model UserArtifactManage"));
         }
         if (remove() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property remove in model UserArtifactManage"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property remove in model UserArtifactManage"));
         }
     }
 

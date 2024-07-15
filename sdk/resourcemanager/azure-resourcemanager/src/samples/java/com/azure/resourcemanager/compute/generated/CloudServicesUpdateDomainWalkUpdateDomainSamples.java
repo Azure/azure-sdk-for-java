@@ -19,7 +19,10 @@ public final class CloudServicesUpdateDomainWalkUpdateDomainSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateCloudServiceToSpecifiedDomain(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServicesUpdateDomains().walkUpdateDomain("ConstosoRG",
-            "{cs-name}", 1, null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServicesUpdateDomains()
+            .walkUpdateDomain("ConstosoRG", "{cs-name}", 1, null, com.azure.core.util.Context.NONE);
     }
 }

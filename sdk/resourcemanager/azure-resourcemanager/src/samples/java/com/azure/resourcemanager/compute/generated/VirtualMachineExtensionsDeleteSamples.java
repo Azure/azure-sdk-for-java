@@ -20,8 +20,11 @@ public final class VirtualMachineExtensionsDeleteSamples {
      */
     public static void
         virtualMachineExtensionDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineExtensions().delete("rgcompute",
-            "aaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineExtensions()
+            .delete("rgcompute", "aaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +39,10 @@ public final class VirtualMachineExtensionsDeleteSamples {
      */
     public static void
         virtualMachineExtensionDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineExtensions().delete("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaaa", "aa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineExtensions()
+            .delete("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaa", "aa", com.azure.core.util.Context.NONE);
     }
 }

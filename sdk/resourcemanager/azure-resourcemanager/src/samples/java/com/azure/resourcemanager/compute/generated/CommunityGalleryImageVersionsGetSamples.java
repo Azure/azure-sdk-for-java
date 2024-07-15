@@ -19,8 +19,11 @@ public final class CommunityGalleryImageVersionsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getACommunityGalleryImageVersion(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCommunityGalleryImageVersions().getWithResponse(
-            "myLocation", "publicGalleryName", "myGalleryImageName", "myGalleryImageVersionName",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCommunityGalleryImageVersions()
+            .getWithResponse("myLocation", "publicGalleryName", "myGalleryImageName", "myGalleryImageVersionName",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -319,7 +319,8 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     private Mono<RestorePointInner> createAsync(String resourceGroupName, String restorePointCollectionName,
         String restorePointName, RestorePointInner parameters, Context context) {
         return beginCreateAsync(resourceGroupName, restorePointCollectionName, restorePointName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

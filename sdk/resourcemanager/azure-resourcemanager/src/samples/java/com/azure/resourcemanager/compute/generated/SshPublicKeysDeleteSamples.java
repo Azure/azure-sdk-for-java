@@ -19,8 +19,11 @@ public final class SshPublicKeysDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void sshPublicKeyDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSshPublicKeys().deleteWithResponse("rgcompute",
-            "aaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSshPublicKeys()
+            .deleteWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +37,10 @@ public final class SshPublicKeysDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void sshPublicKeyDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSshPublicKeys().deleteWithResponse("rgcompute",
-            "aaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSshPublicKeys()
+            .deleteWithResponse("rgcompute", "aaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

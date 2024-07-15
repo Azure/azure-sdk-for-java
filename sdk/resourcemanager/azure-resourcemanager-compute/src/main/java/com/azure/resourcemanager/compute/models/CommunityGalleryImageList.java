@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.CommunityGalleryImageInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ public final class CommunityGalleryImageList {
 
     /**
      * Get the value property: A list of community gallery images.
-     * 
+     *
      * @return the value value.
      */
     public List<CommunityGalleryImageInner> value() {
@@ -45,7 +46,7 @@ public final class CommunityGalleryImageList {
 
     /**
      * Set the value property: A list of community gallery images.
-     * 
+     *
      * @param value the value value to set.
      * @return the CommunityGalleryImageList object itself.
      */
@@ -57,7 +58,7 @@ public final class CommunityGalleryImageList {
     /**
      * Get the nextLink property: The URI to fetch the next page of community gallery images. Call ListNext() with this
      * to fetch the next page of community gallery images.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -67,7 +68,7 @@ public final class CommunityGalleryImageList {
     /**
      * Set the nextLink property: The URI to fetch the next page of community gallery images. Call ListNext() with this
      * to fetch the next page of community gallery images.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the CommunityGalleryImageList object itself.
      */
@@ -78,13 +79,14 @@ public final class CommunityGalleryImageList {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model CommunityGalleryImageList"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property value in model CommunityGalleryImageList"));
         } else {
             value().forEach(e -> e.validate());
         }

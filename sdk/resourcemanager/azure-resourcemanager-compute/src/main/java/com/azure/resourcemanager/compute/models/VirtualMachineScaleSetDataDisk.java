@@ -46,9 +46,9 @@ public final class VirtualMachineScaleSetDataDisk {
     private DiskCreateOptionTypes createOption;
 
     /*
-     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the
-     * disk in a virtual machine image. The property diskSizeGB is the number of bytes x 1024^3 for the disk and the
-     * value cannot be larger than 1023.
+     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk
+     * in a virtual machine image. The property diskSizeGB is the number of bytes x 1024^3 for the disk and the value
+     * cannot be larger than 1023.
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
@@ -153,8 +153,8 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @return the writeAcceleratorEnabled value.
      */
@@ -163,8 +163,8 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
@@ -261,8 +261,8 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Get the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed disk. Should be
-     * used only when StorageAccountType is UltraSSD_LRS. If not specified, a default value would be assigned based on
+     * Get the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed disk. Should be used
+     * only when StorageAccountType is UltraSSD_LRS. If not specified, a default value would be assigned based on
      * diskSizeGB.
      * 
      * @return the diskMBpsReadWrite value.
@@ -272,8 +272,8 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Set the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed disk. Should be
-     * used only when StorageAccountType is UltraSSD_LRS. If not specified, a default value would be assigned based on
+     * Set the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed disk. Should be used
+     * only when StorageAccountType is UltraSSD_LRS. If not specified, a default value would be assigned based on
      * diskSizeGB.
      * 
      * @param diskMBpsReadWrite the diskMBpsReadWrite value to set.
@@ -319,8 +319,9 @@ public final class VirtualMachineScaleSetDataDisk {
      */
     public void validate() {
         if (createOption() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property createOption in model VirtualMachineScaleSetDataDisk"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property createOption in model VirtualMachineScaleSetDataDisk"));
         }
         if (managedDisk() != null) {
             managedDisk().validate();

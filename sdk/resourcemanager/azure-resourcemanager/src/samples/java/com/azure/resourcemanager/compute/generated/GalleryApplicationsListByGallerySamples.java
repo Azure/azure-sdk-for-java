@@ -19,7 +19,10 @@ public final class GalleryApplicationsListByGallerySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listGalleryApplicationsInAGallery(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryApplications().listByGallery("myResourceGroup",
-            "myGalleryName", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryApplications()
+            .listByGallery("myResourceGroup", "myGalleryName", com.azure.core.util.Context.NONE);
     }
 }

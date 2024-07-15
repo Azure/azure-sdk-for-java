@@ -22,8 +22,8 @@ public final class RoleInstanceListResult {
     private List<RoleInstanceInner> value;
 
     /*
-     * The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink
-     * is null to fetch all the resources.
+     * The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink is
+     * null to fetch all the resources.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +83,8 @@ public final class RoleInstanceListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model RoleInstanceListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model RoleInstanceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

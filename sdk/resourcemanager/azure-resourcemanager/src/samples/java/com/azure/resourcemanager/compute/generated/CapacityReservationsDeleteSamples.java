@@ -19,8 +19,11 @@ public final class CapacityReservationsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void capacityReservationDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservations().delete("rgcompute", "aaaaaaaaaaa",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservations()
+            .delete("rgcompute", "aaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +37,10 @@ public final class CapacityReservationsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void capacityReservationDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservations().delete("rgcompute", "aaa", "aaaaaa",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservations()
+            .delete("rgcompute", "aaa", "aaaaaa", com.azure.core.util.Context.NONE);
     }
 }

@@ -237,16 +237,17 @@ public class LogAnalyticsInputBase {
      */
     public void validate() {
         if (blobContainerSasUri() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property blobContainerSasUri in model LogAnalyticsInputBase"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property blobContainerSasUri in model LogAnalyticsInputBase"));
         }
         if (fromTime() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property fromTime in model LogAnalyticsInputBase"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property fromTime in model LogAnalyticsInputBase"));
         }
         if (toTime() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property toTime in model LogAnalyticsInputBase"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property toTime in model LogAnalyticsInputBase"));
         }
     }
 

@@ -20,7 +20,10 @@ public final class VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataSamples {
      */
     public static void
         retrieveBootDiagnosticsDataOfAVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
             .retrieveBootDiagnosticsDataWithResponse("ResourceGroup", "myvmScaleSet", "0", 60,
                 com.azure.core.util.Context.NONE);
     }

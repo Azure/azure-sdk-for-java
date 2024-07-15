@@ -22,7 +22,11 @@ public final class VirtualMachineScaleSetVMsGetInstanceViewSamples {
     public static void
         getInstanceViewOfAVirtualMachineFromAVMScaleSetPlacedOnADedicatedHostGroupThroughAutomaticPlacement(
             com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs().getInstanceViewWithResponse(
-            "myResourceGroup", "myVirtualMachineScaleSet", "0", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .getInstanceViewWithResponse("myResourceGroup", "myVirtualMachineScaleSet", "0",
+                com.azure.core.util.Context.NONE);
     }
 }

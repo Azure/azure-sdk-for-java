@@ -80,8 +80,8 @@ public final class UserArtifactSource {
      */
     public void validate() {
         if (mediaLink() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property mediaLink in model UserArtifactSource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property mediaLink in model UserArtifactSource"));
         }
     }
 
