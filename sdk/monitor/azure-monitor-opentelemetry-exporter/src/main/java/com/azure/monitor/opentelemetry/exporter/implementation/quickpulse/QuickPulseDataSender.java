@@ -6,10 +6,13 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
 class QuickPulseDataSender implements Runnable {
+
+    private static final ClientLogger logger = new ClientLogger(QuickPulseCoordinator.class);
 
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
     private final HttpPipeline httpPipeline;
@@ -31,9 +34,11 @@ class QuickPulseDataSender implements Runnable {
                 post = sendQueue.take();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+                logger.error("QuickPulseDataSender was interrupted while waiting for a request", e);
                 return;
             }
             if (quickPulseHeaderInfo.getQuickPulseStatus() != QuickPulseStatus.QP_IS_ON) {
+                logger.verbose("QuickPulseDataSender is not sending data because QP is " + quickPulseHeaderInfo.getQuickPulseStatus());
                 continue;
             }
 
@@ -59,6 +64,8 @@ class QuickPulseDataSender implements Runnable {
                             break;
                     }
                 }
+            } catch (Throwable t) {
+                logger.error("QuickPulseDataSender failed to send a request", t);
             }
         }
     }
