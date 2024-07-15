@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.SchemaCompatibility;
 import com.azure.resourcemanager.eventhubs.models.SchemaType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-/** The SchemaGroupProperties model. */
+/**
+ * The SchemaGroupProperties model.
+ */
 @Fluent
 public final class SchemaGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SchemaGroupProperties.class);
-
     /*
      * Exact time the Schema Group was updated
      */
@@ -56,6 +55,12 @@ public final class SchemaGroupProperties {
      */
     @JsonProperty(value = "schemaType")
     private SchemaType schemaType;
+
+    /**
+     * Creates an instance of SchemaGroupProperties class.
+     */
+    public SchemaGroupProperties() {
+    }
 
     /**
      * Get the updatedAtUtc property: Exact time the Schema Group was updated.

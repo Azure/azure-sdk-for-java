@@ -6,18 +6,36 @@ package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** Defines values for SkuName. */
+/**
+ * Name of this SKU.
+ */
 public final class SkuName extends ExpandableStringEnum<SkuName> {
-    /** Static value Basic for SkuName. */
+    /**
+     * Static value Basic for SkuName.
+     */
     public static final SkuName BASIC = fromString("Basic");
 
-    /** Static value Standard for SkuName. */
+    /**
+     * Static value Standard for SkuName.
+     */
     public static final SkuName STANDARD = fromString("Standard");
 
-    /** Static value Premium for SkuName. */
+    /**
+     * Static value Premium for SkuName.
+     */
     public static final SkuName PREMIUM = fromString("Premium");
+
+    /**
+     * Creates a new instance of SkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuName() {
+    }
 
     /**
      * Creates or finds a SkuName from its string representation.
@@ -30,7 +48,11 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
         return fromString(name, SkuName.class);
     }
 
-    /** @return known SkuName values. */
+    /**
+     * Gets known SkuName values.
+     *
+     * @return known SkuName values.
+     */
     public static Collection<SkuName> values() {
         return values(SkuName.class);
     }

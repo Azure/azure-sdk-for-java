@@ -5,19 +5,19 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.CaptureDescription;
 import com.azure.resourcemanager.eventhubs.models.EntityStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.eventhubs.models.RetentionDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Properties supplied to the Create Or Update Event Hub operation. */
+/**
+ * Properties supplied to the Create Or Update Event Hub operation.
+ */
 @Fluent
 public final class EventhubProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventhubProperties.class);
-
     /*
      * Current number of shards on the Event Hub.
      */
@@ -37,15 +37,13 @@ public final class EventhubProperties {
     private OffsetDateTime updatedAt;
 
     /*
-     * Number of days to retain the events for this Event Hub, value should be
-     * 1 to 7 days
+     * Number of days to retain the events for this Event Hub, value should be 1 to 7 days
      */
     @JsonProperty(value = "messageRetentionInDays")
     private Long messageRetentionInDays;
 
     /*
-     * Number of partitions created for the Event Hub, allowed values are from
-     * 1 to 32 partitions.
+     * Number of partitions created for the Event Hub, allowed values are from 1 to 32 partitions.
      */
     @JsonProperty(value = "partitionCount")
     private Long partitionCount;
@@ -57,10 +55,28 @@ public final class EventhubProperties {
     private EntityStatus status;
 
     /*
+     * Gets and Sets Metadata of User.
+     */
+    @JsonProperty(value = "userMetadata")
+    private String userMetadata;
+
+    /*
      * Properties of capture description
      */
     @JsonProperty(value = "captureDescription")
     private CaptureDescription captureDescription;
+
+    /*
+     * Event Hub retention settings
+     */
+    @JsonProperty(value = "retentionDescription")
+    private RetentionDescription retentionDescription;
+
+    /**
+     * Creates an instance of EventhubProperties class.
+     */
+    public EventhubProperties() {
+    }
 
     /**
      * Get the partitionIds property: Current number of shards on the Event Hub.
@@ -154,6 +170,26 @@ public final class EventhubProperties {
     }
 
     /**
+     * Get the userMetadata property: Gets and Sets Metadata of User.
+     *
+     * @return the userMetadata value.
+     */
+    public String userMetadata() {
+        return this.userMetadata;
+    }
+
+    /**
+     * Set the userMetadata property: Gets and Sets Metadata of User.
+     *
+     * @param userMetadata the userMetadata value to set.
+     * @return the EventhubProperties object itself.
+     */
+    public EventhubProperties withUserMetadata(String userMetadata) {
+        this.userMetadata = userMetadata;
+        return this;
+    }
+
+    /**
      * Get the captureDescription property: Properties of capture description.
      *
      * @return the captureDescription value.
@@ -174,6 +210,26 @@ public final class EventhubProperties {
     }
 
     /**
+     * Get the retentionDescription property: Event Hub retention settings.
+     *
+     * @return the retentionDescription value.
+     */
+    public RetentionDescription retentionDescription() {
+        return this.retentionDescription;
+    }
+
+    /**
+     * Set the retentionDescription property: Event Hub retention settings.
+     *
+     * @param retentionDescription the retentionDescription value to set.
+     * @return the EventhubProperties object itself.
+     */
+    public EventhubProperties withRetentionDescription(RetentionDescription retentionDescription) {
+        this.retentionDescription = retentionDescription;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -181,6 +237,9 @@ public final class EventhubProperties {
     public void validate() {
         if (captureDescription() != null) {
             captureDescription().validate();
+        }
+        if (retentionDescription() != null) {
+            retentionDescription().validate();
         }
     }
 }

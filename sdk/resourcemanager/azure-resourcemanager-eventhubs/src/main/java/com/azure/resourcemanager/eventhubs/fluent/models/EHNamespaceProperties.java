@@ -5,17 +5,24 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.Encryption;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.eventhubs.models.PublicNetworkAccess;
+import com.azure.resourcemanager.eventhubs.models.TlsVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Namespace properties supplied for create namespace operation. */
+/**
+ * Namespace properties supplied for create namespace operation.
+ */
 @Fluent
 public final class EHNamespaceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EHNamespaceProperties.class);
+    /*
+     * The minimum TLS version for the cluster to support, e.g. '1.2'
+     */
+    @JsonProperty(value = "minimumTlsVersion")
+    private TlsVersion minimumTlsVersion;
 
     /*
      * Provisioning state of the Namespace.
@@ -60,16 +67,20 @@ public final class EHNamespaceProperties {
     private String metricId;
 
     /*
-     * Value that indicates whether AutoInflate is enabled for eventhub
-     * namespace.
+     * Value that indicates whether AutoInflate is enabled for eventhub namespace.
      */
     @JsonProperty(value = "isAutoInflateEnabled")
     private Boolean isAutoInflateEnabled;
 
     /*
-     * Upper limit of throughput units when AutoInflate is enabled, value
-     * should be within 0 to 20 throughput units. ( '0' if AutoInflateEnabled =
-     * true)
+     * This determines if traffic is allowed over public network. By default it is enabled.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. (
+     * '0' if AutoInflateEnabled = true)
      */
     @JsonProperty(value = "maximumThroughputUnits")
     private Integer maximumThroughputUnits;
@@ -81,8 +92,7 @@ public final class EHNamespaceProperties {
     private Boolean kafkaEnabled;
 
     /*
-     * Enabling this property creates a Standard Event Hubs Namespace in
-     * regions supported availability zones.
+     * Enabling this property creates a Standard Event Hubs Namespace in regions supported availability zones.
      */
     @JsonProperty(value = "zoneRedundant")
     private Boolean zoneRedundant;
@@ -110,6 +120,32 @@ public final class EHNamespaceProperties {
      */
     @JsonProperty(value = "alternateName")
     private String alternateName;
+
+    /**
+     * Creates an instance of EHNamespaceProperties class.
+     */
+    public EHNamespaceProperties() {
+    }
+
+    /**
+     * Get the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+     *
+     * @return the minimumTlsVersion value.
+     */
+    public TlsVersion minimumTlsVersion() {
+        return this.minimumTlsVersion;
+    }
+
+    /**
+     * Set the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+     *
+     * @param minimumTlsVersion the minimumTlsVersion value to set.
+     * @return the EHNamespaceProperties object itself.
+     */
+    public EHNamespaceProperties withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
+        this.minimumTlsVersion = minimumTlsVersion;
+        return this;
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the Namespace.
@@ -204,6 +240,28 @@ public final class EHNamespaceProperties {
      */
     public EHNamespaceProperties withIsAutoInflateEnabled(Boolean isAutoInflateEnabled) {
         this.isAutoInflateEnabled = isAutoInflateEnabled;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the EHNamespaceProperties object itself.
+     */
+    public EHNamespaceProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 
@@ -306,8 +364,8 @@ public final class EHNamespaceProperties {
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the EHNamespaceProperties object itself.
      */
-    public EHNamespaceProperties withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public EHNamespaceProperties
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }

@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.EHNamespaceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The response of the List Namespace operation. */
+/**
+ * The response of the List Namespace operation.
+ */
 @Fluent
 public final class EHNamespaceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EHNamespaceListResult.class);
-
     /*
      * Result of the List Namespace operation
      */
@@ -23,11 +22,16 @@ public final class EHNamespaceListResult {
     private List<EHNamespaceInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of namespaces.
+     * Link to the next set of results. Not empty if Value contains incomplete list of namespaces.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /**
+     * Creates an instance of EHNamespaceListResult class.
+     */
+    public EHNamespaceListResult() {
+    }
 
     /**
      * Get the value property: Result of the List Namespace operation.
