@@ -44,7 +44,6 @@
 - Added `AzurePipelinesCredential` to support [Microsoft Entra Workload ID](https://learn.microsoft.com/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml) in Azure Pipelines service connections.
 
 ### Other Changes
-- Migrated Managed Identity authentication flow to utilize Msal4j MI implementation. 
 
 ## 1.12.1 (2024-05-02)
 

@@ -46,8 +46,6 @@ import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IBroker;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.ManagedIdentityId;
-import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
@@ -459,31 +457,6 @@ public abstract class IdentityClientBase {
         }
 
         return applicationBuilder.build();
-    }
-
-    ManagedIdentityApplication getManagedIdentityMsalApplication() {
-
-        ManagedIdentityId managedIdentityId = CoreUtils.isNullOrEmpty(clientId)
-            ? (CoreUtils.isNullOrEmpty(resourceId)
-            ? ManagedIdentityId.systemAssigned() : ManagedIdentityId.userAssignedResourceId(resourceId))
-            : ManagedIdentityId.userAssignedClientId(clientId);
-
-        ManagedIdentityApplication.Builder miBuilder = ManagedIdentityApplication
-            .builder(managedIdentityId)
-            .logPii(options.isUnsafeSupportLoggingEnabled());
-
-        initializeHttpPipelineAdapter();
-        if (httpPipelineAdapter != null) {
-            miBuilder.httpClient(httpPipelineAdapter);
-        } else {
-            miBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-        }
-
-        if (options.getExecutorService() != null) {
-            miBuilder.executorService(options.getExecutorService());
-        }
-
-        return miBuilder.build();
     }
 
     ConfidentialClientApplication getWorkloadIdentityConfidentialClient() {

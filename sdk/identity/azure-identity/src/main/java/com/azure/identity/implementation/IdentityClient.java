@@ -29,7 +29,6 @@ import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
@@ -83,7 +82,6 @@ public class IdentityClient extends IdentityClientBase {
 
     private final SynchronizedAccessor<ConfidentialClientApplication> confidentialClientApplicationAccessorWithCae;
     private final SynchronizedAccessor<ConfidentialClientApplication> managedIdentityConfidentialClientApplicationAccessor;
-    private final SynchronizedAccessor<ManagedIdentityApplication> managedIdentityMsalApplicationAccessor;
     private final SynchronizedAccessor<ConfidentialClientApplication> workloadIdentityConfidentialClientApplicationAccessor;
     private final SynchronizedAccessor<String> clientAssertionAccessor;
 
@@ -133,24 +131,11 @@ public class IdentityClient extends IdentityClientBase {
         this.managedIdentityConfidentialClientApplicationAccessor =
             new SynchronizedAccessor<>(this::getManagedIdentityConfidentialClientApplication);
 
-        this.managedIdentityMsalApplicationAccessor =
-            new SynchronizedAccessor<>(this::getManagedIdentityMsalClient);
-
         this.workloadIdentityConfidentialClientApplicationAccessor =
             new SynchronizedAccessor<>(this::getWorkloadIdentityConfidentialClientApplication);
 
         Duration cacheTimeout = (clientAssertionTimeout == null) ? Duration.ofMinutes(5) : clientAssertionTimeout;
         this.clientAssertionAccessor = new SynchronizedAccessor<>(this::parseClientAssertion, cacheTimeout);
-    }
-
-    public Mono<ManagedIdentityApplication> getManagedIdentityMsalClient() {
-        return Mono.defer(() -> {
-            try {
-                return Mono.just(this.getManagedIdentityMsalApplication());
-            } catch (RuntimeException e) {
-                return Mono.error(e);
-            }
-        });
     }
 
     private Mono<ConfidentialClientApplication> getConfidentialClientApplication(boolean enableCae) {
@@ -590,29 +575,6 @@ public class IdentityClient extends IdentityClientBase {
                             .tenant(IdentityUtil
                                 .resolveTenantId(tenantId, request, options));
                     return confidentialClient.acquireToken(builder.build());
-                }
-            )).onErrorMap(t -> new CredentialUnavailableException("Managed Identity authentication is not available.", t))
-            .map(MsalToken::new);
-    }
-
-    public Mono<AccessToken> authenticateWithManagedIdentityMsalClient(TokenRequestContext request) {
-        String resource = ScopeUtil.scopesToResource(request.getScopes()) + "/";
-
-        return Mono.fromSupplier(() -> options.isChained() && options.getManagedIdentityType().equals(ManagedIdentityType.VM))
-            .flatMap(shouldProbe -> shouldProbe ? checkIMDSAvailable(getImdsEndpoint()) : Mono.just(true))
-            .flatMap(ignored ->  getTokenFromMsalMIClient(resource));
-    }
-
-    private Mono<AccessToken> getTokenFromMsalMIClient(String resource) {
-        return managedIdentityMsalApplicationAccessor.getValue()
-            .flatMap(managedIdentityApplication -> Mono.fromFuture(() -> {
-                    com.microsoft.aad.msal4j.ManagedIdentityParameters.ManagedIdentityParametersBuilder builder =
-                        com.microsoft.aad.msal4j.ManagedIdentityParameters.builder(resource);
-                    try {
-                        return managedIdentityApplication.acquireTokenForManagedIdentity(builder.build());
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
                 }
             )).onErrorMap(t -> new CredentialUnavailableException("Managed Identity authentication is not available.", t))
             .map(MsalToken::new);
@@ -1235,7 +1197,8 @@ public class IdentityClient extends IdentityClientBase {
             return Mono.error(exception);
         }
 
-        String endpoint = getImdsEndpoint();
+        String endpoint = TRAILING_FORWARD_SLASHES.matcher(options.getImdsAuthorityHost()).replaceAll("")
+            + IdentityConstants.DEFAULT_IMDS_TOKENPATH;
 
         return checkIMDSAvailable(endpoint).flatMap(available -> Mono.fromCallable(() -> {
             int retry = 1;
@@ -1317,11 +1280,6 @@ public class IdentityClient extends IdentityClientBase {
                     String.format("MSI: Failed to acquire tokens after retrying %s times",
                     options.getMaxRetry())));
         }));
-    }
-
-    private String getImdsEndpoint() {
-        return TRAILING_FORWARD_SLASHES.matcher(options.getImdsAuthorityHost()).replaceAll("")
-            + IdentityConstants.DEFAULT_IMDS_TOKENPATH;
     }
 
     int getRetryTimeoutInMs(int retry) {

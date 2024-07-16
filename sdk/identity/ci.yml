@@ -85,4 +85,3 @@ extends:
             - name: azure-identity
               groupId: com.azure
               safeName: azureidentity
-
