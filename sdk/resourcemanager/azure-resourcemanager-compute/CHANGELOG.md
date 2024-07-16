@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- Changed type from `java.util.List<com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner>` to `java.util.List<java.lang.String>` of `excludeExtensions` property in `SecurityPostureReference` class.
+- Changed type from `List<VirtualMachineExtensionInner>` to `List<String>` of `excludeExtensions` property in `SecurityPostureReference` class.
 
 ## 2.40.0 (2024-06-24)
 
