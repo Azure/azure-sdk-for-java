@@ -13,7 +13,7 @@
       "path": "./eng/automation/generate.py",
       "logPrefix": "Java-Sdk-Automation",
       "stdout": {
-        "showInComment": "(\\[GENERATE\\]\\[Error\\]|\\[COMPILE\\] Maven build fail|ExternalError).*"
+        "showInComment": "(.*\\[ERROR\\]\\s*).*"
       }
     }
   },
