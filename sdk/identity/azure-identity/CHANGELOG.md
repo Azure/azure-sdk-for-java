@@ -10,6 +10,8 @@
 - Fix `PowershellCredential` issue when user had a profile [#41030](https://github.com/Azure/azure-sdk-for-java/pull/41030)
 
 #### Dependency Updates
+- Upgraded `azure-core` from `1.49.1` to `1.50.0`
+- Upgraded `azure-core-http-netty` from `1.15.1` to `1.15.2`
 - Upgraded `msal4j` from `1.16.0` to `1.16.1`
 
 ## 1.13.0 (2024-06-20)
