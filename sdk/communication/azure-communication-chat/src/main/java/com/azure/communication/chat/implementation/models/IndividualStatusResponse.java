@@ -5,15 +5,19 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The IndividualStatusResponse model. */
 @Immutable
-public final class IndividualStatusResponse {
+public final class IndividualStatusResponse implements JsonSerializable<IndividualStatusResponse> {
     /*
      * Identifies the resource to which the individual status corresponds.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
@@ -26,21 +30,18 @@ public final class IndividualStatusResponse {
      * 403 for lacking permission to execute the operation,
      * 404 for resource not found.
      */
-    @JsonProperty(value = "statusCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer statusCode;
 
     /*
      * The message explaining why the operation failed for the resource
      * identified by the key; null if the operation succeeded.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Identifies the type of the resource to which the individual status
      * corresponds.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -81,5 +82,44 @@ public final class IndividualStatusResponse {
      */
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SendChatMessageOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SendChatMessageOptions if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SendChatMessageOptions.
+     */
+    public static IndividualStatusResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final IndividualStatusResponse response = new IndividualStatusResponse();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    response.id = reader.getString();
+                } else if ("statusCode".equals(fieldName)) {
+                    response.statusCode = reader.getNullable(JsonReader::getInt);
+                } else if ("message".equals(fieldName)) {
+                    response.message = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    response.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return response;
+        });
     }
 }

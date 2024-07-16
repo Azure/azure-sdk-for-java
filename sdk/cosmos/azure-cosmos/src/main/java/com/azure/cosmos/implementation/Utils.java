@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -633,14 +634,44 @@ public class Utils {
         return ensureItemSerializerAccessor().deserializeSafe(effectiveItemSerializer, new ObjectNodeMap(jsonNode), itemClassType);
     }
 
+    public static void validateIdValue(Object itemIdValue) {
+        if (!(itemIdValue instanceof String)) {
+            return;
+        }
+
+        String itemId = (String)itemIdValue;
+        if (itemId != null
+            && Configs.isIdValueValidationEnabled()
+            && itemId.contains("/")) {
+
+            BadRequestException exception = new BadRequestException(
+                "The id value '" + itemId + "' contains the invalid character '/'. To stop the client-side validation "
+                    + "set the environment variable '" + Configs.PREVENT_INVALID_ID_CHARS + "' or the system property '"
+                    + Configs.PREVENT_INVALID_ID_CHARS_VARIABLE + "' to 'true'.");
+
+            BridgeInternal.setSubStatusCode(exception, HttpConstants.SubStatusCodes.INVALID_ID_VALUE);
+
+            throw exception;
+        }
+    }
+
     @SuppressWarnings("unchecked")
-    public static ByteBuffer serializeJsonToByteBuffer(CosmosItemSerializer serializer, Object object, Consumer<Map<String, Object>> onAfterSerialization) {
+    public static ByteBuffer serializeJsonToByteBuffer(
+        CosmosItemSerializer serializer,
+        Object object,
+        Consumer<Map<String, Object>> onAfterSerialization,
+        boolean isIdValidationEnabled) {
+
         checkArgument(serializer != null || object instanceof Map<?, ?>, "Argument 'serializer' must not be null.");
         try {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
             Map<String, Object> jsonTreeMap = (object instanceof Map<?, ?> && serializer == null)
                 ? (Map<String, Object>) object
                 : ensureItemSerializerAccessor().serializeSafe(serializer, object);
+
+            if (isIdValidationEnabled) {
+                validateIdValue(jsonTreeMap.get(Constants.Properties.ID));
+            }
 
             if (onAfterSerialization != null) {
                 onAfterSerialization.accept(jsonTreeMap);

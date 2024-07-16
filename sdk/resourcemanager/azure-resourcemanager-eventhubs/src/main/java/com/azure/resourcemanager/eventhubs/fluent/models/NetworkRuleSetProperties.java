@@ -5,20 +5,19 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.DefaultAction;
 import com.azure.resourcemanager.eventhubs.models.NWRuleSetIpRules;
 import com.azure.resourcemanager.eventhubs.models.NWRuleSetVirtualNetworkRules;
 import com.azure.resourcemanager.eventhubs.models.PublicNetworkAccessFlag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** NetworkRuleSet properties. */
+/**
+ * NetworkRuleSet properties.
+ */
 @Fluent
 public final class NetworkRuleSetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSetProperties.class);
-
     /*
      * Value that indicates whether Trusted Service Access is Enabled or not.
      */
@@ -44,11 +43,18 @@ public final class NetworkRuleSetProperties {
     private List<NWRuleSetIpRules> ipRules;
 
     /*
-     * This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * This determines if traffic is allowed over public network. By default it is enabled. If value is
+     * SecuredByPerimeter then Inbound and Outbound communication is controlled by the network security perimeter and
+     * profile's access rules.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccessFlag publicNetworkAccess;
+
+    /**
+     * Creates an instance of NetworkRuleSetProperties class.
+     */
+    public NetworkRuleSetProperties() {
+    }
 
     /**
      * Get the trustedServiceAccessEnabled property: Value that indicates whether Trusted Service Access is Enabled or
@@ -134,7 +140,8 @@ public final class NetworkRuleSetProperties {
 
     /**
      * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
-     * enabled.
+     * enabled. If value is SecuredByPerimeter then Inbound and Outbound communication is controlled by the network
+     * security perimeter and profile's access rules.
      *
      * @return the publicNetworkAccess value.
      */
@@ -144,7 +151,8 @@ public final class NetworkRuleSetProperties {
 
     /**
      * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
-     * enabled.
+     * enabled. If value is SecuredByPerimeter then Inbound and Outbound communication is controlled by the network
+     * security perimeter and profile's access rules.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the NetworkRuleSetProperties object itself.

@@ -84,8 +84,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity")
         @ExpectedResponses({ 200 })
@@ -95,8 +94,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/entity/bulk")
         @ExpectedResponses({ 200 })
@@ -128,8 +126,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> batchCreateOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasEntitiesWithExtInfo, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/bulk")
         @ExpectedResponses({ 200 })
@@ -139,8 +136,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> batchCreateOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasEntitiesWithExtInfo, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/entity/bulk")
         @ExpectedResponses({ 200 })
@@ -169,9 +165,8 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> addClassification(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData classificationAssociateOptions, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/bulk/classification")
         @ExpectedResponses({ 204 })
@@ -180,9 +175,8 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> addClassificationSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData classificationAssociateOptions, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/entity/guid/{guid}")
         @ExpectedResponses({ 200 })
@@ -368,8 +362,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateByUniqueAttribute(@HostParam("endpoint") String endpoint,
             @PathParam("typeName") String typeName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/entity/uniqueAttribute/type/{typeName}")
         @ExpectedResponses({ 200 })
@@ -379,8 +372,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateByUniqueAttributeSync(@HostParam("endpoint") String endpoint,
             @PathParam("typeName") String typeName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/entity/uniqueAttribute/type/{typeName}")
         @ExpectedResponses({ 200 })
@@ -469,7 +461,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> batchSetClassifications(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasEntityHeaders,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/bulk/setClassifications")
@@ -479,7 +471,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> batchSetClassificationsSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasEntityHeaders,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/entity/bulk/uniqueAttribute/type/{typeName}")
@@ -631,8 +623,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> importBusinessMetadata(@HostParam("endpoint") String endpoint,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData businessMetadataOptions, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/atlas/v2/entity/businessmetadata/import")
@@ -643,8 +634,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> importBusinessMetadataSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData businessMetadataOptions, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/entity/guid/{guid}/labels")
         @ExpectedResponses({ 204 })
@@ -768,7 +758,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> moveEntitiesToCollection(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @QueryParam("collectionId") String collectionId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData moveEntitiesOptions,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/entity/moveTo")
@@ -779,7 +769,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> moveEntitiesToCollectionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @QueryParam("collectionId") String collectionId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData moveEntitiesOptions,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
     }
 
@@ -953,8 +943,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      * 
-     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -964,11 +953,10 @@ public final class EntitiesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(BinaryData atlasEntityWithExtInfo,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, atlasEntityWithExtInfo, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, body, requestOptions, context));
     }
 
     /**
@@ -1141,8 +1129,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      * 
-     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1151,11 +1138,10 @@ public final class EntitiesImpl {
      * @return the mutation response result of entity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(BinaryData atlasEntityWithExtInfo,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            accept, atlasEntityWithExtInfo, requestOptions, Context.NONE);
+            accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -1555,8 +1541,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      * 
-     * @param atlasEntitiesWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1566,11 +1551,11 @@ public final class EntitiesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> batchCreateOrUpdateWithResponseAsync(BinaryData atlasEntitiesWithExtInfo,
+    public Mono<Response<BinaryData>> batchCreateOrUpdateWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.batchCreateOrUpdate(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, atlasEntitiesWithExtInfo, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, body, requestOptions, context));
     }
 
     /**
@@ -1746,8 +1731,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      * 
-     * @param atlasEntitiesWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1756,11 +1740,10 @@ public final class EntitiesImpl {
      * @return the mutation response result of entity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> batchCreateOrUpdateWithResponse(BinaryData atlasEntitiesWithExtInfo,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> batchCreateOrUpdateWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.batchCreateOrUpdateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            accept, atlasEntitiesWithExtInfo, requestOptions, Context.NONE);
+            accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -1968,7 +1951,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      * 
-     * @param classificationAssociateOptions The request payload for classification association.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1977,11 +1960,10 @@ public final class EntitiesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addClassificationWithResponseAsync(BinaryData classificationAssociateOptions,
-        RequestOptions requestOptions) {
+    public Mono<Response<Void>> addClassificationWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.addClassification(this.client.getEndpoint(), accept,
-            classificationAssociateOptions, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.addClassification(this.client.getEndpoint(), accept, body, requestOptions, context));
     }
 
     /**
@@ -2013,7 +1995,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      * 
-     * @param classificationAssociateOptions The request payload for classification association.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2022,11 +2004,9 @@ public final class EntitiesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addClassificationWithResponse(BinaryData classificationAssociateOptions,
-        RequestOptions requestOptions) {
+    public Response<Void> addClassificationWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.addClassificationSync(this.client.getEndpoint(), accept, classificationAssociateOptions,
-            requestOptions, Context.NONE);
+        return service.addClassificationSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -3426,8 +3406,7 @@ public final class EntitiesImpl {
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3437,11 +3416,11 @@ public final class EntitiesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateByUniqueAttributeWithResponseAsync(String typeName,
-        BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateByUniqueAttributeWithResponseAsync(String typeName, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateByUniqueAttribute(this.client.getEndpoint(), typeName,
-            accept, atlasEntityWithExtInfo, requestOptions, context));
+            accept, body, requestOptions, context));
     }
 
     /**
@@ -3621,8 +3600,7 @@ public final class EntitiesImpl {
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3631,11 +3609,11 @@ public final class EntitiesImpl {
      * @return the mutation response result of entity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateByUniqueAttributeWithResponse(String typeName, BinaryData atlasEntityWithExtInfo,
+    public Response<BinaryData> updateByUniqueAttributeWithResponse(String typeName, BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateByUniqueAttributeSync(this.client.getEndpoint(), typeName, accept, atlasEntityWithExtInfo,
-            requestOptions, Context.NONE);
+        return service.updateByUniqueAttributeSync(this.client.getEndpoint(), typeName, accept, body, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -4191,7 +4169,7 @@ public final class EntitiesImpl {
      * ]
      * }</pre>
      * 
-     * @param atlasEntityHeaders An instance of an entity header map.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4200,11 +4178,11 @@ public final class EntitiesImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> batchSetClassificationsWithResponseAsync(BinaryData atlasEntityHeaders,
+    public Mono<Response<BinaryData>> batchSetClassificationsWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.batchSetClassifications(this.client.getEndpoint(), accept,
-            atlasEntityHeaders, requestOptions, context));
+        return FluxUtil.withContext(context -> service.batchSetClassifications(this.client.getEndpoint(), accept, body,
+            requestOptions, context));
     }
 
     /**
@@ -4278,7 +4256,7 @@ public final class EntitiesImpl {
      * ]
      * }</pre>
      * 
-     * @param atlasEntityHeaders An instance of an entity header map.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4287,11 +4265,10 @@ public final class EntitiesImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> batchSetClassificationsWithResponse(BinaryData atlasEntityHeaders,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> batchSetClassificationsWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.batchSetClassificationsSync(this.client.getEndpoint(), accept, atlasEntityHeaders,
-            requestOptions, Context.NONE);
+        return service.batchSetClassificationsSync(this.client.getEndpoint(), accept, body, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -5016,7 +4993,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      * 
-     * @param businessMetadataOptions Business metadata to send to the service.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5025,12 +5002,12 @@ public final class EntitiesImpl {
      * @return bulk import result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> importBusinessMetadataWithResponseAsync(BinaryData businessMetadataOptions,
+    public Mono<Response<BinaryData>> importBusinessMetadataWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.importBusinessMetadata(this.client.getEndpoint(), contentType,
-            accept, businessMetadataOptions, requestOptions, context));
+            accept, body, requestOptions, context));
     }
 
     /**
@@ -5053,7 +5030,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      * 
-     * @param businessMetadataOptions Business metadata to send to the service.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5062,12 +5039,11 @@ public final class EntitiesImpl {
      * @return bulk import result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> importBusinessMetadataWithResponse(BinaryData businessMetadataOptions,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> importBusinessMetadataWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.importBusinessMetadataSync(this.client.getEndpoint(), contentType, accept,
-            businessMetadataOptions, requestOptions, Context.NONE);
+        return service.importBusinessMetadataSync(this.client.getEndpoint(), contentType, accept, body, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -5754,7 +5730,7 @@ public final class EntitiesImpl {
      * }</pre>
      * 
      * @param collectionId The collection where entities will be moved to.
-     * @param moveEntitiesOptions MoveEntitiesOptions.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5764,12 +5740,11 @@ public final class EntitiesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> moveEntitiesToCollectionWithResponseAsync(String collectionId,
-        BinaryData moveEntitiesOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> moveEntitiesToCollectionWithResponseAsync(String collectionId, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.moveEntitiesToCollection(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), collectionId, accept, moveEntitiesOptions, requestOptions,
-            context));
+            this.client.getServiceVersion().getVersion(), collectionId, accept, body, requestOptions, context));
     }
 
     /**
@@ -5854,7 +5829,7 @@ public final class EntitiesImpl {
      * }</pre>
      * 
      * @param collectionId The collection where entities will be moved to.
-     * @param moveEntitiesOptions MoveEntitiesOptions.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5863,11 +5838,10 @@ public final class EntitiesImpl {
      * @return the mutation response result of entity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> moveEntitiesToCollectionWithResponse(String collectionId,
-        BinaryData moveEntitiesOptions, RequestOptions requestOptions) {
+    public Response<BinaryData> moveEntitiesToCollectionWithResponse(String collectionId, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.moveEntitiesToCollectionSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), collectionId, accept, moveEntitiesOptions, requestOptions,
-            Context.NONE);
+            this.client.getServiceVersion().getVersion(), collectionId, accept, body, requestOptions, Context.NONE);
     }
 }

@@ -41,10 +41,10 @@ feature-management:
     feature-v:
       enabled-for:
         -
-          name: TimeWindowFilter
+          name: Microsoft.TimeWindow
           parameters:
-            time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT"
-            time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
+            start: "Wed, 01 May 2019 13:59:59 GMT"
+            end: "Mon, 01 July 2019 00:00:00 GMT"
     feature-w:
       evaluate: false
       enabled-for:
@@ -182,7 +182,7 @@ feature-management:
 
 ### TimeWindowFilter
 
-This filter provides the capability to enable a feature based on a time window. If only `time-window-filter-setting-end` is specified, the feature will be considered on until that time. If only start is specified, the feature will be considered on at all points after that time. If both are specified the feature will be considered valid between the two times.
+This filter provides the capability to enable a feature based on a time window. If only `end` is specified, the feature will be considered enabled until that time. If only `start` is specified, the feature will be considered enabled at all points after that time. If both are specified the feature will be considered enabled between the two times.
 
 ```yaml
 feature-management:
@@ -190,11 +190,174 @@ feature-management:
     feature-v:
       enabled-for:
         -
-         name: TimeWindowFilter
+          name: Microsoft.TimeWindow
           parameters:
-            time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT",
-            time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
+            start: "Wed, 01 May 2019 13:59:59 GMT"
+            end: "Mon, 01 July 2019 00:00:00 GMT"
 ```
+
+The time window can be configured to recur periodically. This can be useful in the scenario where you have to enable/disable a feature during low or high traffic periods of a day or for certain days of the week. To expand the individual time window to recurring time windows, the recurrence rule should be specified in the `recurrence` parameter.
+
+
+```yaml
+feature-management:
+  feature-flags:
+    feature-v:
+      enabled-for:
+        -
+          name: Microsoft.TimeWindow
+          parameters:
+            start: "Fri, 22 Mar 2024 20:00:00 GMT"
+            end: "Sat, 23 Mar 2024 02:00:00 GMT"
+            recurrence:
+              pattern:
+                type: "Daily"
+                interval: 1
+              range:
+                type: "Numbered"
+                numberOfOccurrences: 3
+```
+To create a recurrence rule, you need to specify 3 parts: `start`, `end` and `recurrence`. 
+The `start` and `end` parameters define the time window which need to recur periodically. 
+The `recurrence` parameter is made up of two parts: `pattern` (how often the time window will repeat) and `range` (for how long the recurrence pattern will repeat). To create a recurrence rule, you must specify both `pattern` and `range`. Any pattern type can work with any range type. 
+The time zone offset of the `start` property will apply to the recurrence settings.
+
+**Note:** `start` must be a valid first occurrence which fits the recurrence pattern. For example, if we define to repeat on every other Monday and Tuesday, then the start time should be in Monday or Tuesday. <br /> Additionally, the duration of the time window cannot be longer than how frequently it occurs. For example, it is invalid to have a 25-hour time window recur every day.
+
+#### Recurrence Pattern
+
+There are two possible recurrence pattern types: `Daily` and `Weekly`. 
+
+`Daily` causes an event to repeat based on a number of days between each occurrence. For example, "every day" or "every 3 days".
+
+`Weekly` causes an event to repeat on the same day or days of the week, based on the number of weeks between each set of occurrences. For example, "every Monday" or "every other Friday".
+
+* Parameters
+
+  Property | Relevance | Description
+  -----------|-------|-----
+  **type** | Required  | `Daily`/`Weekly`.
+  **interval** | Optional  | Specifies the interval between each start time of occurrence. Default value is 1. <br/>For example, if the interval is 2 with `Daily` type, and current occurrence is 2:00 AM ~ 3:00 AM on 2024/05/11, then the next occurrence should be 2:00 AM ~ 3:00 AM on 2024/05/13
+  **daysOfWeek** | Required/Optional  | Specifies on which day(s) of the week the event occurs. It's required when `Weekly` type, negatively for `Daily` type. 
+  **firstDayOfWeek** | Optional  | Specifies which day is considered the first day of the week. Default value is `Sunday`. Negatively for `Daily` type. 
+  
+  * Example
+    * Daily
+  
+        The following example will repeat from 2:00 AM to 3:00 AM on every 2 days
+
+        ```yaml
+        start: "Mon, 13 May 2024 02:00:00 GMT"
+        end: "Mon, 13 May 2024 03:00:00 GMT"
+        recurrence:
+          pattern:
+            type: "Daily"
+            interval: 2
+          range:
+            type: "NoEnd"
+        ```
+
+    * Weekly
+  
+      The following example will repeat from 2:00 AM to 3:00 AM on every other Monday and Tuesday
+
+        ```yaml
+        start: "Mon, 13 May 2024 02:00:00 GMT"
+        end: "Mon, 13 May 2024 03:00:00 GMT"
+        recurrence:
+          pattern:
+            type: "Weekly"
+            interval: 2
+            daysOfWeek: 
+              - Monday
+              - Tuesday
+          range:
+            type: "NoEnd"
+        ```
+      The following example shows a time window starts on one day and ends on another, repeat every week.
+
+        ```yaml
+        start: "Mon, 13 May 2024 02:00:00 GMT"
+        end: "Mon, 14 May 2024 03:00:00 GMT"
+        recurrence:
+          pattern:
+            type: "Weekly"
+            interval: 1
+            daysOfWeek: 
+              - Monday
+          range:
+            type: "NoEnd"
+        ```
+
+
+#### Recurrence Range
+
+There are three possible recurrence range type: `NoEnd`, `EndDate` and `Numbered`.
+
+* Parameter
+  
+    Property | Relevance | Description                                                                           |
+    -----------|---------------|-------------
+    **type** | Required  | `NoEnd`/`EndDate`/`Numbered`.
+    **endDate** | Required/Optional  |  Specifies the date time to stop applying the pattern. Note that as long as the start time of the last occurrence falls before the end date, the end time of that occurrence is allowed to extend beyond it. <br /> It's required for `EndDate` type, negatively for `NoEnd` and `Numbered` type.
+    **NumberOfOccurrences** | Required/Optional | Specifies the number of days that it will occur. <br /> It's required for `Numbered` type, negatively for `NoEnd` and `EndDate` type.
+
+  * Example
+    * `NoEnd`
+
+      The `NoEnd` range causes the recurrence to occur indefinitely.
+
+      The following example will repeat from 6:00 PM to 8:00 PM every day.
+
+      ``` yaml
+        start: "Fri, 22 Mar 2024 18:00:00 GMT"
+        end: "Fri, 22 Mar 2024 20:00:00 GMT"
+        recurrence:
+          pattern:
+            type: "Daily"
+            interval: 1
+          range:
+            type: "NoEnd"
+      ```
+
+    * `EndDate`
+
+      The `EndDate` range causes the time window to occur on all days that fit the applicable pattern until the end date.
+
+      The following example will repeat from 6:00 PM to 8:00 PM every day until the last occurrence happens on April 1st, 2024.
+
+      ``` yaml
+      start: "Fri, 22 Mar 2024 18:00:00 GMT"
+      end: "Fri, 22 Mar 2024 20:00:00 GMT"
+      recurrence:
+        pattern:
+          type: "Daily"
+          interval: 1
+        range:
+          type: "EndDate"
+          endDate: "Mon, 1 Apr 2024 20:00:00 GMT"
+      ```
+
+    * `Numbered`
+
+      The `Numbered` range causes the time window to occur a fixed number of days (based on the pattern).
+
+      The following example will repeat from 6:00 PM to 8:00 PM on Monday and Tuesday until the there are 3 occurrences, which respectively happens on 2024/04/01(Mon), 2024/04/02(Tue) and 2024/04/08(Mon).
+
+        ``` yaml
+        start: "Mon, 1 Apr 2024 18:00:00 GMT"
+        end: "Mon, 1 Apr 2024 20:00:00 GMT"
+        recurrence:
+          pattern:
+            type: "Weekly"
+            interval: 1
+            daysOfWeek:
+                - Monday
+                - Tuesday
+          range:
+            type: "Numbered"
+            numberOfOccurrences: 3
+        ```
 
 ### TargetingFilter
 
@@ -247,14 +410,16 @@ An example web application that uses the targeting feature filter is available i
 To begin using the `TargetingFilter` in an application it must be added as a `@Bean` like any other Feature Filter. `TargetingFilter` relies on another `@Bean` to be added to the application, `ITargetingContextAccessor`. The `ITargetingContextAccessor` allows for defining the current `TargetingContext` to be used for defining the current user id and groups. An example of this is:
 
 ```java
-public class TargetingContextAccessorImpl implements TargetingContextAccessor {
+public class TargetingContextAccessor implements ITargetingContextAccessor {
 
     @Override
-    void configureTargetingContext(TargetingContext context) {
+    public Mono<TargetingContext> getContextAsync() {
+        TargetingContext context = new TargetingContext();
         context.setUserId("Jeff");
         ArrayList<String> groups = new ArrayList<String>();
         groups.add("Ring0");
         context.setGroups(groups);
+        return Mono.just(context);
     }
 
 }
@@ -266,7 +431,7 @@ Options are available to customize how targeting evaluation is performed across 
 
 ```java
     @Bean
-    public TargetingFilter targetingFilter(TargetingContextAccessor contextAccessor) {
+    public TargetingFilter targetingFilter(ITargetingContextAccessor contextAccessor) {
         return new TargetingFilter(contextAccessor, new TargetingEvaluationOptions().setIgnoreCase(true));
     }
 ```

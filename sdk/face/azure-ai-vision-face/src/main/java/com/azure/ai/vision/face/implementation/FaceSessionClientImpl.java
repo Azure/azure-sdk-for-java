@@ -282,8 +282,7 @@ public final class FaceSessionClientImpl {
         Mono<Response<BinaryData>> createLivenessWithVerifySessionWithVerifyImage(
             @HostParam("endpoint") String endpoint, @HostParam("apiVersion") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData createLivenessWithVerifySessionContent,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/detectLivenessWithVerify/singleModal/sessions")
@@ -294,8 +293,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createLivenessWithVerifySessionWithVerifyImageSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData createLivenessWithVerifySessionContent,
+            @HeaderParam("accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Delete("/detectLivenessWithVerify/singleModal/sessions/{sessionId}")
@@ -1127,7 +1125,7 @@ public final class FaceSessionClientImpl {
      * }
      * }</pre>
      * 
-     * @param createLivenessWithVerifySessionContent Request of liveness with verify session creation.
+     * @param body Request content of liveness with verify session creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1137,14 +1135,13 @@ public final class FaceSessionClientImpl {
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createLivenessWithVerifySessionWithVerifyImageWithResponseAsync(
-        BinaryData createLivenessWithVerifySessionContent, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createLivenessWithVerifySessionWithVerifyImageWithResponseAsync(BinaryData body,
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createLivenessWithVerifySessionWithVerifyImage(this.getEndpoint(),
-                this.getServiceVersion().getVersion(), contentType, accept, createLivenessWithVerifySessionContent,
-                requestOptions, context));
+                this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -1188,7 +1185,7 @@ public final class FaceSessionClientImpl {
      * }
      * }</pre>
      * 
-     * @param createLivenessWithVerifySessionContent Request of liveness with verify session creation.
+     * @param body Request content of liveness with verify session creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1197,13 +1194,12 @@ public final class FaceSessionClientImpl {
      * @return response of liveness session with verify creation with verify image provided along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createLivenessWithVerifySessionWithVerifyImageWithResponse(
-        BinaryData createLivenessWithVerifySessionContent, RequestOptions requestOptions) {
+    public Response<BinaryData> createLivenessWithVerifySessionWithVerifyImageWithResponse(BinaryData body,
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return service.createLivenessWithVerifySessionWithVerifyImageSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, accept, createLivenessWithVerifySessionContent,
-            requestOptions, Context.NONE);
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
