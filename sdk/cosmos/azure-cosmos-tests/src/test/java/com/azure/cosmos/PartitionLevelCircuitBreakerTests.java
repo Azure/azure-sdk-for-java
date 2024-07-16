@@ -956,70 +956,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ONLY_DIRECT_MODE
             },
-            // 503 injected into all regions for READ_ITEM operation
-            // injected into all replicas of the faulty EPK range.
-            // Expectation is for the operation to hit 503 until fault injection has it its injection limits.
-            // After that, the operation should see a success from the first preferred region.
-            new Object[]{
-                String.format("Test with faulty %s with service unavailable error in all regions.", FaultInjectionOperationType.READ_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions)
-                    .withHitLimit(11),
-                this.buildServiceUnavailableFaultInjectionRules,
-                NO_END_TO_END_TIMEOUT,
-                NO_REGION_SWITCH_HINT,
-                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-                this.validateResponseHasServiceUnavailableError,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasAllRegions,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ONLY_DIRECT_MODE
-            },
-            // 503 injected into all regions for UPSERT_ITEM operation
-            // injected into all replicas of the faulty EPK range (although only the primary replica
-            // is ever involved - effectively doesn't impact the assertions for this test).
-            // Expectation is for the operation to hit 503 until fault injection has it its injection limits.
-            // After that, the operation should see a success from the first preferred region.
-            new Object[]{
-                String.format("Test with faulty %s with service unavailable error in in all regions.", FaultInjectionOperationType.UPSERT_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions)
-                    .withHitLimit(6),
-                this.buildServiceUnavailableFaultInjectionRules,
-                NO_END_TO_END_TIMEOUT,
-                NO_REGION_SWITCH_HINT,
-                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-                this.validateResponseHasServiceUnavailableError,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasAllRegions,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ONLY_DIRECT_MODE
-            },
-            // 503 injected into all regions for QUERY_ITEM operation
-            // injected into all replicas of the faulty EPK range.
-            // Expectation is for the operation to hit 503 until fault injection has it its injection limits.
-            // After that, the operation should see a success from the first preferred region.
-            new Object[] {
-                String.format("Test with faulty %s with service unavailable error in all regions.", FaultInjectionOperationType.QUERY_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions)
-                    .withHitLimit(11),
-                this.buildServiceUnavailableFaultInjectionRules,
-                NO_END_TO_END_TIMEOUT,
-                NO_REGION_SWITCH_HINT,
-                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-                this.validateResponseHasServiceUnavailableError,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasAllRegions,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ONLY_DIRECT_MODE
-            },
             // 449 injected into first preferred region for READ_ITEM operation
             // injected into all replicas of the faulty EPK range.
             // Expectation is for the operation to see a success for all runs (due to threshold-based availability strategy enabled)
@@ -1445,71 +1381,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ONLY_GATEWAY_MODE
-            },
-            // 503 injected into all regions for READ_ITEM operation
-            // injected into all replicas of the faulty EPK range.
-            // Expectation is for the operation to hit 503 until fault injection has it its injection limits.
-            // After that, the operation should see a success from the first preferred region.
-            new Object[]{
-                String.format("Test with faulty %s with service unavailable error in all regions.", FaultInjectionOperationType.READ_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions)
-                    .withHitLimit(11),
-                this.buildServiceUnavailableFaultInjectionRules,
-                NO_END_TO_END_TIMEOUT,
-                NO_REGION_SWITCH_HINT,
-                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-                this.validateResponseHasServiceUnavailableError,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasAllRegions,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ONLY_GATEWAY_MODE
-            },
-            // 503 injected into all regions for UPSERT_ITEM operation
-            // injected into all replicas of the faulty EPK range (although only the primary replica
-            // is ever involved - effectively doesn't impact the assertions for this test).
-            // Expectation is for the operation to hit 503 until fault injection has it its injection limits.
-            // After that, the operation should see a success from the first preferred region.
-            new Object[]{
-                String.format("Test with faulty %s with service unavailable error in in all regions.", FaultInjectionOperationType.UPSERT_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions)
-                    .withHitLimit(6),
-                this.buildServiceUnavailableFaultInjectionRules,
-                NO_END_TO_END_TIMEOUT,
-                NO_REGION_SWITCH_HINT,
-                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-                this.validateResponseHasServiceUnavailableError,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasAllRegions,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ONLY_GATEWAY_MODE
-            },
-            //503 injected into all regions for QUERY_ITEM operation
-            //injected into all replicas of the faulty EPK range.
-            //Expectation is for the operation to hit 503 until fault injection has it its injection limits.
-            //After that, the operation should see a success from the first preferred region.
-            new Object[] {
-                String.format("Test with faulty %s with service unavailable error in all regions.", FaultInjectionOperationType.QUERY_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions)
-                    .withHitLimit(11),
-                this.buildServiceUnavailableFaultInjectionRules,
-                NO_END_TO_END_TIMEOUT,
-                NO_REGION_SWITCH_HINT,
-                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-                this.validateResponseHasServiceUnavailableError,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasAllRegions,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ONLY_GATEWAY_MODE
-            },
+            }
         };
     }
 

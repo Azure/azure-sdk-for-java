@@ -385,9 +385,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        this.serviceUnavailableRetryCount++;
-
-        if (this.serviceUnavailableRetryCount > MaxServiceUnavailableRetryCount) {
+        if (this.serviceUnavailableRetryCount++ > MaxServiceUnavailableRetryCount) {
             logger.warn("shouldRetryOnBackendServiceUnavailableAsync() Not retrying. Retry count = {}", this.serviceUnavailableRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
         }
