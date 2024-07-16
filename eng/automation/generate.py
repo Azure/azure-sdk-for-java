@@ -422,7 +422,7 @@ if __name__ == "__main__":
     logging.basicConfig(
         stream=sys.stdout,
         level=logging.INFO,
-        format="%(asctime)s %(levelname)s %(message)s",
+        format="%(asctime)s [%(levelname)s] %(message)s",
         datefmt="%Y-%m-%d %X",
     )
     main()

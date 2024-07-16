@@ -12,7 +12,7 @@
     "generateScript": {
       "path": "./eng/automation/generate.py",
       "logPrefix": "Java-Sdk-Automation",
-      "stderr": {
+      "stdout": {
         "showInComment": "(\\[GENERATE\\]\\[Error\\]|\\[COMPILE\\] Maven build fail|ExternalError).*"
       }
     }
