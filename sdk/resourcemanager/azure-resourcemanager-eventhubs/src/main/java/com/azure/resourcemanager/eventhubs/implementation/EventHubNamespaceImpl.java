@@ -7,16 +7,17 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.models.EHNamespaceInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.dag.VoidIndexable;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceSkuType;
 import com.azure.resourcemanager.eventhubs.models.Sku;
 import com.azure.resourcemanager.eventhubs.models.SkuName;
+import com.azure.resourcemanager.eventhubs.models.TlsVersion;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.dag.VoidIndexable;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -253,6 +254,16 @@ class EventHubNamespaceImpl
     }
 
     @Override
+    public TlsVersion minimumTlsVersion() {
+        return this.innerModel().minimumTlsVersion();
+    }
+
+    @Override
+    public Boolean zoneRedundant() {
+        return this.innerModel().zoneRedundant();
+    }
+
+    @Override
     protected Mono<EHNamespaceInner> getInnerAsync() {
         return this.manager().serviceClient().getNamespaces()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -269,5 +280,17 @@ class EventHubNamespaceImpl
             postRunTasks = Flux.empty();
         }
         postRunTasks = postRunTasks.concatWith(task);
+    }
+
+    @Override
+    public EventHubNamespaceImpl withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
+        this.innerModel().withMinimumTlsVersion(minimumTlsVersion);
+        return this;
+    }
+
+    @Override
+    public EventHubNamespaceImpl enableZoneRedundant() {
+        this.innerModel().withZoneRedundant(true);
+        return this;
     }
 }
