@@ -13,6 +13,11 @@ import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventH
  */
 public abstract class CommonProperties extends AzureAmqpSdkProperties implements EventHubClientCommonProperties, ConnectionStringProvider {
 
+    /**
+     * Create an instance of {@link CommonProperties}.
+     */
+    public CommonProperties() {
+    }
 
     private String domainName;
 

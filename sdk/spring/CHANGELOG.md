@@ -789,6 +789,9 @@ First release of the Spring Cloud Azure Appconfiguration Config, to support Spri
   - spring-cloud-azure-feature-management
   - spring-cloud-azure-feature-management-web
 
+#### Features Added
+- The module `azure-spring-data-cosmos` was moved from sdk/cosmos to sdk/spring - See [PR 33905](https://github.com/Azure/azure-sdk-for-java/pull/33905)
+
 ### Spring Messaging Event Hubs
 This section includes changes in `spring-messaging-azure-eventhubs` module.
 
