@@ -10,4 +10,9 @@ import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventH
  */
 public class ProducerProperties extends CommonProperties implements EventHubProducerProperties {
 
+    /**
+     * Create an instance of {@link ProducerProperties}.
+     */
+    public ProducerProperties() {
+    }
 }

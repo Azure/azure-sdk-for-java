@@ -10,6 +10,12 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
  */
 public final class AzureProfileProperties extends AzureProfileOptionsAdapter {
 
+    /**
+     * Creates an instance of {@link AzureProfileProperties}.
+     */
+    public AzureProfileProperties() {
+    }
+
     private String tenantId;
     private String subscriptionId;
     private AzureProfileOptionsProvider.CloudType cloudType;
