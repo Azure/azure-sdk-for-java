@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-stream-binder-eventhubs</artifactId>
-  <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs;current} -->
+  <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs;current} -->
 
   <name>Spring Cloud Azure Stream Binder Event Hubs</name>
   <description>Spring Cloud Azure Stream Binder Event Hubs</description>
@@ -32,17 +32,20 @@
     <system>GitHub</system>
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
-
+  <properties>
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus/>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-stream-binder-eventhubs-core</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
     </dependency>
     <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
     <dependency>
@@ -53,20 +56,20 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-stream-binder-test</artifactId>
-      <version>3.2.10</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream-binder-test;external_dependency} -->
+      <artifactId>spring-cloud-stream-test-binder</artifactId>
+      <version>4.1.2</version> <!-- {x-version-update;springboot3_org.springframework.cloud:spring-cloud-stream-test-binder;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -78,13 +81,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
@@ -92,13 +89,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.17</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.17</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -107,21 +104,96 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
-      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
+      <version>3.0.2</version> <!-- {x-version-update;springboot3_com.google.code.findbugs:jsr305;external_dependency} -->
       <scope>provided</scope>
     </dependency>
+
+    <!-- Add mockito-core 4.11.0 to work with Java 21 -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>5.11.0</version> <!-- {x-version-update;springboot3_org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
   <build>
     <plugins>
       <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.2.0</version> <!-- {x-version-update;springboot3_com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.30.0</version> <!-- {x-version-update;springboot3_com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.14.6</version> <!-- {x-version-update;springboot3_org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <executions>
+          <!-- disabled - the executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+          <execution>
+            <id>base-modules-compile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- disabled - compile without module-info for Java 8 -->
+          <execution>
+            <id>base-compile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- disabled - compile with Java 8 -->
+          <execution>
+            <id>base-testCompile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- Ensure we compile with Java 17 -->
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <release>17</release>
+              <compilerArgs>
+                <arg>-parameters</arg> <!-- https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention -->
+              </compilerArgs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter-actuator:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-actuator:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -130,7 +202,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.4.2</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifestEntries>
