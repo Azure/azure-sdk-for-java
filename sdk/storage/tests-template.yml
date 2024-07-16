@@ -49,9 +49,6 @@ stages:
       CloudConfig:
         Preview:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-          ServiceConnection: azure-sdk-tests
-          SubscriptionConfigurationFilePaths:
-            - eng/common/TestResources/sub-config/AzurePublicMsft.json
         PrivatePreview:
           SubscriptionConfiguration: $(sub-config-storage-test-resources)
       Clouds: Preview
