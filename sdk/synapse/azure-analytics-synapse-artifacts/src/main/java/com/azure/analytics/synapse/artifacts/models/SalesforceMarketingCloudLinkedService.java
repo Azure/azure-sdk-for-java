@@ -5,75 +5,79 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Salesforce Marketing Cloud linked service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SalesforceMarketingCloud")
-@JsonFlatten
+/**
+ * Salesforce Marketing Cloud linked service.
+ */
 @Fluent
 public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /*
-     * Properties used to connect to Salesforce Marketing Cloud. It is mutually exclusive with any other properties in
-     * the linked service. Type: object.
+     * Type of linked service.
      */
-    @JsonProperty(value = "typeProperties.connectionProperties")
+    private String type = "SalesforceMarketingCloud";
+
+    /*
+     * Properties used to connect to Salesforce Marketing Cloud. It is mutually exclusive with any other properties in the linked service. Type: object.
+     */
     private Object connectionProperties;
 
     /*
-     * The client ID associated with the Salesforce Marketing Cloud application. Type: string (or Expression with
-     * resultType string).
+     * The client ID associated with the Salesforce Marketing Cloud application. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.clientId", required = true)
     private Object clientId;
 
     /*
-     * The client secret associated with the Salesforce Marketing Cloud application. Type: string (or Expression with
-     * resultType string).
+     * The client secret associated with the Salesforce Marketing Cloud application. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.clientSecret")
     private SecretBase clientSecret;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true. Type: boolean
-     * (or Expression with resultType boolean).
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "typeProperties.useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
-     * connecting over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "typeProperties.useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-     * Type: boolean (or Expression with resultType boolean).
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "typeProperties.usePeerVerification")
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of SalesforceMarketingCloudLinkedService class. */
-    public SalesforceMarketingCloudLinkedService() {}
+    /**
+     * Creates an instance of SalesforceMarketingCloudLinkedService class.
+     */
+    public SalesforceMarketingCloudLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the connectionProperties property: Properties used to connect to Salesforce Marketing Cloud. It is mutually
      * exclusive with any other properties in the linked service. Type: object.
-     *
+     * 
      * @return the connectionProperties value.
      */
     public Object getConnectionProperties() {
@@ -83,7 +87,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Set the connectionProperties property: Properties used to connect to Salesforce Marketing Cloud. It is mutually
      * exclusive with any other properties in the linked service. Type: object.
-     *
+     * 
      * @param connectionProperties the connectionProperties value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
@@ -95,7 +99,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Get the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the clientId value.
      */
     public Object getClientId() {
@@ -105,7 +109,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Set the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
@@ -117,7 +121,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Get the clientSecret property: The client secret associated with the Salesforce Marketing Cloud application.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase getClientSecret() {
@@ -127,7 +131,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Set the clientSecret property: The client secret associated with the Salesforce Marketing Cloud application.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
@@ -139,7 +143,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object getUseEncryptedEndpoints() {
@@ -149,7 +153,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
@@ -162,7 +166,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object getUseHostVerification() {
@@ -173,7 +177,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
@@ -185,7 +189,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
      * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the usePeerVerification value.
      */
     public Object getUsePeerVerification() {
@@ -195,7 +199,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
      * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
@@ -207,7 +211,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -217,7 +221,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
@@ -226,31 +230,150 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (connectionProperties != null
+            || clientId != null
+            || clientSecret != null
+            || useEncryptedEndpoints != null
+            || useHostVerification != null
+            || usePeerVerification != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+            jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SalesforceMarketingCloudLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SalesforceMarketingCloudLinkedService if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SalesforceMarketingCloudLinkedService.
+     */
+    public static SalesforceMarketingCloudLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SalesforceMarketingCloudLinkedService deserializedSalesforceMarketingCloudLinkedService
+                = new SalesforceMarketingCloudLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedSalesforceMarketingCloudLinkedService
+                        .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedSalesforceMarketingCloudLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedSalesforceMarketingCloudLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedSalesforceMarketingCloudLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSalesforceMarketingCloudLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("connectionProperties".equals(fieldName)) {
+                            deserializedSalesforceMarketingCloudLinkedService.connectionProperties
+                                = reader.readUntyped();
+                        } else if ("clientId".equals(fieldName)) {
+                            deserializedSalesforceMarketingCloudLinkedService.clientId = reader.readUntyped();
+                        } else if ("clientSecret".equals(fieldName)) {
+                            deserializedSalesforceMarketingCloudLinkedService.clientSecret
+                                = SecretBase.fromJson(reader);
+                        } else if ("useEncryptedEndpoints".equals(fieldName)) {
+                            deserializedSalesforceMarketingCloudLinkedService.useEncryptedEndpoints
+                                = reader.readUntyped();
+                        } else if ("useHostVerification".equals(fieldName)) {
+                            deserializedSalesforceMarketingCloudLinkedService.useHostVerification
+                                = reader.readUntyped();
+                        } else if ("usePeerVerification".equals(fieldName)) {
+                            deserializedSalesforceMarketingCloudLinkedService.usePeerVerification
+                                = reader.readUntyped();
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedSalesforceMarketingCloudLinkedService.encryptedCredential
+                                = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSalesforceMarketingCloudLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedSalesforceMarketingCloudLinkedService;
+        });
     }
 }

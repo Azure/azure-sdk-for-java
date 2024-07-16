@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** This property indicates the current sku conversion status. */
+/**
+ * This property indicates the current sku conversion status.
+ */
 public final class SkuConversionStatus extends ExpandableStringEnum<SkuConversionStatus> {
-    /** Static value InProgress for SkuConversionStatus. */
+    /**
+     * Static value InProgress for SkuConversionStatus.
+     */
     public static final SkuConversionStatus IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Succeeded for SkuConversionStatus. */
+    /**
+     * Static value Succeeded for SkuConversionStatus.
+     */
     public static final SkuConversionStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for SkuConversionStatus. */
+    /**
+     * Static value Failed for SkuConversionStatus.
+     */
     public static final SkuConversionStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of SkuConversionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class SkuConversionStatus extends ExpandableStringEnum<SkuConversio
 
     /**
      * Creates or finds a SkuConversionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SkuConversionStatus.
      */
@@ -41,7 +49,7 @@ public final class SkuConversionStatus extends ExpandableStringEnum<SkuConversio
 
     /**
      * Gets known SkuConversionStatus values.
-     *
+     * 
      * @return known SkuConversionStatus values.
      */
     public static Collection<SkuConversionStatus> values() {

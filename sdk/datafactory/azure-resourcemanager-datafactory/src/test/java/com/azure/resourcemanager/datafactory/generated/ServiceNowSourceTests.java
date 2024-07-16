@@ -11,19 +11,19 @@ public final class ServiceNowSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceNowSource model = BinaryData.fromString(
-            "{\"type\":\"ovwizjraks\",\"query\":\"dataljgaykaqwnk\",\"queryTimeout\":\"dataewshhqgjvchl\",\"additionalColumns\":\"datazfbtczzjf\",\"sourceRetryCount\":\"datawqpukltfk\",\"sourceRetryWait\":\"dataoxmisnbzczpfvqt\",\"maxConcurrentConnections\":\"datakcfe\",\"disableMetricsCollection\":\"datazknhcvxf\",\"\":{\"ysdmovbvnjyq\":\"datagrnh\",\"kczolndwrggyt\":\"dataofdgzl\",\"ukfwmhzarrfttx\":\"datavoxnjbyjgobzj\",\"vvab\":\"dataifrjgvhone\"}}")
+            "{\"type\":\"ServiceNowSource\",\"query\":\"datajdga\",\"queryTimeout\":\"dataktnsowszbeflhx\",\"additionalColumns\":\"datargokyngarwzutzjx\",\"sourceRetryCount\":\"datassmnatnpo\",\"sourceRetryWait\":\"dataeylqysgm\",\"maxConcurrentConnections\":\"dataxngekcwe\",\"disableMetricsCollection\":\"dataqtkdginmhlgpefqq\",\"\":{\"cqgqrsopq\":\"datayowrwvbqv\",\"pvyktfuhfaabi\":\"dataiqfaxtljpyzcgugs\",\"qlkh\":\"datavslocdkpvv\",\"fmibwzuhy\":\"dataxnzjzashhiz\"}}")
             .toObject(ServiceNowSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceNowSource model = new ServiceNowSource().withSourceRetryCount("datawqpukltfk")
-            .withSourceRetryWait("dataoxmisnbzczpfvqt")
-            .withMaxConcurrentConnections("datakcfe")
-            .withDisableMetricsCollection("datazknhcvxf")
-            .withQueryTimeout("dataewshhqgjvchl")
-            .withAdditionalColumns("datazfbtczzjf")
-            .withQuery("dataljgaykaqwnk");
+        ServiceNowSource model = new ServiceNowSource().withSourceRetryCount("datassmnatnpo")
+            .withSourceRetryWait("dataeylqysgm")
+            .withMaxConcurrentConnections("dataxngekcwe")
+            .withDisableMetricsCollection("dataqtkdginmhlgpefqq")
+            .withQueryTimeout("dataktnsowszbeflhx")
+            .withAdditionalColumns("datargokyngarwzutzjx")
+            .withQuery("datajdga");
         model = BinaryData.fromObject(model).toObject(ServiceNowSource.class);
     }
 }

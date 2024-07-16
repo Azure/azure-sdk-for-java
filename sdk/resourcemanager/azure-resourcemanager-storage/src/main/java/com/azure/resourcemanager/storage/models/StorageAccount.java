@@ -16,12 +16,12 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure storage account. */
 @Fluent
@@ -673,6 +673,15 @@ public interface StorageAccount
 
         /** The stage of storage account definition allowing to configure allow cross tenant replication. */
         interface WithAllowCrossTenantReplication {
+            /**
+             * Enables allow cross tenant replication.
+             *
+             * Enables in storage account overrides the allow cross tenant replication settings for individual containers.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate allowCrossTenantReplication();
+
             /**
              * Disables allow cross tenant replication.
              *

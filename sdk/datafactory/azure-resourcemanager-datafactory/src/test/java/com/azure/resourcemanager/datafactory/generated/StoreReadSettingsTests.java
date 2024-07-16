@@ -13,15 +13,15 @@ public final class StoreReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StoreReadSettings model = BinaryData.fromString(
-            "{\"type\":\"mx\",\"maxConcurrentConnections\":\"datax\",\"disableMetricsCollection\":\"datauvgtoinozsmyvv\",\"\":{\"efcooptmdspddxgu\":\"datafbmrwhk\",\"xjwn\":\"dataiosibgolaxuy\",\"fiksjpkig\":\"datarskyrttnrikss\"}}")
+            "{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"dataj\",\"disableMetricsCollection\":\"datalzq\",\"\":{\"letb\":\"datar\",\"gcvqewx\":\"datalbhkij\",\"kzvjyvobevfbmxz\":\"dataqiwxeppuhkizo\",\"ilhdbbxm\":\"databpghsrlkpajiobyb\"}}")
             .toObject(StoreReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoreReadSettings model = new StoreReadSettings().withMaxConcurrentConnections("datax")
-            .withDisableMetricsCollection("datauvgtoinozsmyvv")
-            .withAdditionalProperties(mapOf("type", "mx"));
+        StoreReadSettings model = new StoreReadSettings().withMaxConcurrentConnections("dataj")
+            .withDisableMetricsCollection("datalzq")
+            .withAdditionalProperties(mapOf("type", "StoreReadSettings"));
         model = BinaryData.fromObject(model).toObject(StoreReadSettings.class);
     }
 

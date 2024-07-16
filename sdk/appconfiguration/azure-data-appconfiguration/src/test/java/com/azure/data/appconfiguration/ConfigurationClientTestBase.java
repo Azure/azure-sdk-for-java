@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -46,7 +47,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
-    private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String KEY_PREFIX = "key";
     private static final String LABEL_PREFIX = "label";
     private static final int PREFIX_LENGTH = 8;
@@ -59,7 +59,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
 
     static final Duration MINIMUM_RETENTION_PERIOD = Duration.ofHours(1);
 
-    static String connectionString;
+    static TokenCredential tokenCredential;
 
     String keyPrefix;
     String labelPrefix;
@@ -69,16 +69,22 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         labelPrefix = testResourceNamer.randomName(LABEL_PREFIX, PREFIX_LENGTH);
     }
 
-    <T> T clientSetup(Function<ConfigurationClientCredentials, T> clientBuilder) {
-        if (CoreUtils.isNullOrEmpty(connectionString)) {
-            connectionString = interceptorManager.isPlaybackMode() ? FAKE_CONNECTION_STRING
-                                   : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+    <T> T clientSetup(BiFunction<TokenCredential, String, T> clientBuilder) {
+        if (tokenCredential == null) {
+            tokenCredential = TestHelper.getTokenCredential(interceptorManager);
         }
 
-        Objects.requireNonNull(connectionString, "AZURE_APPCONFIG_CONNECTION_STRING expected to be set.");
+        String endpoint = interceptorManager.isPlaybackMode()
+            ? new ConfigurationClientCredentials(FAKE_CONNECTION_STRING).getBaseUri()
+            : Configuration.getGlobalConfiguration().get("AZ_CONFIG_ENDPOINT");
 
-        return Objects.requireNonNull(clientBuilder.apply(new ConfigurationClientCredentials(connectionString)));
+
+        Objects.requireNonNull(tokenCredential, "Token Credential expected to be set.");
+        Objects.requireNonNull(endpoint, "Az Config endpoint expected to be set.");
+
+        return Objects.requireNonNull(clientBuilder.apply(tokenCredential, endpoint));
     }
+
 
     String getKey() {
         return testResourceNamer.randomName(keyPrefix, RESOURCE_LENGTH);

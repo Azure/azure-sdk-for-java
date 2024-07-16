@@ -6,35 +6,35 @@ package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes Resource Quota properties.
  */
 @Immutable
-public final class QuotaProperties {
+public final class QuotaProperties implements JsonSerializable<QuotaProperties> {
     /*
      * The unit of usage measurement.
      */
-    @JsonProperty(value = "unit", required = true)
     private String unit;
 
     /*
      * The current usage of the resource.
      */
-    @JsonProperty(value = "currentValue", required = true)
     private long currentValue;
 
     /*
      * The maximum permitted usage of the resource.
      */
-    @JsonProperty(value = "limit", required = true)
     private long limit;
 
     /*
      * The details of the quota.
      */
-    @JsonProperty(value = "name", required = true)
     private QuotaName name;
 
     /**
@@ -98,4 +98,50 @@ public final class QuotaProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(QuotaProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeLongField("currentValue", this.currentValue);
+        jsonWriter.writeLongField("limit", this.limit);
+        jsonWriter.writeJsonField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QuotaProperties.
+     */
+    public static QuotaProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaProperties deserializedQuotaProperties = new QuotaProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("unit".equals(fieldName)) {
+                    deserializedQuotaProperties.unit = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedQuotaProperties.currentValue = reader.getLong();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedQuotaProperties.limit = reader.getLong();
+                } else if ("name".equals(fieldName)) {
+                    deserializedQuotaProperties.name = QuotaName.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaProperties;
+        });
+    }
 }

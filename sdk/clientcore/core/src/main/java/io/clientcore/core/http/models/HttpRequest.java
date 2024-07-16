@@ -57,7 +57,7 @@ public class HttpRequest {
         this.httpMethod = Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
         this.url = Objects.requireNonNull(url, "'url' cannot be null");
         this.headers = new HttpHeaders();
-        this.requestOptions = RequestOptions.NONE;
+        this.requestOptions = RequestOptions.none();
     }
 
     /**
@@ -75,7 +75,7 @@ public class HttpRequest {
         setUrl(url);
 
         this.headers = new HttpHeaders();
-        this.requestOptions = RequestOptions.NONE;
+        this.requestOptions = RequestOptions.none();
     }
 
     /**

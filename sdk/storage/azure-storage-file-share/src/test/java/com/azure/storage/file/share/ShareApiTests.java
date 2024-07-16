@@ -154,6 +154,20 @@ public class ShareApiTests extends FileShareTestBase {
             201);
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void createShareSasError() {
+        ShareServiceClient unauthorizedServiceClient = fileServiceBuilderHelper()
+            .sasToken("sig=dummyToken")
+            .buildClient();
+
+        ShareClient share = unauthorizedServiceClient.getShareClient(generateShareName());
+
+        ShareStorageException e = assertThrows(ShareStorageException.class, share::create);
+        assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+        assertTrue(e.getServiceMessage().contains("AuthenticationErrorDetail"));
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("createShareWithArgsSupplier")
@@ -163,9 +177,13 @@ public class ShareApiTests extends FileShareTestBase {
     }
 
     private static Stream<Arguments> createShareWithArgsSupplier() {
-        return Stream.of(Arguments.of(null, null, null), Arguments.of(null, 1, null),
-            Arguments.of(testMetadata, null, null), Arguments.of(null, null, ShareAccessTier.HOT),
-            Arguments.of(testMetadata, 1, ShareAccessTier.HOT));
+        return Stream.of(
+            Arguments.of(null, null, null),
+            Arguments.of(null, 1, null),
+            Arguments.of(testMetadata, null, null),
+            Arguments.of(null, null, ShareAccessTier.HOT),
+            Arguments.of(testMetadata, 1, ShareAccessTier.HOT),
+            Arguments.of(testMetadata, 6000, null));
     }
 
     @ParameterizedTest
@@ -178,8 +196,7 @@ public class ShareApiTests extends FileShareTestBase {
 
     private static Stream<Arguments> createShareWithInvalidArgsSupplier() {
         return Stream.of(Arguments.of(Collections.singletonMap("", "value"), 1, ShareErrorCode.EMPTY_METADATA_KEY),
-            Arguments.of(Collections.singletonMap("metadata!", "value"), 1, ShareErrorCode.INVALID_METADATA),
-            Arguments.of(testMetadata, 6000, ShareErrorCode.INVALID_HEADER_VALUE));
+            Arguments.of(Collections.singletonMap("metadata!", "value"), 1, ShareErrorCode.INVALID_METADATA));
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
@@ -1238,5 +1255,56 @@ public class ShareApiTests extends FileShareTestBase {
 
         String infoPermission = aadShareClient.createPermission(permission);
         assertNotNull(infoPermission);
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-05-04")
+    @ParameterizedTest
+    @MethodSource("createEnableSnapshotVirtualDirectoryAccessSupplier")
+    public void createEnableSnapshotVirtualDirectoryAccess(Boolean enableSnapshotVirtualDirectoryAccess) {
+        ShareCreateOptions options = new ShareCreateOptions();
+        ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
+        options.setProtocols(protocols);
+        options.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
+
+        premiumFileServiceClient.getShareClient(shareName).createWithResponse(options, null, null);
+
+        ShareProperties response = premiumFileServiceClient.getShareClient(shareName).getProperties();
+        assertEquals(protocols.toString(), response.getProtocols().toString());
+        if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
+            assertTrue(response.isSnapshotVirtualDirectoryAccessEnabled());
+        } else {
+            assertFalse(response.isSnapshotVirtualDirectoryAccessEnabled());
+        }
+    }
+
+    private static Stream<Arguments> createEnableSnapshotVirtualDirectoryAccessSupplier() {
+        return Stream.of(
+            Arguments.of(true),
+            Arguments.of(false),
+            Arguments.of((Boolean) null));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @ParameterizedTest
+    @MethodSource("createEnableSnapshotVirtualDirectoryAccessSupplier")
+    public void setPropertiesEnableSnapshotVirtualDirectoryAccess(Boolean enableSnapshotVirtualDirectoryAccess) {
+        ShareCreateOptions options = new ShareCreateOptions();
+        ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
+        options.setProtocols(protocols);
+
+        premiumFileServiceClient.getShareClient(shareName).createWithResponse(options, null, null);
+
+        ShareSetPropertiesOptions setPropertiesOptions = new ShareSetPropertiesOptions();
+        setPropertiesOptions.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
+
+        premiumFileServiceClient.getShareClient(shareName).setProperties(setPropertiesOptions);
+
+        ShareProperties response = premiumFileServiceClient.getShareClient(shareName).getProperties();
+        assertEquals(protocols.toString(), response.getProtocols().toString());
+        if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
+            assertTrue(response.isSnapshotVirtualDirectoryAccessEnabled());
+        } else {
+            assertFalse(response.isSnapshotVirtualDirectoryAccessEnabled());
+        }
     }
 }

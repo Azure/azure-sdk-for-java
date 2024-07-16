@@ -5,58 +5,59 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Notebook cell. */
+/**
+ * Notebook cell.
+ */
 @Fluent
-public final class NotebookCell {
+public final class NotebookCell implements JsonSerializable<NotebookCell> {
     /*
      * String identifying the type of cell.
      */
-    @JsonProperty(value = "cell_type", required = true)
     private String cellType;
 
     /*
      * Cell-level metadata.
      */
-    @JsonProperty(value = "metadata", required = true)
     private Object metadata;
 
     /*
      * Contents of the cell, represented as an array of lines.
      */
-    @JsonProperty(value = "source", required = true)
     private List<String> source;
 
     /*
      * Attachments associated with the cell.
      */
-    @JsonProperty(value = "attachments")
     private Object attachments;
 
     /*
      * Cell-level output items.
      */
-    @JsonProperty(value = "outputs")
     private List<NotebookCellOutputItem> outputs;
 
     /*
      * Notebook cell.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of NotebookCell class. */
-    public NotebookCell() {}
+    /**
+     * Creates an instance of NotebookCell class.
+     */
+    public NotebookCell() {
+    }
 
     /**
      * Get the cellType property: String identifying the type of cell.
-     *
+     * 
      * @return the cellType value.
      */
     public String getCellType() {
@@ -65,7 +66,7 @@ public final class NotebookCell {
 
     /**
      * Set the cellType property: String identifying the type of cell.
-     *
+     * 
      * @param cellType the cellType value to set.
      * @return the NotebookCell object itself.
      */
@@ -76,7 +77,7 @@ public final class NotebookCell {
 
     /**
      * Get the metadata property: Cell-level metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Object getMetadata() {
@@ -85,7 +86,7 @@ public final class NotebookCell {
 
     /**
      * Set the metadata property: Cell-level metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the NotebookCell object itself.
      */
@@ -96,7 +97,7 @@ public final class NotebookCell {
 
     /**
      * Get the source property: Contents of the cell, represented as an array of lines.
-     *
+     * 
      * @return the source value.
      */
     public List<String> getSource() {
@@ -105,7 +106,7 @@ public final class NotebookCell {
 
     /**
      * Set the source property: Contents of the cell, represented as an array of lines.
-     *
+     * 
      * @param source the source value to set.
      * @return the NotebookCell object itself.
      */
@@ -116,7 +117,7 @@ public final class NotebookCell {
 
     /**
      * Get the attachments property: Attachments associated with the cell.
-     *
+     * 
      * @return the attachments value.
      */
     public Object getAttachments() {
@@ -125,7 +126,7 @@ public final class NotebookCell {
 
     /**
      * Set the attachments property: Attachments associated with the cell.
-     *
+     * 
      * @param attachments the attachments value to set.
      * @return the NotebookCell object itself.
      */
@@ -136,7 +137,7 @@ public final class NotebookCell {
 
     /**
      * Get the outputs property: Cell-level output items.
-     *
+     * 
      * @return the outputs value.
      */
     public List<NotebookCellOutputItem> getOutputs() {
@@ -145,7 +146,7 @@ public final class NotebookCell {
 
     /**
      * Set the outputs property: Cell-level output items.
-     *
+     * 
      * @param outputs the outputs value to set.
      * @return the NotebookCell object itself.
      */
@@ -156,17 +157,16 @@ public final class NotebookCell {
 
     /**
      * Get the additionalProperties property: Notebook cell.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Notebook cell.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the NotebookCell object itself.
      */
@@ -175,11 +175,66 @@ public final class NotebookCell {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cell_type", this.cellType);
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        jsonWriter.writeArrayField("source", this.source, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeUntypedField("attachments", this.attachments);
+        jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotebookCell from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotebookCell if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NotebookCell.
+     */
+    public static NotebookCell fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotebookCell deserializedNotebookCell = new NotebookCell();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cell_type".equals(fieldName)) {
+                    deserializedNotebookCell.cellType = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedNotebookCell.metadata = reader.readUntyped();
+                } else if ("source".equals(fieldName)) {
+                    List<String> source = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNotebookCell.source = source;
+                } else if ("attachments".equals(fieldName)) {
+                    deserializedNotebookCell.attachments = reader.readUntyped();
+                } else if ("outputs".equals(fieldName)) {
+                    List<NotebookCellOutputItem> outputs
+                        = reader.readArray(reader1 -> NotebookCellOutputItem.fromJson(reader1));
+                    deserializedNotebookCell.outputs = outputs;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedNotebookCell.additionalProperties = additionalProperties;
+
+            return deserializedNotebookCell;
+        });
     }
 }

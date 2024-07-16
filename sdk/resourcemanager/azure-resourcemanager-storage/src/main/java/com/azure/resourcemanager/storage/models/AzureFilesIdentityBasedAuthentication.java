@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings for Azure Files identity based authentication. */
+/**
+ * Settings for Azure Files identity based authentication.
+ */
 @Fluent
 public final class AzureFilesIdentityBasedAuthentication {
     /*
@@ -29,14 +31,16 @@ public final class AzureFilesIdentityBasedAuthentication {
     @JsonProperty(value = "defaultSharePermission")
     private DefaultSharePermission defaultSharePermission;
 
-    /** Creates an instance of AzureFilesIdentityBasedAuthentication class. */
+    /**
+     * Creates an instance of AzureFilesIdentityBasedAuthentication class.
+     */
     public AzureFilesIdentityBasedAuthentication() {
     }
 
     /**
      * Get the directoryServiceOptions property: Indicates the directory service used. Note that this enum may be
      * extended in the future.
-     *
+     * 
      * @return the directoryServiceOptions value.
      */
     public DirectoryServiceOptions directoryServiceOptions() {
@@ -46,12 +50,12 @@ public final class AzureFilesIdentityBasedAuthentication {
     /**
      * Set the directoryServiceOptions property: Indicates the directory service used. Note that this enum may be
      * extended in the future.
-     *
+     * 
      * @param directoryServiceOptions the directoryServiceOptions value to set.
      * @return the AzureFilesIdentityBasedAuthentication object itself.
      */
-    public AzureFilesIdentityBasedAuthentication withDirectoryServiceOptions(
-        DirectoryServiceOptions directoryServiceOptions) {
+    public AzureFilesIdentityBasedAuthentication
+        withDirectoryServiceOptions(DirectoryServiceOptions directoryServiceOptions) {
         this.directoryServiceOptions = directoryServiceOptions;
         return this;
     }
@@ -59,7 +63,7 @@ public final class AzureFilesIdentityBasedAuthentication {
     /**
      * Get the activeDirectoryProperties property: Required if directoryServiceOptions are AD, optional if they are
      * AADKERB.
-     *
+     * 
      * @return the activeDirectoryProperties value.
      */
     public ActiveDirectoryProperties activeDirectoryProperties() {
@@ -69,12 +73,12 @@ public final class AzureFilesIdentityBasedAuthentication {
     /**
      * Set the activeDirectoryProperties property: Required if directoryServiceOptions are AD, optional if they are
      * AADKERB.
-     *
+     * 
      * @param activeDirectoryProperties the activeDirectoryProperties value to set.
      * @return the AzureFilesIdentityBasedAuthentication object itself.
      */
-    public AzureFilesIdentityBasedAuthentication withActiveDirectoryProperties(
-        ActiveDirectoryProperties activeDirectoryProperties) {
+    public AzureFilesIdentityBasedAuthentication
+        withActiveDirectoryProperties(ActiveDirectoryProperties activeDirectoryProperties) {
         this.activeDirectoryProperties = activeDirectoryProperties;
         return this;
     }
@@ -82,7 +86,7 @@ public final class AzureFilesIdentityBasedAuthentication {
     /**
      * Get the defaultSharePermission property: Default share permission for users using Kerberos authentication if RBAC
      * role is not assigned.
-     *
+     * 
      * @return the defaultSharePermission value.
      */
     public DefaultSharePermission defaultSharePermission() {
@@ -92,28 +96,26 @@ public final class AzureFilesIdentityBasedAuthentication {
     /**
      * Set the defaultSharePermission property: Default share permission for users using Kerberos authentication if RBAC
      * role is not assigned.
-     *
+     * 
      * @param defaultSharePermission the defaultSharePermission value to set.
      * @return the AzureFilesIdentityBasedAuthentication object itself.
      */
-    public AzureFilesIdentityBasedAuthentication withDefaultSharePermission(
-        DefaultSharePermission defaultSharePermission) {
+    public AzureFilesIdentityBasedAuthentication
+        withDefaultSharePermission(DefaultSharePermission defaultSharePermission) {
         this.defaultSharePermission = defaultSharePermission;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (directoryServiceOptions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property directoryServiceOptions in model"
-                            + " AzureFilesIdentityBasedAuthentication"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property directoryServiceOptions in model AzureFilesIdentityBasedAuthentication"));
         }
         if (activeDirectoryProperties() != null) {
             activeDirectoryProperties().validate();

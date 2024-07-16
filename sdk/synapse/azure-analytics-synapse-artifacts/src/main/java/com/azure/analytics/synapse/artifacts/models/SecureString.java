@@ -5,30 +5,46 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure Synapse secure string definition. The string value will be masked with asterisks '*' during Get or List API
  * calls.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SecureString")
 @Fluent
 public final class SecureString extends SecretBase {
     /*
+     * Type of the secret.
+     */
+    private String type = "SecureString";
+
+    /*
      * Value of secure string.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of SecureString class. */
-    public SecureString() {}
+    /**
+     * Creates an instance of SecureString class.
+     */
+    public SecureString() {
+    }
+
+    /**
+     * Get the type property: Type of the secret.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the value property: Value of secure string.
-     *
+     * 
      * @return the value value.
      */
     public String getValue() {
@@ -37,12 +53,52 @@ public final class SecureString extends SecretBase {
 
     /**
      * Set the value property: Value of secure string.
-     *
+     * 
      * @param value the value value to set.
      * @return the SecureString object itself.
      */
     public SecureString setValue(String value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecureString from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecureString if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecureString.
+     */
+    public static SecureString fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecureString deserializedSecureString = new SecureString();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedSecureString.value = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSecureString.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecureString;
+        });
     }
 }

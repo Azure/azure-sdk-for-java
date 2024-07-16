@@ -9,9 +9,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/OperationList.
-     * json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/OperationList.json
      */
     /**
      * Sample code: Get Registration Operations.

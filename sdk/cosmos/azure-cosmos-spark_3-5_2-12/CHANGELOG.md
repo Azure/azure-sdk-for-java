@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.33.0-beta.1 (Unreleased)
+### 4.34.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,20 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.33.0 (2024-06-22)
+
+#### Features Added
+* Added a service trait `CosmosClinetBuilderInterceptor` to allow intercepting and customizing the CosmosClient creation. - See [PR 40714](https://github.com/Azure/azure-sdk-for-java/pull/40714)
+
+#### Bugs Fixed
+* Fixed a race condition resulting in not always re-enqueueing retries for bulk writes. - See [PR 40714](https://github.com/Azure/azure-sdk-for-java/pull/40714)
+
+### 4.32.1 (2024-06-07)
+
+#### Other Changes
+* Added retries when retrieving new pages for query or readMany operations are timing out to avoid unbounded awaits. - See [PR 40506](https://github.com/Azure/azure-sdk-for-java/pull/40506)
+* Ensured that no statistics are reported when custom queries via `spark.cosmos.read.customQuery` are used. - See [PR 40506](https://github.com/Azure/azure-sdk-for-java/pull/40506)
 
 ### 4.32.0 (2024-05-24)
 
@@ -33,6 +47,7 @@
 
 #### Features Added
 * Added capability to use (and enforce) native netty transport. The native transport is more efficient - esepcially when the number of TCP connections being used is high. - See [PR 39834](https://github.com/Azure/azure-sdk-for-java/pull/39834)
+* Added ManagedIdentity authentication support for azure-cosmos-spark in Databricks. - See [PR 39870](https://github.com/Azure/azure-sdk-for-java/pull/39870)
 
 ### 4.29.0 (2024-04-16)
 

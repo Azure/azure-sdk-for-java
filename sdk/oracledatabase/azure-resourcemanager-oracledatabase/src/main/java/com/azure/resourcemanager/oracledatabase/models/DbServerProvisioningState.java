@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class DbServerProvisioningState extends ExpandableStringEnum<DbServ
      * @param name a name to look for.
      * @return the corresponding DbServerProvisioningState.
      */
-    @JsonCreator
     public static DbServerProvisioningState fromString(String name) {
         return fromString(name, DbServerProvisioningState.class);
     }

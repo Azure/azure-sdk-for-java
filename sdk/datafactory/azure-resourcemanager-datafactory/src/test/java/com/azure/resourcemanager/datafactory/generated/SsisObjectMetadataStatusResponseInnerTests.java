@@ -13,25 +13,25 @@ public final class SsisObjectMetadataStatusResponseInnerTests {
     public void testDeserialize() throws Exception {
         SsisObjectMetadataStatusResponseInner model = BinaryData
             .fromString(
-                "{\"status\":\"civyhzceuo\",\"name\":\"jrwjueiotwm\",\"properties\":\"ytdxwit\",\"error\":\"rjaw\"}")
+                "{\"status\":\"tdhxujznbmpowuwp\",\"name\":\"qlveualupjmkh\",\"properties\":\"obbc\",\"error\":\"s\"}")
             .toObject(SsisObjectMetadataStatusResponseInner.class);
-        Assertions.assertEquals("civyhzceuo", model.status());
-        Assertions.assertEquals("jrwjueiotwm", model.name());
-        Assertions.assertEquals("ytdxwit", model.properties());
-        Assertions.assertEquals("rjaw", model.error());
+        Assertions.assertEquals("tdhxujznbmpowuwp", model.status());
+        Assertions.assertEquals("qlveualupjmkh", model.name());
+        Assertions.assertEquals("obbc", model.properties());
+        Assertions.assertEquals("s", model.error());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SsisObjectMetadataStatusResponseInner model
-            = new SsisObjectMetadataStatusResponseInner().withStatus("civyhzceuo")
-                .withName("jrwjueiotwm")
-                .withProperties("ytdxwit")
-                .withError("rjaw");
+            = new SsisObjectMetadataStatusResponseInner().withStatus("tdhxujznbmpowuwp")
+                .withName("qlveualupjmkh")
+                .withProperties("obbc")
+                .withError("s");
         model = BinaryData.fromObject(model).toObject(SsisObjectMetadataStatusResponseInner.class);
-        Assertions.assertEquals("civyhzceuo", model.status());
-        Assertions.assertEquals("jrwjueiotwm", model.name());
-        Assertions.assertEquals("ytdxwit", model.properties());
-        Assertions.assertEquals("rjaw", model.error());
+        Assertions.assertEquals("tdhxujznbmpowuwp", model.status());
+        Assertions.assertEquals("qlveualupjmkh", model.name());
+        Assertions.assertEquals("obbc", model.properties());
+        Assertions.assertEquals("s", model.error());
     }
 }

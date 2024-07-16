@@ -5,46 +5,63 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity Azure Table sink. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureTableSink")
+/**
+ * A copy activity Azure Table sink.
+ */
 @Fluent
 public final class AzureTableSink extends CopySink {
     /*
+     * Copy sink type.
+     */
+    private String type = "AzureTableSink";
+
+    /*
      * Azure Table default partition key value. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "azureTableDefaultPartitionKeyValue")
     private Object azureTableDefaultPartitionKeyValue;
 
     /*
      * Azure Table partition key name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "azureTablePartitionKeyName")
     private Object azureTablePartitionKeyName;
 
     /*
      * Azure Table row key name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "azureTableRowKeyName")
     private Object azureTableRowKeyName;
 
     /*
      * Azure Table insert type. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "azureTableInsertType")
     private Object azureTableInsertType;
 
-    /** Creates an instance of AzureTableSink class. */
-    public AzureTableSink() {}
+    /**
+     * Creates an instance of AzureTableSink class.
+     */
+    public AzureTableSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the azureTableDefaultPartitionKeyValue property: Azure Table default partition key value. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the azureTableDefaultPartitionKeyValue value.
      */
     public Object getAzureTableDefaultPartitionKeyValue() {
@@ -54,7 +71,7 @@ public final class AzureTableSink extends CopySink {
     /**
      * Set the azureTableDefaultPartitionKeyValue property: Azure Table default partition key value. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param azureTableDefaultPartitionKeyValue the azureTableDefaultPartitionKeyValue value to set.
      * @return the AzureTableSink object itself.
      */
@@ -66,7 +83,7 @@ public final class AzureTableSink extends CopySink {
     /**
      * Get the azureTablePartitionKeyName property: Azure Table partition key name. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the azureTablePartitionKeyName value.
      */
     public Object getAzureTablePartitionKeyName() {
@@ -76,7 +93,7 @@ public final class AzureTableSink extends CopySink {
     /**
      * Set the azureTablePartitionKeyName property: Azure Table partition key name. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param azureTablePartitionKeyName the azureTablePartitionKeyName value to set.
      * @return the AzureTableSink object itself.
      */
@@ -88,7 +105,7 @@ public final class AzureTableSink extends CopySink {
     /**
      * Get the azureTableRowKeyName property: Azure Table row key name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the azureTableRowKeyName value.
      */
     public Object getAzureTableRowKeyName() {
@@ -98,7 +115,7 @@ public final class AzureTableSink extends CopySink {
     /**
      * Set the azureTableRowKeyName property: Azure Table row key name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param azureTableRowKeyName the azureTableRowKeyName value to set.
      * @return the AzureTableSink object itself.
      */
@@ -110,7 +127,7 @@ public final class AzureTableSink extends CopySink {
     /**
      * Get the azureTableInsertType property: Azure Table insert type. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the azureTableInsertType value.
      */
     public Object getAzureTableInsertType() {
@@ -120,7 +137,7 @@ public final class AzureTableSink extends CopySink {
     /**
      * Set the azureTableInsertType property: Azure Table insert type. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param azureTableInsertType the azureTableInsertType value to set.
      * @return the AzureTableSink object itself.
      */
@@ -129,38 +146,122 @@ public final class AzureTableSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("azureTableDefaultPartitionKeyValue", this.azureTableDefaultPartitionKeyValue);
+        jsonWriter.writeUntypedField("azureTablePartitionKeyName", this.azureTablePartitionKeyName);
+        jsonWriter.writeUntypedField("azureTableRowKeyName", this.azureTableRowKeyName);
+        jsonWriter.writeUntypedField("azureTableInsertType", this.azureTableInsertType);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureTableSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureTableSink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureTableSink.
+     */
+    public static AzureTableSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureTableSink deserializedAzureTableSink = new AzureTableSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedAzureTableSink.setWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedAzureTableSink.setWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedAzureTableSink.setSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedAzureTableSink.setSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedAzureTableSink.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureTableSink.type = reader.getString();
+                } else if ("azureTableDefaultPartitionKeyValue".equals(fieldName)) {
+                    deserializedAzureTableSink.azureTableDefaultPartitionKeyValue = reader.readUntyped();
+                } else if ("azureTablePartitionKeyName".equals(fieldName)) {
+                    deserializedAzureTableSink.azureTablePartitionKeyName = reader.readUntyped();
+                } else if ("azureTableRowKeyName".equals(fieldName)) {
+                    deserializedAzureTableSink.azureTableRowKeyName = reader.readUntyped();
+                } else if ("azureTableInsertType".equals(fieldName)) {
+                    deserializedAzureTableSink.azureTableInsertType = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureTableSink.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureTableSink;
+        });
     }
 }

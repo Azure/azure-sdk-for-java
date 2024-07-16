@@ -26,7 +26,7 @@ import java.util.List;
 public final class FhirR4ResearchStudy extends FhirR4DomainResource {
 
     /*
-     * The resourceType property.
+     * Discriminator property for Fhir_R4_DomainResource.
      */
     @Generated
     @JsonTypeId
@@ -213,7 +213,7 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     }
 
     /**
-     * Get the resourceType property: The resourceType property.
+     * Get the resourceType property: Discriminator property for Fhir_R4_DomainResource.
      *
      * @return the resourceType value.
      */

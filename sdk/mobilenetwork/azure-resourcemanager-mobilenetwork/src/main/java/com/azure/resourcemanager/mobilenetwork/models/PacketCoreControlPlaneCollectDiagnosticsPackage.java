@@ -52,8 +52,9 @@ public final class PacketCoreControlPlaneCollectDiagnosticsPackage {
      */
     public void validate() {
         if (storageAccountBlobUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storageAccountBlobUrl in model PacketCoreControlPlaneCollectDiagnosticsPackage"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountBlobUrl in model PacketCoreControlPlaneCollectDiagnosticsPackage"));
         }
     }
 

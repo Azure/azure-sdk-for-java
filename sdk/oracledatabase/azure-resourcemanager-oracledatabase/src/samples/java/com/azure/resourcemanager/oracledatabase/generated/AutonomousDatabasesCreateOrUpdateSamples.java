@@ -16,7 +16,39 @@ import java.util.Map;
  */
 public final class AutonomousDatabasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_create.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_create.json
+     */
+    /**
+     * Sample code: AutonomousDatabases_CreateOrUpdate.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        autonomousDatabasesCreateOrUpdate(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabases()
+            .define("databasedb1")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rg000")
+            .withTags(mapOf("tagK1", "tagV1"))
+            .withProperties(new AutonomousDatabaseProperties().withAdminPassword("fakeTokenPlaceholder")
+                .withCharacterSet("AL32UTF8")
+                .withComputeCount(2.0F)
+                .withComputeModel(ComputeModel.ECPU)
+                .withDataStorageSizeInTbs(1)
+                .withDbVersion("18.4.0.0")
+                .withDisplayName("example_autonomous_databasedb1")
+                .withNcharacterSet("AL16UTF16")
+                .withSubnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1")
+                .withVnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_create.json
      */
     /**
      * Sample code: Create Autonomous Database.
@@ -46,7 +78,9 @@ public final class AutonomousDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseClone_create.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabaseClone_create.
+     * json
      */
     /**
      * Sample code: Create clone Autonomous Database.
@@ -55,6 +89,40 @@ public final class AutonomousDatabasesCreateOrUpdateSamples {
      */
     public static void
         createCloneAutonomousDatabase(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabases()
+            .define("databasedb1")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rg000")
+            .withTags(mapOf("tagK1", "tagV1"))
+            .withProperties(new AutonomousDatabaseCloneProperties().withAdminPassword("fakeTokenPlaceholder")
+                .withCharacterSet("AL32UTF8")
+                .withComputeCount(2.0F)
+                .withComputeModel(ComputeModel.ECPU)
+                .withDataStorageSizeInTbs(1)
+                .withDisplayName("example_autonomous_databasedb1_clone")
+                .withNcharacterSet("AL16UTF16")
+                .withSubnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1")
+                .withVnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1")
+                .withSourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1")
+                .withCloneType(CloneType.FULL))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabaseClone_create.
+     * json
+     */
+    /**
+     * Sample code: AutonomousDatabases_CreateOrUpdate_clone.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        autonomousDatabasesCreateOrUpdateClone(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.autonomousDatabases()
             .define("databasedb1")
             .withRegion("eastus")

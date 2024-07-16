@@ -9,93 +9,80 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 
-/** The PathsAppendDataHeaders model. */
-@JacksonXmlRootElement(localName = "null")
+/**
+ * The PathsAppendDataHeaders model.
+ */
 @Fluent
 public final class PathsAppendDataHeaders {
     /*
      * The x-ms-version property.
      */
-    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
-    @JsonProperty(value = "ETag")
     private String eTag;
 
     /*
      * The x-ms-content-crc64 property.
      */
-    @JsonProperty(value = "x-ms-content-crc64")
     private byte[] xMsContentCrc64;
 
     /*
      * The x-ms-encryption-key-sha256 property.
      */
-    @JsonProperty(value = "x-ms-encryption-key-sha256")
     private String xMsEncryptionKeySha256;
 
     /*
      * The x-ms-lease-renewed property.
      */
-    @JsonProperty(value = "x-ms-lease-renewed")
     private Boolean xMsLeaseRenewed;
 
     /*
      * The x-ms-request-id property.
      */
-    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The x-ms-request-server-encrypted property.
      */
-    @JsonProperty(value = "x-ms-request-server-encrypted")
     private Boolean xMsRequestServerEncrypted;
 
     /*
      * The Date property.
      */
-    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
     /*
      * The x-ms-client-request-id property.
      */
-    @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
 
     /*
      * The Content-MD5 property.
      */
-    @JsonProperty(value = "Content-MD5")
     private byte[] contentMD5;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     private static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
 
-    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256 =
-            HttpHeaderName.fromString("x-ms-encryption-key-sha256");
+    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256
+        = HttpHeaderName.fromString("x-ms-encryption-key-sha256");
 
     private static final HttpHeaderName X_MS_LEASE_RENEWED = HttpHeaderName.fromString("x-ms-lease-renewed");
 
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
-    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
-            HttpHeaderName.fromString("x-ms-request-server-encrypted");
+    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
+        = HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PathsAppendDataHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsAppendDataHeaders(HttpHeaders rawHeaders) {
@@ -110,7 +97,7 @@ public final class PathsAppendDataHeaders {
         if (xMsLeaseRenewed != null) {
             this.xMsLeaseRenewed = Boolean.parseBoolean(xMsLeaseRenewed);
         }
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
@@ -128,7 +115,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -137,7 +124,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
@@ -148,7 +135,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -157,7 +144,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
@@ -168,7 +155,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Get the xMsContentCrc64 property: The x-ms-content-crc64 property.
-     *
+     * 
      * @return the xMsContentCrc64 value.
      */
     public byte[] getXMsContentCrc64() {
@@ -177,7 +164,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Set the xMsContentCrc64 property: The x-ms-content-crc64 property.
-     *
+     * 
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
@@ -188,7 +175,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Get the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
-     *
+     * 
      * @return the xMsEncryptionKeySha256 value.
      */
     public String getXMsEncryptionKeySha256() {
@@ -197,7 +184,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Set the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
-     *
+     * 
      * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
@@ -208,7 +195,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Get the xMsLeaseRenewed property: The x-ms-lease-renewed property.
-     *
+     * 
      * @return the xMsLeaseRenewed value.
      */
     public Boolean isXMsLeaseRenewed() {
@@ -217,7 +204,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Set the xMsLeaseRenewed property: The x-ms-lease-renewed property.
-     *
+     * 
      * @param xMsLeaseRenewed the xMsLeaseRenewed value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
@@ -228,7 +215,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -237,7 +224,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
@@ -248,7 +235,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     *
+     * 
      * @return the xMsRequestServerEncrypted value.
      */
     public Boolean isXMsRequestServerEncrypted() {
@@ -257,7 +244,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     *
+     * 
      * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
@@ -268,7 +255,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -280,7 +267,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
@@ -295,7 +282,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
@@ -304,7 +291,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
@@ -315,7 +302,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Get the contentMD5 property: The Content-MD5 property.
-     *
+     * 
      * @return the contentMD5 value.
      */
     public byte[] getContentMD5() {
@@ -324,7 +311,7 @@ public final class PathsAppendDataHeaders {
 
     /**
      * Set the contentMD5 property: The Content-MD5 property.
-     *
+     * 
      * @param contentMD5 the contentMD5 value to set.
      * @return the PathsAppendDataHeaders object itself.
      */

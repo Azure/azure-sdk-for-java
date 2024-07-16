@@ -5,47 +5,51 @@
 package com.azure.resourcemanager.appcomplianceautomation.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcomplianceautomation.models.ComplianceReportItem;
 import com.azure.resourcemanager.appcomplianceautomation.models.DownloadResponseComplianceDetailedPdfReport;
 import com.azure.resourcemanager.appcomplianceautomation.models.DownloadResponseCompliancePdfReport;
 import com.azure.resourcemanager.appcomplianceautomation.models.ResourceItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Object that includes all the possible response for the download operation. */
+/**
+ * Object that includes all the possible response for the download operation.
+ */
 @Immutable
-public final class DownloadResponseInner {
+public final class DownloadResponseInner implements JsonSerializable<DownloadResponseInner> {
     /*
-     * List of the reports
+     * Resource list of the report
      */
-    @JsonProperty(value = "resourceList", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceItem> resourceList;
 
     /*
      * List of the compliance result
      */
-    @JsonProperty(value = "complianceReport", access = JsonProperty.Access.WRITE_ONLY)
     private List<ComplianceReportItem> complianceReport;
 
     /*
-     * compliance pdf report
+     * Compliance pdf report
      */
-    @JsonProperty(value = "compliancePdfReport", access = JsonProperty.Access.WRITE_ONLY)
     private DownloadResponseCompliancePdfReport compliancePdfReport;
 
     /*
-     * compliance detailed pdf report
+     * The detailed compliance pdf report
      */
-    @JsonProperty(value = "complianceDetailedPdfReport", access = JsonProperty.Access.WRITE_ONLY)
     private DownloadResponseComplianceDetailedPdfReport complianceDetailedPdfReport;
 
-    /** Creates an instance of DownloadResponseInner class. */
-    public DownloadResponseInner() {
+    /**
+     * Creates an instance of DownloadResponseInner class.
+     */
+    private DownloadResponseInner() {
     }
 
     /**
-     * Get the resourceList property: List of the reports.
-     *
+     * Get the resourceList property: Resource list of the report.
+     * 
      * @return the resourceList value.
      */
     public List<ResourceItem> resourceList() {
@@ -54,7 +58,7 @@ public final class DownloadResponseInner {
 
     /**
      * Get the complianceReport property: List of the compliance result.
-     *
+     * 
      * @return the complianceReport value.
      */
     public List<ComplianceReportItem> complianceReport() {
@@ -62,8 +66,8 @@ public final class DownloadResponseInner {
     }
 
     /**
-     * Get the compliancePdfReport property: compliance pdf report.
-     *
+     * Get the compliancePdfReport property: Compliance pdf report.
+     * 
      * @return the compliancePdfReport value.
      */
     public DownloadResponseCompliancePdfReport compliancePdfReport() {
@@ -71,8 +75,8 @@ public final class DownloadResponseInner {
     }
 
     /**
-     * Get the complianceDetailedPdfReport property: compliance detailed pdf report.
-     *
+     * Get the complianceDetailedPdfReport property: The detailed compliance pdf report.
+     * 
      * @return the complianceDetailedPdfReport value.
      */
     public DownloadResponseComplianceDetailedPdfReport complianceDetailedPdfReport() {
@@ -81,7 +85,7 @@ public final class DownloadResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -97,5 +101,51 @@ public final class DownloadResponseInner {
         if (complianceDetailedPdfReport() != null) {
             complianceDetailedPdfReport().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DownloadResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DownloadResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DownloadResponseInner.
+     */
+    public static DownloadResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DownloadResponseInner deserializedDownloadResponseInner = new DownloadResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceList".equals(fieldName)) {
+                    List<ResourceItem> resourceList = reader.readArray(reader1 -> ResourceItem.fromJson(reader1));
+                    deserializedDownloadResponseInner.resourceList = resourceList;
+                } else if ("complianceReport".equals(fieldName)) {
+                    List<ComplianceReportItem> complianceReport
+                        = reader.readArray(reader1 -> ComplianceReportItem.fromJson(reader1));
+                    deserializedDownloadResponseInner.complianceReport = complianceReport;
+                } else if ("compliancePdfReport".equals(fieldName)) {
+                    deserializedDownloadResponseInner.compliancePdfReport
+                        = DownloadResponseCompliancePdfReport.fromJson(reader);
+                } else if ("complianceDetailedPdfReport".equals(fieldName)) {
+                    deserializedDownloadResponseInner.complianceDetailedPdfReport
+                        = DownloadResponseComplianceDetailedPdfReport.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDownloadResponseInner;
+        });
     }
 }

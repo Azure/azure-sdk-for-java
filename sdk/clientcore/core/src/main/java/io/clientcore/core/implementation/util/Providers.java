@@ -11,6 +11,8 @@ import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
+
 /**
  * Helper class that unifies SPI instances creation.
  *
@@ -72,7 +74,7 @@ public final class Providers<TProvider, TInstance> {
         }
 
         defaultImplementation = defaultImplementationName;
-        noDefaultImplementation = CoreUtils.isNullOrEmpty(defaultImplementation);
+        noDefaultImplementation = isNullOrEmpty(defaultImplementation);
         noProviderMessage = noProviderErrorMessage;
     }
 

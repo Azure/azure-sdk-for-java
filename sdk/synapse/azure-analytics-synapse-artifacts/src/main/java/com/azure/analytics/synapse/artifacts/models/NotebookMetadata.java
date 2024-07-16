@@ -5,39 +5,43 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Notebook root-level metadata. */
+/**
+ * Notebook root-level metadata.
+ */
 @Fluent
-public final class NotebookMetadata {
+public final class NotebookMetadata implements JsonSerializable<NotebookMetadata> {
     /*
      * Kernel information.
      */
-    @JsonProperty(value = "kernelspec")
     private NotebookKernelSpec kernelspec;
 
     /*
      * Language info.
      */
-    @JsonProperty(value = "language_info")
     private NotebookLanguageInfo languageInfo;
 
     /*
      * Notebook root-level metadata.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of NotebookMetadata class. */
-    public NotebookMetadata() {}
+    /**
+     * Creates an instance of NotebookMetadata class.
+     */
+    public NotebookMetadata() {
+    }
 
     /**
      * Get the kernelspec property: Kernel information.
-     *
+     * 
      * @return the kernelspec value.
      */
     public NotebookKernelSpec getKernelspec() {
@@ -46,7 +50,7 @@ public final class NotebookMetadata {
 
     /**
      * Set the kernelspec property: Kernel information.
-     *
+     * 
      * @param kernelspec the kernelspec value to set.
      * @return the NotebookMetadata object itself.
      */
@@ -57,7 +61,7 @@ public final class NotebookMetadata {
 
     /**
      * Get the languageInfo property: Language info.
-     *
+     * 
      * @return the languageInfo value.
      */
     public NotebookLanguageInfo getLanguageInfo() {
@@ -66,7 +70,7 @@ public final class NotebookMetadata {
 
     /**
      * Set the languageInfo property: Language info.
-     *
+     * 
      * @param languageInfo the languageInfo value to set.
      * @return the NotebookMetadata object itself.
      */
@@ -77,17 +81,16 @@ public final class NotebookMetadata {
 
     /**
      * Get the additionalProperties property: Notebook root-level metadata.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Notebook root-level metadata.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the NotebookMetadata object itself.
      */
@@ -96,11 +99,53 @@ public final class NotebookMetadata {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("kernelspec", this.kernelspec);
+        jsonWriter.writeJsonField("language_info", this.languageInfo);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotebookMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotebookMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NotebookMetadata.
+     */
+    public static NotebookMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotebookMetadata deserializedNotebookMetadata = new NotebookMetadata();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kernelspec".equals(fieldName)) {
+                    deserializedNotebookMetadata.kernelspec = NotebookKernelSpec.fromJson(reader);
+                } else if ("language_info".equals(fieldName)) {
+                    deserializedNotebookMetadata.languageInfo = NotebookLanguageInfo.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedNotebookMetadata.additionalProperties = additionalProperties;
+
+            return deserializedNotebookMetadata;
+        });
     }
 }

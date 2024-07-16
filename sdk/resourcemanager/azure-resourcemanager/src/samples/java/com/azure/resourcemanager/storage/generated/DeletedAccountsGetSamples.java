@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-/** Samples for DeletedAccounts Get. */
+/**
+ * Samples for DeletedAccounts Get.
+ */
 public final class DeletedAccountsGetSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/DeletedAccountGet.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/DeletedAccountGet.json
      */
     /**
      * Sample code: DeletedAccountGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deletedAccountGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getDeletedAccounts()

@@ -22,7 +22,7 @@ public final class GlobalParametersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"bdzmk\":{\"type\":\"String\",\"value\":\"dataggcphcu\"},\"kmtjd\":{\"type\":\"String\",\"value\":\"dataydbgyb\"},\"qqxmmzwdplru\":{\"type\":\"String\",\"value\":\"databbrtkeejju\"}},\"name\":\"xzearscwfocvvdse\",\"type\":\"qllpb\",\"etag\":\"cezbfgokeboaa\",\"id\":\"uoqafhvvbqyk\"}";
+            = "{\"properties\":{\"jwqx\":{\"type\":\"Array\",\"value\":\"datadzswvfwiu\"},\"wvbiryxsaxwu\":{\"type\":\"Object\",\"value\":\"datatfzgdq\"},\"ofakmopqfzvvtif\":{\"type\":\"Object\",\"value\":\"datansesxwkhkcd\"},\"vbpnrfucxtmhm\":{\"type\":\"Int\",\"value\":\"datasuemewfut\"}},\"name\":\"npsdpf\",\"type\":\"cwwbunfymbwinur\",\"etag\":\"t\",\"id\":\"jokttqgokhajuylk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class GlobalParametersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GlobalParameterResource response = manager.globalParameters()
-            .getWithResponse("jbkcyppagvyioixa", "geclaxcgdybi", "mgrbjgmnoczbxekz", com.azure.core.util.Context.NONE)
+            .getWithResponse("tsolxnhlrpsign", "is", "zobpxfgp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uoqafhvvbqyk", response.id());
-        Assertions.assertEquals(GlobalParameterType.STRING, response.properties().get("bdzmk").type());
+        Assertions.assertEquals("jokttqgokhajuylk", response.id());
+        Assertions.assertEquals(GlobalParameterType.ARRAY, response.properties().get("jwqx").type());
     }
 }

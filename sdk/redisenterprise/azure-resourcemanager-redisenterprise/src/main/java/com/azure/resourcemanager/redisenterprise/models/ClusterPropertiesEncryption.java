@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ClusterPropertiesEncryption {
     /*
-     * All Customer-managed key encryption properties for the resource. Set this to an empty object to use
-     * Microsoft-managed key encryption.
+     * All Customer-managed key encryption properties for the resource. Set this to an empty object to use Microsoft-managed key encryption.
      */
     @JsonProperty(value = "customerManagedKeyEncryption")
     private ClusterPropertiesEncryptionCustomerManagedKeyEncryption customerManagedKeyEncryption;

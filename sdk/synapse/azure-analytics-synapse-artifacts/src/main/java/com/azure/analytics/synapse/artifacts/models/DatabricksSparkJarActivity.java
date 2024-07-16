@@ -5,45 +5,59 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** DatabricksSparkJar activity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("DatabricksSparkJar")
-@JsonFlatten
+/**
+ * DatabricksSparkJar activity.
+ */
 @Fluent
 public class DatabricksSparkJarActivity extends ExecutionActivity {
     /*
-     * The full name of the class containing the main method to be executed. This class must be contained in a JAR
-     * provided as a library. Type: string (or Expression with resultType string).
+     * Type of activity.
      */
-    @JsonProperty(value = "typeProperties.mainClassName", required = true)
+    private String type = "DatabricksSparkJar";
+
+    /*
+     * The full name of the class containing the main method to be executed. This class must be contained in a JAR provided as a library. Type: string (or Expression with resultType string).
+     */
     private Object mainClassName;
 
     /*
      * Parameters that will be passed to the main method.
      */
-    @JsonProperty(value = "typeProperties.parameters")
     private List<Object> parameters;
 
     /*
      * A list of libraries to be installed on the cluster that will execute the job.
      */
-    @JsonProperty(value = "typeProperties.libraries")
     private List<Map<String, Object>> libraries;
 
-    /** Creates an instance of DatabricksSparkJarActivity class. */
-    public DatabricksSparkJarActivity() {}
+    /**
+     * Creates an instance of DatabricksSparkJarActivity class.
+     */
+    public DatabricksSparkJarActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the mainClassName property: The full name of the class containing the main method to be executed. This class
      * must be contained in a JAR provided as a library. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the mainClassName value.
      */
     public Object getMainClassName() {
@@ -53,7 +67,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     /**
      * Set the mainClassName property: The full name of the class containing the main method to be executed. This class
      * must be contained in a JAR provided as a library. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param mainClassName the mainClassName value to set.
      * @return the DatabricksSparkJarActivity object itself.
      */
@@ -64,7 +78,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
 
     /**
      * Get the parameters property: Parameters that will be passed to the main method.
-     *
+     * 
      * @return the parameters value.
      */
     public List<Object> getParameters() {
@@ -73,7 +87,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
 
     /**
      * Set the parameters property: Parameters that will be passed to the main method.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DatabricksSparkJarActivity object itself.
      */
@@ -84,7 +98,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
 
     /**
      * Get the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @return the libraries value.
      */
     public List<Map<String, Object>> getLibraries() {
@@ -93,7 +107,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
 
     /**
      * Set the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @param libraries the libraries value to set.
      * @return the DatabricksSparkJarActivity object itself.
      */
@@ -102,59 +116,181 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (mainClassName != null || parameters != null || libraries != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("mainClassName", this.mainClassName);
+            jsonWriter.writeArrayField("parameters", this.parameters,
+                (writer, element) -> writer.writeUntyped(element));
+            jsonWriter.writeArrayField("libraries", this.libraries,
+                (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeUntyped(element1)));
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabricksSparkJarActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabricksSparkJarActivity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabricksSparkJarActivity.
+     */
+    public static DatabricksSparkJarActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabricksSparkJarActivity deserializedDatabricksSparkJarActivity = new DatabricksSparkJarActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDatabricksSparkJarActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedDatabricksSparkJarActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedDatabricksSparkJarActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedDatabricksSparkJarActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedDatabricksSparkJarActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedDatabricksSparkJarActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedDatabricksSparkJarActivity
+                        .setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedDatabricksSparkJarActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedDatabricksSparkJarActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("mainClassName".equals(fieldName)) {
+                            deserializedDatabricksSparkJarActivity.mainClassName = reader.readUntyped();
+                        } else if ("parameters".equals(fieldName)) {
+                            List<Object> parameters = reader.readArray(reader1 -> reader1.readUntyped());
+                            deserializedDatabricksSparkJarActivity.parameters = parameters;
+                        } else if ("libraries".equals(fieldName)) {
+                            List<Map<String, Object>> libraries
+                                = reader.readArray(reader1 -> reader1.readMap(reader2 -> reader2.readUntyped()));
+                            deserializedDatabricksSparkJarActivity.libraries = libraries;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDatabricksSparkJarActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedDatabricksSparkJarActivity;
+        });
     }
 }

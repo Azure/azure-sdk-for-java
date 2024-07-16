@@ -28,7 +28,8 @@ public final class GoogleBigQueryV2LinkedServiceTypeProperties {
     private GoogleBigQueryV2AuthenticationType authenticationType;
 
     /*
-     * The client id of the google application used to acquire the refresh token. Type: string (or Expression with resultType string).
+     * The client id of the google application used to acquire the refresh token. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "clientId")
     private Object clientId;
@@ -46,13 +47,15 @@ public final class GoogleBigQueryV2LinkedServiceTypeProperties {
     private SecretBase refreshToken;
 
     /*
-     * The content of the .json key file that is used to authenticate the service account. Type: string (or Expression with resultType string).
+     * The content of the .json key file that is used to authenticate the service account. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "keyFileContent")
     private SecretBase keyFileContent;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

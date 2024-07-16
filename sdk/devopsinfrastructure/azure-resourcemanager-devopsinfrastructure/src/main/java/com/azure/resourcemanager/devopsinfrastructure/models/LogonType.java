@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class LogonType extends ExpandableStringEnum<LogonType> {
      * @param name a name to look for.
      * @return the corresponding LogonType.
      */
-    @JsonCreator
     public static LogonType fromString(String name) {
         return fromString(name, LogonType.class);
     }

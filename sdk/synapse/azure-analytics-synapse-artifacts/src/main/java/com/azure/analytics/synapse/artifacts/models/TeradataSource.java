@@ -5,39 +5,57 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity Teradata source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("TeradataSource")
+/**
+ * A copy activity Teradata source.
+ */
 @Fluent
 public final class TeradataSource extends TabularSource {
     /*
+     * Copy source type.
+     */
+    private String type = "TeradataSource";
+
+    /*
      * Teradata query. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "query")
     private Object query;
 
     /*
      * The partition mechanism that will be used for teradata read in parallel.
      */
-    @JsonProperty(value = "partitionOption")
     private TeradataPartitionOption partitionOption;
 
     /*
      * The settings that will be leveraged for teradata source partitioning.
      */
-    @JsonProperty(value = "partitionSettings")
     private TeradataPartitionSettings partitionSettings;
 
-    /** Creates an instance of TeradataSource class. */
-    public TeradataSource() {}
+    /**
+     * Creates an instance of TeradataSource class.
+     */
+    public TeradataSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the query property: Teradata query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object getQuery() {
@@ -46,7 +64,7 @@ public final class TeradataSource extends TabularSource {
 
     /**
      * Set the query property: Teradata query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the TeradataSource object itself.
      */
@@ -57,7 +75,7 @@ public final class TeradataSource extends TabularSource {
 
     /**
      * Get the partitionOption property: The partition mechanism that will be used for teradata read in parallel.
-     *
+     * 
      * @return the partitionOption value.
      */
     public TeradataPartitionOption getPartitionOption() {
@@ -66,7 +84,7 @@ public final class TeradataSource extends TabularSource {
 
     /**
      * Set the partitionOption property: The partition mechanism that will be used for teradata read in parallel.
-     *
+     * 
      * @param partitionOption the partitionOption value to set.
      * @return the TeradataSource object itself.
      */
@@ -77,7 +95,7 @@ public final class TeradataSource extends TabularSource {
 
     /**
      * Get the partitionSettings property: The settings that will be leveraged for teradata source partitioning.
-     *
+     * 
      * @return the partitionSettings value.
      */
     public TeradataPartitionSettings getPartitionSettings() {
@@ -86,7 +104,7 @@ public final class TeradataSource extends TabularSource {
 
     /**
      * Set the partitionSettings property: The settings that will be leveraged for teradata source partitioning.
-     *
+     * 
      * @param partitionSettings the partitionSettings value to set.
      * @return the TeradataSource object itself.
      */
@@ -95,38 +113,120 @@ public final class TeradataSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
+        jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("query", this.query);
+        jsonWriter.writeStringField("partitionOption",
+            this.partitionOption == null ? null : this.partitionOption.toString());
+        jsonWriter.writeJsonField("partitionSettings", this.partitionSettings);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TeradataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TeradataSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TeradataSource.
+     */
+    public static TeradataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TeradataSource deserializedTeradataSource = new TeradataSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedTeradataSource.setSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedTeradataSource.setSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedTeradataSource.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedTeradataSource.setQueryTimeout(reader.readUntyped());
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedTeradataSource.setAdditionalColumns(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedTeradataSource.type = reader.getString();
+                } else if ("query".equals(fieldName)) {
+                    deserializedTeradataSource.query = reader.readUntyped();
+                } else if ("partitionOption".equals(fieldName)) {
+                    deserializedTeradataSource.partitionOption = TeradataPartitionOption.fromString(reader.getString());
+                } else if ("partitionSettings".equals(fieldName)) {
+                    deserializedTeradataSource.partitionSettings = TeradataPartitionSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedTeradataSource.setAdditionalProperties(additionalProperties);
+
+            return deserializedTeradataSource;
+        });
     }
 }

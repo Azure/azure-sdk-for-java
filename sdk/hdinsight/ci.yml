@@ -47,7 +47,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: hdinsight
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-hdinsight
         groupId: com.azure.resourcemanager

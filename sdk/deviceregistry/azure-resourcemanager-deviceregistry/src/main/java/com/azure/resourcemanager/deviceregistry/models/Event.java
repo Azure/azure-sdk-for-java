@@ -6,44 +6,43 @@ package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines the event properties.
  */
 @Fluent
-public final class Event {
+public final class Event implements JsonSerializable<Event> {
     /*
      * The name of the event.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The address of the notifier of the event in the asset (e.g. URL) so that a client can access the event on the
      * asset.
      */
-    @JsonProperty(value = "eventNotifier", required = true)
     private String eventNotifier;
 
     /*
      * The path to the type definition of the capability (e.g. DTMI, OPC UA information model node id, etc.), for
      * example dtmi:com:example:Robot:_contents:__prop1;1.
      */
-    @JsonProperty(value = "capabilityId")
     private String capabilityId;
 
     /*
      * An indication of how the event should be mapped to OpenTelemetry.
      */
-    @JsonProperty(value = "observabilityMode")
     private EventsObservabilityMode observabilityMode;
 
     /*
      * Protocol-specific configuration for the event. For OPC UA, this could include configuration like,
      * publishingInterval, samplingInterval, and queueSize.
      */
-    @JsonProperty(value = "eventConfiguration")
     private String eventConfiguration;
 
     /**
@@ -171,4 +170,54 @@ public final class Event {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Event.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eventNotifier", this.eventNotifier);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("capabilityId", this.capabilityId);
+        jsonWriter.writeStringField("observabilityMode",
+            this.observabilityMode == null ? null : this.observabilityMode.toString());
+        jsonWriter.writeStringField("eventConfiguration", this.eventConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Event from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Event if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Event.
+     */
+    public static Event fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Event deserializedEvent = new Event();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventNotifier".equals(fieldName)) {
+                    deserializedEvent.eventNotifier = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEvent.name = reader.getString();
+                } else if ("capabilityId".equals(fieldName)) {
+                    deserializedEvent.capabilityId = reader.getString();
+                } else if ("observabilityMode".equals(fieldName)) {
+                    deserializedEvent.observabilityMode = EventsObservabilityMode.fromString(reader.getString());
+                } else if ("eventConfiguration".equals(fieldName)) {
+                    deserializedEvent.eventConfiguration = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEvent;
+        });
+    }
 }

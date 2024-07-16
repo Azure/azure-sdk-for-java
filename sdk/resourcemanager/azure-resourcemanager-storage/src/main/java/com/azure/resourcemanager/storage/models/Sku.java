@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SKU of the storage account. */
+/**
+ * The SKU of the storage account.
+ */
 @Fluent
 public final class Sku {
     /*
@@ -24,14 +26,16 @@ public final class Sku {
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private SkuTier tier;
 
-    /** Creates an instance of Sku class. */
+    /**
+     * Creates an instance of Sku class.
+     */
     public Sku() {
     }
 
     /**
      * Get the name property: The SKU name. Required for account creation; optional for update. Note that in older
      * versions, SKU name was called accountType.
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -41,7 +45,7 @@ public final class Sku {
     /**
      * Set the name property: The SKU name. Required for account creation; optional for update. Note that in older
      * versions, SKU name was called accountType.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -52,7 +56,7 @@ public final class Sku {
 
     /**
      * Get the tier property: The SKU tier. This is based on the SKU name.
-     *
+     * 
      * @return the tier value.
      */
     public SkuTier tier() {
@@ -61,13 +65,12 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property name in model Sku"));
         }
     }
 

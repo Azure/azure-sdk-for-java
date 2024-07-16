@@ -31,7 +31,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: databricks
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-databricks
         groupId: com.azure.resourcemanager

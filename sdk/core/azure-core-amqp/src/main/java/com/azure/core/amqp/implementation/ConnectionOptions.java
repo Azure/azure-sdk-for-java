@@ -38,6 +38,7 @@ public class ConnectionOptions {
     private final String clientVersion;
     private final SslDomain.VerifyMode verifyMode;
     private final String hostname;
+    private final boolean enableSsl;
     private final int port;
 
     /**
@@ -67,7 +68,7 @@ public class ConnectionOptions {
         SslDomain.VerifyMode verifyMode, String product, String clientVersion) {
         this(fullyQualifiedNamespace, tokenCredential, authorizationType, authorizationScope, transport, retryOptions,
             proxyOptions, scheduler, clientOptions, verifyMode, product, clientVersion, fullyQualifiedNamespace,
-            getPort(transport));
+            getPort(transport), true);
     }
 
     /**
@@ -91,6 +92,7 @@ public class ConnectionOptions {
      *     connect directly to the AMQP broker.
      * @param port Connection port. Used to create the connection to in the case we cannot connect directly
      *     to the AMQP broker.
+     * @param enableSsl true to enable SSL when creating AMQP connection.
      *
      * @throws NullPointerException in the case that {@code fullyQualifiedNamespace}, {@code tokenCredential},
      *     {@code authorizationType}, {@code transport}, {@code retryOptions}, {@code scheduler},
@@ -99,7 +101,8 @@ public class ConnectionOptions {
     public ConnectionOptions(String fullyQualifiedNamespace, TokenCredential tokenCredential,
         CbsAuthorizationType authorizationType, String authorizationScope, AmqpTransportType transport,
         AmqpRetryOptions retryOptions, ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
-        SslDomain.VerifyMode verifyMode, String product, String clientVersion, String hostname, int port) {
+        SslDomain.VerifyMode verifyMode, String product, String clientVersion, String hostname, int port,
+        boolean enableSsl) {
 
         this.fullyQualifiedNamespace
             = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' is required.");
@@ -112,6 +115,7 @@ public class ConnectionOptions {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' is required.");
         this.verifyMode = Objects.requireNonNull(verifyMode, "'verifyMode' is required.");
         this.hostname = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
+        this.enableSsl = enableSsl;
         this.port = port != -1 ? port : getPort(transport);
         this.proxyOptions = proxyOptions;
 
@@ -202,7 +206,8 @@ public class ConnectionOptions {
     }
 
     /**
-     * Gets the verification mode for the SSL certificate.
+     * Gets the verification mode for the SSL certificate.  The verification mode used when {@link #isEnableSsl()} is
+     * true.
      *
      * @return The verification mode for the SSL certificate.
      */
@@ -246,6 +251,15 @@ public class ConnectionOptions {
      */
     public int getPort() {
         return port;
+    }
+
+    /**
+     * Check if SSL should be enabled when creating the AMQP connection.
+     *
+     * @return {@code true} to enable SSL when creating AMQP connection, false otherwise.
+     */
+    public boolean isEnableSsl() {
+        return enableSsl;
     }
 
     private static int getPort(AmqpTransportType transport) {

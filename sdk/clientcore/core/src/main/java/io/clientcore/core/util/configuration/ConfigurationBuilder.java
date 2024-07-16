@@ -4,7 +4,6 @@
 package io.clientcore.core.util.configuration;
 
 import io.clientcore.core.annotation.Metadata;
-import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.implementation.util.EnvironmentConfiguration;
 import io.clientcore.core.util.ClientLogger;
 
@@ -14,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static io.clientcore.core.annotation.TypeConditions.FLUENT;
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
  * Builds {@link Configuration} with external source.
@@ -202,7 +202,7 @@ public final class ConfigurationBuilder {
     }
 
     private static String getAbsolutePath(String root, String relative) {
-        if (CoreUtils.isNullOrEmpty(root)) {
+        if (isNullOrEmpty(root)) {
             return relative;
         }
 

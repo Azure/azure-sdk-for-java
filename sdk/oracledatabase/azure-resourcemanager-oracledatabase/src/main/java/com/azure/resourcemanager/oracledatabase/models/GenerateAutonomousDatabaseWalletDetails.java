@@ -6,29 +6,31 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Autonomous Database Generate Wallet resource model.
  */
 @Fluent
-public final class GenerateAutonomousDatabaseWalletDetails {
+public final class GenerateAutonomousDatabaseWalletDetails
+    implements JsonSerializable<GenerateAutonomousDatabaseWalletDetails> {
     /*
      * The type of wallet to generate.
      */
-    @JsonProperty(value = "generateType")
     private GenerateType generateType;
 
     /*
      * True when requesting regional connection strings in PDB connect info, applicable to cross-region DG only.
      */
-    @JsonProperty(value = "isRegional")
     private Boolean isRegional;
 
     /*
      * The password to encrypt the keys inside the wallet
      */
-    @JsonProperty(value = "password", required = true)
     private String password;
 
     /**
@@ -113,4 +115,50 @@ public final class GenerateAutonomousDatabaseWalletDetails {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GenerateAutonomousDatabaseWalletDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("generateType", this.generateType == null ? null : this.generateType.toString());
+        jsonWriter.writeBooleanField("isRegional", this.isRegional);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenerateAutonomousDatabaseWalletDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenerateAutonomousDatabaseWalletDetails if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GenerateAutonomousDatabaseWalletDetails.
+     */
+    public static GenerateAutonomousDatabaseWalletDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenerateAutonomousDatabaseWalletDetails deserializedGenerateAutonomousDatabaseWalletDetails
+                = new GenerateAutonomousDatabaseWalletDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("password".equals(fieldName)) {
+                    deserializedGenerateAutonomousDatabaseWalletDetails.password = reader.getString();
+                } else if ("generateType".equals(fieldName)) {
+                    deserializedGenerateAutonomousDatabaseWalletDetails.generateType
+                        = GenerateType.fromString(reader.getString());
+                } else if ("isRegional".equals(fieldName)) {
+                    deserializedGenerateAutonomousDatabaseWalletDetails.isRegional
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenerateAutonomousDatabaseWalletDetails;
+        });
+    }
 }

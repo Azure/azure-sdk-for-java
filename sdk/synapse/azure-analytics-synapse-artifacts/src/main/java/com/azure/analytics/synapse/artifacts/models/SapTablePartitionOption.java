@@ -5,51 +5,64 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The partition mechanism that will be used for SAP table read in parallel. */
+/**
+ * The partition mechanism that will be used for SAP table read in parallel.
+ */
 public final class SapTablePartitionOption extends ExpandableStringEnum<SapTablePartitionOption> {
-    /** Static value None for SapTablePartitionOption. */
+    /**
+     * Static value None for SapTablePartitionOption.
+     */
     public static final SapTablePartitionOption NONE = fromString("None");
 
-    /** Static value PartitionOnInt for SapTablePartitionOption. */
+    /**
+     * Static value PartitionOnInt for SapTablePartitionOption.
+     */
     public static final SapTablePartitionOption PARTITION_ON_INT = fromString("PartitionOnInt");
 
-    /** Static value PartitionOnCalendarYear for SapTablePartitionOption. */
+    /**
+     * Static value PartitionOnCalendarYear for SapTablePartitionOption.
+     */
     public static final SapTablePartitionOption PARTITION_ON_CALENDAR_YEAR = fromString("PartitionOnCalendarYear");
 
-    /** Static value PartitionOnCalendarMonth for SapTablePartitionOption. */
+    /**
+     * Static value PartitionOnCalendarMonth for SapTablePartitionOption.
+     */
     public static final SapTablePartitionOption PARTITION_ON_CALENDAR_MONTH = fromString("PartitionOnCalendarMonth");
 
-    /** Static value PartitionOnCalendarDate for SapTablePartitionOption. */
+    /**
+     * Static value PartitionOnCalendarDate for SapTablePartitionOption.
+     */
     public static final SapTablePartitionOption PARTITION_ON_CALENDAR_DATE = fromString("PartitionOnCalendarDate");
 
-    /** Static value PartitionOnTime for SapTablePartitionOption. */
+    /**
+     * Static value PartitionOnTime for SapTablePartitionOption.
+     */
     public static final SapTablePartitionOption PARTITION_ON_TIME = fromString("PartitionOnTime");
 
     /**
      * Creates a new instance of SapTablePartitionOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SapTablePartitionOption() {}
+    public SapTablePartitionOption() {
+    }
 
     /**
      * Creates or finds a SapTablePartitionOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SapTablePartitionOption.
      */
-    @JsonCreator
     public static SapTablePartitionOption fromString(String name) {
         return fromString(name, SapTablePartitionOption.class);
     }
 
     /**
      * Gets known SapTablePartitionOption values.
-     *
+     * 
      * @return known SapTablePartitionOption values.
      */
     public static Collection<SapTablePartitionOption> values() {

@@ -8,6 +8,10 @@ package com.azure.resourcemanager.deviceregistry.generated;
  * Samples for OperationStatus Get.
  */
 public final class OperationStatusGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Get_OperationStatus.json
+     */
     /**
      * Sample code: Get_OperationStatus.
      * 

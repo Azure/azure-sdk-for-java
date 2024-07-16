@@ -9,9 +9,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
  */
 public final class DiagnosticsPackagesListByPacketCoreControlPlaneSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/
-     * DiagnosticsPackageListByPacketCoreControlPlane.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DiagnosticsPackageListByPacketCoreControlPlane.json
      */
     /**
      * Sample code: List diagnostics packages under a packet core control plane.
@@ -20,7 +18,7 @@ public final class DiagnosticsPackagesListByPacketCoreControlPlaneSamples {
      */
     public static void listDiagnosticsPackagesUnderAPacketCoreControlPlane(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.diagnosticsPackages().listByPacketCoreControlPlane("rg1", "TestPacketCoreCP",
-            com.azure.core.util.Context.NONE);
+        manager.diagnosticsPackages()
+            .listByPacketCoreControlPlane("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE);
     }
 }

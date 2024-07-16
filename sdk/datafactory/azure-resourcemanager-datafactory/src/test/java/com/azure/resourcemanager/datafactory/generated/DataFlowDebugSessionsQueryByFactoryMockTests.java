@@ -22,7 +22,7 @@ public final class DataFlowDebugSessionsQueryByFactoryMockTests {
     @Test
     public void testQueryByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"dataFlowName\":\"nub\",\"computeType\":\"ofihcgyrngbrfyt\",\"coreCount\":1863481234,\"nodeCount\":1781382045,\"integrationRuntimeName\":\"bsr\",\"sessionId\":\"woeuqqgxzhdl\",\"startTime\":\"amearg\",\"timeToLiveInMinutes\":1203253385,\"lastActivityTime\":\"n\",\"\":{\"ht\":\"datacvvyfrf\"}}]}";
+            = "{\"value\":[{\"dataFlowName\":\"ccpg\",\"computeType\":\"ixxxgltqldlh\",\"coreCount\":911012397,\"nodeCount\":209988622,\"integrationRuntimeName\":\"dam\",\"sessionId\":\"ajh\",\"startTime\":\"bpsnogyvpfyjlfn\",\"timeToLiveInMinutes\":1285291253,\"lastActivityTime\":\"toqhyprpwkvz\",\"\":{\"o\":\"datadlhc\",\"jqz\":\"datakmpxtfcrugitjnw\",\"eaqnbkcqoyqmbu\":\"datagq\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,17 +31,17 @@ public final class DataFlowDebugSessionsQueryByFactoryMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DataFlowDebugSessionInfo> response
-            = manager.dataFlowDebugSessions().queryByFactory("xv", "ybidesrzp", com.azure.core.util.Context.NONE);
+        PagedIterable<DataFlowDebugSessionInfo> response = manager.dataFlowDebugSessions()
+            .queryByFactory("enpihtgi", "aeeqgpviroz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nub", response.iterator().next().dataFlowName());
-        Assertions.assertEquals("ofihcgyrngbrfyt", response.iterator().next().computeType());
-        Assertions.assertEquals(1863481234, response.iterator().next().coreCount());
-        Assertions.assertEquals(1781382045, response.iterator().next().nodeCount());
-        Assertions.assertEquals("bsr", response.iterator().next().integrationRuntimeName());
-        Assertions.assertEquals("woeuqqgxzhdl", response.iterator().next().sessionId());
-        Assertions.assertEquals("amearg", response.iterator().next().startTime());
-        Assertions.assertEquals(1203253385, response.iterator().next().timeToLiveInMinutes());
-        Assertions.assertEquals("n", response.iterator().next().lastActivityTime());
+        Assertions.assertEquals("ccpg", response.iterator().next().dataFlowName());
+        Assertions.assertEquals("ixxxgltqldlh", response.iterator().next().computeType());
+        Assertions.assertEquals(911012397, response.iterator().next().coreCount());
+        Assertions.assertEquals(209988622, response.iterator().next().nodeCount());
+        Assertions.assertEquals("dam", response.iterator().next().integrationRuntimeName());
+        Assertions.assertEquals("ajh", response.iterator().next().sessionId());
+        Assertions.assertEquals("bpsnogyvpfyjlfn", response.iterator().next().startTime());
+        Assertions.assertEquals(1285291253, response.iterator().next().timeToLiveInMinutes());
+        Assertions.assertEquals("toqhyprpwkvz", response.iterator().next().lastActivityTime());
     }
 }

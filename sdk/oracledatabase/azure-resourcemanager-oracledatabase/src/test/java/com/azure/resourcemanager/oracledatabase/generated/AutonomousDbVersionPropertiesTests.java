@@ -11,7 +11,7 @@ public final class AutonomousDbVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDbVersionProperties model = BinaryData.fromString(
-            "{\"version\":\"ljuahaquhcdh\",\"dbWorkload\":\"APEX\",\"isDefaultForFree\":false,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":false,\"isPaidEnabled\":false}")
+            "{\"version\":\"gw\",\"dbWorkload\":\"AJD\",\"isDefaultForFree\":false,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":false,\"isPaidEnabled\":true}")
             .toObject(AutonomousDbVersionProperties.class);
     }
 

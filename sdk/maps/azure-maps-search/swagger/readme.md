@@ -1,14 +1,12 @@
-# Azure Search
+# Azure Maps Search for Java
 
 > see https://aka.ms/autorest
 
-This is the AutoRest configuration file for Search Client
-
+This is the AutoRest configuration file for Maps Search.
 ---
-
 ## Getting Started
 
-To build the SDK for Search, simply [Install AutoRest](https://aka.ms/autorest/install) and in this folder, run:
+To build the SDK for Maps Search, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
 
 > `autorest`
 
@@ -16,7 +14,17 @@ To see additional help and options, run:
 
 > `autorest --help`
 
----
+### Setup
+```ps
+npm install -g autorest
+```
+
+### Generation
+
+```ps
+cd <swagger-folder>
+autorest
+```
 
 ## Configuration
 
@@ -26,16 +34,18 @@ These are the global settings for Search Client.
 
 ``` yaml
 directive:
-
   - from: swagger-document
     where: "$"
     transform: >
-        $["securityDefinitions"] = {};
-  - from: swagger-document
-    where: "$"
-    transform: >
-        $["security"] = [];
-            
+      $["securityDefinitions"] = {};
+      $["security"] = [];
+  
+  - rename-model:
+      from: Address
+      to: MapsSearchAddress
+  - rename-model:
+      from: Polygon
+      to: MapsPolygon
   - rename-model:
       from: SearchAddressBatchResult
       to: SearchAddressBatchResultPrivate
@@ -56,6 +66,7 @@ title: SearchClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Search/preview/1.0/search.json
 namespace: com.azure.maps.search
 java: true
+use: '@autorest/java@4.1.29'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0
@@ -68,7 +79,8 @@ generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: Address,AddressRanges,EntryPoint,BatchResultSummary,Brand,BrandName,Classification,ClassificationName,DataSource,ElectricVehicleConnector,EntryPointType,GeographicEntityType,GeometryIdentifier,LocalizedMapView,OperatingHoursRange,MatchType,OperatingHours,OperatingHoursTimeRange,PointOfInterest,PointOfInterestCategory,PointOfInterestCategorySet,PointOfInterestCategoryTreeResult,PointOfInterestExtendedPostalCodes,Polygon,ReverseSearchAddressResult,ReverseSearchAddressResultItem,ReverseSearchCrossStreetAddressResultItem,ReverseSearchCrossStreetAddressResult,RoadUseType,SearchAddressResultType,SearchAddressResultItem,SearchSummary,SearchIndexes,SearchAddressResult,QueryType
-customization-jar-path: target/azure-maps-search-customization-1.0.0-beta.1.jar
-customization-class: SearchCustomization
+custom-types: MapsSearchAddress,AddressRanges,EntryPoint,BatchResultSummary,Brand,BrandName,Classification,ClassificationName,DataSource,ElectricVehicleConnector,EntryPointType,GeographicEntityType,GeometryIdentifier,LocalizedMapView,OperatingHoursRange,MatchType,OperatingHours,OperatingHoursTimeRange,PointOfInterest,PointOfInterestCategory,PointOfInterestCategorySet,PointOfInterestCategoryTreeResult,PointOfInterestExtendedPostalCodes,MapsPolygon,ReverseSearchAddressResult,ReverseSearchAddressResultItem,ReverseSearchCrossStreetAddressResultItem,ReverseSearchCrossStreetAddressResult,RoadUseType,SearchAddressResultType,SearchAddressResultItem,SearchSummary,SearchIndexes,SearchAddressResult,QueryType
+customization-class: src/main/java/SearchCustomization.java
+generic-response-type: true
+no-custom-headers: true
 ```

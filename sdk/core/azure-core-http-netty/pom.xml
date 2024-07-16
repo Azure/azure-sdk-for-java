@@ -68,7 +68,7 @@
     <spotless.skip>false</spotless.skip>
     <animal.sniffer.skip>false</animal.sniffer.skip>
 
-    <netty.version>4.1.108.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
+    <netty.version>4.1.110.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
     <netty-tcnative.version>2.0.65.Final</netty-tcnative.version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
   </properties>
 
@@ -83,7 +83,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.50.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.51.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -157,20 +157,20 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.50.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.51.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

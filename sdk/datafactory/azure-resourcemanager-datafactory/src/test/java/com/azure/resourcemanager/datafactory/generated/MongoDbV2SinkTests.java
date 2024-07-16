@@ -11,19 +11,19 @@ public final class MongoDbV2SinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbV2Sink model = BinaryData.fromString(
-            "{\"type\":\"mazdgeablknqnq\",\"writeBehavior\":\"datanjegom\",\"writeBatchSize\":\"datagiy\",\"writeBatchTimeout\":\"datadeo\",\"sinkRetryCount\":\"datawlpopjlg\",\"sinkRetryWait\":\"dataswqxeva\",\"maxConcurrentConnections\":\"dataoxmxtcnmo\",\"disableMetricsCollection\":\"datakpgnagncguq\",\"\":{\"wdez\":\"datammved\",\"lmvvbw\":\"datatpbezlucxbudaj\",\"myvbiuvxlhf\":\"dataunr\",\"hqzvfzxseqscoy\":\"datakllxoahfvkyhfd\"}}")
+            "{\"type\":\"MongoDbV2Sink\",\"writeBehavior\":\"dataekmgpseassdqpwhp\",\"writeBatchSize\":\"datadosfgbvsozjf\",\"writeBatchTimeout\":\"datawxcjciotlbpuemqe\",\"sinkRetryCount\":\"datao\",\"sinkRetryWait\":\"datavhhedc\",\"maxConcurrentConnections\":\"datalycrldwccas\",\"disableMetricsCollection\":\"databdvsorvhbygw\",\"\":{\"wncggamxbtq\":\"dataqlzzkb\",\"qhbnwmok\":\"datazydaiolnkkghlex\"}}")
             .toObject(MongoDbV2Sink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbV2Sink model = new MongoDbV2Sink().withWriteBatchSize("datagiy")
-            .withWriteBatchTimeout("datadeo")
-            .withSinkRetryCount("datawlpopjlg")
-            .withSinkRetryWait("dataswqxeva")
-            .withMaxConcurrentConnections("dataoxmxtcnmo")
-            .withDisableMetricsCollection("datakpgnagncguq")
-            .withWriteBehavior("datanjegom");
+        MongoDbV2Sink model = new MongoDbV2Sink().withWriteBatchSize("datadosfgbvsozjf")
+            .withWriteBatchTimeout("datawxcjciotlbpuemqe")
+            .withSinkRetryCount("datao")
+            .withSinkRetryWait("datavhhedc")
+            .withMaxConcurrentConnections("datalycrldwccas")
+            .withDisableMetricsCollection("databdvsorvhbygw")
+            .withWriteBehavior("dataekmgpseassdqpwhp");
         model = BinaryData.fromObject(model).toObject(MongoDbV2Sink.class);
     }
 }

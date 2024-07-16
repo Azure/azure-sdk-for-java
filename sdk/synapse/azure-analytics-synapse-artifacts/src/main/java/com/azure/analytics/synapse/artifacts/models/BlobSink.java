@@ -5,46 +5,63 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity Azure Blob sink. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("BlobSink")
+/**
+ * A copy activity Azure Blob sink.
+ */
 @Fluent
 public final class BlobSink extends CopySink {
     /*
+     * Copy sink type.
+     */
+    private String type = "BlobSink";
+
+    /*
      * Blob writer overwrite files. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "blobWriterOverwriteFiles")
     private Object blobWriterOverwriteFiles;
 
     /*
      * Blob writer date time format. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "blobWriterDateTimeFormat")
     private Object blobWriterDateTimeFormat;
 
     /*
      * Blob writer add header. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "blobWriterAddHeader")
     private Object blobWriterAddHeader;
 
     /*
      * The type of copy behavior for copy sink.
      */
-    @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
 
-    /** Creates an instance of BlobSink class. */
-    public BlobSink() {}
+    /**
+     * Creates an instance of BlobSink class.
+     */
+    public BlobSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the blobWriterOverwriteFiles property: Blob writer overwrite files. Type: boolean (or Expression with
      * resultType boolean).
-     *
+     * 
      * @return the blobWriterOverwriteFiles value.
      */
     public Object getBlobWriterOverwriteFiles() {
@@ -54,7 +71,7 @@ public final class BlobSink extends CopySink {
     /**
      * Set the blobWriterOverwriteFiles property: Blob writer overwrite files. Type: boolean (or Expression with
      * resultType boolean).
-     *
+     * 
      * @param blobWriterOverwriteFiles the blobWriterOverwriteFiles value to set.
      * @return the BlobSink object itself.
      */
@@ -66,7 +83,7 @@ public final class BlobSink extends CopySink {
     /**
      * Get the blobWriterDateTimeFormat property: Blob writer date time format. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the blobWriterDateTimeFormat value.
      */
     public Object getBlobWriterDateTimeFormat() {
@@ -76,7 +93,7 @@ public final class BlobSink extends CopySink {
     /**
      * Set the blobWriterDateTimeFormat property: Blob writer date time format. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param blobWriterDateTimeFormat the blobWriterDateTimeFormat value to set.
      * @return the BlobSink object itself.
      */
@@ -88,7 +105,7 @@ public final class BlobSink extends CopySink {
     /**
      * Get the blobWriterAddHeader property: Blob writer add header. Type: boolean (or Expression with resultType
      * boolean).
-     *
+     * 
      * @return the blobWriterAddHeader value.
      */
     public Object getBlobWriterAddHeader() {
@@ -98,7 +115,7 @@ public final class BlobSink extends CopySink {
     /**
      * Set the blobWriterAddHeader property: Blob writer add header. Type: boolean (or Expression with resultType
      * boolean).
-     *
+     * 
      * @param blobWriterAddHeader the blobWriterAddHeader value to set.
      * @return the BlobSink object itself.
      */
@@ -109,7 +126,7 @@ public final class BlobSink extends CopySink {
 
     /**
      * Get the copyBehavior property: The type of copy behavior for copy sink.
-     *
+     * 
      * @return the copyBehavior value.
      */
     public Object getCopyBehavior() {
@@ -118,7 +135,7 @@ public final class BlobSink extends CopySink {
 
     /**
      * Set the copyBehavior property: The type of copy behavior for copy sink.
-     *
+     * 
      * @param copyBehavior the copyBehavior value to set.
      * @return the BlobSink object itself.
      */
@@ -127,38 +144,122 @@ public final class BlobSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("blobWriterOverwriteFiles", this.blobWriterOverwriteFiles);
+        jsonWriter.writeUntypedField("blobWriterDateTimeFormat", this.blobWriterDateTimeFormat);
+        jsonWriter.writeUntypedField("blobWriterAddHeader", this.blobWriterAddHeader);
+        jsonWriter.writeUntypedField("copyBehavior", this.copyBehavior);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobSink if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the BlobSink.
+     */
+    public static BlobSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobSink deserializedBlobSink = new BlobSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedBlobSink.setWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedBlobSink.setWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedBlobSink.setSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedBlobSink.setSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedBlobSink.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedBlobSink.type = reader.getString();
+                } else if ("blobWriterOverwriteFiles".equals(fieldName)) {
+                    deserializedBlobSink.blobWriterOverwriteFiles = reader.readUntyped();
+                } else if ("blobWriterDateTimeFormat".equals(fieldName)) {
+                    deserializedBlobSink.blobWriterDateTimeFormat = reader.readUntyped();
+                } else if ("blobWriterAddHeader".equals(fieldName)) {
+                    deserializedBlobSink.blobWriterAddHeader = reader.readUntyped();
+                } else if ("copyBehavior".equals(fieldName)) {
+                    deserializedBlobSink.copyBehavior = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedBlobSink.setAdditionalProperties(additionalProperties);
+
+            return deserializedBlobSink;
+        });
     }
 }

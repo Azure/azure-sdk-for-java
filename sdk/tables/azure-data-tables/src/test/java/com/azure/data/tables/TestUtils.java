@@ -59,6 +59,19 @@ public final class TestUtils {
             : Configuration.getGlobalConfiguration().get("TABLES_CONNECTION_STRING");
     }
 
+    /**
+     * Gets the endpoint for running tests.
+     *
+     * @param isPlaybackMode {@code true} if the code is not running against a live service. false otherwise.
+     *
+     * @return The corresponding endpoint.
+     */
+    public static String getEndpoint(boolean isPlaybackMode) {
+        return isPlaybackMode
+            ? "https://dummyAccount.table.core.windows.net/"
+            : Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT");
+    }
+
     public static HttpRequest request(String url) throws MalformedURLException {
         return new HttpRequest(HttpMethod.HEAD,
             new URL(url), new HttpHeaders().put("Content-Length", "0"),

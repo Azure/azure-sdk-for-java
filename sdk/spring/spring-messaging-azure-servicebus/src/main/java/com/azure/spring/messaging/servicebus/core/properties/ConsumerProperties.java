@@ -14,6 +14,12 @@ import java.time.Duration;
  */
 public class ConsumerProperties extends CommonProperties implements ServiceBusReceiverClientProperties {
 
+    /**
+     * Create an instance of {@link ConsumerProperties}.
+     */
+    public ConsumerProperties() {
+    }
+
     private Boolean sessionEnabled;
     private Boolean autoComplete;
     private Integer prefetchCount;

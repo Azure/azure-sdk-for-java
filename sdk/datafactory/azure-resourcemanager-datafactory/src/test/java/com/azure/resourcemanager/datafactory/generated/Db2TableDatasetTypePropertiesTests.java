@@ -10,16 +10,16 @@ import com.azure.resourcemanager.datafactory.fluent.models.Db2TableDatasetTypePr
 public final class Db2TableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Db2TableDatasetTypeProperties model = BinaryData.fromString(
-            "{\"tableName\":\"datahgslormhbtofcvx\",\"schema\":\"datalhcnsdylmnqunk\",\"table\":\"databptmsgkwedwlxtzh\"}")
+        Db2TableDatasetTypeProperties model = BinaryData
+            .fromString("{\"tableName\":\"dataxf\",\"schema\":\"dataigcfddofxnf\",\"table\":\"datajyyrqaedw\"}")
             .toObject(Db2TableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Db2TableDatasetTypeProperties model = new Db2TableDatasetTypeProperties().withTableName("datahgslormhbtofcvx")
-            .withSchema("datalhcnsdylmnqunk")
-            .withTable("databptmsgkwedwlxtzh");
+        Db2TableDatasetTypeProperties model = new Db2TableDatasetTypeProperties().withTableName("dataxf")
+            .withSchema("dataigcfddofxnf")
+            .withTable("datajyyrqaedw");
         model = BinaryData.fromObject(model).toObject(Db2TableDatasetTypeProperties.class);
     }
 }

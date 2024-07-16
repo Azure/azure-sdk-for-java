@@ -25,37 +25,49 @@ public final class TabularTranslator extends CopyTranslator {
     private String type = "TabularTranslator";
 
     /*
-     * Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type: string (or Expression with resultType string). This property will be retired. Please use mappings property.
+     * Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type: string (or Expression with
+     * resultType string). This property will be retired. Please use mappings property.
      */
     @JsonProperty(value = "columnMappings")
     private Object columnMappings;
 
     /*
-     * The schema mapping to map between tabular data and hierarchical data. Example: {"Column1": "$.Column1", "Column2": "$.Column2.Property1", "Column3": "$.Column2.Property2"}. Type: object (or Expression with resultType object). This property will be retired. Please use mappings property.
+     * The schema mapping to map between tabular data and hierarchical data. Example: {"Column1": "$.Column1",
+     * "Column2": "$.Column2.Property1", "Column3": "$.Column2.Property2"}. Type: object (or Expression with resultType
+     * object). This property will be retired. Please use mappings property.
      */
     @JsonProperty(value = "schemaMapping")
     private Object schemaMapping;
 
     /*
-     * The JSON Path of the Nested Array that is going to do cross-apply. Type: object (or Expression with resultType object).
+     * The JSON Path of the Nested Array that is going to do cross-apply. Type: object (or Expression with resultType
+     * object).
      */
     @JsonProperty(value = "collectionReference")
     private Object collectionReference;
 
     /*
-     * Whether to map complex (array and object) values to simple strings in json format. Type: boolean (or Expression with resultType boolean).
+     * Whether to map complex (array and object) values to simple strings in json format. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "mapComplexValuesToString")
     private Object mapComplexValuesToString;
 
     /*
-     * Column mappings with logical types. Tabular->tabular example: [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].  Hierarchical->tabular example: [{"source":{"path":"$.CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$.CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}]. Type: object (or Expression with resultType object).
+     * Column mappings with logical types. Tabular->tabular example:
+     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{
+     * "name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
+     * Hierarchical->tabular example:
+     * [{"source":{"path":"$.CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{
+     * "path":"$.CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}]. Type: object (or
+     * Expression with resultType object).
      */
     @JsonProperty(value = "mappings")
     private Object mappings;
 
     /*
-     * Whether to enable the advanced type conversion feature in the Copy activity. Type: boolean (or Expression with resultType boolean).
+     * Whether to enable the advanced type conversion feature in the Copy activity. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "typeConversion")
     private Object typeConversion;

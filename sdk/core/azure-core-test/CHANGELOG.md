@@ -1,6 +1,6 @@
 # Release History
 
-## 1.26.0-beta.1 (Unreleased)
+## 1.27.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.26.1 (2024-07-12)
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to `1.50.0`.
+
+## 1.26.0 (2024-06-06)
+
+### Features Added
+
+- Added `InterceptoprManager.removeSanitizers` to remove sanitizers used by Test Proxy.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
 
 ## 1.25.0 (2024-05-01)
 

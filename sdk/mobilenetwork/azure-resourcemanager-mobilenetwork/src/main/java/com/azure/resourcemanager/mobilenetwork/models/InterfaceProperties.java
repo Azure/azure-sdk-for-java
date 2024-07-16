@@ -6,6 +6,7 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Interface properties.
@@ -13,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class InterfaceProperties {
     /*
-     * The logical name for this interface. This should match one of the interfaces configured on your Azure Stack Edge
-     * device.
+     * The logical name for this interface. This should match one of the interfaces configured on your Azure Stack Edge device.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -37,6 +37,24 @@ public final class InterfaceProperties {
     @JsonProperty(value = "ipv4Gateway")
     private String ipv4Gateway;
 
+    /*
+     * VLAN identifier of the network interface. Example: 501.
+     */
+    @JsonProperty(value = "vlanId")
+    private Integer vlanId;
+
+    /*
+     * The list of IPv4 addresses, for a multi-node system.
+     */
+    @JsonProperty(value = "ipv4AddressList")
+    private List<String> ipv4AddressList;
+
+    /*
+     * The IPv4 addresses of the endpoints to send BFD probes to.
+     */
+    @JsonProperty(value = "bfdIpv4Endpoints")
+    private List<String> bfdIpv4Endpoints;
+
     /**
      * Creates an instance of InterfaceProperties class.
      */
@@ -44,8 +62,8 @@ public final class InterfaceProperties {
     }
 
     /**
-     * Get the name property: The logical name for this interface. This should match one of the interfaces configured
-     * on your Azure Stack Edge device.
+     * Get the name property: The logical name for this interface. This should match one of the interfaces configured on
+     * your Azure Stack Edge device.
      * 
      * @return the name value.
      */
@@ -54,8 +72,8 @@ public final class InterfaceProperties {
     }
 
     /**
-     * Set the name property: The logical name for this interface. This should match one of the interfaces configured
-     * on your Azure Stack Edge device.
+     * Set the name property: The logical name for this interface. This should match one of the interfaces configured on
+     * your Azure Stack Edge device.
      * 
      * @param name the name value to set.
      * @return the InterfaceProperties object itself.
@@ -122,6 +140,66 @@ public final class InterfaceProperties {
      */
     public InterfaceProperties withIpv4Gateway(String ipv4Gateway) {
         this.ipv4Gateway = ipv4Gateway;
+        return this;
+    }
+
+    /**
+     * Get the vlanId property: VLAN identifier of the network interface. Example: 501.
+     * 
+     * @return the vlanId value.
+     */
+    public Integer vlanId() {
+        return this.vlanId;
+    }
+
+    /**
+     * Set the vlanId property: VLAN identifier of the network interface. Example: 501.
+     * 
+     * @param vlanId the vlanId value to set.
+     * @return the InterfaceProperties object itself.
+     */
+    public InterfaceProperties withVlanId(Integer vlanId) {
+        this.vlanId = vlanId;
+        return this;
+    }
+
+    /**
+     * Get the ipv4AddressList property: The list of IPv4 addresses, for a multi-node system.
+     * 
+     * @return the ipv4AddressList value.
+     */
+    public List<String> ipv4AddressList() {
+        return this.ipv4AddressList;
+    }
+
+    /**
+     * Set the ipv4AddressList property: The list of IPv4 addresses, for a multi-node system.
+     * 
+     * @param ipv4AddressList the ipv4AddressList value to set.
+     * @return the InterfaceProperties object itself.
+     */
+    public InterfaceProperties withIpv4AddressList(List<String> ipv4AddressList) {
+        this.ipv4AddressList = ipv4AddressList;
+        return this;
+    }
+
+    /**
+     * Get the bfdIpv4Endpoints property: The IPv4 addresses of the endpoints to send BFD probes to.
+     * 
+     * @return the bfdIpv4Endpoints value.
+     */
+    public List<String> bfdIpv4Endpoints() {
+        return this.bfdIpv4Endpoints;
+    }
+
+    /**
+     * Set the bfdIpv4Endpoints property: The IPv4 addresses of the endpoints to send BFD probes to.
+     * 
+     * @param bfdIpv4Endpoints the bfdIpv4Endpoints value to set.
+     * @return the InterfaceProperties object itself.
+     */
+    public InterfaceProperties withBfdIpv4Endpoints(List<String> bfdIpv4Endpoints) {
+        this.bfdIpv4Endpoints = bfdIpv4Endpoints;
         return this;
     }
 

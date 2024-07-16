@@ -14,7 +14,6 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureSasCredentialPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -41,6 +40,7 @@ import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
+import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
 
@@ -128,7 +128,7 @@ public final class BuilderHelper {
             String scope = audience != null
                 ? ((audience.toString().endsWith("/") ? audience + ".default" : audience + "/.default"))
                 : Constants.STORAGE_SCOPE;
-            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, scope);
+            credentialPolicy =  new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
         } else if (azureSasCredential != null) {
             credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
         } else {

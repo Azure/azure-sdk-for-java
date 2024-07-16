@@ -5,23 +5,30 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Dataset debug resource. */
+/**
+ * Dataset debug resource.
+ */
 @Fluent
 public final class DatasetDebugResource extends SubResourceDebugResource {
     /*
      * Dataset properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private Dataset properties;
 
-    /** Creates an instance of DatasetDebugResource class. */
-    public DatasetDebugResource() {}
+    /**
+     * Creates an instance of DatasetDebugResource class.
+     */
+    public DatasetDebugResource() {
+    }
 
     /**
      * Get the properties property: Dataset properties.
-     *
+     * 
      * @return the properties value.
      */
     public Dataset getProperties() {
@@ -30,7 +37,7 @@ public final class DatasetDebugResource extends SubResourceDebugResource {
 
     /**
      * Set the properties property: Dataset properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DatasetDebugResource object itself.
      */
@@ -39,10 +46,52 @@ public final class DatasetDebugResource extends SubResourceDebugResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatasetDebugResource setName(String name) {
         super.setName(name);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatasetDebugResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatasetDebugResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatasetDebugResource.
+     */
+    public static DatasetDebugResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatasetDebugResource deserializedDatasetDebugResource = new DatasetDebugResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDatasetDebugResource.setName(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDatasetDebugResource.properties = Dataset.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatasetDebugResource;
+        });
     }
 }

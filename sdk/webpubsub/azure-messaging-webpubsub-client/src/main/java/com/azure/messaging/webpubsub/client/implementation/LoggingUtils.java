@@ -26,7 +26,8 @@ public final class LoggingUtils {
         return globalLoggingContext;
     }
 
-    public static LoggingEventBuilder addSignalTypeAndResult(LoggingEventBuilder logBuilder, SignalType signalType, Sinks.EmitResult result) {
+    public static LoggingEventBuilder addSignalTypeAndResult(LoggingEventBuilder logBuilder, SignalType signalType,
+        Sinks.EmitResult result) {
         return logBuilder.addKeyValue("signalType", signalType).addKeyValue("emitResult", result);
     }
 }

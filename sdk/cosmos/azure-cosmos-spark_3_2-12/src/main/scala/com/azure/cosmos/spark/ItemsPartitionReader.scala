@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosItemSerializer, SparkBridgeInternal}
+import com.azure.cosmos.{CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ObjectNodeMap, SparkBridgeImplementationInternal, SparkRowItem, Strings, Utils}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition}
@@ -19,6 +19,7 @@ import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
 
+import java.time.Duration
 import java.util
 
 // per spark task there will be one CosmosPartitionReader.
@@ -136,6 +137,10 @@ private case class ItemsPartitionReader
 
   private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
   private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
+  private val maxOperationTimeout = Duration.ofSeconds(CosmosConstants.readOperationEndToEndTimeoutInSeconds)
+  private val endToEndTimeoutPolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(maxOperationTimeout)
+      .enable(true)
+      .build
 
   private def shouldLogDetailedFeedDiagnostics(): Boolean = {
     diagnosticsConfig.mode.isDefined &&
@@ -146,7 +151,7 @@ private case class ItemsPartitionReader
 
   queryOptions
     .setCustomItemSerializer(
-      new CosmosItemSerializer {
+      new CosmosItemSerializerNoExceptionWrapping {
         override def serialize[T](item: T): util.Map[String, AnyRef] = ???
 
         override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {
@@ -232,6 +237,7 @@ private case class ItemsPartitionReader
       )
 
       queryOptions.setDedicatedGatewayRequestOptions(readConfig.dedicatedGatewayRequestOptions)
+      queryOptions.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndTimeoutPolicy)
 
       ImplementationBridgeHelpers
         .CosmosQueryRequestOptionsHelper

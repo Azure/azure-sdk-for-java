@@ -5,87 +5,93 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** File server read settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("FileServerReadSettings")
+/**
+ * File server read settings.
+ */
 @Fluent
 public final class FileServerReadSettings extends StoreReadSettings {
     /*
-     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression
-     * with resultType boolean).
+     * The read setting type.
      */
-    @JsonProperty(value = "recursive")
+    private String type = "FileServerReadSettings";
+
+    /*
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType boolean).
+     */
     private Object recursive;
 
     /*
      * FileServer wildcardFolderPath. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "wildcardFolderPath")
     private Object wildcardFolderPath;
 
     /*
      * FileServer wildcardFileName. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "wildcardFileName")
     private Object wildcardFileName;
 
     /*
-     * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to
-     * copy. Type: string (or Expression with resultType string).
+     * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileListPath")
     private Object fileListPath;
 
     /*
      * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "enablePartitionDiscovery")
     private Object enablePartitionDiscovery;
 
     /*
-     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
-     * string).
+     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "partitionRootPath")
     private Object partitionRootPath;
 
     /*
-     * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or
-     * Expression with resultType boolean).
+     * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "deleteFilesAfterCompletion")
     private Object deleteFilesAfterCompletion;
 
     /*
      * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
      * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
 
     /*
-     * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string
-     * (or Expression with resultType string).
+     * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileFilter")
     private Object fileFilter;
 
-    /** Creates an instance of FileServerReadSettings class. */
-    public FileServerReadSettings() {}
+    /**
+     * Creates an instance of FileServerReadSettings class.
+     */
+    public FileServerReadSettings() {
+    }
+
+    /**
+     * Get the type property: The read setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
      * boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the recursive value.
      */
     public Object getRecursive() {
@@ -95,7 +101,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Set the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
      * boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param recursive the recursive value to set.
      * @return the FileServerReadSettings object itself.
      */
@@ -107,7 +113,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Get the wildcardFolderPath property: FileServer wildcardFolderPath. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the wildcardFolderPath value.
      */
     public Object getWildcardFolderPath() {
@@ -117,7 +123,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Set the wildcardFolderPath property: FileServer wildcardFolderPath. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param wildcardFolderPath the wildcardFolderPath value to set.
      * @return the FileServerReadSettings object itself.
      */
@@ -129,7 +135,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Get the wildcardFileName property: FileServer wildcardFileName. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the wildcardFileName value.
      */
     public Object getWildcardFileName() {
@@ -139,7 +145,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Set the wildcardFileName property: FileServer wildcardFileName. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param wildcardFileName the wildcardFileName value to set.
      * @return the FileServerReadSettings object itself.
      */
@@ -151,7 +157,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Get the fileListPath property: Point to a text file that lists each file (relative path to the path configured in
      * the dataset) that you want to copy. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the fileListPath value.
      */
     public Object getFileListPath() {
@@ -161,7 +167,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Set the fileListPath property: Point to a text file that lists each file (relative path to the path configured in
      * the dataset) that you want to copy. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param fileListPath the fileListPath value to set.
      * @return the FileServerReadSettings object itself.
      */
@@ -173,7 +179,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the enablePartitionDiscovery value.
      */
     public Object getEnablePartitionDiscovery() {
@@ -183,7 +189,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
      * @return the FileServerReadSettings object itself.
      */
@@ -195,7 +201,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Get the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the partitionRootPath value.
      */
     public Object getPartitionRootPath() {
@@ -205,7 +211,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Set the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param partitionRootPath the partitionRootPath value to set.
      * @return the FileServerReadSettings object itself.
      */
@@ -217,7 +223,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Get the deleteFilesAfterCompletion property: Indicates whether the source files need to be deleted after copy
      * completion. Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the deleteFilesAfterCompletion value.
      */
     public Object getDeleteFilesAfterCompletion() {
@@ -227,7 +233,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Set the deleteFilesAfterCompletion property: Indicates whether the source files need to be deleted after copy
      * completion. Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param deleteFilesAfterCompletion the deleteFilesAfterCompletion value to set.
      * @return the FileServerReadSettings object itself.
      */
@@ -239,7 +245,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Get the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the modifiedDatetimeStart value.
      */
     public Object getModifiedDatetimeStart() {
@@ -249,7 +255,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Set the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the FileServerReadSettings object itself.
      */
@@ -261,7 +267,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Get the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the modifiedDatetimeEnd value.
      */
     public Object getModifiedDatetimeEnd() {
@@ -271,7 +277,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Set the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the FileServerReadSettings object itself.
      */
@@ -283,7 +289,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Get the fileFilter property: Specify a filter to be used to select a subset of files in the folderPath rather
      * than all files. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the fileFilter value.
      */
     public Object getFileFilter() {
@@ -293,7 +299,7 @@ public final class FileServerReadSettings extends StoreReadSettings {
     /**
      * Set the fileFilter property: Specify a filter to be used to select a subset of files in the folderPath rather
      * than all files. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param fileFilter the fileFilter value to set.
      * @return the FileServerReadSettings object itself.
      */
@@ -302,10 +308,92 @@ public final class FileServerReadSettings extends StoreReadSettings {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileServerReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("recursive", this.recursive);
+        jsonWriter.writeUntypedField("wildcardFolderPath", this.wildcardFolderPath);
+        jsonWriter.writeUntypedField("wildcardFileName", this.wildcardFileName);
+        jsonWriter.writeUntypedField("fileListPath", this.fileListPath);
+        jsonWriter.writeUntypedField("enablePartitionDiscovery", this.enablePartitionDiscovery);
+        jsonWriter.writeUntypedField("partitionRootPath", this.partitionRootPath);
+        jsonWriter.writeUntypedField("deleteFilesAfterCompletion", this.deleteFilesAfterCompletion);
+        jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+        jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        jsonWriter.writeUntypedField("fileFilter", this.fileFilter);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileServerReadSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileServerReadSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FileServerReadSettings.
+     */
+    public static FileServerReadSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileServerReadSettings deserializedFileServerReadSettings = new FileServerReadSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedFileServerReadSettings.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedFileServerReadSettings.type = reader.getString();
+                } else if ("recursive".equals(fieldName)) {
+                    deserializedFileServerReadSettings.recursive = reader.readUntyped();
+                } else if ("wildcardFolderPath".equals(fieldName)) {
+                    deserializedFileServerReadSettings.wildcardFolderPath = reader.readUntyped();
+                } else if ("wildcardFileName".equals(fieldName)) {
+                    deserializedFileServerReadSettings.wildcardFileName = reader.readUntyped();
+                } else if ("fileListPath".equals(fieldName)) {
+                    deserializedFileServerReadSettings.fileListPath = reader.readUntyped();
+                } else if ("enablePartitionDiscovery".equals(fieldName)) {
+                    deserializedFileServerReadSettings.enablePartitionDiscovery = reader.readUntyped();
+                } else if ("partitionRootPath".equals(fieldName)) {
+                    deserializedFileServerReadSettings.partitionRootPath = reader.readUntyped();
+                } else if ("deleteFilesAfterCompletion".equals(fieldName)) {
+                    deserializedFileServerReadSettings.deleteFilesAfterCompletion = reader.readUntyped();
+                } else if ("modifiedDatetimeStart".equals(fieldName)) {
+                    deserializedFileServerReadSettings.modifiedDatetimeStart = reader.readUntyped();
+                } else if ("modifiedDatetimeEnd".equals(fieldName)) {
+                    deserializedFileServerReadSettings.modifiedDatetimeEnd = reader.readUntyped();
+                } else if ("fileFilter".equals(fieldName)) {
+                    deserializedFileServerReadSettings.fileFilter = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedFileServerReadSettings.setAdditionalProperties(additionalProperties);
+
+            return deserializedFileServerReadSettings;
+        });
     }
 }

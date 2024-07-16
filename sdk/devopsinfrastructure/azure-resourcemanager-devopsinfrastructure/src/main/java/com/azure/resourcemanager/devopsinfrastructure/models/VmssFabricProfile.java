@@ -6,54 +6,45 @@ package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The agents will run on Virtual Machine Scale Sets.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = VmssFabricProfile.class, visible = true)
-@JsonTypeName("Vmss")
 @Fluent
 public final class VmssFabricProfile extends FabricProfile {
     /*
-     * The kind property.
+     * Discriminator property for FabricProfile.
      */
-    @JsonTypeId
-    @JsonProperty(value = "kind", required = true)
     private String kind = "Vmss";
 
     /*
      * The Azure SKU of the machines in the pool.
      */
-    @JsonProperty(value = "sku", required = true)
     private DevOpsAzureSku sku;
 
     /*
      * The VM images of the machines in the pool.
      */
-    @JsonProperty(value = "images", required = true)
     private List<PoolImage> images;
 
     /*
      * The OS profile of the machines in the pool.
      */
-    @JsonProperty(value = "osProfile")
     private OsProfile osProfile;
 
     /*
      * The storage profile of the machines in the pool.
      */
-    @JsonProperty(value = "storageProfile")
     private StorageProfile storageProfile;
 
     /*
      * The network profile of the machines in the pool.
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
     /**
@@ -63,7 +54,7 @@ public final class VmssFabricProfile extends FabricProfile {
     }
 
     /**
-     * Get the kind property: The kind property.
+     * Get the kind property: Discriminator property for FabricProfile.
      * 
      * @return the kind value.
      */
@@ -204,4 +195,57 @@ public final class VmssFabricProfile extends FabricProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VmssFabricProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeArrayField("images", this.images, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeJsonField("osProfile", this.osProfile);
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VmssFabricProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VmssFabricProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VmssFabricProfile.
+     */
+    public static VmssFabricProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VmssFabricProfile deserializedVmssFabricProfile = new VmssFabricProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedVmssFabricProfile.sku = DevOpsAzureSku.fromJson(reader);
+                } else if ("images".equals(fieldName)) {
+                    List<PoolImage> images = reader.readArray(reader1 -> PoolImage.fromJson(reader1));
+                    deserializedVmssFabricProfile.images = images;
+                } else if ("kind".equals(fieldName)) {
+                    deserializedVmssFabricProfile.kind = reader.getString();
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedVmssFabricProfile.osProfile = OsProfile.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedVmssFabricProfile.storageProfile = StorageProfile.fromJson(reader);
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedVmssFabricProfile.networkProfile = NetworkProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVmssFabricProfile;
+        });
+    }
 }

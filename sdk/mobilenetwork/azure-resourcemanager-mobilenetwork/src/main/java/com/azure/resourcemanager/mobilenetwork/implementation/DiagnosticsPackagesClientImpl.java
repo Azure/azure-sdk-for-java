@@ -319,7 +319,8 @@ public final class DiagnosticsPackagesClientImpl implements DiagnosticsPackagesC
     private Mono<DiagnosticsPackageInner> createOrUpdateAsync(String resourceGroupName,
         String packetCoreControlPlaneName, String diagnosticsPackageName, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, diagnosticsPackageName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

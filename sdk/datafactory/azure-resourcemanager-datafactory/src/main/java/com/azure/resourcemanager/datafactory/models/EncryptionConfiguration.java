@@ -32,7 +32,8 @@ public final class EncryptionConfiguration {
     private String keyVersion;
 
     /*
-     * User assigned identity to use to authenticate to customer's key vault. If not provided Managed Service Identity will be used.
+     * User assigned identity to use to authenticate to customer's key vault. If not provided Managed Service Identity
+     * will be used.
      */
     @JsonProperty(value = "identity")
     private CmkIdentityDefinition identity;

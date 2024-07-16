@@ -6,62 +6,60 @@ package com.azure.resourcemanager.deviceregistry.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The current status of an async operation.
  */
 @Immutable
-public final class OperationStatusResultInner {
+public final class OperationStatusResultInner implements JsonSerializable<OperationStatusResultInner> {
     /*
      * Fully qualified ID for the async operation.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Name of the async operation.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Operation status.
      */
-    @JsonProperty(value = "status", required = true)
     private String status;
 
     /*
      * Percent of the operation that is complete.
      */
-    @JsonProperty(value = "percentComplete")
-    private Integer percentComplete;
+    private Double percentComplete;
 
     /*
      * The start time of the operation.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The end time of the operation.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The operations list.
      */
-    @JsonProperty(value = "operations", required = true)
     private List<OperationStatusResultInner> operations;
 
     /*
      * If present, details of the operation error.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
     /**
@@ -102,7 +100,7 @@ public final class OperationStatusResultInner {
      * 
      * @return the percentComplete value.
      */
-    public Integer percentComplete() {
+    public Double percentComplete() {
         return this.percentComplete;
     }
 
@@ -153,14 +151,74 @@ public final class OperationStatusResultInner {
                 .log(new IllegalArgumentException(
                     "Missing required property status in model OperationStatusResultInner"));
         }
-        if (operations() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property operations in model OperationStatusResultInner"));
-        } else {
+        if (operations() != null) {
             operations().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OperationStatusResultInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("percentComplete", this.percentComplete);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeArrayField("operations", this.operations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationStatusResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationStatusResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationStatusResultInner.
+     */
+    public static OperationStatusResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationStatusResultInner deserializedOperationStatusResultInner = new OperationStatusResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.status = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.name = reader.getString();
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.percentComplete = reader.getNullable(JsonReader::getDouble);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("operations".equals(fieldName)) {
+                    List<OperationStatusResultInner> operations
+                        = reader.readArray(reader1 -> OperationStatusResultInner.fromJson(reader1));
+                    deserializedOperationStatusResultInner.operations = operations;
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationStatusResultInner;
+        });
+    }
 }

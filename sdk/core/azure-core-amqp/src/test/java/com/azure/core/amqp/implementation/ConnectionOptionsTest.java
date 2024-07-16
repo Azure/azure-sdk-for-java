@@ -19,7 +19,9 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Scheduler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link ConnectionOptions}.
@@ -78,6 +80,8 @@ public class ConnectionOptionsTest {
         assertEquals(scope, actual.getAuthorizationScope());
         assertEquals(retryOptions, actual.getRetry());
         assertEquals(verifyMode, actual.getSslVerifyMode());
+
+        assertTrue(actual.isEnableSsl());
     }
 
     /**
@@ -101,7 +105,7 @@ public class ConnectionOptionsTest {
         final ConnectionOptions actual
             = new ConnectionOptions(fullyQualifiedNamespace, tokenCredential, CbsAuthorizationType.JSON_WEB_TOKEN,
                 scope, AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptions,
-                verifyMode, productName, clientVersion, actualHostname, port);
+                verifyMode, productName, clientVersion, actualHostname, port, false);
 
         // Assert
         assertEquals(fullyQualifiedNamespace, actual.getFullyQualifiedNamespace());
@@ -121,5 +125,7 @@ public class ConnectionOptionsTest {
 
         assertEquals(actualHostname, actual.getHostname());
         assertEquals(port, actual.getPort());
+
+        assertFalse(actual.isEnableSsl());
     }
 }

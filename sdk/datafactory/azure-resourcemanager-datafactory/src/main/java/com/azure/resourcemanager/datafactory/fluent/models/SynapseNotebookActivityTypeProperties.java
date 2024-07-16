@@ -40,7 +40,9 @@ public final class SynapseNotebookActivityTypeProperties {
     private Map<String, NotebookParameter> parameters;
 
     /*
-     * Number of core and memory to be used for executors allocated in the specified Spark pool for the session, which will be used for overriding 'executorCores' and 'executorMemory' of the notebook you provide. Type: string (or Expression with resultType string).
+     * Number of core and memory to be used for executors allocated in the specified Spark pool for the session, which
+     * will be used for overriding 'executorCores' and 'executorMemory' of the notebook you provide. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "executorSize")
     private Object executorSize;
@@ -52,13 +54,16 @@ public final class SynapseNotebookActivityTypeProperties {
     private Object conf;
 
     /*
-     * Number of core and memory to be used for driver allocated in the specified Spark pool for the session, which will be used for overriding 'driverCores' and 'driverMemory' of the notebook you provide. Type: string (or Expression with resultType string).
+     * Number of core and memory to be used for driver allocated in the specified Spark pool for the session, which will
+     * be used for overriding 'driverCores' and 'driverMemory' of the notebook you provide. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "driverSize")
     private Object driverSize;
 
     /*
-     * Number of executors to launch for this session, which will override the 'numExecutors' of the notebook you provide. Type: integer (or Expression with resultType integer).
+     * Number of executors to launch for this session, which will override the 'numExecutors' of the notebook you
+     * provide. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "numExecutors")
     private Object numExecutors;

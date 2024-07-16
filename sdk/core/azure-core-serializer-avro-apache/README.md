@@ -7,6 +7,7 @@ Azure Core Apache Avro Serializer is a plugin for the `azure-core` `AvroSerializ
 ### Prerequisites
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority][java8_client_compatibility].
 
 ### Include the package
 
@@ -15,7 +16,7 @@ Azure Core Apache Avro Serializer is a plugin for the `azure-core` `AvroSerializ
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-serializer-avro-apache</artifactId>
-    <version>1.0.0-beta.46</version>
+    <version>1.0.0-beta.47</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,5 +53,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- links -->
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-serializer-avro-apache%2FREADME.png)

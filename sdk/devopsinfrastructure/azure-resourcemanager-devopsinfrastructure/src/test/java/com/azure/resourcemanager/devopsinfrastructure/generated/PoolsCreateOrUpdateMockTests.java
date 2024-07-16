@@ -32,7 +32,7 @@ public final class PoolsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":729293630,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":\"dataytdw\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"brqubp\"},\"identity\":{\"tenantId\":\"exiili\",\"principalId\":\"dtiirqt\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"zwl\":{\"clientId\":\"oruzfgsquyfxrxx\",\"principalId\":\"ptramxj\"},\"ebwnujhe\":{\"clientId\":\"wxuqlcvydypatdoo\",\"principalId\":\"jkniodko\"},\"f\":{\"clientId\":\"sbvdkcrodtjinfw\",\"principalId\":\"fltkacjv\"}}},\"location\":\"lfoakg\",\"tags\":{\"pulpqblylsyxk\":\"pagao\",\"zuempsbzkf\":\"jnsjervtiagxsd\",\"dxrbuukzcle\":\"beyvpnqicvinvkjj\"},\"id\":\"yhmlwpaztzp\",\"name\":\"fn\",\"type\":\"ckw\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":729293630,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":\"dataytdw\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"brqubp\"},\"identity\":{\"principalId\":\"exiili\",\"tenantId\":\"dtiirqt\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"zwl\":{\"principalId\":\"oruzfgsquyfxrxx\",\"clientId\":\"ptramxj\"},\"ebwnujhe\":{\"principalId\":\"wxuqlcvydypatdoo\",\"clientId\":\"jkniodko\"},\"f\":{\"principalId\":\"sbvdkcrodtjinfw\",\"clientId\":\"fltkacjv\"}}},\"location\":\"lfoakg\",\"tags\":{\"pulpqblylsyxk\":\"pagao\",\"zuempsbzkf\":\"jnsjervtiagxsd\",\"dxrbuukzcle\":\"beyvpnqicvinvkjj\"},\"id\":\"yhmlwpaztzp\",\"name\":\"fn\",\"type\":\"ckw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -54,8 +54,7 @@ public final class PoolsCreateOrUpdateMockTests {
                 .withFabricProfile(new FabricProfile())
                 .withDevCenterProjectResourceId("dmjsjqb"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("cqqudf",
-                    new UserAssignedIdentity().withClientId("cubeddgssofw").withPrincipalId("zqalkrmnjijpx"))))
+                .withUserAssignedIdentities(mapOf("cqqudf", new UserAssignedIdentity())))
             .create();
 
         Assertions.assertEquals("lfoakg", response.location());
@@ -64,8 +63,6 @@ public final class PoolsCreateOrUpdateMockTests {
         Assertions.assertEquals(729293630, response.properties().maximumConcurrency());
         Assertions.assertEquals("brqubp", response.properties().devCenterProjectResourceId());
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("oruzfgsquyfxrxx", response.identity().userAssignedIdentities().get("zwl").clientId());
-        Assertions.assertEquals("ptramxj", response.identity().userAssignedIdentities().get("zwl").principalId());
     }
 
     // Use "Map.of" if available

@@ -13,14 +13,14 @@ public final class ImportClusterParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImportClusterParameters model
-            = BinaryData.fromString("{\"sasUris\":[\"ionle\",\"x\"]}").toObject(ImportClusterParameters.class);
-        Assertions.assertEquals("ionle", model.sasUris().get(0));
+            = BinaryData.fromString("{\"sasUris\":[\"zzvdudgwds\",\"fhotw\"]}").toObject(ImportClusterParameters.class);
+        Assertions.assertEquals("zzvdudgwds", model.sasUris().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImportClusterParameters model = new ImportClusterParameters().withSasUris(Arrays.asList("ionle", "x"));
+        ImportClusterParameters model = new ImportClusterParameters().withSasUris(Arrays.asList("zzvdudgwds", "fhotw"));
         model = BinaryData.fromObject(model).toObject(ImportClusterParameters.class);
-        Assertions.assertEquals("ionle", model.sasUris().get(0));
+        Assertions.assertEquals("zzvdudgwds", model.sasUris().get(0));
     }
 }

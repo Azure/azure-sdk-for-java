@@ -19,6 +19,12 @@ public final class AssetConversionOptions {
     private String outputBlobPrefix;
     private String outputAssetFilename;
 
+    /**
+     * Creates options for a conversion.
+     */
+    public AssetConversionOptions() {
+
+    }
 
     // input setters
     /**

@@ -5,36 +5,19 @@
 package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.appcomplianceautomation.models.OverviewStatus;
 import com.azure.resourcemanager.appcomplianceautomation.models.ReportComplianceStatus;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ReportComplianceStatusTests {
-    @Test
-    public void testDeserialize() {
-        ReportComplianceStatus model =
-            BinaryData
-                .fromString(
-                    "{\"m365\":{\"passedCount\":2128722098,\"failedCount\":186461097,\"manualCount\":173170794}}")
-                .toObject(ReportComplianceStatus.class);
-        Assertions.assertEquals(2128722098, model.m365().passedCount());
-        Assertions.assertEquals(186461097, model.m365().failedCount());
-        Assertions.assertEquals(173170794, model.m365().manualCount());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ReportComplianceStatus model = BinaryData.fromString(
+            "{\"m365\":{\"passedCount\":1569477308,\"failedCount\":393211595,\"manualCount\":1686562636,\"notApplicableCount\":1870427389,\"pendingCount\":148650220}}")
+            .toObject(ReportComplianceStatus.class);
     }
 
-    @Test
-    public void testSerialize() {
-        ReportComplianceStatus model =
-            new ReportComplianceStatus()
-                .withM365(
-                    new OverviewStatus()
-                        .withPassedCount(2128722098)
-                        .withFailedCount(186461097)
-                        .withManualCount(173170794));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ReportComplianceStatus model = new ReportComplianceStatus();
         model = BinaryData.fromObject(model).toObject(ReportComplianceStatus.class);
-        Assertions.assertEquals(2128722098, model.m365().passedCount());
-        Assertions.assertEquals(186461097, model.m365().failedCount());
-        Assertions.assertEquals(173170794, model.m365().manualCount());
     }
 }

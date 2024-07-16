@@ -5,29 +5,36 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Run notebook response. */
+/**
+ * Run notebook response.
+ */
 @Fluent
-public final class RunNotebookResponse {
+public final class RunNotebookResponse implements JsonSerializable<RunNotebookResponse> {
     /*
      * Response message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Result of run notebook.
      */
-    @JsonProperty(value = "result")
     private RunNotebookResult result;
 
-    /** Creates an instance of RunNotebookResponse class. */
-    public RunNotebookResponse() {}
+    /**
+     * Creates an instance of RunNotebookResponse class.
+     */
+    public RunNotebookResponse() {
+    }
 
     /**
      * Get the message property: Response message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -36,7 +43,7 @@ public final class RunNotebookResponse {
 
     /**
      * Get the result property: Result of run notebook.
-     *
+     * 
      * @return the result value.
      */
     public RunNotebookResult getResult() {
@@ -45,12 +52,50 @@ public final class RunNotebookResponse {
 
     /**
      * Set the result property: Result of run notebook.
-     *
+     * 
      * @param result the result value to set.
      * @return the RunNotebookResponse object itself.
      */
     public RunNotebookResponse setResult(RunNotebookResult result) {
         this.result = result;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("result", this.result);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunNotebookResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunNotebookResponse if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunNotebookResponse.
+     */
+    public static RunNotebookResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunNotebookResponse deserializedRunNotebookResponse = new RunNotebookResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedRunNotebookResponse.message = reader.getString();
+                } else if ("result".equals(fieldName)) {
+                    deserializedRunNotebookResponse.result = RunNotebookResult.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunNotebookResponse;
+        });
     }
 }

@@ -18,6 +18,7 @@ public class ShareSetPropertiesOptions {
     private ShareAccessTier accessTier;
     private ShareRootSquash rootSquash;
     private ShareRequestConditions requestConditions;
+    private Boolean enableSnapshotVirtualDirectoryAccess;
 
     /**
      * @return {@link ShareAccessTier}
@@ -80,6 +81,33 @@ public class ShareSetPropertiesOptions {
      */
     public ShareSetPropertiesOptions setRequestConditions(ShareRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * Get the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     * Optional. Supported in version 2023-08-03 and above. Only applicable for premium file storage accounts.
+     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
+     * If not specified, the default is true.
+     *
+     * @return the enableSnapshotVirtualDirectoryAccess value.
+     */
+    public Boolean isSnapshotVirtualDirectoryAccessEnabled() {
+        return enableSnapshotVirtualDirectoryAccess;
+    }
+
+    /**
+     * Set the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     * Optional. Supported in version 2023-08-03 and above. Only applicable for premium file storage accounts.
+     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
+     * If not specified, the default is true.
+     *
+     * @param snapshotVirtualDirectoryAccessEnabled the enableSnapshotVirtualDirectoryAccess value to set.
+     * @return the ShareSetPropertiesOptions object itself.
+     */
+    public ShareSetPropertiesOptions setSnapshotVirtualDirectoryAccessEnabled(
+        Boolean snapshotVirtualDirectoryAccessEnabled) {
+        this.enableSnapshotVirtualDirectoryAccess = snapshotVirtualDirectoryAccessEnabled;
         return this;
     }
 }

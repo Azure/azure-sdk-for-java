@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Project properties. */
+/**
+ * Project properties.
+ */
 @Fluent
 public final class ProjectProperties {
     /*
@@ -23,13 +25,15 @@ public final class ProjectProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ProjectProperties class. */
+    /**
+     * Creates an instance of ProjectProperties class.
+     */
     public ProjectProperties() {
     }
 
     /**
      * Get the description property: A description for the Project.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -38,7 +42,7 @@ public final class ProjectProperties {
 
     /**
      * Set the description property: A description for the Project.
-     *
+     * 
      * @param description the description value to set.
      * @return the ProjectProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class ProjectProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of this resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,7 +62,7 @@ public final class ProjectProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

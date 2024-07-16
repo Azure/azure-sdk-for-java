@@ -31,7 +31,9 @@ public final class SapEccSource extends TabularSource {
     private Object query;
 
     /*
-     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data. Default value: 00:05:00. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read
+     * response data. Default value: 00:05:00. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;

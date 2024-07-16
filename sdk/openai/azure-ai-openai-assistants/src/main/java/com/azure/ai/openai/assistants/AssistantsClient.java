@@ -268,7 +268,7 @@ public final class AssistantsClient {
     /**
      * Creates a new assistant.
      *
-     * @param assistantCreationOptions The request details to use when creating a new assistant.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -279,10 +279,10 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Assistant createAssistant(AssistantCreationOptions assistantCreationOptions) {
+    public Assistant createAssistant(AssistantCreationOptions body) {
         // Generated convenience method for createAssistantWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createAssistantWithResponse(BinaryData.fromObject(assistantCreationOptions), requestOptions).getValue()
+        return createAssistantWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(Assistant.class);
     }
 
@@ -1497,7 +1497,7 @@ public final class AssistantsClient {
     /**
      * Creates a new thread. Threads contain messages and can be run by assistants.
      *
-     * @param assistantThreadCreationOptions The details used to create a new assistant thread.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1508,11 +1508,10 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssistantThread createThread(AssistantThreadCreationOptions assistantThreadCreationOptions) {
+    public AssistantThread createThread(AssistantThreadCreationOptions body) {
         // Generated convenience method for createThreadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createThreadWithResponse(BinaryData.fromObject(assistantThreadCreationOptions), requestOptions)
-            .getValue()
+        return createThreadWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AssistantThread.class);
     }
 
@@ -1754,7 +1753,7 @@ public final class AssistantsClient {
     /**
      * Creates a new assistant thread and immediately starts a run using that new thread.
      *
-     * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1765,11 +1764,10 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreadRun createThreadAndRun(CreateAndRunThreadOptions createAndRunThreadOptions) {
+    public ThreadRun createThreadAndRun(CreateAndRunThreadOptions body) {
         // Generated convenience method for createThreadAndRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createThreadAndRunWithResponse(BinaryData.fromObject(createAndRunThreadOptions), requestOptions)
-            .getValue()
+        return createThreadAndRunWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(ThreadRun.class);
     }
 
@@ -2250,7 +2248,7 @@ public final class AssistantsClient {
      * Modifies an existing assistant.
      *
      * @param assistantId The ID of the assistant to modify.
-     * @param updateAssistantOptions The request details to use when modifying an existing assistant.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2261,11 +2259,10 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Assistant updateAssistant(String assistantId, UpdateAssistantOptions updateAssistantOptions) {
+    public Assistant updateAssistant(String assistantId, UpdateAssistantOptions body) {
         // Generated convenience method for updateAssistantWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateAssistantWithResponse(assistantId, BinaryData.fromObject(updateAssistantOptions), requestOptions)
-            .getValue()
+        return updateAssistantWithResponse(assistantId, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(Assistant.class);
     }
 
@@ -2290,9 +2287,9 @@ public final class AssistantsClient {
     public ThreadMessage updateMessage(String threadId, String messageId, Map<String, String> metadata) {
         // Generated convenience method for updateMessageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateMessageRequest requestObj = new UpdateMessageRequest().setMetadata(metadata);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return updateMessageWithResponse(threadId, messageId, request, requestOptions).getValue()
+        UpdateMessageRequest updateMessageRequestObj = new UpdateMessageRequest().setMetadata(metadata);
+        BinaryData updateMessageRequest = BinaryData.fromObject(updateMessageRequestObj);
+        return updateMessageWithResponse(threadId, messageId, updateMessageRequest, requestOptions).getValue()
             .toObject(ThreadMessage.class);
     }
 
@@ -2314,9 +2311,9 @@ public final class AssistantsClient {
     public ThreadMessage updateMessage(String threadId, String messageId) {
         // Generated convenience method for updateMessageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateMessageRequest requestObj = new UpdateMessageRequest();
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return updateMessageWithResponse(threadId, messageId, request, requestOptions).getValue()
+        UpdateMessageRequest updateMessageRequestObj = new UpdateMessageRequest();
+        BinaryData updateMessageRequest = BinaryData.fromObject(updateMessageRequestObj);
+        return updateMessageWithResponse(threadId, messageId, updateMessageRequest, requestOptions).getValue()
             .toObject(ThreadMessage.class);
     }
 
@@ -2432,9 +2429,10 @@ public final class AssistantsClient {
     public ThreadRun updateRun(String threadId, String runId, Map<String, String> metadata) {
         // Generated convenience method for updateRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateRunRequest requestObj = new UpdateRunRequest().setMetadata(metadata);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return updateRunWithResponse(threadId, runId, request, requestOptions).getValue().toObject(ThreadRun.class);
+        UpdateRunRequest updateRunRequestObj = new UpdateRunRequest().setMetadata(metadata);
+        BinaryData updateRunRequest = BinaryData.fromObject(updateRunRequestObj);
+        return updateRunWithResponse(threadId, runId, updateRunRequest, requestOptions).getValue()
+            .toObject(ThreadRun.class);
     }
 
     /**
@@ -2455,9 +2453,10 @@ public final class AssistantsClient {
     public ThreadRun updateRun(String threadId, String runId) {
         // Generated convenience method for updateRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateRunRequest requestObj = new UpdateRunRequest();
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return updateRunWithResponse(threadId, runId, request, requestOptions).getValue().toObject(ThreadRun.class);
+        UpdateRunRequest updateRunRequestObj = new UpdateRunRequest();
+        BinaryData updateRunRequest = BinaryData.fromObject(updateRunRequestObj);
+        return updateRunWithResponse(threadId, runId, updateRunRequest, requestOptions).getValue()
+            .toObject(ThreadRun.class);
     }
 
     /**
@@ -2495,7 +2494,7 @@ public final class AssistantsClient {
      * @return represents an assistant that can call the model and use tools.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIFile uploadFile(FileDetails file, FilePurpose purpose, String filename) {
+    OpenAIFile uploadFile(FileDetails file, FilePurpose purpose, String filename) {
         file.setFilename(filename);
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest requestObj = new UploadFileRequest(file, purpose).setFilename(filename);
@@ -2523,7 +2522,7 @@ public final class AssistantsClient {
      * @return represents an assistant that can call the model and use tools.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIFile uploadFile(FileDetails file, FilePurpose purpose) {
+    public OpenAIFile uploadFile(FileDetails file, FilePurpose purpose) {
         // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest requestObj = new UploadFileRequest(file, purpose);
@@ -2655,9 +2654,10 @@ public final class AssistantsClient {
     public ThreadRun submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs) {
         // Generated convenience method for submitToolOutputsToRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).getValue()
+        SubmitToolOutputsToRunRequest submitToolOutputsToRunRequestObj = new SubmitToolOutputsToRunRequest(toolOutputs);
+        BinaryData submitToolOutputsToRunRequest = BinaryData.fromObject(submitToolOutputsToRunRequestObj);
+        return submitToolOutputsToRunWithResponse(threadId, runId, submitToolOutputsToRunRequest, requestOptions)
+            .getValue()
             .toObject(ThreadRun.class);
     }
 
@@ -3287,7 +3287,7 @@ public final class AssistantsClient {
      * Modifies an existing thread.
      *
      * @param threadId The ID of the thread to modify.
-     * @param updateAssistantThreadOptions The details used to update an existing assistant thread.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3298,11 +3298,10 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssistantThread updateThread(String threadId, UpdateAssistantThreadOptions updateAssistantThreadOptions) {
+    public AssistantThread updateThread(String threadId, UpdateAssistantThreadOptions body) {
         // Generated convenience method for updateThreadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateThreadWithResponse(threadId, BinaryData.fromObject(updateAssistantThreadOptions), requestOptions)
-            .getValue()
+        return updateThreadWithResponse(threadId, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AssistantThread.class);
     }
 
@@ -3394,7 +3393,7 @@ public final class AssistantsClient {
     /**
      * Creates a vector store.
      *
-     * @param vectorStoreOptions Request object for creating a vector store.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3405,10 +3404,10 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VectorStore createVectorStore(VectorStoreOptions vectorStoreOptions) {
+    public VectorStore createVectorStore(VectorStoreOptions body) {
         // Generated convenience method for createVectorStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createVectorStoreWithResponse(BinaryData.fromObject(vectorStoreOptions), requestOptions).getValue()
+        return createVectorStoreWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(VectorStore.class);
     }
 
@@ -3436,7 +3435,7 @@ public final class AssistantsClient {
      * The ID of the vector store to modify.
      *
      * @param vectorStoreId The ID of the vector store to modify.
-     * @param vectorStoreUpdateOptions Request object for updating a vector store.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3447,11 +3446,11 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VectorStore modifyVectorStore(String vectorStoreId, VectorStoreUpdateOptions vectorStoreUpdateOptions) {
+    public VectorStore modifyVectorStore(String vectorStoreId, VectorStoreUpdateOptions body) {
         // Generated convenience method for modifyVectorStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return modifyVectorStoreWithResponse(vectorStoreId, BinaryData.fromObject(vectorStoreUpdateOptions),
-            requestOptions).getValue().toObject(VectorStore.class);
+        return modifyVectorStoreWithResponse(vectorStoreId, BinaryData.fromObject(body), requestOptions).getValue()
+            .toObject(VectorStore.class);
     }
 
     /**
@@ -3565,9 +3564,9 @@ public final class AssistantsClient {
     public VectorStoreFile createVectorStoreFile(String vectorStoreId, String fileId) {
         // Generated convenience method for createVectorStoreFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateVectorStoreFileRequest requestObj = new CreateVectorStoreFileRequest(fileId);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return createVectorStoreFileWithResponse(vectorStoreId, request, requestOptions).getValue()
+        CreateVectorStoreFileRequest createVectorStoreFileRequestObj = new CreateVectorStoreFileRequest(fileId);
+        BinaryData createVectorStoreFileRequest = BinaryData.fromObject(createVectorStoreFileRequestObj);
+        return createVectorStoreFileWithResponse(vectorStoreId, createVectorStoreFileRequest, requestOptions).getValue()
             .toObject(VectorStoreFile.class);
     }
 
@@ -3636,9 +3635,11 @@ public final class AssistantsClient {
     public VectorStoreFileBatch createVectorStoreFileBatch(String vectorStoreId, List<String> fileIds) {
         // Generated convenience method for createVectorStoreFileBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateVectorStoreFileBatchRequest requestObj = new CreateVectorStoreFileBatchRequest(fileIds);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return createVectorStoreFileBatchWithResponse(vectorStoreId, request, requestOptions).getValue()
+        CreateVectorStoreFileBatchRequest createVectorStoreFileBatchRequestObj
+            = new CreateVectorStoreFileBatchRequest(fileIds);
+        BinaryData createVectorStoreFileBatchRequest = BinaryData.fromObject(createVectorStoreFileBatchRequestObj);
+        return createVectorStoreFileBatchWithResponse(vectorStoreId, createVectorStoreFileBatchRequest, requestOptions)
+            .getValue()
             .toObject(VectorStoreFileBatch.class);
     }
 

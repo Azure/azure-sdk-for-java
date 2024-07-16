@@ -128,8 +128,7 @@ public final class SimNameAndProperties {
     }
 
     /**
-     * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM on that
-     * site.
+     * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM on that site.
      * 
      * @return the siteProvisioningState value.
      */
@@ -187,9 +186,9 @@ public final class SimNameAndProperties {
     }
 
     /**
-     * Get the deviceType property: An optional free-form text field that can be used to record the device type this
-     * SIM is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered
-     * based on this value.
+     * Get the deviceType property: An optional free-form text field that can be used to record the device type this SIM
+     * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
+     * this value.
      * 
      * @return the deviceType value.
      */
@@ -198,9 +197,9 @@ public final class SimNameAndProperties {
     }
 
     /**
-     * Set the deviceType property: An optional free-form text field that can be used to record the device type this
-     * SIM is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered
-     * based on this value.
+     * Set the deviceType property: An optional free-form text field that can be used to record the device type this SIM
+     * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
+     * this value.
      * 
      * @param deviceType the deviceType value to set.
      * @return the SimNameAndProperties object itself.
@@ -289,12 +288,13 @@ public final class SimNameAndProperties {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model SimNameAndProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SimNameAndProperties"));
         }
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model SimNameAndProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model SimNameAndProperties"));
         } else {
             innerProperties().validate();
         }

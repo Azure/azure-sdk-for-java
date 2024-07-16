@@ -50,7 +50,7 @@ public final class EnvironmentDefinitionParameter implements JsonSerializable<En
     private final EnvironmentDefinitionParameterType parameterType;
 
     /*
-     * Whether or not this parameter is read-only.  If true, default should have a
+     * Whether or not this parameter is read-only. If true, default should have a
      * value.
      */
     @Generated

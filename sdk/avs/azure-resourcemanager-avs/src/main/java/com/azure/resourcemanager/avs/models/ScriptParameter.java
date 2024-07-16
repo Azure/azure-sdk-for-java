@@ -5,48 +5,54 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An parameter that the script will accept. */
+/**
+ * An parameter that the script will accept.
+ */
 @Fluent
-public final class ScriptParameter {
+public final class ScriptParameter implements JsonSerializable<ScriptParameter> {
     /*
-     * The type of parameter the script is expecting. psCredential is a PSCredentialObject
+     * The type of parameter the script is expecting. psCredential is a
+     * PSCredentialObject
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private ScriptParameterTypes type;
 
     /*
      * The parameter name that the script will expect a parameter value for
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * User friendly description of the parameter
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
-     * Should this parameter be visible to arm and passed in the parameters argument when executing
+     * Should this parameter be visible to arm and passed in the parameters argument
+     * when executing
      */
-    @JsonProperty(value = "visibility", access = JsonProperty.Access.WRITE_ONLY)
     private VisibilityParameterEnum visibility;
 
     /*
      * Is this parameter required or optional
      */
-    @JsonProperty(value = "optional", access = JsonProperty.Access.WRITE_ONLY)
     private OptionalParamEnum optional;
 
-    /** Creates an instance of ScriptParameter class. */
+    /**
+     * Creates an instance of ScriptParameter class.
+     */
     public ScriptParameter() {
     }
 
     /**
-     * Get the type property: The type of parameter the script is expecting. psCredential is a PSCredentialObject.
-     *
+     * Get the type property: The type of parameter the script is expecting. psCredential is a
+     * PSCredentialObject.
+     * 
      * @return the type value.
      */
     public ScriptParameterTypes type() {
@@ -55,7 +61,7 @@ public final class ScriptParameter {
 
     /**
      * Get the name property: The parameter name that the script will expect a parameter value for.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +70,7 @@ public final class ScriptParameter {
 
     /**
      * Set the name property: The parameter name that the script will expect a parameter value for.
-     *
+     * 
      * @param name the name value to set.
      * @return the ScriptParameter object itself.
      */
@@ -75,7 +81,7 @@ public final class ScriptParameter {
 
     /**
      * Get the description property: User friendly description of the parameter.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -83,9 +89,9 @@ public final class ScriptParameter {
     }
 
     /**
-     * Get the visibility property: Should this parameter be visible to arm and passed in the parameters argument when
-     * executing.
-     *
+     * Get the visibility property: Should this parameter be visible to arm and passed in the parameters argument
+     * when executing.
+     * 
      * @return the visibility value.
      */
     public VisibilityParameterEnum visibility() {
@@ -94,7 +100,7 @@ public final class ScriptParameter {
 
     /**
      * Get the optional property: Is this parameter required or optional.
-     *
+     * 
      * @return the optional value.
      */
     public OptionalParamEnum optional() {
@@ -103,9 +109,53 @@ public final class ScriptParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptParameter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScriptParameter.
+     */
+    public static ScriptParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptParameter deserializedScriptParameter = new ScriptParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedScriptParameter.type = ScriptParameterTypes.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedScriptParameter.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedScriptParameter.description = reader.getString();
+                } else if ("visibility".equals(fieldName)) {
+                    deserializedScriptParameter.visibility = VisibilityParameterEnum.fromString(reader.getString());
+                } else if ("optional".equals(fieldName)) {
+                    deserializedScriptParameter.optional = OptionalParamEnum.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptParameter;
+        });
     }
 }

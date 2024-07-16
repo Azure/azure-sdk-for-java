@@ -4,24 +4,33 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for LeaseAction. */
+/**
+ * Defines values for LeaseAction.
+ */
 public enum LeaseAction {
-    /** Enum value acquire. */
+    /**
+     * Enum value acquire.
+     */
     ACQUIRE("acquire"),
 
-    /** Enum value auto-renew. */
+    /**
+     * Enum value auto-renew.
+     */
     AUTO_RENEW("auto-renew"),
 
-    /** Enum value release. */
+    /**
+     * Enum value release.
+     */
     RELEASE("release"),
 
-    /** Enum value acquire-release. */
+    /**
+     * Enum value acquire-release.
+     */
     ACQUIRE_RELEASE("acquire-release");
 
-    /** The actual serialized value for a LeaseAction instance. */
+    /**
+     * The actual serialized value for a LeaseAction instance.
+     */
     private final String value;
 
     LeaseAction(String value) {
@@ -30,11 +39,10 @@ public enum LeaseAction {
 
     /**
      * Parses a serialized value to a LeaseAction instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed LeaseAction object, or null if unable to parse.
      */
-    @JsonCreator
     public static LeaseAction fromString(String value) {
         if (value == null) {
             return null;
@@ -48,8 +56,9 @@ public enum LeaseAction {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

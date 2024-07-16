@@ -4,6 +4,7 @@ package com.azure.data.tables.implementation;
 
 import com.azure.core.util.Base64Util;
 
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
  * Entity Data Model (EDM) types
  */
 public enum EntityDataModelType {
+
     /**
      * <strong>Edm.Binary</strong> Represents fixed- or variable-length binary data
      */

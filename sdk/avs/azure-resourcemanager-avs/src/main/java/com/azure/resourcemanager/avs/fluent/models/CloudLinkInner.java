@@ -6,25 +6,53 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.avs.models.CloudLinkProvisioningState;
 import com.azure.resourcemanager.avs.models.CloudLinkStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A cloud link resource. */
+/**
+ * A cloud link resource.
+ */
 @Fluent
 public final class CloudLinkInner extends ProxyResource {
     /*
-     * The properties of a cloud link.
+     * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties")
     private CloudLinkProperties innerProperties;
 
-    /** Creates an instance of CloudLinkInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of CloudLinkInner class.
+     */
     public CloudLinkInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of a cloud link.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private CloudLinkProperties innerProperties() {
@@ -32,8 +60,56 @@ public final class CloudLinkInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public CloudLinkProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the status property: The state of the cloud link.
-     *
+     * 
      * @return the status value.
      */
     public CloudLinkStatus status() {
@@ -42,7 +118,7 @@ public final class CloudLinkInner extends ProxyResource {
 
     /**
      * Get the linkedCloud property: Identifier of the other private cloud participating in the link.
-     *
+     * 
      * @return the linkedCloud value.
      */
     public String linkedCloud() {
@@ -51,7 +127,7 @@ public final class CloudLinkInner extends ProxyResource {
 
     /**
      * Set the linkedCloud property: Identifier of the other private cloud participating in the link.
-     *
+     * 
      * @param linkedCloud the linkedCloud value to set.
      * @return the CloudLinkInner object itself.
      */
@@ -65,12 +141,57 @@ public final class CloudLinkInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudLinkInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudLinkInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CloudLinkInner.
+     */
+    public static CloudLinkInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudLinkInner deserializedCloudLinkInner = new CloudLinkInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCloudLinkInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCloudLinkInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCloudLinkInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCloudLinkInner.innerProperties = CloudLinkProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCloudLinkInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudLinkInner;
+        });
     }
 }

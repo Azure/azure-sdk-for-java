@@ -13,16 +13,16 @@ public final class ExtendedUeInfoPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtendedUeInfoProperties model = BinaryData
-            .fromString("{\"ratType\":\"ExtendedUeInfoProperties\",\"lastReadAt\":\"2021-01-08T21:19:01Z\"}")
+            .fromString("{\"ratType\":\"ExtendedUeInfoProperties\",\"lastReadAt\":\"2021-02-02T06:10:15Z\"}")
             .toObject(ExtendedUeInfoProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-08T21:19:01Z"), model.lastReadAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-02T06:10:15Z"), model.lastReadAt());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExtendedUeInfoProperties model
-            = new ExtendedUeInfoProperties().withLastReadAt(OffsetDateTime.parse("2021-01-08T21:19:01Z"));
+            = new ExtendedUeInfoProperties().withLastReadAt(OffsetDateTime.parse("2021-02-02T06:10:15Z"));
         model = BinaryData.fromObject(model).toObject(ExtendedUeInfoProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-08T21:19:01Z"), model.lastReadAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-02T06:10:15Z"), model.lastReadAt());
     }
 }

@@ -5,42 +5,49 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** All available HdiNodeTypes values. */
+/**
+ * All available HdiNodeTypes values.
+ */
 public final class HdiNodeTypes extends ExpandableStringEnum<HdiNodeTypes> {
-    /** Static value Headnode for HdiNodeTypes. */
+    /**
+     * Static value Headnode for HdiNodeTypes.
+     */
     public static final HdiNodeTypes HEADNODE = fromString("Headnode");
 
-    /** Static value Workernode for HdiNodeTypes. */
+    /**
+     * Static value Workernode for HdiNodeTypes.
+     */
     public static final HdiNodeTypes WORKERNODE = fromString("Workernode");
 
-    /** Static value Zookeeper for HdiNodeTypes. */
+    /**
+     * Static value Zookeeper for HdiNodeTypes.
+     */
     public static final HdiNodeTypes ZOOKEEPER = fromString("Zookeeper");
 
     /**
      * Creates a new instance of HdiNodeTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public HdiNodeTypes() {}
+    public HdiNodeTypes() {
+    }
 
     /**
      * Creates or finds a HdiNodeTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HdiNodeTypes.
      */
-    @JsonCreator
     public static HdiNodeTypes fromString(String name) {
         return fromString(name, HdiNodeTypes.class);
     }
 
     /**
      * Gets known HdiNodeTypes values.
-     *
+     * 
      * @return known HdiNodeTypes values.
      */
     public static Collection<HdiNodeTypes> values() {

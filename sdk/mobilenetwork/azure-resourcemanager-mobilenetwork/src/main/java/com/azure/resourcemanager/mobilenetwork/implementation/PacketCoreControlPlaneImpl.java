@@ -25,6 +25,7 @@ import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SignalingConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SiteResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.UserConsentConfiguration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -150,6 +151,10 @@ public final class PacketCoreControlPlaneImpl
         return this.innerModel().homeNetworkPrivateKeysProvisioning();
     }
 
+    public UserConsentConfiguration userConsent() {
+        return this.innerModel().userConsent();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -182,14 +187,16 @@ public final class PacketCoreControlPlaneImpl
     }
 
     public PacketCoreControlPlane create() {
-        this.innerObject = serviceManager.serviceClient().getPacketCoreControlPlanes().createOrUpdate(resourceGroupName,
-            packetCoreControlPlaneName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreControlPlanes()
+            .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PacketCoreControlPlane create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPacketCoreControlPlanes().createOrUpdate(resourceGroupName,
-            packetCoreControlPlaneName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreControlPlanes()
+            .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, this.innerModel(), context);
         return this;
     }
 
@@ -206,14 +213,16 @@ public final class PacketCoreControlPlaneImpl
     }
 
     public PacketCoreControlPlane apply() {
-        this.innerObject = serviceManager.serviceClient().getPacketCoreControlPlanes()
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreControlPlanes()
             .updateTagsWithResponse(resourceGroupName, packetCoreControlPlaneName, updateParameters, Context.NONE)
             .getValue();
         return this;
     }
 
     public PacketCoreControlPlane apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPacketCoreControlPlanes()
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreControlPlanes()
             .updateTagsWithResponse(resourceGroupName, packetCoreControlPlaneName, updateParameters, context)
             .getValue();
         return this;
@@ -229,14 +238,18 @@ public final class PacketCoreControlPlaneImpl
     }
 
     public PacketCoreControlPlane refresh() {
-        this.innerObject = serviceManager.serviceClient().getPacketCoreControlPlanes()
-            .getByResourceGroupWithResponse(resourceGroupName, packetCoreControlPlaneName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreControlPlanes()
+            .getByResourceGroupWithResponse(resourceGroupName, packetCoreControlPlaneName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PacketCoreControlPlane refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPacketCoreControlPlanes()
-            .getByResourceGroupWithResponse(resourceGroupName, packetCoreControlPlaneName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreControlPlanes()
+            .getByResourceGroupWithResponse(resourceGroupName, packetCoreControlPlaneName, context)
+            .getValue();
         return this;
     }
 
@@ -245,8 +258,8 @@ public final class PacketCoreControlPlaneImpl
     }
 
     public AsyncOperationStatus rollback(Context context) {
-        return serviceManager.packetCoreControlPlanes().rollback(resourceGroupName, packetCoreControlPlaneName,
-            context);
+        return serviceManager.packetCoreControlPlanes()
+            .rollback(resourceGroupName, packetCoreControlPlaneName, context);
     }
 
     public AsyncOperationStatus reinstall() {
@@ -254,19 +267,19 @@ public final class PacketCoreControlPlaneImpl
     }
 
     public AsyncOperationStatus reinstall(Context context) {
-        return serviceManager.packetCoreControlPlanes().reinstall(resourceGroupName, packetCoreControlPlaneName,
-            context);
+        return serviceManager.packetCoreControlPlanes()
+            .reinstall(resourceGroupName, packetCoreControlPlaneName, context);
     }
 
     public AsyncOperationStatus collectDiagnosticsPackage(PacketCoreControlPlaneCollectDiagnosticsPackage parameters) {
-        return serviceManager.packetCoreControlPlanes().collectDiagnosticsPackage(resourceGroupName,
-            packetCoreControlPlaneName, parameters);
+        return serviceManager.packetCoreControlPlanes()
+            .collectDiagnosticsPackage(resourceGroupName, packetCoreControlPlaneName, parameters);
     }
 
     public AsyncOperationStatus collectDiagnosticsPackage(PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
         Context context) {
-        return serviceManager.packetCoreControlPlanes().collectDiagnosticsPackage(resourceGroupName,
-            packetCoreControlPlaneName, parameters, context);
+        return serviceManager.packetCoreControlPlanes()
+            .collectDiagnosticsPackage(resourceGroupName, packetCoreControlPlaneName, parameters, context);
     }
 
     public PacketCoreControlPlaneImpl withRegion(Region location) {
@@ -368,6 +381,11 @@ public final class PacketCoreControlPlaneImpl
 
     public PacketCoreControlPlaneImpl withInteropSettings(Object interopSettings) {
         this.innerModel().withInteropSettings(interopSettings);
+        return this;
+    }
+
+    public PacketCoreControlPlaneImpl withUserConsent(UserConsentConfiguration userConsent) {
+        this.innerModel().withUserConsent(userConsent);
         return this;
     }
 

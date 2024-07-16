@@ -5,87 +5,89 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Microsoft Fabric Warehouse linked service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Warehouse")
-@JsonFlatten
+/**
+ * Microsoft Fabric Warehouse linked service.
+ */
 @Fluent
 public class WarehouseLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "Warehouse";
+
+    /*
      * The ID of Microsoft Fabric Warehouse artifact. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.artifactId", required = true)
     private Object artifactId;
 
     /*
      * The endpoint of Microsoft Fabric Warehouse server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.endpoint", required = true)
     private Object endpoint;
 
     /*
      * The ID of Microsoft Fabric workspace. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.workspaceId")
     private Object workspaceId;
 
     /*
-     * The ID of the application used to authenticate against Microsoft Fabric Warehouse. Type: string (or Expression
-     * with resultType string).
+     * The ID of the application used to authenticate against Microsoft Fabric Warehouse. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The Key of the application used to authenticate against Microsoft Fabric Warehouse.
      */
-    @JsonProperty(value = "typeProperties.servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
-     * string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.tenant")
     private Object tenant;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;
 
     /*
-     * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
-     * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
+     * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.servicePrincipalCredentialType")
     private Object servicePrincipalCredentialType;
 
     /*
-     * The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is
-     * 'ServicePrincipalKey', servicePrincipalCredential can be SecureString or AzureKeyVaultSecretReference. If
-     * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
-     * AzureKeyVaultSecretReference.
+     * The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "typeProperties.servicePrincipalCredential")
     private SecretBase servicePrincipalCredential;
 
-    /** Creates an instance of WarehouseLinkedService class. */
-    public WarehouseLinkedService() {}
+    /**
+     * Creates an instance of WarehouseLinkedService class.
+     */
+    public WarehouseLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the artifactId property: The ID of Microsoft Fabric Warehouse artifact. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the artifactId value.
      */
     public Object getArtifactId() {
@@ -95,7 +97,7 @@ public class WarehouseLinkedService extends LinkedService {
     /**
      * Set the artifactId property: The ID of Microsoft Fabric Warehouse artifact. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param artifactId the artifactId value to set.
      * @return the WarehouseLinkedService object itself.
      */
@@ -107,7 +109,7 @@ public class WarehouseLinkedService extends LinkedService {
     /**
      * Get the endpoint property: The endpoint of Microsoft Fabric Warehouse server. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the endpoint value.
      */
     public Object getEndpoint() {
@@ -117,7 +119,7 @@ public class WarehouseLinkedService extends LinkedService {
     /**
      * Set the endpoint property: The endpoint of Microsoft Fabric Warehouse server. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the WarehouseLinkedService object itself.
      */
@@ -129,7 +131,7 @@ public class WarehouseLinkedService extends LinkedService {
     /**
      * Get the workspaceId property: The ID of Microsoft Fabric workspace. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the workspaceId value.
      */
     public Object getWorkspaceId() {
@@ -139,7 +141,7 @@ public class WarehouseLinkedService extends LinkedService {
     /**
      * Set the workspaceId property: The ID of Microsoft Fabric workspace. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param workspaceId the workspaceId value to set.
      * @return the WarehouseLinkedService object itself.
      */
@@ -151,7 +153,7 @@ public class WarehouseLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalId property: The ID of the application used to authenticate against Microsoft Fabric
      * Warehouse. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object getServicePrincipalId() {
@@ -161,7 +163,7 @@ public class WarehouseLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalId property: The ID of the application used to authenticate against Microsoft Fabric
      * Warehouse. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the WarehouseLinkedService object itself.
      */
@@ -173,7 +175,7 @@ public class WarehouseLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalKey property: The Key of the application used to authenticate against Microsoft Fabric
      * Warehouse.
-     *
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase getServicePrincipalKey() {
@@ -183,7 +185,7 @@ public class WarehouseLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalKey property: The Key of the application used to authenticate against Microsoft Fabric
      * Warehouse.
-     *
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the WarehouseLinkedService object itself.
      */
@@ -195,7 +197,7 @@ public class WarehouseLinkedService extends LinkedService {
     /**
      * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the tenant value.
      */
     public Object getTenant() {
@@ -205,7 +207,7 @@ public class WarehouseLinkedService extends LinkedService {
     /**
      * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the WarehouseLinkedService object itself.
      */
@@ -217,7 +219,7 @@ public class WarehouseLinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string.
-     *
+     * 
      * @return the encryptedCredential value.
      */
     public String getEncryptedCredential() {
@@ -227,7 +229,7 @@ public class WarehouseLinkedService extends LinkedService {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string.
-     *
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the WarehouseLinkedService object itself.
      */
@@ -240,7 +242,7 @@ public class WarehouseLinkedService extends LinkedService {
      * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
      * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalCredentialType value.
      */
     public Object getServicePrincipalCredentialType() {
@@ -251,7 +253,7 @@ public class WarehouseLinkedService extends LinkedService {
      * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
      * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the WarehouseLinkedService object itself.
      */
@@ -265,7 +267,7 @@ public class WarehouseLinkedService extends LinkedService {
      * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
      * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
      * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the servicePrincipalCredential value.
      */
     public SecretBase getServicePrincipalCredential() {
@@ -277,7 +279,7 @@ public class WarehouseLinkedService extends LinkedService {
      * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
      * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
      * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
-     *
+     * 
      * @param servicePrincipalCredential the servicePrincipalCredential value to set.
      * @return the WarehouseLinkedService object itself.
      */
@@ -286,31 +288,150 @@ public class WarehouseLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WarehouseLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WarehouseLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WarehouseLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WarehouseLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (artifactId != null
+            || endpoint != null
+            || workspaceId != null
+            || servicePrincipalId != null
+            || servicePrincipalKey != null
+            || tenant != null
+            || encryptedCredential != null
+            || servicePrincipalCredentialType != null
+            || servicePrincipalCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("artifactId", this.artifactId);
+            jsonWriter.writeUntypedField("endpoint", this.endpoint);
+            jsonWriter.writeUntypedField("workspaceId", this.workspaceId);
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+            jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+            jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WarehouseLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WarehouseLinkedService if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WarehouseLinkedService.
+     */
+    public static WarehouseLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WarehouseLinkedService deserializedWarehouseLinkedService = new WarehouseLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedWarehouseLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedWarehouseLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedWarehouseLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedWarehouseLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedWarehouseLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("artifactId".equals(fieldName)) {
+                            deserializedWarehouseLinkedService.artifactId = reader.readUntyped();
+                        } else if ("endpoint".equals(fieldName)) {
+                            deserializedWarehouseLinkedService.endpoint = reader.readUntyped();
+                        } else if ("workspaceId".equals(fieldName)) {
+                            deserializedWarehouseLinkedService.workspaceId = reader.readUntyped();
+                        } else if ("servicePrincipalId".equals(fieldName)) {
+                            deserializedWarehouseLinkedService.servicePrincipalId = reader.readUntyped();
+                        } else if ("servicePrincipalKey".equals(fieldName)) {
+                            deserializedWarehouseLinkedService.servicePrincipalKey = SecretBase.fromJson(reader);
+                        } else if ("tenant".equals(fieldName)) {
+                            deserializedWarehouseLinkedService.tenant = reader.readUntyped();
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedWarehouseLinkedService.encryptedCredential = reader.getString();
+                        } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                            deserializedWarehouseLinkedService.servicePrincipalCredentialType = reader.readUntyped();
+                        } else if ("servicePrincipalCredential".equals(fieldName)) {
+                            deserializedWarehouseLinkedService.servicePrincipalCredential = SecretBase.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedWarehouseLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedWarehouseLinkedService;
+        });
     }
 }

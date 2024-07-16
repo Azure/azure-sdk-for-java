@@ -5,45 +5,54 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of SSIS package location. */
+/**
+ * The type of SSIS package location.
+ */
 public final class SsisPackageLocationType extends ExpandableStringEnum<SsisPackageLocationType> {
-    /** Static value SSISDB for SsisPackageLocationType. */
+    /**
+     * Static value SSISDB for SsisPackageLocationType.
+     */
     public static final SsisPackageLocationType SSISDB = fromString("SSISDB");
 
-    /** Static value File for SsisPackageLocationType. */
+    /**
+     * Static value File for SsisPackageLocationType.
+     */
     public static final SsisPackageLocationType FILE = fromString("File");
 
-    /** Static value InlinePackage for SsisPackageLocationType. */
+    /**
+     * Static value InlinePackage for SsisPackageLocationType.
+     */
     public static final SsisPackageLocationType INLINE_PACKAGE = fromString("InlinePackage");
 
-    /** Static value PackageStore for SsisPackageLocationType. */
+    /**
+     * Static value PackageStore for SsisPackageLocationType.
+     */
     public static final SsisPackageLocationType PACKAGE_STORE = fromString("PackageStore");
 
     /**
      * Creates a new instance of SsisPackageLocationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SsisPackageLocationType() {}
+    public SsisPackageLocationType() {
+    }
 
     /**
      * Creates or finds a SsisPackageLocationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SsisPackageLocationType.
      */
-    @JsonCreator
     public static SsisPackageLocationType fromString(String name) {
         return fromString(name, SsisPackageLocationType.class);
     }
 
     /**
      * Gets known SsisPackageLocationType values.
-     *
+     * 
      * @return known SsisPackageLocationType values.
      */
     public static Collection<SsisPackageLocationType> values() {

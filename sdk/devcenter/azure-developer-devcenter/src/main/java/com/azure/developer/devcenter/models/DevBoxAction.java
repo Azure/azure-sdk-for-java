@@ -5,6 +5,7 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -153,8 +154,8 @@ public final class DevBoxAction implements JsonSerializable<DevBoxAction> {
                 } else if ("sourceId".equals(fieldName)) {
                     sourceId = reader.getString();
                 } else if ("suspendedUntil".equals(fieldName)) {
-                    suspendedUntil
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    suspendedUntil = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("next".equals(fieldName)) {
                     nextAction = DevBoxNextAction.fromJson(reader);
                 } else {

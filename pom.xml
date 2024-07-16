@@ -137,6 +137,7 @@
     <module>sdk/mixedreality</module>
     <module>sdk/mobilenetwork</module>
     <module>sdk/modelsrepository</module>
+    <module>sdk/mongocluster</module>
     <module>sdk/monitor</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>

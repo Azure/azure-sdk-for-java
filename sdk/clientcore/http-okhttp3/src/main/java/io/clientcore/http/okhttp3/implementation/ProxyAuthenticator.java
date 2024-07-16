@@ -5,6 +5,7 @@ package io.clientcore.http.okhttp3.implementation;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.binarydata.BinaryData;
 import okhttp3.Authenticator;
 import okhttp3.Challenge;
 import okhttp3.Interceptor;
@@ -46,7 +47,7 @@ public final class ProxyAuthenticator implements Authenticator {
     /*
      * Digest authentication to a proxy uses the 'CONNECT' method, these can't have a request body.
      */
-    private static final Supplier<byte[]> NO_BODY = () -> new byte[0];
+    private static final Supplier<BinaryData> NO_BODY = BinaryData::empty;
 
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";

@@ -20,7 +20,7 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
     static String serviceConnectionId = Configuration.getGlobalConfiguration().get("AZURE_SERVICE_CONNECTION_ID");
     static String systemAccessToken = Configuration.getGlobalConfiguration().get("SYSTEM_ACCESSTOKEN");
 
-    private AzurePipelinesCredential getCredential() {
+    private static AzurePipelinesCredential getCredential() {
         return new AzurePipelinesCredentialBuilder()
             .clientId(clientId)
             .tenantId(tenantId)
@@ -31,11 +31,9 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
 
     @Test
     @LiveOnly
-    public void testGetToken() {
+    public void testGetTokenFromPipeline() {
         // Arrange
-
         AzurePipelinesCredential credential = getCredential();
-
         // Act & Assert
         StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
             .assertNext(accessToken -> {
@@ -47,7 +45,7 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
 
     @Test
     @LiveOnly
-    public void testGetTokenSync() {
+    public void testGetTokenFromPipelineSync() {
         // Arrange
         AzurePipelinesCredential credential = getCredential();
 

@@ -5,42 +5,49 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The partition mechanism that will be used for Netezza read in parallel. */
+/**
+ * The partition mechanism that will be used for Netezza read in parallel.
+ */
 public final class NetezzaPartitionOption extends ExpandableStringEnum<NetezzaPartitionOption> {
-    /** Static value None for NetezzaPartitionOption. */
+    /**
+     * Static value None for NetezzaPartitionOption.
+     */
     public static final NetezzaPartitionOption NONE = fromString("None");
 
-    /** Static value DataSlice for NetezzaPartitionOption. */
+    /**
+     * Static value DataSlice for NetezzaPartitionOption.
+     */
     public static final NetezzaPartitionOption DATA_SLICE = fromString("DataSlice");
 
-    /** Static value DynamicRange for NetezzaPartitionOption. */
+    /**
+     * Static value DynamicRange for NetezzaPartitionOption.
+     */
     public static final NetezzaPartitionOption DYNAMIC_RANGE = fromString("DynamicRange");
 
     /**
      * Creates a new instance of NetezzaPartitionOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public NetezzaPartitionOption() {}
+    public NetezzaPartitionOption() {
+    }
 
     /**
      * Creates or finds a NetezzaPartitionOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetezzaPartitionOption.
      */
-    @JsonCreator
     public static NetezzaPartitionOption fromString(String name) {
         return fromString(name, NetezzaPartitionOption.class);
     }
 
     /**
      * Gets known NetezzaPartitionOption values.
-     *
+     * 
      * @return known NetezzaPartitionOption values.
      */
     public static Collection<NetezzaPartitionOption> values() {

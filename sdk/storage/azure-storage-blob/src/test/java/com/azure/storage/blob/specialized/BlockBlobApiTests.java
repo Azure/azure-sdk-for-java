@@ -7,7 +7,6 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -375,6 +374,20 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         assertEquals(ByteBuffer.wrap(outputStream.toByteArray()), DATA.getDefaultData());
     }
+
+    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void stageBlockFromUrlSourceErrorAndStatusCode() {
+        BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        String blockID = getBlockID();
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.stageBlockFromUrl(blockID, blockBlobClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
+
+        assertTrue(e.getStatusCode() == 409);
+        assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
+        assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
+    }*/
 
     @Test
     public void stageBlockFromUrlMin() {
@@ -1485,6 +1498,18 @@ public class BlockBlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(DATA.getDefaultBytes(), os.toByteArray());
     }
 
+    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void uploadFromUrlSourceErrorAndStatusCode() {
+        BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.uploadFromUrl(blockBlobClient.getBlobUrl()));
+
+        assertTrue(e.getStatusCode() == 409);
+        assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
+        assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
+    }*/
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void uploadFromUrlOverwrite() {
@@ -1741,16 +1766,18 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertTrue(aadBlob.exists());
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        BlockBlobClient aadBlob = instrument(new SpecializedBlobClientBuilder()
-            .endpoint(blockBlobClient.getBlobUrl())
-            .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
+        BlockBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(blockBlobClient.getBlobUrl())
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
             .buildBlockBlobClient();
 
-        BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadBlob.exists());
-        assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+        assertNotNull(aadBlob.getProperties());
     }
 
     @Test

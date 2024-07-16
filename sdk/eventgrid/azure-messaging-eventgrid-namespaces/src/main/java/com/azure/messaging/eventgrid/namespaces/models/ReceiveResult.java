@@ -22,26 +22,26 @@ public final class ReceiveResult implements JsonSerializable<ReceiveResult> {
      * Array of receive responses, one per cloud event.
      */
     @Generated
-    private final List<ReceiveDetails> value;
+    private final List<ReceiveDetails> details;
 
     /**
      * Creates an instance of ReceiveResult class.
      *
-     * @param value the value value to set.
+     * @param details the details value to set.
      */
     @Generated
-    private ReceiveResult(List<ReceiveDetails> value) {
-        this.value = value;
+    private ReceiveResult(List<ReceiveDetails> details) {
+        this.details = details;
     }
 
     /**
-     * Get the value property: Array of receive responses, one per cloud event.
+     * Get the details property: Array of receive responses, one per cloud event.
      *
-     * @return the value value.
+     * @return the details value.
      */
     @Generated
-    public List<ReceiveDetails> getValue() {
-        return this.value;
+    public List<ReceiveDetails> getDetails() {
+        return this.details;
     }
 
     /**
@@ -51,7 +51,7 @@ public final class ReceiveResult implements JsonSerializable<ReceiveResult> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("value", this.details, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -67,17 +67,17 @@ public final class ReceiveResult implements JsonSerializable<ReceiveResult> {
     @Generated
     public static ReceiveResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<ReceiveDetails> value = null;
+            List<ReceiveDetails> details = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("value".equals(fieldName)) {
-                    value = reader.readArray(reader1 -> ReceiveDetails.fromJson(reader1));
+                    details = reader.readArray(reader1 -> ReceiveDetails.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ReceiveResult(value);
+            return new ReceiveResult(details);
         });
     }
 }

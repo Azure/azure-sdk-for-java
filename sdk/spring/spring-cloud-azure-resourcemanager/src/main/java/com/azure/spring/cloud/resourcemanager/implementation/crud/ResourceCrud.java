@@ -6,8 +6,8 @@ package com.azure.spring.cloud.resourcemanager.implementation.crud;
 /**
  * Interface to support CRUD of Azure Resource
  *
- * @param <T> Azure resource type.
- * @param <K> Azure resource key type.
+ * @param <T> Azure resource type
+ * @param <K> Azure resource key type
  * @param <P> Azure resource properties.
  *
  */

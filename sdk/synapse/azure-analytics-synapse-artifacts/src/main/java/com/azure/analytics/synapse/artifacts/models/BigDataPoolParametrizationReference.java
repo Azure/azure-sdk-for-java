@@ -5,29 +5,37 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Big data pool reference type. */
+/**
+ * Big data pool reference type.
+ */
 @Fluent
-public final class BigDataPoolParametrizationReference {
+public final class BigDataPoolParametrizationReference
+    implements JsonSerializable<BigDataPoolParametrizationReference> {
     /*
      * Big data pool reference type.
      */
-    @JsonProperty(value = "type", required = true)
     private BigDataPoolReferenceType type;
 
     /*
      * Reference big data pool name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "referenceName", required = true)
     private Object referenceName;
 
-    /** Creates an instance of BigDataPoolParametrizationReference class. */
-    public BigDataPoolParametrizationReference() {}
+    /**
+     * Creates an instance of BigDataPoolParametrizationReference class.
+     */
+    public BigDataPoolParametrizationReference() {
+    }
 
     /**
      * Get the type property: Big data pool reference type.
-     *
+     * 
      * @return the type value.
      */
     public BigDataPoolReferenceType getType() {
@@ -36,7 +44,7 @@ public final class BigDataPoolParametrizationReference {
 
     /**
      * Set the type property: Big data pool reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the BigDataPoolParametrizationReference object itself.
      */
@@ -48,7 +56,7 @@ public final class BigDataPoolParametrizationReference {
     /**
      * Get the referenceName property: Reference big data pool name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the referenceName value.
      */
     public Object getReferenceName() {
@@ -58,12 +66,54 @@ public final class BigDataPoolParametrizationReference {
     /**
      * Set the referenceName property: Reference big data pool name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the BigDataPoolParametrizationReference object itself.
      */
     public BigDataPoolParametrizationReference setReferenceName(Object referenceName) {
         this.referenceName = referenceName;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeUntypedField("referenceName", this.referenceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BigDataPoolParametrizationReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BigDataPoolParametrizationReference if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BigDataPoolParametrizationReference.
+     */
+    public static BigDataPoolParametrizationReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BigDataPoolParametrizationReference deserializedBigDataPoolParametrizationReference
+                = new BigDataPoolParametrizationReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedBigDataPoolParametrizationReference.type
+                        = BigDataPoolReferenceType.fromString(reader.getString());
+                } else if ("referenceName".equals(fieldName)) {
+                    deserializedBigDataPoolParametrizationReference.referenceName = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBigDataPoolParametrizationReference;
+        });
     }
 }

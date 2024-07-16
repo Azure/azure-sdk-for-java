@@ -39,7 +39,6 @@ extends:
   parameters:
     ServiceDirectory: textanalytics
     JavadocSafeJavaBuildVersion: '1.21'
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-ai-textanalytics
         groupId: com.azure

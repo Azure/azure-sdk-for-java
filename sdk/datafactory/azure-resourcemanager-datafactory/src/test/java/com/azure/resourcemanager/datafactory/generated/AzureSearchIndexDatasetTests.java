@@ -19,32 +19,37 @@ public final class AzureSearchIndexDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSearchIndexDataset model = BinaryData.fromString(
-            "{\"type\":\"uiygtcyzcjefpub\",\"typeProperties\":{\"indexName\":\"datajyffwflbkjc\"},\"description\":\"djcgldry\",\"structure\":\"datar\",\"schema\":\"databhzirmx\",\"linkedServiceName\":{\"referenceName\":\"aujbfomfbozpj\",\"parameters\":{\"thpsnxebycymp\":\"datafppqcwdnnj\"}},\"parameters\":{\"sebcxno\":{\"type\":\"String\",\"defaultValue\":\"datannp\"},\"gspjlf\":{\"type\":\"Bool\",\"defaultValue\":\"datadyzssjlmykdygj\"}},\"annotations\":[\"datangwqxcrbcrgyoim\"],\"folder\":{\"name\":\"z\"},\"\":{\"kognhtvagwnn\":\"datat\"}}")
+            "{\"type\":\"AzureSearchIndex\",\"typeProperties\":{\"indexName\":\"dataki\"},\"description\":\"oifm\",\"structure\":\"datalpwdjraurf\",\"schema\":\"dataznurttu\",\"linkedServiceName\":{\"referenceName\":\"aaaxx\",\"parameters\":{\"ecxstowa\":\"datajmdkqtxfrm\",\"tjaqgbl\":\"dataehxuihwes\",\"spsaneyvaerpiob\":\"datakncypmte\"}},\"parameters\":{\"raq\":{\"type\":\"Float\",\"defaultValue\":\"datarjokjwqd\"},\"f\":{\"type\":\"Bool\",\"defaultValue\":\"datappqcaigazwfwl\"},\"odt\":{\"type\":\"Float\",\"defaultValue\":\"datalzs\"},\"ytjwgetfigw\":{\"type\":\"Array\",\"defaultValue\":\"datarslzymqxserwycu\"}},\"annotations\":[\"datajxzi\",\"dataebjrahgdstubwg\"],\"folder\":{\"name\":\"sshxliqm\"},\"\":{\"alw\":\"datawhfmdoiiyobqzw\",\"crmvjfmr\":\"datasofxc\",\"elsxfkzr\":\"datauydldp\",\"rjwbuocqflm\":\"datatirjvqxvwkiocxo\"}}")
             .toObject(AzureSearchIndexDataset.class);
-        Assertions.assertEquals("djcgldry", model.description());
-        Assertions.assertEquals("aujbfomfbozpj", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("sebcxno").type());
-        Assertions.assertEquals("z", model.folder().name());
+        Assertions.assertEquals("oifm", model.description());
+        Assertions.assertEquals("aaaxx", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("raq").type());
+        Assertions.assertEquals("sshxliqm", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSearchIndexDataset model = new AzureSearchIndexDataset().withDescription("djcgldry")
-            .withStructure("datar")
-            .withSchema("databhzirmx")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("aujbfomfbozpj")
-                .withParameters(mapOf("thpsnxebycymp", "datafppqcwdnnj")))
-            .withParameters(mapOf("sebcxno",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datannp"), "gspjlf",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datadyzssjlmykdygj")))
-            .withAnnotations(Arrays.asList("datangwqxcrbcrgyoim"))
-            .withFolder(new DatasetFolder().withName("z"))
-            .withIndexName("datajyffwflbkjc");
+        AzureSearchIndexDataset model
+            = new AzureSearchIndexDataset().withDescription("oifm")
+                .withStructure("datalpwdjraurf")
+                .withSchema("dataznurttu")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("aaaxx")
+                    .withParameters(mapOf("ecxstowa", "datajmdkqtxfrm", "tjaqgbl", "dataehxuihwes", "spsaneyvaerpiob",
+                        "datakncypmte")))
+                .withParameters(mapOf("raq",
+                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datarjokjwqd"), "f",
+                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datappqcaigazwfwl"),
+                    "odt", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datalzs"),
+                    "ytjwgetfigw",
+                    new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datarslzymqxserwycu")))
+                .withAnnotations(Arrays.asList("datajxzi", "dataebjrahgdstubwg"))
+                .withFolder(new DatasetFolder().withName("sshxliqm"))
+                .withIndexName("dataki");
         model = BinaryData.fromObject(model).toObject(AzureSearchIndexDataset.class);
-        Assertions.assertEquals("djcgldry", model.description());
-        Assertions.assertEquals("aujbfomfbozpj", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("sebcxno").type());
-        Assertions.assertEquals("z", model.folder().name());
+        Assertions.assertEquals("oifm", model.description());
+        Assertions.assertEquals("aaaxx", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("raq").type());
+        Assertions.assertEquals("sshxliqm", model.folder().name());
     }
 
     // Use "Map.of" if available

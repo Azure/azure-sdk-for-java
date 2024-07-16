@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This property enables and defines account-level immutability. Enabling the feature auto-enables Blob Versioning. */
+/**
+ * This property enables and defines account-level immutability. Enabling the feature auto-enables Blob Versioning.
+ */
 @Fluent
 public final class ImmutableStorageAccount {
     /*
@@ -26,14 +28,16 @@ public final class ImmutableStorageAccount {
     @JsonProperty(value = "immutabilityPolicy")
     private AccountImmutabilityPolicyProperties immutabilityPolicy;
 
-    /** Creates an instance of ImmutableStorageAccount class. */
+    /**
+     * Creates an instance of ImmutableStorageAccount class.
+     */
     public ImmutableStorageAccount() {
     }
 
     /**
      * Get the enabled property: A boolean flag which enables account-level immutability. All the containers under such
      * an account have object-level immutability enabled by default.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -43,7 +47,7 @@ public final class ImmutableStorageAccount {
     /**
      * Set the enabled property: A boolean flag which enables account-level immutability. All the containers under such
      * an account have object-level immutability enabled by default.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ImmutableStorageAccount object itself.
      */
@@ -57,7 +61,7 @@ public final class ImmutableStorageAccount {
      * and applied to objects that do not possess an explicit immutability policy at the object level. The object-level
      * immutability policy has higher precedence than the container-level immutability policy, which has a higher
      * precedence than the account-level immutability policy.
-     *
+     * 
      * @return the immutabilityPolicy value.
      */
     public AccountImmutabilityPolicyProperties immutabilityPolicy() {
@@ -69,7 +73,7 @@ public final class ImmutableStorageAccount {
      * and applied to objects that do not possess an explicit immutability policy at the object level. The object-level
      * immutability policy has higher precedence than the container-level immutability policy, which has a higher
      * precedence than the account-level immutability policy.
-     *
+     * 
      * @param immutabilityPolicy the immutabilityPolicy value to set.
      * @return the ImmutableStorageAccount object itself.
      */
@@ -80,7 +84,7 @@ public final class ImmutableStorageAccount {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

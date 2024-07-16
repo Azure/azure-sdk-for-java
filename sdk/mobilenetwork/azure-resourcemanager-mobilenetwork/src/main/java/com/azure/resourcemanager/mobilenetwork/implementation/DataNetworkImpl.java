@@ -91,14 +91,16 @@ public final class DataNetworkImpl implements DataNetwork, DataNetwork.Definitio
     }
 
     public DataNetwork create() {
-        this.innerObject = serviceManager.serviceClient().getDataNetworks().createOrUpdate(resourceGroupName,
-            mobileNetworkName, dataNetworkName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDataNetworks()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, dataNetworkName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DataNetwork create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDataNetworks().createOrUpdate(resourceGroupName,
-            mobileNetworkName, dataNetworkName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDataNetworks()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, dataNetworkName, this.innerModel(), context);
         return this;
     }
 
@@ -114,13 +116,17 @@ public final class DataNetworkImpl implements DataNetwork, DataNetwork.Definitio
     }
 
     public DataNetwork apply() {
-        this.innerObject = serviceManager.serviceClient().getDataNetworks().updateTagsWithResponse(resourceGroupName,
-            mobileNetworkName, dataNetworkName, updateParameters, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataNetworks()
+            .updateTagsWithResponse(resourceGroupName, mobileNetworkName, dataNetworkName, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataNetwork apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDataNetworks()
+        this.innerObject = serviceManager.serviceClient()
+            .getDataNetworks()
             .updateTagsWithResponse(resourceGroupName, mobileNetworkName, dataNetworkName, updateParameters, context)
             .getValue();
         return this;
@@ -136,14 +142,18 @@ public final class DataNetworkImpl implements DataNetwork, DataNetwork.Definitio
     }
 
     public DataNetwork refresh() {
-        this.innerObject = serviceManager.serviceClient().getDataNetworks()
-            .getWithResponse(resourceGroupName, mobileNetworkName, dataNetworkName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataNetworks()
+            .getWithResponse(resourceGroupName, mobileNetworkName, dataNetworkName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataNetwork refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDataNetworks()
-            .getWithResponse(resourceGroupName, mobileNetworkName, dataNetworkName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataNetworks()
+            .getWithResponse(resourceGroupName, mobileNetworkName, dataNetworkName, context)
+            .getValue();
         return this;
     }
 

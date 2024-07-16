@@ -4,25 +4,27 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * A managed identity assigned by the user.
+ * User assigned identity properties.
  */
-@Fluent
-public final class UserAssignedIdentity {
+@Immutable
+public final class UserAssignedIdentity implements JsonSerializable<UserAssignedIdentity> {
     /*
-     * The active directory client identifier for this principal.
+     * The principal ID of the assigned identity.
      */
-    @JsonProperty(value = "clientId")
-    private String clientId;
+    private String principalId;
 
     /*
-     * The active directory identifier for this principal.
+     * The client ID of the assigned identity.
      */
-    @JsonProperty(value = "principalId")
-    private String principalId;
+    private String clientId;
 
     /**
      * Creates an instance of UserAssignedIdentity class.
@@ -31,27 +33,7 @@ public final class UserAssignedIdentity {
     }
 
     /**
-     * Get the clientId property: The active directory client identifier for this principal.
-     * 
-     * @return the clientId value.
-     */
-    public String clientId() {
-        return this.clientId;
-    }
-
-    /**
-     * Set the clientId property: The active directory client identifier for this principal.
-     * 
-     * @param clientId the clientId value to set.
-     * @return the UserAssignedIdentity object itself.
-     */
-    public UserAssignedIdentity withClientId(String clientId) {
-        this.clientId = clientId;
-        return this;
-    }
-
-    /**
-     * Get the principalId property: The active directory identifier for this principal.
+     * Get the principalId property: The principal ID of the assigned identity.
      * 
      * @return the principalId value.
      */
@@ -60,14 +42,12 @@ public final class UserAssignedIdentity {
     }
 
     /**
-     * Set the principalId property: The active directory identifier for this principal.
+     * Get the clientId property: The client ID of the assigned identity.
      * 
-     * @param principalId the principalId value to set.
-     * @return the UserAssignedIdentity object itself.
+     * @return the clientId value.
      */
-    public UserAssignedIdentity withPrincipalId(String principalId) {
-        this.principalId = principalId;
-        return this;
+    public String clientId() {
+        return this.clientId;
     }
 
     /**
@@ -76,5 +56,42 @@ public final class UserAssignedIdentity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAssignedIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAssignedIdentity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserAssignedIdentity.
+     */
+    public static UserAssignedIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserAssignedIdentity deserializedUserAssignedIdentity = new UserAssignedIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedUserAssignedIdentity.principalId = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedUserAssignedIdentity.clientId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserAssignedIdentity;
+        });
     }
 }

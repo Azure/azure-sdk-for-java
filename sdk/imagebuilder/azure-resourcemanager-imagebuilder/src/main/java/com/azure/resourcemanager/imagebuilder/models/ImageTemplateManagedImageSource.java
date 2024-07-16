@@ -6,28 +6,41 @@ package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes an image source that is a managed image in customer subscription. This image must reside in the same
  * subscription and region as the Image Builder template.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("ManagedImage")
 @Fluent
 public final class ImageTemplateManagedImageSource extends ImageTemplateSource {
     /*
+     * Specifies the type of source image you want to start with.
+     */
+    private String type = "ManagedImage";
+
+    /*
      * ARM resource id of the managed image in customer subscription
      */
-    @JsonProperty(value = "imageId", required = true)
     private String imageId;
 
     /**
      * Creates an instance of ImageTemplateManagedImageSource class.
      */
     public ImageTemplateManagedImageSource() {
+    }
+
+    /**
+     * Get the type property: Specifies the type of source image you want to start with.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -59,10 +72,52 @@ public final class ImageTemplateManagedImageSource extends ImageTemplateSource {
     public void validate() {
         super.validate();
         if (imageId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property imageId in model ImageTemplateManagedImageSource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property imageId in model ImageTemplateManagedImageSource"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImageTemplateManagedImageSource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("imageId", this.imageId);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateManagedImageSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateManagedImageSource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageTemplateManagedImageSource.
+     */
+    public static ImageTemplateManagedImageSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateManagedImageSource deserializedImageTemplateManagedImageSource
+                = new ImageTemplateManagedImageSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("imageId".equals(fieldName)) {
+                    deserializedImageTemplateManagedImageSource.imageId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageTemplateManagedImageSource.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateManagedImageSource;
+        });
+    }
 }

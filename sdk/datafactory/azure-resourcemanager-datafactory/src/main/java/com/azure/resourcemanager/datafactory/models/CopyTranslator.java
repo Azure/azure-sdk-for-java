@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -29,7 +29,7 @@ public class CopyTranslator {
      */
     @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "CopyTranslator";
 
     /*
      * A copy activity translator.
@@ -41,7 +41,6 @@ public class CopyTranslator {
      * Creates an instance of CopyTranslator class.
      */
     public CopyTranslator() {
-        this.type = "CopyTranslator";
     }
 
     /**
@@ -77,7 +76,7 @@ public class CopyTranslator {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

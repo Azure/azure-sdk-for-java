@@ -14,19 +14,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SalesforceV2LinkedServiceTypeProperties {
     /*
-     * The URL of Salesforce instance. For example, 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
+     * The URL of Salesforce instance. For example, 'https://[domain].my.salesforce.com'. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "environmentUrl")
     private Object environmentUrl;
 
     /*
-     * The authentication type to be used to connect to the Salesforce. Currently, we only support OAuth2ClientCredentials, it is also the default value
+     * The authentication type to be used to connect to the Salesforce. Currently, we only support
+     * OAuth2ClientCredentials, it is also the default value
      */
     @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
-     * The client Id for OAuth 2.0 Client Credentials Flow authentication of the Salesforce instance. Type: string (or Expression with resultType string).
+     * The client Id for OAuth 2.0 Client Credentials Flow authentication of the Salesforce instance. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "clientId")
     private Object clientId;
@@ -38,13 +41,15 @@ public final class SalesforceV2LinkedServiceTypeProperties {
     private SecretBase clientSecret;
 
     /*
-     * The Salesforce API version used in ADF. The version must be larger than or equal to 47.0 which is required by Salesforce BULK API 2.0. Type: string (or Expression with resultType string).
+     * The Salesforce API version used in ADF. The version must be larger than or equal to 47.0 which is required by
+     * Salesforce BULK API 2.0. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "apiVersion")
     private Object apiVersion;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

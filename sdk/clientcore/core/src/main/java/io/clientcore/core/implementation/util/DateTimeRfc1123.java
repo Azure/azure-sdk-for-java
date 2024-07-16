@@ -14,6 +14,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
+
 /**
  * Wrapper over java.time.OffsetDateTime used for specifying RFC1123 format during serialization and deserialization.
  */
@@ -58,7 +60,7 @@ public final class DateTimeRfc1123 {
      * @return The DateTimeRfc1123 representation of the datetime string, or null if {@code date} is null or empty.
      */
     static DateTimeRfc1123 fromString(final String date) {
-        if (CoreUtils.isNullOrEmpty(date)) {
+        if (isNullOrEmpty(date)) {
             return null;
         }
 

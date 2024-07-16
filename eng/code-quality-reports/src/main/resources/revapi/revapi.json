@@ -3,7 +3,7 @@
     "extension": "revapi.java",
     "configuration": {
       "missing-classes": {
-        "behavior": "report",
+        "behavior": "ignore",
         "ignoreMissingAnnotations": false
       },
       "matchOverloads": true
@@ -127,44 +127,81 @@
           "justification": "Cosmos SDK removes Beta annotation to GA its APIs and classes."
         },
         {
-          "code": "java.method.visibilityReduced",
-          "old": "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter()",
-          "new": "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
-          "justification": "Shouldn't have been a public API."
-        },
-        {
-          "code": "java.method.visibilityReduced",
-          "old": "method com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusMessageConverter()",
-          "new": "method com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusMessageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
-          "justification": "Shouldn't have been a public API."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueMessagingAutoConfiguration::messageConverter()",
-          "justification": "Shouldn't have been a public API."
-        },
-        {
           "code": "java.method.added",
           "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer::<init>(org.springframework.security.web.authentication.logout.LogoutSuccessHandler, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver, org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient<org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest>, org.springframework.boot.web.client.RestTemplateBuilder)",
           "justification": "New method added to fix a bug."
         },
         {
-          "regex": true,
-          "code": "java\\.method\\.removed",
-          "old": "method java\\.lang\\.String com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(getPassword|getRemoteUrl|getUsername)\\(\\)",
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getPassword()",
           "justification": "Remove some meaningless jms properties"
         },
         {
-          "code": "java.annotation.attributeValueChanged",
-          "old": "class com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration",
-          "new": "class com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration",
-          "justification": "Import ServiceBusJmsPasswordlessConfiguration.class"
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getRemoteUrl()",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getUsername()",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setPassword(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setRemoteUrl(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setUsername(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
         },
         {
           "regex": true,
-          "code": "java\\.method\\.removed",
-          "old": "method void com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(setPassword|setRemoteUrl|setUsername)\\(java\\.lang\\.String\\)",
-          "justification": "Remove some meaningless jms properties"
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com\\.azure\\.spring\\.cloud\\.config\\.stores\\..*",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.spring.cloud.config.resource.ConnectionPool com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration::initConnectionString(com.azure.spring.cloud.config.properties.AppConfigurationProperties)",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.ConnectionPool",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.Connection",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.spring.cloud.config.stores.ClientStore",
+          "justification": "Not a public api"
+        },
+        {
+          "ignore": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "interface com.azure.spring.cloud.config.AppConfigurationRefresh",
+          "justification": "Thi isn't an external class"
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|class|enum) com\\.mysql\\.cj\\..*",
+          "justification": "Mysql driver classes are allowed to be exposed by dependencies using them."
         },
         {
           "code": "java.method.addedToInterface",
@@ -217,11 +254,6 @@
           "code": "java.class.removed",
           "old": "enum com.azure.messaging.eventhubs.checkpointstore.blob.Messages",
           "justification": "Messages class was accidentally made public. Reverting the public change since this should be implementation detail."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
         },
         {
           "ignore": true,
@@ -313,36 +345,20 @@
           "justification": "Previous value did was incorrect."
         },
         {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.(containers\\.containerregistry|search\\.documents(\\.indexes)?|security\\.keyvault\\.(administration|certificates|keys|keys\\.cryptography)|ai\\.textanalytics|ai\\.formrecognizer(\\.(documentanalysis(\\.administration)?|training))?|ai\\.metricsadvisor(\\.administration)?|messaging.servicebus(\\.administration)?)\\.models.*",
-          "description": ".*com.fasterxml.jackson.*",
-          "justification": "Removing Jackson annotations from ACR, Form Recognizer, KeyVault, Metrics Advisor, Search, ServiceBus, and Text Analytics in transition to stream-style."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.messaging\\.eventgrid\\.systemevents.*",
-          "justification": "Removing Jackson annotations from EventGrid in transition to stream-style."
-        },
-        {
           "code": "java.field.removed",
           "old": "field com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties.AZURE_GERMANY",
           "justification": "Remove this because AZURE_GERMANY is deprecated."
         },
         {
-          "regex": true,
-          "code": "java.annotation.removed",
-          "old": "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
-          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
-          "justification": "Element no longer annotated with 'org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean'."
+          "code": "java.method.addedToInterface",
+          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionQueue(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties)",
+          "justification": "New method added to support more properties."
         },
         {
           "regex": true,
-          "code": "java.annotation.added",
-          "old": "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
-          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
-          "justification": "Element newly annotated with 'org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity"
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.stream.binder.servicebus.core.properties.(ServiceBusProducerProperties|ServiceBusConsumerProperties)",
+          "justification": "Support new properties."
         },
         {
           "regex": true,
@@ -375,6 +391,21 @@
           "code": "java.annotation.added",
           "new": "class com.azure.cosmos.models.ChangeFeedProcessorItem",
           "justification": "Modifies the type of changeFeedMetaData from ChangeFeedMetaData to JsonNode."
+        },
+        {
+          "code" : "java.field.removed",
+          "old" : "field com.mysql.cj.conf.PropertyKey.ociConfigProfile",
+          "justification" : "Fix field removed."
+        },
+        {
+          "code" : "java.method.addedToInterface",
+          "new" : "method int com.mysql.cj.protocol.ServerSession::getOldStatusFlags()",
+          "justification" : "Method was added to an interface."
+        },
+        {
+          "code" : "java.method.addedToInterface",
+          "new" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
+          "justification" : "Method was added to an interface."
         },
         {
           "code": "java.annotation.added",
@@ -411,24 +442,10 @@
         },
         {
           "regex": true,
-          "code": "java\\.method\\.returnTypeTypeParametersChanged",
+          "code": "java\\.method\\.(parameterTypeChanged|returnTypeTypeParametersChanged|returnTypeChanged)",
           "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
           "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "justification": "Return Router models rather than BinaryData."
-        },
-        {
-          "regex": true,
-          "code": "java\\.method\\.parameterTypeChanged",
-          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
-          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "justification": "Accept Router models rather than BinaryData."
-        },
-        {
-          "regex": true,
-          "code": "java\\.method\\.returnTypeChanged",
-          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
-          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "justification": "Return Router models rather than BinaryData."
+          "justification": "Accept and return Router models rather than BinaryData."
         },
         {
           "ignore": true,
@@ -444,62 +461,15 @@
           "justification": "Additional schema formats are supported by Schema Registry."
         },
         {
-          "ignore": true,
-          "code": "java.annotation.removed",
-          "package": "com.azure.ai.contentsafety.models",
-          "annotationType": "com.fasterxml.jackson.annotation.JsonProperty",
-          "justification": "Migrate to azure-json."
-        },
-        {
-          "ignore": true,
-          "code": "java.annotation.removed",
-          "package": "com.azure.ai.contentsafety.models",
-          "annotationType": "com.fasterxml.jackson.annotation.JsonCreator",
-          "justification": "Migrate to azure-json."
-        },
-        {
-          "ignore": true,
           "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.storage\\.queue\\.models.*",
-          "justification": "Removing Jackson annotations from Storage Queue in transition to stream-style."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.monitor\\.query.*",
-          "justification": "Removing Jackson annotations from Monitor Query in transition to stream-style."
-        },
-        {
-          "ignore": true,
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.storage\\.file\\.share\\.models.*",
-          "justification": "Removing Jackson annotations from Storage File Share in transition to stream-style."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.data\\.tables\\.models.*",
-          "justification": "Removing Jackson annotations from Tables in transition to stream-style."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "justification": "Removing Jackson annotations from Job Router in transition to stream-style."
+          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded|removed)",
+          "old": ".*? com\\.azure\\.resourcemanager\\..*\\.models.*",
+          "justification": "Migration to azure-json."
         },
         {
           "regex": true,
           "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
-          "old": ".*? com\\.azure\\.resourcemanager\\.network\\.models.*",
-          "justification": "Jackson annotation changed."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
-          "old": ".*? com\\.azure\\.resourcemanager\\.cosmos\\.models.*",
+          "old": ".*? com\\.azure\\.communication\\.messages\\.models.*",
           "justification": "Jackson annotation changed."
         },
         {
@@ -531,6 +501,60 @@
           "code": "java.method.removed",
           "old": "method com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::withServiceType(com.azure.resourcemanager.cosmos.models.ServiceType)",
           "justification": "The property flatten disabled due to model changed to polymorphic."
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.communication\\.phonenumbers\\.models.*",
+          "new" : ".*? com\\.azure\\.communication\\.phonenumbers\\.models.*",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
+          "new" : ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.messaging\\.webpubsub\\.client\\.models.*",
+          "new" : ".*? com\\.azure\\.messaging\\.webpubsub\\.client\\.models.*",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.ai\\.translation\\.text\\.models.*",
+          "new" : ".*? com\\.azure\\.ai\\.translation\\.text\\.models.*",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.communication\\.callautomation\\.models.*",
+          "new" : ".*? com\\.azure\\.communication\\.callautomation\\.models.*",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
+          "new" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "code": "java.class.nowFinal",
+          "old" : "class com.azure.resourcemanager.eventhubs.models.Identity",
+          "new" : "class com.azure.resourcemanager.eventhubs.models.Identity",
+          "justification": "Class is now final."
+        },
+        {
+          "code": "java.class.nowFinal",
+          "old" : "class com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity",
+          "new" : "class com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity",
+          "justification": "Class is now final."
         }
       ]
     }

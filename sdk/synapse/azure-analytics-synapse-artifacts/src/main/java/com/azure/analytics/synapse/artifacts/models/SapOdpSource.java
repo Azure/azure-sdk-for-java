@@ -5,49 +5,63 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity source for SAP ODP source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SapOdpSource")
+/**
+ * A copy activity source for SAP ODP source.
+ */
 @Fluent
 public final class SapOdpSource extends TabularSource {
     /*
-     * The extraction mode. Allowed value include: Full, Delta and Recovery. The default value is Full. Type: string
-     * (or Expression with resultType string).
+     * Copy source type.
      */
-    @JsonProperty(value = "extractionMode")
+    private String type = "SapOdpSource";
+
+    /*
+     * The extraction mode. Allowed value include: Full, Delta and Recovery. The default value is Full. Type: string (or Expression with resultType string).
+     */
     private Object extractionMode;
 
     /*
      * The subscriber process to manage the delta process. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "subscriberProcess")
     private Object subscriberProcess;
 
     /*
-     * Specifies the selection conditions from source data. Type: array of objects(selection) (or Expression with
-     * resultType array of objects).
+     * Specifies the selection conditions from source data. Type: array of objects(selection) (or Expression with resultType array of objects).
      */
-    @JsonProperty(value = "selection")
     private Object selection;
 
     /*
-     * Specifies the columns to be selected from source data. Type: array of objects(projection) (or Expression with
-     * resultType array of objects).
+     * Specifies the columns to be selected from source data. Type: array of objects(projection) (or Expression with resultType array of objects).
      */
-    @JsonProperty(value = "projection")
     private Object projection;
 
-    /** Creates an instance of SapOdpSource class. */
-    public SapOdpSource() {}
+    /**
+     * Creates an instance of SapOdpSource class.
+     */
+    public SapOdpSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the extractionMode property: The extraction mode. Allowed value include: Full, Delta and Recovery. The
      * default value is Full. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the extractionMode value.
      */
     public Object getExtractionMode() {
@@ -57,7 +71,7 @@ public final class SapOdpSource extends TabularSource {
     /**
      * Set the extractionMode property: The extraction mode. Allowed value include: Full, Delta and Recovery. The
      * default value is Full. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param extractionMode the extractionMode value to set.
      * @return the SapOdpSource object itself.
      */
@@ -69,7 +83,7 @@ public final class SapOdpSource extends TabularSource {
     /**
      * Get the subscriberProcess property: The subscriber process to manage the delta process. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the subscriberProcess value.
      */
     public Object getSubscriberProcess() {
@@ -79,7 +93,7 @@ public final class SapOdpSource extends TabularSource {
     /**
      * Set the subscriberProcess property: The subscriber process to manage the delta process. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param subscriberProcess the subscriberProcess value to set.
      * @return the SapOdpSource object itself.
      */
@@ -91,7 +105,7 @@ public final class SapOdpSource extends TabularSource {
     /**
      * Get the selection property: Specifies the selection conditions from source data. Type: array of
      * objects(selection) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the selection value.
      */
     public Object getSelection() {
@@ -101,7 +115,7 @@ public final class SapOdpSource extends TabularSource {
     /**
      * Set the selection property: Specifies the selection conditions from source data. Type: array of
      * objects(selection) (or Expression with resultType array of objects).
-     *
+     * 
      * @param selection the selection value to set.
      * @return the SapOdpSource object itself.
      */
@@ -113,7 +127,7 @@ public final class SapOdpSource extends TabularSource {
     /**
      * Get the projection property: Specifies the columns to be selected from source data. Type: array of
      * objects(projection) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the projection value.
      */
     public Object getProjection() {
@@ -123,7 +137,7 @@ public final class SapOdpSource extends TabularSource {
     /**
      * Set the projection property: Specifies the columns to be selected from source data. Type: array of
      * objects(projection) (or Expression with resultType array of objects).
-     *
+     * 
      * @param projection the projection value to set.
      * @return the SapOdpSource object itself.
      */
@@ -132,38 +146,122 @@ public final class SapOdpSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
+        jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("extractionMode", this.extractionMode);
+        jsonWriter.writeUntypedField("subscriberProcess", this.subscriberProcess);
+        jsonWriter.writeUntypedField("selection", this.selection);
+        jsonWriter.writeUntypedField("projection", this.projection);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapOdpSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapOdpSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapOdpSource.
+     */
+    public static SapOdpSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapOdpSource deserializedSapOdpSource = new SapOdpSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedSapOdpSource.setSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedSapOdpSource.setSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSapOdpSource.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedSapOdpSource.setQueryTimeout(reader.readUntyped());
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedSapOdpSource.setAdditionalColumns(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSapOdpSource.type = reader.getString();
+                } else if ("extractionMode".equals(fieldName)) {
+                    deserializedSapOdpSource.extractionMode = reader.readUntyped();
+                } else if ("subscriberProcess".equals(fieldName)) {
+                    deserializedSapOdpSource.subscriberProcess = reader.readUntyped();
+                } else if ("selection".equals(fieldName)) {
+                    deserializedSapOdpSource.selection = reader.readUntyped();
+                } else if ("projection".equals(fieldName)) {
+                    deserializedSapOdpSource.projection = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSapOdpSource.setAdditionalProperties(additionalProperties);
+
+            return deserializedSapOdpSource;
+        });
     }
 }

@@ -11,7 +11,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The CustomLabelClassificationResult model. */
+/**
+ * The CustomLabelClassificationResult model.
+ */
 @Fluent
 public final class CustomLabelClassificationResult extends CustomResult {
     /*
@@ -19,12 +21,15 @@ public final class CustomLabelClassificationResult extends CustomResult {
      */
     private List<CustomLabelClassificationResultDocumentsItem> documents;
 
-    /** Creates an instance of CustomLabelClassificationResult class. */
-    public CustomLabelClassificationResult() {}
+    /**
+     * Creates an instance of CustomLabelClassificationResult class.
+     */
+    public CustomLabelClassificationResult() {
+    }
 
     /**
      * Get the documents property: Response by document.
-     *
+     * 
      * @return the documents value.
      */
     public List<CustomLabelClassificationResultDocumentsItem> getDocuments() {
@@ -33,7 +38,7 @@ public final class CustomLabelClassificationResult extends CustomResult {
 
     /**
      * Set the documents property: Response by document.
-     *
+     * 
      * @param documents the documents value to set.
      * @return the CustomLabelClassificationResult object itself.
      */
@@ -42,34 +47,45 @@ public final class CustomLabelClassificationResult extends CustomResult {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomLabelClassificationResult setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomLabelClassificationResult setStatistics(RequestStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomLabelClassificationResult setProjectName(String projectName) {
         super.setProjectName(projectName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomLabelClassificationResult setDeploymentName(String deploymentName) {
         super.setDeploymentName(deploymentName);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -83,43 +99,40 @@ public final class CustomLabelClassificationResult extends CustomResult {
 
     /**
      * Reads an instance of CustomLabelClassificationResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomLabelClassificationResult if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomLabelClassificationResult.
      */
     public static CustomLabelClassificationResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CustomLabelClassificationResult deserializedCustomLabelClassificationResult =
-                            new CustomLabelClassificationResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CustomLabelClassificationResult deserializedCustomLabelClassificationResult
+                = new CustomLabelClassificationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("errors".equals(fieldName)) {
-                            List<DocumentError> errors = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
-                            deserializedCustomLabelClassificationResult.setErrors(errors);
-                        } else if ("projectName".equals(fieldName)) {
-                            deserializedCustomLabelClassificationResult.setProjectName(reader.getString());
-                        } else if ("deploymentName".equals(fieldName)) {
-                            deserializedCustomLabelClassificationResult.setDeploymentName(reader.getString());
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedCustomLabelClassificationResult.setStatistics(
-                                    RequestStatistics.fromJson(reader));
-                        } else if ("documents".equals(fieldName)) {
-                            List<CustomLabelClassificationResultDocumentsItem> documents =
-                                    reader.readArray(
-                                            reader1 -> CustomLabelClassificationResultDocumentsItem.fromJson(reader1));
-                            deserializedCustomLabelClassificationResult.documents = documents;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("errors".equals(fieldName)) {
+                    List<DocumentError> errors = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
+                    deserializedCustomLabelClassificationResult.setErrors(errors);
+                } else if ("projectName".equals(fieldName)) {
+                    deserializedCustomLabelClassificationResult.setProjectName(reader.getString());
+                } else if ("deploymentName".equals(fieldName)) {
+                    deserializedCustomLabelClassificationResult.setDeploymentName(reader.getString());
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedCustomLabelClassificationResult.setStatistics(RequestStatistics.fromJson(reader));
+                } else if ("documents".equals(fieldName)) {
+                    List<CustomLabelClassificationResultDocumentsItem> documents
+                        = reader.readArray(reader1 -> CustomLabelClassificationResultDocumentsItem.fromJson(reader1));
+                    deserializedCustomLabelClassificationResult.documents = documents;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCustomLabelClassificationResult;
-                });
+            return deserializedCustomLabelClassificationResult;
+        });
     }
 }

@@ -5,67 +5,65 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Connector write settings. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = StoreWriteSettings.class)
-@JsonTypeName("StoreWriteSettings")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "SftpWriteSettings", value = SftpWriteSettings.class),
-    @JsonSubTypes.Type(name = "AzureBlobStorageWriteSettings", value = AzureBlobStorageWriteSettings.class),
-    @JsonSubTypes.Type(name = "AzureBlobFSWriteSettings", value = AzureBlobFSWriteSettings.class),
-    @JsonSubTypes.Type(name = "AzureDataLakeStoreWriteSettings", value = AzureDataLakeStoreWriteSettings.class),
-    @JsonSubTypes.Type(name = "FileServerWriteSettings", value = FileServerWriteSettings.class),
-    @JsonSubTypes.Type(name = "AzureFileStorageWriteSettings", value = AzureFileStorageWriteSettings.class),
-    @JsonSubTypes.Type(name = "LakeHouseWriteSettings", value = LakeHouseWriteSettings.class)
-})
+/**
+ * Connector write settings.
+ */
 @Fluent
-public class StoreWriteSettings {
+public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> {
     /*
-     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
-     * integer).
+     * The write setting type.
      */
-    @JsonProperty(value = "maxConcurrentConnections")
+    private String type;
+
+    /*
+     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
+     */
     private Object maxConcurrentConnections;
 
     /*
      * The type of copy behavior for copy sink.
      */
-    @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
 
     /*
-     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType
-     * array of objects).
+     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType array of objects).
      */
-    @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /*
      * Connector write settings.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of StoreWriteSettings class. */
-    public StoreWriteSettings() {}
+    /**
+     * Creates an instance of StoreWriteSettings class.
+     */
+    public StoreWriteSettings() {
+        this.type = "StoreWriteSettings";
+    }
+
+    /**
+     * Get the type property: The write setting type.
+     * 
+     * @return the type value.
+     */
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the maxConcurrentConnections property: The maximum concurrent connection count for the source data store.
      * Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the maxConcurrentConnections value.
      */
     public Object getMaxConcurrentConnections() {
@@ -75,7 +73,7 @@ public class StoreWriteSettings {
     /**
      * Set the maxConcurrentConnections property: The maximum concurrent connection count for the source data store.
      * Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the StoreWriteSettings object itself.
      */
@@ -86,7 +84,7 @@ public class StoreWriteSettings {
 
     /**
      * Get the copyBehavior property: The type of copy behavior for copy sink.
-     *
+     * 
      * @return the copyBehavior value.
      */
     public Object getCopyBehavior() {
@@ -95,7 +93,7 @@ public class StoreWriteSettings {
 
     /**
      * Set the copyBehavior property: The type of copy behavior for copy sink.
-     *
+     * 
      * @param copyBehavior the copyBehavior value to set.
      * @return the StoreWriteSettings object itself.
      */
@@ -107,7 +105,7 @@ public class StoreWriteSettings {
     /**
      * Get the metadata property: Specify the custom metadata to be added to sink data. Type: array of objects (or
      * Expression with resultType array of objects).
-     *
+     * 
      * @return the metadata value.
      */
     public List<MetadataItem> getMetadata() {
@@ -117,7 +115,7 @@ public class StoreWriteSettings {
     /**
      * Set the metadata property: Specify the custom metadata to be added to sink data. Type: array of objects (or
      * Expression with resultType array of objects).
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the StoreWriteSettings object itself.
      */
@@ -128,17 +126,16 @@ public class StoreWriteSettings {
 
     /**
      * Get the additionalProperties property: Connector write settings.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Connector write settings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the StoreWriteSettings object itself.
      */
@@ -147,11 +144,97 @@ public class StoreWriteSettings {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
+        jsonWriter.writeUntypedField("copyBehavior", this.copyBehavior);
+        jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StoreWriteSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StoreWriteSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StoreWriteSettings.
+     */
+    public static StoreWriteSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("SftpWriteSettings".equals(discriminatorValue)) {
+                    return SftpWriteSettings.fromJson(readerToUse.reset());
+                } else if ("AzureBlobStorageWriteSettings".equals(discriminatorValue)) {
+                    return AzureBlobStorageWriteSettings.fromJson(readerToUse.reset());
+                } else if ("AzureBlobFSWriteSettings".equals(discriminatorValue)) {
+                    return AzureBlobFSWriteSettings.fromJson(readerToUse.reset());
+                } else if ("AzureDataLakeStoreWriteSettings".equals(discriminatorValue)) {
+                    return AzureDataLakeStoreWriteSettings.fromJson(readerToUse.reset());
+                } else if ("FileServerWriteSettings".equals(discriminatorValue)) {
+                    return FileServerWriteSettings.fromJson(readerToUse.reset());
+                } else if ("AzureFileStorageWriteSettings".equals(discriminatorValue)) {
+                    return AzureFileStorageWriteSettings.fromJson(readerToUse.reset());
+                } else if ("LakeHouseWriteSettings".equals(discriminatorValue)) {
+                    return LakeHouseWriteSettings.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static StoreWriteSettings fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StoreWriteSettings deserializedStoreWriteSettings = new StoreWriteSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedStoreWriteSettings.type = reader.getString();
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedStoreWriteSettings.maxConcurrentConnections = reader.readUntyped();
+                } else if ("copyBehavior".equals(fieldName)) {
+                    deserializedStoreWriteSettings.copyBehavior = reader.readUntyped();
+                } else if ("metadata".equals(fieldName)) {
+                    List<MetadataItem> metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    deserializedStoreWriteSettings.metadata = metadata;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedStoreWriteSettings.additionalProperties = additionalProperties;
+
+            return deserializedStoreWriteSettings;
+        });
     }
 }

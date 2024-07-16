@@ -203,6 +203,13 @@ public interface PacketCoreControlPlane {
     HomeNetworkPrivateKeysProvisioning homeNetworkPrivateKeysProvisioning();
 
     /**
+     * Gets the userConsent property: The user consent configuration for the packet core.
+     * 
+     * @return the userConsent value.
+     */
+    UserConsentConfiguration userConsent();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -364,7 +371,7 @@ public interface PacketCoreControlPlane {
             DefinitionStages.WithInstallation, DefinitionStages.WithCoreNetworkTechnology, DefinitionStages.WithVersion,
             DefinitionStages.WithControlPlaneAccessVirtualIpv4Addresses, DefinitionStages.WithUeMtu,
             DefinitionStages.WithDiagnosticsUpload, DefinitionStages.WithEventHub, DefinitionStages.WithSignaling,
-            DefinitionStages.WithInteropSettings {
+            DefinitionStages.WithInteropSettings, DefinitionStages.WithUserConsent {
             /**
              * Executes the create request.
              * 
@@ -536,6 +543,19 @@ public interface PacketCoreControlPlane {
              * @return the next definition stage.
              */
             WithCreate withInteropSettings(Object interopSettings);
+        }
+
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify userConsent.
+         */
+        interface WithUserConsent {
+            /**
+             * Specifies the userConsent property: The user consent configuration for the packet core..
+             * 
+             * @param userConsent The user consent configuration for the packet core.
+             * @return the next definition stage.
+             */
+            WithCreate withUserConsent(UserConsentConfiguration userConsent);
         }
     }
 

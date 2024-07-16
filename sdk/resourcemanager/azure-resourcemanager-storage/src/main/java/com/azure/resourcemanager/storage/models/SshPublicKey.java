@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SshPublicKey model. */
+/**
+ * The SshPublicKey model.
+ */
 @Fluent
 public final class SshPublicKey {
     /*
@@ -22,13 +24,15 @@ public final class SshPublicKey {
     @JsonProperty(value = "key")
     private String key;
 
-    /** Creates an instance of SshPublicKey class. */
+    /**
+     * Creates an instance of SshPublicKey class.
+     */
     public SshPublicKey() {
     }
 
     /**
      * Get the description property: Optional. It is used to store the function/usage of the key.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -37,7 +41,7 @@ public final class SshPublicKey {
 
     /**
      * Set the description property: Optional. It is used to store the function/usage of the key.
-     *
+     * 
      * @param description the description value to set.
      * @return the SshPublicKey object itself.
      */
@@ -49,7 +53,7 @@ public final class SshPublicKey {
     /**
      * Get the key property: Ssh public key base64 encoded. The format should be: '&lt;keyType&gt; &lt;keyData&gt;',
      * e.g. ssh-rsa AAAABBBB.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -59,7 +63,7 @@ public final class SshPublicKey {
     /**
      * Set the key property: Ssh public key base64 encoded. The format should be: '&lt;keyType&gt; &lt;keyData&gt;',
      * e.g. ssh-rsa AAAABBBB.
-     *
+     * 
      * @param key the key value to set.
      * @return the SshPublicKey object itself.
      */
@@ -70,7 +74,7 @@ public final class SshPublicKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

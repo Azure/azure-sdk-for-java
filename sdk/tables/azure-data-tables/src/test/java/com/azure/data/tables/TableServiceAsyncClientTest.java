@@ -9,6 +9,7 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
@@ -30,6 +31,8 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.net.URI;
@@ -50,6 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests methods for {@link TableServiceAsyncClient}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(100);
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
@@ -86,6 +90,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
      * Tests that a table and entity can be created while having a different tenant ID than the one that will be
      * provided in the authentication challenge.
      */
+    @LiveOnly
     @Test
     public void serviceCreateTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.
@@ -242,7 +247,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
-        serviceClient.createTable(tableName).block();
+        serviceClient.createTable(tableName).block(DEFAULT_TIMEOUT);
 
         //Act & Assert
         StepVerifier.create(serviceClient.deleteTableWithResponse(tableName))
@@ -329,6 +334,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         TableAsyncClientTest.getEntityWithResponseAsyncImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
     }
 
+    @LiveOnly
     @Test
     public void generateAccountSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -357,6 +363,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         );
     }
 
+    @LiveOnly
     @Test
     public void generateAccountSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -392,6 +399,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         );
     }
 
+    @LiveOnly
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
 

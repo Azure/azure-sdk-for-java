@@ -19,6 +19,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
@@ -41,7 +42,7 @@ class DocumentIntelligenceClientTestBase extends TestProxyTestBase {
             documentIntelligenceClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
-            documentIntelligenceClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            documentIntelligenceClientbuilder.credential(new AzurePowerShellCredentialBuilder().build());
         }
         documentIntelligenceClient = documentIntelligenceClientbuilder.buildClient();
 
@@ -57,7 +58,7 @@ class DocumentIntelligenceClientTestBase extends TestProxyTestBase {
             documentIntelligenceAdministrationClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
-            documentIntelligenceAdministrationClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            documentIntelligenceAdministrationClientbuilder.credential(new AzurePowerShellCredentialBuilder().build());
         }
         documentIntelligenceAdministrationClient = documentIntelligenceAdministrationClientbuilder.buildClient();
 

@@ -5,31 +5,44 @@
 package com.azure.maps.render.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MapImageStyle. */
+/**
+ * Defines values for MapImageStyle.
+ */
 public final class MapImageStyle extends ExpandableStringEnum<MapImageStyle> {
-    /** Static value main for MapImageStyle. */
+    /**
+     * Azure Maps main style.
+     */
     public static final MapImageStyle MAIN = fromString("main");
 
-    /** Static value dark for MapImageStyle. */
+    /**
+     * Dark grey version of the Azure Maps main style.
+     */
     public static final MapImageStyle DARK = fromString("dark");
 
     /**
+     * Creates a new instance of MapImageStyle value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MapImageStyle() {
+    }
+
+    /**
      * Creates or finds a MapImageStyle from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MapImageStyle.
      */
-    @JsonCreator
     public static MapImageStyle fromString(String name) {
         return fromString(name, MapImageStyle.class);
     }
 
     /**
      * Gets known MapImageStyle values.
-     *
+     * 
      * @return known MapImageStyle values.
      */
     public static Collection<MapImageStyle> values() {

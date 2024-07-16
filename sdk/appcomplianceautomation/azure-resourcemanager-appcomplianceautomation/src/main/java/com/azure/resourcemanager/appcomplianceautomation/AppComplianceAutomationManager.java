@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -23,18 +23,22 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appcomplianceautomation.fluent.AppComplianceAutomationToolForMicrosoft365;
-import com.azure.resourcemanager.appcomplianceautomation.implementation.AppComplianceAutomationToolForMicrosoft365Builder;
+import com.azure.resourcemanager.appcomplianceautomation.fluent.AppComplianceAutomationClient;
+import com.azure.resourcemanager.appcomplianceautomation.implementation.AppComplianceAutomationClientBuilder;
+import com.azure.resourcemanager.appcomplianceautomation.implementation.EvidencesImpl;
 import com.azure.resourcemanager.appcomplianceautomation.implementation.OperationsImpl;
-import com.azure.resourcemanager.appcomplianceautomation.implementation.ReportOperationsImpl;
+import com.azure.resourcemanager.appcomplianceautomation.implementation.ProviderActionsImpl;
 import com.azure.resourcemanager.appcomplianceautomation.implementation.ReportsImpl;
-import com.azure.resourcemanager.appcomplianceautomation.implementation.SnapshotOperationsImpl;
+import com.azure.resourcemanager.appcomplianceautomation.implementation.ScopingConfigurationsImpl;
 import com.azure.resourcemanager.appcomplianceautomation.implementation.SnapshotsImpl;
+import com.azure.resourcemanager.appcomplianceautomation.implementation.WebhooksImpl;
+import com.azure.resourcemanager.appcomplianceautomation.models.Evidences;
 import com.azure.resourcemanager.appcomplianceautomation.models.Operations;
-import com.azure.resourcemanager.appcomplianceautomation.models.ReportOperations;
+import com.azure.resourcemanager.appcomplianceautomation.models.ProviderActions;
 import com.azure.resourcemanager.appcomplianceautomation.models.Reports;
-import com.azure.resourcemanager.appcomplianceautomation.models.SnapshotOperations;
+import com.azure.resourcemanager.appcomplianceautomation.models.ScopingConfigurations;
 import com.azure.resourcemanager.appcomplianceautomation.models.Snapshots;
+import com.azure.resourcemanager.appcomplianceautomation.models.Webhooks;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -42,38 +46,43 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to AppComplianceAutomationManager. App Compliance Automation Tool for Microsoft 365 API spec. */
+/**
+ * Entry point to AppComplianceAutomationManager.
+ * App Compliance Automation Tool for Microsoft 365 API spec.
+ */
 public final class AppComplianceAutomationManager {
+    private ProviderActions providerActions;
+
     private Operations operations;
 
     private Reports reports;
 
-    private ReportOperations reportOperations;
+    private Evidences evidences;
+
+    private ScopingConfigurations scopingConfigurations;
 
     private Snapshots snapshots;
 
-    private SnapshotOperations snapshotOperations;
+    private Webhooks webhooks;
 
-    private final AppComplianceAutomationToolForMicrosoft365 clientObject;
+    private final AppComplianceAutomationClient clientObject;
 
-    private AppComplianceAutomationManager(
-        HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private AppComplianceAutomationManager(HttpPipeline httpPipeline, AzureProfile profile,
+        Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new AppComplianceAutomationToolForMicrosoft365Builder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new AppComplianceAutomationClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
-     * Creates an instance of AppComplianceAutomation service API entry point.
-     *
+     * Creates an instance of App Compliance Automation service API entry point.
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the AppComplianceAutomation service API instance.
+     * @return the App Compliance Automation service API instance.
      */
     public static AppComplianceAutomationManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -82,11 +91,11 @@ public final class AppComplianceAutomationManager {
     }
 
     /**
-     * Creates an instance of AppComplianceAutomation service API entry point.
-     *
+     * Creates an instance of App Compliance Automation service API entry point.
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the AppComplianceAutomation service API instance.
+     * @return the App Compliance Automation service API instance.
      */
     public static AppComplianceAutomationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
@@ -97,14 +106,16 @@ public final class AppComplianceAutomationManager {
     /**
      * Gets a Configurable instance that can be used to create AppComplianceAutomationManager with optional
      * configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new AppComplianceAutomationManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -176,8 +187,8 @@ public final class AppComplianceAutomationManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -194,8 +205,8 @@ public final class AppComplianceAutomationManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -204,26 +215,24 @@ public final class AppComplianceAutomationManager {
         }
 
         /**
-         * Creates an instance of AppComplianceAutomation service API entry point.
+         * Creates an instance of App Compliance Automation service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the AppComplianceAutomation service API instance.
+         * @return the App Compliance Automation service API instance.
          */
         public AppComplianceAutomationManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.appcomplianceautomation")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -248,38 +257,40 @@ public final class AppComplianceAutomationManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new AppComplianceAutomationManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
+     * Gets the resource collection API of ProviderActions.
+     * 
+     * @return Resource collection API of ProviderActions.
+     */
+    public ProviderActions providerActions() {
+        if (this.providerActions == null) {
+            this.providerActions = new ProviderActionsImpl(clientObject.getProviderActions(), this);
+        }
+        return providerActions;
+    }
+
+    /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -291,7 +302,7 @@ public final class AppComplianceAutomationManager {
 
     /**
      * Gets the resource collection API of Reports.
-     *
+     * 
      * @return Resource collection API of Reports.
      */
     public Reports reports() {
@@ -302,20 +313,32 @@ public final class AppComplianceAutomationManager {
     }
 
     /**
-     * Gets the resource collection API of ReportOperations.
-     *
-     * @return Resource collection API of ReportOperations.
+     * Gets the resource collection API of Evidences.
+     * 
+     * @return Resource collection API of Evidences.
      */
-    public ReportOperations reportOperations() {
-        if (this.reportOperations == null) {
-            this.reportOperations = new ReportOperationsImpl(clientObject.getReportOperations(), this);
+    public Evidences evidences() {
+        if (this.evidences == null) {
+            this.evidences = new EvidencesImpl(clientObject.getEvidences(), this);
         }
-        return reportOperations;
+        return evidences;
+    }
+
+    /**
+     * Gets the resource collection API of ScopingConfigurations.
+     * 
+     * @return Resource collection API of ScopingConfigurations.
+     */
+    public ScopingConfigurations scopingConfigurations() {
+        if (this.scopingConfigurations == null) {
+            this.scopingConfigurations = new ScopingConfigurationsImpl(clientObject.getScopingConfigurations(), this);
+        }
+        return scopingConfigurations;
     }
 
     /**
      * Gets the resource collection API of Snapshots.
-     *
+     * 
      * @return Resource collection API of Snapshots.
      */
     public Snapshots snapshots() {
@@ -326,22 +349,24 @@ public final class AppComplianceAutomationManager {
     }
 
     /**
-     * Gets the resource collection API of SnapshotOperations.
-     *
-     * @return Resource collection API of SnapshotOperations.
+     * Gets the resource collection API of Webhooks.
+     * 
+     * @return Resource collection API of Webhooks.
      */
-    public SnapshotOperations snapshotOperations() {
-        if (this.snapshotOperations == null) {
-            this.snapshotOperations = new SnapshotOperationsImpl(clientObject.getSnapshotOperations(), this);
+    public Webhooks webhooks() {
+        if (this.webhooks == null) {
+            this.webhooks = new WebhooksImpl(clientObject.getWebhooks(), this);
         }
-        return snapshotOperations;
+        return webhooks;
     }
 
     /**
-     * @return Wrapped service client AppComplianceAutomationToolForMicrosoft365 providing direct access to the
-     *     underlying auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client AppComplianceAutomationClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client AppComplianceAutomationClient.
      */
-    public AppComplianceAutomationToolForMicrosoft365 serviceClient() {
+    public AppComplianceAutomationClient serviceClient() {
         return this.clientObject;
     }
 }

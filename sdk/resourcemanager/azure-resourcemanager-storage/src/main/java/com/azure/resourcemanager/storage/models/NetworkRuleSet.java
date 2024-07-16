@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Network rule set. */
+/**
+ * Network rule set.
+ */
 @Fluent
 public final class NetworkRuleSet {
     /*
@@ -43,7 +45,9 @@ public final class NetworkRuleSet {
     @JsonProperty(value = "defaultAction", required = true)
     private DefaultAction defaultAction;
 
-    /** Creates an instance of NetworkRuleSet class. */
+    /**
+     * Creates an instance of NetworkRuleSet class.
+     */
     public NetworkRuleSet() {
     }
 
@@ -51,7 +55,7 @@ public final class NetworkRuleSet {
      * Get the bypass property: Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values
      * are any combination of Logging|Metrics|AzureServices (For example, "Logging, Metrics"), or None to bypass none of
      * those traffics.
-     *
+     * 
      * @return the bypass value.
      */
     public Bypass bypass() {
@@ -62,7 +66,7 @@ public final class NetworkRuleSet {
      * Set the bypass property: Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values
      * are any combination of Logging|Metrics|AzureServices (For example, "Logging, Metrics"), or None to bypass none of
      * those traffics.
-     *
+     * 
      * @param bypass the bypass value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -73,7 +77,7 @@ public final class NetworkRuleSet {
 
     /**
      * Get the resourceAccessRules property: Sets the resource access rules.
-     *
+     * 
      * @return the resourceAccessRules value.
      */
     public List<ResourceAccessRule> resourceAccessRules() {
@@ -82,7 +86,7 @@ public final class NetworkRuleSet {
 
     /**
      * Set the resourceAccessRules property: Sets the resource access rules.
-     *
+     * 
      * @param resourceAccessRules the resourceAccessRules value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -93,7 +97,7 @@ public final class NetworkRuleSet {
 
     /**
      * Get the virtualNetworkRules property: Sets the virtual network rules.
-     *
+     * 
      * @return the virtualNetworkRules value.
      */
     public List<VirtualNetworkRule> virtualNetworkRules() {
@@ -102,7 +106,7 @@ public final class NetworkRuleSet {
 
     /**
      * Set the virtualNetworkRules property: Sets the virtual network rules.
-     *
+     * 
      * @param virtualNetworkRules the virtualNetworkRules value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -113,7 +117,7 @@ public final class NetworkRuleSet {
 
     /**
      * Get the ipRules property: Sets the IP ACL rules.
-     *
+     * 
      * @return the ipRules value.
      */
     public List<IpRule> ipRules() {
@@ -122,7 +126,7 @@ public final class NetworkRuleSet {
 
     /**
      * Set the ipRules property: Sets the IP ACL rules.
-     *
+     * 
      * @param ipRules the ipRules value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -133,7 +137,7 @@ public final class NetworkRuleSet {
 
     /**
      * Get the defaultAction property: Specifies the default action of allow or deny when no other rules match.
-     *
+     * 
      * @return the defaultAction value.
      */
     public DefaultAction defaultAction() {
@@ -142,7 +146,7 @@ public final class NetworkRuleSet {
 
     /**
      * Set the defaultAction property: Specifies the default action of allow or deny when no other rules match.
-     *
+     * 
      * @param defaultAction the defaultAction value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -153,7 +157,7 @@ public final class NetworkRuleSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -167,9 +171,8 @@ public final class NetworkRuleSet {
             ipRules().forEach(e -> e.validate());
         }
         if (defaultAction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property defaultAction in model NetworkRuleSet"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property defaultAction in model NetworkRuleSet"));
         }
     }
 

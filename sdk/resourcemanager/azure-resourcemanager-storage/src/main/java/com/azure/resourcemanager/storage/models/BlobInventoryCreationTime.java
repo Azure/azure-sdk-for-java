@@ -20,14 +20,16 @@ public final class BlobInventoryCreationTime {
     @JsonProperty(value = "lastNDays")
     private Integer lastNDays;
 
-    /** Creates an instance of BlobInventoryCreationTime class. */
+    /**
+     * Creates an instance of BlobInventoryCreationTime class.
+     */
     public BlobInventoryCreationTime() {
     }
 
     /**
      * Get the lastNDays property: When set the policy filters the objects that are created in the last N days. Where N
      * is an integer value between 1 to 36500.
-     *
+     * 
      * @return the lastNDays value.
      */
     public Integer lastNDays() {
@@ -37,7 +39,7 @@ public final class BlobInventoryCreationTime {
     /**
      * Set the lastNDays property: When set the policy filters the objects that are created in the last N days. Where N
      * is an integer value between 1 to 36500.
-     *
+     * 
      * @param lastNDays the lastNDays value to set.
      * @return the BlobInventoryCreationTime object itself.
      */
@@ -48,7 +50,7 @@ public final class BlobInventoryCreationTime {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

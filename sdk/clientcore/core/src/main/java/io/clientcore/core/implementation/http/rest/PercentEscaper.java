@@ -3,10 +3,11 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.util.ClientLogger;
 
 import java.util.Arrays;
+
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
  * An escaper that escapes URL data through percent encoding.
@@ -44,7 +45,7 @@ public final class PercentEscaper {
         }
 
         this.safeCharacterPoints = Arrays.copyOf(SAFE_CHARACTERS, 256); // 256 works as only ASCII characters are safe.
-        if (!CoreUtils.isNullOrEmpty(safeCharacters)) {
+        if (!isNullOrEmpty(safeCharacters)) {
             safeCharacters.codePoints().forEach(c -> safeCharacterPoints[c] = true);
         }
     }
@@ -57,7 +58,7 @@ public final class PercentEscaper {
      */
     public String escape(String original) {
         // String is either null or empty, just return it as is.
-        if (CoreUtils.isNullOrEmpty(original)) {
+        if (isNullOrEmpty(original)) {
             return original;
         }
 

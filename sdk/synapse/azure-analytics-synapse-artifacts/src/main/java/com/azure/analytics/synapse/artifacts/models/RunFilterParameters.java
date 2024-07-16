@@ -5,50 +5,55 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Query parameters for listing runs. */
+/**
+ * Query parameters for listing runs.
+ */
 @Fluent
-public final class RunFilterParameters {
+public final class RunFilterParameters implements JsonSerializable<RunFilterParameters> {
     /*
      * The continuation token for getting the next page of results. Null for first page.
      */
-    @JsonProperty(value = "continuationToken")
     private String continuationToken;
 
     /*
      * The time at or after which the run event was updated in 'ISO 8601' format.
      */
-    @JsonProperty(value = "lastUpdatedAfter", required = true)
     private OffsetDateTime lastUpdatedAfter;
 
     /*
      * The time at or before which the run event was updated in 'ISO 8601' format.
      */
-    @JsonProperty(value = "lastUpdatedBefore", required = true)
     private OffsetDateTime lastUpdatedBefore;
 
     /*
      * List of filters.
      */
-    @JsonProperty(value = "filters")
     private List<RunQueryFilter> filters;
 
     /*
      * List of OrderBy option.
      */
-    @JsonProperty(value = "orderBy")
     private List<RunQueryOrderBy> orderBy;
 
-    /** Creates an instance of RunFilterParameters class. */
-    public RunFilterParameters() {}
+    /**
+     * Creates an instance of RunFilterParameters class.
+     */
+    public RunFilterParameters() {
+    }
 
     /**
      * Get the continuationToken property: The continuation token for getting the next page of results. Null for first
      * page.
-     *
+     * 
      * @return the continuationToken value.
      */
     public String getContinuationToken() {
@@ -58,7 +63,7 @@ public final class RunFilterParameters {
     /**
      * Set the continuationToken property: The continuation token for getting the next page of results. Null for first
      * page.
-     *
+     * 
      * @param continuationToken the continuationToken value to set.
      * @return the RunFilterParameters object itself.
      */
@@ -69,7 +74,7 @@ public final class RunFilterParameters {
 
     /**
      * Get the lastUpdatedAfter property: The time at or after which the run event was updated in 'ISO 8601' format.
-     *
+     * 
      * @return the lastUpdatedAfter value.
      */
     public OffsetDateTime getLastUpdatedAfter() {
@@ -78,7 +83,7 @@ public final class RunFilterParameters {
 
     /**
      * Set the lastUpdatedAfter property: The time at or after which the run event was updated in 'ISO 8601' format.
-     *
+     * 
      * @param lastUpdatedAfter the lastUpdatedAfter value to set.
      * @return the RunFilterParameters object itself.
      */
@@ -89,7 +94,7 @@ public final class RunFilterParameters {
 
     /**
      * Get the lastUpdatedBefore property: The time at or before which the run event was updated in 'ISO 8601' format.
-     *
+     * 
      * @return the lastUpdatedBefore value.
      */
     public OffsetDateTime getLastUpdatedBefore() {
@@ -98,7 +103,7 @@ public final class RunFilterParameters {
 
     /**
      * Set the lastUpdatedBefore property: The time at or before which the run event was updated in 'ISO 8601' format.
-     *
+     * 
      * @param lastUpdatedBefore the lastUpdatedBefore value to set.
      * @return the RunFilterParameters object itself.
      */
@@ -109,7 +114,7 @@ public final class RunFilterParameters {
 
     /**
      * Get the filters property: List of filters.
-     *
+     * 
      * @return the filters value.
      */
     public List<RunQueryFilter> getFilters() {
@@ -118,7 +123,7 @@ public final class RunFilterParameters {
 
     /**
      * Set the filters property: List of filters.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the RunFilterParameters object itself.
      */
@@ -129,7 +134,7 @@ public final class RunFilterParameters {
 
     /**
      * Get the orderBy property: List of OrderBy option.
-     *
+     * 
      * @return the orderBy value.
      */
     public List<RunQueryOrderBy> getOrderBy() {
@@ -138,12 +143,71 @@ public final class RunFilterParameters {
 
     /**
      * Set the orderBy property: List of OrderBy option.
-     *
+     * 
      * @param orderBy the orderBy value to set.
      * @return the RunFilterParameters object itself.
      */
     public RunFilterParameters setOrderBy(List<RunQueryOrderBy> orderBy) {
         this.orderBy = orderBy;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lastUpdatedAfter",
+            this.lastUpdatedAfter == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedAfter));
+        jsonWriter.writeStringField("lastUpdatedBefore",
+            this.lastUpdatedBefore == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedBefore));
+        jsonWriter.writeStringField("continuationToken", this.continuationToken);
+        jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("orderBy", this.orderBy, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunFilterParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunFilterParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunFilterParameters.
+     */
+    public static RunFilterParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunFilterParameters deserializedRunFilterParameters = new RunFilterParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastUpdatedAfter".equals(fieldName)) {
+                    deserializedRunFilterParameters.lastUpdatedAfter
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("lastUpdatedBefore".equals(fieldName)) {
+                    deserializedRunFilterParameters.lastUpdatedBefore
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("continuationToken".equals(fieldName)) {
+                    deserializedRunFilterParameters.continuationToken = reader.getString();
+                } else if ("filters".equals(fieldName)) {
+                    List<RunQueryFilter> filters = reader.readArray(reader1 -> RunQueryFilter.fromJson(reader1));
+                    deserializedRunFilterParameters.filters = filters;
+                } else if ("orderBy".equals(fieldName)) {
+                    List<RunQueryOrderBy> orderBy = reader.readArray(reader1 -> RunQueryOrderBy.fromJson(reader1));
+                    deserializedRunFilterParameters.orderBy = orderBy;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunFilterParameters;
+        });
     }
 }

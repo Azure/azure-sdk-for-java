@@ -4,37 +4,38 @@
 
 package com.azure.maps.render;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.maps.render.implementation.RendersImpl;
 import com.azure.maps.render.implementation.models.BoundingBox;
+import com.azure.maps.render.implementation.models.IncludeText;
 import com.azure.maps.render.implementation.models.ResponseFormat;
 import com.azure.maps.render.models.Copyright;
 import com.azure.maps.render.models.CopyrightCaption;
-import com.azure.maps.render.implementation.models.ErrorResponseException;
-import com.azure.maps.render.implementation.models.IncludeText;
+import com.azure.maps.render.models.ErrorResponseException;
 import com.azure.maps.render.models.MapAttribution;
 import com.azure.maps.render.models.MapStaticImageOptions;
 import com.azure.maps.render.models.MapTileOptions;
 import com.azure.maps.render.models.MapTileset;
 import com.azure.maps.render.models.TileIndex;
 import com.azure.maps.render.models.TilesetId;
-
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /** Initializes a new instance of the asynchronous RenderClient type.
 * Creating an async client using a {@link com.azure.core.credential.AzureKeyCredential}:
@@ -107,13 +108,10 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getMapTile(MapTileOptions options) {
-        Mono<StreamResponse> responseMono = this.getMapTileWithResponse(options, null);
         if (options == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("Options is null"));
+            return monoError(LOGGER, new NullPointerException("Options is null"));
         }
-        return BinaryData.fromFlux(responseMono.flatMapMany(response -> {
-            return response.getValue();
-        }));
+        return getMapTileWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -140,14 +138,10 @@ public final class MapsRenderAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getMapTileWithResponse(MapTileOptions options) {
         if (options == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("Options is null"));
+            return monoError(LOGGER, new NullPointerException("Options is null"));
         }
-        StreamResponse response = this.getMapTileWithResponse(options, null).block();
-        if (response != null) {
-            return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
-        } else {
-            return Mono.error(new NullPointerException("Response is null"));
-        }
+
+        return withContext(context -> getMapTileWithResponse(options, context));
     }
 
     /**
@@ -172,16 +166,15 @@ public final class MapsRenderAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Mono<StreamResponse> getMapTileWithResponse(MapTileOptions options, Context context) {
+    Mono<Response<BinaryData>> getMapTileWithResponse(MapTileOptions options, Context context) {
         if (options == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("Options is null"));
+            return monoError(LOGGER, new NullPointerException("Options is null"));
         }
-        return this.serviceClient.getMapTileWithResponseAsync(options.getTilesetId(),
-            options.getTileIndex(),
-            options.getTimestamp(),
-            options.getMapTileSize(),
-            options.getLanguage(),
-            options.getLocalizedMapView()).onErrorMap(throwable -> {
+
+        return this.serviceClient.getMapTileNoCustomHeadersWithResponseAsync(options.getTilesetId(),
+                options.getTileIndex(), options.getTimestamp(), options.getMapTileSize(), options.getLanguage(),
+                options.getLocalizedMapView(), context)
+            .onErrorMap(throwable -> {
                 if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
                 }
@@ -192,7 +185,7 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Map Tileset
-     *
+     * <p>
      * The Get Map Tileset API allows users to request metadata for a tileset.
      *
      * <!-- src_embed com.azure.maps.render.async.get_map_tileset -->
@@ -211,15 +204,12 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MapTileset> getMapTileset(TilesetId tilesetId) {
-        Mono<Response<MapTileset>> result = this.getMapTilesetWithResponse(tilesetId, null);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return getMapTilesetWithResponse(tilesetId).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Get Map Tileset
-     *
+     * <p>
      * The Get Map Tileset API allows users to request metadata for a tileset.
      *
      * <!-- src_embed com.azure.maps.render.async.get_map_tileset -->
@@ -238,12 +228,12 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MapTileset>> getMapTilesetWithResponse(TilesetId tilesetId) {
-        return this.getMapTilesetWithResponse(tilesetId, null);
+        return withContext(context -> getMapTilesetWithResponse(tilesetId, context));
     }
 
     /**
      * Get Map Tileset
-     *
+     * <p>
      * The Get Map Tileset API allows users to request metadata for a tileset.
      *
      * <!-- src_embed com.azure.maps.render.async.get_map_tileset -->
@@ -262,16 +252,15 @@ public final class MapsRenderAsyncClient {
      * @return metadata for a tileset in the TileJSON format.
      */
     Mono<Response<MapTileset>> getMapTilesetWithResponse(TilesetId tilesetId, Context context) {
-        Mono<Response<MapTileset>> responseMono = this.serviceClient.getMapTilesetWithResponseAsync(tilesetId);
-        return responseMono.flatMap(response -> {
-            return Mono.just(response).onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException)) {
-                    return throwable;
-                }
-                ErrorResponseException exception = (ErrorResponseException) throwable;
-                return new HttpResponseException(exception.getMessage(), exception.getResponse());
-            });
-        });
+        return this.serviceClient.getMapTilesetWithResponseAsync(tilesetId, context)
+            .flatMap(response -> Mono.just(response)
+                .onErrorMap(throwable -> {
+                    if (!(throwable instanceof ErrorResponseException)) {
+                        return throwable;
+                    }
+                    ErrorResponseException exception = (ErrorResponseException) throwable;
+                    return new HttpResponseException(exception.getMessage(), exception.getResponse());
+                }));
     }
 
     /**
@@ -296,10 +285,7 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MapAttribution> getMapAttribution(TilesetId tilesetId, int zoom, GeoBoundingBox bounds) {
-        Mono<Response<MapAttribution>> result = this.getMapAttributionWithResponse(tilesetId, zoom, bounds, null);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return getMapAttributionWithResponse(tilesetId, zoom, bounds).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -323,15 +309,16 @@ public final class MapsRenderAsyncClient {
      * @return copyright attribution for the requested section of a tileset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MapAttribution>> getMapAttributionWithResponse(TilesetId tilesetId, int zoom, GeoBoundingBox bounds) {
-        return this.getMapAttributionWithResponse(tilesetId, zoom, bounds, null);
+    public Mono<Response<MapAttribution>> getMapAttributionWithResponse(TilesetId tilesetId, int zoom,
+        GeoBoundingBox bounds) {
+        return withContext(context -> getMapAttributionWithResponse(tilesetId, zoom, bounds, context));
     }
 
     /**
      * Get Map Attribution
-     *
-     * The Get Map Attribution With Response API allows users to request map copyright attribution information for a section of a
-     * tileset with response
+     * <p>
+     * The Get Map Attribution With Response API allows users to request map copyright attribution information for a
+     * section of a tileset with response
      *
      * <!-- src_embed com.azure.maps.render.async.get_map_attribution -->
      * <pre>
@@ -351,18 +338,20 @@ public final class MapsRenderAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return copyright attribution for the requested section of a tileset.
      */
-    Mono<Response<MapAttribution>> getMapAttributionWithResponse(TilesetId tilesetId, int zoom, GeoBoundingBox bounds, Context context) {
+    Mono<Response<MapAttribution>> getMapAttributionWithResponse(TilesetId tilesetId, int zoom, GeoBoundingBox bounds,
+        Context context) {
         List<Double> boundList = new ArrayList<>();
         if (bounds != null) {
             boundList = Arrays.asList(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
         }
-        return this.serviceClient.getMapAttributionWithResponseAsync(tilesetId, zoom, boundList).onErrorMap(throwable -> {
-            if (!(throwable instanceof ErrorResponseException)) {
-                return throwable;
-            }
-            ErrorResponseException exception = (ErrorResponseException) throwable;
-            return new HttpResponseException(exception.getMessage(), exception.getResponse());
-        });
+        return this.serviceClient.getMapAttributionWithResponseAsync(tilesetId, zoom, boundList, context)
+            .onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 
     /**
@@ -377,10 +366,7 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> downloadMapStateTile(String statesetId, TileIndex tileIndex) {
-        Mono<StreamResponse> responseMono = this.downloadMapStateTileWithResponse(statesetId, tileIndex, null);
-        return BinaryData.fromFlux(responseMono.flatMapMany(response -> {
-            return response.getValue();
-        }));
+        return this.downloadMapStateTileWithResponse(statesetId, tileIndex).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -395,12 +381,7 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> downloadMapStateTileWithResponse(String statesetId, TileIndex tileIndex) {
-        StreamResponse response = this.downloadMapStateTileWithResponse(statesetId, tileIndex, null).block();
-        if (response != null) {
-            return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
-        } else {
-            return Mono.error(new NullPointerException("Response is null"));
-        }
+        return withContext(context -> downloadMapStateTileWithResponse(statesetId, tileIndex, context));
     }
 
     /**
@@ -414,14 +395,16 @@ public final class MapsRenderAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the map tile
      */
-    Mono<StreamResponse> downloadMapStateTileWithResponse(String statesetId, TileIndex tileIndex, Context context) {
-        return this.serviceClient.getMapStateTileWithResponseAsync(statesetId, tileIndex).onErrorMap(throwable -> {
-            if (!(throwable instanceof ErrorResponseException)) {
-                return throwable;
-            }
-            ErrorResponseException exception = (ErrorResponseException) throwable;
-            return new HttpResponseException(exception.getMessage(), exception.getResponse());
-        });
+    Mono<Response<BinaryData>> downloadMapStateTileWithResponse(String statesetId, TileIndex tileIndex,
+        Context context) {
+        return this.serviceClient.getMapStateTileNoCustomHeadersWithResponseAsync(statesetId, tileIndex, context)
+            .onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 
     /**
@@ -447,18 +430,15 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyrightCaption> getCopyrightCaption() {
-        Mono<Response<CopyrightCaption>> result = this.getCopyrightCaptionWithResponse(null);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return getCopyrightCaptionWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
      * Get Copyright Caption
-     *
+     * <p>
      * Copyrights API is designed to serve copyright information for Render Tile service. In addition to basic
      * copyright for the whole map, API is serving specific groups of copyrights for some countries.
-     *
+     * <p>
      * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
      * information on the map.
      *
@@ -476,15 +456,15 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyrightCaption>> getCopyrightCaptionWithResponse() {
-        return this.getCopyrightCaptionWithResponse(null);
+        return withContext(this::getCopyrightCaptionWithResponse);
     }
 
     /**
      * Get Copyright Caption
-     *
+     * <p>
      * Copyrights API is designed to serve copyright information for Render Tile service. In addition to basic
      * copyright for the whole map, API is serving specific groups of copyrights for some countries.
-     *
+     * <p>
      * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
      * information on the map.
      *
@@ -502,8 +482,8 @@ public final class MapsRenderAsyncClient {
      * @return this object is returned from a successful copyright call.
      */
     Mono<Response<CopyrightCaption>> getCopyrightCaptionWithResponse(Context context) {
-        return this.serviceClient.getCopyrightCaptionWithResponseAsync(
-            ResponseFormat.JSON).onErrorMap(throwable -> {
+        return this.serviceClient.getCopyrightCaptionWithResponseAsync(ResponseFormat.JSON, context)
+            .onErrorMap(throwable -> {
                 if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
                 }
@@ -514,7 +494,7 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Map Static Image
-     *
+     * <p>
      * The static image service renders a user-defined, rectangular image containing a map section using a zoom level
      * from 0 to 20. The static image service renders a user-defined, rectangular image containing a map section using a
      * zoom level from 0 to 20. The supported resolution range for the map image is from 1x1 to 8192x8192. If you are
@@ -544,15 +524,12 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getMapStaticImage(MapStaticImageOptions options) {
-        Mono<StreamResponse> responseMono = this.getMapStaticImageWithResponse(options, null);
-        return BinaryData.fromFlux(responseMono.flatMapMany(response -> {
-            return response.getValue();
-        }));
+        return getMapStaticImageWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Get Map Static Image
-     *
+     * <p>
      * The static image service renders a user-defined, rectangular image containing a map section using a zoom level
      * from 0 to 20. The static image service renders a user-defined, rectangular image containing a map section using a
      * zoom level from 0 to 20. The supported resolution range for the map image is from 1x1 to 8192x8192. If you are
@@ -582,17 +559,12 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getMapStaticImageWithResponse(MapStaticImageOptions options) {
-        StreamResponse response = this.getMapStaticImageWithResponse(options, null).block();
-        if (response != null) {
-            return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
-        } else {
-            return Mono.error(new NullPointerException("Response is null"));
-        }
+        return withContext(context -> getMapStaticImageWithResponse(options, context));
     }
 
     /**
      * Get Map Static Image
-     *
+     * <p>
      * The static image service renders a user-defined, rectangular image containing a map section using a zoom level
      * from 0 to 20. The static image service renders a user-defined, rectangular image containing a map section using a
      * zoom level from 0 to 20. The supported resolution range for the map image is from 1x1 to 8192x8192. If you are
@@ -621,25 +593,18 @@ public final class MapsRenderAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Mono<StreamResponse> getMapStaticImageWithResponse(MapStaticImageOptions options, Context context) {
+    Mono<Response<BinaryData>> getMapStaticImageWithResponse(MapStaticImageOptions options, Context context) {
         GeoBoundingBox boundingBox = options.getBoundingBox();
         GeoPosition center = options.getCenter();
-        List<Double> centerPrivate = center != null ? Arrays.asList(center.getLatitude(),
-            center.getLongitude(), center.getAltitude()) : null;
-        List<Double> bbox = Arrays.asList(boundingBox.getWest(), boundingBox.getSouth(), boundingBox.getEast(), boundingBox.getNorth());
-        return this.serviceClient.getMapStaticImageWithResponseAsync(
-            options.getRasterTileFormat(),
-            options.getStaticMapLayer(),
-            options.getMapImageStyle(),
-            options.getZoom(),
-            centerPrivate,
-            bbox,
-            options.getHeight(),
-            options.getWidth(),
-            options.getLanguage(),
-            options.getLocalizedMapView(),
-            options.getPins(),
-            options.getPath()).onErrorMap(throwable -> {
+        List<Double> centerPrivate = (center != null)
+            ? Arrays.asList(center.getLatitude(), center.getLongitude(), center.getAltitude()) : null;
+        List<Double> bbox = Arrays.asList(boundingBox.getWest(), boundingBox.getSouth(), boundingBox.getEast(),
+            boundingBox.getNorth());
+        return this.serviceClient.getMapStaticImageNoCustomHeadersWithResponseAsync(options.getRasterTileFormat(),
+            options.getStaticMapLayer(), options.getMapImageStyle(), options.getZoom(), centerPrivate, bbox,
+            options.getHeight(), options.getWidth(), options.getLanguage(), options.getLocalizedMapView(),
+            options.getPins(), options.getPath(), context)
+            .onErrorMap(throwable -> {
                 if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
                 }
@@ -650,9 +615,9 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Copyright From Bounding Box
-     *
+     * <p>
      * **Applies to**: S0 and S1 pricing tiers.
-     *
+     * <p>
      * Returns copyright information for a given bounding box. Bounding-box requests should specify the minimum and
      * maximum longitude and latitude (EPSG-3857) coordinates.
      *
@@ -673,17 +638,14 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Copyright> getCopyrightFromBoundingBox(GeoBoundingBox boundingBox, boolean includeText) {
-        Mono<Response<Copyright>> result = this.getCopyrightFromBoundingBoxWithResponse(boundingBox, includeText, null);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return getCopyrightFromBoundingBoxWithResponse(boundingBox, includeText).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Get Copyright From Bounding Box
-     *
+     * <p>
      * **Applies to**: S0 and S1 pricing tiers.
-     *
+     * <p>
      * Returns copyright information for a given bounding box. Bounding-box requests should specify the minimum and
      * maximum longitude and latitude (EPSG-3857) coordinates.
      *
@@ -703,15 +665,16 @@ public final class MapsRenderAsyncClient {
      * @return this object is returned from a successful copyright request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Copyright>> getCopyrightFromBoundingBoxWithResponse(GeoBoundingBox boundingBox, boolean includeText) {
-        return this.getCopyrightFromBoundingBoxWithResponse(boundingBox, includeText, null);
+    public Mono<Response<Copyright>> getCopyrightFromBoundingBoxWithResponse(GeoBoundingBox boundingBox,
+        boolean includeText) {
+        return withContext(context -> getCopyrightFromBoundingBoxWithResponse(boundingBox, includeText, context));
     }
 
     /**
      * Get Copyright From Bounding Box
-     *
-     * Returns copyright information for a given bounding box with response. Bounding-box requests should specify the minimum and
-     * maximum longitude and latitude (EPSG-3857) coordinates.
+     * <p>
+     * Returns copyright information for a given bounding box with response. Bounding-box requests should specify the
+     * minimum and maximum longitude and latitude (EPSG-3857) coordinates.
      *
      * <!-- src_embed com.azure.maps.render.async.get_copyright_from_bounding_box -->
      * <pre>
@@ -726,11 +689,14 @@ public final class MapsRenderAsyncClient {
      * @param context the context associated with this operation.
      * @return the copyright information.
      */
-    Mono<Response<Copyright>> getCopyrightFromBoundingBoxWithResponse(GeoBoundingBox boundingBox, boolean includeText, Context context) {
-        return this.serviceClient.getCopyrightFromBoundingBoxWithResponseAsync(
-            ResponseFormat.JSON,
-            new BoundingBox().setSouthWest(Arrays.asList(boundingBox.getSouth(), boundingBox.getWest())).setNorthEast(Arrays.asList(boundingBox.getNorth(), boundingBox.getEast())),
-            IncludeText.fromString(String.valueOf(includeText))).onErrorMap(throwable -> {
+    Mono<Response<Copyright>> getCopyrightFromBoundingBoxWithResponse(GeoBoundingBox boundingBox, boolean includeText,
+        Context context) {
+        BoundingBox bbox = new BoundingBox().setSouthWest(Arrays.asList(boundingBox.getSouth(), boundingBox.getWest()))
+            .setNorthEast(Arrays.asList(boundingBox.getNorth(), boundingBox.getEast()));
+        IncludeText includeTextValue = includeText ? IncludeText.YES : IncludeText.NO;
+        return this.serviceClient.getCopyrightFromBoundingBoxWithResponseAsync(ResponseFormat.JSON, bbox,
+            includeTextValue, context)
+            .onErrorMap(throwable -> {
                 if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
                 }
@@ -741,9 +707,9 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Copyright For Tile
-     *
+     * <p>
      * **Applies to**: S0 and S1 pricing tiers.
-     *
+     * <p>
      * Copyrights API is designed to serve copyright information for Render Tile service. In addition to basic
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for a given tile. To obtain the copyright information for a particular tile, the request
@@ -765,17 +731,14 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Copyright> getCopyrightForTile(TileIndex tileIndex, boolean includeText) {
-        Mono<Response<Copyright>> result = this.getCopyrightForTileWithResponse(tileIndex, includeText, null);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return getCopyrightForTileWithResponse(tileIndex, includeText).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Get Copyright For Tile
-     *
+     * <p>
      * **Applies to**: S0 and S1 pricing tiers.
-     *
+     * <p>
      * Copyrights API is designed to serve copyright information for Render Tile service. In addition to basic
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for a given tile. To obtain the copyright information for a particular tile, the request
@@ -797,16 +760,16 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Copyright>> getCopyrightForTileWithResponse(TileIndex tileIndex, boolean includeText) {
-        return this.getCopyrightForTileWithResponse(tileIndex, includeText, null);
+        return withContext(context -> getCopyrightForTileWithResponse(tileIndex, includeText, context));
     }
 
     /**
      * Get Copyright For Tile
-     *
-     * Copyrights With Response API is designed to serve copyright information for Render Tile service with response. In addition to basic
-     * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
-     * copyright information for a given tile. To obtain the copyright information for a particular tile, the request
-     * should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid)
+     * <p>
+     * Copyrights With Response API is designed to serve copyright information for Render Tile service with response. In
+     * addition to basic copyright for the whole map, API is serving specific groups of copyrights for some countries.
+     * Returns the copyright information for a given tile. To obtain the copyright information for a particular tile,
+     * the request should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid)
      *
      * <!-- src_embed com.azure.maps.render.async.get_copyright_for_tile -->
      * <pre>
@@ -820,11 +783,12 @@ public final class MapsRenderAsyncClient {
      * @param context the context associated with this operation.
      * @return the copyright for the tile.
      */
-    Mono<Response<Copyright>> getCopyrightForTileWithResponse(TileIndex tileIndex, boolean includeText, Context context) {
-        return this.serviceClient.getCopyrightForTileWithResponseAsync(
-            ResponseFormat.JSON,
-            tileIndex,
-            IncludeText.fromString(String.valueOf(includeText))).onErrorMap(throwable -> {
+    Mono<Response<Copyright>> getCopyrightForTileWithResponse(TileIndex tileIndex, boolean includeText,
+        Context context) {
+        IncludeText includeTextValue = includeText ? IncludeText.YES : IncludeText.NO;
+        return this.serviceClient.getCopyrightForTileWithResponseAsync(ResponseFormat.JSON, tileIndex, includeTextValue,
+            context)
+            .onErrorMap(throwable -> {
                 if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
                 }
@@ -835,9 +799,9 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Copyright For World
-     *
+     * <p>
      * **Applies to**: S0 and S1 pricing tiers.
-     *
+     * <p>
      * Copyrights API is designed to serve copyright information for Render Tile service. In addition to basic
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for the world. To obtain the default copyright information for the whole world, do not
@@ -858,17 +822,14 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Copyright> getCopyrightForWorld(boolean includeText) {
-        Mono<Response<Copyright>> result = this.getCopyrightForWorldWithResponse(includeText, null);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return getCopyrightForWorldWithResponse(includeText).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Get Copyright For World
-     *
+     * <p>
      * **Applies to**: S0 and S1 pricing tiers.
-     *
+     * <p>
      * Copyrights API is designed to serve copyright information for Render Tile service. In addition to basic
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for the world. To obtain the default copyright information for the whole world, do not
@@ -889,16 +850,16 @@ public final class MapsRenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Copyright>> getCopyrightForWorldWithResponse(boolean includeText) {
-        return this.getCopyrightForWorldWithResponse(includeText, null);
+        return withContext(context -> getCopyrightForWorldWithResponse(includeText, context));
     }
 
     /**
      * Get Copyright For World
-     *
-     * Copyrights with response API is designed to serve copyright information with response for Render Tile service. In addition to basic
-     * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
-     * copyright information for the world. To obtain the default copyright information for the whole world, do not
-     * specify a tile or bounding box.
+     * <p>
+     * Copyrights with response API is designed to serve copyright information with response for Render Tile service. In
+     * addition to basic copyright for the whole map, API is serving specific groups of copyrights for some countries.
+     * Returns the copyright information for the world. To obtain the default copyright information for the whole world,
+     * do not specify a tile or bounding box.
      *
      * <!-- src_embed com.azure.maps.render.async.get_copyright_for_world -->
      * <pre>
@@ -912,8 +873,9 @@ public final class MapsRenderAsyncClient {
      * @return the copyright response.
      */
     Mono<Response<Copyright>> getCopyrightForWorldWithResponse(boolean includeText, Context context) {
-        return this.serviceClient.getCopyrightForWorldWithResponseAsync(
-            ResponseFormat.JSON, IncludeText.fromString(String.valueOf(includeText))).onErrorMap(throwable -> {
+        IncludeText includeTextValue = includeText ? IncludeText.YES : IncludeText.NO;
+        return this.serviceClient.getCopyrightForWorldWithResponseAsync(ResponseFormat.JSON, includeTextValue, context)
+            .onErrorMap(throwable -> {
                 if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
                 }

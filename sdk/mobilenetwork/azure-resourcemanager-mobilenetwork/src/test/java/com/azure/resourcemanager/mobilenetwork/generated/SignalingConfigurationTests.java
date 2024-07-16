@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.mobilenetwork.models.NasEncryptionType;
 import com.azure.resourcemanager.mobilenetwork.models.NasRerouteConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SignalingConfiguration;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class SignalingConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SignalingConfiguration model = BinaryData.fromString("{\"nasReroute\":{\"macroMmeGroupId\":1178618137}}")
+        SignalingConfiguration model = BinaryData.fromString(
+            "{\"nasReroute\":{\"macroMmeGroupId\":1567456771},\"nasEncryption\":[\"NEA1/EEA1\",\"NEA2/EEA2\",\"NEA0/EEA0\",\"NEA2/EEA2\"]}")
             .toObject(SignalingConfiguration.class);
-        Assertions.assertEquals(1178618137, model.nasReroute().macroMmeGroupId());
+        Assertions.assertEquals(1567456771, model.nasReroute().macroMmeGroupId());
+        Assertions.assertEquals(NasEncryptionType.NEA1_EEA1, model.nasEncryption().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SignalingConfiguration model = new SignalingConfiguration()
-            .withNasReroute(new NasRerouteConfiguration().withMacroMmeGroupId(1178618137));
+        SignalingConfiguration model
+            = new SignalingConfiguration().withNasReroute(new NasRerouteConfiguration().withMacroMmeGroupId(1567456771))
+                .withNasEncryption(Arrays.asList(NasEncryptionType.NEA1_EEA1, NasEncryptionType.NEA2_EEA2,
+                    NasEncryptionType.NEA0_EEA0, NasEncryptionType.NEA2_EEA2));
         model = BinaryData.fromObject(model).toObject(SignalingConfiguration.class);
-        Assertions.assertEquals(1178618137, model.nasReroute().macroMmeGroupId());
+        Assertions.assertEquals(1567456771, model.nasReroute().macroMmeGroupId());
+        Assertions.assertEquals(NasEncryptionType.NEA1_EEA1, model.nasEncryption().get(0));
     }
 }

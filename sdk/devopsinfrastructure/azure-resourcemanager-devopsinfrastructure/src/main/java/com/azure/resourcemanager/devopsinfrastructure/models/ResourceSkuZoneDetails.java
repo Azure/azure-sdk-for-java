@@ -6,24 +6,26 @@ package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes The zonal capabilities of a SKU.
  */
 @Immutable
-public final class ResourceSkuZoneDetails {
+public final class ResourceSkuZoneDetails implements JsonSerializable<ResourceSkuZoneDetails> {
     /*
      * Gets the set of zones that the SKU is available in with the specified capabilities.
      */
-    @JsonProperty(value = "name", required = true)
     private List<String> name;
 
     /*
      * A list of capabilities that are available for the SKU in the specified list of zones.
      */
-    @JsonProperty(value = "capabilities", required = true)
     private List<ResourceSkuCapabilities> capabilities;
 
     /**
@@ -71,4 +73,47 @@ public final class ResourceSkuZoneDetails {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceSkuZoneDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("name", this.name, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSkuZoneDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSkuZoneDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceSkuZoneDetails.
+     */
+    public static ResourceSkuZoneDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSkuZoneDetails deserializedResourceSkuZoneDetails = new ResourceSkuZoneDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    List<String> name = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceSkuZoneDetails.name = name;
+                } else if ("capabilities".equals(fieldName)) {
+                    List<ResourceSkuCapabilities> capabilities
+                        = reader.readArray(reader1 -> ResourceSkuCapabilities.fromJson(reader1));
+                    deserializedResourceSkuZoneDetails.capabilities = capabilities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSkuZoneDetails;
+        });
+    }
 }

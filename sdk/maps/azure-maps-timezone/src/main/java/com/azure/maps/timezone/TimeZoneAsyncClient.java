@@ -10,6 +10,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.maps.timezone.implementation.TimezonesImpl;
 import com.azure.maps.timezone.implementation.helper.Utility;
 import com.azure.maps.timezone.implementation.models.ErrorResponseException;
@@ -23,7 +24,9 @@ import com.azure.maps.timezone.models.TimeZoneWindows;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous TimeZoneClient type. 
+import static com.azure.core.util.FluxUtil.withContext;
+
+/** Initializes a new instance of the asynchronous TimeZoneClient type.
 * Creating an async client using a {@link com.azure.core.credential.AzureKeyCredential}:
 * <!-- src_embed com.azure.maps.timezone.async.builder.key.instantiation -->
 * <pre>
@@ -65,7 +68,7 @@ public final class TimeZoneAsyncClient {
      *
      * <p>This API returns current, historical, and future time zone information for the specified IANA time zone ID.
      *
-     * @param options contains parameters for get timezone by id 
+     * @param options contains parameters for get timezone by id
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -73,10 +76,7 @@ public final class TimeZoneAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TimeZoneResult> getTimezoneById(TimeZoneIdOptions options) {
-        Mono<Response<TimeZoneResult>> result = this.getTimezoneByIdWithResponse(options);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return getTimezoneByIdWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -86,13 +86,13 @@ public final class TimeZoneAsyncClient {
      * TimeZoneIdOptions options2 = new TimeZoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimeZoneOptions.ALL&#41;;
      * asyncClient.getTimezoneById&#40;options2&#41;;
      * </pre>
-     * <!-- end om.azure.maps.timezone.async.get_timezone_by_id -->
+     * <!-- end com.azure.maps.timezone.async.get_timezone_by_id -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
      * <p>This API returns current, historical, and future time zone information for the specified IANA time zone ID.
      *
-     * @param options contains parameters for get timezone by id 
+     * @param options contains parameters for get timezone by id
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -100,7 +100,7 @@ public final class TimeZoneAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TimeZoneResult>> getTimezoneByIdWithResponse(TimeZoneIdOptions options) {
-        return this.getTimezoneByIdWithResponse(options, null);
+        return withContext(context -> getTimezoneByIdWithResponse(options, context));
     }
 
     /**
@@ -110,13 +110,13 @@ public final class TimeZoneAsyncClient {
      * TimeZoneIdOptions options2 = new TimeZoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimeZoneOptions.ALL&#41;;
      * asyncClient.getTimezoneById&#40;options2&#41;;
      * </pre>
-     * <!-- end om.azure.maps.timezone.async.get_timezone_by_id -->
+     * <!-- end com.azure.maps.timezone.async.get_timezone_by_id -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
      * <p>This API returns current, historical, and future time zone information for the specified IANA time zone ID.
      *
-     * @param options contains parameters for get timezone by id 
+     * @param options contains parameters for get timezone by id
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -124,21 +124,10 @@ public final class TimeZoneAsyncClient {
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
     Mono<Response<TimeZoneResult>> getTimezoneByIdWithResponse(TimeZoneIdOptions options, Context context) {
-        return this.serviceClient.getTimezoneByIDWithResponseAsync(
-            JsonFormat.JSON,
-            options.getTimezoneId(),
-            options.getLanguage(),
-            options.getOptions(),
-            options.getTimestamp(),
-            options.getDaylightSavingsTime(),
-            options.getDaylightSavingsTimeLastingYears(), 
-            context).onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException)) {
-                    return throwable;
-                }
-                ErrorResponseException exception = (ErrorResponseException) throwable;
-                return new HttpResponseException(exception.getMessage(), exception.getResponse());
-            });
+        return this.serviceClient.getTimezoneByIDWithResponseAsync(JsonFormat.JSON, options.getTimezoneId(),
+                options.getLanguage(), options.getOptions(), options.getTimestamp(), options.getDaylightSavingsTime(),
+                options.getDaylightSavingsTimeLastingYears(), context)
+            .onErrorMap(TimeZoneAsyncClient::mapThrowable);
     }
 
     /**
@@ -164,10 +153,7 @@ public final class TimeZoneAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TimeZoneResult> getTimezoneByCoordinates(TimeZoneCoordinateOptions options) {
-        Mono<Response<TimeZoneResult>> result = this.getTimezoneByCoordinatesWithResponse(options);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return getTimezoneByCoordinatesWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -193,7 +179,7 @@ public final class TimeZoneAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TimeZoneResult>> getTimezoneByCoordinatesWithResponse(TimeZoneCoordinateOptions options) {
-        return this.getTimezoneByCoordinatesWithResponse(options, null);
+        return withContext(context -> getTimezoneByCoordinatesWithResponse(options, context));
     }
 
     /**
@@ -218,22 +204,13 @@ public final class TimeZoneAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
-    Mono<Response<TimeZoneResult>> getTimezoneByCoordinatesWithResponse(TimeZoneCoordinateOptions options, Context context) {
-        return this.serviceClient.getTimezoneByCoordinatesWithResponseAsync(
-            JsonFormat.JSON,
-            Utility.toCoordinateList(options.getPosition()),
-            options.getLanguage(),
-            options.getTimezoneOptions(),
-            options.getTimestamp(),
-            options.getDaylightSavingsTime(),
-            options.getDaylightSavingsTimeLastingYears(), 
-            context).onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException)) {
-                    return throwable;
-                }
-                ErrorResponseException exception = (ErrorResponseException) throwable;
-                return new HttpResponseException(exception.getMessage(), exception.getResponse());
-            });
+    Mono<Response<TimeZoneResult>> getTimezoneByCoordinatesWithResponse(TimeZoneCoordinateOptions options,
+        Context context) {
+        return this.serviceClient.getTimezoneByCoordinatesWithResponseAsync(JsonFormat.JSON,
+                Utility.toCoordinateList(options.getPosition()), options.getLanguage(), options.getTimezoneOptions(),
+                options.getTimestamp(), options.getDaylightSavingsTime(), options.getDaylightSavingsTimeLastingYears(),
+                context)
+            .onErrorMap(TimeZoneAsyncClient::mapThrowable);
     }
 
     /**
@@ -247,7 +224,7 @@ public final class TimeZoneAsyncClient {
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
      * <p>This API returns a full list of Windows Time Zone IDs.
-     * 
+     *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -255,10 +232,7 @@ public final class TimeZoneAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<TimeZoneWindows>> getWindowsTimezoneIds() {
-        Mono<Response<List<TimeZoneWindows>>> result = this.getWindowsTimezoneIdsWithResponse();
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return getWindowsTimezoneIdsWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -280,7 +254,7 @@ public final class TimeZoneAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<TimeZoneWindows>>> getWindowsTimezoneIdsWithResponse() {
-        return this.getWindowsTimezoneIdsWithResponse(null);
+        return withContext(this::getWindowsTimezoneIdsWithResponse);
     }
 
     /**
@@ -302,13 +276,8 @@ public final class TimeZoneAsyncClient {
      * @return this object is returned from a successful Timezone Enum Windows call.
      */
     Mono<Response<List<TimeZoneWindows>>> getWindowsTimezoneIdsWithResponse(Context context) {
-        return this.serviceClient.getWindowsTimezoneIdsWithResponseAsync(JsonFormat.JSON, context).onErrorMap(throwable -> {
-            if (!(throwable instanceof ErrorResponseException)) {
-                return throwable;
-            }
-            ErrorResponseException exception = (ErrorResponseException) throwable;
-            return new HttpResponseException(exception.getMessage(), exception.getResponse());
-        });
+        return this.serviceClient.getWindowsTimezoneIdsWithResponseAsync(JsonFormat.JSON, context)
+            .onErrorMap(TimeZoneAsyncClient::mapThrowable);
     }
 
     /**
@@ -331,10 +300,7 @@ public final class TimeZoneAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<IanaId>> getIanaTimezoneIds() {
-        Mono<Response<List<IanaId>>> result = this.getIanaTimezoneIdsWithResponse();
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return getIanaTimezoneIdsWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -357,7 +323,7 @@ public final class TimeZoneAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<IanaId>>> getIanaTimezoneIdsWithResponse() {
-        return this.getIanaTimezoneIdsWithResponse(null);
+        return withContext(this::getIanaTimezoneIdsWithResponse);
     }
 
     /**
@@ -380,13 +346,8 @@ public final class TimeZoneAsyncClient {
      * @return this object is returned from a successful Timezone Enum IANA call.
      */
     Mono<Response<List<IanaId>>> getIanaTimezoneIdsWithResponse(Context context) {
-        return this.serviceClient.getIanaTimezoneIdsWithResponseAsync(JsonFormat.JSON, context).onErrorMap(throwable -> {
-            if (!(throwable instanceof ErrorResponseException)) {
-                return throwable;
-            }
-            ErrorResponseException exception = (ErrorResponseException) throwable;
-            return new HttpResponseException(exception.getMessage(), exception.getResponse());
-        });
+        return this.serviceClient.getIanaTimezoneIdsWithResponseAsync(JsonFormat.JSON, context)
+            .onErrorMap(TimeZoneAsyncClient::mapThrowable);
     }
 
     /**
@@ -408,10 +369,7 @@ public final class TimeZoneAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TimeZoneIanaVersionResult> getIanaVersion() {
-        Mono<Response<TimeZoneIanaVersionResult>> result = this.getIanaVersionWithResponse();
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return getIanaVersionWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -433,7 +391,7 @@ public final class TimeZoneAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TimeZoneIanaVersionResult>> getIanaVersionWithResponse() {
-        return this.getIanaVersionWithResponse(null);
+        return withContext(this::getIanaVersionWithResponse);
     }
 
     /**
@@ -455,13 +413,8 @@ public final class TimeZoneAsyncClient {
      * @return this object is returned from a successful Timezone IANA Version call.
      */
     Mono<Response<TimeZoneIanaVersionResult>> getIanaVersionWithResponse(Context context) {
-        return this.serviceClient.getIanaVersionWithResponseAsync(JsonFormat.JSON, context).onErrorMap(throwable -> {
-            if (!(throwable instanceof ErrorResponseException)) {
-                return throwable;
-            }
-            ErrorResponseException exception = (ErrorResponseException) throwable;
-            return new HttpResponseException(exception.getMessage(), exception.getResponse());
-        });
+        return this.serviceClient.getIanaVersionWithResponseAsync(JsonFormat.JSON, context)
+            .onErrorMap(TimeZoneAsyncClient::mapThrowable);
     }
 
     /**
@@ -487,10 +440,8 @@ public final class TimeZoneAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<IanaId>> convertWindowsTimezoneToIana(String windowsTimezoneId, String windowsTerritoryCode) {
-        Mono<Response<List<IanaId>>> result = this.convertWindowsTimezoneToIanaWithResponse(windowsTimezoneId, windowsTerritoryCode);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return convertWindowsTimezoneToIanaWithResponse(windowsTimezoneId, windowsTerritoryCode)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -515,8 +466,10 @@ public final class TimeZoneAsyncClient {
      * @return this object is returned from a successful Timezone Windows To IANA call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<IanaId>>> convertWindowsTimezoneToIanaWithResponse(String windowsTimezoneId, String windowsTerritoryCode) {
-        return this.convertWindowsTimezoneToIanaWithResponse(windowsTimezoneId, windowsTerritoryCode, null);
+    public Mono<Response<List<IanaId>>> convertWindowsTimezoneToIanaWithResponse(String windowsTimezoneId,
+        String windowsTerritoryCode) {
+        return withContext(context ->
+            convertWindowsTimezoneToIanaWithResponse(windowsTimezoneId, windowsTerritoryCode, context));
     }
 
     /**
@@ -541,14 +494,18 @@ public final class TimeZoneAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone Windows To IANA call.
      */
-    Mono<Response<List<IanaId>>> convertWindowsTimezoneToIanaWithResponse(String windowsTimezoneId, String windowsTerritoryCode, Context context) {
+    Mono<Response<List<IanaId>>> convertWindowsTimezoneToIanaWithResponse(String windowsTimezoneId,
+        String windowsTerritoryCode, Context context) {
         return this.serviceClient.convertWindowsTimezoneToIanaWithResponseAsync(
-            JsonFormat.JSON, windowsTimezoneId, windowsTerritoryCode, context).onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException)) {
-                    return throwable;
-                }
-                ErrorResponseException exception = (ErrorResponseException) throwable;
-                return new HttpResponseException(exception.getMessage(), exception.getResponse());
-            });
+            JsonFormat.JSON, windowsTimezoneId, windowsTerritoryCode, context)
+            .onErrorMap(TimeZoneAsyncClient::mapThrowable);
+    }
+
+    private static Throwable mapThrowable(Throwable throwable) {
+        if (!(throwable instanceof ErrorResponseException)) {
+            return throwable;
+        }
+        ErrorResponseException exception = (ErrorResponseException) throwable;
+        return new HttpResponseException(exception.getMessage(), exception.getResponse());
     }
 }

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.storage.models.MigrationStatus;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a storage account’s ongoing or enqueued migration. */
+/**
+ * The properties of a storage account’s ongoing or enqueued migration.
+ */
 @Fluent
 public final class StorageAccountMigrationProperties {
     /*
@@ -37,13 +39,15 @@ public final class StorageAccountMigrationProperties {
     @JsonProperty(value = "migrationFailedDetailedReason", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationFailedDetailedReason;
 
-    /** Creates an instance of StorageAccountMigrationProperties class. */
+    /**
+     * Creates an instance of StorageAccountMigrationProperties class.
+     */
     public StorageAccountMigrationProperties() {
     }
 
     /**
      * Get the targetSkuName property: Target sku name for the account.
-     *
+     * 
      * @return the targetSkuName value.
      */
     public SkuName targetSkuName() {
@@ -52,7 +56,7 @@ public final class StorageAccountMigrationProperties {
 
     /**
      * Set the targetSkuName property: Target sku name for the account.
-     *
+     * 
      * @param targetSkuName the targetSkuName value to set.
      * @return the StorageAccountMigrationProperties object itself.
      */
@@ -63,7 +67,7 @@ public final class StorageAccountMigrationProperties {
 
     /**
      * Get the migrationStatus property: Current status of migration.
-     *
+     * 
      * @return the migrationStatus value.
      */
     public MigrationStatus migrationStatus() {
@@ -72,7 +76,7 @@ public final class StorageAccountMigrationProperties {
 
     /**
      * Get the migrationFailedReason property: Error code for migration failure.
-     *
+     * 
      * @return the migrationFailedReason value.
      */
     public String migrationFailedReason() {
@@ -81,7 +85,7 @@ public final class StorageAccountMigrationProperties {
 
     /**
      * Get the migrationFailedDetailedReason property: Reason for migration failure.
-     *
+     * 
      * @return the migrationFailedDetailedReason value.
      */
     public String migrationFailedDetailedReason() {
@@ -90,15 +94,14 @@ public final class StorageAccountMigrationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetSkuName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetSkuName in model StorageAccountMigrationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetSkuName in model StorageAccountMigrationProperties"));
         }
     }
 

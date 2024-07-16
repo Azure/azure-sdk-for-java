@@ -5,30 +5,37 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Reference objects for custom activity. */
+/**
+ * Reference objects for custom activity.
+ */
 @Fluent
-public final class CustomActivityReferenceObject {
+public final class CustomActivityReferenceObject implements JsonSerializable<CustomActivityReferenceObject> {
     /*
      * Linked service references.
      */
-    @JsonProperty(value = "linkedServices")
     private List<LinkedServiceReference> linkedServices;
 
     /*
      * Dataset references.
      */
-    @JsonProperty(value = "datasets")
     private List<DatasetReference> datasets;
 
-    /** Creates an instance of CustomActivityReferenceObject class. */
-    public CustomActivityReferenceObject() {}
+    /**
+     * Creates an instance of CustomActivityReferenceObject class.
+     */
+    public CustomActivityReferenceObject() {
+    }
 
     /**
      * Get the linkedServices property: Linked service references.
-     *
+     * 
      * @return the linkedServices value.
      */
     public List<LinkedServiceReference> getLinkedServices() {
@@ -37,7 +44,7 @@ public final class CustomActivityReferenceObject {
 
     /**
      * Set the linkedServices property: Linked service references.
-     *
+     * 
      * @param linkedServices the linkedServices value to set.
      * @return the CustomActivityReferenceObject object itself.
      */
@@ -48,7 +55,7 @@ public final class CustomActivityReferenceObject {
 
     /**
      * Get the datasets property: Dataset references.
-     *
+     * 
      * @return the datasets value.
      */
     public List<DatasetReference> getDatasets() {
@@ -57,12 +64,56 @@ public final class CustomActivityReferenceObject {
 
     /**
      * Set the datasets property: Dataset references.
-     *
+     * 
      * @param datasets the datasets value to set.
      * @return the CustomActivityReferenceObject object itself.
      */
     public CustomActivityReferenceObject setDatasets(List<DatasetReference> datasets) {
         this.datasets = datasets;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("linkedServices", this.linkedServices,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("datasets", this.datasets, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomActivityReferenceObject from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomActivityReferenceObject if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomActivityReferenceObject.
+     */
+    public static CustomActivityReferenceObject fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomActivityReferenceObject deserializedCustomActivityReferenceObject
+                = new CustomActivityReferenceObject();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServices".equals(fieldName)) {
+                    List<LinkedServiceReference> linkedServices
+                        = reader.readArray(reader1 -> LinkedServiceReference.fromJson(reader1));
+                    deserializedCustomActivityReferenceObject.linkedServices = linkedServices;
+                } else if ("datasets".equals(fieldName)) {
+                    List<DatasetReference> datasets = reader.readArray(reader1 -> DatasetReference.fromJson(reader1));
+                    deserializedCustomActivityReferenceObject.datasets = datasets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomActivityReferenceObject;
+        });
     }
 }

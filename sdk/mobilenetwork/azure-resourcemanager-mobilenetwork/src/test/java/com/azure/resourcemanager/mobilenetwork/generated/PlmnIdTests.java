@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PlmnIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PlmnId model = BinaryData.fromString("{\"mcc\":\"cgyncocpecf\",\"mnc\":\"m\"}").toObject(PlmnId.class);
-        Assertions.assertEquals("cgyncocpecf", model.mcc());
-        Assertions.assertEquals("m", model.mnc());
+        PlmnId model = BinaryData.fromString("{\"mcc\":\"ehxnltyfsop\",\"mnc\":\"usue\"}").toObject(PlmnId.class);
+        Assertions.assertEquals("ehxnltyfsop", model.mcc());
+        Assertions.assertEquals("usue", model.mnc());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlmnId model = new PlmnId().withMcc("cgyncocpecf").withMnc("m");
+        PlmnId model = new PlmnId().withMcc("ehxnltyfsop").withMnc("usue");
         model = BinaryData.fromObject(model).toObject(PlmnId.class);
-        Assertions.assertEquals("cgyncocpecf", model.mcc());
-        Assertions.assertEquals("m", model.mnc());
+        Assertions.assertEquals("ehxnltyfsop", model.mcc());
+        Assertions.assertEquals("usue", model.mnc());
     }
 }

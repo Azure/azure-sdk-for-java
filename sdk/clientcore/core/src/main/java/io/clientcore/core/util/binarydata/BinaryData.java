@@ -115,10 +115,7 @@ import java.util.List;
  * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
 public abstract class BinaryData implements Closeable {
-    /**
-     * Represents an empty instance of BinaryData.
-     */
-    public static final BinaryData EMPTY = BinaryData.fromBytes(new byte[0]);
+    private static final BinaryData EMPTY = BinaryData.fromBytes(new byte[0]);
 
     static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
     static final int STREAM_READ_SIZE = 8192;
@@ -795,4 +792,14 @@ public abstract class BinaryData implements Closeable {
      * @return A replayable {@link BinaryData}.
      */
     public abstract BinaryData toReplayableBinaryData();
+
+    /**
+     * An empty {@link BinaryData} that is immutable, used in situations where there is no binary data, but a
+     * {@link BinaryData} instance is expected.
+     *
+     * @return The singleton instance of an empty {@link BinaryData}.
+     */
+    public static BinaryData empty() {
+        return BinaryData.EMPTY;
+    }
 }

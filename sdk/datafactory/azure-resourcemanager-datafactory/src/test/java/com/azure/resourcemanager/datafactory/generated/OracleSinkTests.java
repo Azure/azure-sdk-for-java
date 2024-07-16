@@ -11,19 +11,19 @@ public final class OracleSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OracleSink model = BinaryData.fromString(
-            "{\"type\":\"vav\",\"preCopyScript\":\"datawynslcfx\",\"writeBatchSize\":\"datariedf\",\"writeBatchTimeout\":\"datatfugppiudhylx\",\"sinkRetryCount\":\"datasumqdri\",\"sinkRetryWait\":\"dataxzcrf\",\"maxConcurrentConnections\":\"databchnh\",\"disableMetricsCollection\":\"datamgcqlufoj\",\"\":{\"zvnsnaklob\":\"datapkqhgfw\",\"jfxueqyjee\":\"datauyhmltdgxiqrgrr\",\"buglalaazncnhzqn\":\"dataytgnycnklqipnzgn\",\"galodfsbhphwt\":\"dataxkscyykrzrjjernj\"}}")
+            "{\"type\":\"OracleSink\",\"preCopyScript\":\"datavnruodu\",\"writeBatchSize\":\"datahskh\",\"writeBatchTimeout\":\"datalvo\",\"sinkRetryCount\":\"dataddqxhegcolhqz\",\"sinkRetryWait\":\"datalqrunqwcrk\",\"maxConcurrentConnections\":\"databyxxyfnipy\",\"disableMetricsCollection\":\"datajgfbsfsv\",\"\":{\"ptnwpwskck\":\"dataejypokk\",\"pgvqioq\":\"datawymfy\"}}")
             .toObject(OracleSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OracleSink model = new OracleSink().withWriteBatchSize("datariedf")
-            .withWriteBatchTimeout("datatfugppiudhylx")
-            .withSinkRetryCount("datasumqdri")
-            .withSinkRetryWait("dataxzcrf")
-            .withMaxConcurrentConnections("databchnh")
-            .withDisableMetricsCollection("datamgcqlufoj")
-            .withPreCopyScript("datawynslcfx");
+        OracleSink model = new OracleSink().withWriteBatchSize("datahskh")
+            .withWriteBatchTimeout("datalvo")
+            .withSinkRetryCount("dataddqxhegcolhqz")
+            .withSinkRetryWait("datalqrunqwcrk")
+            .withMaxConcurrentConnections("databyxxyfnipy")
+            .withDisableMetricsCollection("datajgfbsfsv")
+            .withPreCopyScript("datavnruodu");
         model = BinaryData.fromObject(model).toObject(OracleSink.class);
     }
 }

@@ -359,9 +359,11 @@ public final class FaceClient {
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      *
      * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
+     * &gt; Microsoft has retired or limited facial recognition capabilities that can be used to try to infer emotional
+     * states and identity attributes which, if misused, can subject people to stereotyping, discrimination or unfair
+     * denial of services. The retired capabilities are emotion and gender. The limited capabilities are age, smile,
+     * facial hair, hair and makeup. Email Azure Face API &lt;azureface&#064;microsoft.com&gt; if you have a responsible
+     * use case that would benefit from the use of any of the limited capabilities. Read more about this decision
      * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
      *
      * *
@@ -524,7 +526,7 @@ public final class FaceClient {
      * ]
      * }</pre>
      *
-     * @param request The request parameter.
+     * @param detectFromUrlRequest The detectFromUrlRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -534,17 +536,19 @@ public final class FaceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> detectFromUrlImplWithResponse(BinaryData request, RequestOptions requestOptions) {
-        return this.serviceClient.detectFromUrlImplWithResponse(request, requestOptions);
+    Response<BinaryData> detectFromUrlImplWithResponse(BinaryData detectFromUrlRequest, RequestOptions requestOptions) {
+        return this.serviceClient.detectFromUrlImplWithResponse(detectFromUrlRequest, requestOptions);
     }
 
     /**
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      *
      * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
+     * &gt; Microsoft has retired or limited facial recognition capabilities that can be used to try to infer emotional
+     * states and identity attributes which, if misused, can subject people to stereotyping, discrimination or unfair
+     * denial of services. The retired capabilities are emotion and gender. The limited capabilities are age, smile,
+     * facial hair, hair and makeup. Email Azure Face API &lt;azureface&#064;microsoft.com&gt; if you have a responsible
+     * use case that would benefit from the use of any of the limited capabilities. Read more about this decision
      * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
      *
      * *
@@ -723,9 +727,11 @@ public final class FaceClient {
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      *
      * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
+     * &gt; Microsoft has retired or limited facial recognition capabilities that can be used to try to infer emotional
+     * states and identity attributes which, if misused, can subject people to stereotyping, discrimination or unfair
+     * denial of services. The retired capabilities are emotion and gender. The limited capabilities are age, smile,
+     * facial hair, hair and makeup. Email Azure Face API &lt;azureface&#064;microsoft.com&gt; if you have a responsible
+     * use case that would benefit from the use of any of the limited capabilities. Read more about this decision
      * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
      *
      * *
@@ -767,8 +773,8 @@ public final class FaceClient {
     List<FaceDetectionResult> detectFromUrlImpl(DetectFromUrlImplOptions options) {
         // Generated convenience method for detectFromUrlImplWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        DetectFromUrlImplRequest requestObj = new DetectFromUrlImplRequest(options.getUrl());
-        BinaryData request = BinaryData.fromObject(requestObj);
+        DetectFromUrlImplRequest detectFromUrlRequestObj = new DetectFromUrlImplRequest(options.getUrl());
+        BinaryData detectFromUrlRequest = BinaryData.fromObject(detectFromUrlRequestObj);
         FaceDetectionModel detectionModel = options.getDetectionModel();
         FaceRecognitionModel recognitionModel = options.getRecognitionModel();
         Boolean returnFaceId = options.isReturnFaceId();
@@ -801,7 +807,7 @@ public final class FaceClient {
         if (faceIdTimeToLive != null) {
             requestOptions.addQueryParam("faceIdTimeToLive", String.valueOf(faceIdTimeToLive), false);
         }
-        return detectFromUrlImplWithResponse(request, requestOptions).getValue()
+        return detectFromUrlImplWithResponse(detectFromUrlRequest, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT);
     }
 
@@ -809,9 +815,11 @@ public final class FaceClient {
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      *
      * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
+     * &gt; Microsoft has retired or limited facial recognition capabilities that can be used to try to infer emotional
+     * states and identity attributes which, if misused, can subject people to stereotyping, discrimination or unfair
+     * denial of services. The retired capabilities are emotion and gender. The limited capabilities are age, smile,
+     * facial hair, hair and makeup. Email Azure Face API &lt;azureface&#064;microsoft.com&gt; if you have a responsible
+     * use case that would benefit from the use of any of the limited capabilities. Read more about this decision
      * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
      *
      * *
@@ -903,9 +911,11 @@ public final class FaceClient {
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      *
      * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
+     * &gt; Microsoft has retired or limited facial recognition capabilities that can be used to try to infer emotional
+     * states and identity attributes which, if misused, can subject people to stereotyping, discrimination or unfair
+     * denial of services. The retired capabilities are emotion and gender. The limited capabilities are age, smile,
+     * facial hair, hair and makeup. Email Azure Face API &lt;azureface&#064;microsoft.com&gt; if you have a responsible
+     * use case that would benefit from the use of any of the limited capabilities. Read more about this decision
      * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
      *
      * *

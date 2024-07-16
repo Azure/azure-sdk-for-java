@@ -261,6 +261,7 @@ public class EventHubClientBuilder implements
     private Integer prefetchCount;
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
+
     private URI customEndpointAddress;
     private ConnectionStringProperties connectionStringProperties;
 
@@ -826,6 +827,27 @@ public class EventHubClientBuilder implements
     }
 
     /**
+     * Gets the connection string properties.
+     *
+     * @return the connection string properties.
+     */
+    ConnectionStringProperties getConnectionStringProperties() {
+        return connectionStringProperties;
+    }
+
+    /**
+     * Sets the connection string properties.
+     *
+     * @param connectionStringProperties the connection string properties to set.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    EventHubClientBuilder setConnectionStringProperties(ConnectionStringProperties connectionStringProperties) {
+        this.connectionStringProperties = connectionStringProperties;
+        return this;
+    }
+
+    /**
      * Sets the scheduler for the created Event Hub client.
      *
      * @param scheduler Scheduler to set.
@@ -1141,9 +1163,16 @@ public class EventHubClientBuilder implements
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        final SslDomain.VerifyMode verificationMode = verifyMode != null
+        SslDomain.VerifyMode verificationMode = verifyMode != null
             ? verifyMode
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
+
+        final boolean usingDevelopmentEmulator = connectionStringProperties != null
+            && connectionStringProperties.useDevelopmentEmulator();
+
+        if (usingDevelopmentEmulator) {
+            verificationMode = SslDomain.VerifyMode.ANONYMOUS_PEER;
+        }
 
         final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
 
@@ -1159,15 +1188,23 @@ public class EventHubClientBuilder implements
             port = endpoint.getPort();
         } else {
             hostname = fullyQualifiedNamespace;
-            port = getPort(transport);
+            port = -1;
         }
+
+        // No explicit port was listed, so choose a default port.
+        final int portToUse = port != -1 ? port : getPort(transport, usingDevelopmentEmulator);
+        final boolean enableSsl = !usingDevelopmentEmulator;
 
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
             ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-            options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, hostname, port);
+            options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, hostname, portToUse, enableSsl);
     }
 
-    private static int getPort(AmqpTransportType transport) {
+    private static int getPort(AmqpTransportType transport, boolean useDevelopmentEmulator) {
+        if (useDevelopmentEmulator) {
+            return ConnectionHandler.AMQP_PORT;
+        }
+
         switch (transport) {
             case AMQP:
                 return ConnectionHandler.AMQPS_PORT;

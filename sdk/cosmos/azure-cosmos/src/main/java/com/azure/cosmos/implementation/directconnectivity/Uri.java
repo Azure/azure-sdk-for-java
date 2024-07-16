@@ -24,6 +24,10 @@ public class Uri {
     private volatile Instant lastUnhealthyPendingTimestamp;
     private volatile Instant lastTransitionToUnhealthyTimestamp;
     private volatile boolean isPrimary;
+    public static final String ATTEMPTING = "Attempting";
+    public static final String IGNORING = "Ignoring";
+    private static final String PRIMARY = "P";
+    private static final String SECONDARY = "S";
 
     public static Uri create(String uriAsString) {
         return new Uri(uriAsString);
@@ -54,12 +58,12 @@ public class Uri {
         return this.uriAsString;
     }
 
-    /***
-     * Attention: This is only used for fault injection to easier decide whether the address is primary address.
-     * @param primary
-     */
     public void setPrimary(boolean primary) {
         isPrimary = primary;
+        if (primary) {
+            this.healthStatusTuple.updateAndGet(previousStatusTuple ->
+                new HealthStatusAndDiagnosticStringTuple(this.uri, previousStatusTuple.status, true));
+        }
     }
 
     /***
@@ -139,7 +143,7 @@ public class Uri {
                         status, previousStatusTuple, newStatus);
             }
 
-            return new HealthStatusAndDiagnosticStringTuple(this.uri, newStatus);
+            return new HealthStatusAndDiagnosticStringTuple(this.uri, newStatus, this.isPrimary);
         });
     }
 
@@ -183,7 +187,7 @@ public class Uri {
     }
 
     public String getHealthStatusDiagnosticString() {
-        return this.healthStatusTuple.get().diagnsoticString;
+        return this.healthStatusTuple.get().diagnosticString;
     }
 
     @Override
@@ -230,11 +234,13 @@ public class Uri {
     }
 
     static class HealthStatusAndDiagnosticStringTuple {
-        private final String diagnsoticString;
+        private String diagnosticString;
         private final HealthStatus status;
-
         public HealthStatusAndDiagnosticStringTuple(URI uri, HealthStatus status) {
-            this.diagnsoticString = uri.getPort() + ":" + status;
+            this(uri, status, false);
+        }
+        public HealthStatusAndDiagnosticStringTuple(URI uri, HealthStatus status, boolean isPrimary) {
+            this.diagnosticString = uri.getPort() + ":" + (isPrimary ? Uri.PRIMARY : Uri.SECONDARY) + ":" + status;
             this.status = status;
         }
     }

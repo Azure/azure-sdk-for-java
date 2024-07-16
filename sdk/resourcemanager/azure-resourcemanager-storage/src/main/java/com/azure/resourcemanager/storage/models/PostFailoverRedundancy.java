@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The redundancy type of the account after an account failover is performed. */
+/**
+ * The redundancy type of the account after an account failover is performed.
+ */
 public final class PostFailoverRedundancy extends ExpandableStringEnum<PostFailoverRedundancy> {
-    /** Static value Standard_LRS for PostFailoverRedundancy. */
+    /**
+     * Static value Standard_LRS for PostFailoverRedundancy.
+     */
     public static final PostFailoverRedundancy STANDARD_LRS = fromString("Standard_LRS");
 
-    /** Static value Standard_ZRS for PostFailoverRedundancy. */
+    /**
+     * Static value Standard_ZRS for PostFailoverRedundancy.
+     */
     public static final PostFailoverRedundancy STANDARD_ZRS = fromString("Standard_ZRS");
 
     /**
      * Creates a new instance of PostFailoverRedundancy value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class PostFailoverRedundancy extends ExpandableStringEnum<PostFailo
 
     /**
      * Creates or finds a PostFailoverRedundancy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PostFailoverRedundancy.
      */
@@ -38,7 +44,7 @@ public final class PostFailoverRedundancy extends ExpandableStringEnum<PostFailo
 
     /**
      * Gets known PostFailoverRedundancy values.
-     *
+     * 
      * @return known PostFailoverRedundancy values.
      */
     public static Collection<PostFailoverRedundancy> values() {

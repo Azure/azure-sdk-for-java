@@ -20,6 +20,7 @@ have to be online at the same time.
 ### Prerequisites
 
 - [Java Development Kit (JDK)][java_development_kit] with version 8 or above
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Maven][maven]
 - Microsoft Azure subscription
   - You can create a free account at: [https://azure.microsoft.com](https://azure.microsoft.com)
@@ -69,7 +70,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.17.0</version>
+    <version>7.17.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -89,7 +90,7 @@ First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.12.0</version>
+    <version>1.12.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

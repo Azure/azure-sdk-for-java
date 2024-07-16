@@ -6,55 +6,37 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mobilenetwork.MobileNetworkManager;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCapture;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PacketCapturesListByPacketCoreControlPlaneMockTests {
     @Test
     public void testListByPacketCoreControlPlane() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"status\":\"Stopped\",\"reason\":\"ejjtbxqmul\",\"captureStartTime\":\"2021-12-05T08:42:23Z\",\"networkInterfaces\":[\"zvners\",\"ycucrwnamikzeb\",\"qbsms\",\"ziqgfuh\"],\"bytesToCapturePerPacket\":6886133591151042666,\"totalBytesPerSession\":7144106503918371496,\"timeLimitInSeconds\":302343226,\"outputFiles\":[\"zznvfbyc\",\"sxjwwixz\",\"umwmxqhnd\",\"noamldsehaohdj\"]},\"id\":\"flzokxco\",\"name\":\"pelnjetag\",\"type\":\"tsxoatftgz\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"status\":\"Error\",\"reason\":\"yylizrz\",\"captureStartTime\":\"2021-09-08T20:58:59Z\",\"networkInterfaces\":[\"xsfuztlvt\",\"vagbwidqlvhukove\",\"fizr\"],\"bytesToCapturePerPacket\":119294446727077847,\"totalBytesPerSession\":3767644182859901371,\"timeLimitInSeconds\":1687683807,\"outputFiles\":[\"z\",\"iblkujr\"]},\"id\":\"fojuidjpuuyj\",\"name\":\"c\",\"type\":\"jikzoeovvtzej\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MobileNetworkManager manager = MobileNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PagedIterable<PacketCapture> response = manager.packetCaptures()
+            .listByPacketCoreControlPlane("attcju", "plrvkmjcwmjvlg", com.azure.core.util.Context.NONE);
 
-        PagedIterable<PacketCapture> response = manager.packetCaptures().listByPacketCoreControlPlane("tmninw", "izcil",
-            com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("zvners", response.iterator().next().networkInterfaces().get(0));
-        Assertions.assertEquals(6886133591151042666L, response.iterator().next().bytesToCapturePerPacket());
-        Assertions.assertEquals(7144106503918371496L, response.iterator().next().totalBytesPerSession());
-        Assertions.assertEquals(302343226, response.iterator().next().timeLimitInSeconds());
+        Assertions.assertEquals("xsfuztlvt", response.iterator().next().networkInterfaces().get(0));
+        Assertions.assertEquals(119294446727077847L, response.iterator().next().bytesToCapturePerPacket());
+        Assertions.assertEquals(3767644182859901371L, response.iterator().next().totalBytesPerSession());
+        Assertions.assertEquals(1687683807, response.iterator().next().timeLimitInSeconds());
     }
 }

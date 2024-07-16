@@ -7,6 +7,7 @@ Azure Core Jackson JSON Serializer is a plugin for the `azure-core` `JsonSeriali
 ### Prerequisites
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority][java8_client_compatibility].
 
 ### Include the package
 #### Include the BOM file
@@ -47,7 +48,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-serializer-json-jackson</artifactId>
-    <version>1.4.12</version>
+    <version>1.4.13</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -84,5 +85,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- Links -->
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-serializer-json-jackson%2FREADME.png)

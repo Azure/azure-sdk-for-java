@@ -18,6 +18,11 @@ import java.io.IOException;
 public final class LimitTokenFilter extends TokenFilter {
 
     /*
+     * A URI fragment specifying the type of token filter.
+     */
+    private String odataType = "#Microsoft.Azure.Search.LimitTokenFilter";
+
+    /*
      * The maximum number of tokens to produce. Default is 1.
      */
     private Integer maxTokenCount;
@@ -35,6 +40,16 @@ public final class LimitTokenFilter extends TokenFilter {
      */
     public LimitTokenFilter(String name) {
         super(name);
+    }
+
+    /**
+     * Get the odataType property: A URI fragment specifying the type of token filter.
+     *
+     * @return the odataType value.
+     */
+    @Override
+    public String getOdataType() {
+        return this.odataType;
     }
 
     /**
@@ -58,8 +73,8 @@ public final class LimitTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the allTokensConsumed property: A value indicating whether all tokens from the input must be consumed even
-     * if maxTokenCount is reached. Default is false.
+     * Get the allTokensConsumed property: A value indicating whether all tokens from the input must be consumed even if
+     * maxTokenCount is reached. Default is false.
      *
      * @return the allTokensConsumed value.
      */
@@ -68,8 +83,8 @@ public final class LimitTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the allTokensConsumed property: A value indicating whether all tokens from the input must be consumed even
-     * if maxTokenCount is reached. Default is false.
+     * Set the allTokensConsumed property: A value indicating whether all tokens from the input must be consumed even if
+     * maxTokenCount is reached. Default is false.
      *
      * @param allTokensConsumed the allTokensConsumed value to set.
      * @return the LimitTokenFilter object itself.
@@ -79,11 +94,14 @@ public final class LimitTokenFilter extends TokenFilter {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.LimitTokenFilter");
         jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeNumberField("maxTokenCount", this.maxTokenCount);
         jsonWriter.writeBooleanField("consumeAllTokens", this.allTokensConsumed);
         return jsonWriter.writeEndObject();
@@ -95,29 +113,24 @@ public final class LimitTokenFilter extends TokenFilter {
      * @param jsonReader The JsonReader being read.
      * @return An instance of LimitTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LimitTokenFilter.
      */
     public static LimitTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
             String name = null;
+            String odataType = "#Microsoft.Azure.Search.LimitTokenFilter";
             Integer maxTokenCount = null;
             Boolean allTokensConsumed = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.LimitTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.LimitTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
-                    }
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     name = reader.getString();
                     nameFound = true;
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
                 } else if ("maxTokenCount".equals(fieldName)) {
                     maxTokenCount = reader.getNullable(JsonReader::getInt);
                 } else if ("consumeAllTokens".equals(fieldName)) {
@@ -128,6 +141,7 @@ public final class LimitTokenFilter extends TokenFilter {
             }
             if (nameFound) {
                 LimitTokenFilter deserializedLimitTokenFilter = new LimitTokenFilter(name);
+                deserializedLimitTokenFilter.odataType = odataType;
                 deserializedLimitTokenFilter.maxTokenCount = maxTokenCount;
                 deserializedLimitTokenFilter.allTokensConsumed = allTokensConsumed;
                 return deserializedLimitTokenFilter;

@@ -5,31 +5,15 @@
 package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseNationalCharacterSetInner;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseNationalCharacterSetListResult;
-import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseNationalCharacterSetProperties;
-import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class AutonomousDatabaseNationalCharacterSetListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseNationalCharacterSetListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"characterSet\":\"jzkdeslpvlopwi\"},\"id\":\"ghxpkdw\",\"name\":\"baiuebbaumny\",\"type\":\"upedeojnabckhs\"},{\"properties\":{\"characterSet\":\"xpsiebtfhvpes\"},\"id\":\"skrdqmhjj\",\"name\":\"htldwk\",\"type\":\"zxuutkncwscwsvl\"},{\"properties\":{\"characterSet\":\"togt\"},\"id\":\"upqsx\",\"name\":\"nmic\",\"type\":\"kvceoveilovnotyf\"},{\"properties\":{\"characterSet\":\"cnjbkcnxdhbt\"},\"id\":\"phywpnvj\",\"name\":\"oqnermclfpl\",\"type\":\"hoxus\"}],\"nextLink\":\"pabgyeps\"}")
+            "{\"value\":[{\"properties\":{\"characterSet\":\"yvpycanuzbpzk\"},\"id\":\"kuwbcrnwb\",\"name\":\"ehhseyvjusrts\",\"type\":\"hspkdeemao\"},{\"properties\":{\"characterSet\":\"ag\"},\"id\":\"t\",\"name\":\"elmqk\",\"type\":\"hahvljuahaq\"},{\"properties\":{\"characterSet\":\"dhmdua\"},\"id\":\"exq\",\"name\":\"vfadmws\",\"type\":\"crgvxpvgom\"},{\"properties\":{\"characterSet\":\"misgwbnb\"},\"id\":\"ldawkzbaliourqha\",\"name\":\"auhashsfwx\",\"type\":\"sowzxcugi\"}],\"nextLink\":\"ooxdjebwpuc\"}")
             .toObject(AutonomousDatabaseNationalCharacterSetListResult.class);
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        AutonomousDatabaseNationalCharacterSetListResult model
-            = new AutonomousDatabaseNationalCharacterSetListResult().withValue(Arrays.asList(
-                new AutonomousDatabaseNationalCharacterSetInner()
-                    .withProperties(new AutonomousDatabaseNationalCharacterSetProperties()),
-                new AutonomousDatabaseNationalCharacterSetInner()
-                    .withProperties(new AutonomousDatabaseNationalCharacterSetProperties()),
-                new AutonomousDatabaseNationalCharacterSetInner()
-                    .withProperties(new AutonomousDatabaseNationalCharacterSetProperties()),
-                new AutonomousDatabaseNationalCharacterSetInner()
-                    .withProperties(new AutonomousDatabaseNationalCharacterSetProperties())));
-        model = BinaryData.fromObject(model).toObject(AutonomousDatabaseNationalCharacterSetListResult.class);
+        Assertions.assertEquals("ooxdjebwpuc", model.nextLink());
     }
 }

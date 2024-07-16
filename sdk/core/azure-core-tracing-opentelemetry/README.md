@@ -16,6 +16,7 @@ You can enable tracing in Azure client libraries by using and configuring the Op
 ### Prerequisites
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority][java8_client_compatibility].
 
 ## Key concepts
 
@@ -51,7 +52,7 @@ To enable Azure SDK tracing, add the latest `com.azure:azure-core-tracing-opente
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opentelemetry</artifactId>
-  <version>1.0.0-beta.46</version>
+  <version>1.0.0-beta.47</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -268,6 +269,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure-security-keyvault-secrets]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets
 [context]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/Context.java
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [OpenTelemetry-quickstart]: https://github.com/open-telemetry/opentelemetry-java/blob/main/QUICKSTART.md
 [OpenTelemetry]: https://github.com/open-telemetry/opentelemetry-java#opentelemetry-for-java

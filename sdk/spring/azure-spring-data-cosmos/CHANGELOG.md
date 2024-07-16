@@ -1,14 +1,32 @@
 ## Release History
 
-### 3.47.0-beta.1 (Unreleased)
+### 5.14.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added hierarchical or sub-partitioning support to 'azure-spring-data-cosmos' - See [PR 40928](https://github.com/Azure/azure-sdk-for-java/pull/40928).
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 5.14.0 (2024-07-05)
+
+#### Features Added
+* Added hierarchical or sub-partitioning support to 'azure-spring-data-cosmos' - See [PR 40928](https://github.com/Azure/azure-sdk-for-java/pull/40928).
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.62.0`.
+
+### 5.13.0 (2024-06-06)
+
+#### Features Added
+* Added support for `@Transient` annotation - see [PR 40401](https://github.com/Azure/azure-sdk-for-java/pull/40401).
+
+#### Bugs Fixed
+* Fixing bug with annotated queries that have no where clause but do have a sort - See [PR 40165](https://github.com/Azure/azure-sdk-for-java/pull/40165).
+* Fixing bug with Spring JPA keywords that don't lead to criteria creation - See [PR 40204](https://github.com/Azure/azure-sdk-for-java/pull/40204).
 
 ### 3.46.0 (2024-06-03)
 

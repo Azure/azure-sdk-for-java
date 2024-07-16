@@ -126,14 +126,16 @@ public final class SimPolicyImpl implements SimPolicy, SimPolicy.Definition, Sim
     }
 
     public SimPolicy create() {
-        this.innerObject = serviceManager.serviceClient().getSimPolicies().createOrUpdate(resourceGroupName,
-            mobileNetworkName, simPolicyName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSimPolicies()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, simPolicyName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SimPolicy create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSimPolicies().createOrUpdate(resourceGroupName,
-            mobileNetworkName, simPolicyName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSimPolicies()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, simPolicyName, this.innerModel(), context);
         return this;
     }
 
@@ -149,14 +151,16 @@ public final class SimPolicyImpl implements SimPolicy, SimPolicy.Definition, Sim
     }
 
     public SimPolicy apply() {
-        this.innerObject = serviceManager.serviceClient().getSimPolicies()
+        this.innerObject = serviceManager.serviceClient()
+            .getSimPolicies()
             .updateTagsWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, updateParameters, Context.NONE)
             .getValue();
         return this;
     }
 
     public SimPolicy apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSimPolicies()
+        this.innerObject = serviceManager.serviceClient()
+            .getSimPolicies()
             .updateTagsWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, updateParameters, context)
             .getValue();
         return this;
@@ -172,14 +176,18 @@ public final class SimPolicyImpl implements SimPolicy, SimPolicy.Definition, Sim
     }
 
     public SimPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient().getSimPolicies()
-            .getWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSimPolicies()
+            .getWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SimPolicy refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSimPolicies()
-            .getWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSimPolicies()
+            .getWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, context)
+            .getValue();
         return this;
     }
 

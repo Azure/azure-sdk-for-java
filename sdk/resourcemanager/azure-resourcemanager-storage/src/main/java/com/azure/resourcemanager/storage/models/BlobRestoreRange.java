@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Blob range. */
+/**
+ * Blob range.
+ */
 @Fluent
 public final class BlobRestoreRange {
     /*
@@ -23,13 +25,15 @@ public final class BlobRestoreRange {
     @JsonProperty(value = "endRange", required = true)
     private String endRange;
 
-    /** Creates an instance of BlobRestoreRange class. */
+    /**
+     * Creates an instance of BlobRestoreRange class.
+     */
     public BlobRestoreRange() {
     }
 
     /**
      * Get the startRange property: Blob start range. This is inclusive. Empty means account start.
-     *
+     * 
      * @return the startRange value.
      */
     public String startRange() {
@@ -38,7 +42,7 @@ public final class BlobRestoreRange {
 
     /**
      * Set the startRange property: Blob start range. This is inclusive. Empty means account start.
-     *
+     * 
      * @param startRange the startRange value to set.
      * @return the BlobRestoreRange object itself.
      */
@@ -49,7 +53,7 @@ public final class BlobRestoreRange {
 
     /**
      * Get the endRange property: Blob end range. This is exclusive. Empty means account end.
-     *
+     * 
      * @return the endRange value.
      */
     public String endRange() {
@@ -58,7 +62,7 @@ public final class BlobRestoreRange {
 
     /**
      * Set the endRange property: Blob end range. This is exclusive. Empty means account end.
-     *
+     * 
      * @param endRange the endRange value to set.
      * @return the BlobRestoreRange object itself.
      */
@@ -69,19 +73,17 @@ public final class BlobRestoreRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (startRange() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property startRange in model BlobRestoreRange"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property startRange in model BlobRestoreRange"));
         }
         if (endRange() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endRange in model BlobRestoreRange"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property endRange in model BlobRestoreRange"));
         }
     }
 

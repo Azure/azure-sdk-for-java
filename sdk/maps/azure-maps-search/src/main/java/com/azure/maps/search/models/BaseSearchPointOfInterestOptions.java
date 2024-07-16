@@ -11,14 +11,23 @@ import com.azure.core.models.GeoPosition;
 
 /**
  * Class holding optional parameters for POI Search.
+ *
+ * @param <T> The extending type.
  */
 @Fluent
-public abstract class BaseSearchPointOfInterestOptions<T extends BaseSearchPointOfInterestOptions<T>> extends BaseSearchOptions<T> {
+public abstract class BaseSearchPointOfInterestOptions<T extends BaseSearchPointOfInterestOptions<T>>
+    extends BaseSearchOptions<T> {
     private List<Integer> categoryFilter;
     private List<String> brandFilter;
     private List<ElectricVehicleConnector> electricVehicleConnectorFilter;
     private OperatingHoursRange operatingHours;
     private GeoPosition coordinates;
+
+    /**
+     * Creates a new instance of {@link BaseSearchPointOfInterestOptions}.
+     */
+    public BaseSearchPointOfInterestOptions() {
+    }
 
     /**
      * Returns the category filter.

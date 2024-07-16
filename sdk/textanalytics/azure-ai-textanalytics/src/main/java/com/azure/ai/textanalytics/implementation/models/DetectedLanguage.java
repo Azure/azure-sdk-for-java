@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The DetectedLanguage model. */
+/**
+ * The DetectedLanguage model.
+ */
 @Fluent
 public final class DetectedLanguage implements JsonSerializable<DetectedLanguage> {
     /*
@@ -25,17 +27,19 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
     private String iso6391Name;
 
     /*
-     * A confidence score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is
-     * true.
+     * A confidence score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is true.
      */
     private double confidenceScore;
 
-    /** Creates an instance of DetectedLanguage class. */
-    public DetectedLanguage() {}
+    /**
+     * Creates an instance of DetectedLanguage class.
+     */
+    public DetectedLanguage() {
+    }
 
     /**
      * Get the name property: Long name of a detected language (e.g. English, French).
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -44,7 +48,7 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
 
     /**
      * Set the name property: Long name of a detected language (e.g. English, French).
-     *
+     * 
      * @param name the name value to set.
      * @return the DetectedLanguage object itself.
      */
@@ -56,7 +60,7 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
     /**
      * Get the iso6391Name property: A two letter representation of the detected language according to the ISO 639-1
      * standard (e.g. en, fr).
-     *
+     * 
      * @return the iso6391Name value.
      */
     public String getIso6391Name() {
@@ -66,7 +70,7 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
     /**
      * Set the iso6391Name property: A two letter representation of the detected language according to the ISO 639-1
      * standard (e.g. en, fr).
-     *
+     * 
      * @param iso6391Name the iso6391Name value to set.
      * @return the DetectedLanguage object itself.
      */
@@ -78,7 +82,7 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
     /**
      * Get the confidenceScore property: A confidence score between 0 and 1. Scores close to 1 indicate 100% certainty
      * that the identified language is true.
-     *
+     * 
      * @return the confidenceScore value.
      */
     public double getConfidenceScore() {
@@ -88,7 +92,7 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
     /**
      * Set the confidenceScore property: A confidence score between 0 and 1. Scores close to 1 indicate 100% certainty
      * that the identified language is true.
-     *
+     * 
      * @param confidenceScore the confidenceScore value to set.
      * @return the DetectedLanguage object itself.
      */
@@ -97,6 +101,9 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -108,33 +115,32 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
 
     /**
      * Reads an instance of DetectedLanguage from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DetectedLanguage if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DetectedLanguage.
      */
     public static DetectedLanguage fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DetectedLanguage deserializedDetectedLanguage = new DetectedLanguage();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DetectedLanguage deserializedDetectedLanguage = new DetectedLanguage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("name".equals(fieldName)) {
-                            deserializedDetectedLanguage.name = reader.getString();
-                        } else if ("iso6391Name".equals(fieldName)) {
-                            deserializedDetectedLanguage.iso6391Name = reader.getString();
-                        } else if ("confidenceScore".equals(fieldName)) {
-                            deserializedDetectedLanguage.confidenceScore = reader.getDouble();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("name".equals(fieldName)) {
+                    deserializedDetectedLanguage.name = reader.getString();
+                } else if ("iso6391Name".equals(fieldName)) {
+                    deserializedDetectedLanguage.iso6391Name = reader.getString();
+                } else if ("confidenceScore".equals(fieldName)) {
+                    deserializedDetectedLanguage.confidenceScore = reader.getDouble();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDetectedLanguage;
-                });
+            return deserializedDetectedLanguage;
+        });
     }
 }

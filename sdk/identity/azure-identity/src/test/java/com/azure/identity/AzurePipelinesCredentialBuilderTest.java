@@ -20,10 +20,7 @@ public class AzurePipelinesCredentialBuilderTest {
         String serviceConnectionId = "serviceConnectionId";
         String systemAccessToken = "FakeToken";
         Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI", null)
-            .put("SYSTEM_TEAMPROJECTID", null)
-            .put("SYSTEM_PLANID", null)
-            .put("SYSTEM_JOBID", null));
+            .put("SYSTEM_OIDCREQUESTURI", null));
 
         // test
 
@@ -32,6 +29,7 @@ public class AzurePipelinesCredentialBuilderTest {
                 .build();
         });
 
+        // This assert validates the one required parameter from the environment, SYSTEM_OIDCREQUESTURI, exists.
         assertThrows(IllegalArgumentException.class, () -> {
             AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder()
                 .clientId(clientId)

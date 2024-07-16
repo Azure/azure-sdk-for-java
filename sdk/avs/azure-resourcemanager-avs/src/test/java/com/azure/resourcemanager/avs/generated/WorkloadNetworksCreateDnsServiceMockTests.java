@@ -6,79 +6,48 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.DnsServiceLogLevelEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsService;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WorkloadNetworksCreateDnsServiceMockTests {
     @Test
     public void testCreateDnsService() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"displayName\":\"yrrleaesinuqt\",\"dnsServiceIp\":\"qobbpihehcec\",\"defaultDnsZone\":\"mrqbrjbbmpxdlv\",\"fqdnZones\":[\"rexcrseqwjksghu\",\"gzhxog\",\"ggsvoujkxibdaf\"],\"logLevel\":\"ERROR\",\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":5833008112699016304},\"id\":\"bv\",\"name\":\"bhdyir\",\"type\":\"pwpgddei\"}";
 
-        String responseStr =
-            "{\"properties\":{\"displayName\":\"fdlpukhpyr\",\"dnsServiceIp\":\"izjcpeog\",\"defaultDnsZone\":\"nmg\",\"fqdnZones\":[\"uxddbhfh\",\"fpazjzoywjxhpd\",\"lontacnpq\",\"tehtuevrhrljyoog\"],\"logLevel\":\"FATAL\",\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":809684715358738696},\"id\":\"bsre\",\"name\":\"rfqkfuar\",\"type\":\"nlvhhtklnvnafvv\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AvsManager manager = AvsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        WorkloadNetworkDnsService response = manager.workloadNetworks()
+            .defineDnsService("hj")
+            .withExistingPrivateCloud("klbyulidwcw", "mzegjon")
+            .withDisplayName("gdn")
+            .withDnsServiceIp("brfkspz")
+            .withDefaultDnsZone("mtksjcitdigsx")
+            .withFqdnZones(Arrays.asList("l", "plkeuachtomflryt", "wfpfmdgycx", "mskwhqjjysl"))
+            .withLogLevel(DnsServiceLogLevelEnum.WARNING)
+            .withRevision(2457531549139763727L)
+            .create();
 
-        AvsManager manager =
-            AvsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        WorkloadNetworkDnsService response =
-            manager
-                .workloadNetworks()
-                .defineDnsService("p")
-                .withExistingPrivateCloud("oxhlw", "tsjgqrsx")
-                .withDisplayName("u")
-                .withDnsServiceIp("nchrszizoyu")
-                .withDefaultDnsZone("yetnd")
-                .withFqdnZones(Arrays.asList("qyggagfl", "lgmtrwahzjmucf", "byrplrohkpig", "fusuckzmkwklsno"))
-                .withLogLevel(DnsServiceLogLevelEnum.WARNING)
-                .withRevision(6054442894219666255L)
-                .create();
-
-        Assertions.assertEquals("fdlpukhpyr", response.displayName());
-        Assertions.assertEquals("izjcpeog", response.dnsServiceIp());
-        Assertions.assertEquals("nmg", response.defaultDnsZone());
-        Assertions.assertEquals("uxddbhfh", response.fqdnZones().get(0));
-        Assertions.assertEquals(DnsServiceLogLevelEnum.FATAL, response.logLevel());
-        Assertions.assertEquals(809684715358738696L, response.revision());
+        Assertions.assertEquals("yrrleaesinuqt", response.displayName());
+        Assertions.assertEquals("qobbpihehcec", response.dnsServiceIp());
+        Assertions.assertEquals("mrqbrjbbmpxdlv", response.defaultDnsZone());
+        Assertions.assertEquals("rexcrseqwjksghu", response.fqdnZones().get(0));
+        Assertions.assertEquals(DnsServiceLogLevelEnum.ERROR, response.logLevel());
+        Assertions.assertEquals(5833008112699016304L, response.revision());
     }
 }

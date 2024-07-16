@@ -1,14 +1,24 @@
 # Release History
 
-## 1.0.0-beta.14 (Unreleased)
+## 1.0.0-beta.15 (2024-07-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to `1.50.0`.
+
+## 1.0.0-beta.14 (2024-06-06)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for per-request response timeout. ([#40017](https://github.com/Azure/azure-sdk-for-java/pull/40017))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
 
 ## 1.0.0-beta.13 (2024-05-01)
 

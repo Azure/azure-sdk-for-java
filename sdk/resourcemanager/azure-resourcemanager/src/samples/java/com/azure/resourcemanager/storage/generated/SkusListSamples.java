@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-/** Samples for Skus List. */
+/**
+ * Samples for Skus List.
+ */
 public final class SkusListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/SKUList.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/SKUList.json
      */
     /**
      * Sample code: SkuList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void skuList(com.azure.resourcemanager.AzureResourceManager azure) {

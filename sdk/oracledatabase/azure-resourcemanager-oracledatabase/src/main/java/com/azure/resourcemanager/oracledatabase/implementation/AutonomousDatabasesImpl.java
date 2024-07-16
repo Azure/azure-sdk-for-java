@@ -17,6 +17,7 @@ import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabases;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseWalletFile;
 import com.azure.resourcemanager.oracledatabase.models.GenerateAutonomousDatabaseWalletDetails;
 import com.azure.resourcemanager.oracledatabase.models.PeerDbDetails;
+import com.azure.resourcemanager.oracledatabase.models.RestoreAutonomousDatabaseDetails;
 
 public final class AutonomousDatabasesImpl implements AutonomousDatabases {
     private static final ClientLogger LOGGER = new ClientLogger(AutonomousDatabasesImpl.class);
@@ -120,6 +121,45 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
             = this.serviceClient().generateWallet(resourceGroupName, autonomousdatabasename, body);
         if (inner != null) {
             return new AutonomousDatabaseWalletFileImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AutonomousDatabase restore(String resourceGroupName, String autonomousdatabasename,
+        RestoreAutonomousDatabaseDetails body) {
+        AutonomousDatabaseInner inner = this.serviceClient().restore(resourceGroupName, autonomousdatabasename, body);
+        if (inner != null) {
+            return new AutonomousDatabaseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AutonomousDatabase restore(String resourceGroupName, String autonomousdatabasename,
+        RestoreAutonomousDatabaseDetails body, Context context) {
+        AutonomousDatabaseInner inner
+            = this.serviceClient().restore(resourceGroupName, autonomousdatabasename, body, context);
+        if (inner != null) {
+            return new AutonomousDatabaseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AutonomousDatabase shrink(String resourceGroupName, String autonomousdatabasename) {
+        AutonomousDatabaseInner inner = this.serviceClient().shrink(resourceGroupName, autonomousdatabasename);
+        if (inner != null) {
+            return new AutonomousDatabaseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AutonomousDatabase shrink(String resourceGroupName, String autonomousdatabasename, Context context) {
+        AutonomousDatabaseInner inner = this.serviceClient().shrink(resourceGroupName, autonomousdatabasename, context);
+        if (inner != null) {
+            return new AutonomousDatabaseImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -5,63 +5,73 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity Microsoft Fabric Warehouse source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("WarehouseSource")
+/**
+ * A copy activity Microsoft Fabric Warehouse source.
+ */
 @Fluent
 public final class WarehouseSource extends TabularSource {
     /*
+     * Copy source type.
+     */
+    private String type = "WarehouseSource";
+
+    /*
      * Microsoft Fabric Warehouse reader query. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "sqlReaderQuery")
     private Object sqlReaderQuery;
 
     /*
-     * Name of the stored procedure for a Microsoft Fabric Warehouse source. This cannot be used at the same time as
-     * SqlReaderQuery. Type: string (or Expression with resultType string).
+     * Name of the stored procedure for a Microsoft Fabric Warehouse source. This cannot be used at the same time as SqlReaderQuery. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "sqlReaderStoredProcedureName")
     private Object sqlReaderStoredProcedureName;
 
     /*
-     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
-     * Type: object (or Expression with resultType object), itemType: StoredProcedureParameter.
+     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}". Type: object (or Expression with resultType object), itemType: StoredProcedureParameter.
      */
-    @JsonProperty(value = "storedProcedureParameters")
     private Object storedProcedureParameters;
 
     /*
-     * Specifies the transaction locking behavior for the Microsoft Fabric Warehouse source. Allowed values:
-     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
-     * string (or Expression with resultType string).
+     * Specifies the transaction locking behavior for the Microsoft Fabric Warehouse source. Allowed values: ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "isolationLevel")
     private Object isolationLevel;
 
     /*
-     * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None",
-     * "PhysicalPartitionsOfTable", "DynamicRange".
+     * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
      */
-    @JsonProperty(value = "partitionOption")
     private Object partitionOption;
 
     /*
      * The settings that will be leveraged for Sql source partitioning.
      */
-    @JsonProperty(value = "partitionSettings")
     private SqlPartitionSettings partitionSettings;
 
-    /** Creates an instance of WarehouseSource class. */
-    public WarehouseSource() {}
+    /**
+     * Creates an instance of WarehouseSource class.
+     */
+    public WarehouseSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the sqlReaderQuery property: Microsoft Fabric Warehouse reader query. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the sqlReaderQuery value.
      */
     public Object getSqlReaderQuery() {
@@ -71,7 +81,7 @@ public final class WarehouseSource extends TabularSource {
     /**
      * Set the sqlReaderQuery property: Microsoft Fabric Warehouse reader query. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param sqlReaderQuery the sqlReaderQuery value to set.
      * @return the WarehouseSource object itself.
      */
@@ -84,7 +94,7 @@ public final class WarehouseSource extends TabularSource {
      * Get the sqlReaderStoredProcedureName property: Name of the stored procedure for a Microsoft Fabric Warehouse
      * source. This cannot be used at the same time as SqlReaderQuery. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the sqlReaderStoredProcedureName value.
      */
     public Object getSqlReaderStoredProcedureName() {
@@ -95,7 +105,7 @@ public final class WarehouseSource extends TabularSource {
      * Set the sqlReaderStoredProcedureName property: Name of the stored procedure for a Microsoft Fabric Warehouse
      * source. This cannot be used at the same time as SqlReaderQuery. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param sqlReaderStoredProcedureName the sqlReaderStoredProcedureName value to set.
      * @return the WarehouseSource object itself.
      */
@@ -108,7 +118,7 @@ public final class WarehouseSource extends TabularSource {
      * Get the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
      * "{Parameter1: {value: "1", type: "int"}}". Type: object (or Expression with resultType object), itemType:
      * StoredProcedureParameter.
-     *
+     * 
      * @return the storedProcedureParameters value.
      */
     public Object getStoredProcedureParameters() {
@@ -119,7 +129,7 @@ public final class WarehouseSource extends TabularSource {
      * Set the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
      * "{Parameter1: {value: "1", type: "int"}}". Type: object (or Expression with resultType object), itemType:
      * StoredProcedureParameter.
-     *
+     * 
      * @param storedProcedureParameters the storedProcedureParameters value to set.
      * @return the WarehouseSource object itself.
      */
@@ -132,7 +142,7 @@ public final class WarehouseSource extends TabularSource {
      * Get the isolationLevel property: Specifies the transaction locking behavior for the Microsoft Fabric Warehouse
      * source. Allowed values: ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is
      * ReadCommitted. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the isolationLevel value.
      */
     public Object getIsolationLevel() {
@@ -143,7 +153,7 @@ public final class WarehouseSource extends TabularSource {
      * Set the isolationLevel property: Specifies the transaction locking behavior for the Microsoft Fabric Warehouse
      * source. Allowed values: ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is
      * ReadCommitted. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param isolationLevel the isolationLevel value to set.
      * @return the WarehouseSource object itself.
      */
@@ -155,7 +165,7 @@ public final class WarehouseSource extends TabularSource {
     /**
      * Get the partitionOption property: The partition mechanism that will be used for Sql read in parallel. Possible
      * values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
-     *
+     * 
      * @return the partitionOption value.
      */
     public Object getPartitionOption() {
@@ -165,7 +175,7 @@ public final class WarehouseSource extends TabularSource {
     /**
      * Set the partitionOption property: The partition mechanism that will be used for Sql read in parallel. Possible
      * values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
-     *
+     * 
      * @param partitionOption the partitionOption value to set.
      * @return the WarehouseSource object itself.
      */
@@ -176,7 +186,7 @@ public final class WarehouseSource extends TabularSource {
 
     /**
      * Get the partitionSettings property: The settings that will be leveraged for Sql source partitioning.
-     *
+     * 
      * @return the partitionSettings value.
      */
     public SqlPartitionSettings getPartitionSettings() {
@@ -185,7 +195,7 @@ public final class WarehouseSource extends TabularSource {
 
     /**
      * Set the partitionSettings property: The settings that will be leveraged for Sql source partitioning.
-     *
+     * 
      * @param partitionSettings the partitionSettings value to set.
      * @return the WarehouseSource object itself.
      */
@@ -194,38 +204,128 @@ public final class WarehouseSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WarehouseSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WarehouseSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WarehouseSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WarehouseSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WarehouseSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
+        jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("sqlReaderQuery", this.sqlReaderQuery);
+        jsonWriter.writeUntypedField("sqlReaderStoredProcedureName", this.sqlReaderStoredProcedureName);
+        jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
+        jsonWriter.writeUntypedField("isolationLevel", this.isolationLevel);
+        jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        jsonWriter.writeJsonField("partitionSettings", this.partitionSettings);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WarehouseSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WarehouseSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WarehouseSource.
+     */
+    public static WarehouseSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WarehouseSource deserializedWarehouseSource = new WarehouseSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedWarehouseSource.setSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedWarehouseSource.setSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedWarehouseSource.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedWarehouseSource.setQueryTimeout(reader.readUntyped());
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedWarehouseSource.setAdditionalColumns(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedWarehouseSource.type = reader.getString();
+                } else if ("sqlReaderQuery".equals(fieldName)) {
+                    deserializedWarehouseSource.sqlReaderQuery = reader.readUntyped();
+                } else if ("sqlReaderStoredProcedureName".equals(fieldName)) {
+                    deserializedWarehouseSource.sqlReaderStoredProcedureName = reader.readUntyped();
+                } else if ("storedProcedureParameters".equals(fieldName)) {
+                    deserializedWarehouseSource.storedProcedureParameters = reader.readUntyped();
+                } else if ("isolationLevel".equals(fieldName)) {
+                    deserializedWarehouseSource.isolationLevel = reader.readUntyped();
+                } else if ("partitionOption".equals(fieldName)) {
+                    deserializedWarehouseSource.partitionOption = reader.readUntyped();
+                } else if ("partitionSettings".equals(fieldName)) {
+                    deserializedWarehouseSource.partitionSettings = SqlPartitionSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedWarehouseSource.setAdditionalProperties(additionalProperties);
+
+            return deserializedWarehouseSource;
+        });
     }
 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Platform specific packet core control plane version properties.
@@ -47,6 +48,12 @@ public final class Platform {
      */
     @JsonProperty(value = "obsoleteVersion")
     private ObsoleteVersion obsoleteVersion;
+
+    /*
+     * The list of versions to which a high availability upgrade from this version is supported.
+     */
+    @JsonProperty(value = "haUpgradesAvailable")
+    private List<String> haUpgradesAvailable;
 
     /**
      * Creates an instance of Platform class.
@@ -175,6 +182,28 @@ public final class Platform {
      */
     public Platform withObsoleteVersion(ObsoleteVersion obsoleteVersion) {
         this.obsoleteVersion = obsoleteVersion;
+        return this;
+    }
+
+    /**
+     * Get the haUpgradesAvailable property: The list of versions to which a high availability upgrade from this version
+     * is supported.
+     * 
+     * @return the haUpgradesAvailable value.
+     */
+    public List<String> haUpgradesAvailable() {
+        return this.haUpgradesAvailable;
+    }
+
+    /**
+     * Set the haUpgradesAvailable property: The list of versions to which a high availability upgrade from this version
+     * is supported.
+     * 
+     * @param haUpgradesAvailable the haUpgradesAvailable value to set.
+     * @return the Platform object itself.
+     */
+    public Platform withHaUpgradesAvailable(List<String> haUpgradesAvailable) {
+        this.haUpgradesAvailable = haUpgradesAvailable;
         return this;
     }
 

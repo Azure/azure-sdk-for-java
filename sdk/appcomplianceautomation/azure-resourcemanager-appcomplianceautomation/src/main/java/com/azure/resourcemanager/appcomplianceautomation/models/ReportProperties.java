@@ -5,181 +5,105 @@
 package com.azure.resourcemanager.appcomplianceautomation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Report's properties. */
+/**
+ * Create Report's properties.
+ */
 @Fluent
-public final class ReportProperties {
+public final class ReportProperties implements JsonSerializable<ReportProperties> {
     /*
-     * Report id in database.
+     * Report collection trigger time.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
+    private OffsetDateTime triggerTime;
+
+    /*
+     * Report collection trigger time's time zone, the available list can be obtained by executing
+     * "Get-TimeZone -ListAvailable" in PowerShell.
+     * An example of valid timezone id is "Pacific Standard Time".
+     */
+    private String timeZone;
+
+    /*
+     * List of resource data.
+     */
+    private List<ResourceMetadata> resources;
 
     /*
      * Report status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ReportStatus status;
+
+    /*
+     * List of report error codes.
+     */
+    private List<String> errors;
 
     /*
      * Report's tenant id.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * Report name.
+     * A list of comma-separated offerGuids indicates a series of offerGuids that map to the report. For example,
+     * "00000000-0000-0000-0000-000000000001,00000000-0000-0000-0000-000000000002" and
+     * "00000000-0000-0000-0000-000000000003".
      */
-    @JsonProperty(value = "reportName", access = JsonProperty.Access.WRITE_ONLY)
-    private String reportName;
-
-    /*
-     * Report offer Guid.
-     */
-    @JsonProperty(value = "offerGuid")
     private String offerGuid;
-
-    /*
-     * Report collection trigger time's time zone, the available list can be obtained by executing "Get-TimeZone
-     * -ListAvailable" in PowerShell.
-     * An example of valid timezone id is "Pacific Standard Time".
-     */
-    @JsonProperty(value = "timeZone", required = true)
-    private String timeZone;
-
-    /*
-     * Report collection trigger time.
-     */
-    @JsonProperty(value = "triggerTime", required = true)
-    private OffsetDateTime triggerTime;
 
     /*
      * Report next collection trigger time.
      */
-    @JsonProperty(value = "nextTriggerTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime nextTriggerTime;
 
     /*
      * Report last collection trigger time.
      */
-    @JsonProperty(value = "lastTriggerTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastTriggerTime;
 
     /*
      * List of subscription Ids.
      */
-    @JsonProperty(value = "subscriptions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> subscriptions;
-
-    /*
-     * List of resource data.
-     */
-    @JsonProperty(value = "resources", required = true)
-    private List<ResourceMetadata> resources;
 
     /*
      * Report compliance status.
      */
-    @JsonProperty(value = "complianceStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ReportComplianceStatus complianceStatus;
+
+    /*
+     * The information of 'bring your own storage' binding to the report
+     */
+    private StorageInfo storageInfo;
+
+    /*
+     * List of synchronized certification records.
+     */
+    private List<CertSyncRecord> certRecords;
 
     /*
      * Azure lifecycle management
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ReportProperties class. */
+    /**
+     * Creates an instance of ReportProperties class.
+     */
     public ReportProperties() {
     }
 
     /**
-     * Get the id property: Report id in database.
-     *
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the status property: Report status.
-     *
-     * @return the status value.
-     */
-    public ReportStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Get the tenantId property: Report's tenant id.
-     *
-     * @return the tenantId value.
-     */
-    public String tenantId() {
-        return this.tenantId;
-    }
-
-    /**
-     * Get the reportName property: Report name.
-     *
-     * @return the reportName value.
-     */
-    public String reportName() {
-        return this.reportName;
-    }
-
-    /**
-     * Get the offerGuid property: Report offer Guid.
-     *
-     * @return the offerGuid value.
-     */
-    public String offerGuid() {
-        return this.offerGuid;
-    }
-
-    /**
-     * Set the offerGuid property: Report offer Guid.
-     *
-     * @param offerGuid the offerGuid value to set.
-     * @return the ReportProperties object itself.
-     */
-    public ReportProperties withOfferGuid(String offerGuid) {
-        this.offerGuid = offerGuid;
-        return this;
-    }
-
-    /**
-     * Get the timeZone property: Report collection trigger time's time zone, the available list can be obtained by
-     * executing "Get-TimeZone -ListAvailable" in PowerShell. An example of valid timezone id is "Pacific Standard
-     * Time".
-     *
-     * @return the timeZone value.
-     */
-    public String timeZone() {
-        return this.timeZone;
-    }
-
-    /**
-     * Set the timeZone property: Report collection trigger time's time zone, the available list can be obtained by
-     * executing "Get-TimeZone -ListAvailable" in PowerShell. An example of valid timezone id is "Pacific Standard
-     * Time".
-     *
-     * @param timeZone the timeZone value to set.
-     * @return the ReportProperties object itself.
-     */
-    public ReportProperties withTimeZone(String timeZone) {
-        this.timeZone = timeZone;
-        return this;
-    }
-
-    /**
      * Get the triggerTime property: Report collection trigger time.
-     *
+     * 
      * @return the triggerTime value.
      */
     public OffsetDateTime triggerTime() {
@@ -188,7 +112,7 @@ public final class ReportProperties {
 
     /**
      * Set the triggerTime property: Report collection trigger time.
-     *
+     * 
      * @param triggerTime the triggerTime value to set.
      * @return the ReportProperties object itself.
      */
@@ -198,35 +122,32 @@ public final class ReportProperties {
     }
 
     /**
-     * Get the nextTriggerTime property: Report next collection trigger time.
-     *
-     * @return the nextTriggerTime value.
+     * Get the timeZone property: Report collection trigger time's time zone, the available list can be obtained by
+     * executing "Get-TimeZone -ListAvailable" in PowerShell.
+     * An example of valid timezone id is "Pacific Standard Time".
+     * 
+     * @return the timeZone value.
      */
-    public OffsetDateTime nextTriggerTime() {
-        return this.nextTriggerTime;
+    public String timeZone() {
+        return this.timeZone;
     }
 
     /**
-     * Get the lastTriggerTime property: Report last collection trigger time.
-     *
-     * @return the lastTriggerTime value.
+     * Set the timeZone property: Report collection trigger time's time zone, the available list can be obtained by
+     * executing "Get-TimeZone -ListAvailable" in PowerShell.
+     * An example of valid timezone id is "Pacific Standard Time".
+     * 
+     * @param timeZone the timeZone value to set.
+     * @return the ReportProperties object itself.
      */
-    public OffsetDateTime lastTriggerTime() {
-        return this.lastTriggerTime;
-    }
-
-    /**
-     * Get the subscriptions property: List of subscription Ids.
-     *
-     * @return the subscriptions value.
-     */
-    public List<String> subscriptions() {
-        return this.subscriptions;
+    public ReportProperties withTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+        return this;
     }
 
     /**
      * Get the resources property: List of resource data.
-     *
+     * 
      * @return the resources value.
      */
     public List<ResourceMetadata> resources() {
@@ -235,7 +156,7 @@ public final class ReportProperties {
 
     /**
      * Set the resources property: List of resource data.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the ReportProperties object itself.
      */
@@ -245,8 +166,86 @@ public final class ReportProperties {
     }
 
     /**
+     * Get the status property: Report status.
+     * 
+     * @return the status value.
+     */
+    public ReportStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Get the errors property: List of report error codes.
+     * 
+     * @return the errors value.
+     */
+    public List<String> errors() {
+        return this.errors;
+    }
+
+    /**
+     * Get the tenantId property: Report's tenant id.
+     * 
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Get the offerGuid property: A list of comma-separated offerGuids indicates a series of offerGuids that map to the
+     * report. For example, "00000000-0000-0000-0000-000000000001,00000000-0000-0000-0000-000000000002" and
+     * "00000000-0000-0000-0000-000000000003".
+     * 
+     * @return the offerGuid value.
+     */
+    public String offerGuid() {
+        return this.offerGuid;
+    }
+
+    /**
+     * Set the offerGuid property: A list of comma-separated offerGuids indicates a series of offerGuids that map to the
+     * report. For example, "00000000-0000-0000-0000-000000000001,00000000-0000-0000-0000-000000000002" and
+     * "00000000-0000-0000-0000-000000000003".
+     * 
+     * @param offerGuid the offerGuid value to set.
+     * @return the ReportProperties object itself.
+     */
+    public ReportProperties withOfferGuid(String offerGuid) {
+        this.offerGuid = offerGuid;
+        return this;
+    }
+
+    /**
+     * Get the nextTriggerTime property: Report next collection trigger time.
+     * 
+     * @return the nextTriggerTime value.
+     */
+    public OffsetDateTime nextTriggerTime() {
+        return this.nextTriggerTime;
+    }
+
+    /**
+     * Get the lastTriggerTime property: Report last collection trigger time.
+     * 
+     * @return the lastTriggerTime value.
+     */
+    public OffsetDateTime lastTriggerTime() {
+        return this.lastTriggerTime;
+    }
+
+    /**
+     * Get the subscriptions property: List of subscription Ids.
+     * 
+     * @return the subscriptions value.
+     */
+    public List<String> subscriptions() {
+        return this.subscriptions;
+    }
+
+    /**
      * Get the complianceStatus property: Report compliance status.
-     *
+     * 
      * @return the complianceStatus value.
      */
     public ReportComplianceStatus complianceStatus() {
@@ -254,8 +253,37 @@ public final class ReportProperties {
     }
 
     /**
+     * Get the storageInfo property: The information of 'bring your own storage' binding to the report.
+     * 
+     * @return the storageInfo value.
+     */
+    public StorageInfo storageInfo() {
+        return this.storageInfo;
+    }
+
+    /**
+     * Set the storageInfo property: The information of 'bring your own storage' binding to the report.
+     * 
+     * @param storageInfo the storageInfo value to set.
+     * @return the ReportProperties object itself.
+     */
+    public ReportProperties withStorageInfo(StorageInfo storageInfo) {
+        this.storageInfo = storageInfo;
+        return this;
+    }
+
+    /**
+     * Get the certRecords property: List of synchronized certification records.
+     * 
+     * @return the certRecords value.
+     */
+    public List<CertSyncRecord> certRecords() {
+        return this.certRecords;
+    }
+
+    /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -264,31 +292,109 @@ public final class ReportProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (timeZone() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timeZone in model ReportProperties"));
-        }
         if (triggerTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property triggerTime in model ReportProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property triggerTime in model ReportProperties"));
+        }
+        if (timeZone() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property timeZone in model ReportProperties"));
         }
         if (resources() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resources in model ReportProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property resources in model ReportProperties"));
         } else {
             resources().forEach(e -> e.validate());
         }
         if (complianceStatus() != null) {
             complianceStatus().validate();
         }
+        if (storageInfo() != null) {
+            storageInfo().validate();
+        }
+        if (certRecords() != null) {
+            certRecords().forEach(e -> e.validate());
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ReportProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("triggerTime",
+            this.triggerTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.triggerTime));
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeArrayField("resources", this.resources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("offerGuid", this.offerGuid);
+        jsonWriter.writeJsonField("storageInfo", this.storageInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReportProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReportProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReportProperties.
+     */
+    public static ReportProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReportProperties deserializedReportProperties = new ReportProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("triggerTime".equals(fieldName)) {
+                    deserializedReportProperties.triggerTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedReportProperties.timeZone = reader.getString();
+                } else if ("resources".equals(fieldName)) {
+                    List<ResourceMetadata> resources = reader.readArray(reader1 -> ResourceMetadata.fromJson(reader1));
+                    deserializedReportProperties.resources = resources;
+                } else if ("status".equals(fieldName)) {
+                    deserializedReportProperties.status = ReportStatus.fromString(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    List<String> errors = reader.readArray(reader1 -> reader1.getString());
+                    deserializedReportProperties.errors = errors;
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedReportProperties.tenantId = reader.getString();
+                } else if ("offerGuid".equals(fieldName)) {
+                    deserializedReportProperties.offerGuid = reader.getString();
+                } else if ("nextTriggerTime".equals(fieldName)) {
+                    deserializedReportProperties.nextTriggerTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastTriggerTime".equals(fieldName)) {
+                    deserializedReportProperties.lastTriggerTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("subscriptions".equals(fieldName)) {
+                    List<String> subscriptions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedReportProperties.subscriptions = subscriptions;
+                } else if ("complianceStatus".equals(fieldName)) {
+                    deserializedReportProperties.complianceStatus = ReportComplianceStatus.fromJson(reader);
+                } else if ("storageInfo".equals(fieldName)) {
+                    deserializedReportProperties.storageInfo = StorageInfo.fromJson(reader);
+                } else if ("certRecords".equals(fieldName)) {
+                    List<CertSyncRecord> certRecords = reader.readArray(reader1 -> CertSyncRecord.fromJson(reader1));
+                    deserializedReportProperties.certRecords = certRecords;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedReportProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReportProperties;
+        });
+    }
 }

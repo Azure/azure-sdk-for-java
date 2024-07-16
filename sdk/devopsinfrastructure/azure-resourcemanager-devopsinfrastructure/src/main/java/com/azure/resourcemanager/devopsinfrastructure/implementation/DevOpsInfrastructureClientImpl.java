@@ -73,12 +73,12 @@ public final class DevOpsInfrastructureClientImpl implements DevOpsInfrastructur
     }
 
     /**
-     * The ID of the target subscription.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -220,7 +220,7 @@ public final class DevOpsInfrastructureClientImpl implements DevOpsInfrastructur
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param endpoint Server parameter.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
     DevOpsInfrastructureClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
         Duration defaultPollInterval, AzureEnvironment environment, String endpoint, String subscriptionId) {

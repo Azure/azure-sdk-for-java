@@ -11,19 +11,19 @@ public final class InformixSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InformixSink model = BinaryData.fromString(
-            "{\"type\":\"seehvmtyubvdou\",\"preCopyScript\":\"datazydwexo\",\"writeBatchSize\":\"datakhipaodohb\",\"writeBatchTimeout\":\"databbweaajgokpnb\",\"sinkRetryCount\":\"dataskhjjxesmbu\",\"sinkRetryWait\":\"datacshyhgahmte\",\"maxConcurrentConnections\":\"datafeoij\",\"disableMetricsCollection\":\"datapn\",\"\":{\"nejnjpwkwxnmqmyt\":\"datawgtrcccyiueh\",\"tyfnmwmgh\":\"dataqrj\",\"tnlbsv\":\"dataeedqakhccwj\",\"zafpvwrbqbyxu\":\"datasjvd\"}}")
+            "{\"type\":\"InformixSink\",\"preCopyScript\":\"dataozqqwiawbwzyvbui\",\"writeBatchSize\":\"dataysatoplqc\",\"writeBatchTimeout\":\"datasrlzwuqkprf\",\"sinkRetryCount\":\"datacowtoqfwbsbkob\",\"sinkRetryWait\":\"datassj\",\"maxConcurrentConnections\":\"datahfcxwrjbrxm\",\"disableMetricsCollection\":\"dataetttul\",\"\":{\"mosiskihf\":\"datajbhespf\"}}")
             .toObject(InformixSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InformixSink model = new InformixSink().withWriteBatchSize("datakhipaodohb")
-            .withWriteBatchTimeout("databbweaajgokpnb")
-            .withSinkRetryCount("dataskhjjxesmbu")
-            .withSinkRetryWait("datacshyhgahmte")
-            .withMaxConcurrentConnections("datafeoij")
-            .withDisableMetricsCollection("datapn")
-            .withPreCopyScript("datazydwexo");
+        InformixSink model = new InformixSink().withWriteBatchSize("dataysatoplqc")
+            .withWriteBatchTimeout("datasrlzwuqkprf")
+            .withSinkRetryCount("datacowtoqfwbsbkob")
+            .withSinkRetryWait("datassj")
+            .withMaxConcurrentConnections("datahfcxwrjbrxm")
+            .withDisableMetricsCollection("dataetttul")
+            .withPreCopyScript("dataozqqwiawbwzyvbui");
         model = BinaryData.fromObject(model).toObject(InformixSink.class);
     }
 }

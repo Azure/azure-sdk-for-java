@@ -26,7 +26,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static io.clientcore.core.implementation.util.CoreUtils.isNullOrEmpty;
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUEST_RETRY_COUNT;
 
 /**

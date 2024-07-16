@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * PermissionLevelType enum.
+ * Permission level type enum.
  */
 public final class PermissionLevelType extends ExpandableStringEnum<PermissionLevelType> {
     /**
@@ -37,7 +36,6 @@ public final class PermissionLevelType extends ExpandableStringEnum<PermissionLe
      * @param name a name to look for.
      * @return the corresponding PermissionLevelType.
      */
-    @JsonCreator
     public static PermissionLevelType fromString(String name) {
         return fromString(name, PermissionLevelType.class);
     }

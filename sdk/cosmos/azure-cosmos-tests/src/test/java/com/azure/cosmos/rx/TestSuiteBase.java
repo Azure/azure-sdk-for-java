@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
@@ -52,7 +53,6 @@ import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
@@ -268,6 +268,31 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     protected static void truncateCollection(CosmosAsyncContainer cosmosContainer) {
+        int i = 0;
+        while (i < 100) {
+            try {
+                truncateCollectionInternal(cosmosContainer);
+                return;
+            } catch (CosmosException exception) {
+                if (exception.getStatusCode() != HttpConstants.StatusCodes.TOO_MANY_REQUESTS
+                    || exception.getSubStatusCode() != 3200) {
+
+                    logger.error("No retry of exception", exception);
+                    throw exception;
+                }
+
+                i++;
+                logger.info("Retrying truncation after 100ms - iteration " + i);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    private static void truncateCollectionInternal(CosmosAsyncContainer cosmosContainer) {
         CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
         String cosmosContainerId = cosmosContainerProperties.getId();
         logger.info("Truncating collection {} ...", cosmosContainerId);

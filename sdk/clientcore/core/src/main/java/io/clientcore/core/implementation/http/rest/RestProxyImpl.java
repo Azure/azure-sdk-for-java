@@ -91,17 +91,14 @@ public class RestProxyImpl extends RestProxyBase {
         }
 
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
-        BinaryData responseData = response.getBody();
-        byte[] responseBytes = responseData == null ? null : responseData.toBytes();
-
-        if (responseBytes == null || responseBytes.length == 0) {
+        if (response.getBody() == null || response.getBody().toBytes().length == 0) {
             // No body, create an exception response with an empty body.
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 response, null, null);
         } else {
             // Create an exception response containing the decoded response body.
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode), response,
-                responseBytes, decodeByteArray(response.getBody().toBytes(), response, serializer, methodParser));
+                response.getBody(), decodeByteArray(response.getBody(), response, serializer, methodParser));
         }
     }
 
@@ -180,7 +177,7 @@ public class RestProxyImpl extends RestProxyBase {
             // fully copied into memory resulting in lesser overall memory usage.
             result = responseBody;
         } else {
-            result = decodeByteArray(responseBody.toBytes(), response, serializer, methodParser);
+            result = decodeByteArray(responseBody, response, serializer, methodParser);
         }
 
         return result;

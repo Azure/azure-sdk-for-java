@@ -1,0 +1,42 @@
+{
+  "itemsReceived": 100,
+  "itemsAccepted": 93,
+  "appId": null,
+  "errors": [
+    {
+      "index": 20,
+      "statusCode": 500,
+      "message": "INTERNAL SERVER ERROR"
+    },
+    {
+      "index": 21,
+      "statusCode": 500,
+      "message": "INTERNAL SERVER ERROR"
+    },
+    {
+      "index": 22,
+      "statusCode": 500,
+      "message": "INTERNAL SERVER ERROR"
+    },
+    {
+      "index": 23,
+      "statusCode": 500,
+      "message": "INTERNAL SERVER ERROR"
+    },
+    {
+      "index": 24,
+      "statusCode": 500,
+      "message": "INTERNAL SERVER ERROR"
+    },
+    {
+      "index": 25,
+      "statusCode": 500,
+      "message": "INTERNAL SERVER ERROR"
+    },
+    {
+      "index": 26,
+      "statusCode": 500,
+      "message": "INTERNAL SERVER ERROR"
+    }
+  ]
+}

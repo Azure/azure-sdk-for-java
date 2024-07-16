@@ -68,7 +68,7 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
     public BinaryData getBody() {
         if (body == null) {
             if (super.getValue() == null) {
-                body = BinaryData.EMPTY;
+                body = BinaryData.empty();
             } else {
                 body = super.getValue();
             }

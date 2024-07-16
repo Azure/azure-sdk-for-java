@@ -14,7 +14,9 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Specifies the options associated with query methods (enumeration operations)
@@ -429,7 +431,7 @@ public class CosmosQueryRequestOptions {
      * @return the diagnostic thresholds used as an override for a specific operation.
      */
     public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
-        return this.actualRequestOptions.getThresholds();
+        return this.actualRequestOptions.getDiagnosticsThresholds();
     }
 
     /**
@@ -527,6 +529,26 @@ public class CosmosQueryRequestOptions {
     CosmosQueryRequestOptions setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
         this.actualRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
         return this;
+    }
+
+    /**
+     * Sets the custom ids.
+     *
+     * @param keywordIdentifiers the custom ids.
+     * @return the current request options.
+     */
+    public CosmosQueryRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.actualRequestOptions.setKeywordIdentifiers(keywordIdentifiers);
+        return this;
+    }
+
+    /**
+     * Gets the custom ids.
+     *
+     * @return the custom ids.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return this.actualRequestOptions.getKeywordIdentifiers();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

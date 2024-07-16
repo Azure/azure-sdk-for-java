@@ -5,29 +5,36 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Trigger reference type. */
+/**
+ * Trigger reference type.
+ */
 @Fluent
-public final class TriggerReference {
+public final class TriggerReference implements JsonSerializable<TriggerReference> {
     /*
      * Trigger reference type.
      */
-    @JsonProperty(value = "type", required = true)
     private TriggerReferenceType type;
 
     /*
      * Reference trigger name.
      */
-    @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
-    /** Creates an instance of TriggerReference class. */
-    public TriggerReference() {}
+    /**
+     * Creates an instance of TriggerReference class.
+     */
+    public TriggerReference() {
+    }
 
     /**
      * Get the type property: Trigger reference type.
-     *
+     * 
      * @return the type value.
      */
     public TriggerReferenceType getType() {
@@ -36,7 +43,7 @@ public final class TriggerReference {
 
     /**
      * Set the type property: Trigger reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the TriggerReference object itself.
      */
@@ -47,7 +54,7 @@ public final class TriggerReference {
 
     /**
      * Get the referenceName property: Reference trigger name.
-     *
+     * 
      * @return the referenceName value.
      */
     public String getReferenceName() {
@@ -56,12 +63,52 @@ public final class TriggerReference {
 
     /**
      * Set the referenceName property: Reference trigger name.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the TriggerReference object itself.
      */
     public TriggerReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("referenceName", this.referenceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggerReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggerReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TriggerReference.
+     */
+    public static TriggerReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggerReference deserializedTriggerReference = new TriggerReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedTriggerReference.type = TriggerReferenceType.fromString(reader.getString());
+                } else if ("referenceName".equals(fieldName)) {
+                    deserializedTriggerReference.referenceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggerReference;
+        });
     }
 }

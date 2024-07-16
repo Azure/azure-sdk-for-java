@@ -5,49 +5,52 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Sql Script resource type. */
+/**
+ * Sql Script resource type.
+ */
 @Fluent
-public final class SqlScriptResource {
+public final class SqlScriptResource implements JsonSerializable<SqlScriptResource> {
     /*
-     * Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+     * Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the resource
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Resource Etag.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Properties of sql script.
      */
-    @JsonProperty(value = "properties", required = true)
     private SqlScript properties;
 
-    /** Creates an instance of SqlScriptResource class. */
-    public SqlScriptResource() {}
+    /**
+     * Creates an instance of SqlScriptResource class.
+     */
+    public SqlScriptResource() {
+    }
 
     /**
      * Get the id property: Fully qualified resource Id for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -56,7 +59,7 @@ public final class SqlScriptResource {
 
     /**
      * Get the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -65,7 +68,7 @@ public final class SqlScriptResource {
 
     /**
      * Set the name property: The name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the SqlScriptResource object itself.
      */
@@ -77,7 +80,7 @@ public final class SqlScriptResource {
     /**
      * Get the type property: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
      * Microsoft.Storage/storageAccounts.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -86,7 +89,7 @@ public final class SqlScriptResource {
 
     /**
      * Get the etag property: Resource Etag.
-     *
+     * 
      * @return the etag value.
      */
     public String getEtag() {
@@ -95,7 +98,7 @@ public final class SqlScriptResource {
 
     /**
      * Get the properties property: Properties of sql script.
-     *
+     * 
      * @return the properties value.
      */
     public SqlScript getProperties() {
@@ -104,12 +107,58 @@ public final class SqlScriptResource {
 
     /**
      * Set the properties property: Properties of sql script.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SqlScriptResource object itself.
      */
     public SqlScriptResource setProperties(SqlScript properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlScriptResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlScriptResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlScriptResource.
+     */
+    public static SqlScriptResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlScriptResource deserializedSqlScriptResource = new SqlScriptResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSqlScriptResource.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSqlScriptResource.properties = SqlScript.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedSqlScriptResource.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlScriptResource.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedSqlScriptResource.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlScriptResource;
+        });
     }
 }

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.storage.fluent.models.EncryptionScopeInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of encryption scopes requested, and if paging is required, a URL to the next page of encryption scopes. */
+/**
+ * List of encryption scopes requested, and if paging is required, a URL to the next page of encryption scopes.
+ */
 @Immutable
 public final class EncryptionScopeListResult {
     /*
@@ -25,13 +27,15 @@ public final class EncryptionScopeListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of EncryptionScopeListResult class. */
+    /**
+     * Creates an instance of EncryptionScopeListResult class.
+     */
     public EncryptionScopeListResult() {
     }
 
     /**
      * Get the value property: List of encryption scopes requested.
-     *
+     * 
      * @return the value value.
      */
     public List<EncryptionScopeInner> value() {
@@ -41,7 +45,7 @@ public final class EncryptionScopeListResult {
     /**
      * Get the nextLink property: Request URL that can be used to query next page of encryption scopes. Returned when
      * total number of requested encryption scopes exceeds the maximum page size.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -50,7 +54,7 @@ public final class EncryptionScopeListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

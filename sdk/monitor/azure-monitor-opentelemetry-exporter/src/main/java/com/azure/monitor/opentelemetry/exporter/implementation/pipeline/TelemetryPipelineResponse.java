@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 
 public class TelemetryPipelineResponse {
@@ -33,28 +34,41 @@ public class TelemetryPipelineResponse {
         return body;
     }
 
-    public Set<String> getErrors() {
-        return parseErrors(body); // parseErrors on demand
+    public Set<ResponseError> getErrors() {
+        try {
+            return parseErrors(body); // parseErrors on demand
+        } catch (IllegalStateException e) {
+            return emptySet();
+        }
+    }
+
+    public Set<String> getErrorMessages() {
+        Set<ResponseError> responseErrors;
+        try {
+            responseErrors = parseErrors(body);
+        } catch (IllegalStateException e) {
+            return singleton("Could not parse response");
+        }
+        return responseErrors.stream().map(ResponseError::getMessage).collect(Collectors.toSet());
     }
 
     public boolean isInvalidInstrumentationKey() {
-        Set<String> errors = parseErrors(body);
+        Set<String> errors = getErrorMessages();
         return errors != null && errors.contains(INVALID_INSTRUMENTATION_KEY);
     }
 
-    private static Set<String> parseErrors(String body) {
+    static Set<ResponseError> parseErrors(String body) {
         JsonNode jsonNode;
         try {
             jsonNode = new ObjectMapper().readTree(body);
         } catch (JsonProcessingException e) {
-            // fallback to generic message
-            return singleton("Could not parse response");
+            throw new IllegalStateException("Failed to parse response body", e);
         }
         List<JsonNode> errorNodes = new ArrayList<>();
         jsonNode.get("errors").forEach(errorNodes::add);
         return errorNodes.stream()
-            .map(errorNode -> errorNode.get("message").asText())
-            .filter(s -> !s.equals("Telemetry sampled out."))
+            .map(errorNode -> new ResponseError(errorNode.get("index").asInt(), errorNode.get("statusCode").asInt(), errorNode.get("message").asText()))
+            .filter(s -> !s.getMessage().equals("Telemetry sampled out."))
             .collect(Collectors.toSet());
     }
 }

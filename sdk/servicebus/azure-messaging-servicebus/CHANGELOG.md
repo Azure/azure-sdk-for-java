@@ -8,9 +8,18 @@
 
 ### Bugs Fixed
 
-- Fixes the sender API that takes `Iterable` to not drop messages that cannot be fit in the batch. ([#40462](https://github.com/Azure/azure-sdk-for-java/pull/40462))
-
 ### Other Changes
+
+## 7.17.1 (2024-06-22)
+
+### Features Added
+
+- Setting the v2 stack as the default for "Synchronous Receiver Client".
+
+### Bugs Fixed
+
+- Fixes the sender API that takes `Iterable` to not drop messages that cannot be fit in the batch. ([#40462](https://github.com/Azure/azure-sdk-for-java/pull/40462))
+- Fixed issue where the scheduled enqueue time was not cleared when creating a new message from a received message.([#44585](https://github.com/Azure/azure-sdk-for-net/pull/44585)) 
 
 ## 7.18.0-beta.1 (2024-05-15)
 
@@ -741,7 +750,7 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 Version 7.0.0-beta.1 is a beta of our efforts in creating a client library that is developer-friendly, idiomatic
 to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide
 our efforts can be found in the [Azure SDK Design Guidelines for
-.Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
+.Java](https://aka.ms/azsdk/guide/java).
 
 ### Features
 

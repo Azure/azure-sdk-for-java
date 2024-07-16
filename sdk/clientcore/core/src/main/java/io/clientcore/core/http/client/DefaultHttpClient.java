@@ -284,7 +284,7 @@ class DefaultHttpClient implements HttpClient {
 
         switch (responseBodyMode) {
             case IGNORE:
-                HttpResponseAccessHelper.setBody(httpResponse, BinaryData.EMPTY);
+                HttpResponseAccessHelper.setBody(httpResponse, BinaryData.empty());
 
                 // Close the response InputStream rather than using disconnect. Disconnect will close the Socket
                 // connection when the InputStream is still open, which can result in keep alive handling not being

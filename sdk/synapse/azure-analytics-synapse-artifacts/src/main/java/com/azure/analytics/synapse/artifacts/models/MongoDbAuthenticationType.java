@@ -5,39 +5,44 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The authentication type to be used to connect to the MongoDB database. */
+/**
+ * The authentication type to be used to connect to the MongoDB database.
+ */
 public final class MongoDbAuthenticationType extends ExpandableStringEnum<MongoDbAuthenticationType> {
-    /** Static value Basic for MongoDbAuthenticationType. */
+    /**
+     * Static value Basic for MongoDbAuthenticationType.
+     */
     public static final MongoDbAuthenticationType BASIC = fromString("Basic");
 
-    /** Static value Anonymous for MongoDbAuthenticationType. */
+    /**
+     * Static value Anonymous for MongoDbAuthenticationType.
+     */
     public static final MongoDbAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
      * Creates a new instance of MongoDbAuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public MongoDbAuthenticationType() {}
+    public MongoDbAuthenticationType() {
+    }
 
     /**
      * Creates or finds a MongoDbAuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MongoDbAuthenticationType.
      */
-    @JsonCreator
     public static MongoDbAuthenticationType fromString(String name) {
         return fromString(name, MongoDbAuthenticationType.class);
     }
 
     /**
      * Gets known MongoDbAuthenticationType values.
-     *
+     * 
      * @return known MongoDbAuthenticationType values.
      */
     public static Collection<MongoDbAuthenticationType> values() {

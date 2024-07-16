@@ -5,39 +5,44 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The authentication type to use. */
+/**
+ * The authentication type to use.
+ */
 public final class TeamDeskAuthenticationType extends ExpandableStringEnum<TeamDeskAuthenticationType> {
-    /** Static value Basic for TeamDeskAuthenticationType. */
+    /**
+     * Static value Basic for TeamDeskAuthenticationType.
+     */
     public static final TeamDeskAuthenticationType BASIC = fromString("Basic");
 
-    /** Static value Token for TeamDeskAuthenticationType. */
+    /**
+     * Static value Token for TeamDeskAuthenticationType.
+     */
     public static final TeamDeskAuthenticationType TOKEN = fromString("Token");
 
     /**
      * Creates a new instance of TeamDeskAuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public TeamDeskAuthenticationType() {}
+    public TeamDeskAuthenticationType() {
+    }
 
     /**
      * Creates or finds a TeamDeskAuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TeamDeskAuthenticationType.
      */
-    @JsonCreator
     public static TeamDeskAuthenticationType fromString(String name) {
         return fromString(name, TeamDeskAuthenticationType.class);
     }
 
     /**
      * Gets known TeamDeskAuthenticationType values.
-     *
+     * 
      * @return known TeamDeskAuthenticationType values.
      */
     public static Collection<TeamDeskAuthenticationType> values() {

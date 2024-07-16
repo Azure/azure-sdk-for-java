@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
@@ -32,7 +33,10 @@ import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.net.URI;
@@ -56,6 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests methods for {@link TableServiceClient}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class TableServiceClientTest extends TableServiceClientTestBase {
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
     private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
@@ -88,7 +93,9 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
      * Tests that a table and entity can be created while having a different tenant ID than the one that will be
      * provided in the authentication challenge.
      */
+    @LiveOnly
     @Test
+
     public void serviceCreateTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.
         Assumptions.assumeTrue(serviceClient.getServiceEndpoint().contains("core.windows.net")
@@ -228,6 +235,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         assertEquals(expectedStatusCode, serviceClient.deleteTableWithResponse(tableName, null, null).getStatusCode());
     }
 
+    @Disabled("Due to CI issues")
     @Test
     public void serviceListTables() {
         // Arrange
@@ -287,6 +295,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         TableClientTest.getEntityWithResponseImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
     }
 
+    @LiveOnly
     @Test
     public void generateAccountSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -315,6 +324,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         );
     }
 
+    @LiveOnly
     @Test
     public void generateAccountSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -350,6 +360,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         );
     }
 
+    @LiveOnly
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
         final OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);

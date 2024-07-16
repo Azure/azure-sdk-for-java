@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * DiskRedundancy enum.
+ * Disk redundancy enum.
  */
 public final class DiskRedundancy extends ExpandableStringEnum<DiskRedundancy> {
     /**
@@ -37,7 +36,6 @@ public final class DiskRedundancy extends ExpandableStringEnum<DiskRedundancy> {
      * @param name a name to look for.
      * @return the corresponding DiskRedundancy.
      */
-    @JsonCreator
     public static DiskRedundancy fromString(String name) {
         return fromString(name, DiskRedundancy.class);
     }

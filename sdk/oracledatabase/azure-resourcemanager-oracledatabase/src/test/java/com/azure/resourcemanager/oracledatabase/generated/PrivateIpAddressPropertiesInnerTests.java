@@ -12,27 +12,12 @@ public final class PrivateIpAddressPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateIpAddressPropertiesInner model = BinaryData.fromString(
-            "{\"displayName\":\"afxtsgum\",\"hostnameLabel\":\"jglikkxwslolb\",\"ocid\":\"pvuzlmv\",\"ipAddress\":\"elfk\",\"subnetId\":\"gplcrpwjxeznoigb\"}")
+            "{\"displayName\":\"cbhernntiewdj\",\"hostnameLabel\":\"vbquwr\",\"ocid\":\"ehwagoh\",\"ipAddress\":\"uffkmrqemvvh\",\"subnetId\":\"xtdr\"}")
             .toObject(PrivateIpAddressPropertiesInner.class);
-        Assertions.assertEquals("afxtsgum", model.displayName());
-        Assertions.assertEquals("jglikkxwslolb", model.hostnameLabel());
-        Assertions.assertEquals("pvuzlmv", model.ocid());
-        Assertions.assertEquals("elfk", model.ipAddress());
-        Assertions.assertEquals("gplcrpwjxeznoigb", model.subnetId());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        PrivateIpAddressPropertiesInner model = new PrivateIpAddressPropertiesInner().withDisplayName("afxtsgum")
-            .withHostnameLabel("jglikkxwslolb")
-            .withOcid("pvuzlmv")
-            .withIpAddress("elfk")
-            .withSubnetId("gplcrpwjxeznoigb");
-        model = BinaryData.fromObject(model).toObject(PrivateIpAddressPropertiesInner.class);
-        Assertions.assertEquals("afxtsgum", model.displayName());
-        Assertions.assertEquals("jglikkxwslolb", model.hostnameLabel());
-        Assertions.assertEquals("pvuzlmv", model.ocid());
-        Assertions.assertEquals("elfk", model.ipAddress());
-        Assertions.assertEquals("gplcrpwjxeznoigb", model.subnetId());
+        Assertions.assertEquals("cbhernntiewdj", model.displayName());
+        Assertions.assertEquals("vbquwr", model.hostnameLabel());
+        Assertions.assertEquals("ehwagoh", model.ocid());
+        Assertions.assertEquals("uffkmrqemvvh", model.ipAddress());
+        Assertions.assertEquals("xtdr", model.subnetId());
     }
 }

@@ -186,7 +186,7 @@ public class MetricDataMapper {
         Attributes attributes = pointData.getAttributes();
         if (isPreAggregatedStandardMetric) {
             Long statusCode = getStableOrOldAttribute(attributes, SemanticAttributes.HTTP_RESPONSE_STATUS_CODE, SemanticAttributes.HTTP_STATUS_CODE);
-            boolean success = isSuccess(statusCode, captureHttpServer4xxAsError);
+            boolean success = isSuccess(metricData.getName(), statusCode, captureHttpServer4xxAsError);
             Boolean isSynthetic = attributes.get(IS_SYNTHETIC);
 
             attributes.forEach(
@@ -194,9 +194,9 @@ public class MetricDataMapper {
                     applyConnectionStringAndRoleNameOverrides(
                         metricTelemetryBuilder, value, key.getKey()));
 
-            if (metricData.getName().contains(".server.")) {
+            if (isServer(metricData.getName())) {
                 RequestExtractor.extract(metricTelemetryBuilder, statusCode, success, isSynthetic);
-            } else if (metricData.getName().contains(".client.")) {
+            } else if (isClient(metricData.getName())) {
                 String dependencyType;
                 int defaultPort;
                 if (metricData.getName().startsWith("http")) {
@@ -252,10 +252,31 @@ public class MetricDataMapper {
         return Integer.MAX_VALUE;
     }
 
-    private static boolean isSuccess(Long statusCode, boolean captureHttpServer4xxAsError) {
-        if (captureHttpServer4xxAsError) {
-            return statusCode == null || statusCode < 400;
+    // https://github.com/open-telemetry/semantic-conventions/blob/main/docs/http/http-spans.md#status
+    private static boolean isSuccess(String metricName, Long statusCode, boolean captureHttpServer4xxAsError) {
+        if (statusCode == null) {
+            return true;
         }
-        return statusCode == null || statusCode < 500;
+
+        if (isClient(metricName)) {
+            return statusCode < 400;
+        }
+
+        if (isServer(metricName)) {
+            if (captureHttpServer4xxAsError) {
+                return statusCode < 400;
+            }
+            return statusCode < 500;
+        }
+
+        return false;
+    }
+
+    private static boolean isClient(String metricName) {
+       return metricName.contains(".client.");
+    }
+
+    private static boolean isServer(String metricName) {
+       return metricName.contains(".server.");
     }
 }

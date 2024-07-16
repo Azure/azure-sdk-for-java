@@ -262,8 +262,9 @@ public final class AsyncOperationStatusInner {
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property status in model AsyncOperationStatusInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model AsyncOperationStatusInner"));
         }
     }
 

@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** This is a required field, it specifies the format for the inventory files. */
+/**
+ * This is a required field, it specifies the format for the inventory files.
+ */
 public final class Format extends ExpandableStringEnum<Format> {
-    /** Static value Csv for Format. */
+    /**
+     * Static value Csv for Format.
+     */
     public static final Format CSV = fromString("Csv");
 
-    /** Static value Parquet for Format. */
+    /**
+     * Static value Parquet for Format.
+     */
     public static final Format PARQUET = fromString("Parquet");
 
     /**
      * Creates a new instance of Format value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class Format extends ExpandableStringEnum<Format> {
 
     /**
      * Creates or finds a Format from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Format.
      */
@@ -38,7 +44,7 @@ public final class Format extends ExpandableStringEnum<Format> {
 
     /**
      * Gets known Format values.
-     *
+     * 
      * @return known Format values.
      */
     public static Collection<Format> values() {

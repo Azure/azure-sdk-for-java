@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.imagebuilder.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The type of identity used for the image template. The type 'None' will remove any identities from the image template.
  */
@@ -36,7 +33,6 @@ public enum ResourceIdentityType {
      * @param value the serialized value to parse.
      * @return the parsed ResourceIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ResourceIdentityType fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum ResourceIdentityType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

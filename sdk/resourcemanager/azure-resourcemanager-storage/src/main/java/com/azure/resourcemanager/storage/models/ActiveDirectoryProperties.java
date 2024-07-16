@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings properties for Active Directory (AD). */
+/**
+ * Settings properties for Active Directory (AD).
+ */
 @Fluent
 public final class ActiveDirectoryProperties {
     /*
@@ -59,13 +61,15 @@ public final class ActiveDirectoryProperties {
     @JsonProperty(value = "accountType")
     private ActiveDirectoryPropertiesAccountType accountType;
 
-    /** Creates an instance of ActiveDirectoryProperties class. */
+    /**
+     * Creates an instance of ActiveDirectoryProperties class.
+     */
     public ActiveDirectoryProperties() {
     }
 
     /**
      * Get the domainName property: Specifies the primary domain that the AD DNS server is authoritative for.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -74,7 +78,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Set the domainName property: Specifies the primary domain that the AD DNS server is authoritative for.
-     *
+     * 
      * @param domainName the domainName value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
@@ -85,7 +89,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Get the netBiosDomainName property: Specifies the NetBIOS domain name.
-     *
+     * 
      * @return the netBiosDomainName value.
      */
     public String netBiosDomainName() {
@@ -94,7 +98,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Set the netBiosDomainName property: Specifies the NetBIOS domain name.
-     *
+     * 
      * @param netBiosDomainName the netBiosDomainName value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
@@ -105,7 +109,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Get the forestName property: Specifies the Active Directory forest to get.
-     *
+     * 
      * @return the forestName value.
      */
     public String forestName() {
@@ -114,7 +118,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Set the forestName property: Specifies the Active Directory forest to get.
-     *
+     * 
      * @param forestName the forestName value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
@@ -125,7 +129,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Get the domainGuid property: Specifies the domain GUID.
-     *
+     * 
      * @return the domainGuid value.
      */
     public String domainGuid() {
@@ -134,7 +138,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Set the domainGuid property: Specifies the domain GUID.
-     *
+     * 
      * @param domainGuid the domainGuid value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
@@ -145,7 +149,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Get the domainSid property: Specifies the security identifier (SID).
-     *
+     * 
      * @return the domainSid value.
      */
     public String domainSid() {
@@ -154,7 +158,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Set the domainSid property: Specifies the security identifier (SID).
-     *
+     * 
      * @param domainSid the domainSid value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
@@ -165,7 +169,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Get the azureStorageSid property: Specifies the security identifier (SID) for Azure Storage.
-     *
+     * 
      * @return the azureStorageSid value.
      */
     public String azureStorageSid() {
@@ -174,7 +178,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Set the azureStorageSid property: Specifies the security identifier (SID) for Azure Storage.
-     *
+     * 
      * @param azureStorageSid the azureStorageSid value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
@@ -185,7 +189,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Get the samAccountName property: Specifies the Active Directory SAMAccountName for Azure Storage.
-     *
+     * 
      * @return the samAccountName value.
      */
     public String samAccountName() {
@@ -194,7 +198,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Set the samAccountName property: Specifies the Active Directory SAMAccountName for Azure Storage.
-     *
+     * 
      * @param samAccountName the samAccountName value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
@@ -205,7 +209,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Get the accountType property: Specifies the Active Directory account type for Azure Storage.
-     *
+     * 
      * @return the accountType value.
      */
     public ActiveDirectoryPropertiesAccountType accountType() {
@@ -214,7 +218,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Set the accountType property: Specifies the Active Directory account type for Azure Storage.
-     *
+     * 
      * @param accountType the accountType value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
@@ -225,21 +229,19 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (domainName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property domainName in model ActiveDirectoryProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domainName in model ActiveDirectoryProperties"));
         }
         if (domainGuid() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property domainGuid in model ActiveDirectoryProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domainGuid in model ActiveDirectoryProperties"));
         }
     }
 

@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,34 +12,38 @@ import java.util.Collection;
  * IR.
  */
 public final class GoogleBigQueryAuthenticationType extends ExpandableStringEnum<GoogleBigQueryAuthenticationType> {
-    /** Static value ServiceAuthentication for GoogleBigQueryAuthenticationType. */
+    /**
+     * Static value ServiceAuthentication for GoogleBigQueryAuthenticationType.
+     */
     public static final GoogleBigQueryAuthenticationType SERVICE_AUTHENTICATION = fromString("ServiceAuthentication");
 
-    /** Static value UserAuthentication for GoogleBigQueryAuthenticationType. */
+    /**
+     * Static value UserAuthentication for GoogleBigQueryAuthenticationType.
+     */
     public static final GoogleBigQueryAuthenticationType USER_AUTHENTICATION = fromString("UserAuthentication");
 
     /**
      * Creates a new instance of GoogleBigQueryAuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public GoogleBigQueryAuthenticationType() {}
+    public GoogleBigQueryAuthenticationType() {
+    }
 
     /**
      * Creates or finds a GoogleBigQueryAuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GoogleBigQueryAuthenticationType.
      */
-    @JsonCreator
     public static GoogleBigQueryAuthenticationType fromString(String name) {
         return fromString(name, GoogleBigQueryAuthenticationType.class);
     }
 
     /**
      * Gets known GoogleBigQueryAuthenticationType values.
-     *
+     * 
      * @return known GoogleBigQueryAuthenticationType values.
      */
     public static Collection<GoogleBigQueryAuthenticationType> values() {

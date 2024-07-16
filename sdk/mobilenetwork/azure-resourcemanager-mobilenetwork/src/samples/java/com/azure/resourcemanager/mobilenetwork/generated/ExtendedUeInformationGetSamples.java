@@ -9,9 +9,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
  */
 public final class ExtendedUeInformationGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/
-     * ExtendedUeInfo4GGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/ExtendedUeInfo4GGet.json
      */
     /**
      * Sample code: Get UE Information 4G.
@@ -19,14 +17,12 @@ public final class ExtendedUeInformationGetSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getUEInformation4G(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.extendedUeInformations().getWithResponse("rg1", "TestPacketCoreCP", "84449105622",
-            com.azure.core.util.Context.NONE);
+        manager.extendedUeInformations()
+            .getWithResponse("rg1", "TestPacketCoreCP", "84449105622", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/
-     * ExtendedUeInfo5GGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/ExtendedUeInfo5GGet.json
      */
     /**
      * Sample code: Get UE Information 5G.
@@ -34,7 +30,7 @@ public final class ExtendedUeInformationGetSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getUEInformation5G(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.extendedUeInformations().getWithResponse("rg1", "TestPacketCoreCP", "84449105622",
-            com.azure.core.util.Context.NONE);
+        manager.extendedUeInformations()
+            .getWithResponse("rg1", "TestPacketCoreCP", "84449105622", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,66 +5,67 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** ServiceNowV2 server linked service properties. */
+/**
+ * ServiceNowV2 server linked service properties.
+ */
 @Fluent
-public final class ServiceNowV2LinkedServiceTypeProperties {
+public final class ServiceNowV2LinkedServiceTypeProperties
+    implements JsonSerializable<ServiceNowV2LinkedServiceTypeProperties> {
     /*
      * The endpoint of the ServiceNowV2 server. (i.e. <instance>.service-now.com)
      */
-    @JsonProperty(value = "endpoint", required = true)
     private Object endpoint;
 
     /*
      * The authentication type to use.
      */
-    @JsonProperty(value = "authenticationType", required = true)
     private ServiceNowV2AuthenticationType authenticationType;
 
     /*
      * The user name used to connect to the ServiceNowV2 server for Basic and OAuth2 authentication.
      */
-    @JsonProperty(value = "username")
     private Object username;
 
     /*
      * The password corresponding to the user name for Basic and OAuth2 authentication.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The client id for OAuth2 authentication.
      */
-    @JsonProperty(value = "clientId")
     private Object clientId;
 
     /*
      * The client secret for OAuth2 authentication.
      */
-    @JsonProperty(value = "clientSecret")
     private SecretBase clientSecret;
 
     /*
      * GrantType for OAuth2 authentication. Default value is password.
      */
-    @JsonProperty(value = "grantType")
     private Object grantType;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
-    /** Creates an instance of ServiceNowV2LinkedServiceTypeProperties class. */
-    public ServiceNowV2LinkedServiceTypeProperties() {}
+    /**
+     * Creates an instance of ServiceNowV2LinkedServiceTypeProperties class.
+     */
+    public ServiceNowV2LinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the endpoint property: The endpoint of the ServiceNowV2 server. (i.e. &lt;instance&gt;.service-now.com).
-     *
+     * 
      * @return the endpoint value.
      */
     public Object getEndpoint() {
@@ -73,7 +74,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
 
     /**
      * Set the endpoint property: The endpoint of the ServiceNowV2 server. (i.e. &lt;instance&gt;.service-now.com).
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
@@ -84,7 +85,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
 
     /**
      * Get the authenticationType property: The authentication type to use.
-     *
+     * 
      * @return the authenticationType value.
      */
     public ServiceNowV2AuthenticationType getAuthenticationType() {
@@ -93,12 +94,12 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
 
     /**
      * Set the authenticationType property: The authentication type to use.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
-    public ServiceNowV2LinkedServiceTypeProperties setAuthenticationType(
-            ServiceNowV2AuthenticationType authenticationType) {
+    public ServiceNowV2LinkedServiceTypeProperties
+        setAuthenticationType(ServiceNowV2AuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
     }
@@ -106,7 +107,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
     /**
      * Get the username property: The user name used to connect to the ServiceNowV2 server for Basic and OAuth2
      * authentication.
-     *
+     * 
      * @return the username value.
      */
     public Object getUsername() {
@@ -116,7 +117,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
     /**
      * Set the username property: The user name used to connect to the ServiceNowV2 server for Basic and OAuth2
      * authentication.
-     *
+     * 
      * @param username the username value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
@@ -127,7 +128,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
 
     /**
      * Get the password property: The password corresponding to the user name for Basic and OAuth2 authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -136,7 +137,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
 
     /**
      * Set the password property: The password corresponding to the user name for Basic and OAuth2 authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
@@ -147,7 +148,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
 
     /**
      * Get the clientId property: The client id for OAuth2 authentication.
-     *
+     * 
      * @return the clientId value.
      */
     public Object getClientId() {
@@ -156,7 +157,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
 
     /**
      * Set the clientId property: The client id for OAuth2 authentication.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
@@ -167,7 +168,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
 
     /**
      * Get the clientSecret property: The client secret for OAuth2 authentication.
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase getClientSecret() {
@@ -176,7 +177,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
 
     /**
      * Set the clientSecret property: The client secret for OAuth2 authentication.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
@@ -187,7 +188,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
 
     /**
      * Get the grantType property: GrantType for OAuth2 authentication. Default value is password.
-     *
+     * 
      * @return the grantType value.
      */
     public Object getGrantType() {
@@ -196,7 +197,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
 
     /**
      * Set the grantType property: GrantType for OAuth2 authentication. Default value is password.
-     *
+     * 
      * @param grantType the grantType value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
@@ -208,7 +209,7 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string.
-     *
+     * 
      * @return the encryptedCredential value.
      */
     public String getEncryptedCredential() {
@@ -218,12 +219,73 @@ public final class ServiceNowV2LinkedServiceTypeProperties {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string.
-     *
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ServiceNowV2LinkedServiceTypeProperties object itself.
      */
     public ServiceNowV2LinkedServiceTypeProperties setEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("endpoint", this.endpoint);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("clientId", this.clientId);
+        jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+        jsonWriter.writeUntypedField("grantType", this.grantType);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceNowV2LinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceNowV2LinkedServiceTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceNowV2LinkedServiceTypeProperties.
+     */
+    public static ServiceNowV2LinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceNowV2LinkedServiceTypeProperties deserializedServiceNowV2LinkedServiceTypeProperties
+                = new ServiceNowV2LinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpoint".equals(fieldName)) {
+                    deserializedServiceNowV2LinkedServiceTypeProperties.endpoint = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedServiceNowV2LinkedServiceTypeProperties.authenticationType
+                        = ServiceNowV2AuthenticationType.fromString(reader.getString());
+                } else if ("username".equals(fieldName)) {
+                    deserializedServiceNowV2LinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedServiceNowV2LinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedServiceNowV2LinkedServiceTypeProperties.clientId = reader.readUntyped();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedServiceNowV2LinkedServiceTypeProperties.clientSecret = SecretBase.fromJson(reader);
+                } else if ("grantType".equals(fieldName)) {
+                    deserializedServiceNowV2LinkedServiceTypeProperties.grantType = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedServiceNowV2LinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceNowV2LinkedServiceTypeProperties;
+        });
     }
 }

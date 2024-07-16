@@ -38,6 +38,7 @@ com.azure:azure-data-appconfiguration # Tests owner: mssfang
 com.azure:azure-data-schemaregistry # Tests owner: conniey
 com.azure:azure-data-schemaregistry-apacheavro # Tests owner: conniey
 com.azure:azure-data-tables # Tests owner: jairmyree
+com.azure:azure-developer-devcenter # Tests owner: drielenr, leti367
 com.azure:azure-developer-loadtesting # Tests owner: Harshan01, prativen
 com.azure:azure-digitaltwins-core # Tests owner: sjiherzig
 com.azure:azure-identity-broker # Tests owner: billwert, vigera
@@ -57,7 +58,7 @@ com.azure:azure-security-attestation # Tests owner: LarryOsterman
 com.azure:azure-security-confidentialledger # Tests owner: Xamrmo
 com.azure:azure-security-keyvault-administration # Tests owner: vcolin7
 com.azure:azure-security-keyvault-certificates # Tests owner: vcolin7
-com.azure:azure-security-keyvault-jca # Tests owner: chenrujun
+com.azure:azure-security-keyvault-jca # Tests owner: rujche
 com.azure:azure-security-keyvault-keys # Tests owner: vcolin7
 com.azure:azure-security-keyvault-secrets # Tests owner: vcolin7
 com.azure:azure-search-documents # Tests owner: jairmyree

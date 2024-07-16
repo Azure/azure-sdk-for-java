@@ -60,14 +60,16 @@ public final class TriggerImpl implements Trigger, Trigger.Definition, Trigger.U
     }
 
     public Trigger create() {
-        this.innerObject = serviceManager.serviceClient().getTriggers().createOrUpdate(resourceGroupName,
-            imageTemplateName, triggerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getTriggers()
+            .createOrUpdate(resourceGroupName, imageTemplateName, triggerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Trigger create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getTriggers().createOrUpdate(resourceGroupName,
-            imageTemplateName, triggerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getTriggers()
+            .createOrUpdate(resourceGroupName, imageTemplateName, triggerName, this.innerModel(), context);
         return this;
     }
 
@@ -82,14 +84,16 @@ public final class TriggerImpl implements Trigger, Trigger.Definition, Trigger.U
     }
 
     public Trigger apply() {
-        this.innerObject = serviceManager.serviceClient().getTriggers().createOrUpdate(resourceGroupName,
-            imageTemplateName, triggerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getTriggers()
+            .createOrUpdate(resourceGroupName, imageTemplateName, triggerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Trigger apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getTriggers().createOrUpdate(resourceGroupName,
-            imageTemplateName, triggerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getTriggers()
+            .createOrUpdate(resourceGroupName, imageTemplateName, triggerName, this.innerModel(), context);
         return this;
     }
 
@@ -102,14 +106,18 @@ public final class TriggerImpl implements Trigger, Trigger.Definition, Trigger.U
     }
 
     public Trigger refresh() {
-        this.innerObject = serviceManager.serviceClient().getTriggers()
-            .getWithResponse(resourceGroupName, imageTemplateName, triggerName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTriggers()
+            .getWithResponse(resourceGroupName, imageTemplateName, triggerName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Trigger refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getTriggers()
-            .getWithResponse(resourceGroupName, imageTemplateName, triggerName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTriggers()
+            .getWithResponse(resourceGroupName, imageTemplateName, triggerName, context)
+            .getValue();
         return this;
     }
 

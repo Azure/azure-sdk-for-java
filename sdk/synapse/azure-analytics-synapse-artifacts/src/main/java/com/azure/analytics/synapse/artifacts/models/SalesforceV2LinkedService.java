@@ -5,67 +5,74 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for Salesforce V2. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SalesforceV2")
-@JsonFlatten
+/**
+ * Linked service for Salesforce V2.
+ */
 @Fluent
 public class SalesforceV2LinkedService extends LinkedService {
     /*
-     * The URL of Salesforce instance. For example, 'https://[domain].my.salesforce.com'. Type: string (or Expression
-     * with resultType string).
+     * Type of linked service.
      */
-    @JsonProperty(value = "typeProperties.environmentUrl")
+    private String type = "SalesforceV2";
+
+    /*
+     * The URL of Salesforce instance. For example, 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
+     */
     private Object environmentUrl;
 
     /*
-     * The authentication type to be used to connect to the Salesforce. Currently, we only support
-     * OAuth2ClientCredentials, it is also the default value
+     * The authentication type to be used to connect to the Salesforce. Currently, we only support OAuth2ClientCredentials, it is also the default value
      */
-    @JsonProperty(value = "typeProperties.authenticationType")
     private Object authenticationType;
 
     /*
-     * The client Id for OAuth 2.0 Client Credentials Flow authentication of the Salesforce instance. Type: string (or
-     * Expression with resultType string).
+     * The client Id for OAuth 2.0 Client Credentials Flow authentication of the Salesforce instance. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.clientId")
     private Object clientId;
 
     /*
      * The client secret for OAuth 2.0 Client Credentials Flow authentication of the Salesforce instance.
      */
-    @JsonProperty(value = "typeProperties.clientSecret")
     private SecretBase clientSecret;
 
     /*
-     * The Salesforce API version used in ADF. The version must be larger than or equal to 47.0 which is required by
-     * Salesforce BULK API 2.0. Type: string (or Expression with resultType string).
+     * The Salesforce API version used in ADF. The version must be larger than or equal to 47.0 which is required by Salesforce BULK API 2.0. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.apiVersion")
     private Object apiVersion;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;
 
-    /** Creates an instance of SalesforceV2LinkedService class. */
-    public SalesforceV2LinkedService() {}
+    /**
+     * Creates an instance of SalesforceV2LinkedService class.
+     */
+    public SalesforceV2LinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the environmentUrl property: The URL of Salesforce instance. For example,
      * 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the environmentUrl value.
      */
     public Object getEnvironmentUrl() {
@@ -75,7 +82,7 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * Set the environmentUrl property: The URL of Salesforce instance. For example,
      * 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param environmentUrl the environmentUrl value to set.
      * @return the SalesforceV2LinkedService object itself.
      */
@@ -87,7 +94,7 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * Get the authenticationType property: The authentication type to be used to connect to the Salesforce. Currently,
      * we only support OAuth2ClientCredentials, it is also the default value.
-     *
+     * 
      * @return the authenticationType value.
      */
     public Object getAuthenticationType() {
@@ -97,7 +104,7 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * Set the authenticationType property: The authentication type to be used to connect to the Salesforce. Currently,
      * we only support OAuth2ClientCredentials, it is also the default value.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the SalesforceV2LinkedService object itself.
      */
@@ -109,7 +116,7 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * Get the clientId property: The client Id for OAuth 2.0 Client Credentials Flow authentication of the Salesforce
      * instance. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the clientId value.
      */
     public Object getClientId() {
@@ -119,7 +126,7 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * Set the clientId property: The client Id for OAuth 2.0 Client Credentials Flow authentication of the Salesforce
      * instance. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the SalesforceV2LinkedService object itself.
      */
@@ -131,7 +138,7 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * Get the clientSecret property: The client secret for OAuth 2.0 Client Credentials Flow authentication of the
      * Salesforce instance.
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase getClientSecret() {
@@ -141,7 +148,7 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * Set the clientSecret property: The client secret for OAuth 2.0 Client Credentials Flow authentication of the
      * Salesforce instance.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the SalesforceV2LinkedService object itself.
      */
@@ -153,7 +160,7 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * Get the apiVersion property: The Salesforce API version used in ADF. The version must be larger than or equal to
      * 47.0 which is required by Salesforce BULK API 2.0. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the apiVersion value.
      */
     public Object getApiVersion() {
@@ -163,7 +170,7 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * Set the apiVersion property: The Salesforce API version used in ADF. The version must be larger than or equal to
      * 47.0 which is required by Salesforce BULK API 2.0. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @return the SalesforceV2LinkedService object itself.
      */
@@ -175,7 +182,7 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string.
-     *
+     * 
      * @return the encryptedCredential value.
      */
     public String getEncryptedCredential() {
@@ -185,7 +192,7 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string.
-     *
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SalesforceV2LinkedService object itself.
      */
@@ -194,31 +201,137 @@ public class SalesforceV2LinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceV2LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceV2LinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceV2LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceV2LinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (environmentUrl != null
+            || authenticationType != null
+            || clientId != null
+            || clientSecret != null
+            || apiVersion != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("environmentUrl", this.environmentUrl);
+            jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+            jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+            jsonWriter.writeUntypedField("apiVersion", this.apiVersion);
+            jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SalesforceV2LinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SalesforceV2LinkedService if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SalesforceV2LinkedService.
+     */
+    public static SalesforceV2LinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SalesforceV2LinkedService deserializedSalesforceV2LinkedService = new SalesforceV2LinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedSalesforceV2LinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedSalesforceV2LinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedSalesforceV2LinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedSalesforceV2LinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSalesforceV2LinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("environmentUrl".equals(fieldName)) {
+                            deserializedSalesforceV2LinkedService.environmentUrl = reader.readUntyped();
+                        } else if ("authenticationType".equals(fieldName)) {
+                            deserializedSalesforceV2LinkedService.authenticationType = reader.readUntyped();
+                        } else if ("clientId".equals(fieldName)) {
+                            deserializedSalesforceV2LinkedService.clientId = reader.readUntyped();
+                        } else if ("clientSecret".equals(fieldName)) {
+                            deserializedSalesforceV2LinkedService.clientSecret = SecretBase.fromJson(reader);
+                        } else if ("apiVersion".equals(fieldName)) {
+                            deserializedSalesforceV2LinkedService.apiVersion = reader.readUntyped();
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedSalesforceV2LinkedService.encryptedCredential = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSalesforceV2LinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedSalesforceV2LinkedService;
+        });
     }
 }

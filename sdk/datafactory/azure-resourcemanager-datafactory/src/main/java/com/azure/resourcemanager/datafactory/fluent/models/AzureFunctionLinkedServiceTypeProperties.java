@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureFunctionLinkedServiceTypeProperties {
     /*
-     * The endpoint of the Azure Function App. URL will be in the format https://<accountName>.azurewebsites.net. Type: string (or Expression with resultType string).
+     * The endpoint of the Azure Function App. URL will be in the format https://<accountName>.azurewebsites.net. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "functionAppUrl", required = true)
     private Object functionAppUrl;
@@ -28,7 +29,8 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     private SecretBase functionKey;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -46,7 +48,8 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     private Object resourceId;
 
     /*
-     * Type of authentication (Required to specify MSI) used to connect to AzureFunction. Type: string (or Expression with resultType string).
+     * Type of authentication (Required to specify MSI) used to connect to AzureFunction. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "authentication")
     private Object authentication;

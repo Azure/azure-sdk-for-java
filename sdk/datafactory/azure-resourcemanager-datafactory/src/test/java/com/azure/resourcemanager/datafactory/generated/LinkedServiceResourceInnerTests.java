@@ -19,31 +19,33 @@ public final class LinkedServiceResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedServiceResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"dmoizpostmg\",\"connectVia\":{\"referenceName\":\"fbunrmfqjhhk\",\"parameters\":{\"vkr\":\"datavjymjhxxjyngud\",\"szjfauvjfdxxivet\":\"dataswbxqz\",\"qaqtdoqmcbxvwvxy\":\"datat\",\"obl\":\"datalqbhsf\"}},\"description\":\"k\",\"parameters\":{\"rn\":{\"type\":\"Float\",\"defaultValue\":\"datawwwfbkr\"}},\"annotations\":[\"datahqjohxcrsbfova\",\"datarruvwbhsq\",\"datasub\"],\"\":{\"pybsrfbjfdtw\":\"databirx\"}},\"name\":\"otftpvjzbexilz\",\"type\":\"fqqnvwpmqtaruo\",\"etag\":\"mkcjhwqytjrybn\",\"id\":\"ewgdrjervn\"}")
+            "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"vfiwjmygtdss\",\"parameters\":{\"emwabnet\":\"datatmweriofzpyq\",\"d\":\"datahhszh\"}},\"description\":\"vwiwubmwmbesld\",\"parameters\":{\"flcxoga\":{\"type\":\"Float\",\"defaultValue\":\"datapp\"},\"qzeqqkdltfzxm\":{\"type\":\"SecureString\",\"defaultValue\":\"datanzmnsikvm\"}},\"annotations\":[\"datahgure\"],\"\":{\"xwak\":\"datawobdagxtibqdx\",\"lbpodxunk\":\"dataogqxndlkzgxhuri\",\"lrb\":\"dataebxmubyynt\"}},\"name\":\"koievseo\",\"type\":\"q\",\"etag\":\"ltmuwlauwzizx\",\"id\":\"pgcjefuzmuvp\"}")
             .toObject(LinkedServiceResourceInner.class);
-        Assertions.assertEquals("ewgdrjervn", model.id());
-        Assertions.assertEquals("fbunrmfqjhhk", model.properties().connectVia().referenceName());
-        Assertions.assertEquals("k", model.properties().description());
-        Assertions.assertEquals(ParameterType.FLOAT, model.properties().parameters().get("rn").type());
+        Assertions.assertEquals("pgcjefuzmuvp", model.id());
+        Assertions.assertEquals("vfiwjmygtdss", model.properties().connectVia().referenceName());
+        Assertions.assertEquals("vwiwubmwmbesld", model.properties().description());
+        Assertions.assertEquals(ParameterType.FLOAT, model.properties().parameters().get("flcxoga").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedServiceResourceInner model = new LinkedServiceResourceInner().withId("ewgdrjervn")
+        LinkedServiceResourceInner model = new LinkedServiceResourceInner().withId("pgcjefuzmuvp")
             .withProperties(new LinkedService()
-                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("fbunrmfqjhhk")
-                    .withParameters(mapOf("vkr", "datavjymjhxxjyngud", "szjfauvjfdxxivet", "dataswbxqz",
-                        "qaqtdoqmcbxvwvxy", "datat", "obl", "datalqbhsf")))
-                .withDescription("k")
-                .withParameters(mapOf("rn",
-                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datawwwfbkr")))
-                .withAnnotations(Arrays.asList("datahqjohxcrsbfova", "datarruvwbhsq", "datasub"))
-                .withAdditionalProperties(mapOf("type", "dmoizpostmg")));
+                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("vfiwjmygtdss")
+                    .withParameters(mapOf("emwabnet", "datatmweriofzpyq", "d", "datahhszh")))
+                .withDescription("vwiwubmwmbesld")
+                .withParameters(mapOf("flcxoga",
+                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datapp"),
+                    "qzeqqkdltfzxm",
+                    new ParameterSpecification().withType(ParameterType.SECURE_STRING)
+                        .withDefaultValue("datanzmnsikvm")))
+                .withAnnotations(Arrays.asList("datahgure"))
+                .withAdditionalProperties(mapOf("type", "LinkedService")));
         model = BinaryData.fromObject(model).toObject(LinkedServiceResourceInner.class);
-        Assertions.assertEquals("ewgdrjervn", model.id());
-        Assertions.assertEquals("fbunrmfqjhhk", model.properties().connectVia().referenceName());
-        Assertions.assertEquals("k", model.properties().description());
-        Assertions.assertEquals(ParameterType.FLOAT, model.properties().parameters().get("rn").type());
+        Assertions.assertEquals("pgcjefuzmuvp", model.id());
+        Assertions.assertEquals("vfiwjmygtdss", model.properties().connectVia().referenceName());
+        Assertions.assertEquals("vwiwubmwmbesld", model.properties().description());
+        Assertions.assertEquals(ParameterType.FLOAT, model.properties().parameters().get("flcxoga").type());
     }
 
     // Use "Map.of" if available

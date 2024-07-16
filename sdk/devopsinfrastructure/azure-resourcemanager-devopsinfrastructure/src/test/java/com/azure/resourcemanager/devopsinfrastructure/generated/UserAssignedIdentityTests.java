@@ -6,22 +6,17 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devopsinfrastructure.models.UserAssignedIdentity;
-import org.junit.jupiter.api.Assertions;
 
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model = BinaryData.fromString("{\"clientId\":\"dwzjeiach\",\"principalId\":\"osfln\"}")
+        UserAssignedIdentity model = BinaryData.fromString("{\"principalId\":\"dwzjeiach\",\"clientId\":\"osfln\"}")
             .toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("dwzjeiach", model.clientId());
-        Assertions.assertEquals("osfln", model.principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserAssignedIdentity model = new UserAssignedIdentity().withClientId("dwzjeiach").withPrincipalId("osfln");
+        UserAssignedIdentity model = new UserAssignedIdentity();
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("dwzjeiach", model.clientId());
-        Assertions.assertEquals("osfln", model.principalId());
     }
 }

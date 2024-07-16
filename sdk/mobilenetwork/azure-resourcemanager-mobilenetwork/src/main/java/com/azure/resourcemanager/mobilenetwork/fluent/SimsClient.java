@@ -14,7 +14,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.AsyncOperationStatusInner;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
 import com.azure.resourcemanager.mobilenetwork.models.EncryptedSimUploadList;
+import com.azure.resourcemanager.mobilenetwork.models.SimClone;
 import com.azure.resourcemanager.mobilenetwork.models.SimDeleteList;
+import com.azure.resourcemanager.mobilenetwork.models.SimMove;
 import com.azure.resourcemanager.mobilenetwork.models.SimUploadList;
 
 /**
@@ -382,4 +384,125 @@ public interface SimsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     AsyncOperationStatusInner bulkUploadEncrypted(String resourceGroupName, String simGroupName,
         EncryptedSimUploadList parameters, Context context);
+
+    /**
+     * Move SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to move the SIMs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginMove(String resourceGroupName,
+        String simGroupName, SimMove parameters);
+
+    /**
+     * Move SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to move the SIMs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginMove(String resourceGroupName,
+        String simGroupName, SimMove parameters, Context context);
+
+    /**
+     * Move SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to move the SIMs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AsyncOperationStatusInner move(String resourceGroupName, String simGroupName, SimMove parameters);
+
+    /**
+     * Move SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to move the SIMs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AsyncOperationStatusInner move(String resourceGroupName, String simGroupName, SimMove parameters, Context context);
+
+    /**
+     * Clone SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to clone the SIMs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginClone(String resourceGroupName,
+        String simGroupName, SimClone parameters);
+
+    /**
+     * Clone SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to clone the SIMs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginClone(String resourceGroupName,
+        String simGroupName, SimClone parameters, Context context);
+
+    /**
+     * Clone SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to clone the SIMs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AsyncOperationStatusInner clone(String resourceGroupName, String simGroupName, SimClone parameters);
+
+    /**
+     * Clone SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to clone the SIMs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AsyncOperationStatusInner clone(String resourceGroupName, String simGroupName, SimClone parameters,
+        Context context);
 }

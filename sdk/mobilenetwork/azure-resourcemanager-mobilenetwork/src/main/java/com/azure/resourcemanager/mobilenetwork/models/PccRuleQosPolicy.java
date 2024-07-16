@@ -13,9 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PccRuleQosPolicy extends QosPolicy {
     /*
-     * The guaranteed bit rate (GBR) for all service data flows that use this data flow policy rule. This is an
-     * optional setting. If you do not provide a value, there will be no GBR set for the data flow policy rule that
-     * uses this QoS definition.
+     * The guaranteed bit rate (GBR) for all service data flows that use this data flow policy rule. This is an optional setting. If you do not provide a value, there will be no GBR set for the data flow policy rule that uses this QoS definition.
      */
     @JsonProperty(value = "guaranteedBitRate")
     private Ambr guaranteedBitRate;

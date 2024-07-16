@@ -3,6 +3,8 @@
 
 package io.clientcore.http.okhttp3.implementation;
 
+import io.clientcore.core.util.binarydata.BinaryData;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -140,8 +142,10 @@ public class AuthorizationChallengeHandler {
      * @return Authorization header for Digest authentication challenges.
      */
     public final String handleDigest(String method, String uri, List<Map<String, String>> challenges,
-        Supplier<byte[]> entityBodySupplier) {
+        Supplier<BinaryData> entityBodySupplier) {
+
         authorizationPipeliningType.set(DIGEST);
+
         Map<String, List<Map<String, String>>> challengesByType = partitionByChallengeType(challenges);
 
         for (String algorithm : ALGORITHM_PREFERENCE_ORDER) {
@@ -157,8 +161,9 @@ public class AuthorizationChallengeHandler {
                 continue;
             }
 
-            ConcurrentHashMap<String, String> challenge = new ConcurrentHashMap<>(challengesByType.get(algorithm)
-                .get(0));
+            ConcurrentHashMap<String, String> challenge =
+                new ConcurrentHashMap<>(challengesByType.get(algorithm).get(0));
+
             lastChallenge.set(challenge);
 
             return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entityBodySupplier,
@@ -178,7 +183,9 @@ public class AuthorizationChallengeHandler {
      * {@code "qop=auth-int"}.
      * @return A preemptive authorization header for a potential Digest authentication challenge.
      */
-    public final String attemptToPipelineAuthorization(String method, String uri, Supplier<byte[]> entityBodySupplier) {
+    public final String attemptToPipelineAuthorization(String method, String uri,
+        Supplier<BinaryData> entityBodySupplier) {
+
         String pipeliningType = authorizationPipeliningType.get();
 
         if (DIGEST.equals(pipeliningType)) {
@@ -250,7 +257,8 @@ public class AuthorizationChallengeHandler {
      * Creates the Authorization header for the Digest authentication challenge.
      */
     private String createDigestAuthorizationHeader(String method, String uri, Map<String, String> challenge,
-        String algorithm, Supplier<byte[]> entityBodySupplier, Function<byte[], byte[]> digestFunction) {
+        String algorithm, Supplier<BinaryData> entityBodySupplier, Function<byte[], byte[]> digestFunction) {
+
         String realm = challenge.get(REALM);
         String nonce = challenge.get(NONCE);
         String qop = getQop(challenge.get(QOP));
@@ -263,6 +271,7 @@ public class AuthorizationChallengeHandler {
          */
         int nc = 0;
         String clientNonce = null;
+
         if (AUTH.equals(qop) || AUTH_INT.equals(qop)) {
             clientNonce = generateNonce();
             nc = getNc(challenge);
@@ -376,8 +385,8 @@ public class AuthorizationChallengeHandler {
      * amounts of memory.
      */
     private static String calculateHa2AuthIntQop(Function<byte[], byte[]> digestFunction, String httpMethod, String uri,
-        byte[] requestEntityBody) {
-        String bodyHex = bytesToHexString(digestFunction.apply(requestEntityBody));
+        BinaryData requestEntityBody) {
+        String bodyHex = bytesToHexString(digestFunction.apply(requestEntityBody.toBytes()));
 
         return bytesToHexString(digestFunction.apply(
             (httpMethod + ":" + uri + ":" + bodyHex).getBytes(StandardCharsets.UTF_8)));
@@ -435,9 +444,11 @@ public class AuthorizationChallengeHandler {
              */
             if (SHA_512_256.equals(algorithm)) {
                 MessageDigest digest = MessageDigest.getInstance("SHA-512");
+
                 return (bytes) -> Arrays.copyOf(digest.digest(bytes), 32);
             } else {
                 MessageDigest digest = MessageDigest.getInstance(algorithm);
+
                 return digest::digest;
             }
         } catch (NoSuchAlgorithmException e) {

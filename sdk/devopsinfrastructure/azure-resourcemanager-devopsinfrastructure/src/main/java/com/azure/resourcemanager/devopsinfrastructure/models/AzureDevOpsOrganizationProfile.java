@@ -6,40 +6,30 @@ package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure DevOps organization profile.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "kind",
-    defaultImpl = AzureDevOpsOrganizationProfile.class,
-    visible = true)
-@JsonTypeName("AzureDevOps")
 @Fluent
 public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
     /*
-     * The kind property.
+     * Discriminator property for OrganizationProfile.
      */
-    @JsonTypeId
-    @JsonProperty(value = "kind", required = true)
     private String kind = "AzureDevOps";
 
     /*
      * The list of Azure DevOps organizations the pool should be present in.
      */
-    @JsonProperty(value = "organizations", required = true)
     private List<Organization> organizations;
 
     /*
      * The type of permission which determines which accounts are admins on the Azure DevOps pool.
      */
-    @JsonProperty(value = "permissionProfile")
     private AzureDevOpsPermissionProfile permissionProfile;
 
     /**
@@ -49,7 +39,7 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
     }
 
     /**
-     * Get the kind property: The kind property.
+     * Get the kind property: Discriminator property for OrganizationProfile.
      * 
      * @return the kind value.
      */
@@ -121,4 +111,50 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureDevOpsOrganizationProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("organizations", this.organizations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeJsonField("permissionProfile", this.permissionProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDevOpsOrganizationProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDevOpsOrganizationProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureDevOpsOrganizationProfile.
+     */
+    public static AzureDevOpsOrganizationProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDevOpsOrganizationProfile deserializedAzureDevOpsOrganizationProfile
+                = new AzureDevOpsOrganizationProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("organizations".equals(fieldName)) {
+                    List<Organization> organizations = reader.readArray(reader1 -> Organization.fromJson(reader1));
+                    deserializedAzureDevOpsOrganizationProfile.organizations = organizations;
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAzureDevOpsOrganizationProfile.kind = reader.getString();
+                } else if ("permissionProfile".equals(fieldName)) {
+                    deserializedAzureDevOpsOrganizationProfile.permissionProfile
+                        = AzureDevOpsPermissionProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureDevOpsOrganizationProfile;
+        });
+    }
 }

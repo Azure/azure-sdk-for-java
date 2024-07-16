@@ -16,14 +16,17 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Initializes a new instance of the synchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the synchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class SqlScriptClient {
-    @Generated private final SqlScriptsImpl serviceClient;
+    @Generated
+    private final SqlScriptsImpl serviceClient;
 
     /**
      * Initializes an instance of SqlScriptClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -33,7 +36,7 @@ public final class SqlScriptClient {
 
     /**
      * Lists sql scripts.
-     *
+     * 
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of sql scripts resources as paginated response with {@link PagedIterable}.
@@ -46,7 +49,7 @@ public final class SqlScriptClient {
 
     /**
      * Lists sql scripts.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -61,11 +64,11 @@ public final class SqlScriptClient {
 
     /**
      * Creates or updates a Sql Script.
-     *
+     * 
      * @param sqlScriptName The sql script name.
      * @param sqlScript Sql Script resource definition.
      * @param ifMatch ETag of the SQL script entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -74,18 +77,18 @@ public final class SqlScriptClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlScriptResource> createOrUpdateSqlScriptWithResponse(
-            String sqlScriptName, SqlScriptResource sqlScript, String ifMatch, Context context) {
+    public Response<SqlScriptResource> createOrUpdateSqlScriptWithResponse(String sqlScriptName,
+        SqlScriptResource sqlScript, String ifMatch, Context context) {
         return this.serviceClient.createOrUpdateSqlScriptWithResponse(sqlScriptName, sqlScript, ifMatch, context);
     }
 
     /**
      * Creates or updates a Sql Script.
-     *
+     * 
      * @param sqlScriptName The sql script name.
      * @param sqlScript Sql Script resource definition.
      * @param ifMatch ETag of the SQL script entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -93,14 +96,14 @@ public final class SqlScriptClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlScriptResource createOrUpdateSqlScript(
-            String sqlScriptName, SqlScriptResource sqlScript, String ifMatch) {
+    public SqlScriptResource createOrUpdateSqlScript(String sqlScriptName, SqlScriptResource sqlScript,
+        String ifMatch) {
         return this.serviceClient.createOrUpdateSqlScript(sqlScriptName, sqlScript, ifMatch);
     }
 
     /**
      * Creates or updates a Sql Script.
-     *
+     * 
      * @param sqlScriptName The sql script name.
      * @param sqlScript Sql Script resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,10 +119,10 @@ public final class SqlScriptClient {
 
     /**
      * Gets a sql script.
-     *
+     * 
      * @param sqlScriptName The sql script name.
      * @param ifNoneMatch ETag of the sql compute entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
+     * existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -128,17 +131,17 @@ public final class SqlScriptClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlScriptResource> getSqlScriptWithResponse(
-            String sqlScriptName, String ifNoneMatch, Context context) {
+    public Response<SqlScriptResource> getSqlScriptWithResponse(String sqlScriptName, String ifNoneMatch,
+        Context context) {
         return this.serviceClient.getSqlScriptWithResponse(sqlScriptName, ifNoneMatch, context);
     }
 
     /**
      * Gets a sql script.
-     *
+     * 
      * @param sqlScriptName The sql script name.
      * @param ifNoneMatch ETag of the sql compute entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
+     * existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -152,7 +155,7 @@ public final class SqlScriptClient {
 
     /**
      * Gets a sql script.
-     *
+     * 
      * @param sqlScriptName The sql script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -167,7 +170,7 @@ public final class SqlScriptClient {
 
     /**
      * Deletes a Sql Script.
-     *
+     * 
      * @param sqlScriptName The sql script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,7 +186,7 @@ public final class SqlScriptClient {
 
     /**
      * Deletes a Sql Script.
-     *
+     * 
      * @param sqlScriptName The sql script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -197,7 +200,7 @@ public final class SqlScriptClient {
 
     /**
      * Renames a sqlScript.
-     *
+     * 
      * @param sqlScriptName The sql script name.
      * @param request proposed new name.
      * @param context The context to associate with this operation.
@@ -208,14 +211,14 @@ public final class SqlScriptClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renameSqlScriptWithResponse(
-            String sqlScriptName, ArtifactRenameRequest request, Context context) {
+    public Response<Void> renameSqlScriptWithResponse(String sqlScriptName, ArtifactRenameRequest request,
+        Context context) {
         return this.serviceClient.renameSqlScriptWithResponse(sqlScriptName, request, context);
     }
 
     /**
      * Renames a sqlScript.
-     *
+     * 
      * @param sqlScriptName The sql script name.
      * @param request proposed new name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

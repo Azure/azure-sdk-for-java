@@ -7,12 +7,18 @@ package com.azure.resourcemanager.eventhubs.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for KeySource. */
+/**
+ * Enumerates the possible value of keySource for Encryption.
+ */
 public enum KeySource {
-    /** Enum value Microsoft.KeyVault. */
+    /**
+     * Enum value Microsoft.KeyVault.
+     */
     MICROSOFT_KEY_VAULT("Microsoft.KeyVault");
 
-    /** The actual serialized value for a KeySource instance. */
+    /**
+     * The actual serialized value for a KeySource instance.
+     */
     private final String value;
 
     KeySource(String value) {
@@ -21,12 +27,15 @@ public enum KeySource {
 
     /**
      * Parses a serialized value to a KeySource instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed KeySource object, or null if unable to parse.
      */
     @JsonCreator
     public static KeySource fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         KeySource[] items = KeySource.values();
         for (KeySource item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +45,9 @@ public enum KeySource {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

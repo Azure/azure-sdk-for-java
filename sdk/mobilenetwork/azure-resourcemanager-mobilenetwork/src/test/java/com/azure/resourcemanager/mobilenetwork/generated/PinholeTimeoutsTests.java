@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class PinholeTimeoutsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PinholeTimeouts model = BinaryData.fromString("{\"tcp\":1863276924,\"udp\":253959415,\"icmp\":1793570177}")
+        PinholeTimeouts model = BinaryData.fromString("{\"tcp\":1144028813,\"udp\":429084685,\"icmp\":1137960460}")
             .toObject(PinholeTimeouts.class);
-        Assertions.assertEquals(1863276924, model.tcp());
-        Assertions.assertEquals(253959415, model.udp());
-        Assertions.assertEquals(1793570177, model.icmp());
+        Assertions.assertEquals(1144028813, model.tcp());
+        Assertions.assertEquals(429084685, model.udp());
+        Assertions.assertEquals(1137960460, model.icmp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PinholeTimeouts model = new PinholeTimeouts().withTcp(1863276924).withUdp(253959415).withIcmp(1793570177);
+        PinholeTimeouts model = new PinholeTimeouts().withTcp(1144028813).withUdp(429084685).withIcmp(1137960460);
         model = BinaryData.fromObject(model).toObject(PinholeTimeouts.class);
-        Assertions.assertEquals(1863276924, model.tcp());
-        Assertions.assertEquals(253959415, model.udp());
-        Assertions.assertEquals(1793570177, model.icmp());
+        Assertions.assertEquals(1144028813, model.tcp());
+        Assertions.assertEquals(429084685, model.udp());
+        Assertions.assertEquals(1137960460, model.icmp());
     }
 }

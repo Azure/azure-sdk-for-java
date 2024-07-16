@@ -1,6 +1,25 @@
 # Release History
 
-## 1.0.0-beta.9 (Unreleased)
+## 1.0.0-beta.11 (Unreleased)
+
+### Features Added
+- Added a new overload `getImageGenerationsWithResponse` that takes `RequestOptions` to provide the flexibility to
+  modify the HTTP request.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.10 (2024-07-02)
+
+### Bugs Fixed
+
+- Fixed a bug during the serialization and deserialization of the `content` property in the `ChatRequestUserMessage`. ([#40687](https://github.com/Azure/azure-sdk-for-java/pull/40687))
+
+
+## 1.0.0-beta.9 (2024-06-06)
 
 ### Features Added
 
@@ -59,9 +78,13 @@
 - [AOAI] Replaced `OnYourDataAuthenticationOptions` with `OnYourDataVectorSearchAuthenticationOptions` in the `OnYourDataEndpointVectorizationSource` class.
   Currently, `OnYourDataEndpointVectorizationSource` only supports `OnYourDataApiKeyAuthenticationOptions` and `OnYourDataAccessTokenAuthenticationOptions` as authentication options.
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` to version `1.15.1`.
+
 
 ## 1.0.0-beta.8 (2024-04-09)
 

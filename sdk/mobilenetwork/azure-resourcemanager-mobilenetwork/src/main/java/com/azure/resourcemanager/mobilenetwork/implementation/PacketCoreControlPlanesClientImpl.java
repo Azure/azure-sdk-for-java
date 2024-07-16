@@ -1798,7 +1798,8 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
         String packetCoreControlPlaneName, PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
         Context context) {
         return beginCollectDiagnosticsPackageAsync(resourceGroupName, packetCoreControlPlaneName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

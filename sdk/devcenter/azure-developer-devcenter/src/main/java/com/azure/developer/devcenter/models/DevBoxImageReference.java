@@ -5,6 +5,7 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -139,8 +140,8 @@ public final class DevBoxImageReference implements JsonSerializable<DevBoxImageR
                 } else if ("osBuildNumber".equals(fieldName)) {
                     deserializedDevBoxImageReference.osBuildNumber = reader.getString();
                 } else if ("publishedDate".equals(fieldName)) {
-                    deserializedDevBoxImageReference.publishedDate
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDevBoxImageReference.publishedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

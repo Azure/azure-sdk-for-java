@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -74,7 +73,7 @@ public class HttpResponseBodyDecoderTests {
     public void errorResponse(Response<?> response, HttpResponseDecodeData decodeData,
                               boolean isEmpty, Object expected) {
         BinaryData body = response.getBody();
-        HttpResponseBodyDecoder.decodeByteArray(body.toBytes(), response, SERIALIZER, decodeData);
+        HttpResponseBodyDecoder.decodeByteArray(body, response, SERIALIZER, decodeData);
 
         if (!isEmpty) {
             assertEquals(expected.toString(), body.toString());
@@ -167,7 +166,7 @@ public class HttpResponseBodyDecoderTests {
     @MethodSource("decodableResponseSupplier")
     public void decodableResponse(Response<?> response, HttpResponseDecodeData decodeData, Object expected) {
         BinaryData body = response.getBody();
-        Object actual = HttpResponseBodyDecoder.decodeByteArray(body.toBytes(), response, SERIALIZER, decodeData);
+        Object actual = HttpResponseBodyDecoder.decodeByteArray(body, response, SERIALIZER, decodeData);
 
         assertEquals(expected, actual);
     }
@@ -223,7 +222,7 @@ public class HttpResponseBodyDecoderTests {
         Response<?> response = new MockHttpResponse(GET_REQUEST, 200, base64Urls);
 
         BinaryData body = response.getBody();
-        Object actual = HttpResponseBodyDecoder.decodeByteArray(body.toBytes(), response, SERIALIZER, decodeData);
+        Object actual = HttpResponseBodyDecoder.decodeByteArray(body, response, SERIALIZER, decodeData);
 
         assertInstanceOf(List.class, actual);
 
@@ -240,8 +239,9 @@ public class HttpResponseBodyDecoderTests {
         try (Response<?> response = new MockHttpResponse(GET_REQUEST, 200, (Object) null)) {
             HttpResponseDecodeData decodeData = new MockHttpResponseDecodeData(200, String.class, String.class, true);
 
-            assertThrows(HttpResponseException.class, () -> HttpResponseBodyDecoder.decodeByteArray(
-                "malformed JSON string".getBytes(StandardCharsets.UTF_8), response, SERIALIZER, decodeData));
+            assertThrows(HttpResponseException.class, () ->
+                HttpResponseBodyDecoder.decodeByteArray(BinaryData.fromString("malformed JSON string"), response,
+                    SERIALIZER, decodeData));
         }
     }
 

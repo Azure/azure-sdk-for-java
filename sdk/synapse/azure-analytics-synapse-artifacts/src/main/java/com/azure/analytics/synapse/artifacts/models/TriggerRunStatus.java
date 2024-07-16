@@ -5,42 +5,49 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Trigger run status. */
+/**
+ * Trigger run status.
+ */
 public final class TriggerRunStatus extends ExpandableStringEnum<TriggerRunStatus> {
-    /** Static value Succeeded for TriggerRunStatus. */
+    /**
+     * Static value Succeeded for TriggerRunStatus.
+     */
     public static final TriggerRunStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for TriggerRunStatus. */
+    /**
+     * Static value Failed for TriggerRunStatus.
+     */
     public static final TriggerRunStatus FAILED = fromString("Failed");
 
-    /** Static value Inprogress for TriggerRunStatus. */
+    /**
+     * Static value Inprogress for TriggerRunStatus.
+     */
     public static final TriggerRunStatus INPROGRESS = fromString("Inprogress");
 
     /**
      * Creates a new instance of TriggerRunStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public TriggerRunStatus() {}
+    public TriggerRunStatus() {
+    }
 
     /**
      * Creates or finds a TriggerRunStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TriggerRunStatus.
      */
-    @JsonCreator
     public static TriggerRunStatus fromString(String name) {
         return fromString(name, TriggerRunStatus.class);
     }
 
     /**
      * Gets known TriggerRunStatus values.
-     *
+     * 
      * @return known TriggerRunStatus values.
      */
     public static Collection<TriggerRunStatus> values() {

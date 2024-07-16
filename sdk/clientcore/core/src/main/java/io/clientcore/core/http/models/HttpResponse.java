@@ -115,7 +115,7 @@ public class HttpResponse<T> implements Response<T> {
     public BinaryData getBody() {
         if (body == null) {
             if (value == null) {
-                body = BinaryData.EMPTY;
+                body = BinaryData.empty();
             } else if (value instanceof BinaryData) {
                 body = (BinaryData) value;
             } else {

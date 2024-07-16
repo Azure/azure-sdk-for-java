@@ -12,7 +12,23 @@ import com.azure.resourcemanager.oracledatabase.models.DbNodeActionEnum;
  */
 public final class DbNodesActionSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/dbNodes_action.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/dbNodes_action.json
+     */
+    /**
+     * Sample code: DbNodes_Action.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void dbNodesAction(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.dbNodes()
+            .action("rg000", "cluster1", "ocid1....aaaaaa", new DbNodeAction().withAction(DbNodeActionEnum.START),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/dbNodes_action.json
      */
     /**
      * Sample code: VM actions on DbNodes of VM Cluster.

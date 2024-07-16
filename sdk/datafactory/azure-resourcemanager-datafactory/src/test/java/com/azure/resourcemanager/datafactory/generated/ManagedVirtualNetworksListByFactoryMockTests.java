@@ -22,7 +22,7 @@ public final class ManagedVirtualNetworksListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"vNetId\":\"vqgjhjie\",\"alias\":\"pv\",\"\":{\"xluungytympf\":\"datapfwhwwdml\",\"kxglnklygrqoqyz\":\"datazyasyhrnwmsznqh\"}},\"name\":\"qqslrvinic\",\"type\":\"bmstrdtcpkdp\",\"etag\":\"rpufxnfmqrlmgql\",\"id\":\"erqkisjjttf\"}]}";
+            = "{\"value\":[{\"properties\":{\"vNetId\":\"z\",\"alias\":\"eghmfmuxd\",\"\":{\"zle\":\"datagdcszzzedf\"}},\"name\":\"vldeqmfz\",\"type\":\"ikhnwseftlj\",\"etag\":\"fpfkdybezaxith\",\"id\":\"jxtobeqgzcadoq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ManagedVirtualNetworksListByFactoryMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ManagedVirtualNetworkResource> response = manager.managedVirtualNetworks()
-            .listByFactory("rmynyrtijgn", "jodaonhwlqxhahzs", com.azure.core.util.Context.NONE);
+        PagedIterable<ManagedVirtualNetworkResource> response
+            = manager.managedVirtualNetworks().listByFactory("nlmxzdw", "dwbnou", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("erqkisjjttf", response.iterator().next().id());
+        Assertions.assertEquals("jxtobeqgzcadoq", response.iterator().next().id());
     }
 }

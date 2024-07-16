@@ -5,42 +5,49 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type used for authentication. Type: string. */
+/**
+ * The type used for authentication. Type: string.
+ */
 public final class SnowflakeAuthenticationType extends ExpandableStringEnum<SnowflakeAuthenticationType> {
-    /** Static value Basic for SnowflakeAuthenticationType. */
+    /**
+     * Static value Basic for SnowflakeAuthenticationType.
+     */
     public static final SnowflakeAuthenticationType BASIC = fromString("Basic");
 
-    /** Static value KeyPair for SnowflakeAuthenticationType. */
+    /**
+     * Static value KeyPair for SnowflakeAuthenticationType.
+     */
     public static final SnowflakeAuthenticationType KEY_PAIR = fromString("KeyPair");
 
-    /** Static value AADServicePrincipal for SnowflakeAuthenticationType. */
+    /**
+     * Static value AADServicePrincipal for SnowflakeAuthenticationType.
+     */
     public static final SnowflakeAuthenticationType AADSERVICE_PRINCIPAL = fromString("AADServicePrincipal");
 
     /**
      * Creates a new instance of SnowflakeAuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SnowflakeAuthenticationType() {}
+    public SnowflakeAuthenticationType() {
+    }
 
     /**
      * Creates or finds a SnowflakeAuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SnowflakeAuthenticationType.
      */
-    @JsonCreator
     public static SnowflakeAuthenticationType fromString(String name) {
         return fromString(name, SnowflakeAuthenticationType.class);
     }
 
     /**
      * Gets known SnowflakeAuthenticationType values.
-     *
+     * 
      * @return known SnowflakeAuthenticationType values.
      */
     public static Collection<SnowflakeAuthenticationType> values() {

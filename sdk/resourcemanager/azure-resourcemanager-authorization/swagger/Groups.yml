@@ -3570,7 +3570,7 @@ components:
               nullable: true
             isFavoriteByDefault:
               type: boolean
-              description: 'Indicates whether the channel should automatically be marked ''favorite'' for all members of the team. Can only be set programmatically with Create team. Default: false.'
+              description: 'Indicates whether the channel should be marked ''recommended'' for all members of the team to show in their channel list. Can only be set programmatically with Create team. Default: false. NOTE: All recommended channels will automatically show in channels list for EDU and FLW users.'
               nullable: true
             membershipType:
               $ref: '#/components/schemas/microsoft.graph.channelMembershipType'

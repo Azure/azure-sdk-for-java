@@ -76,7 +76,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileAsyncApiTests extends FileShareTestBase {
     private ShareFileAsyncClient primaryFileAsyncClient;
-    private ShareClient shareClient;
+    private ShareAsyncClient shareAsyncClient;
     private String shareName;
     private String filePath;
     private static Map<String, String> testMetadata;
@@ -88,8 +88,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
     public void setup() {
         shareName = generateShareName();
         filePath = generatePathName();
-        shareClient = shareBuilderHelper(shareName).buildClient();
-        shareClient.create();
+        shareAsyncClient = shareBuilderHelper(shareName).buildAsyncClient();
+        shareAsyncClient.create().block();
         primaryFileAsyncClient = fileBuilderHelper(shareName, filePath).buildFileAsyncClient();
         testMetadata = Collections.singletonMap("testmetadata", "value");
         httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en")
@@ -120,7 +120,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void createFileWithArgsFpk() {
-        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
+        String filePermissionKey = shareAsyncClient.createPermission(FILE_PERMISSION).block();
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
@@ -608,6 +608,21 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
+    /*@RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void uploadRangeFromURLSourceErrorAndStatusCode() {
+        ShareFileAsyncClient destinationClient = shareAsyncClient.getFileClient(generatePathName());
+
+        StepVerifier.create(primaryFileAsyncClient.create(1024).then(destinationClient.create(1024))
+            .then(destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileAsyncClient.getFileUrl())))
+            .verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertTrue(e.getStatusCode() == 401);
+                assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+                assertTrue(e.getServiceMessage().contains("Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+            });
+    }*/
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void uploadRangeFromURLOAuth() {
@@ -747,7 +762,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         boolean setArchiveAttribute, PermissionCopyModeType permissionType) {
         primaryFileAsyncClient.create(1024).block();
         String sourceURL = primaryFileAsyncClient.getFileUrl();
-        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
+        String filePermissionKey = shareAsyncClient.createPermission(FILE_PERMISSION).block();
         // We recreate file properties for each test since we need to store the times for the test with
         // testResourceNamer.now()
         smbProperties.setFileCreationTime(testResourceNamer.now())
@@ -777,6 +792,23 @@ public class FileAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
     }
+
+    /*@RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void startCopySourceErrorAndStatusCode() {
+        primaryFileAsyncClient.create(1024);
+
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy("https://error.file.core.windows.net/garbage", new ShareFileCopyOptions(), null));
+
+        StepVerifier.create(primaryFileAsyncClient.create(1024).thenMany(poller))
+            .verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertTrue(e.getStatusCode() == 400);
+                assertTrue(e.getServiceMessage().contains("InvalidUri"));
+                assertTrue(e.getServiceMessage().contains("The requested URI does not represent any resource on the server."));
+            });
+    }*/
 
     @Disabled("There is a race condition in Poller where it misses the first observed event if there is a gap "
         + "between the time subscribed and the time we start observing events.")
@@ -819,7 +851,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         boolean setArchiveAttribute, PermissionCopyModeType permissionType) {
         primaryFileAsyncClient.create(1024).block();
         String sourceURL = primaryFileAsyncClient.getFileUrl();
-        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
+        String filePermissionKey = shareAsyncClient.createPermission(FILE_PERMISSION).block();
         // We recreate file properties for each test since we need to store the times for the test with
         // testResourceNamer.now()
         smbProperties.setFileCreationTime(testResourceNamer.now())
@@ -920,7 +952,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     public void startCopyWithOptionsCopySmbFilePropertiesPermissionKey() {
         primaryFileAsyncClient.create(1024).block();
         String sourceURL = primaryFileAsyncClient.getFileUrl();
-        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
+        String filePermissionKey = shareAsyncClient.createPermission(FILE_PERMISSION).block();
         EnumSet<NtfsFileAttributes> ntfs = EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.ARCHIVE);
         // We recreate file properties for each test since we need to store the times for the test with
         // testResourceNamer.now()
@@ -1187,7 +1219,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void setHttpHeadersFpk() {
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block();
-        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
+        String filePermissionKey = shareAsyncClient.createPermission(FILE_PERMISSION).block();
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
@@ -1540,7 +1572,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         ShareServiceAsyncClient oAuthServiceClient =
             getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
                 .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .audience(ShareAudience.createShareServiceAccountAudience(shareClient.getAccountName())));
+                .audience(ShareAudience.createShareServiceAccountAudience(shareAsyncClient.getAccountName())));
 
         ShareFileAsyncClient aadFileClient = oAuthServiceClient.getShareAsyncClient(shareName).getFileClient(fileName);
 
@@ -1570,7 +1602,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void audienceFromString() {
-        String url = String.format("https://%s.file.core.windows.net/", shareClient.getAccountName());
+        String url = String.format("https://%s.file.core.windows.net/", shareAsyncClient.getAccountName());
         ShareAudience audience = ShareAudience.fromString(url);
 
         String fileName = generatePathName();

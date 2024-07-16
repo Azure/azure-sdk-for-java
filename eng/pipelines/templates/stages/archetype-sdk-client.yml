@@ -43,12 +43,6 @@ parameters:
   - name: AdditionalStagesAfterBuild
     type: object
     default: []
-  - name: EnableBatchRelease
-    type: boolean
-    default: false
-  - name: UseEsrpRelease
-    type: boolean
-    default: true
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
@@ -70,6 +64,9 @@ parameters:
   - name: oneESTemplateTag
     type: string
     default: release
+  - name: EnvVars
+    type: object
+    default: {}
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -122,6 +119,7 @@ extends:
                 - ${{ if eq(parameters.SDKType, 'data') }}:
                   - JavaTestVersion=(.*1)\.\d{2}(.*)/$1.11$2
               PreBuildSteps: ${{ parameters.PreBuildSteps }}
+              EnvVars: ${{ parameters.EnvVars }}
               AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
               ${{ if eq(parameters.SDKType, 'data') }}:
                 TestGoals: 'verify'
@@ -139,44 +137,30 @@ extends:
       # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
       # The tests-weekly check needs to be done so we don't create signing/release tasks for manual weekly-test runs
       - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'), not(contains(variables['Build.DefinitionName'], 'tests-weekly'))) }}:
-          - ${{ if eq(parameters.EnableBatchRelease, 'true') }}:
-              - template: archetype-java-release-batch.yml
-                parameters:
-                  DependsOn:
-                    - Build
-                    # Only depend on live test stages if the build depends on live tests and the build reason is manual.
-                    # This prevents check-in builds and scheduled builds from having a requirement on live test stages.
-                    - ${{ if and(eq(parameters.ReleaseDependsOnLiveTests, 'true'), eq(variables['Build.Reason'],'Manual')) }}:
-                        - ${{ each liveTestStage in parameters.LiveTestStages }}:
-                            - ${{ liveTestStage.stage }}
-                  ServiceDirectory: ${{ parameters.ServiceDirectory }}
-                  SDKType: ${{ parameters.SDKType }}
-                  # By default, the Artifacts list will contain everything as we won't skip an artifact unless it,
-                  # specifically, has releaseInBatch set to false. releaseInBatch should only be set libraries,
-                  # not ready for release, in service directories that have batch release enabled. The if statement
-                  # below, looking for releaseInBatch not equal false has to be set this way because if the library's
-                  # metadata in the ci.yml doesn't have this variable then it defaults to being released.
-                  Artifacts:
-                    - ${{ each artifact in parameters.Artifacts }}:
-                        - ${{ if ne(artifact.releaseInBatch, 'false') }}:
-                            - ${{ artifact }}
-                  TestPipeline: ${{ parameters.TestPipeline }}
-                  ArtifactName: packages
-                  TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
-                  UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
-                  # This where the MavenBreakGlassApprovers is set for the release tasks.
-                  ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
-                    Environment: 'MavenBreakGlassApprovers'
-          - ${{ else }}:
-            - template: archetype-java-release.yml
-              parameters:
-                DependsOn:
-                  - Build
-                ServiceDirectory: ${{ parameters.ServiceDirectory }}
-                SDKType: ${{ parameters.SDKType }}
-                Artifacts: ${{ parameters.Artifacts }}
-                TestPipeline: ${{ parameters.TestPipeline }}
-                ArtifactName: packages
-                TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
-                UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
+          - template: archetype-java-release-batch.yml
+            parameters:
+              DependsOn:
+                - Build
+                # Only depend on live test stages if the build depends on live tests and the build reason is manual.
+                # This prevents check-in builds and scheduled builds from having a requirement on live test stages.
+                - ${{ if and(eq(parameters.ReleaseDependsOnLiveTests, 'true'), eq(variables['Build.Reason'],'Manual')) }}:
+                    - ${{ each liveTestStage in parameters.LiveTestStages }}:
+                        - ${{ liveTestStage.stage }}
+              ServiceDirectory: ${{ parameters.ServiceDirectory }}
+              SDKType: ${{ parameters.SDKType }}
+              # By default, the Artifacts list will contain everything as we won't skip an artifact unless it,
+              # specifically, has releaseInBatch set to false. releaseInBatch should only be set libraries,
+              # not ready for release, in service directories that have batch release enabled. The if statement
+              # below, looking for releaseInBatch not equal false has to be set this way because if the library's
+              # metadata in the ci.yml doesn't have this variable then it defaults to being released.
+              Artifacts:
+                - ${{ each artifact in parameters.Artifacts }}:
+                    - ${{ if ne(artifact.releaseInBatch, 'false') }}:
+                        - ${{ artifact }}
+              TestPipeline: ${{ parameters.TestPipeline }}
+              ArtifactName: packages
+              TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+              # This where the MavenBreakGlassApprovers is set for the release tasks.
+              ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
+                Environment: 'MavenBreakGlassApprovers'
 

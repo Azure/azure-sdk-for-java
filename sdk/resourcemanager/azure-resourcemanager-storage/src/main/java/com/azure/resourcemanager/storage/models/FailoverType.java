@@ -7,12 +7,18 @@ package com.azure.resourcemanager.storage.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for FailoverType. */
+/**
+ * Defines values for FailoverType.
+ */
 public enum FailoverType {
-    /** Enum value Planned. */
+    /**
+     * Enum value Planned.
+     */
     PLANNED("Planned");
 
-    /** The actual serialized value for a FailoverType instance. */
+    /**
+     * The actual serialized value for a FailoverType instance.
+     */
     private final String value;
 
     FailoverType(String value) {
@@ -21,7 +27,7 @@ public enum FailoverType {
 
     /**
      * Parses a serialized value to a FailoverType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed FailoverType object, or null if unable to parse.
      */
@@ -39,7 +45,9 @@ public enum FailoverType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

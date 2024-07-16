@@ -284,6 +284,7 @@ private[spark] abstract class ItemsScanBase(session: SparkSession,
   private[this] def canUseCollectionStatistics(): Boolean = {
     val canUseCollectionStatistics = {
       analyzedFilters.filtersToBePushedDownToCosmos.isEmpty &&
+        !analyzedFilters.isCustomQuery &&
         this.readManyFiltersMapRef.get() == null
     }
 

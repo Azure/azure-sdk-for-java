@@ -10,6 +10,7 @@ import com.azure.resourcemanager.redisenterprise.models.AofFrequency;
 import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
 import com.azure.resourcemanager.redisenterprise.models.DatabaseList;
 import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
+import com.azure.resourcemanager.redisenterprise.models.DeferUpgradeSetting;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
 import com.azure.resourcemanager.redisenterprise.models.LinkedDatabase;
 import com.azure.resourcemanager.redisenterprise.models.Module;
@@ -23,7 +24,7 @@ public final class DatabaseListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabaseList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"clientProtocol\":\"Encrypted\",\"port\":1018660183,\"provisioningState\":\"Canceled\",\"resourceState\":\"Disabling\",\"clusteringPolicy\":\"EnterpriseCluster\",\"evictionPolicy\":\"NoEviction\",\"persistence\":{\"aofEnabled\":true,\"rdbEnabled\":false,\"aofFrequency\":\"1s\",\"rdbFrequency\":\"1h\"},\"modules\":[{\"name\":\"qulngsntnbybkzgc\",\"args\":\"wclxxwrl\",\"version\":\"ouskcqvkocrc\"}],\"geoReplication\":{\"groupNickname\":\"wtnhxbnjbiksqr\",\"linkedDatabases\":[{},{},{},{}]}},\"id\":\"sainqpjwnzl\",\"name\":\"jfm\",\"type\":\"pee\"},{\"properties\":{\"clientProtocol\":\"Encrypted\",\"port\":1969125414,\"provisioningState\":\"Updating\",\"resourceState\":\"Running\",\"clusteringPolicy\":\"EnterpriseCluster\",\"evictionPolicy\":\"VolatileLRU\",\"persistence\":{\"aofEnabled\":false,\"rdbEnabled\":true,\"aofFrequency\":\"1s\",\"rdbFrequency\":\"1h\"},\"modules\":[{\"name\":\"ndhkrw\",\"args\":\"appd\",\"version\":\"dkvwrwjfe\"},{\"name\":\"snhu\",\"args\":\"eltmrldhugjzzdat\",\"version\":\"hocdgeab\"},{\"name\":\"gphuticndvka\",\"args\":\"wyiftyhxhur\",\"version\":\"ftyxolniw\"}],\"geoReplication\":{\"groupNickname\":\"ukjfkgiawxklr\",\"linkedDatabases\":[{},{},{},{}]}},\"id\":\"wckbasyypnd\",\"name\":\"hsgcbacphejkot\",\"type\":\"nqgoulzndli\"},{\"properties\":{\"clientProtocol\":\"Plaintext\",\"port\":1581994668,\"provisioningState\":\"Creating\",\"resourceState\":\"Scaling\",\"clusteringPolicy\":\"OSSCluster\",\"evictionPolicy\":\"VolatileLRU\",\"persistence\":{\"aofEnabled\":true,\"rdbEnabled\":false,\"aofFrequency\":\"1s\",\"rdbFrequency\":\"6h\"},\"modules\":[{\"name\":\"qedqytbciqfoufl\",\"args\":\"nkzsmodmglou\",\"version\":\"b\"},{\"name\":\"wtmutduq\",\"args\":\"ap\",\"version\":\"wgcu\"},{\"name\":\"rtumkdosvq\",\"args\":\"bmdg\",\"version\":\"jfddgmbmbe\"},{\"name\":\"ppbhtqqrolfp\",\"args\":\"s\",\"version\":\"gbquxigj\"}],\"geoReplication\":{\"groupNickname\":\"zjaoyfhrtxil\",\"linkedDatabases\":[{},{}]}},\"id\":\"kujysvlejuvfq\",\"name\":\"wrlyxwjkcprb\",\"type\":\"wbxgjvt\"},{\"properties\":{\"clientProtocol\":\"Plaintext\",\"port\":1314012997,\"provisioningState\":\"Failed\",\"resourceState\":\"Disabling\",\"clusteringPolicy\":\"EnterpriseCluster\",\"evictionPolicy\":\"VolatileTTL\",\"persistence\":{\"aofEnabled\":false,\"rdbEnabled\":false,\"aofFrequency\":\"always\",\"rdbFrequency\":\"12h\"},\"modules\":[{\"name\":\"zw\",\"args\":\"g\",\"version\":\"tnwu\"},{\"name\":\"zga\",\"args\":\"ufizuckyf\",\"version\":\"rfidfvzwdz\"},{\"name\":\"htymw\",\"args\":\"dkfthwxmnt\",\"version\":\"waopvkmijcmmxd\"}],\"geoReplication\":{\"groupNickname\":\"uf\",\"linkedDatabases\":[{},{},{},{}]}},\"id\":\"ymzidn\",\"name\":\"ezcxtbzsgfyccsne\",\"type\":\"mdwzjeiachboo\"}],\"nextLink\":\"lnrosfqp\"}")
+            "{\"value\":[{\"properties\":{\"clientProtocol\":\"Encrypted\",\"port\":1018660183,\"provisioningState\":\"Canceled\",\"resourceState\":\"Disabling\",\"clusteringPolicy\":\"EnterpriseCluster\",\"evictionPolicy\":\"NoEviction\",\"persistence\":{\"aofEnabled\":true,\"rdbEnabled\":false,\"aofFrequency\":\"1s\",\"rdbFrequency\":\"1h\"},\"modules\":[{\"name\":\"qulngsntnbybkzgc\",\"args\":\"wclxxwrl\",\"version\":\"ouskcqvkocrc\"}],\"geoReplication\":{\"groupNickname\":\"wtnhxbnjbiksqr\",\"linkedDatabases\":[{},{},{},{}]},\"redisVersion\":\"ainqpjwnzlljfm\",\"deferUpgrade\":\"NotDeferred\"},\"id\":\"ebvmgxsabkyqd\",\"name\":\"ujitcjcz\",\"type\":\"zevndhkrwpdappds\"},{\"properties\":{\"clientProtocol\":\"Encrypted\",\"port\":1278778169,\"provisioningState\":\"Canceled\",\"resourceState\":\"Deleting\",\"clusteringPolicy\":\"EnterpriseCluster\",\"evictionPolicy\":\"AllKeysRandom\",\"persistence\":{\"aofEnabled\":false,\"rdbEnabled\":false,\"aofFrequency\":\"1s\",\"rdbFrequency\":\"12h\"},\"modules\":[{\"name\":\"ugjzzdatqxhocdge\",\"args\":\"lgphu\",\"version\":\"cndvkaozwyiftyhx\"},{\"name\":\"urokft\",\"args\":\"olniwpwcukjf\",\"version\":\"iawxklry\"},{\"name\":\"lwckbasyypnddhs\",\"args\":\"bacphejko\",\"version\":\"nqgoulzndli\"},{\"name\":\"wyqkgfgibm\",\"args\":\"gakeqsr\",\"version\":\"bzqqedqytbciq\"}],\"geoReplication\":{\"groupNickname\":\"flmmnk\",\"linkedDatabases\":[{},{},{}]},\"redisVersion\":\"dmgloug\",\"deferUpgrade\":\"NotDeferred\"},\"id\":\"wtmutduq\",\"name\":\"ta\",\"type\":\"spwgcuertumkdosv\"},{\"properties\":{\"clientProtocol\":\"Encrypted\",\"port\":813702940,\"provisioningState\":\"Succeeded\",\"resourceState\":\"Disabled\",\"clusteringPolicy\":\"EnterpriseCluster\",\"evictionPolicy\":\"VolatileTTL\",\"persistence\":{\"aofEnabled\":false,\"rdbEnabled\":false,\"aofFrequency\":\"always\",\"rdbFrequency\":\"6h\"},\"modules\":[{\"name\":\"q\",\"args\":\"ol\",\"version\":\"fpsalgbqu\"}],\"geoReplication\":{\"groupNickname\":\"jyj\",\"linkedDatabases\":[{},{},{}]},\"redisVersion\":\"o\",\"deferUpgrade\":\"Deferred\"},\"id\":\"rtxilner\",\"name\":\"ujysvle\",\"type\":\"uvfqawrlyxwj\"},{\"properties\":{\"clientProtocol\":\"Plaintext\",\"port\":1705333634,\"provisioningState\":\"Canceled\",\"resourceState\":\"Disabled\",\"clusteringPolicy\":\"EnterpriseCluster\",\"evictionPolicy\":\"AllKeysRandom\",\"persistence\":{\"aofEnabled\":true,\"rdbEnabled\":false,\"aofFrequency\":\"always\",\"rdbFrequency\":\"6h\"},\"modules\":[{\"name\":\"qguhmuo\",\"args\":\"f\",\"version\":\"wzwbnguitn\"}],\"geoReplication\":{\"groupNickname\":\"zga\",\"linkedDatabases\":[{},{},{}]},\"redisVersion\":\"izuckyfihrfidfvz\",\"deferUpgrade\":\"NotDeferred\"},\"id\":\"uht\",\"name\":\"mwisdkfthwxmnt\",\"type\":\"i\"}],\"nextLink\":\"opvkmijcm\"}")
             .toObject(DatabaseList.class);
         Assertions.assertEquals(Protocol.ENCRYPTED, model.value().get(0).clientProtocol());
         Assertions.assertEquals(1018660183, model.value().get(0).port());
@@ -36,52 +37,67 @@ public final class DatabaseListTests {
         Assertions.assertEquals("qulngsntnbybkzgc", model.value().get(0).modules().get(0).name());
         Assertions.assertEquals("wclxxwrl", model.value().get(0).modules().get(0).args());
         Assertions.assertEquals("wtnhxbnjbiksqr", model.value().get(0).geoReplication().groupNickname());
+        Assertions.assertEquals(DeferUpgradeSetting.NOT_DEFERRED, model.value().get(0).deferUpgrade());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabaseList model = new DatabaseList().withValue(Arrays.asList(
-            new DatabaseInner().withClientProtocol(Protocol.ENCRYPTED).withPort(1018660183)
+            new DatabaseInner().withClientProtocol(Protocol.ENCRYPTED)
+                .withPort(1018660183)
                 .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
                 .withEvictionPolicy(EvictionPolicy.NO_EVICTION)
-                .withPersistence(new Persistence().withAofEnabled(true).withRdbEnabled(false)
-                    .withAofFrequency(AofFrequency.ONES).withRdbFrequency(RdbFrequency.ONEH))
+                .withPersistence(new Persistence().withAofEnabled(true)
+                    .withRdbEnabled(false)
+                    .withAofFrequency(AofFrequency.ONES)
+                    .withRdbFrequency(RdbFrequency.ONEH))
                 .withModules(Arrays.asList(new Module().withName("qulngsntnbybkzgc").withArgs("wclxxwrl")))
                 .withGeoReplication(new DatabasePropertiesGeoReplication().withGroupNickname("wtnhxbnjbiksqr")
                     .withLinkedDatabases(Arrays.asList(new LinkedDatabase(), new LinkedDatabase(), new LinkedDatabase(),
-                        new LinkedDatabase()))),
-            new DatabaseInner().withClientProtocol(Protocol.ENCRYPTED).withPort(1969125414)
+                        new LinkedDatabase())))
+                .withDeferUpgrade(DeferUpgradeSetting.NOT_DEFERRED),
+            new DatabaseInner().withClientProtocol(Protocol.ENCRYPTED)
+                .withPort(1278778169)
                 .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
-                .withEvictionPolicy(EvictionPolicy.VOLATILE_LRU)
-                .withPersistence(new Persistence().withAofEnabled(false).withRdbEnabled(true)
-                    .withAofFrequency(AofFrequency.ONES).withRdbFrequency(RdbFrequency.ONEH))
-                .withModules(Arrays.asList(new Module().withName("ndhkrw").withArgs("appd"),
-                    new Module().withName("snhu").withArgs("eltmrldhugjzzdat"),
-                    new Module().withName("gphuticndvka").withArgs("wyiftyhxhur")))
-                .withGeoReplication(new DatabasePropertiesGeoReplication().withGroupNickname("ukjfkgiawxklr")
-                    .withLinkedDatabases(Arrays.asList(new LinkedDatabase(), new LinkedDatabase(), new LinkedDatabase(),
-                        new LinkedDatabase()))),
-            new DatabaseInner().withClientProtocol(Protocol.PLAINTEXT).withPort(1581994668)
-                .withClusteringPolicy(ClusteringPolicy.OSSCLUSTER).withEvictionPolicy(EvictionPolicy.VOLATILE_LRU)
-                .withPersistence(new Persistence().withAofEnabled(true).withRdbEnabled(false)
-                    .withAofFrequency(AofFrequency.ONES).withRdbFrequency(RdbFrequency.SIXH))
-                .withModules(Arrays.asList(new Module().withName("qedqytbciqfoufl").withArgs("nkzsmodmglou"),
-                    new Module().withName("wtmutduq").withArgs("ap"),
-                    new Module().withName("rtumkdosvq").withArgs("bmdg"),
-                    new Module().withName("ppbhtqqrolfp").withArgs("s")))
-                .withGeoReplication(new DatabasePropertiesGeoReplication().withGroupNickname("zjaoyfhrtxil")
-                    .withLinkedDatabases(Arrays.asList(new LinkedDatabase(), new LinkedDatabase()))),
-            new DatabaseInner().withClientProtocol(Protocol.PLAINTEXT).withPort(1314012997)
+                .withEvictionPolicy(EvictionPolicy.ALL_KEYS_RANDOM)
+                .withPersistence(new Persistence().withAofEnabled(false)
+                    .withRdbEnabled(false)
+                    .withAofFrequency(AofFrequency.ONES)
+                    .withRdbFrequency(RdbFrequency.ONE_TWOH))
+                .withModules(Arrays.asList(new Module().withName("ugjzzdatqxhocdge").withArgs("lgphu"),
+                    new Module().withName("urokft").withArgs("olniwpwcukjf"),
+                    new Module().withName("lwckbasyypnddhs").withArgs("bacphejko"),
+                    new Module().withName("wyqkgfgibm").withArgs("gakeqsr")))
+                .withGeoReplication(new DatabasePropertiesGeoReplication().withGroupNickname("flmmnk")
+                    .withLinkedDatabases(
+                        Arrays.asList(new LinkedDatabase(), new LinkedDatabase(), new LinkedDatabase())))
+                .withDeferUpgrade(DeferUpgradeSetting.NOT_DEFERRED),
+            new DatabaseInner().withClientProtocol(Protocol.ENCRYPTED)
+                .withPort(813702940)
                 .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
                 .withEvictionPolicy(EvictionPolicy.VOLATILE_TTL)
-                .withPersistence(new Persistence().withAofEnabled(false).withRdbEnabled(false)
-                    .withAofFrequency(AofFrequency.ALWAYS).withRdbFrequency(RdbFrequency.ONE_TWOH))
-                .withModules(Arrays.asList(new Module().withName("zw").withArgs("g"),
-                    new Module().withName("zga").withArgs("ufizuckyf"),
-                    new Module().withName("htymw").withArgs("dkfthwxmnt")))
-                .withGeoReplication(
-                    new DatabasePropertiesGeoReplication().withGroupNickname("uf").withLinkedDatabases(Arrays.asList(
-                        new LinkedDatabase(), new LinkedDatabase(), new LinkedDatabase(), new LinkedDatabase())))));
+                .withPersistence(new Persistence().withAofEnabled(false)
+                    .withRdbEnabled(false)
+                    .withAofFrequency(AofFrequency.ALWAYS)
+                    .withRdbFrequency(RdbFrequency.SIXH))
+                .withModules(Arrays.asList(new Module().withName("q").withArgs("ol")))
+                .withGeoReplication(new DatabasePropertiesGeoReplication().withGroupNickname("jyj")
+                    .withLinkedDatabases(
+                        Arrays.asList(new LinkedDatabase(), new LinkedDatabase(), new LinkedDatabase())))
+                .withDeferUpgrade(DeferUpgradeSetting.DEFERRED),
+            new DatabaseInner().withClientProtocol(Protocol.PLAINTEXT)
+                .withPort(1705333634)
+                .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
+                .withEvictionPolicy(EvictionPolicy.ALL_KEYS_RANDOM)
+                .withPersistence(new Persistence().withAofEnabled(true)
+                    .withRdbEnabled(false)
+                    .withAofFrequency(AofFrequency.ALWAYS)
+                    .withRdbFrequency(RdbFrequency.SIXH))
+                .withModules(Arrays.asList(new Module().withName("qguhmuo").withArgs("f")))
+                .withGeoReplication(new DatabasePropertiesGeoReplication().withGroupNickname("zga")
+                    .withLinkedDatabases(
+                        Arrays.asList(new LinkedDatabase(), new LinkedDatabase(), new LinkedDatabase())))
+                .withDeferUpgrade(DeferUpgradeSetting.NOT_DEFERRED)));
         model = BinaryData.fromObject(model).toObject(DatabaseList.class);
         Assertions.assertEquals(Protocol.ENCRYPTED, model.value().get(0).clientProtocol());
         Assertions.assertEquals(1018660183, model.value().get(0).port());
@@ -94,5 +110,6 @@ public final class DatabaseListTests {
         Assertions.assertEquals("qulngsntnbybkzgc", model.value().get(0).modules().get(0).name());
         Assertions.assertEquals("wclxxwrl", model.value().get(0).modules().get(0).args());
         Assertions.assertEquals("wtnhxbnjbiksqr", model.value().get(0).geoReplication().groupNickname());
+        Assertions.assertEquals(DeferUpgradeSetting.NOT_DEFERRED, model.value().get(0).deferUpgrade());
     }
 }

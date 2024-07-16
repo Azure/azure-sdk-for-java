@@ -27,8 +27,7 @@ public final class EncryptedSimUploadList {
     private int azureKeyIdentifier;
 
     /*
-     * The fingerprint of the SIM vendor public key. The private counterpart is used for signing the encrypted
-     * transport key.
+     * The fingerprint of the SIM vendor public key. The private counterpart is used for signing the encrypted transport key.
      */
     @JsonProperty(value = "vendorKeyFingerprint", required = true)
     private String vendorKeyFingerprint;
@@ -190,20 +189,23 @@ public final class EncryptedSimUploadList {
      */
     public void validate() {
         if (vendorKeyFingerprint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property vendorKeyFingerprint in model EncryptedSimUploadList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vendorKeyFingerprint in model EncryptedSimUploadList"));
         }
         if (encryptedTransportKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property encryptedTransportKey in model EncryptedSimUploadList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property encryptedTransportKey in model EncryptedSimUploadList"));
         }
         if (signedTransportKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property signedTransportKey in model EncryptedSimUploadList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property signedTransportKey in model EncryptedSimUploadList"));
         }
         if (sims() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sims in model EncryptedSimUploadList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sims in model EncryptedSimUploadList"));
         } else {
             sims().forEach(e -> e.validate());
         }

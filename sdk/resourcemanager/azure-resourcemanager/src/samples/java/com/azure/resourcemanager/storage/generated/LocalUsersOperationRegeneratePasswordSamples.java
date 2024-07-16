@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-/** Samples for LocalUsersOperation RegeneratePassword. */
+/**
+ * Samples for LocalUsersOperation RegeneratePassword.
+ */
 public final class LocalUsersOperationRegeneratePasswordSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/LocalUserRegeneratePassword.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/LocalUserRegeneratePassword.
+     * json
      */
     /**
      * Sample code: RegenerateLocalUserPassword.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void regenerateLocalUserPassword(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getLocalUsersOperations()

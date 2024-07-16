@@ -6,7 +6,6 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -713,7 +712,7 @@ class ReactorConnectionTest {
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP,
             new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
-            CLIENT_VERSION, hostname, port);
+            CLIENT_VERSION, hostname, port, true);
 
         final ConnectionHandler connectionHandler
             = new ConnectionHandler(connectionId, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
@@ -746,7 +745,6 @@ class ReactorConnectionTest {
         final ReactorConnection connection2
             = new ReactorConnection(CONNECTION_ID, connectionOptions, provider, reactorHandlerProvider, linkProvider,
                 tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true);
-        final AmqpShutdownSignal signal = new AmqpShutdownSignal(false, false, "Remove");
 
         when(provider.getReactorDispatcher()).thenReturn(dispatcher);
 
@@ -759,11 +757,11 @@ class ReactorConnectionTest {
         connection2.getReactorConnection().subscribe();
 
         // Act and Assert
-        StepVerifier.create(connection2.closeAsync(signal)).expectComplete().verify(VERIFY_TIMEOUT);
+        StepVerifier.create(connection2.closeAsync()).expectComplete().verify(VERIFY_TIMEOUT);
 
         assertTrue(connection2.isDisposed());
 
-        StepVerifier.create(connection2.closeAsync(signal)).expectComplete().verify(VERIFY_TIMEOUT);
+        StepVerifier.create(connection2.closeAsync()).expectComplete().verify(VERIFY_TIMEOUT);
     }
 
     @Test

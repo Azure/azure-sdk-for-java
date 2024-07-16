@@ -97,8 +97,8 @@ public final class SlicePropertiesFormat {
      */
     public void validate() {
         if (snssai() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property snssai in model SlicePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property snssai in model SlicePropertiesFormat"));
         } else {
             snssai().validate();
         }

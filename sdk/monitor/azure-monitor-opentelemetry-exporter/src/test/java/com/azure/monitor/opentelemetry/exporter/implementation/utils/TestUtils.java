@@ -27,8 +27,12 @@ public final class TestUtils {
             + "IngestionEndpoint=https://test.in.applicationinsights.azure.com/;"
             + "LiveEndpoint=https://test.livediagnostics.monitor.azure.com/";
 
+    public static TelemetryItem createMetricTelemetry(String name, int value, String connectionString) {
+        return createMetricTelemetry(name, value, connectionString, "state", "blocked");
+    }
+
     public static TelemetryItem createMetricTelemetry(
-        String name, int value, String connectionString) {
+        String name, int value, String connectionString, String propertyKey, String propertyValue) {
         TelemetryItem telemetry = new TelemetryItem();
         telemetry.setVersion(1);
         telemetry.setName("Metric");
@@ -48,7 +52,7 @@ public final class TestUtils {
         dataPoints.add(dataPoint);
 
         Map<String, String> properties = new HashMap<>();
-        properties.put("state", "blocked");
+        properties.put(propertyKey, propertyValue);
 
         data.setMetrics(dataPoints);
         data.setProperties(properties);

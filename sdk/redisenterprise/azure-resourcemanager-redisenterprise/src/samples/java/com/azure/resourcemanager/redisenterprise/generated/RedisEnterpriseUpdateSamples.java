@@ -16,9 +16,7 @@ import java.util.Map;
  */
 public final class RedisEnterpriseUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/RedisEnterpriseUpdate.
-     * json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-03-01-preview/examples/RedisEnterpriseUpdate.json
      */
     /**
      * Sample code: RedisEnterpriseUpdate.
@@ -27,10 +25,13 @@ public final class RedisEnterpriseUpdateSamples {
      */
     public static void redisEnterpriseUpdate(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         Cluster resource = manager.redisEnterprises()
-            .getByResourceGroupWithResponse("rg1", "cache1", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("tag1", "value1"))
+            .getByResourceGroupWithResponse("rg1", "cache1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("tag1", "value1"))
             .withSku(new Sku().withName(SkuName.ENTERPRISE_FLASH_F300).withCapacity(9))
-            .withMinimumTlsVersion(TlsVersion.ONE_TWO).apply();
+            .withMinimumTlsVersion(TlsVersion.ONE_TWO)
+            .apply();
     }
 
     // Use "Map.of" if available

@@ -13,25 +13,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AmazonRdsForOraclePartitionSettings {
     /*
-     * Names of the physical partitions of AmazonRdsForOracle table. 
+     * Names of the physical partitions of AmazonRdsForOracle table.
      */
     @JsonProperty(value = "partitionNames")
     private Object partitionNames;
 
     /*
-     * The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "partitionColumnName")
     private Object partitionColumnName;
 
     /*
-     * The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning.
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "partitionUpperBound")
     private Object partitionUpperBound;
 
     /*
-     * The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning.
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "partitionLowerBound")
     private Object partitionLowerBound;

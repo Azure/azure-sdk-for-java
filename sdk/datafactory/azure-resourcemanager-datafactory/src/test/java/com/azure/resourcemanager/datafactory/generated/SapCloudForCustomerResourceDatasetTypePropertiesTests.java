@@ -11,14 +11,14 @@ public final class SapCloudForCustomerResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapCloudForCustomerResourceDatasetTypeProperties model
-            = BinaryData.fromString("{\"path\":\"datayvfxnzpfdfupk\"}")
+            = BinaryData.fromString("{\"path\":\"datarvkgpogplbjuvl\"}")
                 .toObject(SapCloudForCustomerResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SapCloudForCustomerResourceDatasetTypeProperties model
-            = new SapCloudForCustomerResourceDatasetTypeProperties().withPath("datayvfxnzpfdfupk");
+            = new SapCloudForCustomerResourceDatasetTypeProperties().withPath("datarvkgpogplbjuvl");
         model = BinaryData.fromObject(model).toObject(SapCloudForCustomerResourceDatasetTypeProperties.class);
     }
 }

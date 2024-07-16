@@ -1,14 +1,30 @@
 # Release History
 
-## 1.0.0-beta.19 (Unreleased)
+## 1.0.0-beta.20 (2024-07-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to `1.50.0`.
+
+## 1.0.0-beta.19 (2024-06-06)
 
 ### Features Added
 
+- Added support for response timeout and per-request response timeout. ([#40017](https://github.com/Azure/azure-sdk-for-java/pull/40017))
+
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed `VertxAsyncHttpClientBuilder.idleTimeout`, renamed `readIdleTimeout` to `readTimeout` and `writeIdleTimeout`
+  to `writeTimeout` in `VertxAsyncHttpClientBuilder`. ([#40017](https://github.com/Azure/azure-sdk-for-java/pull/40017))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
+- Upgraded Vertx from `4.5.7` to `4.5.8`.
 
 ## 1.0.0-beta.18 (2024-05-01)
 

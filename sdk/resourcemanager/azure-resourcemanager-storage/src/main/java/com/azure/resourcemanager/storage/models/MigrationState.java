@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** This property denotes the container level immutability to object level immutability migration state. */
+/**
+ * This property denotes the container level immutability to object level immutability migration state.
+ */
 public final class MigrationState extends ExpandableStringEnum<MigrationState> {
-    /** Static value InProgress for MigrationState. */
+    /**
+     * Static value InProgress for MigrationState.
+     */
     public static final MigrationState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Completed for MigrationState. */
+    /**
+     * Static value Completed for MigrationState.
+     */
     public static final MigrationState COMPLETED = fromString("Completed");
 
     /**
      * Creates a new instance of MigrationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class MigrationState extends ExpandableStringEnum<MigrationState> {
 
     /**
      * Creates or finds a MigrationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MigrationState.
      */
@@ -38,7 +44,7 @@ public final class MigrationState extends ExpandableStringEnum<MigrationState> {
 
     /**
      * Gets known MigrationState values.
-     *
+     * 
      * @return known MigrationState values.
      */
     public static Collection<MigrationState> values() {

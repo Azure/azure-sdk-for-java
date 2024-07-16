@@ -23,7 +23,7 @@ public final class PoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":1475071070,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":\"datazvgnwzs\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"glzufc\"},\"identity\":{\"tenantId\":\"ohdbihanufh\",\"principalId\":\"bj\",\"type\":\"None\",\"userAssignedIdentities\":{\"fpikxwczb\":{\"clientId\":\"th\",\"principalId\":\"hab\"}}},\"location\":\"cnpqxuhivyqniwby\",\"tags\":{\"mjgr\":\"xvd\"},\"id\":\"fwvuk\",\"name\":\"gaudcc\",\"type\":\"nhsjcnyej\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":1475071070,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":\"datazvgnwzs\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"glzufc\"},\"identity\":{\"principalId\":\"ohdbihanufh\",\"tenantId\":\"bj\",\"type\":\"None\",\"userAssignedIdentities\":{\"fpikxwczb\":{\"principalId\":\"th\",\"clientId\":\"hab\"}}},\"location\":\"cnpqxuhivyqniwby\",\"tags\":{\"mjgr\":\"xvd\"},\"id\":\"fwvuk\",\"name\":\"gaudcc\",\"type\":\"nhsjcnyej\"}")
             .toObject(PoolInner.class);
         Assertions.assertEquals("cnpqxuhivyqniwby", model.location());
         Assertions.assertEquals("xvd", model.tags().get("mjgr"));
@@ -31,8 +31,6 @@ public final class PoolInnerTests {
         Assertions.assertEquals(1475071070, model.properties().maximumConcurrency());
         Assertions.assertEquals("glzufc", model.properties().devCenterProjectResourceId());
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("th", model.identity().userAssignedIdentities().get("fpikxwczb").clientId());
-        Assertions.assertEquals("hab", model.identity().userAssignedIdentities().get("fpikxwczb").principalId());
     }
 
     @org.junit.jupiter.api.Test
@@ -47,8 +45,7 @@ public final class PoolInnerTests {
                 .withFabricProfile(new FabricProfile())
                 .withDevCenterProjectResourceId("glzufc"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(
-                    mapOf("fpikxwczb", new UserAssignedIdentity().withClientId("th").withPrincipalId("hab"))));
+                .withUserAssignedIdentities(mapOf("fpikxwczb", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(PoolInner.class);
         Assertions.assertEquals("cnpqxuhivyqniwby", model.location());
         Assertions.assertEquals("xvd", model.tags().get("mjgr"));
@@ -56,8 +53,6 @@ public final class PoolInnerTests {
         Assertions.assertEquals(1475071070, model.properties().maximumConcurrency());
         Assertions.assertEquals("glzufc", model.properties().devCenterProjectResourceId());
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("th", model.identity().userAssignedIdentities().get("fpikxwczb").clientId());
-        Assertions.assertEquals("hab", model.identity().userAssignedIdentities().get("fpikxwczb").principalId());
     }
 
     // Use "Map.of" if available

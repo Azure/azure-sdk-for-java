@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a storage account’s Queue service. */
+/**
+ * The properties of a storage account’s Queue service.
+ */
 @Fluent
 public final class QueueServicePropertiesInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class QueueServicePropertiesInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private QueueServicePropertiesProperties innerQueueServiceProperties;
 
-    /** Creates an instance of QueueServicePropertiesInner class. */
+    /**
+     * Creates an instance of QueueServicePropertiesInner class.
+     */
     public QueueServicePropertiesInner() {
     }
 
     /**
      * Get the innerQueueServiceProperties property: The properties of a storage account’s Queue service.
-     *
+     * 
      * @return the innerQueueServiceProperties value.
      */
     private QueueServicePropertiesProperties innerQueueServiceProperties() {
@@ -35,7 +39,7 @@ public final class QueueServicePropertiesInner extends ProxyResource {
      * Get the cors property: Specifies CORS rules for the Queue service. You can include up to five CorsRule elements
      * in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and
      * CORS will be disabled for the Queue service.
-     *
+     * 
      * @return the cors value.
      */
     public CorsRules cors() {
@@ -46,7 +50,7 @@ public final class QueueServicePropertiesInner extends ProxyResource {
      * Set the cors property: Specifies CORS rules for the Queue service. You can include up to five CorsRule elements
      * in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and
      * CORS will be disabled for the Queue service.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the QueueServicePropertiesInner object itself.
      */
@@ -60,7 +64,7 @@ public final class QueueServicePropertiesInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

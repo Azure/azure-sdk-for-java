@@ -5,61 +5,73 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** HDInsight Pig activity type. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("HDInsightPig")
-@JsonFlatten
+/**
+ * HDInsight Pig activity type.
+ */
 @Fluent
 public class HDInsightPigActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "HDInsightPig";
+
+    /*
      * Storage linked service references.
      */
-    @JsonProperty(value = "typeProperties.storageLinkedServices")
     private List<LinkedServiceReference> storageLinkedServices;
 
     /*
      * User specified arguments to HDInsightActivity. Type: array (or Expression with resultType array).
      */
-    @JsonProperty(value = "typeProperties.arguments")
     private Object arguments;
 
     /*
      * Debug info option.
      */
-    @JsonProperty(value = "typeProperties.getDebugInfo")
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
      * Script path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.scriptPath")
     private Object scriptPath;
 
     /*
      * Script linked service reference.
      */
-    @JsonProperty(value = "typeProperties.scriptLinkedService")
     private LinkedServiceReference scriptLinkedService;
 
     /*
      * Allows user to specify defines for Pig job request.
      */
-    @JsonProperty(value = "typeProperties.defines")
     private Map<String, Object> defines;
 
-    /** Creates an instance of HDInsightPigActivity class. */
-    public HDInsightPigActivity() {}
+    /**
+     * Creates an instance of HDInsightPigActivity class.
+     */
+    public HDInsightPigActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @return the storageLinkedServices value.
      */
     public List<LinkedServiceReference> getStorageLinkedServices() {
@@ -68,7 +80,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Set the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @param storageLinkedServices the storageLinkedServices value to set.
      * @return the HDInsightPigActivity object itself.
      */
@@ -80,7 +92,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
     /**
      * Get the arguments property: User specified arguments to HDInsightActivity. Type: array (or Expression with
      * resultType array).
-     *
+     * 
      * @return the arguments value.
      */
     public Object getArguments() {
@@ -90,7 +102,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
     /**
      * Set the arguments property: User specified arguments to HDInsightActivity. Type: array (or Expression with
      * resultType array).
-     *
+     * 
      * @param arguments the arguments value to set.
      * @return the HDInsightPigActivity object itself.
      */
@@ -101,7 +113,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Get the getDebugInfo property: Debug info option.
-     *
+     * 
      * @return the getDebugInfo value.
      */
     public HDInsightActivityDebugInfoOption getGetDebugInfo() {
@@ -110,7 +122,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Set the getDebugInfo property: Debug info option.
-     *
+     * 
      * @param getDebugInfo the getDebugInfo value to set.
      * @return the HDInsightPigActivity object itself.
      */
@@ -121,7 +133,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Get the scriptPath property: Script path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the scriptPath value.
      */
     public Object getScriptPath() {
@@ -130,7 +142,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Set the scriptPath property: Script path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param scriptPath the scriptPath value to set.
      * @return the HDInsightPigActivity object itself.
      */
@@ -141,7 +153,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Get the scriptLinkedService property: Script linked service reference.
-     *
+     * 
      * @return the scriptLinkedService value.
      */
     public LinkedServiceReference getScriptLinkedService() {
@@ -150,7 +162,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Set the scriptLinkedService property: Script linked service reference.
-     *
+     * 
      * @param scriptLinkedService the scriptLinkedService value to set.
      * @return the HDInsightPigActivity object itself.
      */
@@ -161,7 +173,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Get the defines property: Allows user to specify defines for Pig job request.
-     *
+     * 
      * @return the defines value.
      */
     public Map<String, Object> getDefines() {
@@ -170,7 +182,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Set the defines property: Allows user to specify defines for Pig job request.
-     *
+     * 
      * @param defines the defines value to set.
      * @return the HDInsightPigActivity object itself.
      */
@@ -179,59 +191,196 @@ public class HDInsightPigActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (storageLinkedServices != null
+            || arguments != null
+            || getDebugInfo != null
+            || scriptPath != null
+            || scriptLinkedService != null
+            || defines != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeArrayField("storageLinkedServices", this.storageLinkedServices,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeUntypedField("arguments", this.arguments);
+            jsonWriter.writeStringField("getDebugInfo",
+                this.getDebugInfo == null ? null : this.getDebugInfo.toString());
+            jsonWriter.writeUntypedField("scriptPath", this.scriptPath);
+            jsonWriter.writeJsonField("scriptLinkedService", this.scriptLinkedService);
+            jsonWriter.writeMapField("defines", this.defines, (writer, element) -> writer.writeUntyped(element));
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HDInsightPigActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HDInsightPigActivity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HDInsightPigActivity.
+     */
+    public static HDInsightPigActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HDInsightPigActivity deserializedHDInsightPigActivity = new HDInsightPigActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedHDInsightPigActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedHDInsightPigActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedHDInsightPigActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedHDInsightPigActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedHDInsightPigActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedHDInsightPigActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedHDInsightPigActivity.setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedHDInsightPigActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedHDInsightPigActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("storageLinkedServices".equals(fieldName)) {
+                            List<LinkedServiceReference> storageLinkedServices
+                                = reader.readArray(reader1 -> LinkedServiceReference.fromJson(reader1));
+                            deserializedHDInsightPigActivity.storageLinkedServices = storageLinkedServices;
+                        } else if ("arguments".equals(fieldName)) {
+                            deserializedHDInsightPigActivity.arguments = reader.readUntyped();
+                        } else if ("getDebugInfo".equals(fieldName)) {
+                            deserializedHDInsightPigActivity.getDebugInfo
+                                = HDInsightActivityDebugInfoOption.fromString(reader.getString());
+                        } else if ("scriptPath".equals(fieldName)) {
+                            deserializedHDInsightPigActivity.scriptPath = reader.readUntyped();
+                        } else if ("scriptLinkedService".equals(fieldName)) {
+                            deserializedHDInsightPigActivity.scriptLinkedService
+                                = LinkedServiceReference.fromJson(reader);
+                        } else if ("defines".equals(fieldName)) {
+                            Map<String, Object> defines = reader.readMap(reader1 -> reader1.readUntyped());
+                            deserializedHDInsightPigActivity.defines = defines;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedHDInsightPigActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedHDInsightPigActivity;
+        });
     }
 }

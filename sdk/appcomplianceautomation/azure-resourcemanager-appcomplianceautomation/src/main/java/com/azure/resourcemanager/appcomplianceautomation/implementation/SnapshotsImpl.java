@@ -5,10 +5,15 @@
 package com.azure.resourcemanager.appcomplianceautomation.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcomplianceautomation.fluent.SnapshotsClient;
+import com.azure.resourcemanager.appcomplianceautomation.fluent.models.DownloadResponseInner;
 import com.azure.resourcemanager.appcomplianceautomation.fluent.models.SnapshotResourceInner;
+import com.azure.resourcemanager.appcomplianceautomation.models.DownloadResponse;
+import com.azure.resourcemanager.appcomplianceautomation.models.SnapshotDownloadRequest;
 import com.azure.resourcemanager.appcomplianceautomation.models.SnapshotResource;
 import com.azure.resourcemanager.appcomplianceautomation.models.Snapshots;
 
@@ -19,8 +24,7 @@ public final class SnapshotsImpl implements Snapshots {
 
     private final com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager serviceManager;
 
-    public SnapshotsImpl(
-        SnapshotsClient innerClient,
+    public SnapshotsImpl(SnapshotsClient innerClient,
         com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,20 +32,52 @@ public final class SnapshotsImpl implements Snapshots {
 
     public PagedIterable<SnapshotResource> list(String reportName) {
         PagedIterable<SnapshotResourceInner> inner = this.serviceClient().list(reportName);
-        return Utils.mapPage(inner, inner1 -> new SnapshotResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SnapshotResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SnapshotResource> list(
-        String reportName,
-        String skipToken,
-        Integer top,
-        String select,
-        String reportCreatorTenantId,
-        String offerGuid,
+    public PagedIterable<SnapshotResource> list(String reportName, String skipToken, Integer top, String select,
+        String filter, String orderby, String offerGuid, String reportCreatorTenantId, Context context) {
+        PagedIterable<SnapshotResourceInner> inner = this.serviceClient()
+            .list(reportName, skipToken, top, select, filter, orderby, offerGuid, reportCreatorTenantId, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SnapshotResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<SnapshotResource> getWithResponse(String reportName, String snapshotName, Context context) {
+        Response<SnapshotResourceInner> inner = this.serviceClient().getWithResponse(reportName, snapshotName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SnapshotResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SnapshotResource get(String reportName, String snapshotName) {
+        SnapshotResourceInner inner = this.serviceClient().get(reportName, snapshotName);
+        if (inner != null) {
+            return new SnapshotResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public DownloadResponse download(String reportName, String snapshotName, SnapshotDownloadRequest body) {
+        DownloadResponseInner inner = this.serviceClient().download(reportName, snapshotName, body);
+        if (inner != null) {
+            return new DownloadResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public DownloadResponse download(String reportName, String snapshotName, SnapshotDownloadRequest body,
         Context context) {
-        PagedIterable<SnapshotResourceInner> inner =
-            this.serviceClient().list(reportName, skipToken, top, select, reportCreatorTenantId, offerGuid, context);
-        return Utils.mapPage(inner, inner1 -> new SnapshotResourceImpl(inner1, this.manager()));
+        DownloadResponseInner inner = this.serviceClient().download(reportName, snapshotName, body, context);
+        if (inner != null) {
+            return new DownloadResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private SnapshotsClient serviceClient() {

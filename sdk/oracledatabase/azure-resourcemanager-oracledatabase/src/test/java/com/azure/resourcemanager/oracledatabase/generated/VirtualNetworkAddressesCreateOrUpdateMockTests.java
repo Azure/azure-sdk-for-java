@@ -22,7 +22,7 @@ public final class VirtualNetworkAddressesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ipAddress\":\"gwgcl\",\"vmOcid\":\"oebqinjipn\",\"ocid\":\"fujqlafcba\",\"domain\":\"pzpofoiyjw\",\"lifecycleDetails\":\"ilkmk\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Terminating\",\"timeAssigned\":\"2021-03-31T13:06:19Z\"},\"id\":\"viauogphua\",\"name\":\"tvt\",\"type\":\"ukyefchnmnahmnxh\"}";
+            = "{\"properties\":{\"ipAddress\":\"beolh\",\"vmOcid\":\"lvbmxuqibsxtkcu\",\"ocid\":\"b\",\"domain\":\"arfsi\",\"lifecycleDetails\":\"lkjxnqpvwgf\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Failed\",\"timeAssigned\":\"2021-06-25T15:03:20Z\"},\"id\":\"zmdk\",\"name\":\"aoaf\",\"type\":\"luqvoxmycjimryv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class VirtualNetworkAddressesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VirtualNetworkAddress response = manager.virtualNetworkAddresses()
-            .define("zcugswvxwlmzqw")
-            .withExistingCloudVmCluster("mribiat", "gplucfotangcfhny")
-            .withProperties(new VirtualNetworkAddressProperties().withIpAddress("xnjmxm").withVmOcid("qudtcvclx"))
+            .define("fsv")
+            .withExistingCloudVmCluster("phaimmoi", "oqboshbragapyyr")
+            .withProperties(new VirtualNetworkAddressProperties().withIpAddress("vbopfppdbwnu").withVmOcid("ahxku"))
             .create();
 
-        Assertions.assertEquals("gwgcl", response.properties().ipAddress());
-        Assertions.assertEquals("oebqinjipn", response.properties().vmOcid());
+        Assertions.assertEquals("beolh", response.properties().ipAddress());
+        Assertions.assertEquals("lvbmxuqibsxtkcu", response.properties().vmOcid());
     }
 }

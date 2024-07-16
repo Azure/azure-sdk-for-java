@@ -6,67 +6,39 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.Datastore;
 import com.azure.resourcemanager.avs.models.MountOptionEnum;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DatastoresListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"netAppVolume\":{\"id\":\"uwasqvd\"},\"diskPoolVolume\":{\"targetId\":\"y\",\"lunName\":\"guxak\",\"mountOption\":\"ATTACH\",\"path\":\"hzbezkgi\"},\"elasticSanVolume\":{\"targetId\":\"idxas\"},\"status\":\"DeadOrError\"},\"id\":\"yvvjskgfmo\",\"name\":\"wa\",\"type\":\"pqg\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"netAppVolume\":{\"id\":\"aqh\"},\"diskPoolVolume\":{\"targetId\":\"eufuqyrxpdlcgql\",\"lunName\":\"ismjqfrddgamqu\",\"mountOption\":\"MOUNT\",\"path\":\"rsjuivfcdisyir\"},\"status\":\"DeadOrError\"},\"id\":\"hcz\",\"name\":\"xrxzbujrtr\",\"type\":\"qvwre\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AvsManager manager = AvsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Datastore> response
+            = manager.datastores().list("fegcea", "zxwhcansymoyqhlw", "gdivbkbxg", com.azure.core.util.Context.NONE);
 
-        AvsManager manager =
-            AvsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Datastore> response =
-            manager.datastores().list("igpibud", "wyxebeybpmzz", "rtffyaqitmh", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("aqh", response.iterator().next().netAppVolume().id());
-        Assertions.assertEquals("eufuqyrxpdlcgql", response.iterator().next().diskPoolVolume().targetId());
-        Assertions.assertEquals("ismjqfrddgamqu", response.iterator().next().diskPoolVolume().lunName());
-        Assertions.assertEquals(MountOptionEnum.MOUNT, response.iterator().next().diskPoolVolume().mountOption());
+        Assertions.assertEquals("uwasqvd", response.iterator().next().netAppVolume().id());
+        Assertions.assertEquals("y", response.iterator().next().diskPoolVolume().targetId());
+        Assertions.assertEquals("guxak", response.iterator().next().diskPoolVolume().lunName());
+        Assertions.assertEquals(MountOptionEnum.ATTACH, response.iterator().next().diskPoolVolume().mountOption());
+        Assertions.assertEquals("idxas", response.iterator().next().elasticSanVolume().targetId());
     }
 }

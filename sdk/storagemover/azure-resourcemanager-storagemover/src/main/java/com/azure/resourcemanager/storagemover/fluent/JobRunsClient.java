@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagemover.fluent.models.JobRunInner;
 
-/** An instance of this class provides access to all the operations defined in JobRunsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobRunsClient.
+ */
 public interface JobRunsClient {
     /**
      * Lists all Job Runs in a Job Definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -26,12 +28,12 @@ public interface JobRunsClient {
      * @return list of Job Runs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JobRunInner> list(
-        String resourceGroupName, String storageMoverName, String projectName, String jobDefinitionName);
+    PagedIterable<JobRunInner> list(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName);
 
     /**
      * Lists all Job Runs in a Job Definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -43,16 +45,12 @@ public interface JobRunsClient {
      * @return list of Job Runs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JobRunInner> list(
-        String resourceGroupName,
-        String storageMoverName,
-        String projectName,
-        String jobDefinitionName,
-        Context context);
+    PagedIterable<JobRunInner> list(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName, Context context);
 
     /**
      * Gets a Job Run resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -65,17 +63,12 @@ public interface JobRunsClient {
      * @return a Job Run resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobRunInner> getWithResponse(
-        String resourceGroupName,
-        String storageMoverName,
-        String projectName,
-        String jobDefinitionName,
-        String jobRunName,
-        Context context);
+    Response<JobRunInner> getWithResponse(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName, String jobRunName, Context context);
 
     /**
      * Gets a Job Run resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -87,10 +80,6 @@ public interface JobRunsClient {
      * @return a Job Run resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobRunInner get(
-        String resourceGroupName,
-        String storageMoverName,
-        String projectName,
-        String jobDefinitionName,
+    JobRunInner get(String resourceGroupName, String storageMoverName, String projectName, String jobDefinitionName,
         String jobRunName);
 }

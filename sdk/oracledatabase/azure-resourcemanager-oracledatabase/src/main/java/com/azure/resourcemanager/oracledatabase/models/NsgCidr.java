@@ -6,23 +6,25 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A rule for allowing inbound (INGRESS) IP packets.
  */
 @Fluent
-public final class NsgCidr {
+public final class NsgCidr implements JsonSerializable<NsgCidr> {
     /*
      * Conceptually, this is the range of IP addresses that a packet coming into the instance can come from.
      */
-    @JsonProperty(value = "source", required = true)
     private String source;
 
     /*
      * Destination port range to specify particular destination ports for TCP rules.
      */
-    @JsonProperty(value = "destinationPortRange")
     private PortRange destinationPortRange;
 
     /**
@@ -91,4 +93,44 @@ public final class NsgCidr {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NsgCidr.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeJsonField("destinationPortRange", this.destinationPortRange);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NsgCidr from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NsgCidr if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NsgCidr.
+     */
+    public static NsgCidr fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NsgCidr deserializedNsgCidr = new NsgCidr();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedNsgCidr.source = reader.getString();
+                } else if ("destinationPortRange".equals(fieldName)) {
+                    deserializedNsgCidr.destinationPortRange = PortRange.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNsgCidr;
+        });
+    }
 }

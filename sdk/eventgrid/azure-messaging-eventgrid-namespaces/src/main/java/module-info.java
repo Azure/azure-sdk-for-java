@@ -4,8 +4,8 @@
 
 module com.azure.messaging.eventgrid.namespaces {
     requires transitive com.azure.core;
-    requires transitive com.azure.json;
     exports com.azure.messaging.eventgrid.namespaces;
     exports com.azure.messaging.eventgrid.namespaces.models;
+    opens com.azure.messaging.eventgrid.namespaces.implementation.models to com.azure.core;
     opens com.azure.messaging.eventgrid.namespaces.models to com.azure.core;
 }
