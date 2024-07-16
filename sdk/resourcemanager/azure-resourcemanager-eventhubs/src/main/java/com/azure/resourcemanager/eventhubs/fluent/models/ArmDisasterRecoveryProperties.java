@@ -5,27 +5,24 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.ProvisioningStateDR;
 import com.azure.resourcemanager.eventhubs.models.RoleDisasterRecovery;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties required to the Create Or Update Alias(Disaster Recovery configurations). */
+/**
+ * Properties required to the Create Or Update Alias(Disaster Recovery configurations).
+ */
 @Fluent
 public final class ArmDisasterRecoveryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmDisasterRecoveryProperties.class);
-
     /*
-     * Provisioning state of the Alias(Disaster Recovery configuration) -
-     * possible values 'Accepted' or 'Succeeded' or 'Failed'
+     * Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or 'Succeeded' or
+     * 'Failed'
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStateDR provisioningState;
 
     /*
-     * ARM Id of the Primary/Secondary eventhub namespace name, which is part
-     * of GEO DR pairing
+     * ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing
      */
     @JsonProperty(value = "partnerNamespace")
     private String partnerNamespace;
@@ -37,8 +34,7 @@ public final class ArmDisasterRecoveryProperties {
     private String alternateName;
 
     /*
-     * role of namespace in GEO DR - possible values 'Primary' or
-     * 'PrimaryNotReplicating' or 'Secondary'
+     * role of namespace in GEO DR - possible values 'Primary' or 'PrimaryNotReplicating' or 'Secondary'
      */
     @JsonProperty(value = "role", access = JsonProperty.Access.WRITE_ONLY)
     private RoleDisasterRecovery role;
@@ -50,9 +46,15 @@ public final class ArmDisasterRecoveryProperties {
     private Long pendingReplicationOperationsCount;
 
     /**
+     * Creates an instance of ArmDisasterRecoveryProperties class.
+     */
+    public ArmDisasterRecoveryProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the Alias(Disaster Recovery configuration) - possible
      * values 'Accepted' or 'Succeeded' or 'Failed'.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStateDR provisioningState() {
@@ -62,7 +64,7 @@ public final class ArmDisasterRecoveryProperties {
     /**
      * Get the partnerNamespace property: ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO
      * DR pairing.
-     *
+     * 
      * @return the partnerNamespace value.
      */
     public String partnerNamespace() {
@@ -72,7 +74,7 @@ public final class ArmDisasterRecoveryProperties {
     /**
      * Set the partnerNamespace property: ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO
      * DR pairing.
-     *
+     * 
      * @param partnerNamespace the partnerNamespace value to set.
      * @return the ArmDisasterRecoveryProperties object itself.
      */
@@ -83,7 +85,7 @@ public final class ArmDisasterRecoveryProperties {
 
     /**
      * Get the alternateName property: Alternate name specified when alias and namespace names are same.
-     *
+     * 
      * @return the alternateName value.
      */
     public String alternateName() {
@@ -92,7 +94,7 @@ public final class ArmDisasterRecoveryProperties {
 
     /**
      * Set the alternateName property: Alternate name specified when alias and namespace names are same.
-     *
+     * 
      * @param alternateName the alternateName value to set.
      * @return the ArmDisasterRecoveryProperties object itself.
      */
@@ -104,7 +106,7 @@ public final class ArmDisasterRecoveryProperties {
     /**
      * Get the role property: role of namespace in GEO DR - possible values 'Primary' or 'PrimaryNotReplicating' or
      * 'Secondary'.
-     *
+     * 
      * @return the role value.
      */
     public RoleDisasterRecovery role() {
@@ -113,7 +115,7 @@ public final class ArmDisasterRecoveryProperties {
 
     /**
      * Get the pendingReplicationOperationsCount property: Number of entities pending to be replicated.
-     *
+     * 
      * @return the pendingReplicationOperationsCount value.
      */
     public Long pendingReplicationOperationsCount() {
@@ -122,7 +124,7 @@ public final class ArmDisasterRecoveryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

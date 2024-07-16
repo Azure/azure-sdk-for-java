@@ -501,6 +501,18 @@
           "justification": "Migration to azure-json"
         },
         {
+          "code": "java.class.nowFinal",
+          "old" : "class com.azure.resourcemanager.eventhubs.models.Identity",
+          "new" : "class com.azure.resourcemanager.eventhubs.models.Identity",
+          "justification": "Class is now final."
+        },
+        {
+          "code": "java.class.nowFinal",
+          "old" : "class com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity",
+          "new" : "class com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity",
+          "justification": "Class is now final."
+        },
+        {
           "code" : "java.class.removed",
           "old" : "class com.azure.resourcemanager.containerservice.models.OSOptionProperty",
           "justification": "Removed non-functional API `getOsOptions` and related models `OSOptionProperty`"

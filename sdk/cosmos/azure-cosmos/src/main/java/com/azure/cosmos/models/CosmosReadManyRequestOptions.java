@@ -12,7 +12,10 @@ import com.azure.cosmos.implementation.CosmosReadManyRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 
 import java.time.Duration;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Specifies the options associated with read many operation
@@ -309,6 +312,26 @@ public final class CosmosReadManyRequestOptions {
         this.actualRequestOptions.setCustomItemSerializer(customItemSerializer);
 
         return this;
+    }
+
+    /**
+     * Sets the custom ids.
+     *
+     * @param keywordIdentifiers the custom ids.
+     * @return the current request options.
+     */
+    public CosmosReadManyRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.actualRequestOptions.setKeywordIdentifiers(keywordIdentifiers);
+        return this;
+    }
+
+    /**
+     * Gets the custom ids.
+     *
+     * @return the custom ids.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return this.actualRequestOptions.getKeywordIdentifiers();
     }
 
     CosmosQueryRequestOptionsBase<?> getImpl() {
