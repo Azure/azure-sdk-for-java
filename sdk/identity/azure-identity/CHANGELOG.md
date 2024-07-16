@@ -9,6 +9,9 @@
 - Fixed certificate type detection, which fixes using a PFX certificate without a password. [#37210](https://github.com/Azure/azure-sdk-for-java/issues/37210)
 - Fix `PowershellCredential` issue when user had a profile [#41030](https://github.com/Azure/azure-sdk-for-java/pull/41030)
 
+#### Dependency Updates
+- Upgraded `msal4j` from `1.16.0` to `1.16.1`
+
 ## 1.13.0 (2024-06-20)
 
 ### Features Added
