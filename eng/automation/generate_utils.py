@@ -86,9 +86,11 @@ def generate(
     logging.info(command)
     if os.system(command) != 0:
         logging.error("[GENERATE] Code generation failed.")
-        logging.error("Please first check if the failure happens only to Java automation, or for all SDK automations. "
-                      "If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff. "
-                      "If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue.")
+        logging.error(
+            "Please first check if the failure happens only to Java automation, or for all SDK automations. "
+            "If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff. "
+            "If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
+        )
         return False
 
     group = GROUP_ID
@@ -125,7 +127,9 @@ def compile_arm_package(sdk_root: str, module: str) -> bool:
         != 0
     ):
         logging.error("[COMPILE] Maven build fail.")
-        logging.error('You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.')
+        logging.error(
+            'You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.'
+        )
         return False
     return True
 

@@ -77,7 +77,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
                     tsp_project, sdk_root, spec_root, head_sha, repo_url
                 )
-                stable_version, _= set_or_default_version(sdk_root, GROUP_ID, module)
+                stable_version, _ = set_or_default_version(sdk_root, GROUP_ID, module)
                 current_version = DEFAULT_VERSION
                 if require_sdk_integration:
                     update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
@@ -398,7 +398,9 @@ def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
     logging.info(command)
     if os.system(command) != 0:
         logging.error("[COMPILE] Maven build fail.")
-        logging.error("One reason of the compilation failure is that the existing code customization in SDK repository being incompatible with the class generated from updated TypeSpec source. In such case, you can ignore the failure, and fix the customization in SDK repository. You can inquire in \"Language - Java\" Teams channel. Please include the link of this Pull Request in the query.")
+        logging.error(
+            'One reason of the compilation failure is that the existing code customization in SDK repository being incompatible with the class generated from updated TypeSpec source. In such case, you can ignore the failure, and fix the customization in SDK repository. You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.'
+        )
         return False
     return True
 
