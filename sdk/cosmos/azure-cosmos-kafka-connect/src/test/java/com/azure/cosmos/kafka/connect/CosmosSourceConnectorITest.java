@@ -224,6 +224,73 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
         }
     }
 
+    @Test(groups = { "kafka-integration" }, dataProvider = "sourceAuthParameterProvider")
+    public void createConnectorWithWrongContainerName(boolean useMasterKey, CosmosMetadataStorageType metadataStorageType) {
+
+        logger.info("read from single container " + useMasterKey);
+        String wrongContainerName = "wrongContainerName";
+        String topicName = wrongContainerName + "-" + UUID.randomUUID();
+        String metadataStorageName = "Metadata-" + UUID.randomUUID();
+
+        Map<String, String> sourceConnectorConfig = new HashMap<>();
+        sourceConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSourceConnector");
+        sourceConnectorConfig.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConnectorConfig.put("azure.cosmos.application.name", "Test");
+        sourceConnectorConfig.put("azure.cosmos.source.database.name", databaseName);
+        sourceConnectorConfig.put("azure.cosmos.source.containers.includeAll", "false");
+        sourceConnectorConfig.put("azure.cosmos.source.containers.includedList", wrongContainerName);
+        sourceConnectorConfig.put("azure.cosmos.source.containers.topicMap", topicName + "#" + wrongContainerName);
+
+        if (useMasterKey) {
+            sourceConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+        } else {
+            sourceConnectorConfig.put("azure.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
+            sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
+            sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
+            sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+        }
+
+        if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
+            sourceConnectorConfig.put("azure.cosmos.source.metadata.storage.name", metadataStorageName);
+            sourceConnectorConfig.put("azure.cosmos.source.metadata.storage.type", CosmosMetadataStorageType.COSMOS.getName());
+        }
+
+        // Create topic ahead of time
+        kafkaCosmosConnectContainer.createTopic(topicName, 1);
+        String connectorName = "simpleTest-" + UUID.randomUUID();
+
+        try {
+            // if using cosmos container to persiste the metadata, pre-create it
+            if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
+                logger.info("Creating metadata container");
+                client.getDatabase(databaseName)
+                    .createContainerIfNotExists(metadataStorageName, "/id")
+                    .block();
+            }
+
+            kafkaCosmosConnectContainer.registerConnector(connectorName, sourceConnectorConfig);
+
+            // give some time for the connector to start up
+            Thread.sleep(10000);
+            // verify connector tasks
+            ConnectorStatus connectorStatus = kafkaCosmosConnectContainer.getConnectorStatus(connectorName);
+            assertThat(connectorStatus.getConnector().get("state").equals("FAILED")).isTrue();
+            assertThat(connectorStatus.getConnector().get("trace")
+                .contains("java.lang.IllegalStateException: Some of the containers specified in the config were not found in the database.")).isTrue();
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (client != null) {
+
+                // delete the metadata container if created
+                if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
+                    client.getDatabase(databaseName).getContainer(metadataStorageName).delete().block();
+                }
+            }
+        }
+    }
+
     @Test(groups = { "kafka-integration" }, dataProvider = "metadataCosmosStorageParameterProvider", timeOut = 2 * TIMEOUT)
     public void connectorStart_metadata_cosmosStorageType(
         boolean useMasterKey,

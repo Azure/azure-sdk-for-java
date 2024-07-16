@@ -76,7 +76,6 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
         this.config = new CosmosSourceConfig(props);
         this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
         this.cosmosClient = CosmosClientStore.getCosmosClient(this.config.getAccountConfig(), connectorName);
-
         // IMPORTANT: sequence matters
         this.kafkaOffsetStorageReader = new MetadataKafkaStorageManager(this.context().offsetStorageReader());
         this.metadataReader = this.getMetadataReader();
@@ -462,7 +461,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
 
         Map<String, String> effectiveContainersTopicMap = new HashMap<>();
         allContainers.forEach(containerProperties -> {
-            // by default, we are using container id as the topic name as well unless customer override through containers.topicMap 
+            // by default, we are using container id as the topic name as well unless customer override through containers.topicMap
             if (topicMapFromConfig.containsKey(containerProperties.getId())) {
                 effectiveContainersTopicMap.put(
                     containerProperties.getId(),
@@ -473,7 +472,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
                     containerProperties.getId());
             }
         });
-        
+
         return effectiveContainersTopicMap;
     }
 

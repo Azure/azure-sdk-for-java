@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Connector status appears us `FAILED` if try to create a connector with an incorrect container name - See 
 
 #### Other Changes
 

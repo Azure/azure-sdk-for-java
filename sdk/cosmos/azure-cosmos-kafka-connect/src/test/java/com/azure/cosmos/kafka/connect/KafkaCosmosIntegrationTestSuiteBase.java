@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -110,7 +111,7 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
     private static void createConnectorJar() throws IOException, InterruptedException {
         logger.info("Start creating connector jars...");
 
-        boolean isWindows = System.getProperty("os.name").startsWith("windows");
+        boolean isWindows = System.getProperty("os.name").toLowerCase(Locale.ROOT).startsWith("windows");
         Path connectorPluginsPath = Paths.get("src/test/connectorPlugins");
 
         ProcessBuilder processBuilder;

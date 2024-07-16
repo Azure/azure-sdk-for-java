@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import org.apache.kafka.connect.source.SourceConnectorContext;
@@ -21,6 +22,7 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -70,6 +72,10 @@ public class MetadataMonitorThread extends Thread {
         this.metadataReader = metadataReader;
         this.cosmosClient = cosmosClient;
         this.containersQuerySpec = this.getContainersQuerySpec();
+        int numContainers = Objects.requireNonNull(this.getAllContainers().block()).size();
+        if (numContainers == 0 || numContainers != sourceContainersConfig.getIncludedContainers().size()) {
+            throw new IllegalStateException("Some of the containers specified in the config were not found in the database.");
+        }
         this.containersMetadataTopicPartition = new ContainersMetadataTopicPartition(containersConfig.getDatabaseName(), connectorName);
     }
 
