@@ -501,6 +501,18 @@
           "justification": "Migration to azure-json"
         },
         {
+          "code": "java.class.nowFinal",
+          "old" : "class com.azure.resourcemanager.eventhubs.models.Identity",
+          "new" : "class com.azure.resourcemanager.eventhubs.models.Identity",
+          "justification": "Class is now final."
+        },
+        {
+          "code": "java.class.nowFinal",
+          "old" : "class com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity",
+          "new" : "class com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity",
+          "justification": "Class is now final."
+        },
+        {
           "code" : "java.method.returnTypeTypeParametersChanged",
           "old" : "method java.util.List<com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner> com.azure.resourcemanager.compute.models.SecurityPostureReference::excludeExtensions()",
           "new" : "method java.util.List<java.lang.String> com.azure.resourcemanager.compute.models.SecurityPostureReference::excludeExtensions()",
