@@ -149,7 +149,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.49.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.50.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -173,7 +173,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.9.6</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
+      <version>2.9.7</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>

@@ -189,6 +189,19 @@ public class Configs {
     public static final String DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR = "COSMOS.DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR";
     public static final boolean DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR = true;
 
+    // Out-of-the-box it is possible to create documents with invalid character '/' in the id field
+    // Client and service will just allow creating these documents - but no read, replace, patch or delete operation
+    // can be done for these documents because the resulting request uri
+    // "dbs/DBNAME/cols/CONTAINERNAME/docs/IDVALUE" would become invalid
+    // Adding a validation to prevent the '/' in the id value would be breaking (for service and client)
+    // but for some workloads there is a vested interest in failing early if someone tries to create documents
+    // with invalid id value = the environment variable changes below
+    // allow opting into a validation client-side. If this becomes used more frequently we might need to create
+    // a public API for it as well.
+    public static final String PREVENT_INVALID_ID_CHARS = "COSMOS.PREVENT_INVALID_ID_CHARS";
+    public static final String PREVENT_INVALID_ID_CHARS_VARIABLE = "COSMOS_PREVENT_INVALID_ID_CHARS";
+    public static final boolean DEFAULT_PREVENT_INVALID_ID_CHARS = false;
+
 
     // Metrics
     // Samples:
@@ -364,6 +377,20 @@ public class Configs {
         }
 
         return DEFAULT_E2E_FOR_NON_POINT_DISABLED_DEFAULT;
+    }
+
+    public static boolean isIdValueValidationEnabled() {
+        String valueFromSystemProperty = System.getProperty(PREVENT_INVALID_ID_CHARS);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return !Boolean.valueOf(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(PREVENT_INVALID_ID_CHARS_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return!Boolean.valueOf(valueFromEnvVariable);
+        }
+
+        return DEFAULT_PREVENT_INVALID_ID_CHARS;
     }
 
     public static int getMaxHttpRequestTimeout() {

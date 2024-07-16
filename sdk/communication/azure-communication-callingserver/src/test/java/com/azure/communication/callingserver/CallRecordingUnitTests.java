@@ -9,6 +9,7 @@ import com.azure.communication.callingserver.models.RecordingStateResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void recordingOperationsTest() {
 
         CallAutomationClient callAutomationClient = CallAutomationUnitTestBase.getCallAutomationClient(

@@ -517,8 +517,6 @@
 # PRLabel: %Load Testing
 /sdk/loadtesting/                                    @Harshan01 @prativen
 
-/sdk/loganalytics/microsoft-azure-loganalytics/      @ischrei
-
 # ServiceLabel: %Logic App
 # ServiceOwners:                                     @Azure/azure-logicapps-team
 
