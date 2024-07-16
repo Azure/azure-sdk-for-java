@@ -393,9 +393,8 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrReplaceDiscoGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("groupName") String groupName,
-            @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData createOrReplaceDiscoGroupRequest, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Put("/discoGroups/{groupName}")
         @ExpectedResponses({ 200 })
@@ -405,9 +404,8 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrReplaceDiscoGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("groupName") String groupName,
-            @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData createOrReplaceDiscoGroupRequest, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/discoGroups/{groupName}:run")
         @ExpectedResponses({ 204 })
@@ -2489,7 +2487,7 @@ public final class EasmClientImpl {
      * }</pre>
      * 
      * @param groupName The caller provided unique name for the resource.
-     * @param createOrReplaceDiscoGroupRequest The createOrReplaceDiscoGroupRequest parameter.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2498,12 +2496,11 @@ public final class EasmClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceDiscoGroupWithResponseAsync(String groupName,
-        BinaryData createOrReplaceDiscoGroupRequest, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrReplaceDiscoGroupWithResponseAsync(String groupName, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createOrReplaceDiscoGroup(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                groupName, accept, createOrReplaceDiscoGroupRequest, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createOrReplaceDiscoGroup(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), groupName, accept, body, requestOptions, context));
     }
 
     /**
@@ -2577,7 +2574,7 @@ public final class EasmClientImpl {
      * }</pre>
      * 
      * @param groupName The caller provided unique name for the resource.
-     * @param createOrReplaceDiscoGroupRequest The createOrReplaceDiscoGroupRequest parameter.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2586,11 +2583,11 @@ public final class EasmClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceDiscoGroupWithResponse(String groupName,
-        BinaryData createOrReplaceDiscoGroupRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrReplaceDiscoGroupWithResponse(String groupName, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createOrReplaceDiscoGroupSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            groupName, accept, createOrReplaceDiscoGroupRequest, requestOptions, Context.NONE);
+            groupName, accept, body, requestOptions, Context.NONE);
     }
 
     /**

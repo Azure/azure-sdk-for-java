@@ -4,10 +4,8 @@
 package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.implementation.EasmClientImpl;
-import com.azure.analytics.defender.easm.implementation.models.CreateOrReplaceDiscoGroupRequest;
 import com.azure.analytics.defender.easm.models.AssetResource;
 import com.azure.analytics.defender.easm.models.AssetUpdateData;
-import com.azure.analytics.defender.easm.models.CreateOrReplaceDiscoGroupOptions;
 import com.azure.analytics.defender.easm.models.DataConnection;
 import com.azure.analytics.defender.easm.models.DataConnectionData;
 import com.azure.analytics.defender.easm.models.DiscoGroup;
@@ -670,7 +668,7 @@ public final class EasmAsyncClient {
      * }</pre>
      *
      * @param groupName The caller provided unique name for the resource.
-     * @param createOrReplaceDiscoGroupRequest The createOrReplaceDiscoGroupRequest parameter.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -680,10 +678,9 @@ public final class EasmAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceDiscoGroupWithResponse(String groupName,
-        BinaryData createOrReplaceDiscoGroupRequest, RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceDiscoGroupWithResponseAsync(groupName,
-            createOrReplaceDiscoGroupRequest, requestOptions);
+    public Mono<Response<BinaryData>> createOrReplaceDiscoGroupWithResponse(String groupName, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceDiscoGroupWithResponseAsync(groupName, body, requestOptions);
     }
 
     /**
@@ -1621,39 +1618,6 @@ public final class EasmAsyncClient {
     }
 
     /**
-     * Create a discovery group with a given groupName.
-     *
-     * @param options Options for createOrReplaceDiscoGroup API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DiscoGroup> createOrReplaceDiscoGroup(CreateOrReplaceDiscoGroupOptions options) {
-        // Generated convenience method for createOrReplaceDiscoGroupWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String groupName = options.getGroupName();
-        CreateOrReplaceDiscoGroupRequest createOrReplaceDiscoGroupRequestObj
-            = new CreateOrReplaceDiscoGroupRequest().setName(options.getName())
-                .setDescription(options.getDescription())
-                .setTier(options.getTier())
-                .setFrequencyMilliseconds(options.getFrequencyMilliseconds())
-                .setSeeds(options.getSeeds())
-                .setNames(options.getNames())
-                .setExcludes(options.getExcludes())
-                .setTemplateId(options.getTemplateId());
-        BinaryData createOrReplaceDiscoGroupRequest = BinaryData.fromObject(createOrReplaceDiscoGroupRequestObj);
-        return createOrReplaceDiscoGroupWithResponse(groupName, createOrReplaceDiscoGroupRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DiscoGroup.class));
-    }
-
-    /**
      * Run a discovery group with a given groupName.
      *
      * @param groupName The caller provided unique name for the resource.
@@ -2143,5 +2107,28 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return cancelTaskWithResponse(taskId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
+    }
+
+    /**
+     * Create a discovery group with a given groupName.
+     *
+     * @param groupName The caller provided unique name for the resource.
+     * @param body Body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DiscoGroup> createOrReplaceDiscoGroup(String groupName, DiscoGroupData body) {
+        // Generated convenience method for createOrReplaceDiscoGroupWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(DiscoGroup.class));
     }
 }
