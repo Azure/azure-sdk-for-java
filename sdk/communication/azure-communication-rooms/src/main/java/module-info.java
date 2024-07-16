@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 module com.azure.communication.rooms {
-    requires com.azure.json;
     requires transitive com.azure.communication.common;
 
     // public API surface area

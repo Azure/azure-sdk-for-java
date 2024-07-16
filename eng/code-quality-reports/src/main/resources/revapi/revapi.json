@@ -569,8 +569,8 @@
           "justification": "Service breaks but no customer onboard."
         },
         {
-          "code": "java.class.removed",
-          "old": "class com.azure.resourcemanager.containerservice.models.OSOptionProperty",
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.containerservice.models.OSOptionProperty",
           "justification": "Removed non-functional API `getOsOptions` and related models `OSOptionProperty`"
         },
         {
