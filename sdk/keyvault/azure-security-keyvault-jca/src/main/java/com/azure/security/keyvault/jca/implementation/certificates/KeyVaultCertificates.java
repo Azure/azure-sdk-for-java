@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.jca.implementation.certificates;
 
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
-
 import java.security.Key;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ import java.util.Optional;
  * Store certificates loaded from KeyVault.
  */
 public final class KeyVaultCertificates implements AzureCertificates {
+
     /**
      * Stores the list of aliases.
      */
@@ -36,7 +36,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
     private final Map<String, Key> certificateKeys = new HashMap<>();
 
     /**
-     * Stores the last time refresh certificates and alias.
+     * Stores the last time refresh certificates and alias
      */
     private Date lastRefreshTime;
 
@@ -44,12 +44,14 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     private final long refreshInterval;
 
-    public KeyVaultCertificates(long refreshInterval, String keyVaultUri, String tenantId, String clientId,
-        String clientSecret, String managedIdentity, boolean disableChallengeResourceVerification) {
-
+    public KeyVaultCertificates(long refreshInterval,
+                         String keyVaultUri,
+                         String tenantId,
+                         String clientId,
+                         String clientSecret,
+                         String managedIdentity) {
         this.refreshInterval = refreshInterval;
-
-        updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, disableChallengeResourceVerification);
+        updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
     }
 
     public KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient) {
@@ -58,21 +60,21 @@ public final class KeyVaultCertificates implements AzureCertificates {
     }
 
     /**
-     * Update KeyVaultClient.
+     * Update KeyVaultClient
      *
-     * @param keyVaultUri Key Vault URI.
-     * @param tenantId Tenant ID.
-     * @param clientId Client ID.
-     * @param clientSecret Client secret.
-     * @param managedIdentity Managed identity.
-     * @param disableChallengeResourceVerification Indicates if the challenge resource verification should be disabled.
+     * @param keyVaultUri keyVault uri
+     * @param tenantId tenant id
+     * @param clientId client id
+     * @param clientSecret client secret
+     * @param managedIdentity managed identity
      */
-    public void updateKeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret,
-        String managedIdentity, boolean disableChallengeResourceVerification) {
-
+    public void updateKeyVaultClient(String keyVaultUri,
+                                     String tenantId,
+                                     String clientId,
+                                     String clientSecret,
+                                     String managedIdentity) {
         if (keyVaultUri != null) {
-            keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
-                disableChallengeResourceVerification);
+            keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
         } else {
             keyVaultClient = null;
         }
@@ -85,43 +87,39 @@ public final class KeyVaultCertificates implements AzureCertificates {
         if (lastRefreshTime == null) {
             return true;
         }
-
         return refreshInterval > 0 && lastRefreshTime.getTime() + refreshInterval < new Date().getTime();
     }
 
     /**
      * Get certificate aliases.
      *
-     * @return Certificate aliases.
+     * @return certificate aliases
      */
     @Override
     public List<String> getAliases() {
         refreshCertificatesIfNeeded();
-
         return aliases;
     }
 
     /**
      * Get certificates.
      *
-     * @return Certificates.
+     * @return certificates
      */
     @Override
     public Map<String, Certificate> getCertificates() {
         refreshCertificatesIfNeeded();
-
         return certificates;
     }
 
     /**
      * Get certificates.
      *
-     * @return Certificate keys.
+     * @return certificate keys
      */
     @Override
     public Map<String, Key> getCertificateKeys() {
         refreshCertificatesIfNeeded();
-
         return certificateKeys;
     }
 
@@ -137,63 +135,57 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     /**
      * Refresh certificates. Including certificates, aliases, certificate keys.
+     *
      */
     public synchronized void refreshCertificates() {
         // When refreshing certificates, the update of the 3 variables should be an atomic operation.
         aliases = keyVaultClient.getAliases();
         certificateKeys.clear();
         certificates.clear();
-
         Optional.ofNullable(aliases)
-            .orElse(Collections.emptyList())
-            .forEach(alias -> {
-                Key key = keyVaultClient.getKey(alias, null);
-
-                if (!Objects.isNull(key)) {
-                    certificateKeys.put(alias, key);
-                }
-
-                Certificate certificate = keyVaultClient.getCertificate(alias);
-
-                if (!Objects.isNull(certificate)) {
-                    certificates.put(alias, certificate);
-                }
-            });
-
+                .orElse(Collections.emptyList())
+                .forEach(alias -> {
+                    Key key = keyVaultClient.getKey(alias, null);
+                    if (!Objects.isNull(key)) {
+                        certificateKeys.put(alias, key);
+                    }
+                    Certificate certificate = keyVaultClient.getCertificate(alias);
+                    if (!Objects.isNull(certificate)) {
+                        certificates.put(alias, certificate);
+                    }
+                });
         lastRefreshTime = new Date();
     }
 
     /**
-     * Get latest alias by certificate.
+     * Get latest alias by certificate which in portal
      *
-     * @param certificate Certificate to get alias with.
-     *
-     * @return Certificate alias if it exists.
+     * @param certificate certificate got
+     * @return certificate' alias if exist.
      */
     public String refreshAndGetAliasByCertificate(Certificate certificate) {
         refreshCertificates();
-
         return getCertificates().entrySet()
-            .stream()
-            .filter(entry -> certificate.equals(entry.getValue()))
-            .findFirst()
-            .map(Map.Entry::getKey)
-            .orElse(null);
+                                .stream()
+                                .filter(entry -> certificate.equals(entry.getValue()))
+                                .findFirst()
+                                .map(Map.Entry::getKey)
+                                .orElse(null);
 
     }
 
     /**
-     * Delete certificate info by alias if exists.
+     * Delete certificate info by alias if exits
      *
-     * @param alias Deleted certificate.
+     * @param alias deleted certificate
      */
     @Override
     public void deleteEntry(String alias) {
         if (aliases != null) {
             aliases.remove(alias);
         }
-
         certificates.remove(alias);
         certificateKeys.remove(alias);
     }
+
 }
