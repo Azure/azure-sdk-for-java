@@ -128,7 +128,7 @@ currently released version and a lower version is resolved. -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- We should keep these netty dependencies, for the netty version in qpid-jms-client is lower than the ones in azure sdks.  -->

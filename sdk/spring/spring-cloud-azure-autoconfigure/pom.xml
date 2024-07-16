@@ -163,7 +163,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
