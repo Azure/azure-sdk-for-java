@@ -625,17 +625,27 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
     @Test
     public void testWithZoneRedundant() {
         rgName = generateRandomResourceName("javacsmrg", 15);
-        final String namespaceName = generateRandomResourceName("ns", 14);
+        final String namespaceName1 = generateRandomResourceName("ns", 14);
+        final String namespaceName2 = generateRandomResourceName("ns", 14);
 
-        EventHubNamespace namespace = eventHubsManager.namespaces()
-            .define(namespaceName)
+        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+        EventHubNamespace namespace1 = eventHubsManager.namespaces()
+            .define(namespaceName1)
             .withRegion(region)
-            .withNewResourceGroup(rgName)
+            .withExistingResourceGroup(rgName)
+            // SDK should use Sku as 'Standard' and set capacity.capacity in it as 1
+            .withAutoScaling()
+            .create();
+        Assertions.assertFalse(namespace1.zoneRedundant());
+
+        EventHubNamespace namespace2 = eventHubsManager.namespaces()
+            .define(namespaceName2)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
             // SDK should use Sku as 'Standard' and set capacity.capacity in it as 1
             .withAutoScaling()
             .enableZoneRedundant()
             .create();
-
-        Assertions.assertTrue(namespace.zoneRedundant());
+        Assertions.assertTrue(namespace2.zoneRedundant());
     }
 }

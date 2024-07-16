@@ -90,12 +90,17 @@ public interface EventHubNamespace extends
     PagedIterable<EventHubNamespaceAuthorizationRule> listAuthorizationRules();
 
     /**
-     * @return minimum tls version of the namespace
+     * Get the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+     *
+     * @return the minimumTlsVersion value.
      */
     TlsVersion minimumTlsVersion();
 
     /**
-     * @return zone redundant of the namespace
+     * Get the zoneRedundant property: Enabling this property creates a Standard Event Hubs Namespace in regions
+     * supported availability zones.
+     *
+     * @return the zoneRedundant value.
      */
     Boolean zoneRedundant();
 
@@ -236,9 +241,9 @@ public interface EventHubNamespace extends
          */
         interface WithMinimumTlsVersion {
             /**
-             * Specifies that minimum TLS version should be created in the namespace.
+             * Set the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
              *
-             * @param minimumTlsVersion minimum TLS version
+             * @param minimumTlsVersion the minimumTlsVersion value to set.
              * @return next stage of the event hub namespace definition
              */
             WithCreate withMinimumTlsVersion(TlsVersion minimumTlsVersion);
@@ -249,7 +254,8 @@ public interface EventHubNamespace extends
          */
         interface WithZoneRedundant {
             /**
-             * Enables Zone Redundant.
+             * Set the zoneRedundant property: Enabling this property creates a Standard Event Hubs Namespace in regions
+             * supported availability zones.
              *
              * @return next stage of the event hub namespace definition
              */
@@ -417,10 +423,10 @@ public interface EventHubNamespace extends
          */
         interface WithMinimumTlsVersion {
             /**
-             * Specifies the minimum Tls version.
+             * Set the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
              *
-             * @param minimumTlsVersion minimum tls version
-             * @return the next definition stage.
+             * @param minimumTlsVersion the minimumTlsVersion value to set.
+             * @return next stage of the event hub namespace update
              */
             Update withMinimumTlsVersion(TlsVersion minimumTlsVersion);
         }
