@@ -17,6 +17,12 @@ import java.io.IOException;
 public final class LogAnalyticsDataConnectionData extends DataConnectionData {
 
     /*
+     * Discriminator property for DataConnectionData.
+     */
+    @Generated
+    private String kind = "logAnalytics";
+
+    /*
      * properties
      */
     @Generated
@@ -30,6 +36,17 @@ public final class LogAnalyticsDataConnectionData extends DataConnectionData {
     @Generated
     public LogAnalyticsDataConnectionData(LogAnalyticsDataConnectionProperties properties) {
         this.properties = properties;
+    }
+
+    /**
+     * Get the kind property: Discriminator property for DataConnectionData.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public String getKind() {
+        return this.kind;
     }
 
     /**
@@ -80,23 +97,6 @@ public final class LogAnalyticsDataConnectionData extends DataConnectionData {
     public LogAnalyticsDataConnectionData setFrequencyOffset(Integer frequencyOffset) {
         super.setFrequencyOffset(frequencyOffset);
         return this;
-    }
-
-    /*
-     * Discriminator property for DataConnectionData.
-     */
-    @Generated
-    private String kind = "logAnalytics";
-
-    /**
-     * Get the kind property: Discriminator property for DataConnectionData.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public String getKind() {
-        return this.kind;
     }
 
     /**

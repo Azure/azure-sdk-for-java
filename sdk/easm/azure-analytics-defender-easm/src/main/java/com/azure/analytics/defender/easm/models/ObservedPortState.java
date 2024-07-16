@@ -31,6 +31,30 @@ public final class ObservedPortState extends ObservedValue {
     @Generated
     private Integer port;
 
+    /*
+     * The firstSeen property.
+     */
+    @Generated
+    private OffsetDateTime firstSeen;
+
+    /*
+     * The lastSeen property.
+     */
+    @Generated
+    private OffsetDateTime lastSeen;
+
+    /*
+     * The count property.
+     */
+    @Generated
+    private Long count;
+
+    /*
+     * The recent property.
+     */
+    @Generated
+    private Boolean recent;
+
     /**
      * Creates an instance of ObservedPortState class.
      */
@@ -57,30 +81,6 @@ public final class ObservedPortState extends ObservedValue {
     public Integer getPort() {
         return this.port;
     }
-
-    /*
-     * The firstSeen property.
-     */
-    @Generated
-    private OffsetDateTime firstSeen;
-
-    /*
-     * The lastSeen property.
-     */
-    @Generated
-    private OffsetDateTime lastSeen;
-
-    /*
-     * The count property.
-     */
-    @Generated
-    private Long count;
-
-    /*
-     * The recent property.
-     */
-    @Generated
-    private Boolean recent;
 
     /**
      * Get the firstSeen property: The firstSeen property.

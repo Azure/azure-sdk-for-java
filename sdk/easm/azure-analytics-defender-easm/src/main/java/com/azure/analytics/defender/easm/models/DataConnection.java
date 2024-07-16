@@ -20,6 +20,12 @@ import java.time.OffsetDateTime;
 public class DataConnection implements JsonSerializable<DataConnection> {
 
     /*
+     * Discriminator property for DataConnection.
+     */
+    @Generated
+    private String kind = "DataConnection";
+
+    /*
      * The system generated unique id for the resource.
      */
     @Generated
@@ -93,122 +99,6 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     }
 
     /**
-     * Get the id property: The system generated unique id for the resource.
-     *
-     * @return the id value.
-     */
-    @Generated
-    public String getId() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The caller provided unique name for the resource.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Get the displayName property: The name that can be used for display purposes.
-     *
-     * @return the displayName value.
-     */
-    @Generated
-    public String getDisplayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Get the content property: The type of data the data connection will transfer.
-     *
-     * @return the content value.
-     */
-    @Generated
-    public DataConnectionContent getContent() {
-        return this.content;
-    }
-
-    /**
-     * Get the createdDate property: The date the data connection was created.
-     *
-     * @return the createdDate value.
-     */
-    @Generated
-    public OffsetDateTime getCreatedDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Get the frequency property: The rate at which the data connection will receive updates.
-     *
-     * @return the frequency value.
-     */
-    @Generated
-    public DataConnectionFrequency getFrequency() {
-        return this.frequency;
-    }
-
-    /**
-     * Get the frequencyOffset property: The day to update the data connection on.
-     *
-     * @return the frequencyOffset value.
-     */
-    @Generated
-    public Integer getFrequencyOffset() {
-        return this.frequencyOffset;
-    }
-
-    /**
-     * Get the updatedDate property: The date the data connection was last updated.
-     *
-     * @return the updatedDate value.
-     */
-    @Generated
-    public OffsetDateTime getUpdatedDate() {
-        return this.updatedDate;
-    }
-
-    /**
-     * Get the userUpdatedAt property: The date the data connection was last updated by user.
-     *
-     * @return the userUpdatedAt value.
-     */
-    @Generated
-    public OffsetDateTime getUserUpdatedAt() {
-        return this.userUpdatedAt;
-    }
-
-    /**
-     * Get the active property: An indicator of whether the data connection is active.
-     *
-     * @return the active value.
-     */
-    @Generated
-    public Boolean isActive() {
-        return this.active;
-    }
-
-    /**
-     * Get the inactiveMessage property: A message that specifies details about data connection if inactive.
-     *
-     * @return the inactiveMessage value.
-     */
-    @Generated
-    public String getInactiveMessage() {
-        return this.inactiveMessage;
-    }
-
-    /*
-     * Discriminator property for DataConnection.
-     */
-    @Generated
-    private String kind = "DataConnection";
-
-    /**
      * Get the kind property: Discriminator property for DataConnection.
      *
      * @return the kind value.
@@ -216,6 +106,16 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     @Generated
     public String getKind() {
         return this.kind;
+    }
+
+    /**
+     * Get the id property: The system generated unique id for the resource.
+     *
+     * @return the id value.
+     */
+    @Generated
+    public String getId() {
+        return this.id;
     }
 
     /**
@@ -231,6 +131,16 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     }
 
     /**
+     * Get the name property: The caller provided unique name for the resource.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
      * Set the name property: The caller provided unique name for the resource.
      *
      * @param name the name value to set.
@@ -240,6 +150,16 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     DataConnection setName(String name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Get the displayName property: The name that can be used for display purposes.
+     *
+     * @return the displayName value.
+     */
+    @Generated
+    public String getDisplayName() {
+        return this.displayName;
     }
 
     /**
@@ -255,6 +175,16 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     }
 
     /**
+     * Get the content property: The type of data the data connection will transfer.
+     *
+     * @return the content value.
+     */
+    @Generated
+    public DataConnectionContent getContent() {
+        return this.content;
+    }
+
+    /**
      * Set the content property: The type of data the data connection will transfer.
      *
      * @param content the content value to set.
@@ -264,6 +194,16 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     DataConnection setContent(DataConnectionContent content) {
         this.content = content;
         return this;
+    }
+
+    /**
+     * Get the createdDate property: The date the data connection was created.
+     *
+     * @return the createdDate value.
+     */
+    @Generated
+    public OffsetDateTime getCreatedDate() {
+        return this.createdDate;
     }
 
     /**
@@ -279,6 +219,16 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     }
 
     /**
+     * Get the frequency property: The rate at which the data connection will receive updates.
+     *
+     * @return the frequency value.
+     */
+    @Generated
+    public DataConnectionFrequency getFrequency() {
+        return this.frequency;
+    }
+
+    /**
      * Set the frequency property: The rate at which the data connection will receive updates.
      *
      * @param frequency the frequency value to set.
@@ -288,6 +238,16 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     DataConnection setFrequency(DataConnectionFrequency frequency) {
         this.frequency = frequency;
         return this;
+    }
+
+    /**
+     * Get the frequencyOffset property: The day to update the data connection on.
+     *
+     * @return the frequencyOffset value.
+     */
+    @Generated
+    public Integer getFrequencyOffset() {
+        return this.frequencyOffset;
     }
 
     /**
@@ -303,6 +263,16 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     }
 
     /**
+     * Get the updatedDate property: The date the data connection was last updated.
+     *
+     * @return the updatedDate value.
+     */
+    @Generated
+    public OffsetDateTime getUpdatedDate() {
+        return this.updatedDate;
+    }
+
+    /**
      * Set the updatedDate property: The date the data connection was last updated.
      *
      * @param updatedDate the updatedDate value to set.
@@ -312,6 +282,16 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     DataConnection setUpdatedDate(OffsetDateTime updatedDate) {
         this.updatedDate = updatedDate;
         return this;
+    }
+
+    /**
+     * Get the userUpdatedAt property: The date the data connection was last updated by user.
+     *
+     * @return the userUpdatedAt value.
+     */
+    @Generated
+    public OffsetDateTime getUserUpdatedAt() {
+        return this.userUpdatedAt;
     }
 
     /**
@@ -327,6 +307,16 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     }
 
     /**
+     * Get the active property: An indicator of whether the data connection is active.
+     *
+     * @return the active value.
+     */
+    @Generated
+    public Boolean isActive() {
+        return this.active;
+    }
+
+    /**
      * Set the active property: An indicator of whether the data connection is active.
      *
      * @param active the active value to set.
@@ -336,6 +326,16 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     DataConnection setActive(Boolean active) {
         this.active = active;
         return this;
+    }
+
+    /**
+     * Get the inactiveMessage property: A message that specifies details about data connection if inactive.
+     *
+     * @return the inactiveMessage value.
+     */
+    @Generated
+    public String getInactiveMessage() {
+        return this.inactiveMessage;
     }
 
     /**

@@ -32,6 +32,30 @@ public final class ObservedInteger extends ObservedValue {
     @Generated
     private List<Source> sources;
 
+    /*
+     * The firstSeen property.
+     */
+    @Generated
+    private OffsetDateTime firstSeen;
+
+    /*
+     * The lastSeen property.
+     */
+    @Generated
+    private OffsetDateTime lastSeen;
+
+    /*
+     * The count property.
+     */
+    @Generated
+    private Long count;
+
+    /*
+     * The recent property.
+     */
+    @Generated
+    private Boolean recent;
+
     /**
      * Creates an instance of ObservedInteger class.
      */
@@ -58,30 +82,6 @@ public final class ObservedInteger extends ObservedValue {
     public List<Source> getSources() {
         return this.sources;
     }
-
-    /*
-     * The firstSeen property.
-     */
-    @Generated
-    private OffsetDateTime firstSeen;
-
-    /*
-     * The lastSeen property.
-     */
-    @Generated
-    private OffsetDateTime lastSeen;
-
-    /*
-     * The count property.
-     */
-    @Generated
-    private Long count;
-
-    /*
-     * The recent property.
-     */
-    @Generated
-    private Boolean recent;
 
     /**
      * Get the firstSeen property: The firstSeen property.

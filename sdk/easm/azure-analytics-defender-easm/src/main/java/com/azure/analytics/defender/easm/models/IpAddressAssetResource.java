@@ -21,36 +21,16 @@ import java.util.List;
 public final class IpAddressAssetResource extends AssetResource {
 
     /*
-     * asset
-     */
-    @Generated
-    private final IpAddressAsset asset;
-
-    /**
-     * Creates an instance of IpAddressAssetResource class.
-     *
-     * @param asset the asset value to set.
-     */
-    @Generated
-    private IpAddressAssetResource(IpAddressAsset asset) {
-        this.asset = asset;
-    }
-
-    /**
-     * Get the asset property: asset.
-     *
-     * @return the asset value.
-     */
-    @Generated
-    public IpAddressAsset getAsset() {
-        return this.asset;
-    }
-
-    /*
      * Discriminator property for AssetResource.
      */
     @Generated
     private String kind = "ipAddress";
+
+    /*
+     * asset
+     */
+    @Generated
+    private final IpAddressAsset asset;
 
     /*
      * The caller provided unique name for the resource.
@@ -125,6 +105,16 @@ public final class IpAddressAssetResource extends AssetResource {
     private String reason;
 
     /**
+     * Creates an instance of IpAddressAssetResource class.
+     *
+     * @param asset the asset value to set.
+     */
+    @Generated
+    private IpAddressAssetResource(IpAddressAsset asset) {
+        this.asset = asset;
+    }
+
+    /**
      * Get the kind property: Discriminator property for AssetResource.
      *
      * @return the kind value.
@@ -133,6 +123,16 @@ public final class IpAddressAssetResource extends AssetResource {
     @Override
     public String getKind() {
         return this.kind;
+    }
+
+    /**
+     * Get the asset property: asset.
+     *
+     * @return the asset value.
+     */
+    @Generated
+    public IpAddressAsset getAsset() {
+        return this.asset;
     }
 
     /**

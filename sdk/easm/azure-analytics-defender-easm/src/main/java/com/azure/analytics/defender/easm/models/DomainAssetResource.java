@@ -21,36 +21,16 @@ import java.util.List;
 public final class DomainAssetResource extends AssetResource {
 
     /*
-     * asset
-     */
-    @Generated
-    private final DomainAsset asset;
-
-    /**
-     * Creates an instance of DomainAssetResource class.
-     *
-     * @param asset the asset value to set.
-     */
-    @Generated
-    private DomainAssetResource(DomainAsset asset) {
-        this.asset = asset;
-    }
-
-    /**
-     * Get the asset property: asset.
-     *
-     * @return the asset value.
-     */
-    @Generated
-    public DomainAsset getAsset() {
-        return this.asset;
-    }
-
-    /*
      * Discriminator property for AssetResource.
      */
     @Generated
     private String kind = "domain";
+
+    /*
+     * asset
+     */
+    @Generated
+    private final DomainAsset asset;
 
     /*
      * The caller provided unique name for the resource.
@@ -125,6 +105,16 @@ public final class DomainAssetResource extends AssetResource {
     private String reason;
 
     /**
+     * Creates an instance of DomainAssetResource class.
+     *
+     * @param asset the asset value to set.
+     */
+    @Generated
+    private DomainAssetResource(DomainAsset asset) {
+        this.asset = asset;
+    }
+
+    /**
      * Get the kind property: Discriminator property for AssetResource.
      *
      * @return the kind value.
@@ -133,6 +123,16 @@ public final class DomainAssetResource extends AssetResource {
     @Override
     public String getKind() {
         return this.kind;
+    }
+
+    /**
+     * Get the asset property: asset.
+     *
+     * @return the asset value.
+     */
+    @Generated
+    public DomainAsset getAsset() {
+        return this.asset;
     }
 
     /**

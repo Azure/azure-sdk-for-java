@@ -4,24 +4,16 @@
 package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.implementation.EasmClientImpl;
-import com.azure.analytics.defender.easm.models.AssetChainRequest;
-import com.azure.analytics.defender.easm.models.AssetChainSummaryResult;
+import com.azure.analytics.defender.easm.implementation.models.CreateOrReplaceDiscoGroupRequest;
 import com.azure.analytics.defender.easm.models.AssetResource;
-import com.azure.analytics.defender.easm.models.AssetsExportRequest;
 import com.azure.analytics.defender.easm.models.AssetUpdateData;
-import com.azure.analytics.defender.easm.models.CisaCveResult;
+import com.azure.analytics.defender.easm.models.CreateOrReplaceDiscoGroupOptions;
 import com.azure.analytics.defender.easm.models.DataConnection;
 import com.azure.analytics.defender.easm.models.DataConnectionData;
-import com.azure.analytics.defender.easm.models.DeltaDetailsRequest;
-import com.azure.analytics.defender.easm.models.DeltaResult;
-import com.azure.analytics.defender.easm.models.DeltaSummaryRequest;
-import com.azure.analytics.defender.easm.models.DeltaSummaryResult;
 import com.azure.analytics.defender.easm.models.DiscoGroup;
 import com.azure.analytics.defender.easm.models.DiscoGroupData;
 import com.azure.analytics.defender.easm.models.DiscoRunResult;
 import com.azure.analytics.defender.easm.models.DiscoTemplate;
-import com.azure.analytics.defender.easm.models.ObservationPageResult;
-import com.azure.analytics.defender.easm.models.ReportAssetSnapshotExportRequest;
 import com.azure.analytics.defender.easm.models.ReportAssetSnapshotRequest;
 import com.azure.analytics.defender.easm.models.ReportAssetSnapshotResult;
 import com.azure.analytics.defender.easm.models.ReportAssetSummaryRequest;
@@ -71,58 +63,24 @@ public final class EasmAsyncClient {
 
     /**
      * Retrieve a list of assets for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>orderby</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A list of expressions that specify the order of the returned resources.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
-     * <tr>
-     * <td>mark</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and subsequent
-     * values are returned in the response.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>A list of expressions that specify the order of the returned
+     * resources.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <tr><td>mark</td><td>String</td><td>No</td><td>Specify this value instead of 'skip' to use cursor-based
+     * searching. Initial value is '*' and subsequent values are returned in the response.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     displayName: String (Optional)
@@ -156,21 +114,10 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of AssetResource items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAssetResource(RequestOptions requestOptions) {
-        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listAssetResourceAsync(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> cleanUp(protocolMethodData))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return this.serviceClient.listAssetResourceAsync(requestOptions);
     }
 
     /**
@@ -271,39 +218,19 @@ public final class EasmAsyncClient {
 
     /**
      * Retrieve a list of data connections.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     displayName: String (Optional)
@@ -325,21 +252,10 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DataConnection items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDataConnection(RequestOptions requestOptions) {
-        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDataConnectionAsync(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> cleanUp(protocolMethodData))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return this.serviceClient.listDataConnectionAsync(requestOptions);
     }
 
     /**
@@ -497,43 +413,17 @@ public final class EasmAsyncClient {
 
     /**
      * Retrieve a list of discovery group for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -583,21 +473,10 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDiscoGroup(RequestOptions requestOptions) {
-        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDiscoGroupAsync(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> cleanUp(protocolMethodData))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return this.serviceClient.listDiscoGroupAsync(requestOptions);
     }
 
     /**
@@ -825,44 +704,68 @@ public final class EasmAsyncClient {
     }
 
     /**
-     * Retrieve a list of disco templates for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * Retrieve a collection of discovery run results for a discovery group with a given groupName.
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     submittedDate: OffsetDateTime (Optional)
+     *     startedDate: OffsetDateTime (Optional)
+     *     completedDate: OffsetDateTime (Optional)
+     *     tier: String (Optional)
+     *     state: String(pending/running/completed/failed) (Optional)
+     *     totalAssetsFoundCount: Long (Optional)
+     *     seeds (Optional): [
+     *          (Optional){
+     *             kind: String(as/attribute/contact/domain/host/ipBlock) (Optional)
+     *             name: String (Optional)
+     *         }
+     *     ]
+     *     excludes (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     names (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }</pre>
      *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
+     * @param groupName The unique identifier for the discovery group.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listRuns(String groupName, RequestOptions requestOptions) {
+        return this.serviceClient.listRunsAsync(groupName, requestOptions);
+    }
+
+    /**
+     * Retrieve a list of disco templates for the provided search parameters.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -892,21 +795,10 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDiscoTemplate(RequestOptions requestOptions) {
-        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDiscoTemplateAsync(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> cleanUp(protocolMethodData))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return this.serviceClient.listDiscoTemplateAsync(requestOptions);
     }
 
     /**
@@ -1119,43 +1011,17 @@ public final class EasmAsyncClient {
 
     /**
      * Retrieve a list of saved filters for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -1173,21 +1039,10 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of SavedFilter items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listSavedFilter(RequestOptions requestOptions) {
-        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listSavedFilterAsync(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> cleanUp(protocolMethodData))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return this.serviceClient.listSavedFilterAsync(requestOptions);
     }
 
     /**
@@ -1276,49 +1131,19 @@ public final class EasmAsyncClient {
 
     /**
      * Retrieve a list of tasks for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>orderby</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A list of expressions that specify the order of the returned resources.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>A list of expressions that specify the order of the returned
+     * resources.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1329,7 +1154,7 @@ public final class EasmAsyncClient {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      * }
      * }</pre>
@@ -1341,21 +1166,10 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of Task items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listTask(RequestOptions requestOptions) {
-        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listTaskAsync(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> cleanUp(protocolMethodData))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return this.serviceClient.listTaskAsync(requestOptions);
     }
 
     /**
@@ -1427,6 +1241,54 @@ public final class EasmAsyncClient {
     /**
      * Retrieve a list of assets for the provided search parameters.
      *
+     * @param filter Filter the result list using the given expression.
+     * @param orderBy A list of expressions that specify the order of the returned resources.
+     * @param skip The number of result items to skip.
+     * @param mark Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and
+     * subsequent values are returned in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of AssetResource items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AssetResource> listAssetResource(String filter, String orderBy, Integer skip, String mark) {
+        // Generated convenience method for listAssetResource
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter, false);
+        }
+        if (orderBy != null) {
+            requestOptions.addQueryParam("orderby", orderBy, false);
+        }
+        if (skip != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
+        }
+        if (mark != null) {
+            requestOptions.addQueryParam("mark", mark, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listAssetResource(requestOptions);
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, AssetResource>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(AssetResource.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Retrieve a list of assets for the provided search parameters.
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1458,7 +1320,7 @@ public final class EasmAsyncClient {
      * Update labels on assets matching the provided filter.
      *
      * @param filter An expression on the resource type that selects the resources to be returned.
-     * @param assetUpdateData A request body used to update an asset.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1467,13 +1329,13 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Task> updateAssets(String filter, AssetUpdateData assetUpdateData) {
+    public Mono<Task> updateAssets(String filter, AssetUpdateData body) {
         // Generated convenience method for updateAssetsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateAssetsWithResponse(filter, BinaryData.fromObject(assetUpdateData), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
+        return updateAssetsWithResponse(filter, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
     }
 
     /**
@@ -1488,12 +1350,13 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the items in the current page of results on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AssetResource> getAssetResource(String assetId) {
         // Generated convenience method for getAssetResourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAssetResourceWithResponse(assetId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(AssetResource.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(AssetResource.class));
     }
 
     /**
@@ -1508,6 +1371,7 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DataConnection items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataConnection> listDataConnection(Integer skip) {
         // Generated convenience method for listDataConnection
@@ -1540,6 +1404,7 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DataConnection items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataConnection> listDataConnection() {
         // Generated convenience method for listDataConnection
@@ -1562,22 +1427,22 @@ public final class EasmAsyncClient {
     /**
      * Validate a data connection with a given dataConnectionName.
      *
-     * @param dataConnectionData The dataConnectionData parameter.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return validate result for validate action endpoints on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ValidateResult> validateDataConnection(DataConnectionData dataConnectionData) {
+    public Mono<ValidateResult> validateDataConnection(DataConnectionData body) {
         // Generated convenience method for validateDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return validateDataConnectionWithResponse(BinaryData.fromObject(dataConnectionData), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ValidateResult.class));
+        return validateDataConnectionWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ValidateResult.class));
     }
 
     /**
@@ -1592,19 +1457,20 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataConnection> getDataConnection(String dataConnectionName) {
         // Generated convenience method for getDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getDataConnectionWithResponse(dataConnectionName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DataConnection.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DataConnection.class));
     }
 
     /**
      * Create or replace a data connection with a given dataConnectionName.
      *
      * @param dataConnectionName The caller provided unique name for the resource.
-     * @param dataConnectionData The dataConnectionData parameter.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1613,14 +1479,14 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataConnection> createOrReplaceDataConnection(String dataConnectionName,
-        DataConnectionData dataConnectionData) {
+    public Mono<DataConnection> createOrReplaceDataConnection(String dataConnectionName, DataConnectionData body) {
         // Generated convenience method for createOrReplaceDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceDataConnectionWithResponse(dataConnectionName, BinaryData.fromObject(dataConnectionData),
+        return createOrReplaceDataConnectionWithResponse(dataConnectionName, BinaryData.fromObject(body),
             requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DataConnection.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DataConnection.class));
     }
 
     /**
@@ -1692,6 +1558,7 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiscoGroup> listDiscoGroup() {
         // Generated convenience method for listDiscoGroup
@@ -1714,22 +1581,22 @@ public final class EasmAsyncClient {
     /**
      * Validate a discovery group with a given groupName.
      *
-     * @param discoGroupData A request body used to create a discovery group.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return validate result for validate action endpoints on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ValidateResult> validateDiscoGroup(DiscoGroupData discoGroupData) {
+    public Mono<ValidateResult> validateDiscoGroup(DiscoGroupData body) {
         // Generated convenience method for validateDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return validateDiscoGroupWithResponse(BinaryData.fromObject(discoGroupData), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ValidateResult.class));
+        return validateDiscoGroupWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ValidateResult.class));
     }
 
     /**
@@ -1744,19 +1611,19 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiscoGroup> getDiscoGroup(String groupName) {
         // Generated convenience method for getDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getDiscoGroupWithResponse(groupName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoGroup.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DiscoGroup.class));
     }
 
     /**
      * Create a discovery group with a given groupName.
      *
-     * @param groupName The caller provided unique name for the resource.
-     * @param discoGroupData A request body used to create a discovery group.
+     * @param options Options for createOrReplaceDiscoGroup API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1765,13 +1632,25 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DiscoGroup> createOrReplaceDiscoGroup(String groupName, DiscoGroupData discoGroupData) {
+    public Mono<DiscoGroup> createOrReplaceDiscoGroup(CreateOrReplaceDiscoGroupOptions options) {
         // Generated convenience method for createOrReplaceDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(discoGroupData), requestOptions)
+        String groupName = options.getGroupName();
+        CreateOrReplaceDiscoGroupRequest createOrReplaceDiscoGroupRequestObj
+            = new CreateOrReplaceDiscoGroupRequest().setName(options.getName())
+                .setDescription(options.getDescription())
+                .setTier(options.getTier())
+                .setFrequencyMilliseconds(options.getFrequencyMilliseconds())
+                .setSeeds(options.getSeeds())
+                .setNames(options.getNames())
+                .setExcludes(options.getExcludes())
+                .setTemplateId(options.getTemplateId());
+        BinaryData createOrReplaceDiscoGroupRequest = BinaryData.fromObject(createOrReplaceDiscoGroupRequestObj);
+        return createOrReplaceDiscoGroupWithResponse(groupName, createOrReplaceDiscoGroupRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoGroup.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DiscoGroup.class));
     }
 
     /**
@@ -1792,6 +1671,46 @@ public final class EasmAsyncClient {
         // Generated convenience method for runDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return runDiscoGroupWithResponse(groupName, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Retrieve a collection of discovery run results for a discovery group with a given groupName.
+     *
+     * @param groupName The unique identifier for the discovery group.
+     * @param filter Filter the result list using the given expression.
+     * @param skip The number of result items to skip.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DiscoRunResult> listRuns(String groupName, String filter, Integer skip) {
+        // Generated convenience method for listRuns
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter, false);
+        }
+        if (skip != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listRuns(groupName, requestOptions);
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoRunResult>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DiscoRunResult.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1839,6 +1758,7 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiscoTemplate> listDiscoTemplate(String filter, Integer skip) {
         // Generated convenience method for listDiscoTemplate
@@ -1874,6 +1794,7 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiscoTemplate> listDiscoTemplate() {
         // Generated convenience method for listDiscoTemplate
@@ -1905,12 +1826,13 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the items in the current page of results on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiscoTemplate> getDiscoTemplate(String templateId) {
         // Generated convenience method for getDiscoTemplateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getDiscoTemplateWithResponse(templateId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoTemplate.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DiscoTemplate.class));
     }
 
     /**
@@ -1923,18 +1845,19 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return billable assets summary for the workspace on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReportBillableAssetSummaryResult> getBillable() {
         // Generated convenience method for getBillableWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getBillableWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ReportBillableAssetSummaryResult.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ReportBillableAssetSummaryResult.class));
     }
 
     /**
      * Get the most recent snapshot of asset summary values for the snapshot request.
      *
-     * @param reportAssetSnapshotRequest A request body used to retrieve an asset report snapshot.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1944,20 +1867,19 @@ public final class EasmAsyncClient {
      * @return the most recent snapshot of asset summary values for the snapshot request on successful completion of
      * {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReportAssetSnapshotResult> getSnapshot(ReportAssetSnapshotRequest reportAssetSnapshotRequest) {
+    public Mono<ReportAssetSnapshotResult> getSnapshot(ReportAssetSnapshotRequest body) {
         // Generated convenience method for getSnapshotWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSnapshotWithResponse(BinaryData.fromObject(reportAssetSnapshotRequest), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ReportAssetSnapshotResult.class));
+        return getSnapshotWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ReportAssetSnapshotResult.class));
     }
 
     /**
      * Get asset summary details for the summary request.
      *
-     * @param reportAssetSummaryRequest A request body used to retrieve summary asset information. One and only one
-     * collection of summary identifiers must be provided: filters, metrics, or metricCategories.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1966,13 +1888,13 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return asset summary details for the summary request on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReportAssetSummaryResult> getSummary(ReportAssetSummaryRequest reportAssetSummaryRequest) {
+    public Mono<ReportAssetSummaryResult> getSummary(ReportAssetSummaryRequest body) {
         // Generated convenience method for getSummaryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSummaryWithResponse(BinaryData.fromObject(reportAssetSummaryRequest), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ReportAssetSummaryResult.class));
+        return getSummaryWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ReportAssetSummaryResult.class));
     }
 
     /**
@@ -2056,19 +1978,20 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SavedFilter> getSavedFilter(String filterName) {
         // Generated convenience method for getSavedFilterWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getSavedFilterWithResponse(filterName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(SavedFilter.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(SavedFilter.class));
     }
 
     /**
      * Create or replace a saved filter with a given filterName.
      *
      * @param filterName The caller provided unique name for the resource.
-     * @param savedFilterData A request body used to create a saved filter.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2077,13 +2000,14 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SavedFilter> createOrReplaceSavedFilter(String filterName, SavedFilterData savedFilterData) {
+    public Mono<SavedFilter> createOrReplaceSavedFilter(String filterName, SavedFilterData body) {
         // Generated convenience method for createOrReplaceSavedFilterWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceSavedFilterWithResponse(filterName, BinaryData.fromObject(savedFilterData),
-            requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(SavedFilter.class));
+        return createOrReplaceSavedFilterWithResponse(filterName, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(SavedFilter.class));
     }
 
     /**
@@ -2191,12 +2115,13 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> getTask(String taskId) {
         // Generated convenience method for getTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getTaskWithResponse(taskId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
     }
 
     /**
@@ -2211,1034 +2136,12 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> cancelTask(String taskId) {
         // Generated convenience method for cancelTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cancelTaskWithResponse(taskId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
-    }
-
-    private BinaryData cleanUp(BinaryData input) {
-        return BinaryData.fromString(input.toString().replaceAll("\\+0000", "+00:00"));
-    }
-
-    /**
-     * Retrieve a collection of discovery run results for a discovery group with a given groupName.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     submittedDate: OffsetDateTime (Optional)
-     *     startedDate: OffsetDateTime (Optional)
-     *     completedDate: OffsetDateTime (Optional)
-     *     tier: String (Optional)
-     *     state: String(pending/running/completed/failed) (Optional)
-     *     totalAssetsFoundCount: Long (Optional)
-     *     seeds (Optional): [
-     *          (Optional){
-     *             kind: String(as/attribute/contact/domain/host/ipBlock) (Optional)
-     *             name: String (Optional)
-     *         }
-     *     ]
-     *     excludes (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     names (Optional): [
-     *         String (Optional)
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param groupName The unique identifier for the discovery group.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listRuns(String groupName, RequestOptions requestOptions) {
-        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listRunsAsync(groupName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> cleanUp(protocolMethodData))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Retrieve a collection of discovery run results for a discovery group with a given groupName.
-     *
-     * @param groupName The unique identifier for the discovery group.
-     * @param filter Filter the result list using the given expression.
-     * @param skip The number of result items to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DiscoRunResult> listRuns(String groupName, String filter, Integer skip) {
-        // Generated convenience method for listRuns
-        RequestOptions requestOptions = new RequestOptions();
-        if (filter != null) {
-            requestOptions.addQueryParam("filter", filter, false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listRuns(groupName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoRunResult>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(DiscoRunResult.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Export a list of assets for the provided search parameters.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
-     * <tr><td>orderby</td><td>String</td><td>No</td><td>A list of expressions that specify the order of the returned
-     * resources.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     fileName: String (Required)
-     *     columns (Required): [
-     *         String (Required)
-     *     ]
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     startedAt: OffsetDateTime (Optional)
-     *     completedAt: OffsetDateTime (Optional)
-     *     lastPolledAt: OffsetDateTime (Optional)
-     *     state: String(pending/running/paused/complete/incomplete/failed/warning) (Optional)
-     *     phase: String(running/polling/complete) (Optional)
-     *     reason: String (Optional)
-     *     metadata (Optional): {
-     *         String: Object (Required)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param body Body parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAssetsExportWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.getAssetsExportWithResponseAsync(body, requestOptions);
-    }
-
-    /**
-     * Retrieve observations on an asset.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
-     * <tr><td>orderby</td><td>String</td><td>No</td><td>A list of expressions that specify the order of the returned
-     * resources.</td></tr>
-     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     totalElements: long (Required)
-     *     prioritySummary (Required): {
-     *         String: int (Required)
-     *     }
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             types (Required): [
-     *                 String(cve/insight) (Required)
-     *             ]
-     *             priority: String(high/medium/low/none) (Required)
-     *             cvssScoreV2: double (Required)
-     *             cvssScoreV3: double (Required)
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param assetId The system generated unique id for the resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the page result response for the observation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getObservationsWithResponse(String assetId, RequestOptions requestOptions) {
-        return this.serviceClient.getObservationsWithResponseAsync(assetId, requestOptions);
-    }
-
-    /**
-     * Retrieve a list of deltas for the provided time range.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     deltaDetailType: String(added/removed) (Required)
-     *     priorDays: Integer (Optional)
-     *     kind: String(page/resource/mailServer/nameServer/host/domain/ipAddress/ipBlock/as/contact/sslCert) (Required)
-     *     date: String (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     kind: String(page/resource/mailServer/nameServer/host/domain/ipAddress/ipBlock/as/contact/sslCert) (Required)
-     *     name: String (Required)
-     *     createdAt: OffsetDateTime (Required)
-     *     updatedAt: OffsetDateTime (Required)
-     *     state: String(candidate/candidateInvestigate/confirmed/associated/associatedPartner/associatedThirdParty/archived/dismissed/autoconfirmed) (Required)
-     * }
-     * }</pre>
-     *
-     * @param body Body parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getDeltaDetails(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.getDeltaDetailsAsync(body, requestOptions);
-    }
-
-    /**
-     * Retrieve a list of deltas with overall summary changes for the provided time range.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     priorDays: Integer (Optional)
-     *     date: String (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     summary (Required): {
-     *         range: long (Required)
-     *         removed: long (Required)
-     *         added: long (Required)
-     *         difference: long (Required)
-     *         kindSummaries (Required): [
-     *              (Required){
-     *                 kind: String(page/resource/mailServer/nameServer/host/domain/ipAddress/ipBlock/as/contact/sslCert) (Required)
-     *                 removed: long (Required)
-     *                 added: long (Required)
-     *                 difference: long (Required)
-     *             }
-     *         ]
-     *     }
-     *     daily (Required): [
-     *          (Required){
-     *             date: OffsetDateTime (Required)
-     *             deltas (Required): [
-     *                  (Required){
-     *                     kind: String(page/resource/mailServer/nameServer/host/domain/ipAddress/ipBlock/as/contact/sslCert) (Required)
-     *                     removed: long (Required)
-     *                     added: long (Required)
-     *                     difference: long (Required)
-     *                     count: long (Required)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param body Body parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return define response body for getting delta summary along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeltaSummaryWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.getDeltaSummaryWithResponseAsync(body, requestOptions);
-    }
-
-    /**
-     * Delete a discovery group with a given discovery group name.
-     *
-     * @param groupName The caller provided unique name for the resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDiscoGroupWithResponse(String groupName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteDiscoGroupWithResponseAsync(groupName, requestOptions);
-    }
-
-    /**
-     * Retrieve an asset chain summary.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     assetChainSource: String(DISCO_GROUP/ASSET) (Required)
-     *     sourceIds (Required): [
-     *         String (Required)
-     *     ]
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     affectedAssetsSummary (Required): [
-     *          (Required){
-     *             kind: String(as/contact/domain/host/ipAddress/ipBlock/page/sslCert) (Required)
-     *             affectedCount: long (Required)
-     *         }
-     *     ]
-     *     affectedGroupsSummary (Required): [
-     *          (Required){
-     *             id: String (Required)
-     *             name: String (Required)
-     *             displayName: String (Required)
-     *         }
-     *     ]
-     *     errors (Optional): [
-     *          (Optional){
-     *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
-     *             }
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param body Body parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response for the asset chain summary along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAssetChainSummaryWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.getAssetChainSummaryWithResponseAsync(body, requestOptions);
-    }
-
-    /**
-     * Dismiss discovery chain for a given asset chain source.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     assetChainSource: String(DISCO_GROUP/ASSET) (Required)
-     *     sourceIds (Required): [
-     *         String (Required)
-     *     ]
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     startedAt: OffsetDateTime (Optional)
-     *     completedAt: OffsetDateTime (Optional)
-     *     lastPolledAt: OffsetDateTime (Optional)
-     *     state: String(pending/running/paused/complete/incomplete/failed/warning) (Optional)
-     *     phase: String(running/polling/complete) (Optional)
-     *     reason: String (Optional)
-     *     metadata (Optional): {
-     *         String: Object (Required)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param body Body parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> dismissAssetChainWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.dismissAssetChainWithResponseAsync(body, requestOptions);
-    }
-
-    /**
-     * Get the most recent snapshot of asset summary values for the snapshot request exported to a file.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     metric: String (Optional)
-     *     fileName: String (Optional)
-     *     columns (Optional): [
-     *         String (Optional)
-     *     ]
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     startedAt: OffsetDateTime (Optional)
-     *     completedAt: OffsetDateTime (Optional)
-     *     lastPolledAt: OffsetDateTime (Optional)
-     *     state: String(pending/running/paused/complete/incomplete/failed/warning) (Optional)
-     *     phase: String(running/polling/complete) (Optional)
-     *     reason: String (Optional)
-     *     metadata (Optional): {
-     *         String: Object (Required)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param body Body parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the most recent snapshot of asset summary values for the snapshot request exported to a file along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSnapshotExportWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.getSnapshotExportWithResponseAsync(body, requestOptions);
-    }
-
-    /**
-     * Run a task by taskId.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     startedAt: OffsetDateTime (Optional)
-     *     completedAt: OffsetDateTime (Optional)
-     *     lastPolledAt: OffsetDateTime (Optional)
-     *     state: String(pending/running/paused/complete/incomplete/failed/warning) (Optional)
-     *     phase: String(running/polling/complete) (Optional)
-     *     reason: String (Optional)
-     *     metadata (Optional): {
-     *         String: Object (Required)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param taskId The unique identifier of the task.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> runTaskWithResponse(String taskId, RequestOptions requestOptions) {
-        return this.serviceClient.runTaskWithResponseAsync(taskId, requestOptions);
-    }
-
-    /**
-     * Download a task.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     startedAt: OffsetDateTime (Optional)
-     *     completedAt: OffsetDateTime (Optional)
-     *     lastPolledAt: OffsetDateTime (Optional)
-     *     state: String(pending/running/paused/complete/incomplete/failed/warning) (Optional)
-     *     phase: String(running/polling/complete) (Optional)
-     *     reason: String (Optional)
-     *     metadata (Optional): {
-     *         String: Object (Required)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param taskId The unique identifier of the task.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadTaskWithResponse(String taskId, RequestOptions requestOptions) {
-        return this.serviceClient.downloadTaskWithResponseAsync(taskId, requestOptions);
-    }
-
-    /**
-     * Retrieve a list of CisaCves for the provided search parameters.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     cveId: String (Required)
-     *     vendorProject: String (Required)
-     *     product: String (Required)
-     *     vulnerabilityName: String (Required)
-     *     shortDescription: String (Required)
-     *     requiredAction: String (Required)
-     *     notes: String (Required)
-     *     dateAdded: OffsetDateTime (Required)
-     *     dueDate: OffsetDateTime (Required)
-     *     updatedAt: OffsetDateTime (Required)
-     *     count: long (Required)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of CisaCveResult items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getCisaCves(RequestOptions requestOptions) {
-        return this.serviceClient.getCisaCvesAsync(requestOptions);
-    }
-
-    /**
-     * Retrieve details of CisaCve by cveId.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     cveId: String (Required)
-     *     vendorProject: String (Required)
-     *     product: String (Required)
-     *     vulnerabilityName: String (Required)
-     *     shortDescription: String (Required)
-     *     requiredAction: String (Required)
-     *     notes: String (Required)
-     *     dateAdded: OffsetDateTime (Required)
-     *     dueDate: OffsetDateTime (Required)
-     *     updatedAt: OffsetDateTime (Required)
-     *     count: long (Required)
-     * }
-     * }</pre>
-     *
-     * @param cveId The CVE ID of the vulnerability in the format CVE-YYYY-NNNN, note that the number portion can have
-     * more than 4 digits.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return cisa cve in a given workspace along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCisaCveWithResponse(String cveId, RequestOptions requestOptions) {
-        return this.serviceClient.getCisaCveWithResponseAsync(cveId, requestOptions);
-    }
-
-    /**
-     * Export a list of assets for the provided search parameters.
-     *
-     * @param body Body parameter.
-     * @param filter Filter the result list using the given expression.
-     * @param orderBy A list of expressions that specify the order of the returned resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Task> getAssetsExport(AssetsExportRequest body, String filter, String orderBy) {
-        // Generated convenience method for getAssetsExportWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (filter != null) {
-            requestOptions.addQueryParam("filter", filter, false);
-        }
-        if (orderBy != null) {
-            requestOptions.addQueryParam("orderby", orderBy, false);
-        }
-        return getAssetsExportWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
-    }
-
-    /**
-     * Export a list of assets for the provided search parameters.
-     *
-     * @param body Body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Task> getAssetsExport(AssetsExportRequest body) {
-        // Generated convenience method for getAssetsExportWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getAssetsExportWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
-    }
-
-    /**
-     * Retrieve observations on an asset.
-     *
-     * @param assetId The system generated unique id for the resource.
-     * @param filter Filter the result list using the given expression.
-     * @param orderBy A list of expressions that specify the order of the returned resources.
-     * @param skip The number of result items to skip.
-     * @param maxPageSize The maximum number of result items per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the page result response for the observation on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ObservationPageResult> getObservations(String assetId, String filter, String orderBy, Integer skip,
-        Integer maxPageSize) {
-        // Generated convenience method for getObservationsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (filter != null) {
-            requestOptions.addQueryParam("filter", filter, false);
-        }
-        if (orderBy != null) {
-            requestOptions.addQueryParam("orderby", orderBy, false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxpagesize", String.valueOf(maxPageSize), false);
-        }
-        return getObservationsWithResponse(assetId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ObservationPageResult.class));
-    }
-
-    /**
-     * Retrieve observations on an asset.
-     *
-     * @param assetId The system generated unique id for the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the page result response for the observation on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ObservationPageResult> getObservations(String assetId) {
-        // Generated convenience method for getObservationsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getObservationsWithResponse(assetId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ObservationPageResult.class));
-    }
-
-    /**
-     * Retrieve a list of deltas for the provided time range.
-     *
-     * @param body Body parameter.
-     * @param skip The number of result items to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeltaResult> getDeltaDetails(DeltaDetailsRequest body, Integer skip) {
-        // Generated convenience method for getDeltaDetails
-        RequestOptions requestOptions = new RequestOptions();
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = getDeltaDetails(BinaryData.fromObject(body), requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, DeltaResult>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(DeltaResult.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Retrieve a list of deltas for the provided time range.
-     *
-     * @param body Body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeltaResult> getDeltaDetails(DeltaDetailsRequest body) {
-        // Generated convenience method for getDeltaDetails
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = getDeltaDetails(BinaryData.fromObject(body), requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, DeltaResult>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(DeltaResult.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Retrieve a list of deltas with overall summary changes for the provided time range.
-     *
-     * @param body Body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define response body for getting delta summary on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeltaSummaryResult> getDeltaSummary(DeltaSummaryRequest body) {
-        // Generated convenience method for getDeltaSummaryWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getDeltaSummaryWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DeltaSummaryResult.class));
-    }
-
-    /**
-     * Delete a discovery group with a given discovery group name.
-     *
-     * @param groupName The caller provided unique name for the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteDiscoGroup(String groupName) {
-        // Generated convenience method for deleteDiscoGroupWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteDiscoGroupWithResponse(groupName, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Retrieve an asset chain summary.
-     *
-     * @param body Body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the asset chain summary on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AssetChainSummaryResult> getAssetChainSummary(AssetChainRequest body) {
-        // Generated convenience method for getAssetChainSummaryWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getAssetChainSummaryWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AssetChainSummaryResult.class));
-    }
-
-    /**
-     * Dismiss discovery chain for a given asset chain source.
-     *
-     * @param body Body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Task> dismissAssetChain(AssetChainRequest body) {
-        // Generated convenience method for dismissAssetChainWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return dismissAssetChainWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
-    }
-
-    /**
-     * Get the most recent snapshot of asset summary values for the snapshot request exported to a file.
-     *
-     * @param body Body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the most recent snapshot of asset summary values for the snapshot request exported to a file on
-     * successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Task> getSnapshotExport(ReportAssetSnapshotExportRequest body) {
-        // Generated convenience method for getSnapshotExportWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getSnapshotExportWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
-    }
-
-    /**
-     * Run a task by taskId.
-     *
-     * @param taskId The unique identifier of the task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Task> runTask(String taskId) {
-        // Generated convenience method for runTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return runTaskWithResponse(taskId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
-    }
-
-    /**
-     * Download a task.
-     *
-     * @param taskId The unique identifier of the task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Task> downloadTask(String taskId) {
-        // Generated convenience method for downloadTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return downloadTaskWithResponse(taskId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
-    }
-
-    /**
-     * Retrieve a list of CisaCves for the provided search parameters.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of CisaCveResult items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CisaCveResult> getCisaCves() {
-        // Generated convenience method for getCisaCves
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = getCisaCves(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, CisaCveResult>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(CisaCveResult.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Retrieve details of CisaCve by cveId.
-     *
-     * @param cveId The CVE ID of the vulnerability in the format CVE-YYYY-NNNN, note that the number portion can have
-     * more than 4 digits.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cisa cve in a given workspace on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CisaCveResult> getCisaCve(String cveId) {
-        // Generated convenience method for getCisaCveWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getCisaCveWithResponse(cveId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CisaCveResult.class));
     }
 }

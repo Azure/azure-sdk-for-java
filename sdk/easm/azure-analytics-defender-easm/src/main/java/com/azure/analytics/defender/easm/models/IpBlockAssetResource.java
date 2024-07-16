@@ -21,36 +21,16 @@ import java.util.List;
 public final class IpBlockAssetResource extends AssetResource {
 
     /*
-     * asset
-     */
-    @Generated
-    private final IpBlockAsset asset;
-
-    /**
-     * Creates an instance of IpBlockAssetResource class.
-     *
-     * @param asset the asset value to set.
-     */
-    @Generated
-    private IpBlockAssetResource(IpBlockAsset asset) {
-        this.asset = asset;
-    }
-
-    /**
-     * Get the asset property: asset.
-     *
-     * @return the asset value.
-     */
-    @Generated
-    public IpBlockAsset getAsset() {
-        return this.asset;
-    }
-
-    /*
      * Discriminator property for AssetResource.
      */
     @Generated
     private String kind = "ipBlock";
+
+    /*
+     * asset
+     */
+    @Generated
+    private final IpBlockAsset asset;
 
     /*
      * The caller provided unique name for the resource.
@@ -125,6 +105,16 @@ public final class IpBlockAssetResource extends AssetResource {
     private String reason;
 
     /**
+     * Creates an instance of IpBlockAssetResource class.
+     *
+     * @param asset the asset value to set.
+     */
+    @Generated
+    private IpBlockAssetResource(IpBlockAsset asset) {
+        this.asset = asset;
+    }
+
+    /**
      * Get the kind property: Discriminator property for AssetResource.
      *
      * @return the kind value.
@@ -133,6 +123,16 @@ public final class IpBlockAssetResource extends AssetResource {
     @Override
     public String getKind() {
         return this.kind;
+    }
+
+    /**
+     * Get the asset property: asset.
+     *
+     * @return the asset value.
+     */
+    @Generated
+    public IpBlockAsset getAsset() {
+        return this.asset;
     }
 
     /**

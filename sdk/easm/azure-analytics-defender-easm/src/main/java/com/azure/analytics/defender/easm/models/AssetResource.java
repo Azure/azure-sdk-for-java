@@ -22,6 +22,12 @@ import java.util.List;
 public class AssetResource implements JsonSerializable<AssetResource> {
 
     /*
+     * Discriminator property for AssetResource.
+     */
+    @Generated
+    private String kind = "AssetResource";
+
+    /*
      * The system generated unique id for the resource.
      */
     @Generated
@@ -107,144 +113,6 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     }
 
     /**
-     * Get the id property: The system generated unique id for the resource.
-     *
-     * @return the id value.
-     */
-    @Generated
-    public String getId() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The caller provided unique name for the resource.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Get the displayName property: The name that can be used for display purposes.
-     *
-     * @return the displayName value.
-     */
-    @Generated
-    public String getDisplayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Get the uuid property: Global UUID for the asset.
-     *
-     * @return the uuid value.
-     */
-    @Generated
-    public String getUuid() {
-        return this.uuid;
-    }
-
-    /**
-     * Get the createdDate property: The date this asset was first added to this workspace.
-     *
-     * @return the createdDate value.
-     */
-    @Generated
-    public OffsetDateTime getCreatedDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Get the updatedDate property: The date this asset was last updated for this workspace.
-     *
-     * @return the updatedDate value.
-     */
-    @Generated
-    public OffsetDateTime getUpdatedDate() {
-        return this.updatedDate;
-    }
-
-    /**
-     * Get the state property: The state property.
-     *
-     * @return the state value.
-     */
-    @Generated
-    public AssetState getState() {
-        return this.state;
-    }
-
-    /**
-     * Get the externalId property: An optional customer provided identifier for this asset.
-     *
-     * @return the externalId value.
-     */
-    @Generated
-    public String getExternalId() {
-        return this.externalId;
-    }
-
-    /**
-     * Get the labels property: Customer labels assigned to this asset.
-     *
-     * @return the labels value.
-     */
-    @Generated
-    public List<String> getLabels() {
-        return this.labels;
-    }
-
-    /**
-     * Get the wildcard property: An indicator of whether this asset represents a wildcard rollup of assets on this
-     * domain.
-     *
-     * @return the wildcard value.
-     */
-    @Generated
-    public Boolean isWildcard() {
-        return this.wildcard;
-    }
-
-    /**
-     * Get the discoGroupName property: The name of the DiscoGroup that brought added this asset to the workspace.
-     *
-     * @return the discoGroupName value.
-     */
-    @Generated
-    public String getDiscoGroupName() {
-        return this.discoGroupName;
-    }
-
-    /**
-     * Get the auditTrail property: The history of how this asset was pulled into the workspace through the discovery
-     * process.
-     *
-     * @return the auditTrail value.
-     */
-    @Generated
-    public List<AuditTrailItem> getAuditTrail() {
-        return this.auditTrail;
-    }
-
-    /**
-     * Get the reason property: The reason property.
-     *
-     * @return the reason value.
-     */
-    @Generated
-    public String getReason() {
-        return this.reason;
-    }
-
-    /*
-     * Discriminator property for AssetResource.
-     */
-    @Generated
-    private String kind = "AssetResource";
-
-    /**
      * Get the kind property: Discriminator property for AssetResource.
      *
      * @return the kind value.
@@ -252,6 +120,16 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     @Generated
     public String getKind() {
         return this.kind;
+    }
+
+    /**
+     * Get the id property: The system generated unique id for the resource.
+     *
+     * @return the id value.
+     */
+    @Generated
+    public String getId() {
+        return this.id;
     }
 
     /**
@@ -267,6 +145,16 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     }
 
     /**
+     * Get the name property: The caller provided unique name for the resource.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
      * Set the name property: The caller provided unique name for the resource.
      *
      * @param name the name value to set.
@@ -276,6 +164,16 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     AssetResource setName(String name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Get the displayName property: The name that can be used for display purposes.
+     *
+     * @return the displayName value.
+     */
+    @Generated
+    public String getDisplayName() {
+        return this.displayName;
     }
 
     /**
@@ -291,6 +189,16 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     }
 
     /**
+     * Get the uuid property: Global UUID for the asset.
+     *
+     * @return the uuid value.
+     */
+    @Generated
+    public String getUuid() {
+        return this.uuid;
+    }
+
+    /**
      * Set the uuid property: Global UUID for the asset.
      *
      * @param uuid the uuid value to set.
@@ -300,6 +208,16 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     AssetResource setUuid(String uuid) {
         this.uuid = uuid;
         return this;
+    }
+
+    /**
+     * Get the createdDate property: The date this asset was first added to this workspace.
+     *
+     * @return the createdDate value.
+     */
+    @Generated
+    public OffsetDateTime getCreatedDate() {
+        return this.createdDate;
     }
 
     /**
@@ -315,6 +233,16 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     }
 
     /**
+     * Get the updatedDate property: The date this asset was last updated for this workspace.
+     *
+     * @return the updatedDate value.
+     */
+    @Generated
+    public OffsetDateTime getUpdatedDate() {
+        return this.updatedDate;
+    }
+
+    /**
      * Set the updatedDate property: The date this asset was last updated for this workspace.
      *
      * @param updatedDate the updatedDate value to set.
@@ -324,6 +252,16 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     AssetResource setUpdatedDate(OffsetDateTime updatedDate) {
         this.updatedDate = updatedDate;
         return this;
+    }
+
+    /**
+     * Get the state property: The state property.
+     *
+     * @return the state value.
+     */
+    @Generated
+    public AssetState getState() {
+        return this.state;
     }
 
     /**
@@ -339,6 +277,16 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     }
 
     /**
+     * Get the externalId property: An optional customer provided identifier for this asset.
+     *
+     * @return the externalId value.
+     */
+    @Generated
+    public String getExternalId() {
+        return this.externalId;
+    }
+
+    /**
      * Set the externalId property: An optional customer provided identifier for this asset.
      *
      * @param externalId the externalId value to set.
@@ -351,6 +299,16 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     }
 
     /**
+     * Get the labels property: Customer labels assigned to this asset.
+     *
+     * @return the labels value.
+     */
+    @Generated
+    public List<String> getLabels() {
+        return this.labels;
+    }
+
+    /**
      * Set the labels property: Customer labels assigned to this asset.
      *
      * @param labels the labels value to set.
@@ -360,6 +318,17 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     AssetResource setLabels(List<String> labels) {
         this.labels = labels;
         return this;
+    }
+
+    /**
+     * Get the wildcard property: An indicator of whether this asset represents a wildcard rollup of assets on this
+     * domain.
+     *
+     * @return the wildcard value.
+     */
+    @Generated
+    public Boolean isWildcard() {
+        return this.wildcard;
     }
 
     /**
@@ -376,6 +345,16 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     }
 
     /**
+     * Get the discoGroupName property: The name of the DiscoGroup that brought added this asset to the workspace.
+     *
+     * @return the discoGroupName value.
+     */
+    @Generated
+    public String getDiscoGroupName() {
+        return this.discoGroupName;
+    }
+
+    /**
      * Set the discoGroupName property: The name of the DiscoGroup that brought added this asset to the workspace.
      *
      * @param discoGroupName the discoGroupName value to set.
@@ -385,6 +364,17 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     AssetResource setDiscoGroupName(String discoGroupName) {
         this.discoGroupName = discoGroupName;
         return this;
+    }
+
+    /**
+     * Get the auditTrail property: The history of how this asset was pulled into the workspace through the discovery
+     * process.
+     *
+     * @return the auditTrail value.
+     */
+    @Generated
+    public List<AuditTrailItem> getAuditTrail() {
+        return this.auditTrail;
     }
 
     /**
@@ -398,6 +388,16 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     AssetResource setAuditTrail(List<AuditTrailItem> auditTrail) {
         this.auditTrail = auditTrail;
         return this;
+    }
+
+    /**
+     * Get the reason property: The reason property.
+     *
+     * @return the reason value.
+     */
+    @Generated
+    public String getReason() {
+        return this.reason;
     }
 
     /**

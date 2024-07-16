@@ -17,6 +17,12 @@ import java.io.IOException;
 public final class AzureDataExplorerDataConnectionData extends DataConnectionData {
 
     /*
+     * Discriminator property for DataConnectionData.
+     */
+    @Generated
+    private String kind = "azureDataExplorer";
+
+    /*
      * properties
      */
     @Generated
@@ -30,6 +36,17 @@ public final class AzureDataExplorerDataConnectionData extends DataConnectionDat
     @Generated
     public AzureDataExplorerDataConnectionData(AzureDataExplorerDataConnectionProperties properties) {
         this.properties = properties;
+    }
+
+    /**
+     * Get the kind property: Discriminator property for DataConnectionData.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public String getKind() {
+        return this.kind;
     }
 
     /**
@@ -80,23 +97,6 @@ public final class AzureDataExplorerDataConnectionData extends DataConnectionDat
     public AzureDataExplorerDataConnectionData setFrequencyOffset(Integer frequencyOffset) {
         super.setFrequencyOffset(frequencyOffset);
         return this;
-    }
-
-    /*
-     * Discriminator property for DataConnectionData.
-     */
-    @Generated
-    private String kind = "azureDataExplorer";
-
-    /**
-     * Get the kind property: Discriminator property for DataConnectionData.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public String getKind() {
-        return this.kind;
     }
 
     /**

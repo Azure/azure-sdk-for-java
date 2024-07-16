@@ -19,36 +19,16 @@ import java.time.OffsetDateTime;
 public final class LogAnalyticsDataConnection extends DataConnection {
 
     /*
-     * properties
-     */
-    @Generated
-    private final LogAnalyticsDataConnectionProperties properties;
-
-    /**
-     * Creates an instance of LogAnalyticsDataConnection class.
-     *
-     * @param properties the properties value to set.
-     */
-    @Generated
-    private LogAnalyticsDataConnection(LogAnalyticsDataConnectionProperties properties) {
-        this.properties = properties;
-    }
-
-    /**
-     * Get the properties property: properties.
-     *
-     * @return the properties value.
-     */
-    @Generated
-    public LogAnalyticsDataConnectionProperties getProperties() {
-        return this.properties;
-    }
-
-    /*
      * Discriminator property for DataConnection.
      */
     @Generated
     private String kind = "logAnalytics";
+
+    /*
+     * properties
+     */
+    @Generated
+    private final LogAnalyticsDataConnectionProperties properties;
 
     /*
      * The system generated unique id for the resource.
@@ -111,6 +91,16 @@ public final class LogAnalyticsDataConnection extends DataConnection {
     private String inactiveMessage;
 
     /**
+     * Creates an instance of LogAnalyticsDataConnection class.
+     *
+     * @param properties the properties value to set.
+     */
+    @Generated
+    private LogAnalyticsDataConnection(LogAnalyticsDataConnectionProperties properties) {
+        this.properties = properties;
+    }
+
+    /**
      * Get the kind property: Discriminator property for DataConnection.
      *
      * @return the kind value.
@@ -119,6 +109,16 @@ public final class LogAnalyticsDataConnection extends DataConnection {
     @Override
     public String getKind() {
         return this.kind;
+    }
+
+    /**
+     * Get the properties property: properties.
+     *
+     * @return the properties value.
+     */
+    @Generated
+    public LogAnalyticsDataConnectionProperties getProperties() {
+        return this.properties;
     }
 
     /**

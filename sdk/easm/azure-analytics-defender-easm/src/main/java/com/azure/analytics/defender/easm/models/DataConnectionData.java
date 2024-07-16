@@ -18,6 +18,12 @@ import java.io.IOException;
 public class DataConnectionData implements JsonSerializable<DataConnectionData> {
 
     /*
+     * Discriminator property for DataConnectionData.
+     */
+    @Generated
+    private String kind = "DataConnectionData";
+
+    /*
      * The name of data connection
      */
     @Generated
@@ -46,6 +52,16 @@ public class DataConnectionData implements JsonSerializable<DataConnectionData> 
      */
     @Generated
     public DataConnectionData() {
+    }
+
+    /**
+     * Get the kind property: Discriminator property for DataConnectionData.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public String getKind() {
+        return this.kind;
     }
 
     /**
@@ -134,22 +150,6 @@ public class DataConnectionData implements JsonSerializable<DataConnectionData> 
     public DataConnectionData setFrequencyOffset(Integer frequencyOffset) {
         this.frequencyOffset = frequencyOffset;
         return this;
-    }
-
-    /*
-     * Discriminator property for DataConnectionData.
-     */
-    @Generated
-    private String kind = "DataConnectionData";
-
-    /**
-     * Get the kind property: Discriminator property for DataConnectionData.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    public String getKind() {
-        return this.kind;
     }
 
     /**

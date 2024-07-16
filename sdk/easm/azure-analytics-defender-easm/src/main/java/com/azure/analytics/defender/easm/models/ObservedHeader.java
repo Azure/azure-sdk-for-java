@@ -31,6 +31,30 @@ public final class ObservedHeader extends ObservedValue {
     @Generated
     private String headerValue;
 
+    /*
+     * The firstSeen property.
+     */
+    @Generated
+    private OffsetDateTime firstSeen;
+
+    /*
+     * The lastSeen property.
+     */
+    @Generated
+    private OffsetDateTime lastSeen;
+
+    /*
+     * The count property.
+     */
+    @Generated
+    private Long count;
+
+    /*
+     * The recent property.
+     */
+    @Generated
+    private Boolean recent;
+
     /**
      * Creates an instance of ObservedHeader class.
      */
@@ -57,30 +81,6 @@ public final class ObservedHeader extends ObservedValue {
     public String getHeaderValue() {
         return this.headerValue;
     }
-
-    /*
-     * The firstSeen property.
-     */
-    @Generated
-    private OffsetDateTime firstSeen;
-
-    /*
-     * The lastSeen property.
-     */
-    @Generated
-    private OffsetDateTime lastSeen;
-
-    /*
-     * The count property.
-     */
-    @Generated
-    private Long count;
-
-    /*
-     * The recent property.
-     */
-    @Generated
-    private Boolean recent;
 
     /**
      * Get the firstSeen property: The firstSeen property.

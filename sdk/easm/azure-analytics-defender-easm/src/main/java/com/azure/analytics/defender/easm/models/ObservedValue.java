@@ -62,36 +62,6 @@ public class ObservedValue implements JsonSerializable<ObservedValue> {
     }
 
     /**
-     * Get the lastSeen property: The lastSeen property.
-     *
-     * @return the lastSeen value.
-     */
-    @Generated
-    public OffsetDateTime getLastSeen() {
-        return this.lastSeen;
-    }
-
-    /**
-     * Get the count property: The count property.
-     *
-     * @return the count value.
-     */
-    @Generated
-    public Long getCount() {
-        return this.count;
-    }
-
-    /**
-     * Get the recent property: The recent property.
-     *
-     * @return the recent value.
-     */
-    @Generated
-    public Boolean isRecent() {
-        return this.recent;
-    }
-
-    /**
      * Set the firstSeen property: The firstSeen property.
      *
      * @param firstSeen the firstSeen value to set.
@@ -101,6 +71,16 @@ public class ObservedValue implements JsonSerializable<ObservedValue> {
     ObservedValue setFirstSeen(OffsetDateTime firstSeen) {
         this.firstSeen = firstSeen;
         return this;
+    }
+
+    /**
+     * Get the lastSeen property: The lastSeen property.
+     *
+     * @return the lastSeen value.
+     */
+    @Generated
+    public OffsetDateTime getLastSeen() {
+        return this.lastSeen;
     }
 
     /**
@@ -116,6 +96,16 @@ public class ObservedValue implements JsonSerializable<ObservedValue> {
     }
 
     /**
+     * Get the count property: The count property.
+     *
+     * @return the count value.
+     */
+    @Generated
+    public Long getCount() {
+        return this.count;
+    }
+
+    /**
      * Set the count property: The count property.
      *
      * @param count the count value to set.
@@ -125,6 +115,16 @@ public class ObservedValue implements JsonSerializable<ObservedValue> {
     ObservedValue setCount(Long count) {
         this.count = count;
         return this;
+    }
+
+    /**
+     * Get the recent property: The recent property.
+     *
+     * @return the recent value.
+     */
+    @Generated
+    public Boolean isRecent() {
+        return this.recent;
     }
 
     /**
