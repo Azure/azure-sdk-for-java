@@ -13,7 +13,12 @@ public enum EasmServiceVersion implements ServiceVersion {
     /**
      * Enum value 2023-03-01-preview.
      */
-    V2023_03_01_PREVIEW("2023-03-01-preview");
+    V2023_03_01_PREVIEW("2023-03-01-preview"),
+
+    /**
+     * Enum value 2024-03-01-preview.
+     */
+    V2024_03_01_PREVIEW("2024-03-01-preview");
 
     private final String version;
 
@@ -35,6 +40,6 @@ public enum EasmServiceVersion implements ServiceVersion {
      * @return The latest {@link EasmServiceVersion}.
      */
     public static EasmServiceVersion getLatest() {
-        return V2023_03_01_PREVIEW;
+        return V2024_03_01_PREVIEW;
     }
 }

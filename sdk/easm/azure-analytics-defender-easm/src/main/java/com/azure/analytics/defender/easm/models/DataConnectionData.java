@@ -5,52 +5,40 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The DataConnectionData model.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = DataConnectionData.class)
-@JsonTypeName("DataConnectionData")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "logAnalytics", value = LogAnalyticsDataConnectionData.class),
-    @JsonSubTypes.Type(name = "azureDataExplorer", value = AzureDataExplorerDataConnectionData.class) })
 @Fluent
-public class DataConnectionData {
+public class DataConnectionData implements JsonSerializable<DataConnectionData> {
 
     /*
      * The name of data connection
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The type of data the data connection will transfer.
      */
     @Generated
-    @JsonProperty(value = "content")
     private DataConnectionContent content;
 
     /*
      * The rate at which the data connection will receive updates.
      */
     @Generated
-    @JsonProperty(value = "frequency")
     private DataConnectionFrequency frequency;
 
     /*
      * The day to update the data connection on. (1-7 for weekly, 1-31 for monthly)
      */
     @Generated
-    @JsonProperty(value = "frequencyOffset")
     private Integer frequencyOffset;
 
     /**
@@ -146,5 +134,98 @@ public class DataConnectionData {
     public DataConnectionData setFrequencyOffset(Integer frequencyOffset) {
         this.frequencyOffset = frequencyOffset;
         return this;
+    }
+
+    /*
+     * Discriminator property for DataConnectionData.
+     */
+    @Generated
+    private String kind = "DataConnectionData";
+
+    /**
+     * Get the kind property: Discriminator property for DataConnectionData.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public String getKind() {
+        return this.kind;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("content", this.content == null ? null : this.content.toString());
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeNumberField("frequencyOffset", this.frequencyOffset);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataConnectionData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataConnectionData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataConnectionData.
+     */
+    @Generated
+    public static DataConnectionData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("logAnalytics".equals(discriminatorValue)) {
+                    return LogAnalyticsDataConnectionData.fromJson(readerToUse.reset());
+                } else if ("azureDataExplorer".equals(discriminatorValue)) {
+                    return AzureDataExplorerDataConnectionData.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    @Generated
+    static DataConnectionData fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataConnectionData deserializedDataConnectionData = new DataConnectionData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("kind".equals(fieldName)) {
+                    deserializedDataConnectionData.kind = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDataConnectionData.name = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    deserializedDataConnectionData.content = DataConnectionContent.fromString(reader.getString());
+                } else if ("frequency".equals(fieldName)) {
+                    deserializedDataConnectionData.frequency = DataConnectionFrequency.fromString(reader.getString());
+                } else if ("frequencyOffset".equals(fieldName)) {
+                    deserializedDataConnectionData.frequencyOffset = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedDataConnectionData;
+        });
     }
 }

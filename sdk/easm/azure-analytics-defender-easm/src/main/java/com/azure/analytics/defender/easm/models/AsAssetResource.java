@@ -5,16 +5,18 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * The AsAssetResource model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("as")
 @Immutable
 public final class AsAssetResource extends AssetResource {
 
@@ -22,8 +24,7 @@ public final class AsAssetResource extends AssetResource {
      * asset
      */
     @Generated
-    @JsonProperty(value = "asset")
-    private AsAsset asset;
+    private final AsAsset asset;
 
     /**
      * Creates an instance of AsAssetResource class.
@@ -31,8 +32,7 @@ public final class AsAssetResource extends AssetResource {
      * @param asset the asset value to set.
      */
     @Generated
-    @JsonCreator
-    private AsAssetResource(@JsonProperty(value = "asset") AsAsset asset) {
+    private AsAssetResource(AsAsset asset) {
         this.asset = asset;
     }
 
@@ -44,5 +44,339 @@ public final class AsAssetResource extends AssetResource {
     @Generated
     public AsAsset getAsset() {
         return this.asset;
+    }
+
+    /*
+     * Discriminator property for AssetResource.
+     */
+    @Generated
+    private String kind = "as";
+
+    /*
+     * The caller provided unique name for the resource.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * The name that can be used for display purposes.
+     */
+    @Generated
+    private String displayName;
+
+    /*
+     * Global UUID for the asset.
+     */
+    @Generated
+    private String uuid;
+
+    /*
+     * The date this asset was first added to this workspace.
+     */
+    @Generated
+    private OffsetDateTime createdDate;
+
+    /*
+     * The date this asset was last updated for this workspace.
+     */
+    @Generated
+    private OffsetDateTime updatedDate;
+
+    /*
+     * The state property.
+     */
+    @Generated
+    private AssetState state;
+
+    /*
+     * An optional customer provided identifier for this asset.
+     */
+    @Generated
+    private String externalId;
+
+    /*
+     * Customer labels assigned to this asset.
+     */
+    @Generated
+    private List<String> labels;
+
+    /*
+     * An indicator of whether this asset represents a wildcard rollup of assets on this domain.
+     */
+    @Generated
+    private Boolean wildcard;
+
+    /*
+     * The name of the DiscoGroup that brought added this asset to the workspace.
+     */
+    @Generated
+    private String discoGroupName;
+
+    /*
+     * The history of how this asset was pulled into the workspace through the discovery process.
+     */
+    @Generated
+    private List<AuditTrailItem> auditTrail;
+
+    /*
+     * The reason property.
+     */
+    @Generated
+    private String reason;
+
+    /**
+     * Get the kind property: Discriminator property for AssetResource.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public String getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Get the name property: The caller provided unique name for the resource.
+     *
+     * @return the name value.
+     */
+    @Generated
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the displayName property: The name that can be used for display purposes.
+     *
+     * @return the displayName value.
+     */
+    @Generated
+    @Override
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Get the uuid property: Global UUID for the asset.
+     *
+     * @return the uuid value.
+     */
+    @Generated
+    @Override
+    public String getUuid() {
+        return this.uuid;
+    }
+
+    /**
+     * Get the createdDate property: The date this asset was first added to this workspace.
+     *
+     * @return the createdDate value.
+     */
+    @Generated
+    @Override
+    public OffsetDateTime getCreatedDate() {
+        return this.createdDate;
+    }
+
+    /**
+     * Get the updatedDate property: The date this asset was last updated for this workspace.
+     *
+     * @return the updatedDate value.
+     */
+    @Generated
+    @Override
+    public OffsetDateTime getUpdatedDate() {
+        return this.updatedDate;
+    }
+
+    /**
+     * Get the state property: The state property.
+     *
+     * @return the state value.
+     */
+    @Generated
+    @Override
+    public AssetState getState() {
+        return this.state;
+    }
+
+    /**
+     * Get the externalId property: An optional customer provided identifier for this asset.
+     *
+     * @return the externalId value.
+     */
+    @Generated
+    @Override
+    public String getExternalId() {
+        return this.externalId;
+    }
+
+    /**
+     * Get the labels property: Customer labels assigned to this asset.
+     *
+     * @return the labels value.
+     */
+    @Generated
+    @Override
+    public List<String> getLabels() {
+        return this.labels;
+    }
+
+    /**
+     * Get the wildcard property: An indicator of whether this asset represents a wildcard rollup of assets on this
+     * domain.
+     *
+     * @return the wildcard value.
+     */
+    @Generated
+    @Override
+    public Boolean isWildcard() {
+        return this.wildcard;
+    }
+
+    /**
+     * Get the discoGroupName property: The name of the DiscoGroup that brought added this asset to the workspace.
+     *
+     * @return the discoGroupName value.
+     */
+    @Generated
+    @Override
+    public String getDiscoGroupName() {
+        return this.discoGroupName;
+    }
+
+    /**
+     * Get the auditTrail property: The history of how this asset was pulled into the workspace through the discovery
+     * process.
+     *
+     * @return the auditTrail value.
+     */
+    @Generated
+    @Override
+    public List<AuditTrailItem> getAuditTrail() {
+        return this.auditTrail;
+    }
+
+    /**
+     * Get the reason property: The reason property.
+     *
+     * @return the reason value.
+     */
+    @Generated
+    @Override
+    public String getReason() {
+        return this.reason;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("displayName", getDisplayName());
+        jsonWriter.writeStringField("uuid", getUuid());
+        jsonWriter.writeStringField("createdDate",
+            getCreatedDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedDate()));
+        jsonWriter.writeStringField("updatedDate",
+            getUpdatedDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getUpdatedDate()));
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("externalId", getExternalId());
+        jsonWriter.writeArrayField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("wildcard", isWildcard());
+        jsonWriter.writeStringField("discoGroupName", getDiscoGroupName());
+        jsonWriter.writeArrayField("auditTrail", getAuditTrail(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("reason", getReason());
+        jsonWriter.writeJsonField("asset", this.asset);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AsAssetResource from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AsAssetResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AsAssetResource.
+     */
+    @Generated
+    public static AsAssetResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            String name = null;
+            String displayName = null;
+            String uuid = null;
+            OffsetDateTime createdDate = null;
+            OffsetDateTime updatedDate = null;
+            AssetState state = null;
+            String externalId = null;
+            List<String> labels = null;
+            Boolean wildcard = null;
+            String discoGroupName = null;
+            List<AuditTrailItem> auditTrail = null;
+            String reason = null;
+            AsAsset asset = null;
+            String kind = "as";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if ("uuid".equals(fieldName)) {
+                    uuid = reader.getString();
+                } else if ("createdDate".equals(fieldName)) {
+                    createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedDate".equals(fieldName)) {
+                    updatedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    state = AssetState.fromString(reader.getString());
+                } else if ("externalId".equals(fieldName)) {
+                    externalId = reader.getString();
+                } else if ("labels".equals(fieldName)) {
+                    labels = reader.readArray(reader1 -> reader1.getString());
+                } else if ("wildcard".equals(fieldName)) {
+                    wildcard = reader.getNullable(JsonReader::getBoolean);
+                } else if ("discoGroupName".equals(fieldName)) {
+                    discoGroupName = reader.getString();
+                } else if ("auditTrail".equals(fieldName)) {
+                    auditTrail = reader.readArray(reader1 -> AuditTrailItem.fromJson(reader1));
+                } else if ("reason".equals(fieldName)) {
+                    reason = reader.getString();
+                } else if ("asset".equals(fieldName)) {
+                    asset = AsAsset.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AsAssetResource deserializedAsAssetResource = new AsAssetResource(asset);
+            deserializedAsAssetResource.setId(id);
+            deserializedAsAssetResource.name = name;
+            deserializedAsAssetResource.displayName = displayName;
+            deserializedAsAssetResource.uuid = uuid;
+            deserializedAsAssetResource.createdDate = createdDate;
+            deserializedAsAssetResource.updatedDate = updatedDate;
+            deserializedAsAssetResource.state = state;
+            deserializedAsAssetResource.externalId = externalId;
+            deserializedAsAssetResource.labels = labels;
+            deserializedAsAssetResource.wildcard = wildcard;
+            deserializedAsAssetResource.discoGroupName = discoGroupName;
+            deserializedAsAssetResource.auditTrail = auditTrail;
+            deserializedAsAssetResource.reason = reason;
+            deserializedAsAssetResource.kind = kind;
+            return deserializedAsAssetResource;
+        });
     }
 }

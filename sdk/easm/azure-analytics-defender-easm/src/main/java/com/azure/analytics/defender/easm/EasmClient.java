@@ -4,14 +4,24 @@
 package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.implementation.EasmClientImpl;
+import com.azure.analytics.defender.easm.models.AssetChainRequest;
+import com.azure.analytics.defender.easm.models.AssetChainSummaryResult;
 import com.azure.analytics.defender.easm.models.AssetResource;
+import com.azure.analytics.defender.easm.models.AssetsExportRequest;
 import com.azure.analytics.defender.easm.models.AssetUpdateData;
+import com.azure.analytics.defender.easm.models.CisaCveResult;
 import com.azure.analytics.defender.easm.models.DataConnection;
 import com.azure.analytics.defender.easm.models.DataConnectionData;
+import com.azure.analytics.defender.easm.models.DeltaDetailsRequest;
+import com.azure.analytics.defender.easm.models.DeltaResult;
+import com.azure.analytics.defender.easm.models.DeltaSummaryRequest;
+import com.azure.analytics.defender.easm.models.DeltaSummaryResult;
 import com.azure.analytics.defender.easm.models.DiscoGroup;
 import com.azure.analytics.defender.easm.models.DiscoGroupData;
 import com.azure.analytics.defender.easm.models.DiscoRunResult;
 import com.azure.analytics.defender.easm.models.DiscoTemplate;
+import com.azure.analytics.defender.easm.models.ObservationPageResult;
+import com.azure.analytics.defender.easm.models.ReportAssetSnapshotExportRequest;
 import com.azure.analytics.defender.easm.models.ReportAssetSnapshotRequest;
 import com.azure.analytics.defender.easm.models.ReportAssetSnapshotResult;
 import com.azure.analytics.defender.easm.models.ReportAssetSummaryRequest;
@@ -147,9 +157,8 @@ public final class EasmClient {
 
     /**
      * Update labels on assets matching the provided filter.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     state: String(candidate/confirmed/dismissed/candidateInvestigate/associatedPartner/associatedThirdparty) (Optional)
@@ -160,9 +169,9 @@ public final class EasmClient {
      *     transfers: String(as/contact/domain/host/ipAddress/ipBlock/page/sslCert) (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -179,7 +188,7 @@ public final class EasmClient {
      * }</pre>
      *
      * @param filter An expression on the resource type that selects the resources to be returned.
-     * @param assetUpdateData A request body used to update an asset.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -189,18 +198,18 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAssetsWithResponse(String filter, BinaryData assetUpdateData,
+    public Response<BinaryData> updateAssetsWithResponse(String filter, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateAssetsWithResponse(filter, assetUpdateData, requestOptions);
+        return this.serviceClient.updateAssetsWithResponse(filter, body, requestOptions);
     }
 
     /**
      * Retrieve an asset by assetId.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     displayName: String (Optional)
@@ -304,20 +313,20 @@ public final class EasmClient {
 
     /**
      * Validate a data connection with a given dataConnectionName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String (Required)
      *     name: String (Optional)
      *     content: String(assets/attackSurfaceInsights) (Optional)
      *     frequency: String(daily/weekly/monthly) (Optional)
      *     frequencyOffset: Integer (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     error (Optional): {
@@ -335,28 +344,27 @@ public final class EasmClient {
      * }
      * }</pre>
      *
-     * @param dataConnectionData The dataConnectionData parameter.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return validate result for validate action endpoints along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> validateDataConnectionWithResponse(BinaryData dataConnectionData,
-        RequestOptions requestOptions) {
-        return this.serviceClient.validateDataConnectionWithResponse(dataConnectionData, requestOptions);
+    public Response<BinaryData> validateDataConnectionWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.validateDataConnectionWithResponse(body, requestOptions);
     }
 
     /**
      * Retrieve a data connection with a given dataConnectionName.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     displayName: String (Optional)
@@ -388,22 +396,23 @@ public final class EasmClient {
 
     /**
      * Create or replace a data connection with a given dataConnectionName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String (Required)
      *     name: String (Optional)
      *     content: String(assets/attackSurfaceInsights) (Optional)
      *     frequency: String(daily/weekly/monthly) (Optional)
      *     frequencyOffset: Integer (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     displayName: String (Optional)
@@ -419,7 +428,7 @@ public final class EasmClient {
      * }</pre>
      *
      * @param dataConnectionName The caller provided unique name for the resource.
-     * @param dataConnectionData The dataConnectionData parameter.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -429,10 +438,9 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceDataConnectionWithResponse(String dataConnectionName,
-        BinaryData dataConnectionData, RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceDataConnectionWithResponse(dataConnectionName, dataConnectionData,
-            requestOptions);
+    public Response<BinaryData> createOrReplaceDataConnectionWithResponse(String dataConnectionName, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceDataConnectionWithResponse(dataConnectionName, body, requestOptions);
     }
 
     /**
@@ -454,9 +462,8 @@ public final class EasmClient {
 
     /**
      * Validate a discovery group with a given groupName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -478,9 +485,9 @@ public final class EasmClient {
      *     templateId: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     error (Optional): {
@@ -498,26 +505,24 @@ public final class EasmClient {
      * }
      * }</pre>
      *
-     * @param discoGroupData A request body used to create a discovery group.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return validate result for validate action endpoints along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> validateDiscoGroupWithResponse(BinaryData discoGroupData,
-        RequestOptions requestOptions) {
-        return this.serviceClient.validateDiscoGroupWithResponse(discoGroupData, requestOptions);
+    public Response<BinaryData> validateDiscoGroupWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.validateDiscoGroupWithResponse(body, requestOptions);
     }
 
     /**
      * Retrieve a discovery group with a given groupName.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -576,9 +581,8 @@ public final class EasmClient {
 
     /**
      * Create a discovery group with a given groupName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -600,9 +604,9 @@ public final class EasmClient {
      *     templateId: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -646,7 +650,7 @@ public final class EasmClient {
      * }</pre>
      *
      * @param groupName The caller provided unique name for the resource.
-     * @param discoGroupData A request body used to create a discovery group.
+     * @param createOrReplaceDiscoGroupRequest The createOrReplaceDiscoGroupRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -656,9 +660,10 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceDiscoGroupWithResponse(String groupName, BinaryData discoGroupData,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceDiscoGroupWithResponse(groupName, discoGroupData, requestOptions);
+    public Response<BinaryData> createOrReplaceDiscoGroupWithResponse(String groupName,
+        BinaryData createOrReplaceDiscoGroupRequest, RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceDiscoGroupWithResponse(groupName, createOrReplaceDiscoGroupRequest,
+            requestOptions);
     }
 
     /**
@@ -828,9 +833,8 @@ public final class EasmClient {
 
     /**
      * Retrieve a disco template with a given templateId.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -869,9 +873,8 @@ public final class EasmClient {
 
     /**
      * Get billable assets summary for the workspace.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     assetSummaries (Optional): [
@@ -904,9 +907,8 @@ public final class EasmClient {
 
     /**
      * Get the most recent snapshot of asset summary values for the snapshot request.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     metric: String (Optional)
@@ -915,9 +917,9 @@ public final class EasmClient {
      *     page: Integer (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     displayName: String (Optional)
@@ -931,6 +933,7 @@ public final class EasmClient {
      *         nextLink: String (Optional)
      *         value (Optional): [
      *              (Optional){
+     *                 kind: String (Required)
      *                 id: String (Required)
      *                 name: String (Optional)
      *                 displayName: String (Optional)
@@ -960,7 +963,7 @@ public final class EasmClient {
      * }
      * }</pre>
      *
-     * @param reportAssetSnapshotRequest A request body used to retrieve an asset report snapshot.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -970,16 +973,14 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSnapshotWithResponse(BinaryData reportAssetSnapshotRequest,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getSnapshotWithResponse(reportAssetSnapshotRequest, requestOptions);
+    public Response<BinaryData> getSnapshotWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.getSnapshotWithResponse(body, requestOptions);
     }
 
     /**
      * Get asset summary details for the summary request.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     metricCategories (Optional): [
@@ -996,9 +997,9 @@ public final class EasmClient {
      *     labelName: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     assetSummaries (Optional): [
@@ -1020,8 +1021,7 @@ public final class EasmClient {
      * }
      * }</pre>
      *
-     * @param reportAssetSummaryRequest A request body used to retrieve summary asset information. One and only one
-     * collection of summary identifiers must be provided: filters, metrics, or metricCategories.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1031,9 +1031,8 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSummaryWithResponse(BinaryData reportAssetSummaryRequest,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getSummaryWithResponse(reportAssetSummaryRequest, requestOptions);
+    public Response<BinaryData> getSummaryWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.getSummaryWithResponse(body, requestOptions);
     }
 
     /**
@@ -1099,9 +1098,8 @@ public final class EasmClient {
 
     /**
      * Retrieve a saved filter by filterName.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -1128,18 +1126,17 @@ public final class EasmClient {
 
     /**
      * Create or replace a saved filter with a given filterName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     filter: String (Required)
      *     description: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -1151,7 +1148,7 @@ public final class EasmClient {
      * }</pre>
      *
      * @param filterName The caller provided unique name for the resource.
-     * @param savedFilterData A request body used to create a saved filter.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1161,9 +1158,9 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceSavedFilterWithResponse(String filterName, BinaryData savedFilterData,
+    public Response<BinaryData> createOrReplaceSavedFilterWithResponse(String filterName, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceSavedFilterWithResponse(filterName, savedFilterData, requestOptions);
+        return this.serviceClient.createOrReplaceSavedFilterWithResponse(filterName, body, requestOptions);
     }
 
     /**
@@ -1257,9 +1254,8 @@ public final class EasmClient {
 
     /**
      * Retrieve a task by taskId.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1291,9 +1287,8 @@ public final class EasmClient {
 
     /**
      * Cancel a task by taskId.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2129,5 +2124,852 @@ public final class EasmClient {
         }
         return serviceClient.listRuns(groupName, requestOptions)
             .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoRunResult.class));
+    }
+
+    /**
+     * Export a list of assets for the provided search parameters.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>A list of expressions that specify the order of the returned
+     * resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     fileName: String (Required)
+     *     columns (Required): [
+     *         String (Required)
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     startedAt: OffsetDateTime (Optional)
+     *     completedAt: OffsetDateTime (Optional)
+     *     lastPolledAt: OffsetDateTime (Optional)
+     *     state: String(pending/running/paused/complete/incomplete/failed/warning) (Optional)
+     *     phase: String(running/polling/complete) (Optional)
+     *     reason: String (Optional)
+     *     metadata (Optional): {
+     *         String: Object (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param body Body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAssetsExportWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.getAssetsExportWithResponse(body, requestOptions);
+    }
+
+    /**
+     * Retrieve observations on an asset.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>A list of expressions that specify the order of the returned
+     * resources.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     totalElements: long (Required)
+     *     prioritySummary (Required): {
+     *         String: int (Required)
+     *     }
+     *     value (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *             types (Required): [
+     *                 String(cve/insight) (Required)
+     *             ]
+     *             priority: String(high/medium/low/none) (Required)
+     *             cvssScoreV2: double (Required)
+     *             cvssScoreV3: double (Required)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param assetId The system generated unique id for the resource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the page result response for the observation along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getObservationsWithResponse(String assetId, RequestOptions requestOptions) {
+        return this.serviceClient.getObservationsWithResponse(assetId, requestOptions);
+    }
+
+    /**
+     * Retrieve a list of deltas for the provided time range.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     deltaDetailType: String(added/removed) (Required)
+     *     priorDays: Integer (Optional)
+     *     kind: String(page/resource/mailServer/nameServer/host/domain/ipAddress/ipBlock/as/contact/sslCert) (Required)
+     *     date: String (Optional)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     kind: String(page/resource/mailServer/nameServer/host/domain/ipAddress/ipBlock/as/contact/sslCert) (Required)
+     *     name: String (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     updatedAt: OffsetDateTime (Required)
+     *     state: String(candidate/candidateInvestigate/confirmed/associated/associatedPartner/associatedThirdParty/archived/dismissed/autoconfirmed) (Required)
+     * }
+     * }</pre>
+     *
+     * @param body Body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> getDeltaDetails(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.getDeltaDetails(body, requestOptions);
+    }
+
+    /**
+     * Retrieve a list of deltas with overall summary changes for the provided time range.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     priorDays: Integer (Optional)
+     *     date: String (Optional)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     summary (Required): {
+     *         range: long (Required)
+     *         removed: long (Required)
+     *         added: long (Required)
+     *         difference: long (Required)
+     *         kindSummaries (Required): [
+     *              (Required){
+     *                 kind: String(page/resource/mailServer/nameServer/host/domain/ipAddress/ipBlock/as/contact/sslCert) (Required)
+     *                 removed: long (Required)
+     *                 added: long (Required)
+     *                 difference: long (Required)
+     *             }
+     *         ]
+     *     }
+     *     daily (Required): [
+     *          (Required){
+     *             date: OffsetDateTime (Required)
+     *             deltas (Required): [
+     *                  (Required){
+     *                     kind: String(page/resource/mailServer/nameServer/host/domain/ipAddress/ipBlock/as/contact/sslCert) (Required)
+     *                     removed: long (Required)
+     *                     added: long (Required)
+     *                     difference: long (Required)
+     *                     count: long (Required)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param body Body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return define response body for getting delta summary along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getDeltaSummaryWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.getDeltaSummaryWithResponse(body, requestOptions);
+    }
+
+    /**
+     * Delete a discovery group with a given discovery group name.
+     *
+     * @param groupName The caller provided unique name for the resource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteDiscoGroupWithResponse(String groupName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteDiscoGroupWithResponse(groupName, requestOptions);
+    }
+
+    /**
+     * Retrieve an asset chain summary.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     assetChainSource: String(DISCO_GROUP/ASSET) (Required)
+     *     sourceIds (Required): [
+     *         String (Required)
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     affectedAssetsSummary (Required): [
+     *          (Required){
+     *             kind: String(as/contact/domain/host/ipAddress/ipBlock/page/sslCert) (Required)
+     *             affectedCount: long (Required)
+     *         }
+     *     ]
+     *     affectedGroupsSummary (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             name: String (Required)
+     *             displayName: String (Required)
+     *         }
+     *     ]
+     *     errors (Optional): [
+     *          (Optional){
+     *             error (Required): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Optional)
+     *                     innererror (Optional): (recursive schema, see innererror above)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param body Body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response for the asset chain summary along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAssetChainSummaryWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.getAssetChainSummaryWithResponse(body, requestOptions);
+    }
+
+    /**
+     * Dismiss discovery chain for a given asset chain source.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     assetChainSource: String(DISCO_GROUP/ASSET) (Required)
+     *     sourceIds (Required): [
+     *         String (Required)
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     startedAt: OffsetDateTime (Optional)
+     *     completedAt: OffsetDateTime (Optional)
+     *     lastPolledAt: OffsetDateTime (Optional)
+     *     state: String(pending/running/paused/complete/incomplete/failed/warning) (Optional)
+     *     phase: String(running/polling/complete) (Optional)
+     *     reason: String (Optional)
+     *     metadata (Optional): {
+     *         String: Object (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param body Body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> dismissAssetChainWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.dismissAssetChainWithResponse(body, requestOptions);
+    }
+
+    /**
+     * Get the most recent snapshot of asset summary values for the snapshot request exported to a file.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     metric: String (Optional)
+     *     fileName: String (Optional)
+     *     columns (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     startedAt: OffsetDateTime (Optional)
+     *     completedAt: OffsetDateTime (Optional)
+     *     lastPolledAt: OffsetDateTime (Optional)
+     *     state: String(pending/running/paused/complete/incomplete/failed/warning) (Optional)
+     *     phase: String(running/polling/complete) (Optional)
+     *     reason: String (Optional)
+     *     metadata (Optional): {
+     *         String: Object (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param body Body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the most recent snapshot of asset summary values for the snapshot request exported to a file along with
+     * {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getSnapshotExportWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.getSnapshotExportWithResponse(body, requestOptions);
+    }
+
+    /**
+     * Run a task by taskId.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     startedAt: OffsetDateTime (Optional)
+     *     completedAt: OffsetDateTime (Optional)
+     *     lastPolledAt: OffsetDateTime (Optional)
+     *     state: String(pending/running/paused/complete/incomplete/failed/warning) (Optional)
+     *     phase: String(running/polling/complete) (Optional)
+     *     reason: String (Optional)
+     *     metadata (Optional): {
+     *         String: Object (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param taskId The unique identifier of the task.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> runTaskWithResponse(String taskId, RequestOptions requestOptions) {
+        return this.serviceClient.runTaskWithResponse(taskId, requestOptions);
+    }
+
+    /**
+     * Download a task.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     startedAt: OffsetDateTime (Optional)
+     *     completedAt: OffsetDateTime (Optional)
+     *     lastPolledAt: OffsetDateTime (Optional)
+     *     state: String(pending/running/paused/complete/incomplete/failed/warning) (Optional)
+     *     phase: String(running/polling/complete) (Optional)
+     *     reason: String (Optional)
+     *     metadata (Optional): {
+     *         String: Object (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param taskId The unique identifier of the task.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> downloadTaskWithResponse(String taskId, RequestOptions requestOptions) {
+        return this.serviceClient.downloadTaskWithResponse(taskId, requestOptions);
+    }
+
+    /**
+     * Retrieve a list of CisaCves for the provided search parameters.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     cveId: String (Required)
+     *     vendorProject: String (Required)
+     *     product: String (Required)
+     *     vulnerabilityName: String (Required)
+     *     shortDescription: String (Required)
+     *     requiredAction: String (Required)
+     *     notes: String (Required)
+     *     dateAdded: OffsetDateTime (Required)
+     *     dueDate: OffsetDateTime (Required)
+     *     updatedAt: OffsetDateTime (Required)
+     *     count: long (Required)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of CisaCveResult items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> getCisaCves(RequestOptions requestOptions) {
+        return this.serviceClient.getCisaCves(requestOptions);
+    }
+
+    /**
+     * Retrieve details of CisaCve by cveId.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     cveId: String (Required)
+     *     vendorProject: String (Required)
+     *     product: String (Required)
+     *     vulnerabilityName: String (Required)
+     *     shortDescription: String (Required)
+     *     requiredAction: String (Required)
+     *     notes: String (Required)
+     *     dateAdded: OffsetDateTime (Required)
+     *     dueDate: OffsetDateTime (Required)
+     *     updatedAt: OffsetDateTime (Required)
+     *     count: long (Required)
+     * }
+     * }</pre>
+     *
+     * @param cveId The CVE ID of the vulnerability in the format CVE-YYYY-NNNN, note that the number portion can have
+     * more than 4 digits.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return cisa cve in a given workspace along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getCisaCveWithResponse(String cveId, RequestOptions requestOptions) {
+        return this.serviceClient.getCisaCveWithResponse(cveId, requestOptions);
+    }
+
+    /**
+     * Export a list of assets for the provided search parameters.
+     *
+     * @param body Body parameter.
+     * @param filter Filter the result list using the given expression.
+     * @param orderBy A list of expressions that specify the order of the returned resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Task getAssetsExport(AssetsExportRequest body, String filter, String orderBy) {
+        // Generated convenience method for getAssetsExportWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter, false);
+        }
+        if (orderBy != null) {
+            requestOptions.addQueryParam("orderby", orderBy, false);
+        }
+        return getAssetsExportWithResponse(BinaryData.fromObject(body), requestOptions).getValue().toObject(Task.class);
+    }
+
+    /**
+     * Export a list of assets for the provided search parameters.
+     *
+     * @param body Body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Task getAssetsExport(AssetsExportRequest body) {
+        // Generated convenience method for getAssetsExportWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAssetsExportWithResponse(BinaryData.fromObject(body), requestOptions).getValue().toObject(Task.class);
+    }
+
+    /**
+     * Retrieve observations on an asset.
+     *
+     * @param assetId The system generated unique id for the resource.
+     * @param filter Filter the result list using the given expression.
+     * @param orderBy A list of expressions that specify the order of the returned resources.
+     * @param skip The number of result items to skip.
+     * @param maxPageSize The maximum number of result items per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the page result response for the observation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ObservationPageResult getObservations(String assetId, String filter, String orderBy, Integer skip,
+        Integer maxPageSize) {
+        // Generated convenience method for getObservationsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter, false);
+        }
+        if (orderBy != null) {
+            requestOptions.addQueryParam("orderby", orderBy, false);
+        }
+        if (skip != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxpagesize", String.valueOf(maxPageSize), false);
+        }
+        return getObservationsWithResponse(assetId, requestOptions).getValue().toObject(ObservationPageResult.class);
+    }
+
+    /**
+     * Retrieve observations on an asset.
+     *
+     * @param assetId The system generated unique id for the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the page result response for the observation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ObservationPageResult getObservations(String assetId) {
+        // Generated convenience method for getObservationsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getObservationsWithResponse(assetId, requestOptions).getValue().toObject(ObservationPageResult.class);
+    }
+
+    /**
+     * Retrieve a list of deltas for the provided time range.
+     *
+     * @param body Body parameter.
+     * @param skip The number of result items to skip.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeltaResult> getDeltaDetails(DeltaDetailsRequest body, Integer skip) {
+        // Generated convenience method for getDeltaDetails
+        RequestOptions requestOptions = new RequestOptions();
+        if (skip != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
+        }
+        return serviceClient.getDeltaDetails(BinaryData.fromObject(body), requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DeltaResult.class));
+    }
+
+    /**
+     * Retrieve a list of deltas for the provided time range.
+     *
+     * @param body Body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeltaResult> getDeltaDetails(DeltaDetailsRequest body) {
+        // Generated convenience method for getDeltaDetails
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.getDeltaDetails(BinaryData.fromObject(body), requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DeltaResult.class));
+    }
+
+    /**
+     * Retrieve a list of deltas with overall summary changes for the provided time range.
+     *
+     * @param body Body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define response body for getting delta summary.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeltaSummaryResult getDeltaSummary(DeltaSummaryRequest body) {
+        // Generated convenience method for getDeltaSummaryWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getDeltaSummaryWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+            .toObject(DeltaSummaryResult.class);
+    }
+
+    /**
+     * Delete a discovery group with a given discovery group name.
+     *
+     * @param groupName The caller provided unique name for the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteDiscoGroup(String groupName) {
+        // Generated convenience method for deleteDiscoGroupWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteDiscoGroupWithResponse(groupName, requestOptions).getValue();
+    }
+
+    /**
+     * Retrieve an asset chain summary.
+     *
+     * @param body Body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for the asset chain summary.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AssetChainSummaryResult getAssetChainSummary(AssetChainRequest body) {
+        // Generated convenience method for getAssetChainSummaryWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAssetChainSummaryWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+            .toObject(AssetChainSummaryResult.class);
+    }
+
+    /**
+     * Dismiss discovery chain for a given asset chain source.
+     *
+     * @param body Body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Task dismissAssetChain(AssetChainRequest body) {
+        // Generated convenience method for dismissAssetChainWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return dismissAssetChainWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+            .toObject(Task.class);
+    }
+
+    /**
+     * Get the most recent snapshot of asset summary values for the snapshot request exported to a file.
+     *
+     * @param body Body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the most recent snapshot of asset summary values for the snapshot request exported to a file.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Task getSnapshotExport(ReportAssetSnapshotExportRequest body) {
+        // Generated convenience method for getSnapshotExportWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getSnapshotExportWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+            .toObject(Task.class);
+    }
+
+    /**
+     * Run a task by taskId.
+     *
+     * @param taskId The unique identifier of the task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Task runTask(String taskId) {
+        // Generated convenience method for runTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return runTaskWithResponse(taskId, requestOptions).getValue().toObject(Task.class);
+    }
+
+    /**
+     * Download a task.
+     *
+     * @param taskId The unique identifier of the task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Task downloadTask(String taskId) {
+        // Generated convenience method for downloadTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return downloadTaskWithResponse(taskId, requestOptions).getValue().toObject(Task.class);
+    }
+
+    /**
+     * Retrieve a list of CisaCves for the provided search parameters.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of CisaCveResult items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CisaCveResult> getCisaCves() {
+        // Generated convenience method for getCisaCves
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.getCisaCves(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(CisaCveResult.class));
+    }
+
+    /**
+     * Retrieve details of CisaCve by cveId.
+     *
+     * @param cveId The CVE ID of the vulnerability in the format CVE-YYYY-NNNN, note that the number portion can have
+     * more than 4 digits.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cisa cve in a given workspace.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CisaCveResult getCisaCve(String cveId) {
+        // Generated convenience method for getCisaCveWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getCisaCveWithResponse(cveId, requestOptions).getValue().toObject(CisaCveResult.class);
     }
 }
