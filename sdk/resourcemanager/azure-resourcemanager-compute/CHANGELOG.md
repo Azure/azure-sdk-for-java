@@ -2,11 +2,9 @@
 
 ## 2.41.0-beta.1 (Unreleased)
 
-### Other Changes
+### Breaking Changes
 
-#### Dependency Updates
-
-- Updated core dependency from resources.
+- Changed type from `java.util.List<com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner>` to `java.util.List<java.lang.String>` of `excludeExtensions` property in `SecurityPostureReference` class.
 
 ## 2.40.0 (2024-06-24)
 
