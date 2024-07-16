@@ -3,8 +3,6 @@
 
 package com.azure.maps.search;
 
-import java.util.List;
-
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -13,11 +11,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.maps.search.implementation.models.ErrorResponseException;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
-import com.azure.maps.search.implementation.models.ErrorResponseException;
-import com.azure.maps.search.models.MapsPolygon;
 import com.azure.maps.search.models.FuzzySearchOptions;
+import com.azure.maps.search.models.MapsPolygon;
 import com.azure.maps.search.models.PointOfInterestCategoryTreeResult;
 import com.azure.maps.search.models.ReverseSearchAddressOptions;
 import com.azure.maps.search.models.ReverseSearchAddressResult;
@@ -32,6 +30,8 @@ import com.azure.maps.search.models.SearchPointOfInterestCategoryOptions;
 import com.azure.maps.search.models.SearchPointOfInterestOptions;
 import com.azure.maps.search.models.SearchStructuredAddressOptions;
 import com.azure.maps.search.models.StructuredAddress;
+
+import java.util.List;
 
 /**
  * {@link MapsSearchClient} instances are created via the {@link MapsSearchClientBuilder}, as shown below.
@@ -340,7 +340,7 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAddressResult> searchPointOfInterestWithResponse(SearchPointOfInterestOptions options,
-            Context context) {
+        Context context) {
         return this.asyncClient.searchPointOfInterestWithResponse(options, context).block();
     }
 
@@ -438,7 +438,7 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAddressResult> searchNearbyPointsOfInterestWithResponse(
-            SearchNearbyPointsOfInterestOptions options, Context context) {
+        SearchNearbyPointsOfInterestOptions options, Context context) {
         return this.asyncClient.searchNearbyPointsOfInterestWithResponse(options, context).block();
     }
 
@@ -536,7 +536,7 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAddressResult> searchPointOfInterestCategoryWithResponse(
-            SearchPointOfInterestCategoryOptions options, Context context) {
+        SearchPointOfInterestCategoryOptions options, Context context) {
         return this.asyncClient.searchPointOfInterestCategoryWithResponse(options, context).block();
     }
 
@@ -569,7 +569,7 @@ public final class MapsSearchClient {
      * <!-- end com.azure.maps.search.sync.search_poi_category_tree -->
      *
      * @param language Language in which search results should be returned. Should be one of supported IETF language
-     *     tags, except NGT and NGT-Latn. Language tag is case insensitive. When data in specified language is not
+     *     tags, except NGT and NGT-Latn. Language tag is case-insensitive. When data in specified language is not
      *     available for a specific field, default language is used (English).
      *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      *     details.
@@ -580,8 +580,8 @@ public final class MapsSearchClient {
      * @return this object is returned from a successful POI Category Tree call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PointOfInterestCategoryTreeResult> getPointOfInterestCategoryTreeWithResponse(
-            String language, Context context) {
+    public Response<PointOfInterestCategoryTreeResult> getPointOfInterestCategoryTreeWithResponse(String language,
+        Context context) {
         return this.asyncClient.getPointOfInterestCategoryTreeWithResponse(language, context).block();
     }
 
@@ -694,8 +694,7 @@ public final class MapsSearchClient {
      * @return this object is returned from a successful Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAddressResult> searchAddressWithResponse(SearchAddressOptions options,
-            Context context) {
+    public Response<SearchAddressResult> searchAddressWithResponse(SearchAddressOptions options, Context context) {
         return this.asyncClient.searchAddressWithResponse(options, context).block();
     }
 
@@ -816,8 +815,8 @@ public final class MapsSearchClient {
      * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReverseSearchAddressResult> reverseSearchAddressWithResponse(
-            ReverseSearchAddressOptions options, Context context) {
+    public Response<ReverseSearchAddressResult> reverseSearchAddressWithResponse(ReverseSearchAddressOptions options,
+        Context context) {
         return this.asyncClient.reverseSearchAddressWithResponse(options, context).block();
     }
 
@@ -854,7 +853,7 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReverseSearchCrossStreetAddressResult reverseSearchCrossStreetAddress(
-            ReverseSearchCrossStreetAddressOptions options) {
+        ReverseSearchCrossStreetAddressOptions options) {
         return this.asyncClient.reverseSearchCrossStreetAddress(options).block();
     }
 
@@ -890,9 +889,9 @@ public final class MapsSearchClient {
      * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReverseSearchCrossStreetAddressResult reverseSearchCrossStreetAddress(
-            GeoPosition query) {
-        return this.asyncClient.reverseSearchCrossStreetAddress(new ReverseSearchCrossStreetAddressOptions(query)).block();
+    public ReverseSearchCrossStreetAddressResult reverseSearchCrossStreetAddress(GeoPosition query) {
+        return this.asyncClient.reverseSearchCrossStreetAddress(new ReverseSearchCrossStreetAddressOptions(query))
+            .block();
     }
 
     /**
@@ -929,7 +928,7 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReverseSearchCrossStreetAddressResult> reverseSearchCrossStreetAddressWithResponse(
-            ReverseSearchCrossStreetAddressOptions options, Context context) {
+        ReverseSearchCrossStreetAddressOptions options, Context context) {
         return this.asyncClient.reverseSearchCrossStreetAddressWithResponse(options, context).block();
     }
 
@@ -970,7 +969,7 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchAddressResult searchStructuredAddress(StructuredAddress address,
-            SearchStructuredAddressOptions options) {
+        SearchStructuredAddressOptions options) {
         return this.asyncClient.searchStructuredAddress(address, options).block();
     }
 
@@ -1050,8 +1049,8 @@ public final class MapsSearchClient {
      * @return this object is returned from a successful Structured Address Search call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAddressResult> searchStructuredAddressWithResponse(
-            StructuredAddress address, SearchStructuredAddressOptions options, Context context) {
+    public Response<SearchAddressResult> searchStructuredAddressWithResponse(StructuredAddress address,
+        SearchStructuredAddressOptions options, Context context) {
         return this.asyncClient.searchStructuredAddressWithResponse(address, options, context).block();
     }
 
@@ -1182,8 +1181,8 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAddressResult> searchInsideGeometryWithResponse(SearchInsideGeometryOptions options,
-            Context context) {
-        return this.asyncClient.searchInsideGeometryWithResponse(options, null).block();
+        Context context) {
+        return this.asyncClient.searchInsideGeometryWithResponse(options, context).block();
     }
 
     /**
@@ -1314,7 +1313,7 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAddressResult> searchAlongRouteWithResponse(SearchAlongRouteOptions options,
-            Context context) {
+        Context context) {
         return this.asyncClient.searchAlongRouteWithResponse(options, context).block();
     }
 
@@ -1342,7 +1341,7 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BatchSearchResult, BatchSearchResult> beginFuzzySearchBatch(
-            List<FuzzySearchOptions> optionsList) {
+        List<FuzzySearchOptions> optionsList) {
         return this.asyncClient.beginFuzzySearchBatch(optionsList).getSyncPoller();
     }
 
@@ -1370,8 +1369,8 @@ public final class MapsSearchClient {
      * @return this object is returned from a successful Search Address Batch service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchSearchResult, BatchSearchResult> beginFuzzySearchBatch(
-            List<FuzzySearchOptions> optionsList, Context context) {
+    public SyncPoller<BatchSearchResult, BatchSearchResult> beginFuzzySearchBatch(List<FuzzySearchOptions> optionsList,
+        Context context) {
         return this.asyncClient.beginFuzzySearchBatch(optionsList, context).getSyncPoller();
     }
 
@@ -1398,8 +1397,7 @@ public final class MapsSearchClient {
      * @return this object is returned from a successful Search Address Batch service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchSearchResult, BatchSearchResult> beginGetFuzzySearchBatch(
-            String batchId) {
+    public SyncPoller<BatchSearchResult, BatchSearchResult> beginGetFuzzySearchBatch(String batchId) {
         return this.asyncClient.beginGetFuzzySearchBatch(batchId).getSyncPoller();
     }
 
@@ -1427,8 +1425,7 @@ public final class MapsSearchClient {
      * @return this object is returned from a successful Search Address Batch service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchSearchResult, BatchSearchResult> beginGetFuzzySearchBatch(
-            String batchId, Context context) {
+    public SyncPoller<BatchSearchResult, BatchSearchResult> beginGetFuzzySearchBatch(String batchId, Context context) {
         return this.asyncClient.beginGetFuzzySearchBatch(batchId, context).getSyncPoller();
     }
 
@@ -1463,7 +1460,7 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BatchSearchResult, BatchSearchResult> beginSearchAddressBatch(
-            List<SearchAddressOptions> optionsList) {
+        List<SearchAddressOptions> optionsList) {
         return this.asyncClient.beginSearchAddressBatch(optionsList).getSyncPoller();
     }
 
@@ -1499,7 +1496,7 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BatchSearchResult, BatchSearchResult> beginSearchAddressBatch(
-            List<SearchAddressOptions> optionsList, Context context) {
+        List<SearchAddressOptions> optionsList, Context context) {
         return this.asyncClient.beginSearchAddressBatch(optionsList, context).getSyncPoller();
     }
 
@@ -1533,8 +1530,7 @@ public final class MapsSearchClient {
      * @return this object is returned from a successful Search Address Batch service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchSearchResult, BatchSearchResult> beginGetSearchAddressBatch(
-            String batchId) {
+    public SyncPoller<BatchSearchResult, BatchSearchResult> beginGetSearchAddressBatch(String batchId) {
         return this.asyncClient.beginGetSearchAddressBatch(batchId).getSyncPoller();
     }
 
@@ -1569,8 +1565,8 @@ public final class MapsSearchClient {
      * @return this object is returned from a successful Search Address Batch service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchSearchResult, BatchSearchResult> beginGetSearchAddressBatch(
-            String batchId, Context context) {
+    public SyncPoller<BatchSearchResult, BatchSearchResult> beginGetSearchAddressBatch(String batchId,
+        Context context) {
         return this.asyncClient.beginGetSearchAddressBatch(batchId, context).getSyncPoller();
     }
 
@@ -1599,8 +1595,8 @@ public final class MapsSearchClient {
      * @return a {@code SyncPoller} wrapping the service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchReverseSearchResult, BatchReverseSearchResult>
-            beginReverseSearchAddressBatch(List<ReverseSearchAddressOptions> optionsList) {
+    public SyncPoller<BatchReverseSearchResult, BatchReverseSearchResult> beginReverseSearchAddressBatch(
+        List<ReverseSearchAddressOptions> optionsList) {
         return this.asyncClient.beginReverseSearchAddressBatch(optionsList).getSyncPoller();
     }
 
@@ -1630,8 +1626,8 @@ public final class MapsSearchClient {
      * @return a {@code SyncPoller} wrapping the service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchReverseSearchResult, BatchReverseSearchResult>
-            beginReverseSearchAddressBatch(List<ReverseSearchAddressOptions> optionsList, Context context) {
+    public SyncPoller<BatchReverseSearchResult, BatchReverseSearchResult> beginReverseSearchAddressBatch(
+        List<ReverseSearchAddressOptions> optionsList, Context context) {
         return this.asyncClient.beginReverseSearchAddressBatch(optionsList, context).getSyncPoller();
     }
 
@@ -1660,8 +1656,8 @@ public final class MapsSearchClient {
      * @return a {@code SyncPoller} wrapping the service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchReverseSearchResult, BatchReverseSearchResult>
-            beginGetReverseSearchAddressBatch(String batchId) {
+    public SyncPoller<BatchReverseSearchResult, BatchReverseSearchResult> beginGetReverseSearchAddressBatch(
+        String batchId) {
         return this.asyncClient.beginGetReverseSearchAddressBatch(batchId).getSyncPoller();
     }
 
@@ -1691,8 +1687,8 @@ public final class MapsSearchClient {
      * @return a {@code SyncPoller} wrapping the service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchReverseSearchResult, BatchReverseSearchResult>
-            beginGetReverseSearchAddressBatch(String batchId, Context context) {
+    public SyncPoller<BatchReverseSearchResult, BatchReverseSearchResult> beginGetReverseSearchAddressBatch(
+        String batchId, Context context) {
         return this.asyncClient.beginGetReverseSearchAddressBatch(batchId, context).getSyncPoller();
     }
 }

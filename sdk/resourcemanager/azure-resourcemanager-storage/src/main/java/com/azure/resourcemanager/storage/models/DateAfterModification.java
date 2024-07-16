@@ -23,13 +23,16 @@ public final class DateAfterModification {
     private Float daysAfterModificationGreaterThan;
 
     /*
-     * Value indicating the age in days after last blob access. This property can only be used in conjunction with last access time tracking policy
+     * Value indicating the age in days after last blob access. This property can only be used in conjunction with last
+     * access time tracking policy
      */
     @JsonProperty(value = "daysAfterLastAccessTimeGreaterThan")
     private Float daysAfterLastAccessTimeGreaterThan;
 
     /*
-     * Value indicating the age in days after last blob tier change time. This property is only applicable for tierToArchive actions and requires daysAfterModificationGreaterThan to be set for baseBlobs based actions. The blob will be archived if both the conditions are satisfied.
+     * Value indicating the age in days after last blob tier change time. This property is only applicable for
+     * tierToArchive actions and requires daysAfterModificationGreaterThan to be set for baseBlobs based actions. The
+     * blob will be archived if both the conditions are satisfied.
      */
     @JsonProperty(value = "daysAfterLastTierChangeGreaterThan")
     private Float daysAfterLastTierChangeGreaterThan;

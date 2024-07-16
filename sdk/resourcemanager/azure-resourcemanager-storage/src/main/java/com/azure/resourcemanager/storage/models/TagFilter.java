@@ -20,7 +20,8 @@ public final class TagFilter {
     private String name;
 
     /*
-     * This is the comparison operator which is used for object comparison and filtering. Only == (equality operator) is currently supported
+     * This is the comparison operator which is used for object comparison and filtering. Only == (equality operator) is
+     * currently supported
      */
     @JsonProperty(value = "op", required = true)
     private String op;

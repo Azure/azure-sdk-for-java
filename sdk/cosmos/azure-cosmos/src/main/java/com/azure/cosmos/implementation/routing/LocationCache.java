@@ -422,7 +422,7 @@ public class LocationCache {
         }
 
         //If preferred list is not set, locationEndpoint will be default endpoint, so return the hub region
-        return this.locationInfo.availableWriteEndpointByLocation.keySet().iterator().next();
+        return this.locationInfo.availableWriteLocations.get(0).toLowerCase(Locale.ROOT);
     }
 
     private boolean areEqual(URI url1, URI url2) {

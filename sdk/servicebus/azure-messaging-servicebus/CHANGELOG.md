@@ -4,16 +4,22 @@
 
 ### Features Added
 
-- Setting the v2 stack as the default for "Synchronous Receiver Client".
-
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 7.17.1 (2024-06-22)
+
+### Features Added
+
+- Setting the v2 stack as the default for "Synchronous Receiver Client".
 
 ### Bugs Fixed
 
 - Fixes the sender API that takes `Iterable` to not drop messages that cannot be fit in the batch. ([#40462](https://github.com/Azure/azure-sdk-for-java/pull/40462))
 - Fixed issue where the scheduled enqueue time was not cleared when creating a new message from a received message.([#44585](https://github.com/Azure/azure-sdk-for-net/pull/44585)) 
-
-### Other Changes
 
 ## 7.18.0-beta.1 (2024-05-15)
 

@@ -25,15 +25,8 @@ Import the OpenTelemetry Bills of Materials (BOM)
 by [following the OpenTelemetry documentation](https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/#dependency-management).
 
 #### Add monitoring dependency
-[//]: # ({x-version-update-start;com.azure:azure-monitor-azure-monitor-spring-native;current})
-```xml
-<dependency>
-  <groupId>com.azure.spring</groupId>
-  <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-  <version>1.0.0-beta.5</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
+
+Add the [Spring Cloud Azure Starter Monitor](https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-monitor) dependency.
 
 #### Required native image build configuration
 

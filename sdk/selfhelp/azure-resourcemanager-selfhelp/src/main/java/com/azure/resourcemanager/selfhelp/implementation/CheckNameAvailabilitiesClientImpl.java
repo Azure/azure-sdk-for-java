@@ -63,7 +63,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
         @Post("/{scope}/providers/Microsoft.Help/checkNameAvailability")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityResponseInner>> post(@HostParam("$host") String endpoint,
+        Mono<Response<CheckNameAvailabilityResponseInner>> checkAvailability(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckNameAvailabilityRequest checkNameAvailabilityRequest,
             @HeaderParam("Accept") String accept, Context context);
@@ -82,7 +82,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseInner>> postWithResponseAsync(String scope,
+    private Mono<Response<CheckNameAvailabilityResponseInner>> checkAvailabilityWithResponseAsync(String scope,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -96,8 +96,8 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.post(this.client.getEndpoint(), scope, this.client.getApiVersion(),
-                checkNameAvailabilityRequest, accept, context))
+            .withContext(context -> service.checkAvailability(this.client.getEndpoint(), scope,
+                this.client.getApiVersion(), checkNameAvailabilityRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -115,7 +115,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseInner>> postWithResponseAsync(String scope,
+    private Mono<Response<CheckNameAvailabilityResponseInner>> checkAvailabilityWithResponseAsync(String scope,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -129,8 +129,8 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.post(this.client.getEndpoint(), scope, this.client.getApiVersion(), checkNameAvailabilityRequest,
-            accept, context);
+        return service.checkAvailability(this.client.getEndpoint(), scope, this.client.getApiVersion(),
+            checkNameAvailabilityRequest, accept, context);
     }
 
     /**
@@ -145,9 +145,9 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameAvailabilityResponseInner> postAsync(String scope) {
+    private Mono<CheckNameAvailabilityResponseInner> checkAvailabilityAsync(String scope) {
         final CheckNameAvailabilityRequest checkNameAvailabilityRequest = null;
-        return postWithResponseAsync(scope, checkNameAvailabilityRequest)
+        return checkAvailabilityWithResponseAsync(scope, checkNameAvailabilityRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -164,9 +164,9 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      * @return response for whether the requested resource name is available or not along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResponseInner> postWithResponse(String scope,
+    public Response<CheckNameAvailabilityResponseInner> checkAvailabilityWithResponse(String scope,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
-        return postWithResponseAsync(scope, checkNameAvailabilityRequest, context).block();
+        return checkAvailabilityWithResponseAsync(scope, checkNameAvailabilityRequest, context).block();
     }
 
     /**
@@ -180,8 +180,8 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      * @return response for whether the requested resource name is available or not.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResponseInner post(String scope) {
+    public CheckNameAvailabilityResponseInner checkAvailability(String scope) {
         final CheckNameAvailabilityRequest checkNameAvailabilityRequest = null;
-        return postWithResponse(scope, checkNameAvailabilityRequest, Context.NONE).getValue();
+        return checkAvailabilityWithResponse(scope, checkNameAvailabilityRequest, Context.NONE).getValue();
     }
 }

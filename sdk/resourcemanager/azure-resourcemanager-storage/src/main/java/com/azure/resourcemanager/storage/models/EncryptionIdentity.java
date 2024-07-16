@@ -14,14 +14,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class EncryptionIdentity {
     /*
-     * Resource identifier of the UserAssigned identity to be associated with server-side encryption on the storage account.
+     * Resource identifier of the UserAssigned identity to be associated with server-side encryption on the storage
+     * account.
      */
     @JsonProperty(value = "userAssignedIdentity")
     @JsonInclude(value = JsonInclude.Include.ALWAYS)
     private String encryptionUserAssignedIdentity;
 
     /*
-     * ClientId of the multi-tenant application to be used in conjunction with the user-assigned identity for cross-tenant customer-managed-keys server-side encryption on the storage account.
+     * ClientId of the multi-tenant application to be used in conjunction with the user-assigned identity for
+     * cross-tenant customer-managed-keys server-side encryption on the storage account.
      */
     @JsonProperty(value = "federatedIdentityClientId")
     private String encryptionFederatedIdentityClientId;

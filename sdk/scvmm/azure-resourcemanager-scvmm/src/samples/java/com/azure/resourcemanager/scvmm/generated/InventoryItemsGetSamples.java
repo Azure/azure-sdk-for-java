@@ -4,21 +4,37 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for InventoryItems Get. */
+/**
+ * Samples for InventoryItems Get.
+ */
 public final class InventoryItemsGetSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/GetInventoryItem.json
+     * x-ms-original-file:
+     * specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Get_MinimumSet_Gen
+     * .json
      */
     /**
-     * Sample code: GetInventoryItem.
-     *
+     * Sample code: InventoryItems_Get_MinimumSet.
+     * 
      * @param manager Entry point to ScvmmManager.
      */
-    public static void getInventoryItem(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager
-            .inventoryItems()
-            .getWithResponse("testrg", "ContosoVMMServer", "12345678-1234-1234-1234-123456789abc", Context.NONE);
+    public static void inventoryItemsGetMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.inventoryItems()
+            .getWithResponse("rgscvmm", "_", "cacb8Ceb-efAC-bebb-ae7C-dec8C5Bb7100", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Get_MaximumSet_Gen
+     * .json
+     */
+    /**
+     * Sample code: InventoryItems_Get_MaximumSet.
+     * 
+     * @param manager Entry point to ScvmmManager.
+     */
+    public static void inventoryItemsGetMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.inventoryItems()
+            .getWithResponse("rgscvmm", "1", "2bFBede6-EEf8-becB-dBbd-B96DbBFdB3f3", com.azure.core.util.Context.NONE);
     }
 }

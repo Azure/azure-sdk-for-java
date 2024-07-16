@@ -3,13 +3,10 @@
 
 package com.azure.ai.translation.text;
 
-import java.util.List;
-import java.util.ArrayList;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.ai.translation.text.models.DetectedLanguage;
-import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationText;
+import com.azure.core.credential.AzureKeyCredential;
 
 /**
  * You can omit source language of the input text. In this case, API will try to auto-detect the language.

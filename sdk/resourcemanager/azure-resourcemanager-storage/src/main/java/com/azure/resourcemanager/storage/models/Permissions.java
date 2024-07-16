@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -56,7 +55,7 @@ public final class Permissions extends ExpandableStringEnum<Permissions> {
 
     /**
      * Creates a new instance of Permissions value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -65,7 +64,7 @@ public final class Permissions extends ExpandableStringEnum<Permissions> {
 
     /**
      * Creates or finds a Permissions from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Permissions.
      */
@@ -76,7 +75,7 @@ public final class Permissions extends ExpandableStringEnum<Permissions> {
 
     /**
      * Gets known Permissions values.
-     *
+     * 
      * @return known Permissions values.
      */
     public static Collection<Permissions> values() {

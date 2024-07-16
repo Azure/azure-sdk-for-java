@@ -9,7 +9,8 @@ package com.azure.resourcemanager.selfhelp.generated;
  */
 public final class SolutionOperationWarmUpSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_WarmUp.json
+     * x-ms-original-file:
+     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_WarmUp.json
      */
     /**
      * Sample code: Solution_WarmUp.

@@ -9,7 +9,8 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class TableDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/TableOperationDelete.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/TableOperationDelete.json
      */
     /**
      * Sample code: TableOperationDelete.

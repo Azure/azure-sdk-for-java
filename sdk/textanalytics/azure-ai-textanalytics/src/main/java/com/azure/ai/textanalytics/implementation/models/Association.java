@@ -4,15 +4,23 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-/** Describes if the entity is the subject of the text or if it describes someone else. */
+/**
+ * Describes if the entity is the subject of the text or if it describes someone else.
+ */
 public enum Association {
-    /** Enum value subject. */
+    /**
+     * Enum value subject.
+     */
     SUBJECT("subject"),
 
-    /** Enum value other. */
+    /**
+     * Enum value other.
+     */
     OTHER("other");
 
-    /** The actual serialized value for a Association instance. */
+    /**
+     * The actual serialized value for a Association instance.
+     */
     private final String value;
 
     Association(String value) {
@@ -21,7 +29,7 @@ public enum Association {
 
     /**
      * Parses a serialized value to a Association instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Association object, or null if unable to parse.
      */
@@ -38,7 +46,9 @@ public enum Association {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

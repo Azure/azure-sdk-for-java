@@ -5,34 +5,61 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** NSX DHCP Server. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dhcpType")
-@JsonTypeName("SERVER")
+/**
+ * NSX DHCP Server.
+ */
 @Fluent
 public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
     /*
+     * Type of DHCP: SERVER or RELAY.
+     */
+    private DhcpTypeEnum dhcpType = DhcpTypeEnum.SERVER;
+
+    /*
      * DHCP Server Address.
      */
-    @JsonProperty(value = "serverAddress")
     private String serverAddress;
 
     /*
      * DHCP Server Lease Time.
      */
-    @JsonProperty(value = "leaseTime")
     private Long leaseTime;
 
-    /** Creates an instance of WorkloadNetworkDhcpServer class. */
+    /*
+     * NSX Segments consuming DHCP.
+     */
+    private List<String> segments;
+
+    /*
+     * The provisioning state
+     */
+    private WorkloadNetworkDhcpProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of WorkloadNetworkDhcpServer class.
+     */
     public WorkloadNetworkDhcpServer() {
     }
 
     /**
+     * Get the dhcpType property: Type of DHCP: SERVER or RELAY.
+     * 
+     * @return the dhcpType value.
+     */
+    @Override
+    public DhcpTypeEnum dhcpType() {
+        return this.dhcpType;
+    }
+
+    /**
      * Get the serverAddress property: DHCP Server Address.
-     *
+     * 
      * @return the serverAddress value.
      */
     public String serverAddress() {
@@ -41,7 +68,7 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
 
     /**
      * Set the serverAddress property: DHCP Server Address.
-     *
+     * 
      * @param serverAddress the serverAddress value to set.
      * @return the WorkloadNetworkDhcpServer object itself.
      */
@@ -52,7 +79,7 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
 
     /**
      * Get the leaseTime property: DHCP Server Lease Time.
-     *
+     * 
      * @return the leaseTime value.
      */
     public Long leaseTime() {
@@ -61,7 +88,7 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
 
     /**
      * Set the leaseTime property: DHCP Server Lease Time.
-     *
+     * 
      * @param leaseTime the leaseTime value to set.
      * @return the WorkloadNetworkDhcpServer object itself.
      */
@@ -70,14 +97,38 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the segments property: NSX Segments consuming DHCP.
+     * 
+     * @return the segments value.
+     */
+    @Override
+    public List<String> segments() {
+        return this.segments;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public WorkloadNetworkDhcpProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkloadNetworkDhcpServer withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkloadNetworkDhcpServer withRevision(Long revision) {
         super.withRevision(revision);
@@ -86,11 +137,65 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeNumberField("revision", revision());
+        jsonWriter.writeStringField("dhcpType", this.dhcpType == null ? null : this.dhcpType.toString());
+        jsonWriter.writeStringField("serverAddress", this.serverAddress);
+        jsonWriter.writeNumberField("leaseTime", this.leaseTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadNetworkDhcpServer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadNetworkDhcpServer if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkloadNetworkDhcpServer.
+     */
+    public static WorkloadNetworkDhcpServer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadNetworkDhcpServer deserializedWorkloadNetworkDhcpServer = new WorkloadNetworkDhcpServer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedWorkloadNetworkDhcpServer.withDisplayName(reader.getString());
+                } else if ("segments".equals(fieldName)) {
+                    List<String> segments = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWorkloadNetworkDhcpServer.segments = segments;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedWorkloadNetworkDhcpServer.provisioningState
+                        = WorkloadNetworkDhcpProvisioningState.fromString(reader.getString());
+                } else if ("revision".equals(fieldName)) {
+                    deserializedWorkloadNetworkDhcpServer.withRevision(reader.getNullable(JsonReader::getLong));
+                } else if ("dhcpType".equals(fieldName)) {
+                    deserializedWorkloadNetworkDhcpServer.dhcpType = DhcpTypeEnum.fromString(reader.getString());
+                } else if ("serverAddress".equals(fieldName)) {
+                    deserializedWorkloadNetworkDhcpServer.serverAddress = reader.getString();
+                } else if ("leaseTime".equals(fieldName)) {
+                    deserializedWorkloadNetworkDhcpServer.leaseTime = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadNetworkDhcpServer;
+        });
     }
 }

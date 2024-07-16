@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.BlobInventoryPolicySchema;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 
 /**
@@ -36,7 +35,7 @@ public final class BlobInventoryPolicyProperties {
 
     /**
      * Get the lastModifiedTime property: Returns the last modified date and time of the blob inventory policy.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -45,7 +44,7 @@ public final class BlobInventoryPolicyProperties {
 
     /**
      * Get the policy property: The storage account blob inventory policy object. It is composed of policy rules.
-     *
+     * 
      * @return the policy value.
      */
     public BlobInventoryPolicySchema policy() {
@@ -54,7 +53,7 @@ public final class BlobInventoryPolicyProperties {
 
     /**
      * Set the policy property: The storage account blob inventory policy object. It is composed of policy rules.
-     *
+     * 
      * @param policy the policy value to set.
      * @return the BlobInventoryPolicyProperties object itself.
      */
@@ -65,7 +64,7 @@ public final class BlobInventoryPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

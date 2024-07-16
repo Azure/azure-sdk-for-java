@@ -41,7 +41,6 @@ final class ResourceManagerUtils {
             }
         }
         return null;
-
     }
 
     static String getValueFromIdByParameterName(String id, String pathTemplate, String parameterName) {
@@ -75,7 +74,6 @@ final class ResourceManagerUtils {
             }
         }
         return null;
-
     }
 
     static <T, S> PagedIterable<S> mapPage(PagedIterable<T> pageIterable, Function<T, S> mapper) {

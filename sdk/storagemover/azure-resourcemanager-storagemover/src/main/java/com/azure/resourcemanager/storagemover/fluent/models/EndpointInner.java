@@ -11,7 +11,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagemover.models.EndpointBaseProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Endpoint resource, which contains information about file sources and targets. */
+/**
+ * The Endpoint resource, which contains information about file sources and targets.
+ */
 @Fluent
 public final class EndpointInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class EndpointInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of EndpointInner class. */
+    /**
+     * Creates an instance of EndpointInner class.
+     */
     public EndpointInner() {
     }
 
     /**
      * Get the properties property: The resource specific properties for the Storage Mover resource.
-     *
+     * 
      * @return the properties value.
      */
     public EndpointBaseProperties properties() {
@@ -41,7 +45,7 @@ public final class EndpointInner extends ProxyResource {
 
     /**
      * Set the properties property: The resource specific properties for the Storage Mover resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the EndpointInner object itself.
      */
@@ -52,7 +56,7 @@ public final class EndpointInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -61,14 +65,13 @@ public final class EndpointInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model EndpointInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model EndpointInner"));
         } else {
             properties().validate();
         }

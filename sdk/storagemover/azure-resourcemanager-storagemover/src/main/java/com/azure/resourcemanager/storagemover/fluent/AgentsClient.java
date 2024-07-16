@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storagemover.fluent.models.AgentInner;
 import com.azure.resourcemanager.storagemover.models.AgentUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in AgentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AgentsClient.
+ */
 public interface AgentsClient {
     /**
      * Lists all Agents in a Storage Mover.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface AgentsClient {
 
     /**
      * Lists all Agents in a Storage Mover.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param context The context to associate with this operation.
@@ -45,7 +47,7 @@ public interface AgentsClient {
 
     /**
      * Gets an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -56,12 +58,12 @@ public interface AgentsClient {
      * @return an Agent resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AgentInner> getWithResponse(
-        String resourceGroupName, String storageMoverName, String agentName, Context context);
+    Response<AgentInner> getWithResponse(String resourceGroupName, String storageMoverName, String agentName,
+        Context context);
 
     /**
      * Gets an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -75,11 +77,11 @@ public interface AgentsClient {
 
     /**
      * Creates or updates an Agent resource, which references a hybrid compute machine that can run jobs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
-     * @param agent The Agent resource.
+     * @param agent The agent parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -87,16 +89,16 @@ public interface AgentsClient {
      * @return the Agent resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AgentInner> createOrUpdateWithResponse(
-        String resourceGroupName, String storageMoverName, String agentName, AgentInner agent, Context context);
+    Response<AgentInner> createOrUpdateWithResponse(String resourceGroupName, String storageMoverName, String agentName,
+        AgentInner agent, Context context);
 
     /**
      * Creates or updates an Agent resource, which references a hybrid compute machine that can run jobs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
-     * @param agent The Agent resource.
+     * @param agent The agent parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -107,11 +109,11 @@ public interface AgentsClient {
 
     /**
      * Creates or updates an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
-     * @param agent The Agent resource.
+     * @param agent The agent parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -119,20 +121,16 @@ public interface AgentsClient {
      * @return the Agent resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AgentInner> updateWithResponse(
-        String resourceGroupName,
-        String storageMoverName,
-        String agentName,
-        AgentUpdateParameters agent,
-        Context context);
+    Response<AgentInner> updateWithResponse(String resourceGroupName, String storageMoverName, String agentName,
+        AgentUpdateParameters agent, Context context);
 
     /**
      * Creates or updates an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
-     * @param agent The Agent resource.
+     * @param agent The agent parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -143,7 +141,7 @@ public interface AgentsClient {
 
     /**
      * Deletes an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -157,7 +155,7 @@ public interface AgentsClient {
 
     /**
      * Deletes an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -168,12 +166,12 @@ public interface AgentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String storageMoverName, String agentName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName, String agentName,
+        Context context);
 
     /**
      * Deletes an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -186,7 +184,7 @@ public interface AgentsClient {
 
     /**
      * Deletes an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.

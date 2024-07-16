@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: contentsafety
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-ai-contentsafety
         groupId: com.azure

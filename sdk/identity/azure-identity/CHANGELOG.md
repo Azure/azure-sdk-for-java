@@ -1,5 +1,28 @@
 # Release History
 
+## 1.14.0-beta.1 (Unreleased)
+
+### Features Added
+- Added support in `EnvironmentCredential` (and thus `DefaultAzureCredential` when it chooses `EnvironmentCredential`) for using subject name / issuer authentication with client certificates by setting `AZURE_CLIENT_SEND_CERTIFICATE_CHAIN` to `1` or `true`. [#40013](https://github.com/Azure/azure-sdk-for-java/issues/40013) 
+
+### Breaking Changes
+
+### Bugs Fixed
+- Fixed certificate type detection, which fixes using a PFX certificate without a password. [#37210](https://github.com/Azure/azure-sdk-for-java/issues/37210)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `msal4j` from `1.16.0` to `1.16.1`
+
+## 1.13.0 (2024-06-20)
+
+### Features Added
+- GA for `AzurePipelinesCredential`
+
+### Bugs Fixed
+- Fixed an issue which may block `AzurePowershellCredential` from functioning correctly. [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files)
+
 ## 1.13.0-beta.3 (Unreleased)
 
 ### Features Added

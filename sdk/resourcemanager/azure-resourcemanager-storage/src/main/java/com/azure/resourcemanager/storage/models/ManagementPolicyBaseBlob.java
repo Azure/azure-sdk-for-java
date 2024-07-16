@@ -43,7 +43,8 @@ public final class ManagementPolicyBaseBlob {
     private DateAfterModification delete;
 
     /*
-     * This property enables auto tiering of a blob from cool to hot on a blob access. This property requires tierToCool.daysAfterLastAccessTimeGreaterThan.
+     * This property enables auto tiering of a blob from cool to hot on a blob access. This property requires
+     * tierToCool.daysAfterLastAccessTimeGreaterThan.
      */
     @JsonProperty(value = "enableAutoTierToHotFromCool")
     private Boolean enableAutoTierToHotFromCool;

@@ -49,7 +49,6 @@ public abstract class NotificationContent {
     @JsonCreator
     protected NotificationContent(@JsonProperty(value = "channelRegistrationId") String channelRegistrationId,
         @JsonProperty(value = "to") List<String> to) {
-        this.kind = CommunicationMessageKind.fromString("NotificationContent");
         this.channelRegistrationId = channelRegistrationId;
         this.to = to;
     }
@@ -80,7 +79,7 @@ public abstract class NotificationContent {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private CommunicationMessageKind kind;
+    private CommunicationMessageKind kind = CommunicationMessageKind.fromString("NotificationContent");
 
     /**
      * Get the kind property: The type discriminator describing a notification type.

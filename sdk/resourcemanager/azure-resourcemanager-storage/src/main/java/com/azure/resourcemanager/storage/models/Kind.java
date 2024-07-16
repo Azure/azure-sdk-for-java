@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -40,7 +39,7 @@ public final class Kind extends ExpandableStringEnum<Kind> {
 
     /**
      * Creates a new instance of Kind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -49,7 +48,7 @@ public final class Kind extends ExpandableStringEnum<Kind> {
 
     /**
      * Creates or finds a Kind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Kind.
      */
@@ -60,7 +59,7 @@ public final class Kind extends ExpandableStringEnum<Kind> {
 
     /**
      * Gets known Kind values.
-     *
+     * 
      * @return known Kind values.
      */
     public static Collection<Kind> values() {

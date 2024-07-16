@@ -13,7 +13,6 @@ import com.azure.resourcemanager.storage.models.NetworkSecurityPerimeterConfigur
 import com.azure.resourcemanager.storage.models.NetworkSecurityPerimeterConfigurationProvisioningState;
 import com.azure.resourcemanager.storage.models.ProvisioningIssue;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -41,7 +40,7 @@ public final class NetworkSecurityPerimeterConfigurationInner extends ProxyResou
 
     /**
      * Get the innerProperties property: Properties of the Network Security Perimeter Configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkSecurityPerimeterConfigurationProperties innerProperties() {
@@ -50,7 +49,7 @@ public final class NetworkSecurityPerimeterConfigurationInner extends ProxyResou
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -59,7 +58,7 @@ public final class NetworkSecurityPerimeterConfigurationInner extends ProxyResou
 
     /**
      * Get the provisioningState property: Provisioning state of Network Security Perimeter configuration propagation.
-     *
+     * 
      * @return the provisioningState value.
      */
     public NetworkSecurityPerimeterConfigurationProvisioningState provisioningState() {
@@ -68,7 +67,7 @@ public final class NetworkSecurityPerimeterConfigurationInner extends ProxyResou
 
     /**
      * Get the provisioningIssues property: List of Provisioning Issues if any.
-     *
+     * 
      * @return the provisioningIssues value.
      */
     public List<ProvisioningIssue> provisioningIssues() {
@@ -77,7 +76,7 @@ public final class NetworkSecurityPerimeterConfigurationInner extends ProxyResou
 
     /**
      * Get the networkSecurityPerimeter property: NetworkSecurityPerimeter related information.
-     *
+     * 
      * @return the networkSecurityPerimeter value.
      */
     public NetworkSecurityPerimeter networkSecurityPerimeter() {
@@ -86,7 +85,7 @@ public final class NetworkSecurityPerimeterConfigurationInner extends ProxyResou
 
     /**
      * Get the resourceAssociation property: Information about resource association.
-     *
+     * 
      * @return the resourceAssociation value.
      */
     public NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation resourceAssociation() {
@@ -95,7 +94,7 @@ public final class NetworkSecurityPerimeterConfigurationInner extends ProxyResou
 
     /**
      * Get the profile property: Network Security Perimeter profile.
-     *
+     * 
      * @return the profile value.
      */
     public NetworkSecurityPerimeterConfigurationPropertiesProfile profile() {
@@ -104,7 +103,7 @@ public final class NetworkSecurityPerimeterConfigurationInner extends ProxyResou
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

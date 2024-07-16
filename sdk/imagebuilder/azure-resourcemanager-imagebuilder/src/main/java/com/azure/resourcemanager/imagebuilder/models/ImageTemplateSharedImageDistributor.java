@@ -6,64 +6,72 @@ package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Distribute via Azure Compute Gallery.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SharedImage")
 @Fluent
 public final class ImageTemplateSharedImageDistributor extends ImageTemplateDistributor {
     /*
+     * Type of distribution.
+     */
+    private String type = "SharedImage";
+
+    /*
      * Resource Id of the Azure Compute Gallery image
      */
-    @JsonProperty(value = "galleryImageId", required = true)
     private String galleryImageId;
 
     /*
      * [Deprecated] A list of regions that the image will be replicated to. This list can be specified only if
      * targetRegions is not specified. This field is deprecated - use targetRegions instead.
      */
-    @JsonProperty(value = "replicationRegions")
     private List<String> replicationRegions;
 
     /*
      * Flag that indicates whether created image version should be excluded from latest. Omit to use the default
      * (false).
      */
-    @JsonProperty(value = "excludeFromLatest")
     private Boolean excludeFromLatest;
 
     /*
      * [Deprecated] Storage account type to be used to store the shared image. Omit to use the default (Standard_LRS).
-     * This field can be specified only if replicationRegions is specified. This field is deprecated - use
-     * targetRegions instead.
+     * This field can be specified only if replicationRegions is specified. This field is deprecated - use targetRegions
+     * instead.
      */
-    @JsonProperty(value = "storageAccountType")
     private SharedImageStorageAccountType storageAccountType;
 
     /*
      * The target regions where the distributed Image Version is going to be replicated to. This object supersedes
      * replicationRegions and can be specified only if replicationRegions is not specified.
      */
-    @JsonProperty(value = "targetRegions")
     private List<TargetRegion> targetRegions;
 
     /*
      * Describes how to generate new x.y.z version number for distribution.
      */
-    @JsonProperty(value = "versioning")
     private DistributeVersioner versioning;
 
     /**
      * Creates an instance of ImageTemplateSharedImageDistributor class.
      */
     public ImageTemplateSharedImageDistributor() {
+    }
+
+    /**
+     * Get the type property: Type of distribution.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -133,9 +141,9 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     }
 
     /**
-     * Get the storageAccountType property: [Deprecated] Storage account type to be used to store the shared image.
-     * Omit to use the default (Standard_LRS). This field can be specified only if replicationRegions is specified.
-     * This field is deprecated - use targetRegions instead.
+     * Get the storageAccountType property: [Deprecated] Storage account type to be used to store the shared image. Omit
+     * to use the default (Standard_LRS). This field can be specified only if replicationRegions is specified. This
+     * field is deprecated - use targetRegions instead.
      * 
      * @return the storageAccountType value.
      */
@@ -144,9 +152,9 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     }
 
     /**
-     * Set the storageAccountType property: [Deprecated] Storage account type to be used to store the shared image.
-     * Omit to use the default (Standard_LRS). This field can be specified only if replicationRegions is specified.
-     * This field is deprecated - use targetRegions instead.
+     * Set the storageAccountType property: [Deprecated] Storage account type to be used to store the shared image. Omit
+     * to use the default (Standard_LRS). This field can be specified only if replicationRegions is specified. This
+     * field is deprecated - use targetRegions instead.
      * 
      * @param storageAccountType the storageAccountType value to set.
      * @return the ImageTemplateSharedImageDistributor object itself.
@@ -226,8 +234,9 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     public void validate() {
         super.validate();
         if (galleryImageId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property galleryImageId in model ImageTemplateSharedImageDistributor"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property galleryImageId in model ImageTemplateSharedImageDistributor"));
         }
         if (targetRegions() != null) {
             targetRegions().forEach(e -> e.validate());
@@ -238,4 +247,73 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImageTemplateSharedImageDistributor.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("runOutputName", runOutputName());
+        jsonWriter.writeMapField("artifactTags", artifactTags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("galleryImageId", this.galleryImageId);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeArrayField("replicationRegions", this.replicationRegions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("excludeFromLatest", this.excludeFromLatest);
+        jsonWriter.writeStringField("storageAccountType",
+            this.storageAccountType == null ? null : this.storageAccountType.toString());
+        jsonWriter.writeArrayField("targetRegions", this.targetRegions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("versioning", this.versioning);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateSharedImageDistributor from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateSharedImageDistributor if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageTemplateSharedImageDistributor.
+     */
+    public static ImageTemplateSharedImageDistributor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateSharedImageDistributor deserializedImageTemplateSharedImageDistributor
+                = new ImageTemplateSharedImageDistributor();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runOutputName".equals(fieldName)) {
+                    deserializedImageTemplateSharedImageDistributor.withRunOutputName(reader.getString());
+                } else if ("artifactTags".equals(fieldName)) {
+                    Map<String, String> artifactTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedImageTemplateSharedImageDistributor.withArtifactTags(artifactTags);
+                } else if ("galleryImageId".equals(fieldName)) {
+                    deserializedImageTemplateSharedImageDistributor.galleryImageId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageTemplateSharedImageDistributor.type = reader.getString();
+                } else if ("replicationRegions".equals(fieldName)) {
+                    List<String> replicationRegions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedImageTemplateSharedImageDistributor.replicationRegions = replicationRegions;
+                } else if ("excludeFromLatest".equals(fieldName)) {
+                    deserializedImageTemplateSharedImageDistributor.excludeFromLatest
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("storageAccountType".equals(fieldName)) {
+                    deserializedImageTemplateSharedImageDistributor.storageAccountType
+                        = SharedImageStorageAccountType.fromString(reader.getString());
+                } else if ("targetRegions".equals(fieldName)) {
+                    List<TargetRegion> targetRegions = reader.readArray(reader1 -> TargetRegion.fromJson(reader1));
+                    deserializedImageTemplateSharedImageDistributor.targetRegions = targetRegions;
+                } else if ("versioning".equals(fieldName)) {
+                    deserializedImageTemplateSharedImageDistributor.versioning = DistributeVersioner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateSharedImageDistributor;
+        });
+    }
 }

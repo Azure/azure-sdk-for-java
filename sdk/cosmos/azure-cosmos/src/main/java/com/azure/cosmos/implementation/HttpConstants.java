@@ -385,6 +385,10 @@ public class HttpConstants {
         public static final int PARTITION_KEY_MISMATCH = 1001;
         public static final int CROSS_PARTITION_QUERY_NOT_SERVABLE = 1004;
 
+        // client generated 400s
+        public static final int CUSTOM_SERIALIZER_EXCEPTION = 10101;
+        public static final int INVALID_ID_VALUE = 10102;
+
         // 410: StatusCodeType_Gone: substatus
         // Merge or split share the same status code and subStatusCode
         public static final int NAME_CACHE_IS_STALE = 1000;

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -20,7 +19,7 @@ public final class InventoryRuleType extends ExpandableStringEnum<InventoryRuleT
 
     /**
      * Creates a new instance of InventoryRuleType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -29,7 +28,7 @@ public final class InventoryRuleType extends ExpandableStringEnum<InventoryRuleT
 
     /**
      * Creates or finds a InventoryRuleType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InventoryRuleType.
      */
@@ -40,7 +39,7 @@ public final class InventoryRuleType extends ExpandableStringEnum<InventoryRuleT
 
     /**
      * Gets known InventoryRuleType values.
-     *
+     * 
      * @return known InventoryRuleType values.
      */
     public static Collection<InventoryRuleType> values() {

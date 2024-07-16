@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +24,7 @@ public final class RunStatusEnum extends ExpandableStringEnum<RunStatusEnum> {
 
     /**
      * Creates a new instance of RunStatusEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +33,7 @@ public final class RunStatusEnum extends ExpandableStringEnum<RunStatusEnum> {
 
     /**
      * Creates or finds a RunStatusEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RunStatusEnum.
      */
@@ -45,7 +44,7 @@ public final class RunStatusEnum extends ExpandableStringEnum<RunStatusEnum> {
 
     /**
      * Gets known RunStatusEnum values.
-     *
+     * 
      * @return known RunStatusEnum values.
      */
     public static Collection<RunStatusEnum> values() {

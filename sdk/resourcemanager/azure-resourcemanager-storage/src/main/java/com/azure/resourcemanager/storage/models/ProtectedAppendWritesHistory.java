@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 
 /**
@@ -15,7 +14,8 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ProtectedAppendWritesHistory {
     /*
-     * When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining legal hold protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted.
+     * When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining legal hold protection
+     * and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted.
      */
     @JsonProperty(value = "allowProtectedAppendWritesAll")
     private Boolean allowProtectedAppendWritesAll;
@@ -36,7 +36,7 @@ public final class ProtectedAppendWritesHistory {
      * Get the allowProtectedAppendWritesAll property: When enabled, new blocks can be written to both 'Append and Bock
      * Blobs' while maintaining legal hold protection and compliance. Only new blocks can be added and any existing
      * blocks cannot be modified or deleted.
-     *
+     * 
      * @return the allowProtectedAppendWritesAll value.
      */
     public Boolean allowProtectedAppendWritesAll() {
@@ -47,7 +47,7 @@ public final class ProtectedAppendWritesHistory {
      * Set the allowProtectedAppendWritesAll property: When enabled, new blocks can be written to both 'Append and Bock
      * Blobs' while maintaining legal hold protection and compliance. Only new blocks can be added and any existing
      * blocks cannot be modified or deleted.
-     *
+     * 
      * @param allowProtectedAppendWritesAll the allowProtectedAppendWritesAll value to set.
      * @return the ProtectedAppendWritesHistory object itself.
      */
@@ -58,7 +58,7 @@ public final class ProtectedAppendWritesHistory {
 
     /**
      * Get the timestamp property: Returns the date and time the tag was added.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -67,7 +67,7 @@ public final class ProtectedAppendWritesHistory {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

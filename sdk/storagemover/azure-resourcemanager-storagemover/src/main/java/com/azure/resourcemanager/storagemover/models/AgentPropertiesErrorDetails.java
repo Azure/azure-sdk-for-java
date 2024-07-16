@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagemover.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AgentPropertiesErrorDetails model. */
+/**
+ * The AgentPropertiesErrorDetails model.
+ */
 @Fluent
 public final class AgentPropertiesErrorDetails {
     /*
@@ -22,13 +24,15 @@ public final class AgentPropertiesErrorDetails {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of AgentPropertiesErrorDetails class. */
+    /**
+     * Creates an instance of AgentPropertiesErrorDetails class.
+     */
     public AgentPropertiesErrorDetails() {
     }
 
     /**
      * Get the code property: Error code reported by Agent.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +41,7 @@ public final class AgentPropertiesErrorDetails {
 
     /**
      * Set the code property: Error code reported by Agent.
-     *
+     * 
      * @param code the code value to set.
      * @return the AgentPropertiesErrorDetails object itself.
      */
@@ -48,7 +52,7 @@ public final class AgentPropertiesErrorDetails {
 
     /**
      * Get the message property: Expanded description of reported error code.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -57,7 +61,7 @@ public final class AgentPropertiesErrorDetails {
 
     /**
      * Set the message property: Expanded description of reported error code.
-     *
+     * 
      * @param message the message value to set.
      * @return the AgentPropertiesErrorDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class AgentPropertiesErrorDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

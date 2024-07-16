@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -22,7 +21,8 @@ public final class ExecutionTarget {
     private List<String> prefix;
 
     /*
-     * List of object prefixes to be excluded from task execution. If there is a conflict between include and exclude prefixes, the exclude prefix will be the determining factor
+     * List of object prefixes to be excluded from task execution. If there is a conflict between include and exclude
+     * prefixes, the exclude prefix will be the determining factor
      */
     @JsonProperty(value = "excludePrefix")
     private List<String> excludePrefix;
@@ -35,7 +35,7 @@ public final class ExecutionTarget {
 
     /**
      * Get the prefix property: Required list of object prefixes to be included for task execution.
-     *
+     * 
      * @return the prefix value.
      */
     public List<String> prefix() {
@@ -44,7 +44,7 @@ public final class ExecutionTarget {
 
     /**
      * Set the prefix property: Required list of object prefixes to be included for task execution.
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the ExecutionTarget object itself.
      */
@@ -56,7 +56,7 @@ public final class ExecutionTarget {
     /**
      * Get the excludePrefix property: List of object prefixes to be excluded from task execution. If there is a
      * conflict between include and exclude prefixes, the exclude prefix will be the determining factor.
-     *
+     * 
      * @return the excludePrefix value.
      */
     public List<String> excludePrefix() {
@@ -66,7 +66,7 @@ public final class ExecutionTarget {
     /**
      * Set the excludePrefix property: List of object prefixes to be excluded from task execution. If there is a
      * conflict between include and exclude prefixes, the exclude prefix will be the determining factor.
-     *
+     * 
      * @param excludePrefix the excludePrefix value to set.
      * @return the ExecutionTarget object itself.
      */
@@ -77,7 +77,7 @@ public final class ExecutionTarget {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

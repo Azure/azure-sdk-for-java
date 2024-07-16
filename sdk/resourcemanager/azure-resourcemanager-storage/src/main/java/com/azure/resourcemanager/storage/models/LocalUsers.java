@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storage.fluent.models.LocalUserInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -22,7 +21,8 @@ public final class LocalUsers {
     private List<LocalUserInner> value;
 
     /*
-     * Request URL that can be used to query next page of local users. Returned when total number of requested local users exceeds the maximum page size.
+     * Request URL that can be used to query next page of local users. Returned when total number of requested local
+     * users exceeds the maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
@@ -35,7 +35,7 @@ public final class LocalUsers {
 
     /**
      * Get the value property: The list of local users associated with the storage account.
-     *
+     * 
      * @return the value value.
      */
     public List<LocalUserInner> value() {
@@ -44,7 +44,7 @@ public final class LocalUsers {
 
     /**
      * Set the value property: The list of local users associated with the storage account.
-     *
+     * 
      * @param value the value value to set.
      * @return the LocalUsers object itself.
      */
@@ -56,7 +56,7 @@ public final class LocalUsers {
     /**
      * Get the nextLink property: Request URL that can be used to query next page of local users. Returned when total
      * number of requested local users exceeds the maximum page size.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +65,7 @@ public final class LocalUsers {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

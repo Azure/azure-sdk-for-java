@@ -17,7 +17,6 @@
     "com.azure.communication.messages.NotificationMessagesClient.send": "Azure.Communication.MessagesService.NotificationMessagesClient.send",
     "com.azure.communication.messages.NotificationMessagesClient.sendWithResponse": "Azure.Communication.MessagesService.NotificationMessagesClient.send",
     "com.azure.communication.messages.NotificationMessagesClientBuilder": "Azure.Communication.MessagesService.NotificationMessagesClient",
-    "com.azure.communication.messages.implementation.models.MessageDataStream": "Azure.Communication.MessagesService.MessageDataStream",
     "com.azure.communication.messages.models.CommunicationMessageKind": "Azure.Communication.MessagesService.CommunicationMessageKind",
     "com.azure.communication.messages.models.CommunicationMessagesChannel": "Azure.Communication.MessagesService.CommunicationMessagesChannel",
     "com.azure.communication.messages.models.MediaNotificationContent": "Azure.Communication.MessagesService.MediaNotificationContent",

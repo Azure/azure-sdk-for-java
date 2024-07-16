@@ -20,7 +20,9 @@ import java.util.Arrays;
  */
 public final class StorageTaskAssignmentsCreateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/storageTaskAssignmentsCrud/PutStorageTaskAssignment.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/storageTaskAssignmentsCrud/
+     * PutStorageTaskAssignment.json
      */
     /**
      * Sample code: PutStorageTaskAssignment.
@@ -48,7 +50,9 @@ public final class StorageTaskAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/storageTaskAssignmentsCrud/PutStorageTaskAssignmentRequiredProperties.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/storageTaskAssignmentsCrud/
+     * PutStorageTaskAssignmentRequiredProperties.json
      */
     /**
      * Sample code: PutStorageTaskAssignmentRequiredProperties.

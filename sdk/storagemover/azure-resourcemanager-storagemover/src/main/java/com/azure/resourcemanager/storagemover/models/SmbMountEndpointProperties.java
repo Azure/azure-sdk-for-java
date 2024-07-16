@@ -7,14 +7,28 @@ package com.azure.resourcemanager.storagemover.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The properties of SMB share endpoint. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+/**
+ * The properties of SMB share endpoint.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "endpointType",
+    defaultImpl = SmbMountEndpointProperties.class,
+    visible = true)
 @JsonTypeName("SmbMount")
 @Fluent
 public final class SmbMountEndpointProperties extends EndpointBaseProperties {
+    /*
+     * The Endpoint resource type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "endpointType", required = true)
+    private EndpointType endpointType = EndpointType.SMB_MOUNT;
+
     /*
      * The host name or IP address of the server exporting the file system.
      */
@@ -33,13 +47,25 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
     @JsonProperty(value = "credentials")
     private AzureKeyVaultSmbCredentials credentials;
 
-    /** Creates an instance of SmbMountEndpointProperties class. */
+    /**
+     * Creates an instance of SmbMountEndpointProperties class.
+     */
     public SmbMountEndpointProperties() {
     }
 
     /**
+     * Get the endpointType property: The Endpoint resource type.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
      * Get the host property: The host name or IP address of the server exporting the file system.
-     *
+     * 
      * @return the host value.
      */
     public String host() {
@@ -48,7 +74,7 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
 
     /**
      * Set the host property: The host name or IP address of the server exporting the file system.
-     *
+     * 
      * @param host the host value to set.
      * @return the SmbMountEndpointProperties object itself.
      */
@@ -59,7 +85,7 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
 
     /**
      * Get the shareName property: The name of the SMB share being exported from the server.
-     *
+     * 
      * @return the shareName value.
      */
     public String shareName() {
@@ -68,7 +94,7 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
 
     /**
      * Set the shareName property: The name of the SMB share being exported from the server.
-     *
+     * 
      * @param shareName the shareName value to set.
      * @return the SmbMountEndpointProperties object itself.
      */
@@ -80,7 +106,7 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
     /**
      * Get the credentials property: The Azure Key Vault secret URIs which store the required credentials to access the
      * SMB share.
-     *
+     * 
      * @return the credentials value.
      */
     public AzureKeyVaultSmbCredentials credentials() {
@@ -90,7 +116,7 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
     /**
      * Set the credentials property: The Azure Key Vault secret URIs which store the required credentials to access the
      * SMB share.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the SmbMountEndpointProperties object itself.
      */
@@ -99,7 +125,9 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SmbMountEndpointProperties withDescription(String description) {
         super.withDescription(description);
@@ -108,22 +136,21 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (host() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property host in model SmbMountEndpointProperties"));
         }
         if (shareName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property shareName in model SmbMountEndpointProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property shareName in model SmbMountEndpointProperties"));
         }
         if (credentials() != null) {
             credentials().validate();

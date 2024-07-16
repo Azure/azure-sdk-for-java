@@ -42,7 +42,6 @@ public abstract class MessageTemplateValue {
     @Generated
     @JsonCreator
     protected MessageTemplateValue(@JsonProperty(value = "name") String refValue) {
-        this.kind = MessageTemplateValueKind.fromString("MessageTemplateValue");
         this.refValue = refValue;
     }
 
@@ -62,7 +61,7 @@ public abstract class MessageTemplateValue {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private MessageTemplateValueKind kind;
+    private MessageTemplateValueKind kind = MessageTemplateValueKind.fromString("MessageTemplateValue");
 
     /**
      * Get the kind property: The type discriminator describing a template parameter type.

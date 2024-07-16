@@ -27,8 +27,6 @@ import com.azure.maps.traffic.models.TrafficIncidentViewportOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -43,10 +41,11 @@ public class TrafficClientTest extends TrafficClientTestBase {
     // Test get traffic flow tile
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testGetTrafficFlowTile(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testGetTrafficFlowTile(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficFlowTileOptions trafficFlowTileOptions = new TrafficFlowTileOptions();
-        trafficFlowTileOptions.setZoom(12).setFormat(TileFormat.PNG)
+        trafficFlowTileOptions.setZoom(12)
+            .setFormat(TileFormat.PNG)
             .setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY)
             .setTileIndex(new TileIndex().setX(2044).setY(1360));
         validateGetTrafficFlowTile(client.getTrafficFlowTile(trafficFlowTileOptions).toBytes());
@@ -56,21 +55,23 @@ public class TrafficClientTest extends TrafficClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testGetTrafficFlowTileWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testGetTrafficFlowTileWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
-        TrafficFlowTileOptions trafficFlowTileOptions = new TrafficFlowTileOptions().setZoom(12).setFormat(TileFormat.PNG)
+        TrafficFlowTileOptions trafficFlowTileOptions = new TrafficFlowTileOptions().setZoom(12)
+            .setFormat(TileFormat.PNG)
             .setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY)
             .setTileIndex(new TileIndex().setX(2044).setY(1360));
-        validateGetTrafficFlowTileWithResponse(200, client.getTrafficFlowTileWithResponse(trafficFlowTileOptions, null));
+        validateGetTrafficFlowTileWithResponse(client.getTrafficFlowTileWithResponse(trafficFlowTileOptions, null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testInvalidGetTrafficFlowTileWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetTrafficFlowTileWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficFlowTileOptions trafficFlowTileOptions = new TrafficFlowTileOptions().setZoom(-1000)
-            .setFormat(TileFormat.PNG).setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY)
+            .setFormat(TileFormat.PNG)
+            .setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY)
             .setTileIndex(new TileIndex().setX(2044).setY(1360));
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getTrafficFlowTileWithResponse(trafficFlowTileOptions, null));
@@ -80,11 +81,15 @@ public class TrafficClientTest extends TrafficClientTestBase {
     // Test get traffic flow segment
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testGetTrafficFlowSegment(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testGetTrafficFlowSegment(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficFlowSegmentOptions trafficFlowSegmentOptions = new TrafficFlowSegmentOptions();
-        trafficFlowSegmentOptions.setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE).setOpenLr(false)
-            .setZoom(10).setCoordinates(new GeoPosition(4.84239, 52.41072)).setThickness(2).setUnit(SpeedUnit.MPH);
+        trafficFlowSegmentOptions.setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE)
+            .setOpenLr(false)
+            .setZoom(10)
+            .setCoordinates(new GeoPosition(4.84239, 52.41072))
+            .setThickness(2)
+            .setUnit(SpeedUnit.MPH);
         TrafficFlowSegmentData actualResult = client.getTrafficFlowSegment(trafficFlowSegmentOptions);
         TrafficFlowSegmentData expectedResult = TestUtils.getExpectedTrafficFlowSegment();
         validateGetTrafficFlowSegment(actualResult, expectedResult);
@@ -94,22 +99,32 @@ public class TrafficClientTest extends TrafficClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testGetTrafficFlowSegmentWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testGetTrafficFlowSegmentWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficFlowSegmentOptions trafficFlowSegmentOptions = new TrafficFlowSegmentOptions();
-        trafficFlowSegmentOptions.setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE).setOpenLr(false)
-            .setZoom(10).setCoordinates(new GeoPosition(4.84239, 52.41072)).setThickness(2).setUnit(SpeedUnit.MPH);
-        validateGetTrafficFlowSegmentWithResponse(TestUtils.getExpectedTrafficFlowSegment(), 200, client.getTrafficFlowSegmentWithResponse(trafficFlowSegmentOptions, null));
+        trafficFlowSegmentOptions.setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE)
+            .setOpenLr(false)
+            .setZoom(10)
+            .setCoordinates(new GeoPosition(4.84239, 52.41072))
+            .setThickness(2)
+            .setUnit(SpeedUnit.MPH);
+        validateGetTrafficFlowSegmentWithResponse(TestUtils.getExpectedTrafficFlowSegment(),
+            client.getTrafficFlowSegmentWithResponse(trafficFlowSegmentOptions, null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testInvalidGetTrafficFlowSegmentWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetTrafficFlowSegmentWithResponse(HttpClient httpClient,
+        TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
-        TrafficFlowSegmentOptions trafficFlowSegmentOptions = new TrafficFlowSegmentOptions()
-            .setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE).setOpenLr(false).setZoom(-1000)
-            .setCoordinates(new GeoPosition(45, 45)).setThickness(2).setUnit(SpeedUnit.MPH);
+        TrafficFlowSegmentOptions trafficFlowSegmentOptions
+            = new TrafficFlowSegmentOptions().setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE)
+            .setOpenLr(false)
+            .setZoom(-1000)
+            .setCoordinates(new GeoPosition(45, 45))
+            .setThickness(2)
+            .setUnit(SpeedUnit.MPH);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getTrafficFlowSegmentWithResponse(trafficFlowSegmentOptions, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -118,11 +133,13 @@ public class TrafficClientTest extends TrafficClientTestBase {
     // Test get traffic incident tile
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testGetTrafficIncidentTile(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testGetTrafficIncidentTile(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficIncidentTileOptions trafficIncidentTileOptions = new TrafficIncidentTileOptions();
-        trafficIncidentTileOptions.setFormat(TileFormat.PNG).setTrafficIncidentTileStyle(TrafficIncidentTileStyle.NIGHT)
-            .setTileIndex(new TileIndex().setX(175).setY(408)).setZoom(10);
+        trafficIncidentTileOptions.setFormat(TileFormat.PNG)
+            .setTrafficIncidentTileStyle(TrafficIncidentTileStyle.NIGHT)
+            .setTileIndex(new TileIndex().setX(175).setY(408))
+            .setZoom(10);
         validateGetTrafficIncidentTile(client.getTrafficIncidentTile(trafficIncidentTileOptions).toBytes());
     }
 
@@ -130,22 +147,28 @@ public class TrafficClientTest extends TrafficClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testGetTrafficIncidentTileWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testGetTrafficIncidentTileWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficIncidentTileOptions trafficIncidentTileOptions = new TrafficIncidentTileOptions();
-        trafficIncidentTileOptions.setFormat(TileFormat.PNG).setTrafficIncidentTileStyle(TrafficIncidentTileStyle.NIGHT)
-            .setTileIndex(new TileIndex().setX(175).setY(408)).setZoom(10);
-        validateGetTrafficIncidentTileWithResponse(200, client.getTrafficIncidentTileWithResponse(trafficIncidentTileOptions, null));
+        trafficIncidentTileOptions.setFormat(TileFormat.PNG)
+            .setTrafficIncidentTileStyle(TrafficIncidentTileStyle.NIGHT)
+            .setTileIndex(new TileIndex().setX(175).setY(408))
+            .setZoom(10);
+        validateGetTrafficIncidentTileWithResponse(
+            client.getTrafficIncidentTileWithResponse(trafficIncidentTileOptions, null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testInvalidGetTrafficIncidentTileWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetTrafficIncidentTileWithResponse(HttpClient httpClient,
+        TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
-        TrafficIncidentTileOptions trafficIncidentTileOptions = new TrafficIncidentTileOptions()
-            .setFormat(TileFormat.PNG).setTrafficIncidentTileStyle(TrafficIncidentTileStyle.NIGHT)
-            .setTileIndex(new TileIndex().setX(175).setY(408)).setZoom(-1000);
+        TrafficIncidentTileOptions trafficIncidentTileOptions = new TrafficIncidentTileOptions().setFormat(
+                TileFormat.PNG)
+            .setTrafficIncidentTileStyle(TrafficIncidentTileStyle.NIGHT)
+            .setTileIndex(new TileIndex().setX(175).setY(408))
+            .setZoom(-1000);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getTrafficIncidentTileWithResponse(trafficIncidentTileOptions, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -154,13 +177,18 @@ public class TrafficClientTest extends TrafficClientTestBase {
     // Test get traffic incident detail empty poi
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testGetTrafficIncidentDetail(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testGetTrafficIncidentDetail(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficIncidentDetailOptions trafficIncidentDetailOptions = new TrafficIncidentDetailOptions();
         trafficIncidentDetailOptions.setIncidentDetailStyle(IncidentDetailStyle.S3)
-            .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setBoundingZoom(11).setTrafficmodelId("1335294634919")
-            .setExpandCluster(false).setOriginalPosition(false).setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
-            .setLanguage("en").setProjectionStandard(ProjectionStandard.EPSG900913);
+            .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
+            .setBoundingZoom(11)
+            .setTrafficmodelId("1335294634919")
+            .setExpandCluster(false)
+            .setOriginalPosition(false)
+            .setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
+            .setLanguage("en")
+            .setProjectionStandard(ProjectionStandard.EPSG900913);
         TrafficIncidentDetail actualResult = client.getTrafficIncidentDetail(trafficIncidentDetailOptions);
         TrafficIncidentDetail expectedResult = TestUtils.getExpectedTrafficIncidentDetail();
         validateTrafficIncidentDetail(actualResult, expectedResult);
@@ -170,39 +198,54 @@ public class TrafficClientTest extends TrafficClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testGetTrafficIncidentDetailWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testGetTrafficIncidentDetailWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficIncidentDetailOptions trafficIncidentDetailOptions = new TrafficIncidentDetailOptions();
         trafficIncidentDetailOptions.setIncidentDetailStyle(IncidentDetailStyle.S3)
-            .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setBoundingZoom(11).setTrafficmodelId("1335294634919")
-            .setExpandCluster(false).setOriginalPosition(false).setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
-            .setLanguage("en").setProjectionStandard(ProjectionStandard.EPSG900913);
-        validateTrafficIncidentDetailWithResponse(TestUtils.getExpectedTrafficIncidentDetail(), 200, client.getTrafficIncidentDetailWithResponse(trafficIncidentDetailOptions, null));
+            .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
+            .setBoundingZoom(11)
+            .setTrafficmodelId("1335294634919")
+            .setExpandCluster(false)
+            .setOriginalPosition(false)
+            .setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
+            .setLanguage("en")
+            .setProjectionStandard(ProjectionStandard.EPSG900913);
+        validateTrafficIncidentDetailWithResponse(TestUtils.getExpectedTrafficIncidentDetail(),
+            client.getTrafficIncidentDetailWithResponse(trafficIncidentDetailOptions, null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testInvalidGetTrafficIncidentDetailWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetTrafficIncidentDetailWithResponse(HttpClient httpClient,
+        TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
-        TrafficIncidentDetailOptions trafficIncidentDetailOptions = new TrafficIncidentDetailOptions()
-            .setIncidentDetailStyle(IncidentDetailStyle.S3).setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
-            .setBoundingZoom(-1000).setTrafficmodelId("1335294634919").setExpandCluster(false)
-            .setOriginalPosition(false).setIncidentGeometryType(IncidentGeometryType.ORIGINAL).setLanguage("en")
+        TrafficIncidentDetailOptions trafficIncidentDetailOptions
+            = new TrafficIncidentDetailOptions().setIncidentDetailStyle(IncidentDetailStyle.S3)
+            .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
+            .setBoundingZoom(-1000)
+            .setTrafficmodelId("1335294634919")
+            .setExpandCluster(false)
+            .setOriginalPosition(false)
+            .setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
+            .setLanguage("en")
             .setProjectionStandard(ProjectionStandard.EPSG900913);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.getTrafficIncidentDetailWithResponse(trafficIncidentDetailOptions, null));
+            () -> client.getTrafficIncidentDetailWithResponse(trafficIncidentDetailOptions, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
     // Test get traffic incident viewport
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testGetTrafficIncidentViewport(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testGetTrafficIncidentViewport(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficIncidentViewportOptions trafficIncidentViewportOptions = new TrafficIncidentViewportOptions();
         trafficIncidentViewportOptions.setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
-            .setOverview(new GeoBoundingBox(45, 45, 45, 45)).setBoundingZoom(2).setOverviewZoom(2).setCopyright(true);
+            .setOverview(new GeoBoundingBox(45, 45, 45, 45))
+            .setBoundingZoom(2)
+            .setOverviewZoom(2)
+            .setCopyright(true);
         TrafficIncidentViewport actualResult = client.getTrafficIncidentViewport(trafficIncidentViewportOptions);
         TrafficIncidentViewport expectedResult = TestUtils.getExpectedTrafficIncidentViewport();
         validateTrafficIncidentViewport(actualResult, expectedResult);
@@ -212,21 +255,31 @@ public class TrafficClientTest extends TrafficClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testGetTrafficIncidentViewportWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testGetTrafficIncidentViewportWithResponse(HttpClient httpClient,
+        TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficIncidentViewportOptions trafficIncidentViewportOptions = new TrafficIncidentViewportOptions();
         trafficIncidentViewportOptions.setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
-            .setOverview(new GeoBoundingBox(45, 45, 45, 45)).setBoundingZoom(2).setOverviewZoom(2).setCopyright(true);
-        validateTrafficIncidentViewportWithResponse(TestUtils.getExpectedTrafficIncidentViewport(), 200, client.getTrafficIncidentViewportWithResponse(trafficIncidentViewportOptions, null));
+            .setOverview(new GeoBoundingBox(45, 45, 45, 45))
+            .setBoundingZoom(2)
+            .setOverviewZoom(2)
+            .setCopyright(true);
+        validateTrafficIncidentViewportWithResponse(TestUtils.getExpectedTrafficIncidentViewport(),
+            client.getTrafficIncidentViewportWithResponse(trafficIncidentViewportOptions, null));
     }
 
-    // Case 2: Respone 400, incorrect input
+    // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testInvalidGetTrafficIncidentViewportWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) throws IOException {
+    public void testInvalidGetTrafficIncidentViewportWithResponse(HttpClient httpClient,
+        TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
-        TrafficIncidentViewportOptions trafficIncidentViewportOptions = new TrafficIncidentViewportOptions().setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setOverview(new GeoBoundingBox(45, 45, 45, 45))
-            .setBoundingZoom(-1000).setOverviewZoom(2).setCopyright(true);
+        TrafficIncidentViewportOptions trafficIncidentViewportOptions
+            = new TrafficIncidentViewportOptions().setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
+            .setOverview(new GeoBoundingBox(45, 45, 45, 45))
+            .setBoundingZoom(-1000)
+            .setOverviewZoom(2)
+            .setCopyright(true);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getTrafficIncidentViewportWithResponse(trafficIncidentViewportOptions, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());

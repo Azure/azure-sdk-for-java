@@ -4,42 +4,59 @@
 
 package com.azure.maps.search.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
  * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
  */
 public enum GeoJsonObjectType {
-    /** Enum value Point. */
+    /**
+     * `GeoJSON Point` geometry.
+     */
     GEO_JSON_POINT("Point"),
 
-    /** Enum value MultiPoint. */
+    /**
+     * `GeoJSON MultiPoint` geometry.
+     */
     GEO_JSON_MULTI_POINT("MultiPoint"),
 
-    /** Enum value LineString. */
+    /**
+     * `GeoJSON LineString` geometry.
+     */
     GEO_JSON_LINE_STRING("LineString"),
 
-    /** Enum value MultiLineString. */
+    /**
+     * `GeoJSON MultiLineString` geometry.
+     */
     GEO_JSON_MULTI_LINE_STRING("MultiLineString"),
 
-    /** Enum value Polygon. */
+    /**
+     * `GeoJSON Polygon` geometry.
+     */
     GEO_JSON_POLYGON("Polygon"),
 
-    /** Enum value MultiPolygon. */
+    /**
+     * `GeoJSON MultiPolygon` geometry.
+     */
     GEO_JSON_MULTI_POLYGON("MultiPolygon"),
 
-    /** Enum value GeometryCollection. */
+    /**
+     * `GeoJSON GeometryCollection` geometry.
+     */
     GEO_JSON_GEOMETRY_COLLECTION("GeometryCollection"),
 
-    /** Enum value Feature. */
+    /**
+     * `GeoJSON Feature` object.
+     */
     GEO_JSON_FEATURE("Feature"),
 
-    /** Enum value FeatureCollection. */
+    /**
+     * `GeoJSON FeatureCollection` object.
+     */
     GEO_JSON_FEATURE_COLLECTION("FeatureCollection");
 
-    /** The actual serialized value for a GeoJsonObjectType instance. */
+    /**
+     * The actual serialized value for a GeoJsonObjectType instance.
+     */
     private final String value;
 
     GeoJsonObjectType(String value) {
@@ -48,11 +65,10 @@ public enum GeoJsonObjectType {
 
     /**
      * Parses a serialized value to a GeoJsonObjectType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed GeoJsonObjectType object, or null if unable to parse.
      */
-    @JsonCreator
     public static GeoJsonObjectType fromString(String value) {
         if (value == null) {
             return null;
@@ -66,8 +82,9 @@ public enum GeoJsonObjectType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

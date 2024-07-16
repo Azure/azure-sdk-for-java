@@ -108,8 +108,8 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
 
     public Response<RunOutput> getRunOutputWithResponse(String resourceGroupName, String imageTemplateName,
         String runOutputName, Context context) {
-        Response<RunOutputInner> inner = this.serviceClient().getRunOutputWithResponse(resourceGroupName,
-            imageTemplateName, runOutputName, context);
+        Response<RunOutputInner> inner = this.serviceClient()
+            .getRunOutputWithResponse(resourceGroupName, imageTemplateName, runOutputName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RunOutputImpl(inner.getValue(), this.manager()));

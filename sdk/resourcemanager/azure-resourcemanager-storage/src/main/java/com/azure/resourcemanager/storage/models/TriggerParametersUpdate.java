@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 
 /**
@@ -15,31 +14,36 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class TriggerParametersUpdate {
     /*
-     * When to start task execution. This is a mutable field when ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
+     * When to start task execution. This is a mutable field when ExecutionTrigger.properties.type is 'OnSchedule'; this
+     * property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
      */
     @JsonProperty(value = "startFrom")
     private OffsetDateTime startFrom;
 
     /*
-     * Run interval of task execution. This is a mutable field when ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
+     * Run interval of task execution. This is a mutable field when ExecutionTrigger.properties.type is 'OnSchedule';
+     * this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
      */
     @JsonProperty(value = "interval")
     private Integer interval;
 
     /*
-     * Run interval unit of task execution. This is a mutable field when ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
+     * Run interval unit of task execution. This is a mutable field when ExecutionTrigger.properties.type is
+     * 'OnSchedule'; this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
      */
     @JsonProperty(value = "intervalUnit")
     private IntervalUnit intervalUnit;
 
     /*
-     * When to end task execution. This is a mutable field when ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
+     * When to end task execution. This is a mutable field when ExecutionTrigger.properties.type is 'OnSchedule'; this
+     * property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
      */
     @JsonProperty(value = "endBy")
     private OffsetDateTime endBy;
 
     /*
-     * When to start task execution. This is a mutable field when ExecutionTrigger.properties.type is 'RunOnce'; this property should not be present when ExecutionTrigger.properties.type is 'OnSchedule'
+     * When to start task execution. This is a mutable field when ExecutionTrigger.properties.type is 'RunOnce'; this
+     * property should not be present when ExecutionTrigger.properties.type is 'OnSchedule'
      */
     @JsonProperty(value = "startOn")
     private OffsetDateTime startOn;
@@ -54,7 +58,7 @@ public final class TriggerParametersUpdate {
      * Get the startFrom property: When to start task execution. This is a mutable field when
      * ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when
      * ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @return the startFrom value.
      */
     public OffsetDateTime startFrom() {
@@ -65,7 +69,7 @@ public final class TriggerParametersUpdate {
      * Set the startFrom property: When to start task execution. This is a mutable field when
      * ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when
      * ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @param startFrom the startFrom value to set.
      * @return the TriggerParametersUpdate object itself.
      */
@@ -78,7 +82,7 @@ public final class TriggerParametersUpdate {
      * Get the interval property: Run interval of task execution. This is a mutable field when
      * ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when
      * ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @return the interval value.
      */
     public Integer interval() {
@@ -89,7 +93,7 @@ public final class TriggerParametersUpdate {
      * Set the interval property: Run interval of task execution. This is a mutable field when
      * ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when
      * ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the TriggerParametersUpdate object itself.
      */
@@ -102,7 +106,7 @@ public final class TriggerParametersUpdate {
      * Get the intervalUnit property: Run interval unit of task execution. This is a mutable field when
      * ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when
      * ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @return the intervalUnit value.
      */
     public IntervalUnit intervalUnit() {
@@ -113,7 +117,7 @@ public final class TriggerParametersUpdate {
      * Set the intervalUnit property: Run interval unit of task execution. This is a mutable field when
      * ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when
      * ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @param intervalUnit the intervalUnit value to set.
      * @return the TriggerParametersUpdate object itself.
      */
@@ -125,7 +129,7 @@ public final class TriggerParametersUpdate {
     /**
      * Get the endBy property: When to end task execution. This is a mutable field when ExecutionTrigger.properties.type
      * is 'OnSchedule'; this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @return the endBy value.
      */
     public OffsetDateTime endBy() {
@@ -135,7 +139,7 @@ public final class TriggerParametersUpdate {
     /**
      * Set the endBy property: When to end task execution. This is a mutable field when ExecutionTrigger.properties.type
      * is 'OnSchedule'; this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @param endBy the endBy value to set.
      * @return the TriggerParametersUpdate object itself.
      */
@@ -148,7 +152,7 @@ public final class TriggerParametersUpdate {
      * Get the startOn property: When to start task execution. This is a mutable field when
      * ExecutionTrigger.properties.type is 'RunOnce'; this property should not be present when
      * ExecutionTrigger.properties.type is 'OnSchedule'.
-     *
+     * 
      * @return the startOn value.
      */
     public OffsetDateTime startOn() {
@@ -159,7 +163,7 @@ public final class TriggerParametersUpdate {
      * Set the startOn property: When to start task execution. This is a mutable field when
      * ExecutionTrigger.properties.type is 'RunOnce'; this property should not be present when
      * ExecutionTrigger.properties.type is 'OnSchedule'.
-     *
+     * 
      * @param startOn the startOn value to set.
      * @return the TriggerParametersUpdate object itself.
      */
@@ -170,7 +174,7 @@ public final class TriggerParametersUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
