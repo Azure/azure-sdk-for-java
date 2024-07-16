@@ -4,24 +4,26 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for EventHubs Delete. */
+/**
+ * Samples for EventHubs Delete.
+ */
 public final class EventHubsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubDelete.json
+     * x-ms-original-file:
+     * specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/EventHubs/EHEventHubDelete.
+     * json
      */
     /**
      * Sample code: EventHubDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void eventHubDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .eventHubs()
+        azure.eventHubs()
             .manager()
             .serviceClient()
             .getEventHubs()
-            .deleteWithResponse("ArunMonocle", "sdk-Namespace-5357", "sdk-EventHub-6547", Context.NONE);
+            .deleteWithResponse("ArunMonocle", "sdk-Namespace-5357", "sdk-EventHub-6547",
+                com.azure.core.util.Context.NONE);
     }
 }
