@@ -4,9 +4,7 @@
 
 ### Breaking Changes
 
-Note: The resource type `locations/osOptions` is deprecated and not to support this API from `2024-05-01`.
-
-- `models.OSOptionProperty` was removed.
+- Removed non-functional API `getOsOptions` and related models `OSOptionProperty`.
 
 ### Other Changes
 

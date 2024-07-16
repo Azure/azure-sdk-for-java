@@ -503,7 +503,7 @@
         {
           "code" : "java.class.removed",
           "old" : "class com.azure.resourcemanager.containerservice.models.OSOptionProperty",
-          "justification": "Class was removed."
+          "justification": "Removed non-functional API `getOsOptions` and related models `OSOptionProperty`"
         }
       ]
     }
