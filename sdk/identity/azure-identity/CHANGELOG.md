@@ -12,6 +12,9 @@
 
 ### Other Changes
 
+#### Dependency Updates
+- Upgraded `msal4j` from `1.16.0` to `1.16.1`
+
 ## 1.13.0 (2024-06-20)
 
 ### Features Added
