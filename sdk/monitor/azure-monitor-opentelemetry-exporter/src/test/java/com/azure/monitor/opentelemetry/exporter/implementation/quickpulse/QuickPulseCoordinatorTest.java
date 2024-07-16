@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
+import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -53,16 +54,19 @@ class QuickPulseCoordinatorTest {
         Mockito.verify(mockPingSender, Mockito.atLeast(1)).ping(null);
         // make sure QP_IS_OFF after ping
         assertThat(collector.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_OFF);
+
+        assertThat(QuickPulseConfiguration.getInstance().getEtag()).isNull();
+
     }
 
     @Test
     void testOnePingAndThenOnePost() throws InterruptedException {
+
         QuickPulseDataFetcher mockFetcher = mock(QuickPulseDataFetcher.class);
         QuickPulseDataSender mockSender = mock(QuickPulseDataSender.class);
         Mockito.doReturn(new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF))
             .when(mockSender)
             .getQuickPulseHeaderInfo();
-
         QuickPulsePingSender mockPingSender = mock(QuickPulsePingSender.class);
         Mockito.when(mockPingSender.ping(null))
             .thenReturn(
@@ -99,6 +103,8 @@ class QuickPulseCoordinatorTest {
         Mockito.verify(mockPingSender, Mockito.atLeast(1)).ping(null);
         // Make sure QP_IS_OFF after one post and ping
         assertThat(collector.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_OFF);
+
+        assertThat(QuickPulseConfiguration.getInstance().getEtag()).isNull();
     }
 
     @Disabled("sporadically failing on CI")

@@ -32,7 +32,6 @@ class QuickPulsePingSenderTests {
 
     @Test
     void endpointIsFormattedCorrectlyWhenUsingConnectionString() throws URISyntaxException {
-        QuickPulseConfiguration.getInstance().reset();
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
         QuickPulsePingSender quickPulsePingSender =
             new QuickPulsePingSender(
@@ -57,7 +56,6 @@ class QuickPulsePingSenderTests {
 
     @Test
     void endpointIsFormattedCorrectlyWhenUsingInstrumentationKey() throws URISyntaxException {
-        QuickPulseConfiguration.getInstance().reset();
         ConnectionString connectionString =
             ConnectionString.parse("InstrumentationKey=A-test-instrumentation-key");
         QuickPulsePingSender quickPulsePingSender =
@@ -85,7 +83,6 @@ class QuickPulsePingSenderTests {
 
     @Test
     void endpointChangesWithRedirectHeaderAndGetNewPingInterval() {
-        QuickPulseConfiguration.getInstance().reset();
         Map<String, String> headers = new HashMap<>();
         headers.put("x-ms-qps-service-polling-interval-hint", "1000");
         headers.put("x-ms-qps-service-endpoint-redirect-v2", "https://new.endpoint.com");
@@ -113,14 +110,11 @@ class QuickPulsePingSenderTests {
         assertThat(1000).isEqualTo(quickPulseHeaderInfo.getQpsServicePollingInterval());
         assertThat("https://new.endpoint.com")
             .isEqualTo(quickPulseHeaderInfo.getQpsServiceEndpointRedirect());
-        QuickPulseConfiguration.getInstance().reset();
     }
 
 
     @Test
     void successfulPingReturnsWithEtagHeader() {
-        QuickPulseConfiguration configInstance = QuickPulseConfiguration.getInstance();
-        configInstance.reset();
         System.out.println("QuickPulseConfiguration.getInstance().getEtag() = " + QuickPulseConfiguration.getInstance().getEtag());
         Map<String, String> headers = new HashMap<>();
         headers.put("x-ms-qps-service-polling-interval-hint", "1000");
@@ -148,13 +142,12 @@ class QuickPulsePingSenderTests {
         assertThat(QuickPulseStatus.QP_IS_ON).isEqualTo(quickPulseHeaderInfo.getQuickPulseStatus());
         assertThat("https://new.endpoint.com")
             .isEqualTo(quickPulseHeaderInfo.getQpsServiceEndpointRedirect());
-        assertThat(configInstance.getEtag()).isEqualTo("0::randometag::1::");
+        assertThat(QuickPulseConfiguration.getInstance().getEtag()).isEqualTo("0::randometag::1::");
         QuickPulseConfiguration.getInstance().reset();
     }
 
     @Test
     void successfulPingReturnsWithEtagHeaderAndRequestedMetrics() {
-        QuickPulseConfiguration.getInstance().reset();
         Map<String, String> headers = new HashMap<>();
         headers.put("x-ms-qps-service-polling-interval-hint", "1000");
         headers.put("x-ms-qps-service-endpoint-redirect-v2", "https://new.endpoint.com");

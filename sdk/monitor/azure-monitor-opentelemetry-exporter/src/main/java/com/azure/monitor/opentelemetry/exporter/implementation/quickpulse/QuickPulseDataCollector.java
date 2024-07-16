@@ -56,6 +56,7 @@ final class QuickPulseDataCollector {
 
     synchronized void disable() {
         counters.set(null);
+        metricsStorage.clearMetrics();
         quickPulseStatus = QuickPulseStatus.QP_IS_OFF;
     }
 
@@ -341,6 +342,16 @@ final class QuickPulseDataCollector {
         return metricsStorage.processMetrics();
     }
 
+    // for testing purposes
+    public ConcurrentHashMap<String, OpenTelMetric> getOpenTelMetrics() {
+        return metricsStorage.getMetrics();
+    }
+
+    //for testing purposes
+    public void flushOpenTelMetrics() {
+        metricsStorage.clearMetrics();
+    }
+
     class FinalCounters {
 
         final int exceptions;
@@ -443,7 +454,7 @@ final class QuickPulseDataCollector {
     }
 
     class OpenTelMetricsStorage {
-        private ConcurrentHashMap<String, OpenTelMetric> metrics = new ConcurrentHashMap<>();
+        private volatile ConcurrentHashMap<String, OpenTelMetric> metrics = new ConcurrentHashMap<>();
 
         public void addMetric(String metricName, double value) {
             OpenTelMetric metric = metrics.get(metricName);
@@ -512,5 +523,13 @@ final class QuickPulseDataCollector {
 
         }
 
+        public void clearMetrics() {
+            this.metrics = new ConcurrentHashMap<String, OpenTelMetric>();
+        }
+
+        //for testing
+        public ConcurrentHashMap<String, OpenTelMetric> getMetrics() {
+            return metrics;
+        }
     }
 }
