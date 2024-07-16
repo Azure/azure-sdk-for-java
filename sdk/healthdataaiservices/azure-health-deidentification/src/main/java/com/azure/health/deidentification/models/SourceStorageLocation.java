@@ -19,19 +19,19 @@ import java.util.List;
 @Immutable
 public final class SourceStorageLocation implements JsonSerializable<SourceStorageLocation> {
     /*
-     * URL to storage location. Must be a valid Azure Storage SAS URI.
+     * URL to storage location.
      */
     @Generated
     private final String location;
 
     /*
-     * Prefix to filter blobs by.
+     * Prefix to filter path by.
      */
     @Generated
     private final String prefix;
 
     /*
-     * List of extensions to filter blobs by.
+     * List of extensions to filter path by.
      */
     @Generated
     private final List<String> extensions;
@@ -51,7 +51,7 @@ public final class SourceStorageLocation implements JsonSerializable<SourceStora
     }
 
     /**
-     * Get the location property: URL to storage location. Must be a valid Azure Storage SAS URI.
+     * Get the location property: URL to storage location.
      * 
      * @return the location value.
      */
@@ -61,7 +61,7 @@ public final class SourceStorageLocation implements JsonSerializable<SourceStora
     }
 
     /**
-     * Get the prefix property: Prefix to filter blobs by.
+     * Get the prefix property: Prefix to filter path by.
      * 
      * @return the prefix value.
      */
@@ -71,7 +71,7 @@ public final class SourceStorageLocation implements JsonSerializable<SourceStora
     }
 
     /**
-     * Get the extensions property: List of extensions to filter blobs by.
+     * Get the extensions property: List of extensions to filter path by.
      * 
      * @return the extensions value.
      */

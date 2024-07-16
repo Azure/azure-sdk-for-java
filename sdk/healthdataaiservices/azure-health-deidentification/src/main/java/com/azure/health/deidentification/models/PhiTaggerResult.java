@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Result of the tag operation.
+ * Result of the "Tag" operation.
  */
 @Immutable
 public final class PhiTaggerResult implements JsonSerializable<PhiTaggerResult> {
@@ -25,13 +25,7 @@ public final class PhiTaggerResult implements JsonSerializable<PhiTaggerResult> 
     private final List<PhiEntity> entities;
 
     /*
-     * Requested Encoding of the tag response indices.
-     */
-    @Generated
-    private final StringIndexType stringIndexType;
-
-    /*
-     * Path to the file in the storage container.
+     * Path to the document in storage.
      */
     @Generated
     private String path;
@@ -46,12 +40,10 @@ public final class PhiTaggerResult implements JsonSerializable<PhiTaggerResult> 
      * Creates an instance of PhiTaggerResult class.
      * 
      * @param entities the entities value to set.
-     * @param stringIndexType the stringIndexType value to set.
      */
     @Generated
-    private PhiTaggerResult(List<PhiEntity> entities, StringIndexType stringIndexType) {
+    private PhiTaggerResult(List<PhiEntity> entities) {
         this.entities = entities;
-        this.stringIndexType = stringIndexType;
     }
 
     /**
@@ -65,17 +57,7 @@ public final class PhiTaggerResult implements JsonSerializable<PhiTaggerResult> 
     }
 
     /**
-     * Get the stringIndexType property: Requested Encoding of the tag response indices.
-     * 
-     * @return the stringIndexType value.
-     */
-    @Generated
-    public StringIndexType getStringIndexType() {
-        return this.stringIndexType;
-    }
-
-    /**
-     * Get the path property: Path to the file in the storage container.
+     * Get the path property: Path to the document in storage.
      * 
      * @return the path value.
      */
@@ -102,9 +84,8 @@ public final class PhiTaggerResult implements JsonSerializable<PhiTaggerResult> 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("entities", this.entities, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("stringIndexType",
-            this.stringIndexType == null ? null : this.stringIndexType.toString());
         jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("etag", this.etag);
         return jsonWriter.writeEndObject();
     }
 
@@ -121,28 +102,25 @@ public final class PhiTaggerResult implements JsonSerializable<PhiTaggerResult> 
     public static PhiTaggerResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<PhiEntity> entities = null;
-            StringIndexType stringIndexType = null;
-            String etag = null;
             String path = null;
+            String etag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("entities".equals(fieldName)) {
                     entities = reader.readArray(reader1 -> PhiEntity.fromJson(reader1));
-                } else if ("stringIndexType".equals(fieldName)) {
-                    stringIndexType = StringIndexType.fromString(reader.getString());
-                } else if ("etag".equals(fieldName)) {
-                    etag = reader.getString();
                 } else if ("path".equals(fieldName)) {
                     path = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    etag = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            PhiTaggerResult deserializedPhiTaggerResult = new PhiTaggerResult(entities, stringIndexType);
-            deserializedPhiTaggerResult.etag = etag;
+            PhiTaggerResult deserializedPhiTaggerResult = new PhiTaggerResult(entities);
             deserializedPhiTaggerResult.path = path;
+            deserializedPhiTaggerResult.etag = etag;
 
             return deserializedPhiTaggerResult;
         });

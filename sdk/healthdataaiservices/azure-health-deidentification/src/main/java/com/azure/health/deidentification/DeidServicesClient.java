@@ -17,32 +17,32 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.health.deidentification.implementation.DeidentificationClientImpl;
+import com.azure.health.deidentification.implementation.DeidServicesClientImpl;
 import com.azure.health.deidentification.models.DeidentificationContent;
 import com.azure.health.deidentification.models.DeidentificationJob;
 import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.HealthFileDetails;
+import com.azure.health.deidentification.models.DocumentDetails;
 
 /**
- * Initializes a new instance of the synchronous DeidentificationClient type.
+ * Initializes a new instance of the synchronous DeidServicesClient type.
  */
-@ServiceClient(builder = DeidentificationClientBuilder.class)
-public final class DeidentificationClient {
+@ServiceClient(builder = DeidServicesClientBuilder.class)
+public final class DeidServicesClient {
     @Generated
-    private final DeidentificationClientImpl serviceClient;
+    private final DeidServicesClientImpl serviceClient;
 
     /**
-     * Initializes an instance of DeidentificationClient class.
+     * Initializes an instance of DeidServicesClient class.
      * 
      * @param serviceClient the service client implementation.
      */
     @Generated
-    DeidentificationClient(DeidentificationClientImpl serviceClient) {
+    DeidServicesClient(DeidServicesClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
-     * Get a De-Identify Job
+     * Get a de-identification job.
      * 
      * Resource read operation template.
      * <p><strong>Response Body Schema</strong></p>
@@ -77,9 +77,9 @@ public final class DeidentificationClient {
      *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
+     *     lastUpdatedAt: OffsetDateTime (Required)
      *     createdAt: OffsetDateTime (Required)
      *     startedAt: OffsetDateTime (Optional)
-     *     lastUpdatedAt: OffsetDateTime (Optional)
      *     summary (Optional): {
      *         successful: int (Required)
      *         failed: int (Required)
@@ -96,7 +96,7 @@ public final class DeidentificationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a job containing a batch of documents to deidentify along with {@link Response}.
+     * @return a job containing a batch of documents to de-identify along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -105,7 +105,7 @@ public final class DeidentificationClient {
     }
 
     /**
-     * Create a De-Identify Job
+     * Create a de-identification job.
      * 
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
@@ -140,9 +140,9 @@ public final class DeidentificationClient {
      *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
+     *     lastUpdatedAt: OffsetDateTime (Required)
      *     createdAt: OffsetDateTime (Required)
      *     startedAt: OffsetDateTime (Optional)
-     *     lastUpdatedAt: OffsetDateTime (Optional)
      *     summary (Optional): {
      *         successful: int (Required)
      *         failed: int (Required)
@@ -185,9 +185,9 @@ public final class DeidentificationClient {
      *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
+     *     lastUpdatedAt: OffsetDateTime (Required)
      *     createdAt: OffsetDateTime (Required)
      *     startedAt: OffsetDateTime (Optional)
-     *     lastUpdatedAt: OffsetDateTime (Optional)
      *     summary (Optional): {
      *         successful: int (Required)
      *         failed: int (Required)
@@ -205,7 +205,7 @@ public final class DeidentificationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of a job containing a batch of documents to deidentify.
+     * @return the {@link SyncPoller} for polling of a job containing a batch of documents to de-identify.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -215,7 +215,7 @@ public final class DeidentificationClient {
     }
 
     /**
-     * List De-Identify Jobs
+     * List de-identification jobs.
      * 
      * Resource list operation template.
      * <p><strong>Query Parameters</strong></p>
@@ -258,9 +258,9 @@ public final class DeidentificationClient {
      *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
+     *     lastUpdatedAt: OffsetDateTime (Required)
      *     createdAt: OffsetDateTime (Required)
      *     startedAt: OffsetDateTime (Optional)
-     *     lastUpdatedAt: OffsetDateTime (Optional)
      *     summary (Optional): {
      *         successful: int (Required)
      *         failed: int (Required)
@@ -285,7 +285,7 @@ public final class DeidentificationClient {
     }
 
     /**
-     * List processed files within a Job
+     * List processed documents within a job.
      * 
      * Resource list operation template.
      * <p><strong>Query Parameters</strong></p>
@@ -328,21 +328,21 @@ public final class DeidentificationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of HealthFileDetails items as paginated response with {@link PagedIterable}.
+     * @return paged collection of DocumentDetails items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listJobFiles(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listJobFiles(name, requestOptions);
+    public PagedIterable<BinaryData> listJobDocuments(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listJobDocuments(name, requestOptions);
     }
 
     /**
-     * Cancel a De-Identify Job
+     * Cancel a de-identification job.
      * 
      * Cancels a job that is in progress.
      * 
      * The job will be marked as canceled and the service will stop processing the job. The service will not delete any
-     * files that have already been processed.
+     * documents that have already been processed.
      * 
      * If the job is already complete, this will have no effect.
      * <p><strong>Response Body Schema</strong></p>
@@ -377,9 +377,9 @@ public final class DeidentificationClient {
      *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
+     *     lastUpdatedAt: OffsetDateTime (Required)
      *     createdAt: OffsetDateTime (Required)
      *     startedAt: OffsetDateTime (Optional)
-     *     lastUpdatedAt: OffsetDateTime (Optional)
      *     summary (Optional): {
      *         successful: int (Required)
      *         failed: int (Required)
@@ -396,7 +396,7 @@ public final class DeidentificationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a job containing a batch of documents to deidentify along with {@link Response}.
+     * @return a job containing a batch of documents to de-identify along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -405,9 +405,9 @@ public final class DeidentificationClient {
     }
 
     /**
-     * Delete a De-Identify Job
+     * Delete a de-identification job.
      * 
-     * Removes the record of the job from the service. Does not delete any files.
+     * Removes the record of the job from the service. Does not delete any documents.
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -424,7 +424,7 @@ public final class DeidentificationClient {
     }
 
     /**
-     * Realtime Synchronous Deidentification.
+     * De-identify text.
      * 
      * A remote procedure call (RPC) operation.
      * <p><strong>Request Body Schema</strong></p>
@@ -434,7 +434,6 @@ public final class DeidentificationClient {
      *     inputText: String (Required)
      *     operation: String(Redact/Surrogate/Tag) (Required)
      *     dataType: String(Plaintext) (Required)
-     *     stringIndexType: String(TextElement_v8/UnicodeCodePoint/Utf16CodeUnit) (Optional)
      *     redactionFormat: String (Optional)
      * }
      * }</pre>
@@ -448,26 +447,29 @@ public final class DeidentificationClient {
      *         entities (Required): [
      *              (Required){
      *                 category: String(Unknown/Account/Age/BioID/City/CountryOrRegion/Date/Device/Doctor/Email/Fax/HealthPlan/Hospital/IDNum/IPAddress/License/LocationOther/MedicalRecord/Organization/Patient/Phone/Profession/SocialSecurity/State/Street/Url/Username/Vehicle/Zip) (Required)
-     *                 offset: int (Required)
-     *                 length: int (Required)
+     *                 offset (Required): {
+     *                     utf8: int (Required)
+     *                     utf16: int (Required)
+     *                     codePoint: int (Required)
+     *                 }
+     *                 length (Required): (recursive schema, see length above)
      *                 text: String (Optional)
      *                 confidenceScore: Double (Optional)
      *             }
      *         ]
-     *         stringIndexType: String(TextElement_v8/UnicodeCodePoint/Utf16CodeUnit) (Required)
      *         path: String (Optional)
-     *         etag: String (Required)
+     *         etag: String (Optional)
      *     }
      * }
      * }</pre>
      * 
-     * @param body The request body for realtime deidentification.
+     * @param body Request body for de-identification operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response for synchronous De-Identify operation along with {@link Response}.
+     * @return response body for de-identification operation along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -476,7 +478,7 @@ public final class DeidentificationClient {
     }
 
     /**
-     * Get a De-Identify Job
+     * Get a de-identification job.
      * 
      * Resource read operation template.
      * 
@@ -487,7 +489,7 @@ public final class DeidentificationClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job containing a batch of documents to deidentify.
+     * @return a job containing a batch of documents to de-identify.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -498,7 +500,7 @@ public final class DeidentificationClient {
     }
 
     /**
-     * Create a De-Identify Job
+     * Create a de-identification job.
      * 
      * Long-running resource create or replace operation template.
      * 
@@ -510,7 +512,7 @@ public final class DeidentificationClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a job containing a batch of documents to deidentify.
+     * @return the {@link SyncPoller} for polling of a job containing a batch of documents to de-identify.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -522,7 +524,7 @@ public final class DeidentificationClient {
     }
 
     /**
-     * List De-Identify Jobs
+     * List de-identification jobs.
      * 
      * Resource list operation template.
      * 
@@ -548,7 +550,7 @@ public final class DeidentificationClient {
     }
 
     /**
-     * List De-Identify Jobs
+     * List de-identification jobs.
      * 
      * Resource list operation template.
      * 
@@ -569,7 +571,7 @@ public final class DeidentificationClient {
     }
 
     /**
-     * List processed files within a Job
+     * List processed documents within a job.
      * 
      * Resource list operation template.
      * 
@@ -581,22 +583,22 @@ public final class DeidentificationClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of HealthFileDetails items as paginated response with {@link PagedIterable}.
+     * @return paged collection of DocumentDetails items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<HealthFileDetails> listJobFiles(String name, String continuationToken) {
-        // Generated convenience method for listJobFiles
+    public PagedIterable<DocumentDetails> listJobDocuments(String name, String continuationToken) {
+        // Generated convenience method for listJobDocuments
         RequestOptions requestOptions = new RequestOptions();
         if (continuationToken != null) {
             requestOptions.addQueryParam("continuationToken", continuationToken, false);
         }
-        return serviceClient.listJobFiles(name, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(HealthFileDetails.class));
+        return serviceClient.listJobDocuments(name, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentDetails.class));
     }
 
     /**
-     * List processed files within a Job
+     * List processed documents within a job.
      * 
      * Resource list operation template.
      * 
@@ -607,24 +609,24 @@ public final class DeidentificationClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of HealthFileDetails items as paginated response with {@link PagedIterable}.
+     * @return paged collection of DocumentDetails items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<HealthFileDetails> listJobFiles(String name) {
-        // Generated convenience method for listJobFiles
+    public PagedIterable<DocumentDetails> listJobDocuments(String name) {
+        // Generated convenience method for listJobDocuments
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listJobFiles(name, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(HealthFileDetails.class));
+        return serviceClient.listJobDocuments(name, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentDetails.class));
     }
 
     /**
-     * Cancel a De-Identify Job
+     * Cancel a de-identification job.
      * 
      * Cancels a job that is in progress.
      * 
      * The job will be marked as canceled and the service will stop processing the job. The service will not delete any
-     * files that have already been processed.
+     * documents that have already been processed.
      * 
      * If the job is already complete, this will have no effect.
      * 
@@ -635,7 +637,7 @@ public final class DeidentificationClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job containing a batch of documents to deidentify.
+     * @return a job containing a batch of documents to de-identify.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -646,9 +648,9 @@ public final class DeidentificationClient {
     }
 
     /**
-     * Delete a De-Identify Job
+     * Delete a de-identification job.
      * 
-     * Removes the record of the job from the service. Does not delete any files.
+     * Removes the record of the job from the service. Does not delete any documents.
      * 
      * @param name The name of a job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -667,18 +669,18 @@ public final class DeidentificationClient {
     }
 
     /**
-     * Realtime Synchronous Deidentification.
+     * De-identify text.
      * 
      * A remote procedure call (RPC) operation.
      * 
-     * @param body The request body for realtime deidentification.
+     * @param body Request body for de-identification operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for synchronous De-Identify operation.
+     * @return response body for de-identification operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

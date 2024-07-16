@@ -13,18 +13,18 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Response for synchronous De-Identify operation.
+ * Response body for de-identification operation.
  */
 @Immutable
 public final class DeidentificationResult implements JsonSerializable<DeidentificationResult> {
     /*
-     * Output text after de-identifying. Not available for Tag Operation.
+     * Output text after de-identification. Not available for "Tag" operation.
      */
     @Generated
     private String outputText;
 
     /*
-     * Result of the tag operation. Only available for Tag Operation.
+     * Result of the "Tag" operation. Only available for "Tag" Operation.
      */
     @Generated
     private PhiTaggerResult taggerResult;
@@ -37,7 +37,7 @@ public final class DeidentificationResult implements JsonSerializable<Deidentifi
     }
 
     /**
-     * Get the outputText property: Output text after de-identifying. Not available for Tag Operation.
+     * Get the outputText property: Output text after de-identification. Not available for "Tag" operation.
      * 
      * @return the outputText value.
      */
@@ -47,7 +47,7 @@ public final class DeidentificationResult implements JsonSerializable<Deidentifi
     }
 
     /**
-     * Get the taggerResult property: Result of the tag operation. Only available for Tag Operation.
+     * Get the taggerResult property: Result of the "Tag" operation. Only available for "Tag" Operation.
      * 
      * @return the taggerResult value.
      */

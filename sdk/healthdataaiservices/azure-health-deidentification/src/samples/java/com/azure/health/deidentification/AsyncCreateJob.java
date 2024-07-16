@@ -20,11 +20,11 @@ public class AsyncCreateJob {
         String outputFolder = "_output";
         String inputPrefix = "example_patient_1";
 
-        DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
+        DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        DeidentificationAsyncClient deidentificationClient = deidentificationClientbuilder.buildAsyncClient();
+        DeidServicesAsyncClient deidentificationClient = deidentificationClientbuilder.buildAsyncClient();
 
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();

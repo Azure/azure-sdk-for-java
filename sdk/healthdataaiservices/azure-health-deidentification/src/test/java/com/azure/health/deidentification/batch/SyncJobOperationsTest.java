@@ -16,8 +16,8 @@ import com.azure.core.test.models.*;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.health.deidentification.DeidentificationClient;
-import com.azure.health.deidentification.DeidentificationClientBuilder;
+import com.azure.health.deidentification.DeidServicesClient;
+import com.azure.health.deidentification.DeidServicesClientBuilder;
 import com.azure.health.deidentification.models.*;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
@@ -32,12 +32,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SyncJobOperationsTest extends TestProxyTestBase {
-    protected DeidentificationClient deidentificationClient;
+    protected DeidServicesClient deidentificationClient;
     private static final String OUTPUT_FOLDER = "_output";
 
     @Override
     protected void beforeTest() {
-        DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
+        System.setProperty("javax.net.ssl.trustStore", "c:\\Users\\daszanis\\Downloads\\deidkeystore.jks");
+        System.setProperty("javax.net.ssl.trustStorePassword", "123456");
+        DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpClient(getHttpClientOrUsePlayback(HttpClient.createDefault()))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
@@ -65,7 +67,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testCreateJobReturnsExpected() {
-        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded001";
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded001q";
 
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
@@ -99,7 +101,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testCreateThenListReturnsExpected() {
-        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded002";
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded002q";
 
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
@@ -145,7 +147,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testJobE2EWaitUntilSuccess() {
-        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded003";
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded003q";
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
@@ -162,11 +164,11 @@ class SyncJobOperationsTest extends TestProxyTestBase {
             .getValue();
         assertEquals(JobStatus.SUCCEEDED, result.getStatus());
 
-        PagedIterable<HealthFileDetails> reports = deidentificationClient.listJobFiles(jobName);
-        Iterator<HealthFileDetails> iterator = reports.iterator();
+        PagedIterable<DocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
+        Iterator<DocumentDetails> iterator = reports.iterator();
         int results = 0;
         while (iterator.hasNext()) {
-            HealthFileDetails currentReport = iterator.next();
+            DocumentDetails currentReport = iterator.next();
             assertEquals(currentReport.getStatus(), OperationState.SUCCEEDED);
             assertTrue(currentReport.getOutput().getPath().startsWith(OUTPUT_FOLDER));
             assertEquals(currentReport.getId().length(), 36);
@@ -177,7 +179,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testJobE2ECancelJobThenDeleteJobDeletesJob() {
-        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded004";
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded004q";
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
@@ -206,7 +208,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testJobE2ECannotAccessStorageCreateJobFails() {
-        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded005";
+        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded005q";
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = "FAKE_STORAGE_ACCOUNT";
         List<String> extensions = new ArrayList<>();

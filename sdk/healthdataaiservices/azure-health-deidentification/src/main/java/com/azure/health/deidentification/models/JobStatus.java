@@ -13,37 +13,37 @@ import java.util.Collection;
  */
 public final class JobStatus extends ExpandableStringEnum<JobStatus> {
     /**
-     * Static value NotStarted for JobStatus.
+     * Job has been submitted and is waiting to be processed.
      */
     @Generated
     public static final JobStatus NOT_STARTED = fromString("NotStarted");
 
     /**
-     * Static value Running for JobStatus.
+     * Job has been started.
      */
     @Generated
     public static final JobStatus RUNNING = fromString("Running");
 
     /**
-     * Static value Succeeded for JobStatus.
+     * Job has completed successfully. All documents have succeeded.
      */
     @Generated
     public static final JobStatus SUCCEEDED = fromString("Succeeded");
 
     /**
-     * Job has completed with at least 1 file failing.
+     * Job has completed with at least a single document failing.
      */
     @Generated
     public static final JobStatus PARTIAL_FAILED = fromString("PartialFailed");
 
     /**
-     * Static value Failed for JobStatus.
+     * Job has completed with all documents failing, or a validation failure.
      */
     @Generated
     public static final JobStatus FAILED = fromString("Failed");
 
     /**
-     * Static value Canceled for JobStatus.
+     * Job has been canceled after user request.
      */
     @Generated
     public static final JobStatus CANCELED = fromString("Canceled");

@@ -13,12 +13,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Request for synchronous De-Identify operation.
+ * Request body for de-identification operation.
  */
 @Fluent
 public final class DeidentificationContent implements JsonSerializable<DeidentificationContent> {
     /*
-     * Input text to deidentify.
+     * Input text to de-identify.
      */
     @Generated
     private final String inputText;
@@ -36,13 +36,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     private final DocumentDataType dataType;
 
     /*
-     * Requested Encoding of the tag response indices.
-     */
-    @Generated
-    private StringIndexType stringIndexType;
-
-    /*
-     * Format of the redacted output. Only valid when OperationType is Redact.
+     * Format of the redacted output. Only valid when OperationType is "Redact".
      */
     @Generated
     private String redactionFormat;
@@ -62,7 +56,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     }
 
     /**
-     * Get the inputText property: Input text to deidentify.
+     * Get the inputText property: Input text to de-identify.
      * 
      * @return the inputText value.
      */
@@ -92,29 +86,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     }
 
     /**
-     * Get the stringIndexType property: Requested Encoding of the tag response indices.
-     * 
-     * @return the stringIndexType value.
-     */
-    @Generated
-    public StringIndexType getStringIndexType() {
-        return this.stringIndexType;
-    }
-
-    /**
-     * Set the stringIndexType property: Requested Encoding of the tag response indices.
-     * 
-     * @param stringIndexType the stringIndexType value to set.
-     * @return the DeidentificationContent object itself.
-     */
-    @Generated
-    public DeidentificationContent setStringIndexType(StringIndexType stringIndexType) {
-        this.stringIndexType = stringIndexType;
-        return this;
-    }
-
-    /**
-     * Get the redactionFormat property: Format of the redacted output. Only valid when OperationType is Redact.
+     * Get the redactionFormat property: Format of the redacted output. Only valid when OperationType is "Redact".
      * 
      * @return the redactionFormat value.
      */
@@ -124,7 +96,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     }
 
     /**
-     * Set the redactionFormat property: Format of the redacted output. Only valid when OperationType is Redact.
+     * Set the redactionFormat property: Format of the redacted output. Only valid when OperationType is "Redact".
      * 
      * @param redactionFormat the redactionFormat value to set.
      * @return the DeidentificationContent object itself.
@@ -145,8 +117,6 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
         jsonWriter.writeStringField("inputText", this.inputText);
         jsonWriter.writeStringField("operation", this.operation == null ? null : this.operation.toString());
         jsonWriter.writeStringField("dataType", this.dataType == null ? null : this.dataType.toString());
-        jsonWriter.writeStringField("stringIndexType",
-            this.stringIndexType == null ? null : this.stringIndexType.toString());
         jsonWriter.writeStringField("redactionFormat", this.redactionFormat);
         return jsonWriter.writeEndObject();
     }
@@ -166,7 +136,6 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
             String inputText = null;
             OperationType operation = null;
             DocumentDataType dataType = null;
-            StringIndexType stringIndexType = null;
             String redactionFormat = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -178,8 +147,6 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
                     operation = OperationType.fromString(reader.getString());
                 } else if ("dataType".equals(fieldName)) {
                     dataType = DocumentDataType.fromString(reader.getString());
-                } else if ("stringIndexType".equals(fieldName)) {
-                    stringIndexType = StringIndexType.fromString(reader.getString());
                 } else if ("redactionFormat".equals(fieldName)) {
                     redactionFormat = reader.getString();
                 } else {
@@ -188,7 +155,6 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
             }
             DeidentificationContent deserializedDeidentificationContent
                 = new DeidentificationContent(inputText, operation, dataType);
-            deserializedDeidentificationContent.stringIndexType = stringIndexType;
             deserializedDeidentificationContent.redactionFormat = redactionFormat;
 
             return deserializedDeidentificationContent;

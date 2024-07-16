@@ -59,12 +59,12 @@ The following sections provide several code snippets covering some of the most c
 Create a `DeidentificationClient` using the `DEID_SERVICE_ENDPOINT` environment variable.
 
 ```java com.azure.health.deidentification.readme
-DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
+DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
     .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
     .httpClient(HttpClient.createDefault())
     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
-DeidentificationClient deidentificationClient = deidentificationClientbuilder.buildClient();
+DeidServicesClient deidentificationClient = deidentificationClientbuilder.buildClient();
 ```
 
 ### Calling `Deidentification` endpoint
@@ -121,9 +121,9 @@ for (DeidentificationJob currentJob : jobs) {
 List the files which are completed by a job.
 
 ```java com.azure.health.deidentification.sync.listcompletedfiles
-PagedIterable<HealthFileDetails> reports = deidentificationClient.listJobFiles(jobName);
+PagedIterable<DocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
 
-for (HealthFileDetails currentFile : reports) {
+for (DocumentDetails currentFile : reports) {
     System.out.println(currentFile.getId() + " - " + currentFile.getOutput().getPath());
     // c45dcd5e-e3ce-4ff2-80b6-a8bbeb47f878 - _output/MyJob-1719954393623/example_patient_1/visit_summary.txt
     // e55a1aa2-8eba-4515-b070-1fd3d005008b - _output/MyJob-1719954393623/example_patient_1/doctor_dictation.txt

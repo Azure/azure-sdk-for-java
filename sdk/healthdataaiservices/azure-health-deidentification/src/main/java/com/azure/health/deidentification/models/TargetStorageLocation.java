@@ -18,13 +18,13 @@ import java.io.IOException;
 @Immutable
 public final class TargetStorageLocation implements JsonSerializable<TargetStorageLocation> {
     /*
-     * URL to storage location. Must be a valid Azure Storage SAS URI.
+     * URL to storage location.
      */
     @Generated
     private final String location;
 
     /*
-     * Prefix to filter blobs by.
+     * Prefix to filter path by.
      */
     @Generated
     private final String prefix;
@@ -42,7 +42,7 @@ public final class TargetStorageLocation implements JsonSerializable<TargetStora
     }
 
     /**
-     * Get the location property: URL to storage location. Must be a valid Azure Storage SAS URI.
+     * Get the location property: URL to storage location.
      * 
      * @return the location value.
      */
@@ -52,7 +52,7 @@ public final class TargetStorageLocation implements JsonSerializable<TargetStora
     }
 
     /**
-     * Get the prefix property: Prefix to filter blobs by.
+     * Get the prefix property: Prefix to filter path by.
      * 
      * @return the prefix value.
      */

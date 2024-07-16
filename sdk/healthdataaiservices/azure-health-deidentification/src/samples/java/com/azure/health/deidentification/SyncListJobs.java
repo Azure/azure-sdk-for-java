@@ -16,12 +16,12 @@ public class SyncListJobs {
     public static void main(String[] args) {
         String jobName = "MyJob-" + Instant.now().toEpochMilli();
 
-        DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
+        DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
-        DeidentificationClient deidentificationClient = deidentificationClientbuilder.buildClient();
+        DeidServicesClient deidentificationClient = deidentificationClientbuilder.buildClient();
 
         // BEGIN: com.azure.health.deidentification.sync.listjobs
         PagedIterable<DeidentificationJob> jobs = deidentificationClient.listJobs();

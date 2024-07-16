@@ -13,12 +13,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Location of a file.
+ * Location of a document.
  */
 @Immutable
-public final class FileLocation implements JsonSerializable<FileLocation> {
+public final class DocumentLocation implements JsonSerializable<DocumentLocation> {
     /*
-     * Absolute path to the file in storage.
+     * Path of document in storage.
      */
     @Generated
     private final String path;
@@ -30,17 +30,17 @@ public final class FileLocation implements JsonSerializable<FileLocation> {
     private String etag;
 
     /**
-     * Creates an instance of FileLocation class.
+     * Creates an instance of DocumentLocation class.
      * 
      * @param path the path value to set.
      */
     @Generated
-    private FileLocation(String path) {
+    private DocumentLocation(String path) {
         this.path = path;
     }
 
     /**
-     * Get the path property: Absolute path to the file in storage.
+     * Get the path property: Path of document in storage.
      * 
      * @return the path value.
      */
@@ -71,16 +71,16 @@ public final class FileLocation implements JsonSerializable<FileLocation> {
     }
 
     /**
-     * Reads an instance of FileLocation from the JsonReader.
+     * Reads an instance of DocumentLocation from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of FileLocation if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of DocumentLocation if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the FileLocation.
+     * @throws IOException If an error occurs while reading the DocumentLocation.
      */
     @Generated
-    public static FileLocation fromJson(JsonReader jsonReader) throws IOException {
+    public static DocumentLocation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String path = null;
             String etag = null;
@@ -96,10 +96,10 @@ public final class FileLocation implements JsonSerializable<FileLocation> {
                     reader.skipChildren();
                 }
             }
-            FileLocation deserializedFileLocation = new FileLocation(path);
-            deserializedFileLocation.etag = etag;
+            DocumentLocation deserializedDocumentLocation = new DocumentLocation(path);
+            deserializedDocumentLocation.etag = etag;
 
-            return deserializedFileLocation;
+            return deserializedDocumentLocation;
         });
     }
 }

@@ -14,54 +14,54 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * File report once job has completed.
+ * Details of a single document in a job.
  */
 @Immutable
-public final class HealthFileDetails implements JsonSerializable<HealthFileDetails> {
+public final class DocumentDetails implements JsonSerializable<DocumentDetails> {
     /*
-     * Id of the file report.
+     * Id of the document details.
      */
     @Generated
     private String id;
 
     /*
-     * File Location for the input.
+     * Location for the input.
      */
     @Generated
-    private final FileLocation input;
+    private final DocumentLocation input;
 
     /*
-     * File Location for the output.
+     * Location for the output.
      */
     @Generated
-    private FileLocation output;
+    private DocumentLocation output;
 
     /*
-     * Status of the file.
+     * Status of the document.
      */
     @Generated
     private final OperationState status;
 
     /*
-     * Error when file fails.
+     * Error when document fails.
      */
     @Generated
     private ResponseError error;
 
     /**
-     * Creates an instance of HealthFileDetails class.
+     * Creates an instance of DocumentDetails class.
      * 
      * @param input the input value to set.
      * @param status the status value to set.
      */
     @Generated
-    private HealthFileDetails(FileLocation input, OperationState status) {
+    private DocumentDetails(DocumentLocation input, OperationState status) {
         this.input = input;
         this.status = status;
     }
 
     /**
-     * Get the id property: Id of the file report.
+     * Get the id property: Id of the document details.
      * 
      * @return the id value.
      */
@@ -71,27 +71,27 @@ public final class HealthFileDetails implements JsonSerializable<HealthFileDetai
     }
 
     /**
-     * Get the input property: File Location for the input.
+     * Get the input property: Location for the input.
      * 
      * @return the input value.
      */
     @Generated
-    public FileLocation getInput() {
+    public DocumentLocation getInput() {
         return this.input;
     }
 
     /**
-     * Get the output property: File Location for the output.
+     * Get the output property: Location for the output.
      * 
      * @return the output value.
      */
     @Generated
-    public FileLocation getOutput() {
+    public DocumentLocation getOutput() {
         return this.output;
     }
 
     /**
-     * Get the status property: Status of the file.
+     * Get the status property: Status of the document.
      * 
      * @return the status value.
      */
@@ -101,7 +101,7 @@ public final class HealthFileDetails implements JsonSerializable<HealthFileDetai
     }
 
     /**
-     * Get the error property: Error when file fails.
+     * Get the error property: Error when document fails.
      * 
      * @return the error value.
      */
@@ -125,21 +125,21 @@ public final class HealthFileDetails implements JsonSerializable<HealthFileDetai
     }
 
     /**
-     * Reads an instance of HealthFileDetails from the JsonReader.
+     * Reads an instance of DocumentDetails from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of HealthFileDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of DocumentDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the HealthFileDetails.
+     * @throws IOException If an error occurs while reading the DocumentDetails.
      */
     @Generated
-    public static HealthFileDetails fromJson(JsonReader jsonReader) throws IOException {
+    public static DocumentDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            FileLocation input = null;
+            DocumentLocation input = null;
             OperationState status = null;
-            FileLocation output = null;
+            DocumentLocation output = null;
             ResponseError error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -148,23 +148,23 @@ public final class HealthFileDetails implements JsonSerializable<HealthFileDetai
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("input".equals(fieldName)) {
-                    input = FileLocation.fromJson(reader);
+                    input = DocumentLocation.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
                     status = OperationState.fromString(reader.getString());
                 } else if ("output".equals(fieldName)) {
-                    output = FileLocation.fromJson(reader);
+                    output = DocumentLocation.fromJson(reader);
                 } else if ("error".equals(fieldName)) {
                     error = ResponseError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            HealthFileDetails deserializedHealthFileDetails = new HealthFileDetails(input, status);
-            deserializedHealthFileDetails.id = id;
-            deserializedHealthFileDetails.output = output;
-            deserializedHealthFileDetails.error = error;
+            DocumentDetails deserializedDocumentDetails = new DocumentDetails(input, status);
+            deserializedDocumentDetails.id = id;
+            deserializedDocumentDetails.output = output;
+            deserializedDocumentDetails.error = error;
 
-            return deserializedHealthFileDetails;
+            return deserializedDocumentDetails;
         });
     }
 }

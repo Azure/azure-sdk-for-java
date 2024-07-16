@@ -14,12 +14,12 @@ import com.azure.health.deidentification.models.OperationType;
 
 public class SyncHelloWorld {
     public static void main(String[] args) {
-        DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
+        DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
-        DeidentificationClient deidentificationClient = deidentificationClientbuilder.buildClient();
+        DeidServicesClient deidentificationClient = deidentificationClientbuilder.buildClient();
         // BEGIN: com.azure.health.deidentification.sync.helloworld
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText, OperationType.SURROGATE, DocumentDataType.PLAINTEXT);

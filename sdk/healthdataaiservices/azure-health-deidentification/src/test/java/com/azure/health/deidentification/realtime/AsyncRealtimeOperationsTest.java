@@ -10,8 +10,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
-import com.azure.health.deidentification.DeidentificationAsyncClient;
-import com.azure.health.deidentification.DeidentificationClientBuilder;
+import com.azure.health.deidentification.DeidServicesAsyncClient;
+import com.azure.health.deidentification.DeidServicesClientBuilder;
 import com.azure.health.deidentification.models.*;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
@@ -22,11 +22,13 @@ import java.time.OffsetDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AsyncRealtimeOperationsTest extends TestProxyTestBase {
-    protected DeidentificationAsyncClient deidentificationClient;
+    protected DeidServicesAsyncClient deidentificationClient;
 
     @Override
     protected void beforeTest() {
-        DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
+        System.setProperty("javax.net.ssl.trustStore", "c:\\Users\\daszanis\\Downloads\\deidkeystore.jks");
+        System.setProperty("javax.net.ssl.trustStorePassword", "123456");
+        DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
@@ -69,12 +71,11 @@ class AsyncRealtimeOperationsTest extends TestProxyTestBase {
         assertNull(asyncResult.getOutputText());
         assertNull(asyncResult.getTaggerResult().getEtag());
         assertNull(asyncResult.getTaggerResult().getPath());
-        assertEquals(StringIndexType.TEXT_ELEMENT_V8, asyncResult.getTaggerResult().getStringIndexType());
         assertFalse(asyncResult.getTaggerResult().getEntities().isEmpty());
         assertTrue(asyncResult.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.DOCTOR) || asyncResult.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.PATIENT));
         assertEquals("John Smith", asyncResult.getTaggerResult().getEntities().get(0).getText());
-        assertEquals(18, asyncResult.getTaggerResult().getEntities().get(0).getOffset());
-        assertEquals(10, asyncResult.getTaggerResult().getEntities().get(0).getLength());
+        assertEquals(18, asyncResult.getTaggerResult().getEntities().get(0).getOffset().getUtf8());
+        assertEquals(10, asyncResult.getTaggerResult().getEntities().get(0).getLength().getUtf8());
     }
 
 }

@@ -13,30 +13,30 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Summary metrics the documents pertaining to a job.
+ * Summary metrics of a job.
  */
 @Immutable
 public final class JobSummary implements JsonSerializable<JobSummary> {
     /*
-     * Number of blobs that have completed.
+     * Number of documents that have completed.
      */
     @Generated
     private final int successful;
 
     /*
-     * Number of blobs that have failed.
+     * Number of documents that have failed.
      */
     @Generated
     private final int failed;
 
     /*
-     * Number of blobs that have been canceled.
+     * Number of documents that have been canceled.
      */
     @Generated
     private final int canceled;
 
     /*
-     * Number of blobs total.
+     * Number of documents total.
      */
     @Generated
     private final int total;
@@ -66,7 +66,7 @@ public final class JobSummary implements JsonSerializable<JobSummary> {
     }
 
     /**
-     * Get the successful property: Number of blobs that have completed.
+     * Get the successful property: Number of documents that have completed.
      * 
      * @return the successful value.
      */
@@ -76,7 +76,7 @@ public final class JobSummary implements JsonSerializable<JobSummary> {
     }
 
     /**
-     * Get the failed property: Number of blobs that have failed.
+     * Get the failed property: Number of documents that have failed.
      * 
      * @return the failed value.
      */
@@ -86,7 +86,7 @@ public final class JobSummary implements JsonSerializable<JobSummary> {
     }
 
     /**
-     * Get the canceled property: Number of blobs that have been canceled.
+     * Get the canceled property: Number of documents that have been canceled.
      * 
      * @return the canceled value.
      */
@@ -96,7 +96,7 @@ public final class JobSummary implements JsonSerializable<JobSummary> {
     }
 
     /**
-     * Get the total property: Number of blobs total.
+     * Get the total property: Number of documents total.
      * 
      * @return the total value.
      */

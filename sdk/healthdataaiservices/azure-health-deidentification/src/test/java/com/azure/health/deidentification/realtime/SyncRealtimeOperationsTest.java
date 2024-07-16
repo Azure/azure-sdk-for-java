@@ -10,8 +10,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
-import com.azure.health.deidentification.DeidentificationClient;
-import com.azure.health.deidentification.DeidentificationClientBuilder;
+import com.azure.health.deidentification.DeidServicesClient;
+import com.azure.health.deidentification.DeidServicesClientBuilder;
 import com.azure.health.deidentification.models.*;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
@@ -22,11 +22,13 @@ import java.time.OffsetDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SyncRealtimeOperationsTest extends TestProxyTestBase {
-    protected DeidentificationClient deidentificationClient;
+    protected DeidServicesClient deidentificationClient;
 
     @Override
     protected void beforeTest() {
-        DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
+        System.setProperty("javax.net.ssl.trustStore", "c:\\Users\\daszanis\\Downloads\\deidkeystore.jks");
+        System.setProperty("javax.net.ssl.trustStorePassword", "123456");
+        DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
@@ -65,12 +67,11 @@ class SyncRealtimeOperationsTest extends TestProxyTestBase {
         assertNull(result.getOutputText());
         assertNull(result.getTaggerResult().getEtag());
         assertNull(result.getTaggerResult().getPath());
-        assertEquals(StringIndexType.TEXT_ELEMENT_V8, result.getTaggerResult().getStringIndexType());
         assertFalse(result.getTaggerResult().getEntities().isEmpty());
         assertTrue(result.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.DOCTOR) || result.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.PATIENT));
         assertEquals("John Smith", result.getTaggerResult().getEntities().get(0).getText());
-        assertEquals(18, result.getTaggerResult().getEntities().get(0).getOffset());
-        assertEquals(10, result.getTaggerResult().getEntities().get(0).getLength());
+        assertEquals(18, result.getTaggerResult().getEntities().get(0).getOffset().getUtf8());
+        assertEquals(10, result.getTaggerResult().getEntities().get(0).getLength().getUtf8());
     }
 
 }

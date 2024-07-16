@@ -23,11 +23,11 @@ public class AsyncListCompletedFiles {
         String outputFolder = "_output";
         String inputPrefix = "example_patient_1";
 
-        DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
+        DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        DeidentificationAsyncClient deidentificationClient = deidentificationClientbuilder.buildAsyncClient();
+        DeidServicesAsyncClient deidentificationClient = deidentificationClientbuilder.buildAsyncClient();
 
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
@@ -43,7 +43,7 @@ public class AsyncListCompletedFiles {
             .getSyncPoller()
             .waitForCompletion()
             .getValue();
-        PagedFlux<HealthFileDetails> reports = deidentificationClient.listJobFiles(jobName);
+        PagedFlux<DocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
 
         reports.byPage() // Retrieves Flux<PagedResponse<T>>, where each PagedResponse<T> represents a page
             .flatMap(page -> Flux.fromIterable(page.getElements())) // Converts each page into a Flux<T> of its items

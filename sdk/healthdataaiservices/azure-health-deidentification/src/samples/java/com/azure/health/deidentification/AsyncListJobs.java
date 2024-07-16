@@ -15,11 +15,11 @@ import java.time.Instant;
 public class AsyncListJobs {
     public static void main(String[] args) {
         // BEGIN: com.azure.health.deidentification.async.listjobs
-        DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
+        DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        DeidentificationAsyncClient deidentificationClient = deidentificationClientbuilder.buildAsyncClient();
+        DeidServicesAsyncClient deidentificationClient = deidentificationClientbuilder.buildAsyncClient();
 
         PagedFlux<DeidentificationJob> jobs = deidentificationClient.listJobs();
 

@@ -13,12 +13,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Phi Entity tag in the input.
+ * PHI Entity tag in the input.
  */
 @Immutable
 public final class PhiEntity implements JsonSerializable<PhiEntity> {
     /*
-     * Phi Category of the entity.
+     * PHI Category of the entity.
      */
     @Generated
     private final PhiCategory category;
@@ -27,13 +27,13 @@ public final class PhiEntity implements JsonSerializable<PhiEntity> {
      * Starting index of the location from within the input text.
      */
     @Generated
-    private final int offset;
+    private final StringIndex offset;
 
     /*
      * Length of the input text.
      */
     @Generated
-    private final int length;
+    private final StringIndex length;
 
     /*
      * Text of the entity.
@@ -42,7 +42,7 @@ public final class PhiEntity implements JsonSerializable<PhiEntity> {
     private String text;
 
     /*
-     * Confidence score of the text/type pairing.
+     * Confidence score of the category match.
      */
     @Generated
     private Double confidenceScore;
@@ -55,14 +55,14 @@ public final class PhiEntity implements JsonSerializable<PhiEntity> {
      * @param length the length value to set.
      */
     @Generated
-    private PhiEntity(PhiCategory category, int offset, int length) {
+    private PhiEntity(PhiCategory category, StringIndex offset, StringIndex length) {
         this.category = category;
         this.offset = offset;
         this.length = length;
     }
 
     /**
-     * Get the category property: Phi Category of the entity.
+     * Get the category property: PHI Category of the entity.
      * 
      * @return the category value.
      */
@@ -77,7 +77,7 @@ public final class PhiEntity implements JsonSerializable<PhiEntity> {
      * @return the offset value.
      */
     @Generated
-    public int getOffset() {
+    public StringIndex getOffset() {
         return this.offset;
     }
 
@@ -87,7 +87,7 @@ public final class PhiEntity implements JsonSerializable<PhiEntity> {
      * @return the length value.
      */
     @Generated
-    public int getLength() {
+    public StringIndex getLength() {
         return this.length;
     }
 
@@ -102,7 +102,7 @@ public final class PhiEntity implements JsonSerializable<PhiEntity> {
     }
 
     /**
-     * Get the confidenceScore property: Confidence score of the text/type pairing.
+     * Get the confidenceScore property: Confidence score of the category match.
      * 
      * @return the confidenceScore value.
      */
@@ -119,8 +119,8 @@ public final class PhiEntity implements JsonSerializable<PhiEntity> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("category", this.category == null ? null : this.category.toString());
-        jsonWriter.writeIntField("offset", this.offset);
-        jsonWriter.writeIntField("length", this.length);
+        jsonWriter.writeJsonField("offset", this.offset);
+        jsonWriter.writeJsonField("length", this.length);
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeNumberField("confidenceScore", this.confidenceScore);
         return jsonWriter.writeEndObject();
@@ -139,8 +139,8 @@ public final class PhiEntity implements JsonSerializable<PhiEntity> {
     public static PhiEntity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhiCategory category = null;
-            int offset = 0;
-            int length = 0;
+            StringIndex offset = null;
+            StringIndex length = null;
             String text = null;
             Double confidenceScore = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -150,9 +150,9 @@ public final class PhiEntity implements JsonSerializable<PhiEntity> {
                 if ("category".equals(fieldName)) {
                     category = PhiCategory.fromString(reader.getString());
                 } else if ("offset".equals(fieldName)) {
-                    offset = reader.getInt();
+                    offset = StringIndex.fromJson(reader);
                 } else if ("length".equals(fieldName)) {
-                    length = reader.getInt();
+                    length = StringIndex.fromJson(reader);
                 } else if ("text".equals(fieldName)) {
                     text = reader.getString();
                 } else if ("confidenceScore".equals(fieldName)) {

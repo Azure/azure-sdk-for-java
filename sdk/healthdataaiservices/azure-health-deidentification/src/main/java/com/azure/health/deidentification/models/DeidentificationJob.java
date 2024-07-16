@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
- * A job containing a batch of documents to deidentify.
+ * A job containing a batch of documents to de-identify.
  */
 @Fluent
 public final class DeidentificationJob implements JsonSerializable<DeidentificationJob> {
@@ -69,6 +69,16 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     private ResponseError error;
 
     /*
+     * Date and time when the job was completed.
+     * 
+     * If the job is canceled, this is the time when the job was canceled.
+     * 
+     * If the job failed, this is the time when the job failed.
+     */
+    @Generated
+    private OffsetDateTime lastUpdatedAt;
+
+    /*
      * Date and time when the job was created.
      */
     @Generated
@@ -79,16 +89,6 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      */
     @Generated
     private OffsetDateTime startedAt;
-
-    /*
-     * Date and time when the job was completed.
-     * 
-     * If the job is canceled, this is the time when the job was canceled.
-     * 
-     * If the job failed, this is the time when the job failed.
-     */
-    @Generated
-    private OffsetDateTime lastUpdatedAt;
 
     /*
      * Summary of a job. Exists only when the job is completed.
@@ -206,6 +206,20 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     }
 
     /**
+     * Get the lastUpdatedAt property: Date and time when the job was completed.
+     * 
+     * If the job is canceled, this is the time when the job was canceled.
+     * 
+     * If the job failed, this is the time when the job failed.
+     * 
+     * @return the lastUpdatedAt value.
+     */
+    @Generated
+    public OffsetDateTime getLastUpdatedAt() {
+        return this.lastUpdatedAt;
+    }
+
+    /**
      * Get the createdAt property: Date and time when the job was created.
      * 
      * @return the createdAt value.
@@ -223,20 +237,6 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     @Generated
     public OffsetDateTime getStartedAt() {
         return this.startedAt;
-    }
-
-    /**
-     * Get the lastUpdatedAt property: Date and time when the job was completed.
-     * 
-     * If the job is canceled, this is the time when the job was canceled.
-     * 
-     * If the job failed, this is the time when the job failed.
-     * 
-     * @return the lastUpdatedAt value.
-     */
-    @Generated
-    public OffsetDateTime getLastUpdatedAt() {
-        return this.lastUpdatedAt;
     }
 
     /**
@@ -282,11 +282,11 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
             OperationType operation = null;
             DocumentDataType dataType = null;
             JobStatus status = null;
+            OffsetDateTime lastUpdatedAt = null;
             OffsetDateTime createdAt = null;
             String redactionFormat = null;
             ResponseError error = null;
             OffsetDateTime startedAt = null;
-            OffsetDateTime lastUpdatedAt = null;
             JobSummary summary = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -304,6 +304,9 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                     dataType = DocumentDataType.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     status = JobStatus.fromString(reader.getString());
+                } else if ("lastUpdatedAt".equals(fieldName)) {
+                    lastUpdatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("createdAt".equals(fieldName)) {
                     createdAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -313,9 +316,6 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                     error = ResponseError.fromJson(reader);
                 } else if ("startedAt".equals(fieldName)) {
                     startedAt = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("lastUpdatedAt".equals(fieldName)) {
-                    lastUpdatedAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("summary".equals(fieldName)) {
                     summary = JobSummary.fromJson(reader);
@@ -327,11 +327,11 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                 = new DeidentificationJob(sourceLocation, targetLocation, operation, dataType);
             deserializedDeidentificationJob.name = name;
             deserializedDeidentificationJob.status = status;
+            deserializedDeidentificationJob.lastUpdatedAt = lastUpdatedAt;
             deserializedDeidentificationJob.createdAt = createdAt;
             deserializedDeidentificationJob.redactionFormat = redactionFormat;
             deserializedDeidentificationJob.error = error;
             deserializedDeidentificationJob.startedAt = startedAt;
-            deserializedDeidentificationJob.lastUpdatedAt = lastUpdatedAt;
             deserializedDeidentificationJob.summary = summary;
 
             return deserializedDeidentificationJob;

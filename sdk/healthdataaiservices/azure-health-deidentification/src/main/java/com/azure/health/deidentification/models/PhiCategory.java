@@ -91,7 +91,7 @@ public final class PhiCategory extends ExpandableStringEnum<PhiCategory> {
     public static final PhiCategory HOSPITAL = fromString("Hospital");
 
     /**
-     * Id Numbers. Such as a passport number.
+     * Id Number, eg. passport number.
      */
     @Generated
     public static final PhiCategory IDNUM = fromString("IDNum");
@@ -103,13 +103,13 @@ public final class PhiCategory extends ExpandableStringEnum<PhiCategory> {
     public static final PhiCategory IPADDRESS = fromString("IPAddress");
 
     /**
-     * License. Such as a driver's license or medical license.
+     * License, eg. Driver's license or medical license.
      */
     @Generated
     public static final PhiCategory LICENSE = fromString("License");
 
     /**
-     * Location Other. Such as Golden Gate Park.
+     * Location Other, eg. Golden Gate Park.
      */
     @Generated
     public static final PhiCategory LOCATION_OTHER = fromString("LocationOther");
@@ -121,7 +121,7 @@ public final class PhiCategory extends ExpandableStringEnum<PhiCategory> {
     public static final PhiCategory MEDICAL_RECORD = fromString("MedicalRecord");
 
     /**
-     * Organization. Such as a company name.
+     * Organization, eg. Microsoft.
      */
     @Generated
     public static final PhiCategory ORGANIZATION = fromString("Organization");
@@ -145,7 +145,7 @@ public final class PhiCategory extends ExpandableStringEnum<PhiCategory> {
     public static final PhiCategory PROFESSION = fromString("Profession");
 
     /**
-     * Social Security Numbers in the US.
+     * Social Security Number.
      */
     @Generated
     public static final PhiCategory SOCIAL_SECURITY = fromString("SocialSecurity");
@@ -169,13 +169,13 @@ public final class PhiCategory extends ExpandableStringEnum<PhiCategory> {
     public static final PhiCategory URL = fromString("Url");
 
     /**
-     * Usernames, such as a social media handle.
+     * Usernames, eg. a social media handle.
      */
     @Generated
     public static final PhiCategory USERNAME = fromString("Username");
 
     /**
-     * Vehicle IDs, such as license plates or VIN numbers.
+     * Vehicle IDs, eg. license plate or VIN number.
      */
     @Generated
     public static final PhiCategory VEHICLE = fromString("Vehicle");

@@ -15,12 +15,12 @@ import java.util.List;
 
 public class SyncCreateJob {
     public static void main(String[] args) {
-        DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
+        DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
-        DeidentificationClient deidentificationClient = deidentificationClientbuilder.buildClient();
+        DeidServicesClient deidentificationClient = deidentificationClientbuilder.buildClient();
 
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
