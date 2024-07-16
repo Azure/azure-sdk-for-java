@@ -43,7 +43,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             List<TestProxySanitizer> customSanitizer = new ArrayList<>();
-            customSanitizer.add(new TestProxySanitizer("$..location","^(?!.*FAKE_STORAGE_ACCOUNT).*", "https://fake_storage_account_sas_uri.blob.core.windows.net/container-sdk-dev-fakeid", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..location", "^(?!.*FAKE_STORAGE_ACCOUNT).*", "https://fake_storage_account_sas_uri.blob.core.windows.net/container-sdk-dev-fakeid", TestProxySanitizerType.BODY_KEY));
             interceptorManager.removeSanitizers("AZSDK3493", "AZSDK4001", "AZSDK3430", "AZSDK2003", "AZSDK2030");
             interceptorManager.addSanitizers(customSanitizer);
             deidentificationClientbuilder.httpClient(interceptorManager.getPlaybackClient())
@@ -51,7 +51,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
         } else if (getTestMode() == TestMode.RECORD) {
             List<TestProxySanitizer> customSanitizer = new ArrayList<>();
             // sanitize value for key: "modelId" in response json body
-            customSanitizer.add(new TestProxySanitizer("$..location","^(?!.*FAKE_STORAGE_ACCOUNT).*", "https://fake_storage_account_sas_uri.blob.core.windows.net/container-sdk-dev-fakeid", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..location", "^(?!.*FAKE_STORAGE_ACCOUNT).*", "https://fake_storage_account_sas_uri.blob.core.windows.net/container-sdk-dev-fakeid", TestProxySanitizerType.BODY_KEY));
             interceptorManager.removeSanitizers("AZSDK3493", "AZSDK4001", "AZSDK3430", "AZSDK2003", "AZSDK2030");
             // add sanitizer to Test Proxy Policy
             interceptorManager.addSanitizers(customSanitizer);
@@ -65,7 +65,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testCreateJobReturnsExpected() {
-        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded001q";
+        String jobName = getTestMode() == TestMode.LIVE ? testResourceNamer.randomName("livemode", 16) : "recorded001q";
 
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
@@ -99,7 +99,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testCreateThenListReturnsExpected() {
-        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded002q";
+        String jobName = getTestMode() == TestMode.LIVE ? testResourceNamer.randomName("livemode", 16) : "recorded002q";
 
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
@@ -145,7 +145,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testJobE2EWaitUntilSuccess() {
-        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded003q";
+        String jobName = getTestMode() == TestMode.LIVE ? testResourceNamer.randomName("livemode", 16) : "recorded003q";
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
@@ -156,7 +156,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
             new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER),
             OperationType.SURROGATE,
             DocumentDataType.PLAINTEXT);
-        SyncPoller<DeidentificationJob, DeidentificationJob> poller =  setPlaybackSyncPollerPollInterval(deidentificationClient.beginCreateJob(jobName, job));
+        SyncPoller<DeidentificationJob, DeidentificationJob> poller = setPlaybackSyncPollerPollInterval(deidentificationClient.beginCreateJob(jobName, job));
         DeidentificationJob result = poller
             .waitForCompletion()
             .getValue();
@@ -177,7 +177,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testJobE2ECancelJobThenDeleteJobDeletesJob() {
-        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded004q";
+        String jobName = getTestMode() == TestMode.LIVE ? testResourceNamer.randomName("livemode", 16) : "recorded004q";
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
@@ -206,7 +206,7 @@ class SyncJobOperationsTest extends TestProxyTestBase {
 
     @Test
     void testJobE2ECannotAccessStorageCreateJobFails() {
-        String jobName = getTestMode() == TestMode.LIVE? testResourceNamer.randomName("livemode", 16): "recorded005q";
+        String jobName = getTestMode() == TestMode.LIVE ? testResourceNamer.randomName("livemode", 16) : "recorded005q";
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = "FAKE_STORAGE_ACCOUNT";
         List<String> extensions = new ArrayList<>();

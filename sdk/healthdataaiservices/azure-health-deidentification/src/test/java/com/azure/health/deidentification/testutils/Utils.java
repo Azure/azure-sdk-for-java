@@ -11,7 +11,7 @@ public class Utils {
     public static String generateJobName(String baseName, TestMode testMode) {
         long timestamp = Instant.now().toEpochMilli();
         String jobName = baseName + "-" + timestamp;
-        if(testMode == TestMode.RECORD || testMode == TestMode.PLAYBACK) {
+        if (testMode == TestMode.RECORD || testMode == TestMode.PLAYBACK) {
             jobName = baseName;
         }
         return jobName;
