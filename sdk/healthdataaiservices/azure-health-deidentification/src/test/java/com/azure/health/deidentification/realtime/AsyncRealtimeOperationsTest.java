@@ -26,8 +26,6 @@ class AsyncRealtimeOperationsTest extends TestProxyTestBase {
 
     @Override
     protected void beforeTest() {
-        System.setProperty("javax.net.ssl.trustStore", "c:\\Users\\daszanis\\Downloads\\deidkeystore.jks");
-        System.setProperty("javax.net.ssl.trustStorePassword", "123456");
         DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpClient(HttpClient.createDefault())
