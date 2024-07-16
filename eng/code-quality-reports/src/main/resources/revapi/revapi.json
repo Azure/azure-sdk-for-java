@@ -530,10 +530,16 @@
           "justification": "Migration to azure-json"
         },
         {
+<<<<<<< HEAD
           "code": "java.method.returnTypeErasureChanged",
           "old" : "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.InteractiveBrowserCredentialBuilder",
           "new" : "method com.azure.identity.InteractiveBrowserCredentialBuilder com.azure.identity.InteractiveBrowserCredentialBuilder::clientId(java.lang.String)",
           "justification": "Override flags this as a potential binary breaking change, but it isn't."
+=======
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.containerservice.models.OSOptionProperty",
+          "justification": "Removed non-functional API `getOsOptions` and related models `OSOptionProperty`"
+>>>>>>> 46adcbf3be1 (move to util + remove stack trace printing)
         },
         {
           "code": "java.method.returnTypeErasureChanged",

@@ -7,14 +7,10 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.rooms.implementation.AzureCommunicationRoomServiceImpl;
 import com.azure.communication.rooms.implementation.ParticipantsImpl;
 import com.azure.communication.rooms.implementation.RoomsImpl;
-import com.azure.communication.rooms.implementation.converters.ParticipantRoleConverter;
 import com.azure.communication.rooms.implementation.converters.RoomModelConverter;
 import com.azure.communication.rooms.implementation.converters.RoomParticipantConverter;
-import com.azure.communication.rooms.implementation.models.CreateRoomRequest;
 import com.azure.communication.rooms.implementation.models.ParticipantProperties;
 import com.azure.communication.rooms.implementation.models.RoomModel;
-import com.azure.communication.rooms.implementation.models.UpdateParticipantsRequest;
-import com.azure.communication.rooms.implementation.models.UpdateRoomRequest;
 import com.azure.communication.rooms.models.AddOrUpdateParticipantsResult;
 import com.azure.communication.rooms.models.CommunicationRoom;
 import com.azure.communication.rooms.models.CreateRoomOptions;
@@ -32,22 +28,22 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.PageRetriever;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.communication.rooms.implementation.Transforms.convertRoomIdentifiersToMapForRemove;
+import static com.azure.communication.rooms.implementation.Transforms.convertRoomParticipantsToMapForAddOrUpdate;
+import static com.azure.communication.rooms.implementation.Transforms.getCommunicationRoomFromResponse;
+import static com.azure.communication.rooms.implementation.Transforms.getUpdateRequest;
+import static com.azure.communication.rooms.implementation.Transforms.toCreateRoomRequest;
+import static com.azure.communication.rooms.implementation.Transforms.toUpdateRoomRequest;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 
@@ -348,7 +344,6 @@ public final class RoomsAsyncClient {
                 });
 
         } catch (IOException ex) {
-            ex.printStackTrace();
             return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -385,7 +380,6 @@ public final class RoomsAsyncClient {
                 .map(result -> new SimpleResponse<AddOrUpdateParticipantsResult>(
                     result.getRequest(), result.getStatusCode(), result.getHeaders(), null));
         } catch (IOException ex) {
-            ex.printStackTrace();
             return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -422,7 +416,6 @@ public final class RoomsAsyncClient {
                     return Mono.just(new RemoveParticipantsResult());
                 });
         } catch (IOException ex) {
-            ex.printStackTrace();
             return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -458,7 +451,6 @@ public final class RoomsAsyncClient {
                 .map(result -> new SimpleResponse<RemoveParticipantsResult>(
                     result.getRequest(), result.getStatusCode(), result.getHeaders(), null));
         } catch (IOException ex) {
-            ex.printStackTrace();
             return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -512,113 +504,5 @@ public final class RoomsAsyncClient {
         };
 
         return PagedFlux.create(provider);
-    }
-
-    private CommunicationRoom getCommunicationRoomFromResponse(RoomModel room) {
-        return new CommunicationRoom(
-                room.getId(),
-                room.getValidFrom(),
-                room.getValidUntil(),
-                room.getCreatedAt(),
-                room.isPstnDialOutEnabled());
-    }
-
-    /**
-     * Translate to create room request.
-     *
-     * @return The create room request.
-     */
-    private CreateRoomRequest toCreateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil,
-            Boolean isPstnDialOutEnabled, Iterable<RoomParticipant> participants) {
-        CreateRoomRequest createRoomRequest = new CreateRoomRequest();
-        if (validFrom != null) {
-            createRoomRequest.setValidFrom(validFrom);
-        }
-
-        if (validUntil != null) {
-            createRoomRequest.setValidUntil(validUntil);
-        }
-
-        createRoomRequest.setPstnDialOutEnabled(isPstnDialOutEnabled);
-
-        Map<String, ParticipantProperties> roomParticipants = new HashMap<>();
-
-        if (participants != null) {
-            roomParticipants = convertRoomParticipantsToMapForAddOrUpdate(participants);
-        }
-
-        if (participants != null) {
-            createRoomRequest.setParticipants(roomParticipants);
-        }
-
-        return createRoomRequest;
-    }
-
-    /**
-     * Translate to update room request.
-     *
-     * @return The update room request.
-     */
-    private UpdateRoomRequest toUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil, Boolean isPstnDialOutEnabled) {
-        UpdateRoomRequest updateRoomRequest = new UpdateRoomRequest();
-
-        if (validFrom != null) {
-            updateRoomRequest.setValidFrom(validFrom);
-        }
-
-        if (validUntil != null) {
-            updateRoomRequest.setValidUntil(validUntil);
-        }
-
-        if (isPstnDialOutEnabled != null) {
-            updateRoomRequest.setPstnDialOutEnabled(isPstnDialOutEnabled);
-        }
-
-        return updateRoomRequest;
-    }
-
-    /**
-     * Translate to map for add or update participants.
-     *
-     * @return Map of participants.
-     */
-    private Map<String, ParticipantProperties> convertRoomParticipantsToMapForAddOrUpdate(
-            Iterable<RoomParticipant> participants) {
-        Map<String, ParticipantProperties> participantMap = new HashMap<>();
-
-        if (participants != null) {
-            for (RoomParticipant participant : participants) {
-                participantMap.put(participant.getCommunicationIdentifier().getRawId(),
-                        new ParticipantProperties().setRole(ParticipantRoleConverter.convert(participant.getRole())));
-            }
-        }
-
-        return participantMap;
-    }
-
-    /**
-     * Translate to map for remove participants.
-     *
-     * @return Map of participants.
-     */
-    private Map<String, ParticipantProperties> convertRoomIdentifiersToMapForRemove(
-            Iterable<CommunicationIdentifier> identifiers) {
-        Map<String, ParticipantProperties> participantMap = new HashMap<>();
-
-        if (identifiers != null) {
-            for (CommunicationIdentifier identifier : identifiers) {
-                participantMap.put(identifier.getRawId(), null);
-            }
-        }
-
-        return participantMap;
-    }
-
-    private static String getUpdateRequest(Map<String, ParticipantProperties> participantMap) throws IOException {
-        Writer json = new StringWriter();
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(json)) {
-            new UpdateParticipantsRequest().setParticipants(participantMap).toJson(jsonWriter);
-        }
-        return json.toString();
     }
 }
