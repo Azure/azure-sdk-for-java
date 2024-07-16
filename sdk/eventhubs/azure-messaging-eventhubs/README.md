@@ -138,7 +138,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.12.2</version>
+    <version>1.13.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
