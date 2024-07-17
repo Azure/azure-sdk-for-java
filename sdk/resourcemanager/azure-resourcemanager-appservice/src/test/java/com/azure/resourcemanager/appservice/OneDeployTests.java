@@ -200,7 +200,7 @@ public class OneDeployTests extends AppServiceTest {
                 com.azure.core.util.Context.NONE);
 
         FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName, functionAppName);
-        File zipFile = new File(OneDeployTests.class.getResource("/webapps.zip").getPath());
+        File zipFile = new File(OneDeployTests.class.getResource("/java-functions.zip").getPath());
         functionApp.deploy(zipFile);
 
         // wait a bit

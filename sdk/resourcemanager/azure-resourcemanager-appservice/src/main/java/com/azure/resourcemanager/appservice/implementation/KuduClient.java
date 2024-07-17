@@ -150,7 +150,17 @@ class KuduClient {
             @QueryParam("clean") Boolean clean,
             @QueryParam("isAsync") Boolean isAsync,
             @QueryParam("trackDeploymentProgress") Boolean trackDeploymentProgress,
-            @QueryParam("RemoteBuild") Boolean remoteBuild,
+            @QueryParam("remoteBuild") Boolean remoteBuild,
+            @QueryParam("deployer") String deployer
+        );
+
+        @Headers({"Content-Type: application/zip"})
+        @Post("api/publish")
+        Mono<Response<Void>> deployFlexConsumption(
+            @HostParam("$host") String host,
+            @BodyParam("application/zip") Flux<ByteBuffer> file,
+            @HeaderParam("content-length") long size,
+            @QueryParam("remoteBuild") Boolean remoteBuild,
             @QueryParam("deployer") String deployer
         );
 
@@ -324,15 +334,14 @@ class KuduClient {
 
     Mono<Void> deployFlexConsumptionAsync(InputStream file, long length) {
         Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
-        return retryOnError(service.deploy(host, flux, length, null, null, null, null, null, null,
+        return retryOnError(service.deployFlexConsumption(host, flux, length,
             false, "JavaSDK"))
             .then();
     }
 
     Mono<Void> deployFlexConsumptionAsync(File file) throws IOException {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
-        return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
-            null, null, null, null, null, null,
+        return retryOnError(service.deployFlexConsumption(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
             false, "JavaSDK"))
             .then()
             .doFinally(ignored -> {
