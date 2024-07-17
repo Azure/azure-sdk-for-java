@@ -5,7 +5,9 @@ package com.azure.spring.cloud.autoconfigure.implementation.storage.blob;
 
 import com.azure.spring.cloud.autoconfigure.implementation.storage.AzureStorageConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobPropertiesConfiguration;
+import com.azure.spring.cloud.core.resource.AzureStorageBlobProtocolResolver;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -18,6 +20,7 @@ import org.springframework.context.annotation.Import;
     AzureStorageBlobPropertiesConfiguration.class,
     AzureStorageBlobProtocolResolverConfiguration.class
 })
+@ConditionalOnClass({ AzureStorageBlobProtocolResolver.class })
 public class AzureStorageBlobResourceAutoConfiguration {
 
 }

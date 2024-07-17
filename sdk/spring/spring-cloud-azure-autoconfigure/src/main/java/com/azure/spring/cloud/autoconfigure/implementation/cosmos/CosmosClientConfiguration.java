@@ -16,7 +16,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 
 @ConditionalOnBean(AzureCosmosProperties.class)
-public class CosmosClientConfiguration {
+class CosmosClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

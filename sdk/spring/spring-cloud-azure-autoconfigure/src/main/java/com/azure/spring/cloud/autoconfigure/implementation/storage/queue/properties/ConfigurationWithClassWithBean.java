@@ -17,11 +17,11 @@ import org.springframework.core.env.Environment;
 
 @ConditionalOnClass(ConnectionDetails.class)
 @ConditionalOnBean(AzureStorageQueueConnectionDetails.class)
-public class ConfigurationWithClassWithBean {
+class ConfigurationWithClassWithBean {
     private final Environment environment;
     private final AzureStorageQueueConnectionDetails connectionDetails;
 
-    public ConfigurationWithClassWithBean(
+    ConfigurationWithClassWithBean(
         Environment environment,
         AzureStorageQueueConnectionDetails connectionDetails) {
         this.environment = environment;

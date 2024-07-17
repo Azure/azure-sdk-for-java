@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties;
 
-import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureGlobalPropertiesUtils;
@@ -17,15 +16,15 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
-@ConditionalOnClass({CosmosClientBuilder.class, ConnectionDetails.class})
+@ConditionalOnClass(ConnectionDetails.class)
 @ConditionalOnMissingBean(AzureCosmosConnectionDetails.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.cosmos.enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.cosmos", name = "endpoint")
-public class ConfigurationWithClassWithoutBean {
+class ConfigurationWithClassWithoutBean {
     private final Environment environment;
     private final AzureGlobalProperties globalProperties;
 
-    public ConfigurationWithClassWithoutBean(
+    ConfigurationWithClassWithoutBean(
         Environment environment,
         AzureGlobalProperties globalProperties) {
         this.environment = environment;

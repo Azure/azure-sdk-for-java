@@ -30,7 +30,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
 import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 
 @ConditionalOnBean(AzureStorageBlobProperties.class)
-public class BlobClientConfiguration {
+class BlobClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

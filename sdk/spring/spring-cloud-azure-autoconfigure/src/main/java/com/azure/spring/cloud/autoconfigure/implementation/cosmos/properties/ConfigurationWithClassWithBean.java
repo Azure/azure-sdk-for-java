@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties;
 
-import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureGlobalPropertiesUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -15,14 +14,14 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
-@ConditionalOnClass({CosmosClientBuilder.class, ConnectionDetails.class})
+@ConditionalOnClass(ConnectionDetails.class)
 @ConditionalOnBean(AzureCosmosConnectionDetails.class)
-public class ConfigurationWithClassWithBean {
+class ConfigurationWithClassWithBean {
     private final Environment environment;
     private final AzureGlobalProperties globalProperties;
     private final AzureCosmosConnectionDetails connectionDetails;
 
-    public ConfigurationWithClassWithBean(
+    ConfigurationWithClassWithBean(
         Environment environment,
         AzureGlobalProperties globalProperties,
         AzureCosmosConnectionDetails connectionDetails) {

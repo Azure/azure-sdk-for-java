@@ -24,7 +24,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
 @ConditionalOnBean(AzureStorageQueueProperties.class)
-public class QueueClientConfiguration {
+class QueueClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

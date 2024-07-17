@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnAnyProperty(
     prefixes = { "spring.cloud.azure.storage.blob", "spring.cloud.azure.storage" },
     name = { "account-name", "endpoint", "connection-string" })
-public class ConfigurationWithoutClass {
+class ConfigurationWithoutClass {
 
     @Bean
     @ConfigurationProperties(AzureStorageBlobProperties.PREFIX)
