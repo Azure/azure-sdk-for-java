@@ -33,7 +33,6 @@ import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;

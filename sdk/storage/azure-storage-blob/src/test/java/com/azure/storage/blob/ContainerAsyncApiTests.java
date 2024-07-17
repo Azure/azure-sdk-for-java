@@ -452,6 +452,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void setAccessPolicy(PublicAccessType publicAccess) {
         StepVerifier.create(ccAsync.setAccessPolicyWithResponse(publicAccess, null, null))
             .assertNext(r -> assertTrue(validateBasicHeaders(r.getHeaders())))
