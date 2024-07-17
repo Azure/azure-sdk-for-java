@@ -516,13 +516,13 @@
           "code" : "java.method.returnTypeTypeParametersChanged",
           "old" : "method java.util.List<com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner> com.azure.resourcemanager.compute.models.SecurityPostureReference::excludeExtensions()",
           "new" : "method java.util.List<java.lang.String> com.azure.resourcemanager.compute.models.SecurityPostureReference::excludeExtensions()",
-          "justification": "Return String list rather than Virtual Machine Extension models list."
+          "justification": "Service breaks but no customer onboard."
         },
         {
           "code" : "java.method.parameterTypeParameterChanged",
           "old" : "parameter com.azure.resourcemanager.compute.models.SecurityPostureReference com.azure.resourcemanager.compute.models.SecurityPostureReference::withExcludeExtensions(===java.util.List<com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner>===)",
           "new" : "parameter com.azure.resourcemanager.compute.models.SecurityPostureReference com.azure.resourcemanager.compute.models.SecurityPostureReference::withExcludeExtensions(===java.util.List<java.lang.String>===)",
-          "justification": "Accept String list rather than Virtual Machine Extension models list."
+          "justification": "Service breaks but no customer onboard."
         }
       ]
     }
