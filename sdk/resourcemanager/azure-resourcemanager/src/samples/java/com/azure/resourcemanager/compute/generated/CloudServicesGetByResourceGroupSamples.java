@@ -20,7 +20,10 @@ public final class CloudServicesGetByResourceGroupSamples {
      */
     public static void
         getCloudServiceWithMultipleRolesAndRDPExtension(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServices()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServices()
             .getByResourceGroupWithResponse("ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

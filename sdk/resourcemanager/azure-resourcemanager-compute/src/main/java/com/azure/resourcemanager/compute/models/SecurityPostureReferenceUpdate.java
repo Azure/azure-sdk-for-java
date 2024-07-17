@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,13 +12,13 @@ import java.util.List;
  * Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01.
  */
 @Fluent
-public final class SecurityPostureReference {
+public final class SecurityPostureReferenceUpdate {
     /*
      * The security posture reference id in the form of
      * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|
      * latest
      */
-    @JsonProperty(value = "id", required = true)
+    @JsonProperty(value = "id")
     private String id;
 
     /*
@@ -35,9 +34,9 @@ public final class SecurityPostureReference {
     private Boolean isOverridable;
 
     /**
-     * Creates an instance of SecurityPostureReference class.
+     * Creates an instance of SecurityPostureReferenceUpdate class.
      */
-    public SecurityPostureReference() {
+    public SecurityPostureReferenceUpdate() {
     }
 
     /**
@@ -55,9 +54,9 @@ public final class SecurityPostureReference {
      * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|latest.
      * 
      * @param id the id value to set.
-     * @return the SecurityPostureReference object itself.
+     * @return the SecurityPostureReferenceUpdate object itself.
      */
-    public SecurityPostureReference withId(String id) {
+    public SecurityPostureReferenceUpdate withId(String id) {
         this.id = id;
         return this;
     }
@@ -77,9 +76,9 @@ public final class SecurityPostureReference {
      * security posture.
      * 
      * @param excludeExtensions the excludeExtensions value to set.
-     * @return the SecurityPostureReference object itself.
+     * @return the SecurityPostureReferenceUpdate object itself.
      */
-    public SecurityPostureReference withExcludeExtensions(List<String> excludeExtensions) {
+    public SecurityPostureReferenceUpdate withExcludeExtensions(List<String> excludeExtensions) {
         this.excludeExtensions = excludeExtensions;
         return this;
     }
@@ -97,9 +96,9 @@ public final class SecurityPostureReference {
      * Set the isOverridable property: Whether the security posture can be overridden by the user.
      * 
      * @param isOverridable the isOverridable value to set.
-     * @return the SecurityPostureReference object itself.
+     * @return the SecurityPostureReferenceUpdate object itself.
      */
-    public SecurityPostureReference withIsOverridable(Boolean isOverridable) {
+    public SecurityPostureReferenceUpdate withIsOverridable(Boolean isOverridable) {
         this.isOverridable = isOverridable;
         return this;
     }
@@ -110,11 +109,5 @@ public final class SecurityPostureReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (id() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property id in model SecurityPostureReference"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SecurityPostureReference.class);
 }

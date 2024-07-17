@@ -19,8 +19,8 @@ import java.util.List;
 @Immutable
 public final class VirtualMachineInstallPatchesResultInner {
     /*
-     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
-     * At that point it will become "Failed", "Succeeded", "Unknown" or "CompletedWithWarnings."
+     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes. At
+     * that point it will become "Failed", "Succeeded", "Unknown" or "CompletedWithWarnings."
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStatus status;
@@ -140,8 +140,8 @@ public final class VirtualMachineInstallPatchesResultInner {
     }
 
     /**
-     * Get the excludedPatchCount property: The number of patches that were not installed due to the user blocking
-     * their installation.
+     * Get the excludedPatchCount property: The number of patches that were not installed due to the user blocking their
+     * installation.
      * 
      * @return the excludedPatchCount value.
      */
