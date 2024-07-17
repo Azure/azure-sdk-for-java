@@ -9,9 +9,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Import;
 
 @Import({
-    ConfigurationWithClassWithBean.class,
-    ConfigurationWithClassWithoutBean.class,
-    ConfigurationWithoutClass.class
+    ConfigurationWithConnectionDetailsBean.class,
+    ConfigurationWithoutConnectionDetailsBean.class,
 })
 @ConditionalOnClass(CosmosClientBuilder.class)
 @EnableConfigurationProperties
