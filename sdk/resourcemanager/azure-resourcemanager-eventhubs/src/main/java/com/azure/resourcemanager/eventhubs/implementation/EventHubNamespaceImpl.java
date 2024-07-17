@@ -22,7 +22,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -260,8 +259,8 @@ class EventHubNamespaceImpl
     }
 
     @Override
-    public Boolean zoneRedundant() {
-        return Objects.isNull(this.innerModel().zoneRedundant()) ? false : this.innerModel().zoneRedundant();
+    public boolean zoneRedundant() {
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().zoneRedundant());
     }
 
     @Override

@@ -102,7 +102,7 @@ public interface EventHubNamespace extends
      *
      * @return the zoneRedundant value.
      */
-    Boolean zoneRedundant();
+    boolean zoneRedundant();
 
     /**
      * The entirety of the event hub namespace definition.
