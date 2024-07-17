@@ -20,7 +20,7 @@ import argparse
 from version_util import version_greater_than
 
 from log import log
-from _constants import SPRING_BOOT_MAJOR_VERSION_PREFIX_MAP
+from _constants import SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME, get_spring_boot_version_tag_prefix
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 SKIP_IDS = [
@@ -47,10 +47,10 @@ def get_args():
         '-sbmvn',
         '--spring_boot_major_version_number',
         type=str,
-        choices=['v2', 'v3'],
-        required=False,
-        default='v3',
-        help='Update the dependencies of Spring Boot major version. The default is "v3".'
+        choices=[SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME],
+        required=True,
+        default=SPRING_BOOT_MAJOR_3_VERSION_NAME,
+        help='Update the dependencies of Spring Boot major version. The default is ' + SPRING_BOOT_MAJOR_3_VERSION_NAME + '.'
     )
     args = parser.parse_args()
     log.set_log_level(args.log)
@@ -63,7 +63,7 @@ def main():
     args = get_args()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     file_name = get_spring_boot_managed_external_dependencies_file_name(args.spring_boot_dependencies_version)
-    sync_external_dependencies(SPRING_BOOT_MAJOR_VERSION_PREFIX_MAP[args.spring_boot_major_version_number], file_name, EXTERNAL_DEPENDENCIES_FILE)
+    sync_external_dependencies(get_spring_boot_version_tag_prefix(args.spring_boot_major_version_number), file_name, EXTERNAL_DEPENDENCIES_FILE)
     update_external_dependencies_comment(args.spring_boot_major_version_number, file_name, EXTERNAL_DEPENDENCIES_FILE)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
@@ -111,7 +111,7 @@ def sync_external_dependencies(version_prefix, source_file, target_file):
 
 
 def update_external_dependencies_comment(spring_boot_major_version, source_name, target_file):
-    if spring_boot_major_version == 'v2':
+    if spring_boot_major_version == SPRING_BOOT_MAJOR_2_VERSION_NAME:
         with open(target_file, 'r', encoding='utf-8') as file:
             lines = file.readlines()
             lines[1] = '# make sure the version is same to {}\n'.format(source_name)

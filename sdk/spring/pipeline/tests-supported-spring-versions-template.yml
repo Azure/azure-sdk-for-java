@@ -1,7 +1,7 @@
 parameters:
   - name: TestName
     type: string
-    default: 'SpringTest'
+    default: 'SpringIntegration'
   - name: PreSteps
     type: object
     default: []
@@ -71,7 +71,7 @@ stages:
           displayName: 'Install python module'
         - script: |
             python ./sdk/spring/scripts/compatibility_update_supported_version_matrix_json.py -mcp ${{ parameters.MatrixConfigs[0].Path }}
-          displayName: 'Update Spring supported versions'
+          displayName: 'Update supported Spring versions'
       MatrixFilters:
         - JavaTestVersion=^(?!1.8|1.11).*
       AdditionalSparseCheckoutPaths:
@@ -80,19 +80,19 @@ stages:
         - ${{ parameters.PreSteps }}
         - script: |
             python -m pip install termcolor requests
-          displayName: 'Install python module'
+          displayName: 'Install python modules'
         - bash: |
             echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION]$(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION))"
-          displayName: 'Set Spring supported version to environment variables'
+          displayName: 'Set supported Spring version to environment variables'
         - bash: |
             echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION):"
             echo "https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION)/spring-boot-dependencies-$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION).pom"
             echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION):"
             echo "https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)/spring-cloud-dependencies-$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION).pom"
-          displayName: 'Print Spring version and Maven pom path'
+          displayName: 'Log Spring version and Maven pom path'
         - script: |
             python ./sdk/spring/scripts/compatibility_insert_dependencymanagement.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION) -c $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)
-          displayName: 'Insert Spring dependency management'
+          displayName: 'Insert Spring dependency managements'
         - script: |
             python ./sdk/spring/scripts/compatibility_delete_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION)
-          displayName: 'Remove unused dependency version'
+          displayName: 'Remove unused dependency versions'

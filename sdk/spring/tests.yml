@@ -4,7 +4,7 @@ extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
     stages:
-      - template: /sdk/spring/pipeline/tests-supported-spring-versions.yml
+      - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
           TestName: Spring_Integration
           TimeoutInMinutes: 240
@@ -23,16 +23,16 @@ extends:
             - name: spring-cloud-azure-integration-tests
               groupId: com.azure.spring
               safeName: springcloudazureintegrationtests
-      - template: /sdk/spring/pipeline/tests-supported-spring-versions.yml
+      - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
-          TestName: Spring_App_Config_Integration
+          TestName: Spring_AppConfig_Integration
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-test-appconfiguration-config
           Artifacts:
             - name: spring-cloud-azure-integration-test-appconfiguration-config
               groupId: com.azure.spring
               safeName: springcloudazureintegrationtestappconfigurationconfig
-      - template: /sdk/spring/pipeline/tests-supported-spring-versions.yml
+      - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
           MatrixConfigs:
             - Name: Cosmos_live_test_integration

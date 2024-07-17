@@ -14,7 +14,7 @@ import time
 import argparse
 
 from log import log
-from _constants import (get_spring_boot_major_version_tag_prefix, SPRING_BOOT_MAJOR_3_VERSION_TAG_PREFIX)
+from _constants import get_spring_boot_version_tag_prefix, SPRING_BOOT_MAJOR_3_VERSION_TAG_PREFIX
 
 
 IGNORED_ARTIFACTS = {'com.github.tomakehurst:wiremock-jre8'}
@@ -42,7 +42,7 @@ def main():
     change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     args = get_args()
-    version_tag_prefix = get_spring_boot_major_version_tag_prefix(args.spring_boot_dependencies_version)
+    version_tag_prefix = get_spring_boot_version_tag_prefix(args.spring_boot_dependencies_version)
     ignored_artifacts = get_ignored_artifacts(args.spring_boot_dependencies_version)
     find_all_poms_do_version_control("./sdk/spring", version_tag_prefix, ignored_artifacts)
     elapsed_time = time.time() - start_time
