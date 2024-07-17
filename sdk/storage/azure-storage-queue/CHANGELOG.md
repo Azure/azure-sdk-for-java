@@ -4,6 +4,7 @@
 
 ### Features Added
 - Added support for bearer token challenges.
+- Added support for encoding messages with Base64, `QueueMessageEncoding.BASE64`.
 - Added support for service version 2024-08-04.
 
 ### Other Changes
