@@ -230,8 +230,8 @@ public class BlobAsyncClientBase {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
         }
-        if (blobName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'blobName' can not be set to null"));
+        if (blobName == null || blobName.equals("")) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'blobName' can not be set to null or empty."));
         }
         this.azureBlobStorage = new AzureBlobStorageImplBuilder()
             .pipeline(pipeline)
