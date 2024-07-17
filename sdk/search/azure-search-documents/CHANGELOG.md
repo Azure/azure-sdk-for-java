@@ -1,6 +1,6 @@
 # Release History
 
-## 11.7.0 (2024-07-16)
+## 11.7.0 (2024-07-17)
 
 ### Features Added
 
@@ -44,6 +44,12 @@
 - All polymorphic models now expose their discriminator value through a getter, where the getter is named after the
   discriminator property such as `getOdataType()`. Super most polymorphic classes are no longer `abstract` to allow for
   direct instantiation of the class.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.13` to version `1.4.14`.
 
 ## 11.6.6 (2024-06-27)
 
