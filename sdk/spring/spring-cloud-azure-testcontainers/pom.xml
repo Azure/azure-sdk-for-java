@@ -169,18 +169,6 @@
               <release>17</release>
             </configuration>
           </execution>
-          <execution>
-            <id>annotation-process</id>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <configuration>
-              <compilerArgs>
-                <arg>-proc:only</arg> <!-- Turn on annotation processing -->
-              </compilerArgs>
-              <release>17</release>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
       <plugin>
