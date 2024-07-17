@@ -448,3 +448,11 @@ spring_com.microsoft.azure:azure;1.34.0
 
 # sdk\spring\spring-cloud-azure-service\pom.xml
 spring_redis.clients:jedis;3.8.0
+
+# sdk\keyvault\azure-security-keyvault-jca\pom.xml
+jca_org.conscrypt:conscrypt-openjdk-uber;2.2.1
+jca_com.github.spotbugs:spotbugs-annotations;4.8.0
+jca_org.apache.maven.plugins:maven-jar-plugin;3.2.2
+jca_org.jacoco:jacoco-maven-plugin;0.8.11
+jca_org.apache.maven.plugins:maven-enforcer-plugin;3.0.0-M3
+jca_org.springframework:spring-core;5.3.30

@@ -1,13 +1,13 @@
 variables:
   DocWardenVersion: '0.7.2'
   # This is the default Java build version. It's the version used to build the shipping libraries, Spotbugs etc.
-  JavaBuildVersion: '1.21'
+  JavaBuildVersion: '1.17'
   # This is the highest Java version we can write all our Javadocs with. Libraries that support a higher version can override this value in their CI templates.
   JavadocSafeJavaBuildVersion: '1.17' # TODO (vcolin7): Remove and use JavaBuildVersion in templates once Javadoc migration to Java 21 is complete. See: https://github.com/Azure/azure-sdk-for-java/issues/38267.
   # This is the highest LTS Java version we use to build the Cosmos Spark connectors and libraries baselined on Java 7.
   FallbackJavaBuildVersion: '1.17'
   # This is the default Java test version. It's the version used when running tests.
-  JavaTestVersion: '1.21'
+  JavaTestVersion: '1.17'
   # This is the latest non-LTS Java version released. It's used to run a non-failing job to validate the latest non-LTS Java version.
   LatestNonLtsJavaVersion: '1.20'
   LatestNonLtsJdkFeatureVersion: '20'

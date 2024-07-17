@@ -8,7 +8,7 @@
       "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" },
       "macos-latest": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" }
     },
-    "JavaTestVersion": [ "1.8", "1.21" ],
+    "JavaTestVersion": [ "1.8", "1.17" ],
     "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
     "TestFromSource": false,
     "RunAggregateReports": false,
@@ -18,7 +18,7 @@
   "exclude": [
     {
       "Pool": "env:WINDOWSPOOL",
-      "JavaTestVersion": "1.21"
+      "JavaTestVersion": "1.17"
     }
   ],
   "include": [
@@ -26,7 +26,7 @@
       "Agent": {
           "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
-      "JavaTestVersion": "1.21",
+      "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": true,
       "RunAggregateReports": false,
@@ -37,7 +37,7 @@
       "Agent": {
         "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" }
       },
-      "JavaTestVersion": "1.21",
+      "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false,
       "RunAggregateReports": true,

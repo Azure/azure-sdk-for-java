@@ -42,7 +42,7 @@
       },
       "ArmTemplateParameters": "@{ enableHsm = $true }",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "JavaTestVersion": "1.21",
+      "JavaTestVersion": "1.11",
       "TestOptions": ""
     }
   ]

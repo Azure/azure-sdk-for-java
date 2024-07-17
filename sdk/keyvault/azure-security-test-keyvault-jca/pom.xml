@@ -38,7 +38,7 @@
     <dependency>
       <groupId>org.conscrypt</groupId>
       <artifactId>conscrypt-openjdk-uber</artifactId>
-      <version>2.2.1</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
+      <version>2.2.1</version> <!-- {x-version-update;jca_org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- Jackson Databind -->
@@ -76,13 +76,13 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>5.3.30</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
+      <version>5.3.30</version> <!-- {x-version-update;jca_org.springframework:spring-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.22.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.22.1</version> <!-- {x-version-update;jca.com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.8.2 (2024-07-12)
+## 2.8.2 (2024-07-17)
 
 ### Bugs Fixed
 - Fix bug: AccessTokenUtil does not urlencode its parameters when getting an access token. ([40616](https://github.com/Azure/azure-sdk-for-java/issues/40616))
