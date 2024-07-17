@@ -141,6 +141,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void createPublicAccess(PublicAccessType publicAccess) {
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
         cc.createWithResponse(null, publicAccess, null, null);
@@ -236,6 +237,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void createIfNotExistsPublicAccess(PublicAccessType publicAccess) {
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
         Response<Boolean> result = cc.createIfNotExistsWithResponse(new BlobContainerCreateOptions()
