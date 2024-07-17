@@ -241,7 +241,7 @@ public interface EventHubNamespace extends
          */
         interface WithMinimumTlsVersion {
             /**
-             * Set the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+             * Sets the minimum TLS version
              *
              * @param minimumTlsVersion the minimumTlsVersion value to set.
              * @return next stage of the event hub namespace definition
@@ -254,8 +254,7 @@ public interface EventHubNamespace extends
          */
         interface WithZoneRedundant {
             /**
-             * Set the zoneRedundant property: Enabling this property creates a Standard Event Hubs Namespace in regions
-             * supported availability zones.
+             * Sets the zone redundant
              *
              * @return next stage of the event hub namespace definition
              */
@@ -423,7 +422,7 @@ public interface EventHubNamespace extends
          */
         interface WithMinimumTlsVersion {
             /**
-             * Set the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+             * Sets the minimum TLS version
              *
              * @param minimumTlsVersion the minimumTlsVersion value to set.
              * @return next stage of the event hub namespace update
