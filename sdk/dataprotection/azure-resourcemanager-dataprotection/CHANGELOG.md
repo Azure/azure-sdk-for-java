@@ -1,14 +1,833 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (2024-07-17)
 
-### Features Added
+- Azure Resource Manager DataProtection client library for Java. This package contains Microsoft Azure SDK for DataProtection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package tag package-2024-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.BackupInstanceResource` was modified
 
-### Other Changes
+* `suspendBackups(com.azure.core.util.Context)` was removed
+* `stopProtection(com.azure.core.util.Context)` was removed
+
+#### `models.BackupInstances` was modified
+
+* `stopProtection(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `suspendBackups(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.IdentityType` was added
+
+* `models.EncryptionSettings` was added
+
+* `models.InfrastructureEncryptionState` was added
+
+* `models.BcdrSecurityLevel` was added
+
+* `models.BackupInstancesExtensionRoutings` was added
+
+* `models.StopProtectionRequest` was added
+
+* `models.CmkKeyVaultProperties` was added
+
+* `models.CmkKekIdentity` was added
+
+* `models.EncryptionState` was added
+
+* `models.SuspendBackupRequest` was added
+
+#### `models.AdhocBasedTriggerContext` was modified
+
+* `objectType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AdhocBasedTaggingCriteria` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AzureBackupRecoveryTimeBasedRestoreRequest` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `withResourceGuardOperationRequests(java.util.List)` was added
+
+#### `models.ResourceMoveDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CrossRegionRestoreJobRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SourceLifeCycle` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DppWorkerRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TaggingCriteria` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.JobExtendedInfo` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SoftDeleteSettings` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DppTrackedResource` was modified
+
+* `id()` was added
+* `name()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `type()` was added
+* `systemData()` was added
+
+#### `models.BackupInstanceResource` was modified
+
+* `suspendBackups(models.SuspendBackupRequest,com.azure.core.util.Context)` was added
+* `stopProtection(models.StopProtectionRequest,com.azure.core.util.Context)` was added
+
+#### `models.AdhocBackupTriggerOption` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SupportedFeature` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.PolicyParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DataStoreParameters` was modified
+
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.RestorableTimeRange` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AzureBackupParams` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClientDiscoveryDisplay` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DppResource` was modified
+
+* `name()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `type()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `id()` was added
+
+#### `models.StorageSetting` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DppResourceList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ProtectionStatusDetails` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BackupInstanceResourceList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.RangeBasedItemLevelRestoreCriteria` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SecretStoreResource` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AzureBackupRestoreRequest` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `resourceGuardOperationRequests()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+
+#### `models.BackupSchedule` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `DataProtectionManager` was modified
+
+* `backupInstancesExtensionRoutings()` was added
+
+#### `models.PatchBackupVaultInput` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `resourceGuardOperationRequests()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DeletedBackupInstance` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `provisioningState()` was added
+* `protectionStatus()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `currentProtectionState()` was added
+* `protectionErrorDetails()` was added
+
+#### `models.CrossSubscriptionRestoreSettings` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AbsoluteDeleteOption` was modified
+
+* `objectType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SecuritySettings` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `encryptionSettings()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `withEncryptionSettings(models.EncryptionSettings)` was added
+
+#### `models.DefaultResourceProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AzureBackupRestoreWithRehydrationRequest` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `objectType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.RestoreJobRecoveryPointDetails` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BaseResourceProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+
+#### `models.AzureBackupFindRestorableTimeRangesRequestResource` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.NamespacedNameResource` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TriggerContext` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.BasePolicyRule` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AzureBackupJobResourceList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.KubernetesClusterBackupDatasourceParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.UnlockDeleteRequest` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.UserAssignedIdentity` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ResourceGuardOperationDetail` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CheckNameAvailabilityRequest` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.UserFacingError` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DatasourceSet` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.RestoreFilesTargetInfo` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+
+#### `models.RestoreTargetInfo` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+
+#### `models.DeleteOption` was modified
+
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BackupCriteria` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+
+#### `models.DeletedBackupInstanceResourceList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.UserFacingWarningDetail` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DeletionInfo` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.BackupInstance` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `resourceGuardOperationRequests()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ValidateCrossRegionRestoreRequestObject` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClientDiscoveryForProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CustomCopyOption` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+
+#### `models.TargetDetails` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ItemLevelRestoreCriteria` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ItemPathBasedRestoreCriteria` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+
+#### `models.RestoreTargetInfoBase` was modified
+
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AzureOperationalStoreParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.BaseBackupPolicy` was modified
+
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.InnerError` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AzureRetentionRule` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.MonitoringSettings` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.FeatureValidationRequestBase` was modified
+
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.FeatureSettings` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AuthCredentials` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+
+#### `models.BackupVault` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `resourceGuardOperationRequests()` was added
+* `bcdrSecurityLevel()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Day` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ResourceGuardOperation` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClientDiscoveryResponse` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SyncBackupInstanceRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AzureBackupRule` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+
+#### `models.OperationJobExtendedInfo` was modified
+
+* `objectType()` was added
+
+#### `models.CopyOption` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BackupDatasourceParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ScheduleBasedBackupCriteria` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+
+#### `models.CrossRegionRestoreSettings` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CrossRegionRestoreJobsRequest` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AzureBackupFindRestorableTimeRangesResponse` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AzureMonitorAlertSettings` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.IdentityDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.FeatureValidationResponse` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClientDiscoveryForLogSpecification` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DppTrackedResourceList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.FeatureValidationRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+
+#### `models.KubernetesStorageClassRestoreCriteria` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DppBaseResourceList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ValidateRestoreRequestObject` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TriggerBackupRequest` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Datasource` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BlobBackupDatasourceParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+
+#### `models.RetentionTag` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CrossRegionRestoreDetails` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ValidateForBackupRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TargetCopySetting` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OperationExtendedInfo` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.JobSubTask` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.KubernetesClusterVaultTierRestoreCriteria` was modified
+
+* `withResourceModifierReference(models.NamespacedNameResource)` was added
+* `objectType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `resourceModifierReference()` was added
+
+#### `models.PatchResourceRequestInput` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.KubernetesPVRestoreCriteria` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+
+#### `models.SecretStoreBasedAuthCredentials` was modified
+
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AzureBackupRehydrationRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ScheduleBasedTriggerContext` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.BaseBackupPolicyResourceList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.BackupInstances` was modified
+
+* `stopProtection(java.lang.String,java.lang.String,java.lang.String,models.StopProtectionRequest,com.azure.core.util.Context)` was added
+* `suspendBackups(java.lang.String,java.lang.String,java.lang.String,models.SuspendBackupRequest,com.azure.core.util.Context)` was added
+
+#### `models.RecoveryPointDataStoreDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CopyOnExpiryOption` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+
+#### `models.ImmutabilitySettings` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DataStoreInfoBase` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AdHocBackupRuleOptions` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.KubernetesClusterRestoreCriteria` was modified
+
+* `objectType()` was added
+* `withResourceModifierReference(models.NamespacedNameResource)` was added
+* `resourceModifierReference()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.FetchSecondaryRPsRequestParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ResourceGuardProxyBase` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ResourceGuardProxyBaseResourceList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CrossRegionRestoreRequestObject` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ResourceGuardResourceList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.BackupPolicy` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+
+#### `models.AzureBackupRecoveryPoint` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ItemLevelRestoreTargetInfo` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `objectType()` was added
+
+#### `models.AzureBackupFindRestorableTimeRangesRequest` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ResourceGuard` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClientDiscoveryForServiceSpecification` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AzureBackupDiscreteRecoveryPoint` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AzureBackupRecoveryPointBasedRestoreRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `objectType()` was added
+* `withResourceGuardOperationRequests(java.util.List)` was added
+
+#### `models.BackupVaultResourceList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AzureBackupRecoveryPointResourceList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ImmediateCopyOption` was modified
+
+* `objectType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DppProxyResource` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `id()` was added
+* `type()` was added
+* `name()` was added
+
+#### `models.FeatureValidationResponseBase` was modified
+
+* `objectType()` was added
+
+#### `models.DppBaseTrackedResource` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `name()` was added
+* `id()` was added
+* `type()` was added
+
+#### `models.AzureBackupJob` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.PatchResourceGuardInput` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DppIdentityDetails` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PolicyInfo` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BackupParameters` was modified
+
+* `objectType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 ## 1.2.0 (2023-12-18)
 
