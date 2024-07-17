@@ -31,7 +31,7 @@ public final class InputStreamWithReadTimeout extends InputStream {
     public InputStreamWithReadTimeout(InputStream delegate, Duration readTimeout) {
         this.delegate = delegate;
         this.readTimeout = readTimeout;
-        this.hasTimeout = !readTimeout.isNegative() && !readTimeout.isZero();
+        this.hasTimeout = readTimeout != null && !readTimeout.isNegative() && !readTimeout.isZero();
     }
 
     @Override
@@ -66,12 +66,26 @@ public final class InputStreamWithReadTimeout extends InputStream {
 
     @Override
     public long skip(long n) throws IOException {
-        if (hasTimeout) {
-            Future<Long> readOp = SharedExecutorService.getInstance().submit(() -> delegate.skip(n));
-            return getResultWithTimeout(readOp, readTimeout);
-        } else {
-            return delegate.skip(n);
+        // Implementation is effectively the same as the default implementation, except we're using a larger minimum
+        // buffer size to reduce the number of reads.
+        long remaining = n;
+        int bytesRead;
+
+        if (n <= 0) {
+            return 0;
         }
+
+        int size = (int) Math.min(8192, remaining);
+        byte[] skipBuffer = new byte[size];
+        while (remaining > 0) {
+            bytesRead = read(skipBuffer, 0, (int) Math.min(size, remaining));
+            if (bytesRead < 0) {
+                break;
+            }
+            remaining -= bytesRead;
+        }
+
+        return n - remaining;
     }
 
     @Override
