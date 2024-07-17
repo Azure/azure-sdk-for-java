@@ -177,7 +177,7 @@ com.azure:azure-security-attestation;1.1.25;1.2.0-beta.1
 com.azure:azure-security-confidentialledger;1.0.21;1.1.0-beta.1
 com.azure:azure-security-keyvault-administration;4.5.5;4.6.0-beta.1
 com.azure:azure-security-keyvault-certificates;4.6.4;4.7.0-beta.1
-com.azure:azure-security-keyvault-jca;2.8.1;2.8.2
+com.azure:azure-security-keyvault-jca;2.8.2;2.9.0-beta.1
 com.azure:azure-security-test-keyvault-jca;1.0.0;1.0.0
 com.azure:azure-security-keyvault-keys;4.8.5;4.9.0-beta.1
 com.azure:azure-security-keyvault-secrets;4.8.4;4.9.0-beta.1
