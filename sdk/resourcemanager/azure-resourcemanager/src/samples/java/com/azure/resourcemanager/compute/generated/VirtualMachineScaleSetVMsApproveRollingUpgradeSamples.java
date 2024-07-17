@@ -20,7 +20,11 @@ public final class VirtualMachineScaleSetVMsApproveRollingUpgradeSamples {
      */
     public static void
         virtualMachineScaleSetVMApproveRollingUpgrade(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs().approveRollingUpgrade(
-            "rgcompute", "vmssToApproveRollingUpgradeOn", "0123", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .approveRollingUpgrade("rgcompute", "vmssToApproveRollingUpgradeOn", "0123",
+                com.azure.core.util.Context.NONE);
     }
 }

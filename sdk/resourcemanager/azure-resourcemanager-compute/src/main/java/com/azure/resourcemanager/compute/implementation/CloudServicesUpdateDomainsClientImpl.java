@@ -33,9 +33,10 @@ import com.azure.resourcemanager.compute.fluent.CloudServicesUpdateDomainsClient
 import com.azure.resourcemanager.compute.fluent.models.UpdateDomainInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.UpdateDomainListResult;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in CloudServicesUpdateDomainsClient.
@@ -53,7 +54,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Initializes an instance of CloudServicesUpdateDomainsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     CloudServicesUpdateDomainsClientImpl(ComputeManagementClientImpl client) {
@@ -110,7 +111,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Updates the role instances in the specified update domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -154,7 +155,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Updates the role instances in the specified update domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -197,7 +198,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Updates the role instances in the specified update domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -219,7 +220,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Updates the role instances in the specified update domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -241,7 +242,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Updates the role instances in the specified update domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -265,7 +266,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Updates the role instances in the specified update domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -285,7 +286,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Updates the role instances in the specified update domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -306,7 +307,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Updates the role instances in the specified update domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -326,7 +327,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Updates the role instances in the specified update domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -345,7 +346,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Updates the role instances in the specified update domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -366,7 +367,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Updates the role instances in the specified update domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -383,7 +384,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Updates the role instances in the specified update domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -403,7 +404,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
     /**
      * Gets the specified update domain of a cloud service. Use nextLink property in the response to get the next page
      * of update domains. Do this till nextLink is null to fetch all the update domains.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -444,7 +445,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
     /**
      * Gets the specified update domain of a cloud service. Use nextLink property in the response to get the next page
      * of update domains. Do this till nextLink is null to fetch all the update domains.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -485,7 +486,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
     /**
      * Gets the specified update domain of a cloud service. Use nextLink property in the response to get the next page
      * of update domains. Do this till nextLink is null to fetch all the update domains.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -505,7 +506,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
     /**
      * Gets the specified update domain of a cloud service. Use nextLink property in the response to get the next page
      * of update domains. Do this till nextLink is null to fetch all the update domains.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -525,7 +526,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
     /**
      * Gets the specified update domain of a cloud service. Use nextLink property in the response to get the next page
      * of update domains. Do this till nextLink is null to fetch all the update domains.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
@@ -542,7 +543,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Gets a list of all update domains in a cloud service.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -582,7 +583,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Gets a list of all update domains in a cloud service.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -623,7 +624,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Gets a list of all update domains in a cloud service.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -639,7 +640,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Gets a list of all update domains in a cloud service.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -657,7 +658,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Gets a list of all update domains in a cloud service.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -672,7 +673,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Gets a list of all update domains in a cloud service.
-     * 
+     *
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -689,10 +690,8 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -717,10 +716,8 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

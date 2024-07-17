@@ -14,8 +14,6 @@ import java.util.List;
 @Fluent
 public final class SharingStatus {
     /*
-     * The sharing state of the gallery.
-     * 
      * Aggregated sharing state of current gallery.
      */
     @JsonProperty(value = "aggregatedState", access = JsonProperty.Access.WRITE_ONLY)
@@ -34,9 +32,7 @@ public final class SharingStatus {
     }
 
     /**
-     * Get the aggregatedState property: The sharing state of the gallery.
-     * 
-     * Aggregated sharing state of current gallery.
+     * Get the aggregatedState property: Aggregated sharing state of current gallery.
      * 
      * @return the aggregatedState value.
      */

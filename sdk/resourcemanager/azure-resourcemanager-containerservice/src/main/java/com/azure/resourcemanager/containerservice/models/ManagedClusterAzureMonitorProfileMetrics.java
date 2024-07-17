@@ -23,8 +23,8 @@ public final class ManagedClusterAzureMonitorProfileMetrics {
 
     /*
      * Kube State Metrics profile for the Azure Managed Prometheus addon. These optional settings are for the
-     * kube-state-metrics pod that is deployed with the addon. See aka.ms/AzureManagedPrometheus-optional-parameters
-     * for details.
+     * kube-state-metrics pod that is deployed with the addon. See aka.ms/AzureManagedPrometheus-optional-parameters for
+     * details.
      */
     @JsonProperty(value = "kubeStateMetrics")
     private ManagedClusterAzureMonitorProfileKubeStateMetrics kubeStateMetrics;

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -14,8 +15,8 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class AvailablePatchSummary {
     /*
-     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
-     * At that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
+     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes. At
+     * that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStatus status;
@@ -74,7 +75,7 @@ public final class AvailablePatchSummary {
      * Get the status property: The overall success or failure status of the operation. It remains "InProgress" until
      * the operation completes. At that point it will become "Unknown", "Failed", "Succeeded", or
      * "CompletedWithWarnings.".
-     * 
+     *
      * @return the status value.
      */
     public PatchOperationStatus status() {
@@ -84,7 +85,7 @@ public final class AvailablePatchSummary {
     /**
      * Get the assessmentActivityId property: The activity ID of the operation that produced this result. It is used to
      * correlate across CRP and extension logs.
-     * 
+     *
      * @return the assessmentActivityId value.
      */
     public String assessmentActivityId() {
@@ -94,7 +95,7 @@ public final class AvailablePatchSummary {
     /**
      * Get the rebootPending property: The overall reboot status of the VM. It will be true when partially installed
      * patches require a reboot to complete installation but the reboot has not yet occurred.
-     * 
+     *
      * @return the rebootPending value.
      */
     public Boolean rebootPending() {
@@ -104,7 +105,7 @@ public final class AvailablePatchSummary {
     /**
      * Get the criticalAndSecurityPatchCount property: The number of critical or security patches that have been
      * detected as available and not yet installed.
-     * 
+     *
      * @return the criticalAndSecurityPatchCount value.
      */
     public Integer criticalAndSecurityPatchCount() {
@@ -113,7 +114,7 @@ public final class AvailablePatchSummary {
 
     /**
      * Get the otherPatchCount property: The number of all available patches excluding critical and security.
-     * 
+     *
      * @return the otherPatchCount value.
      */
     public Integer otherPatchCount() {
@@ -122,7 +123,7 @@ public final class AvailablePatchSummary {
 
     /**
      * Get the startTime property: The UTC timestamp when the operation began.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -131,7 +132,7 @@ public final class AvailablePatchSummary {
 
     /**
      * Get the lastModifiedTime property: The UTC timestamp when the operation began.
-     * 
+     *
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -141,7 +142,7 @@ public final class AvailablePatchSummary {
     /**
      * Get the error property: The errors that were encountered during execution of the operation. The details array
      * contains the list of them.
-     * 
+     *
      * @return the error value.
      */
     public ApiError error() {
@@ -150,7 +151,7 @@ public final class AvailablePatchSummary {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

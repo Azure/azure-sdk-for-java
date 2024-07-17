@@ -59,6 +59,7 @@ import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineSizesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+
 import java.time.Duration;
 
 /**
@@ -75,7 +76,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
     /**
      * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
-     * 
+     *
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
@@ -89,7 +90,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets server parameter.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -103,7 +104,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -117,7 +118,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
@@ -131,7 +132,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets The default poll interval for long-running operation.
-     * 
+     *
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
@@ -145,7 +146,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the OperationsClient object to access its operations.
-     * 
+     *
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
@@ -159,7 +160,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the UsagesClient object to access its operations.
-     * 
+     *
      * @return the UsagesClient object.
      */
     public UsagesClient getUsages() {
@@ -173,7 +174,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualMachineSizesClient object to access its operations.
-     * 
+     *
      * @return the VirtualMachineSizesClient object.
      */
     public VirtualMachineSizesClient getVirtualMachineSizes() {
@@ -187,7 +188,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualMachineScaleSetsClient object to access its operations.
-     * 
+     *
      * @return the VirtualMachineScaleSetsClient object.
      */
     public VirtualMachineScaleSetsClient getVirtualMachineScaleSets() {
@@ -201,7 +202,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualMachineScaleSetExtensionsClient object to access its operations.
-     * 
+     *
      * @return the VirtualMachineScaleSetExtensionsClient object.
      */
     public VirtualMachineScaleSetExtensionsClient getVirtualMachineScaleSetExtensions() {
@@ -215,7 +216,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualMachineScaleSetRollingUpgradesClient object to access its operations.
-     * 
+     *
      * @return the VirtualMachineScaleSetRollingUpgradesClient object.
      */
     public VirtualMachineScaleSetRollingUpgradesClient getVirtualMachineScaleSetRollingUpgrades() {
@@ -229,7 +230,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualMachineScaleSetVMExtensionsClient object to access its operations.
-     * 
+     *
      * @return the VirtualMachineScaleSetVMExtensionsClient object.
      */
     public VirtualMachineScaleSetVMExtensionsClient getVirtualMachineScaleSetVMExtensions() {
@@ -243,7 +244,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualMachineScaleSetVMsClient object to access its operations.
-     * 
+     *
      * @return the VirtualMachineScaleSetVMsClient object.
      */
     public VirtualMachineScaleSetVMsClient getVirtualMachineScaleSetVMs() {
@@ -257,7 +258,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualMachineExtensionsClient object to access its operations.
-     * 
+     *
      * @return the VirtualMachineExtensionsClient object.
      */
     public VirtualMachineExtensionsClient getVirtualMachineExtensions() {
@@ -271,7 +272,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualMachinesClient object to access its operations.
-     * 
+     *
      * @return the VirtualMachinesClient object.
      */
     public VirtualMachinesClient getVirtualMachines() {
@@ -285,7 +286,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualMachineImagesClient object to access its operations.
-     * 
+     *
      * @return the VirtualMachineImagesClient object.
      */
     public VirtualMachineImagesClient getVirtualMachineImages() {
@@ -299,7 +300,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualMachineImagesEdgeZonesClient object to access its operations.
-     * 
+     *
      * @return the VirtualMachineImagesEdgeZonesClient object.
      */
     public VirtualMachineImagesEdgeZonesClient getVirtualMachineImagesEdgeZones() {
@@ -313,7 +314,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualMachineExtensionImagesClient object to access its operations.
-     * 
+     *
      * @return the VirtualMachineExtensionImagesClient object.
      */
     public VirtualMachineExtensionImagesClient getVirtualMachineExtensionImages() {
@@ -327,7 +328,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the AvailabilitySetsClient object to access its operations.
-     * 
+     *
      * @return the AvailabilitySetsClient object.
      */
     public AvailabilitySetsClient getAvailabilitySets() {
@@ -341,7 +342,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ProximityPlacementGroupsClient object to access its operations.
-     * 
+     *
      * @return the ProximityPlacementGroupsClient object.
      */
     public ProximityPlacementGroupsClient getProximityPlacementGroups() {
@@ -355,7 +356,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the DedicatedHostGroupsClient object to access its operations.
-     * 
+     *
      * @return the DedicatedHostGroupsClient object.
      */
     public DedicatedHostGroupsClient getDedicatedHostGroups() {
@@ -369,7 +370,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the DedicatedHostsClient object to access its operations.
-     * 
+     *
      * @return the DedicatedHostsClient object.
      */
     public DedicatedHostsClient getDedicatedHosts() {
@@ -383,7 +384,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the SshPublicKeysClient object to access its operations.
-     * 
+     *
      * @return the SshPublicKeysClient object.
      */
     public SshPublicKeysClient getSshPublicKeys() {
@@ -397,7 +398,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ImagesClient object to access its operations.
-     * 
+     *
      * @return the ImagesClient object.
      */
     public ImagesClient getImages() {
@@ -411,7 +412,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the RestorePointCollectionsClient object to access its operations.
-     * 
+     *
      * @return the RestorePointCollectionsClient object.
      */
     public RestorePointCollectionsClient getRestorePointCollections() {
@@ -425,7 +426,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the RestorePointsClient object to access its operations.
-     * 
+     *
      * @return the RestorePointsClient object.
      */
     public RestorePointsClient getRestorePoints() {
@@ -439,7 +440,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the CapacityReservationGroupsClient object to access its operations.
-     * 
+     *
      * @return the CapacityReservationGroupsClient object.
      */
     public CapacityReservationGroupsClient getCapacityReservationGroups() {
@@ -453,7 +454,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the CapacityReservationsClient object to access its operations.
-     * 
+     *
      * @return the CapacityReservationsClient object.
      */
     public CapacityReservationsClient getCapacityReservations() {
@@ -467,7 +468,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the LogAnalyticsClient object to access its operations.
-     * 
+     *
      * @return the LogAnalyticsClient object.
      */
     public LogAnalyticsClient getLogAnalytics() {
@@ -481,7 +482,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualMachineRunCommandsClient object to access its operations.
-     * 
+     *
      * @return the VirtualMachineRunCommandsClient object.
      */
     public VirtualMachineRunCommandsClient getVirtualMachineRunCommands() {
@@ -495,7 +496,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualMachineScaleSetVMRunCommandsClient object to access its operations.
-     * 
+     *
      * @return the VirtualMachineScaleSetVMRunCommandsClient object.
      */
     public VirtualMachineScaleSetVMRunCommandsClient getVirtualMachineScaleSetVMRunCommands() {
@@ -509,7 +510,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the DisksClient object to access its operations.
-     * 
+     *
      * @return the DisksClient object.
      */
     public DisksClient getDisks() {
@@ -523,7 +524,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the DiskAccessesClient object to access its operations.
-     * 
+     *
      * @return the DiskAccessesClient object.
      */
     public DiskAccessesClient getDiskAccesses() {
@@ -537,7 +538,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the DiskEncryptionSetsClient object to access its operations.
-     * 
+     *
      * @return the DiskEncryptionSetsClient object.
      */
     public DiskEncryptionSetsClient getDiskEncryptionSets() {
@@ -551,7 +552,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the DiskRestorePointsClient object to access its operations.
-     * 
+     *
      * @return the DiskRestorePointsClient object.
      */
     public DiskRestorePointsClient getDiskRestorePoints() {
@@ -565,7 +566,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the SnapshotsClient object to access its operations.
-     * 
+     *
      * @return the SnapshotsClient object.
      */
     public SnapshotsClient getSnapshots() {
@@ -579,7 +580,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ResourceSkusClient object to access its operations.
-     * 
+     *
      * @return the ResourceSkusClient object.
      */
     public ResourceSkusClient getResourceSkus() {
@@ -593,7 +594,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the GalleriesClient object to access its operations.
-     * 
+     *
      * @return the GalleriesClient object.
      */
     public GalleriesClient getGalleries() {
@@ -607,7 +608,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the GalleryImagesClient object to access its operations.
-     * 
+     *
      * @return the GalleryImagesClient object.
      */
     public GalleryImagesClient getGalleryImages() {
@@ -621,7 +622,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the GalleryImageVersionsClient object to access its operations.
-     * 
+     *
      * @return the GalleryImageVersionsClient object.
      */
     public GalleryImageVersionsClient getGalleryImageVersions() {
@@ -635,7 +636,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the GalleryApplicationsClient object to access its operations.
-     * 
+     *
      * @return the GalleryApplicationsClient object.
      */
     public GalleryApplicationsClient getGalleryApplications() {
@@ -649,7 +650,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the GalleryApplicationVersionsClient object to access its operations.
-     * 
+     *
      * @return the GalleryApplicationVersionsClient object.
      */
     public GalleryApplicationVersionsClient getGalleryApplicationVersions() {
@@ -663,7 +664,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the GallerySharingProfilesClient object to access its operations.
-     * 
+     *
      * @return the GallerySharingProfilesClient object.
      */
     public GallerySharingProfilesClient getGallerySharingProfiles() {
@@ -677,7 +678,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the SharedGalleriesClient object to access its operations.
-     * 
+     *
      * @return the SharedGalleriesClient object.
      */
     public SharedGalleriesClient getSharedGalleries() {
@@ -691,7 +692,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the SharedGalleryImagesClient object to access its operations.
-     * 
+     *
      * @return the SharedGalleryImagesClient object.
      */
     public SharedGalleryImagesClient getSharedGalleryImages() {
@@ -705,7 +706,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the SharedGalleryImageVersionsClient object to access its operations.
-     * 
+     *
      * @return the SharedGalleryImageVersionsClient object.
      */
     public SharedGalleryImageVersionsClient getSharedGalleryImageVersions() {
@@ -719,7 +720,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the CommunityGalleriesClient object to access its operations.
-     * 
+     *
      * @return the CommunityGalleriesClient object.
      */
     public CommunityGalleriesClient getCommunityGalleries() {
@@ -733,7 +734,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the CommunityGalleryImagesClient object to access its operations.
-     * 
+     *
      * @return the CommunityGalleryImagesClient object.
      */
     public CommunityGalleryImagesClient getCommunityGalleryImages() {
@@ -747,7 +748,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the CommunityGalleryImageVersionsClient object to access its operations.
-     * 
+     *
      * @return the CommunityGalleryImageVersionsClient object.
      */
     public CommunityGalleryImageVersionsClient getCommunityGalleryImageVersions() {
@@ -761,7 +762,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the CloudServiceRoleInstancesClient object to access its operations.
-     * 
+     *
      * @return the CloudServiceRoleInstancesClient object.
      */
     public CloudServiceRoleInstancesClient getCloudServiceRoleInstances() {
@@ -775,7 +776,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the CloudServiceRolesClient object to access its operations.
-     * 
+     *
      * @return the CloudServiceRolesClient object.
      */
     public CloudServiceRolesClient getCloudServiceRoles() {
@@ -789,7 +790,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the CloudServicesClient object to access its operations.
-     * 
+     *
      * @return the CloudServicesClient object.
      */
     public CloudServicesClient getCloudServices() {
@@ -803,7 +804,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the CloudServicesUpdateDomainsClient object to access its operations.
-     * 
+     *
      * @return the CloudServicesUpdateDomainsClient object.
      */
     public CloudServicesUpdateDomainsClient getCloudServicesUpdateDomains() {
@@ -817,7 +818,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the CloudServiceOperatingSystemsClient object to access its operations.
-     * 
+     *
      * @return the CloudServiceOperatingSystemsClient object.
      */
     public CloudServiceOperatingSystemsClient getCloudServiceOperatingSystems() {
@@ -826,7 +827,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Initializes an instance of ComputeManagementClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.

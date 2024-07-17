@@ -555,6 +555,23 @@
           "old" : "class com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity",
           "new" : "class com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity",
           "justification": "Class is now final."
+        },
+        {
+          "code" : "java.method.returnTypeTypeParametersChanged",
+          "old" : "method java.util.List<com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner> com.azure.resourcemanager.compute.models.SecurityPostureReference::excludeExtensions()",
+          "new" : "method java.util.List<java.lang.String> com.azure.resourcemanager.compute.models.SecurityPostureReference::excludeExtensions()",
+          "justification": "Service breaks but no customer onboard."
+        },
+        {
+          "code" : "java.method.parameterTypeParameterChanged",
+          "old" : "parameter com.azure.resourcemanager.compute.models.SecurityPostureReference com.azure.resourcemanager.compute.models.SecurityPostureReference::withExcludeExtensions(===java.util.List<com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner>===)",
+          "new" : "parameter com.azure.resourcemanager.compute.models.SecurityPostureReference com.azure.resourcemanager.compute.models.SecurityPostureReference::withExcludeExtensions(===java.util.List<java.lang.String>===)",
+          "justification": "Service breaks but no customer onboard."
+        },
+        {
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.containerservice.models.OSOptionProperty",
+          "justification": "Removed non-functional API `getOsOptions` and related models `OSOptionProperty`"
         }
       ]
     }
