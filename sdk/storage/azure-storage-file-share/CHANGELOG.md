@@ -1,14 +1,18 @@
 # Release History
 
-## 12.23.0-beta.2 (Unreleased)
+## 12.23.0 (2024-07-17)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for snapshot management on NFS shares.
+- Added authorization error details in responses.
+- Added support for service version 2024-08-04.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-storage-common` from `12.25.1` to version `12.26.0`.
 
 ## 12.23.0-beta.1 (2024-06-11)
 
