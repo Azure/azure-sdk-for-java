@@ -6,27 +6,28 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * AdHocBackupRuleOptions
- * 
+ *
  * Adhoc backup rules.
  */
 @Fluent
-public final class AdHocBackupRuleOptions {
+public final class AdHocBackupRuleOptions implements JsonSerializable<AdHocBackupRuleOptions> {
     /*
      * The ruleName property.
      */
-    @JsonProperty(value = "ruleName", required = true)
     private String ruleName;
 
     /*
-     * AdhocBackupTriggerOption
-     * 
      * Adhoc backup trigger option
      */
-    @JsonProperty(value = "triggerOption", required = true)
     private AdhocBackupTriggerOption triggerOption;
 
     /**
@@ -37,7 +38,7 @@ public final class AdHocBackupRuleOptions {
 
     /**
      * Get the ruleName property: The ruleName property.
-     * 
+     *
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -46,7 +47,7 @@ public final class AdHocBackupRuleOptions {
 
     /**
      * Set the ruleName property: The ruleName property.
-     * 
+     *
      * @param ruleName the ruleName value to set.
      * @return the AdHocBackupRuleOptions object itself.
      */
@@ -56,10 +57,8 @@ public final class AdHocBackupRuleOptions {
     }
 
     /**
-     * Get the triggerOption property: AdhocBackupTriggerOption
-     * 
-     * Adhoc backup trigger option.
-     * 
+     * Get the triggerOption property: Adhoc backup trigger option.
+     *
      * @return the triggerOption value.
      */
     public AdhocBackupTriggerOption triggerOption() {
@@ -67,10 +66,8 @@ public final class AdHocBackupRuleOptions {
     }
 
     /**
-     * Set the triggerOption property: AdhocBackupTriggerOption
-     * 
-     * Adhoc backup trigger option.
-     * 
+     * Set the triggerOption property: Adhoc backup trigger option.
+     *
      * @param triggerOption the triggerOption value to set.
      * @return the AdHocBackupRuleOptions object itself.
      */
@@ -81,21 +78,63 @@ public final class AdHocBackupRuleOptions {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ruleName in model AdHocBackupRuleOptions"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property ruleName in model AdHocBackupRuleOptions"));
         }
         if (triggerOption() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property triggerOption in model AdHocBackupRuleOptions"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property triggerOption in model AdHocBackupRuleOptions"));
         } else {
             triggerOption().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AdHocBackupRuleOptions.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ruleName", this.ruleName);
+        jsonWriter.writeJsonField("triggerOption", this.triggerOption);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdHocBackupRuleOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdHocBackupRuleOptions if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AdHocBackupRuleOptions.
+     */
+    public static AdHocBackupRuleOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdHocBackupRuleOptions deserializedAdHocBackupRuleOptions = new AdHocBackupRuleOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleName".equals(fieldName)) {
+                    deserializedAdHocBackupRuleOptions.ruleName = reader.getString();
+                } else if ("triggerOption".equals(fieldName)) {
+                    deserializedAdHocBackupRuleOptions.triggerOption = AdhocBackupTriggerOption.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdHocBackupRuleOptions;
+        });
+    }
 }

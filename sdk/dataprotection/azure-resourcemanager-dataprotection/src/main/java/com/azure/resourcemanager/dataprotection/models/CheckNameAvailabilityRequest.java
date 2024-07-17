@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * CheckNameAvailabilityRequest
- * 
+ *
  * CheckNameAvailability Request.
  */
 @Fluent
-public final class CheckNameAvailabilityRequest {
+public final class CheckNameAvailabilityRequest implements JsonSerializable<CheckNameAvailabilityRequest> {
     /*
      * Resource name for which availability needs to be checked
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Describes the Resource type: Microsoft.DataProtection/BackupVaults
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /**
@@ -34,7 +37,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Get the name property: Resource name for which availability needs to be checked.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -43,7 +46,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Set the name property: Resource name for which availability needs to be checked.
-     * 
+     *
      * @param name the name value to set.
      * @return the CheckNameAvailabilityRequest object itself.
      */
@@ -54,7 +57,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Get the type property: Describes the Resource type: Microsoft.DataProtection/BackupVaults.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -63,7 +66,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Set the type property: Describes the Resource type: Microsoft.DataProtection/BackupVaults.
-     * 
+     *
      * @param type the type value to set.
      * @return the CheckNameAvailabilityRequest object itself.
      */
@@ -74,9 +77,48 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckNameAvailabilityRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckNameAvailabilityRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckNameAvailabilityRequest.
+     */
+    public static CheckNameAvailabilityRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckNameAvailabilityRequest deserializedCheckNameAvailabilityRequest = new CheckNameAvailabilityRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityRequest.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityRequest.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckNameAvailabilityRequest;
+        });
     }
 }

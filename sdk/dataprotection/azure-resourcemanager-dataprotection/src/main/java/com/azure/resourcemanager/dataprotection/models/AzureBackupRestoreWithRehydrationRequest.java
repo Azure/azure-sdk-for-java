@@ -6,29 +6,33 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * AzureBackupRestoreWithRehydrationRequest
- * 
+ *
  * AzureBackup Restore with Rehydration Request.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AzureBackupRestoreWithRehydrationRequest")
 @Fluent
 public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupRecoveryPointBasedRestoreRequest {
     /*
+     * The objectType property.
+     */
+    private String objectType = "AzureBackupRestoreWithRehydrationRequest";
+
+    /*
      * Priority to be used for rehydration. Values High or Standard
      */
-    @JsonProperty(value = "rehydrationPriority", required = true)
     private RehydrationPriority rehydrationPriority;
 
     /*
      * Retention duration in ISO 8601 format i.e P10D .
      */
-    @JsonProperty(value = "rehydrationRetentionDuration", required = true)
     private String rehydrationRetentionDuration;
 
     /**
@@ -38,8 +42,18 @@ public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupR
     }
 
     /**
+     * Get the objectType property: The objectType property.
+     *
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the rehydrationPriority property: Priority to be used for rehydration. Values High or Standard.
-     * 
+     *
      * @return the rehydrationPriority value.
      */
     public RehydrationPriority rehydrationPriority() {
@@ -48,7 +62,7 @@ public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupR
 
     /**
      * Set the rehydrationPriority property: Priority to be used for rehydration. Values High or Standard.
-     * 
+     *
      * @param rehydrationPriority the rehydrationPriority value to set.
      * @return the AzureBackupRestoreWithRehydrationRequest object itself.
      */
@@ -59,7 +73,7 @@ public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupR
 
     /**
      * Get the rehydrationRetentionDuration property: Retention duration in ISO 8601 format i.e P10D .
-     * 
+     *
      * @return the rehydrationRetentionDuration value.
      */
     public String rehydrationRetentionDuration() {
@@ -68,7 +82,7 @@ public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupR
 
     /**
      * Set the rehydrationRetentionDuration property: Retention duration in ISO 8601 format i.e P10D .
-     * 
+     *
      * @param rehydrationRetentionDuration the rehydrationRetentionDuration value to set.
      * @return the AzureBackupRestoreWithRehydrationRequest object itself.
      */
@@ -118,6 +132,16 @@ public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupR
      * {@inheritDoc}
      */
     @Override
+    public AzureBackupRestoreWithRehydrationRequest
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public AzureBackupRestoreWithRehydrationRequest withIdentityDetails(IdentityDetails identityDetails) {
         super.withIdentityDetails(identityDetails);
         return this;
@@ -125,21 +149,95 @@ public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupR
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (rehydrationPriority() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property rehydrationPriority in model AzureBackupRestoreWithRehydrationRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rehydrationPriority in model AzureBackupRestoreWithRehydrationRequest"));
         }
         if (rehydrationRetentionDuration() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property rehydrationRetentionDuration in model AzureBackupRestoreWithRehydrationRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rehydrationRetentionDuration in model AzureBackupRestoreWithRehydrationRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureBackupRestoreWithRehydrationRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("restoreTargetInfo", restoreTargetInfo());
+        jsonWriter.writeStringField("sourceDataStoreType",
+            sourceDataStoreType() == null ? null : sourceDataStoreType().toString());
+        jsonWriter.writeStringField("recoveryPointId", recoveryPointId());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identityDetails", identityDetails());
+        jsonWriter.writeStringField("rehydrationPriority",
+            this.rehydrationPriority == null ? null : this.rehydrationPriority.toString());
+        jsonWriter.writeStringField("rehydrationRetentionDuration", this.rehydrationRetentionDuration);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBackupRestoreWithRehydrationRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBackupRestoreWithRehydrationRequest if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureBackupRestoreWithRehydrationRequest.
+     */
+    public static AzureBackupRestoreWithRehydrationRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBackupRestoreWithRehydrationRequest deserializedAzureBackupRestoreWithRehydrationRequest
+                = new AzureBackupRestoreWithRehydrationRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("restoreTargetInfo".equals(fieldName)) {
+                    deserializedAzureBackupRestoreWithRehydrationRequest
+                        .withRestoreTargetInfo(RestoreTargetInfoBase.fromJson(reader));
+                } else if ("sourceDataStoreType".equals(fieldName)) {
+                    deserializedAzureBackupRestoreWithRehydrationRequest
+                        .withSourceDataStoreType(SourceDataStoreType.fromString(reader.getString()));
+                } else if ("recoveryPointId".equals(fieldName)) {
+                    deserializedAzureBackupRestoreWithRehydrationRequest.withRecoveryPointId(reader.getString());
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureBackupRestoreWithRehydrationRequest.withSourceResourceId(reader.getString());
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureBackupRestoreWithRehydrationRequest
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("identityDetails".equals(fieldName)) {
+                    deserializedAzureBackupRestoreWithRehydrationRequest
+                        .withIdentityDetails(IdentityDetails.fromJson(reader));
+                } else if ("rehydrationPriority".equals(fieldName)) {
+                    deserializedAzureBackupRestoreWithRehydrationRequest.rehydrationPriority
+                        = RehydrationPriority.fromString(reader.getString());
+                } else if ("rehydrationRetentionDuration".equals(fieldName)) {
+                    deserializedAzureBackupRestoreWithRehydrationRequest.rehydrationRetentionDuration
+                        = reader.getString();
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureBackupRestoreWithRehydrationRequest.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBackupRestoreWithRehydrationRequest;
+        });
+    }
 }

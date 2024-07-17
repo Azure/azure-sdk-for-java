@@ -6,56 +6,39 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.AdHocBackupRuleOptions;
 import com.azure.resourcemanager.dataprotection.models.AdhocBackupTriggerOption;
 import com.azure.resourcemanager.dataprotection.models.OperationJobExtendedInfo;
 import com.azure.resourcemanager.dataprotection.models.TriggerBackupRequest;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 
 public final class BackupInstancesAdhocBackupMockTests {
     @Test
     public void testAdhocBackup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"sjnygqdnfwqzdzgt\"}";
 
-        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"ybnnustg\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataProtectionManager manager = DataProtectionManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        DataProtectionManager manager = DataProtectionManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        OperationJobExtendedInfo response
-            = manager.backupInstances().adhocBackup("linmfgv", "irpghriypoqeyh", "qhykprlpyzn",
-                new TriggerBackupRequest().withBackupRuleOptions(new AdHocBackupRuleOptions().withRuleName("ciqdsme")
-                    .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("itdfuxtyasiib"))),
+        OperationJobExtendedInfo response = manager.backupInstances()
+            .adhocBackup("zhhzjhfjmhvvmu", "gpmuneqsxvmhfbuz", "yihsasbhudypohyu",
+                new TriggerBackupRequest().withBackupRuleOptions(new AdHocBackupRuleOptions().withRuleName("ms")
+                    .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("nsqyrpfoobrltt"))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ybnnustg", response.jobId());
+        Assertions.assertEquals("sjnygqdnfwqzdzgt", response.jobId());
     }
 }

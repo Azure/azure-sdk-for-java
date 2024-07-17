@@ -12,9 +12,12 @@ import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreRequest
 import com.azure.resourcemanager.dataprotection.models.BackupInstance;
 import com.azure.resourcemanager.dataprotection.models.BackupInstanceResource;
 import com.azure.resourcemanager.dataprotection.models.OperationJobExtendedInfo;
+import com.azure.resourcemanager.dataprotection.models.StopProtectionRequest;
+import com.azure.resourcemanager.dataprotection.models.SuspendBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.SyncBackupInstanceRequest;
 import com.azure.resourcemanager.dataprotection.models.TriggerBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.ValidateRestoreRequestObject;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -78,14 +81,16 @@ public final class BackupInstanceResourceImpl
     }
 
     public BackupInstanceResource create() {
-        this.innerObject = serviceManager.serviceClient().getBackupInstances().createOrUpdate(resourceGroupName,
-            vaultName, backupInstanceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupInstances()
+            .createOrUpdate(resourceGroupName, vaultName, backupInstanceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public BackupInstanceResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBackupInstances().createOrUpdate(resourceGroupName,
-            vaultName, backupInstanceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupInstances()
+            .createOrUpdate(resourceGroupName, vaultName, backupInstanceName, this.innerModel(), context);
         return this;
     }
 
@@ -101,14 +106,16 @@ public final class BackupInstanceResourceImpl
     }
 
     public BackupInstanceResource apply() {
-        this.innerObject = serviceManager.serviceClient().getBackupInstances().createOrUpdate(resourceGroupName,
-            vaultName, backupInstanceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupInstances()
+            .createOrUpdate(resourceGroupName, vaultName, backupInstanceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public BackupInstanceResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBackupInstances().createOrUpdate(resourceGroupName,
-            vaultName, backupInstanceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupInstances()
+            .createOrUpdate(resourceGroupName, vaultName, backupInstanceName, this.innerModel(), context);
         return this;
     }
 
@@ -116,31 +123,35 @@ public final class BackupInstanceResourceImpl
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.vaultName = Utils.getValueFromIdByName(innerObject.id(), "backupVaults");
-        this.backupInstanceName = Utils.getValueFromIdByName(innerObject.id(), "backupInstances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupVaults");
+        this.backupInstanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupInstances");
     }
 
     public BackupInstanceResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getBackupInstances()
-            .getWithResponse(resourceGroupName, vaultName, backupInstanceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupInstances()
+            .getWithResponse(resourceGroupName, vaultName, backupInstanceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public BackupInstanceResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBackupInstances()
-            .getWithResponse(resourceGroupName, vaultName, backupInstanceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupInstances()
+            .getWithResponse(resourceGroupName, vaultName, backupInstanceName, context)
+            .getValue();
         return this;
     }
 
     public OperationJobExtendedInfo adhocBackup(TriggerBackupRequest parameters) {
-        return serviceManager.backupInstances().adhocBackup(resourceGroupName, vaultName, backupInstanceName,
-            parameters);
+        return serviceManager.backupInstances()
+            .adhocBackup(resourceGroupName, vaultName, backupInstanceName, parameters);
     }
 
     public OperationJobExtendedInfo adhocBackup(TriggerBackupRequest parameters, Context context) {
-        return serviceManager.backupInstances().adhocBackup(resourceGroupName, vaultName, backupInstanceName,
-            parameters, context);
+        return serviceManager.backupInstances()
+            .adhocBackup(resourceGroupName, vaultName, backupInstanceName, parameters, context);
     }
 
     public void triggerRehydrate(AzureBackupRehydrationRequest parameters) {
@@ -148,18 +159,18 @@ public final class BackupInstanceResourceImpl
     }
 
     public void triggerRehydrate(AzureBackupRehydrationRequest parameters, Context context) {
-        serviceManager.backupInstances().triggerRehydrate(resourceGroupName, vaultName, backupInstanceName, parameters,
-            context);
+        serviceManager.backupInstances()
+            .triggerRehydrate(resourceGroupName, vaultName, backupInstanceName, parameters, context);
     }
 
     public OperationJobExtendedInfo triggerRestore(AzureBackupRestoreRequest parameters) {
-        return serviceManager.backupInstances().triggerRestore(resourceGroupName, vaultName, backupInstanceName,
-            parameters);
+        return serviceManager.backupInstances()
+            .triggerRestore(resourceGroupName, vaultName, backupInstanceName, parameters);
     }
 
     public OperationJobExtendedInfo triggerRestore(AzureBackupRestoreRequest parameters, Context context) {
-        return serviceManager.backupInstances().triggerRestore(resourceGroupName, vaultName, backupInstanceName,
-            parameters, context);
+        return serviceManager.backupInstances()
+            .triggerRestore(resourceGroupName, vaultName, backupInstanceName, parameters, context);
     }
 
     public void resumeBackups() {
@@ -182,36 +193,38 @@ public final class BackupInstanceResourceImpl
         serviceManager.backupInstances().stopProtection(resourceGroupName, vaultName, backupInstanceName);
     }
 
-    public void stopProtection(Context context) {
-        serviceManager.backupInstances().stopProtection(resourceGroupName, vaultName, backupInstanceName, context);
+    public void stopProtection(StopProtectionRequest parameters, Context context) {
+        serviceManager.backupInstances()
+            .stopProtection(resourceGroupName, vaultName, backupInstanceName, parameters, context);
     }
 
     public void suspendBackups() {
         serviceManager.backupInstances().suspendBackups(resourceGroupName, vaultName, backupInstanceName);
     }
 
-    public void suspendBackups(Context context) {
-        serviceManager.backupInstances().suspendBackups(resourceGroupName, vaultName, backupInstanceName, context);
+    public void suspendBackups(SuspendBackupRequest parameters, Context context) {
+        serviceManager.backupInstances()
+            .suspendBackups(resourceGroupName, vaultName, backupInstanceName, parameters, context);
     }
 
     public void syncBackupInstance(SyncBackupInstanceRequest parameters) {
-        serviceManager.backupInstances().syncBackupInstance(resourceGroupName, vaultName, backupInstanceName,
-            parameters);
+        serviceManager.backupInstances()
+            .syncBackupInstance(resourceGroupName, vaultName, backupInstanceName, parameters);
     }
 
     public void syncBackupInstance(SyncBackupInstanceRequest parameters, Context context) {
-        serviceManager.backupInstances().syncBackupInstance(resourceGroupName, vaultName, backupInstanceName,
-            parameters, context);
+        serviceManager.backupInstances()
+            .syncBackupInstance(resourceGroupName, vaultName, backupInstanceName, parameters, context);
     }
 
     public OperationJobExtendedInfo validateForRestore(ValidateRestoreRequestObject parameters) {
-        return serviceManager.backupInstances().validateForRestore(resourceGroupName, vaultName, backupInstanceName,
-            parameters);
+        return serviceManager.backupInstances()
+            .validateForRestore(resourceGroupName, vaultName, backupInstanceName, parameters);
     }
 
     public OperationJobExtendedInfo validateForRestore(ValidateRestoreRequestObject parameters, Context context) {
-        return serviceManager.backupInstances().validateForRestore(resourceGroupName, vaultName, backupInstanceName,
-            parameters, context);
+        return serviceManager.backupInstances()
+            .validateForRestore(resourceGroupName, vaultName, backupInstanceName, parameters, context);
     }
 
     public BackupInstanceResourceImpl withTags(Map<String, String> tags) {

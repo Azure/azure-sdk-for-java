@@ -5,9 +5,14 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupFindRestorableTimeRangesResponse;
 import com.azure.resourcemanager.dataprotection.models.DppResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /**
  * List Restore Ranges Response.
@@ -17,8 +22,27 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInner exte
     /*
      * AzureBackupFindRestorableTimeRangesResponseResource properties
      */
-    @JsonProperty(value = "properties")
     private AzureBackupFindRestorableTimeRangesResponse properties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    private SystemData systemData;
 
     /**
      * Creates an instance of AzureBackupFindRestorableTimeRangesResponseResourceInner class.
@@ -28,7 +52,7 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInner exte
 
     /**
      * Get the properties property: AzureBackupFindRestorableTimeRangesResponseResource properties.
-     * 
+     *
      * @return the properties value.
      */
     public AzureBackupFindRestorableTimeRangesResponse properties() {
@@ -37,7 +61,7 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInner exte
 
     /**
      * Set the properties property: AzureBackupFindRestorableTimeRangesResponseResource properties.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the AzureBackupFindRestorableTimeRangesResponseResourceInner object itself.
      */
@@ -48,8 +72,48 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInner exte
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -58,5 +122,55 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInner exte
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBackupFindRestorableTimeRangesResponseResourceInner from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBackupFindRestorableTimeRangesResponseResourceInner if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the
+     * AzureBackupFindRestorableTimeRangesResponseResourceInner.
+     */
+    public static AzureBackupFindRestorableTimeRangesResponseResourceInner fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBackupFindRestorableTimeRangesResponseResourceInner deserializedAzureBackupFindRestorableTimeRangesResponseResourceInner
+                = new AzureBackupFindRestorableTimeRangesResponseResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAzureBackupFindRestorableTimeRangesResponseResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAzureBackupFindRestorableTimeRangesResponseResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureBackupFindRestorableTimeRangesResponseResourceInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAzureBackupFindRestorableTimeRangesResponseResourceInner.systemData
+                        = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAzureBackupFindRestorableTimeRangesResponseResourceInner.properties
+                        = AzureBackupFindRestorableTimeRangesResponse.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBackupFindRestorableTimeRangesResponseResourceInner;
+        });
     }
 }

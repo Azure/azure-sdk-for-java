@@ -6,32 +6,28 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * AzureBackupRecoveryPointBasedRestoreRequest
- * 
+ *
  * Azure backup recoveryPoint based restore request.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "objectType",
-    defaultImpl = AzureBackupRecoveryPointBasedRestoreRequest.class)
-@JsonTypeName("AzureBackupRecoveryPointBasedRestoreRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "AzureBackupRestoreWithRehydrationRequest",
-        value = AzureBackupRestoreWithRehydrationRequest.class) })
 @Fluent
 public class AzureBackupRecoveryPointBasedRestoreRequest extends AzureBackupRestoreRequest {
     /*
+     * The objectType property.
+     */
+    private String objectType = "AzureBackupRecoveryPointBasedRestoreRequest";
+
+    /*
      * The recoveryPointId property.
      */
-    @JsonProperty(value = "recoveryPointId", required = true)
     private String recoveryPointId;
 
     /**
@@ -41,8 +37,18 @@ public class AzureBackupRecoveryPointBasedRestoreRequest extends AzureBackupRest
     }
 
     /**
+     * Get the objectType property: The objectType property.
+     *
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the recoveryPointId property: The recoveryPointId property.
-     * 
+     *
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -51,7 +57,7 @@ public class AzureBackupRecoveryPointBasedRestoreRequest extends AzureBackupRest
 
     /**
      * Set the recoveryPointId property: The recoveryPointId property.
-     * 
+     *
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the AzureBackupRecoveryPointBasedRestoreRequest object itself.
      */
@@ -92,6 +98,16 @@ public class AzureBackupRecoveryPointBasedRestoreRequest extends AzureBackupRest
      * {@inheritDoc}
      */
     @Override
+    public AzureBackupRecoveryPointBasedRestoreRequest
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public AzureBackupRecoveryPointBasedRestoreRequest withIdentityDetails(IdentityDetails identityDetails) {
         super.withIdentityDetails(identityDetails);
         return this;
@@ -99,17 +115,107 @@ public class AzureBackupRecoveryPointBasedRestoreRequest extends AzureBackupRest
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (recoveryPointId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property recoveryPointId in model AzureBackupRecoveryPointBasedRestoreRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryPointId in model AzureBackupRecoveryPointBasedRestoreRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureBackupRecoveryPointBasedRestoreRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("restoreTargetInfo", restoreTargetInfo());
+        jsonWriter.writeStringField("sourceDataStoreType",
+            sourceDataStoreType() == null ? null : sourceDataStoreType().toString());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identityDetails", identityDetails());
+        jsonWriter.writeStringField("recoveryPointId", this.recoveryPointId);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBackupRecoveryPointBasedRestoreRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBackupRecoveryPointBasedRestoreRequest if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureBackupRecoveryPointBasedRestoreRequest.
+     */
+    public static AzureBackupRecoveryPointBasedRestoreRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureBackupRestoreWithRehydrationRequest".equals(discriminatorValue)) {
+                    return AzureBackupRestoreWithRehydrationRequest.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AzureBackupRecoveryPointBasedRestoreRequest fromJsonKnownDiscriminator(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBackupRecoveryPointBasedRestoreRequest deserializedAzureBackupRecoveryPointBasedRestoreRequest
+                = new AzureBackupRecoveryPointBasedRestoreRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("restoreTargetInfo".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryPointBasedRestoreRequest
+                        .withRestoreTargetInfo(RestoreTargetInfoBase.fromJson(reader));
+                } else if ("sourceDataStoreType".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryPointBasedRestoreRequest
+                        .withSourceDataStoreType(SourceDataStoreType.fromString(reader.getString()));
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryPointBasedRestoreRequest.withSourceResourceId(reader.getString());
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureBackupRecoveryPointBasedRestoreRequest
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("identityDetails".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryPointBasedRestoreRequest
+                        .withIdentityDetails(IdentityDetails.fromJson(reader));
+                } else if ("recoveryPointId".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryPointBasedRestoreRequest.recoveryPointId = reader.getString();
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryPointBasedRestoreRequest.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBackupRecoveryPointBasedRestoreRequest;
+        });
+    }
 }

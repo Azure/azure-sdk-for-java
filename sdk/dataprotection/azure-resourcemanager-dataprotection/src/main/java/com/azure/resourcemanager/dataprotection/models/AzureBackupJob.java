@@ -5,201 +5,177 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * AzureBackup Job Class.
  */
 @Fluent
-public final class AzureBackupJob {
+public final class AzureBackupJob implements JsonSerializable<AzureBackupJob> {
     /*
      * Job Activity Id
      */
-    @JsonProperty(value = "activityID", required = true)
     private String activityId;
 
     /*
      * Name of the Backup Instance
      */
-    @JsonProperty(value = "backupInstanceFriendlyName", required = true)
     private String backupInstanceFriendlyName;
 
     /*
      * ARM ID of the Backup Instance
      */
-    @JsonProperty(value = "backupInstanceId", access = JsonProperty.Access.WRITE_ONLY)
     private String backupInstanceId;
 
     /*
      * ARM ID of the DataSource
      */
-    @JsonProperty(value = "dataSourceId", required = true)
     private String dataSourceId;
 
     /*
      * Location of the DataSource
      */
-    @JsonProperty(value = "dataSourceLocation", required = true)
     private String dataSourceLocation;
 
     /*
      * User Friendly Name of the DataSource
      */
-    @JsonProperty(value = "dataSourceName", required = true)
     private String dataSourceName;
 
     /*
      * Data Source Set Name of the DataSource
      */
-    @JsonProperty(value = "dataSourceSetName")
     private String dataSourceSetName;
 
     /*
      * Type of DataSource
      */
-    @JsonProperty(value = "dataSourceType", required = true)
     private String dataSourceType;
 
     /*
      * Total run time of the job. ISO 8601 format.
      */
-    @JsonProperty(value = "duration")
     private String duration;
 
     /*
      * EndTime of the job(in UTC)
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * A List, detailing the errors related to the job
      */
-    @JsonProperty(value = "errorDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<UserFacingError> errorDetails;
 
     /*
      * Extended Information about the job
      */
-    @JsonProperty(value = "extendedInfo", access = JsonProperty.Access.WRITE_ONLY)
     private JobExtendedInfo extendedInfo;
 
     /*
      * Indicated that whether the job is adhoc(true) or scheduled(false)
      */
-    @JsonProperty(value = "isUserTriggered", required = true)
     private boolean isUserTriggered;
 
     /*
      * It indicates the type of Job i.e. Backup:full/log/diff ;Restore:ALR/OLR; Tiering:Backup/Archive ;
      * Management:ConfigureProtection/UnConfigure
      */
-    @JsonProperty(value = "operation", required = true)
     private String operation;
 
     /*
      * It indicates the type of Job i.e. Backup/Restore/Tiering/Management
      */
-    @JsonProperty(value = "operationCategory", required = true)
     private String operationCategory;
 
     /*
      * ARM ID of the policy
      */
-    @JsonProperty(value = "policyId", access = JsonProperty.Access.WRITE_ONLY)
     private String policyId;
 
     /*
      * Name of the policy
      */
-    @JsonProperty(value = "policyName", access = JsonProperty.Access.WRITE_ONLY)
     private String policyName;
 
     /*
      * Indicated whether progress is enabled for the job
      */
-    @JsonProperty(value = "progressEnabled", required = true)
     private boolean progressEnabled;
 
     /*
      * Url which contains job's progress
      */
-    @JsonProperty(value = "progressUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String progressUrl;
 
     /*
      * Priority to be used for rehydration
      */
-    @JsonProperty(value = "rehydrationPriority", access = JsonProperty.Access.WRITE_ONLY)
     private String rehydrationPriority;
 
     /*
      * It indicates the sub type of operation i.e. in case of Restore it can be ALR/OLR
      */
-    @JsonProperty(value = "restoreType", access = JsonProperty.Access.WRITE_ONLY)
     private String restoreType;
 
     /*
      * Resource Group Name of the Datasource
      */
-    @JsonProperty(value = "sourceResourceGroup", required = true)
     private String sourceResourceGroup;
 
     /*
      * SubscriptionId corresponding to the DataSource
      */
-    @JsonProperty(value = "sourceSubscriptionID", required = true)
     private String sourceSubscriptionId;
 
     /*
      * StartTime of the job(in UTC)
      */
-    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * Status of the job like InProgress/Success/Failed/Cancelled/SuccessWithWarning
      */
-    @JsonProperty(value = "status", required = true)
     private String status;
 
     /*
      * Subscription Id of the corresponding backup vault
      */
-    @JsonProperty(value = "subscriptionId", required = true)
     private String subscriptionId;
 
     /*
      * List of supported actions
      */
-    @JsonProperty(value = "supportedActions", required = true)
     private List<String> supportedActions;
 
     /*
      * Name of the vault
      */
-    @JsonProperty(value = "vaultName", required = true)
     private String vaultName;
 
     /*
      * The etag property.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * The sourceDataStoreName property.
      */
-    @JsonProperty(value = "sourceDataStoreName")
     private String sourceDataStoreName;
 
     /*
      * The destinationDataStoreName property.
      */
-    @JsonProperty(value = "destinationDataStoreName")
     private String destinationDataStoreName;
 
     /**
@@ -210,7 +186,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the activityId property: Job Activity Id.
-     * 
+     *
      * @return the activityId value.
      */
     public String activityId() {
@@ -219,7 +195,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the activityId property: Job Activity Id.
-     * 
+     *
      * @param activityId the activityId value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -230,7 +206,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the backupInstanceFriendlyName property: Name of the Backup Instance.
-     * 
+     *
      * @return the backupInstanceFriendlyName value.
      */
     public String backupInstanceFriendlyName() {
@@ -239,7 +215,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the backupInstanceFriendlyName property: Name of the Backup Instance.
-     * 
+     *
      * @param backupInstanceFriendlyName the backupInstanceFriendlyName value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -250,7 +226,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the backupInstanceId property: ARM ID of the Backup Instance.
-     * 
+     *
      * @return the backupInstanceId value.
      */
     public String backupInstanceId() {
@@ -259,7 +235,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the dataSourceId property: ARM ID of the DataSource.
-     * 
+     *
      * @return the dataSourceId value.
      */
     public String dataSourceId() {
@@ -268,7 +244,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the dataSourceId property: ARM ID of the DataSource.
-     * 
+     *
      * @param dataSourceId the dataSourceId value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -279,7 +255,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the dataSourceLocation property: Location of the DataSource.
-     * 
+     *
      * @return the dataSourceLocation value.
      */
     public String dataSourceLocation() {
@@ -288,7 +264,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the dataSourceLocation property: Location of the DataSource.
-     * 
+     *
      * @param dataSourceLocation the dataSourceLocation value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -299,7 +275,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the dataSourceName property: User Friendly Name of the DataSource.
-     * 
+     *
      * @return the dataSourceName value.
      */
     public String dataSourceName() {
@@ -308,7 +284,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the dataSourceName property: User Friendly Name of the DataSource.
-     * 
+     *
      * @param dataSourceName the dataSourceName value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -319,7 +295,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the dataSourceSetName property: Data Source Set Name of the DataSource.
-     * 
+     *
      * @return the dataSourceSetName value.
      */
     public String dataSourceSetName() {
@@ -328,7 +304,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the dataSourceSetName property: Data Source Set Name of the DataSource.
-     * 
+     *
      * @param dataSourceSetName the dataSourceSetName value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -339,7 +315,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the dataSourceType property: Type of DataSource.
-     * 
+     *
      * @return the dataSourceType value.
      */
     public String dataSourceType() {
@@ -348,7 +324,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the dataSourceType property: Type of DataSource.
-     * 
+     *
      * @param dataSourceType the dataSourceType value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -359,7 +335,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the duration property: Total run time of the job. ISO 8601 format.
-     * 
+     *
      * @return the duration value.
      */
     public String duration() {
@@ -368,7 +344,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the duration property: Total run time of the job. ISO 8601 format.
-     * 
+     *
      * @param duration the duration value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -379,7 +355,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the endTime property: EndTime of the job(in UTC).
-     * 
+     *
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -388,7 +364,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the errorDetails property: A List, detailing the errors related to the job.
-     * 
+     *
      * @return the errorDetails value.
      */
     public List<UserFacingError> errorDetails() {
@@ -397,7 +373,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the extendedInfo property: Extended Information about the job.
-     * 
+     *
      * @return the extendedInfo value.
      */
     public JobExtendedInfo extendedInfo() {
@@ -406,7 +382,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the isUserTriggered property: Indicated that whether the job is adhoc(true) or scheduled(false).
-     * 
+     *
      * @return the isUserTriggered value.
      */
     public boolean isUserTriggered() {
@@ -415,7 +391,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the isUserTriggered property: Indicated that whether the job is adhoc(true) or scheduled(false).
-     * 
+     *
      * @param isUserTriggered the isUserTriggered value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -427,7 +403,7 @@ public final class AzureBackupJob {
     /**
      * Get the operation property: It indicates the type of Job i.e. Backup:full/log/diff ;Restore:ALR/OLR;
      * Tiering:Backup/Archive ; Management:ConfigureProtection/UnConfigure.
-     * 
+     *
      * @return the operation value.
      */
     public String operation() {
@@ -437,7 +413,7 @@ public final class AzureBackupJob {
     /**
      * Set the operation property: It indicates the type of Job i.e. Backup:full/log/diff ;Restore:ALR/OLR;
      * Tiering:Backup/Archive ; Management:ConfigureProtection/UnConfigure.
-     * 
+     *
      * @param operation the operation value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -448,7 +424,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the operationCategory property: It indicates the type of Job i.e. Backup/Restore/Tiering/Management.
-     * 
+     *
      * @return the operationCategory value.
      */
     public String operationCategory() {
@@ -457,7 +433,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the operationCategory property: It indicates the type of Job i.e. Backup/Restore/Tiering/Management.
-     * 
+     *
      * @param operationCategory the operationCategory value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -468,7 +444,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the policyId property: ARM ID of the policy.
-     * 
+     *
      * @return the policyId value.
      */
     public String policyId() {
@@ -477,7 +453,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the policyName property: Name of the policy.
-     * 
+     *
      * @return the policyName value.
      */
     public String policyName() {
@@ -486,7 +462,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the progressEnabled property: Indicated whether progress is enabled for the job.
-     * 
+     *
      * @return the progressEnabled value.
      */
     public boolean progressEnabled() {
@@ -495,7 +471,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the progressEnabled property: Indicated whether progress is enabled for the job.
-     * 
+     *
      * @param progressEnabled the progressEnabled value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -506,7 +482,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the progressUrl property: Url which contains job's progress.
-     * 
+     *
      * @return the progressUrl value.
      */
     public String progressUrl() {
@@ -515,7 +491,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the rehydrationPriority property: Priority to be used for rehydration.
-     * 
+     *
      * @return the rehydrationPriority value.
      */
     public String rehydrationPriority() {
@@ -524,7 +500,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the restoreType property: It indicates the sub type of operation i.e. in case of Restore it can be ALR/OLR.
-     * 
+     *
      * @return the restoreType value.
      */
     public String restoreType() {
@@ -533,7 +509,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the sourceResourceGroup property: Resource Group Name of the Datasource.
-     * 
+     *
      * @return the sourceResourceGroup value.
      */
     public String sourceResourceGroup() {
@@ -542,7 +518,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the sourceResourceGroup property: Resource Group Name of the Datasource.
-     * 
+     *
      * @param sourceResourceGroup the sourceResourceGroup value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -553,7 +529,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the sourceSubscriptionId property: SubscriptionId corresponding to the DataSource.
-     * 
+     *
      * @return the sourceSubscriptionId value.
      */
     public String sourceSubscriptionId() {
@@ -562,7 +538,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the sourceSubscriptionId property: SubscriptionId corresponding to the DataSource.
-     * 
+     *
      * @param sourceSubscriptionId the sourceSubscriptionId value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -573,7 +549,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the startTime property: StartTime of the job(in UTC).
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -582,7 +558,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the startTime property: StartTime of the job(in UTC).
-     * 
+     *
      * @param startTime the startTime value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -593,7 +569,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the status property: Status of the job like InProgress/Success/Failed/Cancelled/SuccessWithWarning.
-     * 
+     *
      * @return the status value.
      */
     public String status() {
@@ -602,7 +578,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the status property: Status of the job like InProgress/Success/Failed/Cancelled/SuccessWithWarning.
-     * 
+     *
      * @param status the status value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -613,7 +589,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the subscriptionId property: Subscription Id of the corresponding backup vault.
-     * 
+     *
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -622,7 +598,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the subscriptionId property: Subscription Id of the corresponding backup vault.
-     * 
+     *
      * @param subscriptionId the subscriptionId value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -633,7 +609,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the supportedActions property: List of supported actions.
-     * 
+     *
      * @return the supportedActions value.
      */
     public List<String> supportedActions() {
@@ -642,7 +618,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the supportedActions property: List of supported actions.
-     * 
+     *
      * @param supportedActions the supportedActions value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -653,7 +629,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the vaultName property: Name of the vault.
-     * 
+     *
      * @return the vaultName value.
      */
     public String vaultName() {
@@ -662,7 +638,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the vaultName property: Name of the vault.
-     * 
+     *
      * @param vaultName the vaultName value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -673,7 +649,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the etag property: The etag property.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -682,7 +658,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the etag property: The etag property.
-     * 
+     *
      * @param etag the etag value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -693,7 +669,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the sourceDataStoreName property: The sourceDataStoreName property.
-     * 
+     *
      * @return the sourceDataStoreName value.
      */
     public String sourceDataStoreName() {
@@ -702,7 +678,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the sourceDataStoreName property: The sourceDataStoreName property.
-     * 
+     *
      * @param sourceDataStoreName the sourceDataStoreName value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -713,7 +689,7 @@ public final class AzureBackupJob {
 
     /**
      * Get the destinationDataStoreName property: The destinationDataStoreName property.
-     * 
+     *
      * @return the destinationDataStoreName value.
      */
     public String destinationDataStoreName() {
@@ -722,7 +698,7 @@ public final class AzureBackupJob {
 
     /**
      * Set the destinationDataStoreName property: The destinationDataStoreName property.
-     * 
+     *
      * @param destinationDataStoreName the destinationDataStoreName value to set.
      * @return the AzureBackupJob object itself.
      */
@@ -733,33 +709,35 @@ public final class AzureBackupJob {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (activityId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property activityId in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property activityId in model AzureBackupJob"));
         }
         if (backupInstanceFriendlyName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property backupInstanceFriendlyName in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property backupInstanceFriendlyName in model AzureBackupJob"));
         }
         if (dataSourceId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dataSourceId in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dataSourceId in model AzureBackupJob"));
         }
         if (dataSourceLocation() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dataSourceLocation in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataSourceLocation in model AzureBackupJob"));
         }
         if (dataSourceName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dataSourceName in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dataSourceName in model AzureBackupJob"));
         }
         if (dataSourceType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dataSourceType in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dataSourceType in model AzureBackupJob"));
         }
         if (errorDetails() != null) {
             errorDetails().forEach(e -> e.validate());
@@ -768,42 +746,170 @@ public final class AzureBackupJob {
             extendedInfo().validate();
         }
         if (operation() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property operation in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property operation in model AzureBackupJob"));
         }
         if (operationCategory() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property operationCategory in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property operationCategory in model AzureBackupJob"));
         }
         if (sourceResourceGroup() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sourceResourceGroup in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceResourceGroup in model AzureBackupJob"));
         }
         if (sourceSubscriptionId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sourceSubscriptionId in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceSubscriptionId in model AzureBackupJob"));
         }
         if (startTime() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property startTime in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property startTime in model AzureBackupJob"));
         }
         if (status() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property status in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property status in model AzureBackupJob"));
         }
         if (subscriptionId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property subscriptionId in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property subscriptionId in model AzureBackupJob"));
         }
         if (supportedActions() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property supportedActions in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property supportedActions in model AzureBackupJob"));
         }
         if (vaultName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property vaultName in model AzureBackupJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property vaultName in model AzureBackupJob"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureBackupJob.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("activityID", this.activityId);
+        jsonWriter.writeStringField("backupInstanceFriendlyName", this.backupInstanceFriendlyName);
+        jsonWriter.writeStringField("dataSourceId", this.dataSourceId);
+        jsonWriter.writeStringField("dataSourceLocation", this.dataSourceLocation);
+        jsonWriter.writeStringField("dataSourceName", this.dataSourceName);
+        jsonWriter.writeStringField("dataSourceType", this.dataSourceType);
+        jsonWriter.writeBooleanField("isUserTriggered", this.isUserTriggered);
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeStringField("operationCategory", this.operationCategory);
+        jsonWriter.writeBooleanField("progressEnabled", this.progressEnabled);
+        jsonWriter.writeStringField("sourceResourceGroup", this.sourceResourceGroup);
+        jsonWriter.writeStringField("sourceSubscriptionID", this.sourceSubscriptionId);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeArrayField("supportedActions", this.supportedActions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("vaultName", this.vaultName);
+        jsonWriter.writeStringField("dataSourceSetName", this.dataSourceSetName);
+        jsonWriter.writeStringField("duration", this.duration);
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeStringField("sourceDataStoreName", this.sourceDataStoreName);
+        jsonWriter.writeStringField("destinationDataStoreName", this.destinationDataStoreName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBackupJob from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBackupJob if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureBackupJob.
+     */
+    public static AzureBackupJob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBackupJob deserializedAzureBackupJob = new AzureBackupJob();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("activityID".equals(fieldName)) {
+                    deserializedAzureBackupJob.activityId = reader.getString();
+                } else if ("backupInstanceFriendlyName".equals(fieldName)) {
+                    deserializedAzureBackupJob.backupInstanceFriendlyName = reader.getString();
+                } else if ("dataSourceId".equals(fieldName)) {
+                    deserializedAzureBackupJob.dataSourceId = reader.getString();
+                } else if ("dataSourceLocation".equals(fieldName)) {
+                    deserializedAzureBackupJob.dataSourceLocation = reader.getString();
+                } else if ("dataSourceName".equals(fieldName)) {
+                    deserializedAzureBackupJob.dataSourceName = reader.getString();
+                } else if ("dataSourceType".equals(fieldName)) {
+                    deserializedAzureBackupJob.dataSourceType = reader.getString();
+                } else if ("isUserTriggered".equals(fieldName)) {
+                    deserializedAzureBackupJob.isUserTriggered = reader.getBoolean();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedAzureBackupJob.operation = reader.getString();
+                } else if ("operationCategory".equals(fieldName)) {
+                    deserializedAzureBackupJob.operationCategory = reader.getString();
+                } else if ("progressEnabled".equals(fieldName)) {
+                    deserializedAzureBackupJob.progressEnabled = reader.getBoolean();
+                } else if ("sourceResourceGroup".equals(fieldName)) {
+                    deserializedAzureBackupJob.sourceResourceGroup = reader.getString();
+                } else if ("sourceSubscriptionID".equals(fieldName)) {
+                    deserializedAzureBackupJob.sourceSubscriptionId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedAzureBackupJob.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedAzureBackupJob.status = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedAzureBackupJob.subscriptionId = reader.getString();
+                } else if ("supportedActions".equals(fieldName)) {
+                    List<String> supportedActions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureBackupJob.supportedActions = supportedActions;
+                } else if ("vaultName".equals(fieldName)) {
+                    deserializedAzureBackupJob.vaultName = reader.getString();
+                } else if ("backupInstanceId".equals(fieldName)) {
+                    deserializedAzureBackupJob.backupInstanceId = reader.getString();
+                } else if ("dataSourceSetName".equals(fieldName)) {
+                    deserializedAzureBackupJob.dataSourceSetName = reader.getString();
+                } else if ("duration".equals(fieldName)) {
+                    deserializedAzureBackupJob.duration = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedAzureBackupJob.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("errorDetails".equals(fieldName)) {
+                    List<UserFacingError> errorDetails = reader.readArray(reader1 -> UserFacingError.fromJson(reader1));
+                    deserializedAzureBackupJob.errorDetails = errorDetails;
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedAzureBackupJob.extendedInfo = JobExtendedInfo.fromJson(reader);
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedAzureBackupJob.policyId = reader.getString();
+                } else if ("policyName".equals(fieldName)) {
+                    deserializedAzureBackupJob.policyName = reader.getString();
+                } else if ("progressUrl".equals(fieldName)) {
+                    deserializedAzureBackupJob.progressUrl = reader.getString();
+                } else if ("rehydrationPriority".equals(fieldName)) {
+                    deserializedAzureBackupJob.rehydrationPriority = reader.getString();
+                } else if ("restoreType".equals(fieldName)) {
+                    deserializedAzureBackupJob.restoreType = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedAzureBackupJob.etag = reader.getString();
+                } else if ("sourceDataStoreName".equals(fieldName)) {
+                    deserializedAzureBackupJob.sourceDataStoreName = reader.getString();
+                } else if ("destinationDataStoreName".equals(fieldName)) {
+                    deserializedAzureBackupJob.destinationDataStoreName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBackupJob;
+        });
+    }
 }

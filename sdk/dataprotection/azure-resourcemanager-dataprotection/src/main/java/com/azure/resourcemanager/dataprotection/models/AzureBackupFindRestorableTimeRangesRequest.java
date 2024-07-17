@@ -6,29 +6,32 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * List Restore Ranges Request.
  */
 @Fluent
-public final class AzureBackupFindRestorableTimeRangesRequest {
+public final class AzureBackupFindRestorableTimeRangesRequest
+    implements JsonSerializable<AzureBackupFindRestorableTimeRangesRequest> {
     /*
      * Gets or sets the type of the source data store.
      */
-    @JsonProperty(value = "sourceDataStoreType", required = true)
     private RestoreSourceDataStoreType sourceDataStoreType;
 
     /*
      * Start time for the List Restore Ranges request. ISO 8601 format.
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
      * End time for the List Restore Ranges request. ISO 8601 format.
      */
-    @JsonProperty(value = "endTime")
     private String endTime;
 
     /**
@@ -39,7 +42,7 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
 
     /**
      * Get the sourceDataStoreType property: Gets or sets the type of the source data store.
-     * 
+     *
      * @return the sourceDataStoreType value.
      */
     public RestoreSourceDataStoreType sourceDataStoreType() {
@@ -48,7 +51,7 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
 
     /**
      * Set the sourceDataStoreType property: Gets or sets the type of the source data store.
-     * 
+     *
      * @param sourceDataStoreType the sourceDataStoreType value to set.
      * @return the AzureBackupFindRestorableTimeRangesRequest object itself.
      */
@@ -60,7 +63,7 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
 
     /**
      * Get the startTime property: Start time for the List Restore Ranges request. ISO 8601 format.
-     * 
+     *
      * @return the startTime value.
      */
     public String startTime() {
@@ -69,7 +72,7 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
 
     /**
      * Set the startTime property: Start time for the List Restore Ranges request. ISO 8601 format.
-     * 
+     *
      * @param startTime the startTime value to set.
      * @return the AzureBackupFindRestorableTimeRangesRequest object itself.
      */
@@ -80,7 +83,7 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
 
     /**
      * Get the endTime property: End time for the List Restore Ranges request. ISO 8601 format.
-     * 
+     *
      * @return the endTime value.
      */
     public String endTime() {
@@ -89,7 +92,7 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
 
     /**
      * Set the endTime property: End time for the List Restore Ranges request. ISO 8601 format.
-     * 
+     *
      * @param endTime the endTime value to set.
      * @return the AzureBackupFindRestorableTimeRangesRequest object itself.
      */
@@ -100,15 +103,62 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceDataStoreType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceDataStoreType in model AzureBackupFindRestorableTimeRangesRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceDataStoreType in model AzureBackupFindRestorableTimeRangesRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureBackupFindRestorableTimeRangesRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceDataStoreType",
+            this.sourceDataStoreType == null ? null : this.sourceDataStoreType.toString());
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeStringField("endTime", this.endTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBackupFindRestorableTimeRangesRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBackupFindRestorableTimeRangesRequest if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureBackupFindRestorableTimeRangesRequest.
+     */
+    public static AzureBackupFindRestorableTimeRangesRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBackupFindRestorableTimeRangesRequest deserializedAzureBackupFindRestorableTimeRangesRequest
+                = new AzureBackupFindRestorableTimeRangesRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceDataStoreType".equals(fieldName)) {
+                    deserializedAzureBackupFindRestorableTimeRangesRequest.sourceDataStoreType
+                        = RestoreSourceDataStoreType.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedAzureBackupFindRestorableTimeRangesRequest.startTime = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedAzureBackupFindRestorableTimeRangesRequest.endTime = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBackupFindRestorableTimeRangesRequest;
+        });
+    }
 }

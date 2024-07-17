@@ -5,21 +5,23 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * AdhocBasedTaggingCriteria
- * 
+ *
  * Adhoc backup tagging criteria.
  */
 @Fluent
-public final class AdhocBasedTaggingCriteria {
+public final class AdhocBasedTaggingCriteria implements JsonSerializable<AdhocBasedTaggingCriteria> {
     /*
-     * RetentionTag
-     * 
      * Retention tag information
      */
-    @JsonProperty(value = "tagInfo")
     private RetentionTag tagInfo;
 
     /**
@@ -29,10 +31,8 @@ public final class AdhocBasedTaggingCriteria {
     }
 
     /**
-     * Get the tagInfo property: RetentionTag
-     * 
-     * Retention tag information.
-     * 
+     * Get the tagInfo property: Retention tag information.
+     *
      * @return the tagInfo value.
      */
     public RetentionTag tagInfo() {
@@ -40,10 +40,8 @@ public final class AdhocBasedTaggingCriteria {
     }
 
     /**
-     * Set the tagInfo property: RetentionTag
-     * 
-     * Retention tag information.
-     * 
+     * Set the tagInfo property: Retention tag information.
+     *
      * @param tagInfo the tagInfo value to set.
      * @return the AdhocBasedTaggingCriteria object itself.
      */
@@ -54,12 +52,48 @@ public final class AdhocBasedTaggingCriteria {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tagInfo() != null) {
             tagInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("tagInfo", this.tagInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdhocBasedTaggingCriteria from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdhocBasedTaggingCriteria if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdhocBasedTaggingCriteria.
+     */
+    public static AdhocBasedTaggingCriteria fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdhocBasedTaggingCriteria deserializedAdhocBasedTaggingCriteria = new AdhocBasedTaggingCriteria();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tagInfo".equals(fieldName)) {
+                    deserializedAdhocBasedTaggingCriteria.tagInfo = RetentionTag.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdhocBasedTaggingCriteria;
+        });
     }
 }

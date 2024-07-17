@@ -6,30 +6,29 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
  * BaseBackupPolicy
- * 
+ *
  * BackupPolicy base.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "objectType",
-    defaultImpl = BaseBackupPolicy.class)
-@JsonTypeName("BaseBackupPolicy")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "BackupPolicy", value = BackupPolicy.class) })
 @Fluent
-public class BaseBackupPolicy {
+public class BaseBackupPolicy implements JsonSerializable<BaseBackupPolicy> {
+    /*
+     * The objectType property.
+     */
+    private String objectType = "BaseBackupPolicy";
+
     /*
      * Type of datasource for the backup management
      */
-    @JsonProperty(value = "datasourceTypes", required = true)
     private List<String> datasourceTypes;
 
     /**
@@ -39,8 +38,17 @@ public class BaseBackupPolicy {
     }
 
     /**
+     * Get the objectType property: The objectType property.
+     *
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the datasourceTypes property: Type of datasource for the backup management.
-     * 
+     *
      * @return the datasourceTypes value.
      */
     public List<String> datasourceTypes() {
@@ -49,7 +57,7 @@ public class BaseBackupPolicy {
 
     /**
      * Set the datasourceTypes property: Type of datasource for the backup management.
-     * 
+     *
      * @param datasourceTypes the datasourceTypes value to set.
      * @return the BaseBackupPolicy object itself.
      */
@@ -60,15 +68,83 @@ public class BaseBackupPolicy {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (datasourceTypes() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property datasourceTypes in model BaseBackupPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property datasourceTypes in model BaseBackupPolicy"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BaseBackupPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("datasourceTypes", this.datasourceTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BaseBackupPolicy from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BaseBackupPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BaseBackupPolicy.
+     */
+    public static BaseBackupPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("BackupPolicy".equals(discriminatorValue)) {
+                    return BackupPolicy.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static BaseBackupPolicy fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BaseBackupPolicy deserializedBaseBackupPolicy = new BaseBackupPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("datasourceTypes".equals(fieldName)) {
+                    List<String> datasourceTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBaseBackupPolicy.datasourceTypes = datasourceTypes;
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedBaseBackupPolicy.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBaseBackupPolicy;
+        });
+    }
 }

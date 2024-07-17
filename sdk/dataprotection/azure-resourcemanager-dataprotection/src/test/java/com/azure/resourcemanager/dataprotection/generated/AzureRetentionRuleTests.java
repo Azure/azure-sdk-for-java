@@ -12,64 +12,67 @@ import com.azure.resourcemanager.dataprotection.models.DataStoreTypes;
 import com.azure.resourcemanager.dataprotection.models.DeleteOption;
 import com.azure.resourcemanager.dataprotection.models.SourceLifeCycle;
 import com.azure.resourcemanager.dataprotection.models.TargetCopySetting;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
+
+import java.util.Arrays;
 
 public final class AzureRetentionRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureRetentionRule model = BinaryData.fromString(
-            "{\"objectType\":\"AzureRetentionRule\",\"isDefault\":true,\"lifecycles\":[{\"deleteAfter\":{\"objectType\":\"DeleteOption\",\"duration\":\"cluyovwxnbkf\"},\"sourceDataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"zxscyhwzdgirujb\"},\"targetDataStoreCopySettings\":[{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"vzzbtdcq\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"niyujv\"}}]},{\"deleteAfter\":{\"objectType\":\"DeleteOption\",\"duration\":\"ylwdshfssn\"},\"sourceDataStore\":{\"dataStoreType\":\"OperationalStore\",\"objectType\":\"gy\"},\"targetDataStoreCopySettings\":[{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"OperationalStore\",\"objectType\":\"msgaoj\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"ArchiveStore\",\"objectType\":\"wncot\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"fhir\"}}]}],\"name\":\"tymoxoftp\"}")
+            "{\"objectType\":\"AzureRetentionRule\",\"isDefault\":true,\"lifecycles\":[{\"deleteAfter\":{\"objectType\":\"DeleteOption\",\"duration\":\"j\"},\"sourceDataStore\":{\"dataStoreType\":\"OperationalStore\",\"objectType\":\"wuenvr\"},\"targetDataStoreCopySettings\":[{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"uaibrebqaaysj\"}}]},{\"deleteAfter\":{\"objectType\":\"DeleteOption\",\"duration\":\"ixqtn\"},\"sourceDataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"tezlwff\"},\"targetDataStoreCopySettings\":[{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"pjpqqmtedltmmji\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"OperationalStore\",\"objectType\":\"eozphv\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"uyqncygupkvipmd\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"OperationalStore\",\"objectType\":\"wx\"}}]}],\"name\":\"upev\"}")
             .toObject(AzureRetentionRule.class);
-        Assertions.assertEquals("tymoxoftp", model.name());
+        Assertions.assertEquals("upev", model.name());
         Assertions.assertEquals(true, model.isDefault());
-        Assertions.assertEquals("cluyovwxnbkf", model.lifecycles().get(0).deleteAfter().duration());
-        Assertions.assertEquals(DataStoreTypes.VAULT_STORE,
+        Assertions.assertEquals("j", model.lifecycles().get(0).deleteAfter().duration());
+        Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE,
             model.lifecycles().get(0).sourceDataStore().dataStoreType());
-        Assertions.assertEquals("zxscyhwzdgirujb", model.lifecycles().get(0).sourceDataStore().objectType());
+        Assertions.assertEquals("wuenvr", model.lifecycles().get(0).sourceDataStore().objectType());
         Assertions.assertEquals(DataStoreTypes.VAULT_STORE,
             model.lifecycles().get(0).targetDataStoreCopySettings().get(0).dataStore().dataStoreType());
-        Assertions.assertEquals("vzzbtdcq",
+        Assertions.assertEquals("uaibrebqaaysj",
             model.lifecycles().get(0).targetDataStoreCopySettings().get(0).dataStore().objectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureRetentionRule model = new AzureRetentionRule().withName("tymoxoftp").withIsDefault(true)
+        AzureRetentionRule model = new AzureRetentionRule().withName("upev")
+            .withIsDefault(true)
             .withLifecycles(Arrays.asList(
-                new SourceLifeCycle().withDeleteAfter(new DeleteOption().withDuration("cluyovwxnbkf"))
-                    .withSourceDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE)
-                        .withObjectType("zxscyhwzdgirujb"))
-                    .withTargetDataStoreCopySettings(Arrays.asList(
-                        new TargetCopySetting().withCopyAfter(new CopyOption())
-                            .withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE)
-                                .withObjectType("vzzbtdcq")),
-                        new TargetCopySetting().withCopyAfter(new CopyOption())
-                            .withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE)
-                                .withObjectType("niyujv")))),
-                new SourceLifeCycle().withDeleteAfter(new DeleteOption().withDuration("ylwdshfssn"))
+                new SourceLifeCycle().withDeleteAfter(new DeleteOption().withDuration("j"))
                     .withSourceDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE)
-                        .withObjectType("gy"))
+                        .withObjectType("wuenvr"))
+                    .withTargetDataStoreCopySettings(
+                        Arrays.asList(new TargetCopySetting().withCopyAfter(new CopyOption())
+                            .withDataStore(new DataStoreInfoBase()
+                                .withDataStoreType(DataStoreTypes.VAULT_STORE)
+                                .withObjectType("uaibrebqaaysj")))),
+                new SourceLifeCycle().withDeleteAfter(new DeleteOption().withDuration("ixqtn"))
+                    .withSourceDataStore(
+                        new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE).withObjectType("tezlwff"))
                     .withTargetDataStoreCopySettings(Arrays.asList(
-                        new TargetCopySetting()
-                            .withCopyAfter(new CopyOption())
-                            .withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE)
-                                .withObjectType("msgaoj")),
                         new TargetCopySetting().withCopyAfter(new CopyOption())
-                            .withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.ARCHIVE_STORE)
-                                .withObjectType("wncot")),
-                        new TargetCopySetting().withCopyAfter(new CopyOption()).withDataStore(new DataStoreInfoBase()
-                            .withDataStoreType(DataStoreTypes.VAULT_STORE).withObjectType("fhir"))))));
+                            .withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE)
+                                .withObjectType("pjpqqmtedltmmji")),
+                        new TargetCopySetting().withCopyAfter(new CopyOption())
+                            .withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE)
+                                .withObjectType("eozphv")),
+                        new TargetCopySetting().withCopyAfter(new CopyOption())
+                            .withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE)
+                                .withObjectType("uyqncygupkvipmd")),
+                        new TargetCopySetting().withCopyAfter(new CopyOption())
+                            .withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE)
+                                .withObjectType("wx"))))));
         model = BinaryData.fromObject(model).toObject(AzureRetentionRule.class);
-        Assertions.assertEquals("tymoxoftp", model.name());
+        Assertions.assertEquals("upev", model.name());
         Assertions.assertEquals(true, model.isDefault());
-        Assertions.assertEquals("cluyovwxnbkf", model.lifecycles().get(0).deleteAfter().duration());
-        Assertions.assertEquals(DataStoreTypes.VAULT_STORE,
+        Assertions.assertEquals("j", model.lifecycles().get(0).deleteAfter().duration());
+        Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE,
             model.lifecycles().get(0).sourceDataStore().dataStoreType());
-        Assertions.assertEquals("zxscyhwzdgirujb", model.lifecycles().get(0).sourceDataStore().objectType());
+        Assertions.assertEquals("wuenvr", model.lifecycles().get(0).sourceDataStore().objectType());
         Assertions.assertEquals(DataStoreTypes.VAULT_STORE,
             model.lifecycles().get(0).targetDataStoreCopySettings().get(0).dataStore().dataStoreType());
-        Assertions.assertEquals("vzzbtdcq",
+        Assertions.assertEquals("uaibrebqaaysj",
             model.lifecycles().get(0).targetDataStoreCopySettings().get(0).dataStore().objectType());
     }
 }

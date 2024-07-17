@@ -6,26 +6,29 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
  * BackupSchedule
- * 
+ *
  * Schedule for backup.
  */
 @Fluent
-public final class BackupSchedule {
+public final class BackupSchedule implements JsonSerializable<BackupSchedule> {
     /*
      * ISO 8601 repeating time interval format
      */
-    @JsonProperty(value = "repeatingTimeIntervals", required = true)
     private List<String> repeatingTimeIntervals;
 
     /*
      * Time zone for a schedule. Example: Pacific Standard Time
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /**
@@ -36,7 +39,7 @@ public final class BackupSchedule {
 
     /**
      * Get the repeatingTimeIntervals property: ISO 8601 repeating time interval format.
-     * 
+     *
      * @return the repeatingTimeIntervals value.
      */
     public List<String> repeatingTimeIntervals() {
@@ -45,7 +48,7 @@ public final class BackupSchedule {
 
     /**
      * Set the repeatingTimeIntervals property: ISO 8601 repeating time interval format.
-     * 
+     *
      * @param repeatingTimeIntervals the repeatingTimeIntervals value to set.
      * @return the BackupSchedule object itself.
      */
@@ -56,7 +59,7 @@ public final class BackupSchedule {
 
     /**
      * Get the timeZone property: Time zone for a schedule. Example: Pacific Standard Time.
-     * 
+     *
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -65,7 +68,7 @@ public final class BackupSchedule {
 
     /**
      * Set the timeZone property: Time zone for a schedule. Example: Pacific Standard Time.
-     * 
+     *
      * @param timeZone the timeZone value to set.
      * @return the BackupSchedule object itself.
      */
@@ -76,15 +79,58 @@ public final class BackupSchedule {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (repeatingTimeIntervals() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property repeatingTimeIntervals in model BackupSchedule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property repeatingTimeIntervals in model BackupSchedule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BackupSchedule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("repeatingTimeIntervals", this.repeatingTimeIntervals,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupSchedule from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupSchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackupSchedule.
+     */
+    public static BackupSchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupSchedule deserializedBackupSchedule = new BackupSchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("repeatingTimeIntervals".equals(fieldName)) {
+                    List<String> repeatingTimeIntervals = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBackupSchedule.repeatingTimeIntervals = repeatingTimeIntervals;
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedBackupSchedule.timeZone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupSchedule;
+        });
+    }
 }

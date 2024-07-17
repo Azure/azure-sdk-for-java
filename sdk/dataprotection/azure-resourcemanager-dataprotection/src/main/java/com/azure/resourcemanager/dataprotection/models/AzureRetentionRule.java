@@ -6,30 +6,33 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
  * AzureRetentionRule
- * 
+ *
  * Azure retention rule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AzureRetentionRule")
 @Fluent
 public final class AzureRetentionRule extends BasePolicyRule {
     /*
+     * The objectType property.
+     */
+    private String objectType = "AzureRetentionRule";
+
+    /*
      * The isDefault property.
      */
-    @JsonProperty(value = "isDefault")
     private Boolean isDefault;
 
     /*
      * The lifecycles property.
      */
-    @JsonProperty(value = "lifecycles", required = true)
     private List<SourceLifeCycle> lifecycles;
 
     /**
@@ -39,8 +42,18 @@ public final class AzureRetentionRule extends BasePolicyRule {
     }
 
     /**
+     * Get the objectType property: The objectType property.
+     *
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the isDefault property: The isDefault property.
-     * 
+     *
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -49,7 +62,7 @@ public final class AzureRetentionRule extends BasePolicyRule {
 
     /**
      * Set the isDefault property: The isDefault property.
-     * 
+     *
      * @param isDefault the isDefault value to set.
      * @return the AzureRetentionRule object itself.
      */
@@ -60,7 +73,7 @@ public final class AzureRetentionRule extends BasePolicyRule {
 
     /**
      * Get the lifecycles property: The lifecycles property.
-     * 
+     *
      * @return the lifecycles value.
      */
     public List<SourceLifeCycle> lifecycles() {
@@ -69,7 +82,7 @@ public final class AzureRetentionRule extends BasePolicyRule {
 
     /**
      * Set the lifecycles property: The lifecycles property.
-     * 
+     *
      * @param lifecycles the lifecycles value to set.
      * @return the AzureRetentionRule object itself.
      */
@@ -89,19 +102,66 @@ public final class AzureRetentionRule extends BasePolicyRule {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (lifecycles() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property lifecycles in model AzureRetentionRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property lifecycles in model AzureRetentionRule"));
         } else {
             lifecycles().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureRetentionRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeArrayField("lifecycles", this.lifecycles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeBooleanField("isDefault", this.isDefault);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureRetentionRule from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureRetentionRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureRetentionRule.
+     */
+    public static AzureRetentionRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureRetentionRule deserializedAzureRetentionRule = new AzureRetentionRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureRetentionRule.withName(reader.getString());
+                } else if ("lifecycles".equals(fieldName)) {
+                    List<SourceLifeCycle> lifecycles = reader.readArray(reader1 -> SourceLifeCycle.fromJson(reader1));
+                    deserializedAzureRetentionRule.lifecycles = lifecycles;
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureRetentionRule.objectType = reader.getString();
+                } else if ("isDefault".equals(fieldName)) {
+                    deserializedAzureRetentionRule.isDefault = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureRetentionRule;
+        });
+    }
 }

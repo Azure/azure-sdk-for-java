@@ -6,23 +6,27 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * AzureBackupParams
- * 
+ *
  * Azure backup parameters.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AzureBackupParams")
 @Fluent
 public final class AzureBackupParams extends BackupParameters {
     /*
+     * Type of the specific object - used for deserializing
+     */
+    private String objectType = "AzureBackupParams";
+
+    /*
      * BackupType ; Full/Incremental etc
      */
-    @JsonProperty(value = "backupType", required = true)
     private String backupType;
 
     /**
@@ -32,8 +36,18 @@ public final class AzureBackupParams extends BackupParameters {
     }
 
     /**
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     *
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the backupType property: BackupType ; Full/Incremental etc.
-     * 
+     *
      * @return the backupType value.
      */
     public String backupType() {
@@ -42,7 +56,7 @@ public final class AzureBackupParams extends BackupParameters {
 
     /**
      * Set the backupType property: BackupType ; Full/Incremental etc.
-     * 
+     *
      * @param backupType the backupType value to set.
      * @return the AzureBackupParams object itself.
      */
@@ -53,17 +67,57 @@ public final class AzureBackupParams extends BackupParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (backupType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property backupType in model AzureBackupParams"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property backupType in model AzureBackupParams"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureBackupParams.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupType", this.backupType);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBackupParams from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBackupParams if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureBackupParams.
+     */
+    public static AzureBackupParams fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBackupParams deserializedAzureBackupParams = new AzureBackupParams();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupType".equals(fieldName)) {
+                    deserializedAzureBackupParams.backupType = reader.getString();
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureBackupParams.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBackupParams;
+        });
+    }
 }

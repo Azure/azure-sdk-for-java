@@ -5,24 +5,46 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRecoveryPoint;
 import com.azure.resourcemanager.dataprotection.models.DppResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /**
  * AzureBackupRecoveryPointResource
- * 
+ *
  * Azure backup recoveryPoint resource.
  */
 @Fluent
 public final class AzureBackupRecoveryPointResourceInner extends DppResource {
     /*
-     * AzureBackupRecoveryPoint
-     * 
      * AzureBackupRecoveryPointResource properties
      */
-    @JsonProperty(value = "properties")
     private AzureBackupRecoveryPoint properties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    private SystemData systemData;
 
     /**
      * Creates an instance of AzureBackupRecoveryPointResourceInner class.
@@ -31,10 +53,8 @@ public final class AzureBackupRecoveryPointResourceInner extends DppResource {
     }
 
     /**
-     * Get the properties property: AzureBackupRecoveryPoint
-     * 
-     * AzureBackupRecoveryPointResource properties.
-     * 
+     * Get the properties property: AzureBackupRecoveryPointResource properties.
+     *
      * @return the properties value.
      */
     public AzureBackupRecoveryPoint properties() {
@@ -42,10 +62,8 @@ public final class AzureBackupRecoveryPointResourceInner extends DppResource {
     }
 
     /**
-     * Set the properties property: AzureBackupRecoveryPoint
-     * 
-     * AzureBackupRecoveryPointResource properties.
-     * 
+     * Set the properties property: AzureBackupRecoveryPointResource properties.
+     *
      * @param properties the properties value to set.
      * @return the AzureBackupRecoveryPointResourceInner object itself.
      */
@@ -55,8 +73,48 @@ public final class AzureBackupRecoveryPointResourceInner extends DppResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -65,5 +123,52 @@ public final class AzureBackupRecoveryPointResourceInner extends DppResource {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBackupRecoveryPointResourceInner from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBackupRecoveryPointResourceInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureBackupRecoveryPointResourceInner.
+     */
+    public static AzureBackupRecoveryPointResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBackupRecoveryPointResourceInner deserializedAzureBackupRecoveryPointResourceInner
+                = new AzureBackupRecoveryPointResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryPointResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryPointResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryPointResourceInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryPointResourceInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryPointResourceInner.properties
+                        = AzureBackupRecoveryPoint.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBackupRecoveryPointResourceInner;
+        });
     }
 }

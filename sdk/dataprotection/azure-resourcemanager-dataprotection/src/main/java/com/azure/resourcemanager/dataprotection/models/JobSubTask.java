@@ -6,44 +6,41 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Details of Job's Sub Task.
  */
 @Fluent
-public final class JobSubTask {
+public final class JobSubTask implements JsonSerializable<JobSubTask> {
     /*
      * Additional details of Sub Tasks
      */
-    @JsonProperty(value = "additionalDetails")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> additionalDetails;
 
     /*
      * Task Id of the Sub Task
      */
-    @JsonProperty(value = "taskId", required = true)
     private int taskId;
 
     /*
      * Name of the Sub Task
      */
-    @JsonProperty(value = "taskName", required = true)
     private String taskName;
 
     /*
      * Progress of the Sub Task
      */
-    @JsonProperty(value = "taskProgress", access = JsonProperty.Access.WRITE_ONLY)
     private String taskProgress;
 
     /*
      * Status of the Sub Task
      */
-    @JsonProperty(value = "taskStatus", required = true)
     private String taskStatus;
 
     /**
@@ -148,14 +145,64 @@ public final class JobSubTask {
      */
     public void validate() {
         if (taskName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property taskName in model JobSubTask"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property taskName in model JobSubTask"));
         }
         if (taskStatus() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property taskStatus in model JobSubTask"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property taskStatus in model JobSubTask"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobSubTask.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("taskId", this.taskId);
+        jsonWriter.writeStringField("taskName", this.taskName);
+        jsonWriter.writeStringField("taskStatus", this.taskStatus);
+        jsonWriter.writeMapField("additionalDetails", this.additionalDetails,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobSubTask from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobSubTask if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobSubTask.
+     */
+    public static JobSubTask fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobSubTask deserializedJobSubTask = new JobSubTask();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("taskId".equals(fieldName)) {
+                    deserializedJobSubTask.taskId = reader.getInt();
+                } else if ("taskName".equals(fieldName)) {
+                    deserializedJobSubTask.taskName = reader.getString();
+                } else if ("taskStatus".equals(fieldName)) {
+                    deserializedJobSubTask.taskStatus = reader.getString();
+                } else if ("additionalDetails".equals(fieldName)) {
+                    Map<String, String> additionalDetails = reader.readMap(reader1 -> reader1.getString());
+                    deserializedJobSubTask.additionalDetails = additionalDetails;
+                } else if ("taskProgress".equals(fieldName)) {
+                    deserializedJobSubTask.taskProgress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobSubTask;
+        });
+    }
 }

@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.fluent.models.BackupVaultResourceInner;
+
 import java.util.Map;
 
 /**
@@ -16,95 +17,91 @@ import java.util.Map;
 public interface BackupVaultResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     * 
+     *
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     * 
+     *
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     * 
+     *
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the etag property: Optional ETag.
-     * 
+     *
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
+     *
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
-     * Gets the identity property: DppIdentityDetails
-     * 
-     * Input Managed Identity Details.
-     * 
+     * Gets the identity property: Input Managed Identity Details.
+     *
      * @return the identity value.
      */
     DppIdentityDetails identity();
 
     /**
-     * Gets the properties property: BackupVault
-     * 
-     * BackupVaultResource properties.
-     * 
+     * Gets the properties property: BackupVaultResource properties.
+     *
      * @return the properties value.
      */
     BackupVault properties();
 
     /**
      * Gets the region of the resource.
-     * 
+     *
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     * 
+     *
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     * 
+     *
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.dataprotection.fluent.models.BackupVaultResourceInner object.
-     * 
+     *
      * @return the inner object.
      */
     BackupVaultResourceInner innerModel();
@@ -132,7 +129,7 @@ public interface BackupVaultResource {
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             * 
+             *
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -140,7 +137,7 @@ public interface BackupVaultResource {
 
             /**
              * Specifies the region for the resource.
-             * 
+             *
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -153,7 +150,7 @@ public interface BackupVaultResource {
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             * 
+             *
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
@@ -165,13 +162,9 @@ public interface BackupVaultResource {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: BackupVault
-             * 
-             * BackupVaultResource properties.
-             * 
-             * @param properties BackupVault
-             * 
-             * BackupVaultResource properties.
+             * Specifies the properties property: BackupVaultResource properties.
+             *
+             * @param properties BackupVaultResource properties.
              * @return the next definition stage.
              */
             WithCreate withProperties(BackupVault properties);
@@ -185,14 +178,14 @@ public interface BackupVaultResource {
             extends DefinitionStages.WithTags, DefinitionStages.WithEtag, DefinitionStages.WithIdentity {
             /**
              * Executes the create request.
-             * 
+             *
              * @return the created resource.
              */
             BackupVaultResource create();
 
             /**
              * Executes the create request.
-             * 
+             *
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
@@ -205,7 +198,7 @@ public interface BackupVaultResource {
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             * 
+             *
              * @param tags Resource tags.
              * @return the next definition stage.
              */
@@ -218,7 +211,7 @@ public interface BackupVaultResource {
         interface WithEtag {
             /**
              * Specifies the etag property: Optional ETag..
-             * 
+             *
              * @param etag Optional ETag.
              * @return the next definition stage.
              */
@@ -230,13 +223,9 @@ public interface BackupVaultResource {
          */
         interface WithIdentity {
             /**
-             * Specifies the identity property: DppIdentityDetails
-             * 
-             * Input Managed Identity Details.
-             * 
-             * @param identity DppIdentityDetails
-             * 
-             * Input Managed Identity Details.
+             * Specifies the identity property: Input Managed Identity Details.
+             *
+             * @param identity Input Managed Identity Details.
              * @return the next definition stage.
              */
             WithCreate withIdentity(DppIdentityDetails identity);
@@ -245,7 +234,7 @@ public interface BackupVaultResource {
 
     /**
      * Begins update for the BackupVaultResource resource.
-     * 
+     *
      * @return the stage of resource update.
      */
     BackupVaultResource.Update update();
@@ -256,14 +245,14 @@ public interface BackupVaultResource {
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
         /**
          * Executes the update request.
-         * 
+         *
          * @return the updated resource.
          */
         BackupVaultResource apply();
 
         /**
          * Executes the update request.
-         * 
+         *
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
@@ -280,7 +269,7 @@ public interface BackupVaultResource {
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             * 
+             *
              * @param tags Resource tags.
              * @return the next definition stage.
              */
@@ -292,13 +281,9 @@ public interface BackupVaultResource {
          */
         interface WithIdentity {
             /**
-             * Specifies the identity property: DppIdentityDetails
-             * 
-             * Input Managed Identity Details.
-             * 
-             * @param identity DppIdentityDetails
-             * 
-             * Input Managed Identity Details.
+             * Specifies the identity property: Input Managed Identity Details.
+             *
+             * @param identity Input Managed Identity Details.
              * @return the next definition stage.
              */
             Update withIdentity(DppIdentityDetails identity);
@@ -310,7 +295,7 @@ public interface BackupVaultResource {
         interface WithProperties {
             /**
              * Specifies the properties property: Resource properties..
-             * 
+             *
              * @param properties Resource properties.
              * @return the next definition stage.
              */
@@ -320,14 +305,14 @@ public interface BackupVaultResource {
 
     /**
      * Refreshes the resource to sync with Azure.
-     * 
+     *
      * @return the refreshed resource.
      */
     BackupVaultResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

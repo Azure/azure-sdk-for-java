@@ -8,37 +8,35 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dataprotection.fluent.models.AzureBackupFindRestorableTimeRangesResponseResourceInner;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupFindRestorableTimeRangesResponse;
 import com.azure.resourcemanager.dataprotection.models.RestorableTimeRange;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
+
+import java.util.Arrays;
 
 public final class AzureBackupFindRestorableTimeRangesResponseResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBackupFindRestorableTimeRangesResponseResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"restorableTimeRanges\":[{\"startTime\":\"akbogqxndlkzgxh\",\"endTime\":\"ripl\",\"objectType\":\"odxun\"},{\"startTime\":\"bebxmubyyntwl\",\"endTime\":\"bqtkoievseotgqr\",\"objectType\":\"tmuwlauwzi\"},{\"startTime\":\"xbmp\",\"endTime\":\"cjefuzmu\",\"objectType\":\"bttdumorppxe\"}],\"objectType\":\"nzbtbhj\"},\"id\":\"lkfg\",\"name\":\"hdneuelfph\",\"type\":\"dyhtozfikdowwquu\"}")
+            "{\"properties\":{\"restorableTimeRanges\":[{\"startTime\":\"gktrmgucnapkte\",\"endTime\":\"ellwptfdy\",\"objectType\":\"fqbuaceopzf\"}],\"objectType\":\"hhuao\"},\"id\":\"pcqeqx\",\"name\":\"lzdahzxctobgbkdm\",\"type\":\"izpost\"}")
             .toObject(AzureBackupFindRestorableTimeRangesResponseResourceInner.class);
-        Assertions.assertEquals("akbogqxndlkzgxh", model.properties().restorableTimeRanges().get(0).startTime());
-        Assertions.assertEquals("ripl", model.properties().restorableTimeRanges().get(0).endTime());
-        Assertions.assertEquals("odxun", model.properties().restorableTimeRanges().get(0).objectType());
-        Assertions.assertEquals("nzbtbhj", model.properties().objectType());
+        Assertions.assertEquals("gktrmgucnapkte", model.properties().restorableTimeRanges().get(0).startTime());
+        Assertions.assertEquals("ellwptfdy", model.properties().restorableTimeRanges().get(0).endTime());
+        Assertions.assertEquals("fqbuaceopzf", model.properties().restorableTimeRanges().get(0).objectType());
+        Assertions.assertEquals("hhuao", model.properties().objectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureBackupFindRestorableTimeRangesResponseResourceInner model
-            = new AzureBackupFindRestorableTimeRangesResponseResourceInner().withProperties(
-                new AzureBackupFindRestorableTimeRangesResponse().withRestorableTimeRanges(Arrays.asList(
-                    new RestorableTimeRange().withStartTime("akbogqxndlkzgxh").withEndTime("ripl")
-                        .withObjectType("odxun"),
-                    new RestorableTimeRange().withStartTime("bebxmubyyntwl").withEndTime("bqtkoievseotgqr")
-                        .withObjectType("tmuwlauwzi"),
-                    new RestorableTimeRange().withStartTime("xbmp").withEndTime("cjefuzmu")
-                        .withObjectType("bttdumorppxe")))
-                    .withObjectType("nzbtbhj"));
+            = new AzureBackupFindRestorableTimeRangesResponseResourceInner()
+                .withProperties(new AzureBackupFindRestorableTimeRangesResponse()
+                    .withRestorableTimeRanges(Arrays.asList(new RestorableTimeRange().withStartTime("gktrmgucnapkte")
+                        .withEndTime("ellwptfdy")
+                        .withObjectType("fqbuaceopzf")))
+                    .withObjectType("hhuao"));
         model = BinaryData.fromObject(model).toObject(AzureBackupFindRestorableTimeRangesResponseResourceInner.class);
-        Assertions.assertEquals("akbogqxndlkzgxh", model.properties().restorableTimeRanges().get(0).startTime());
-        Assertions.assertEquals("ripl", model.properties().restorableTimeRanges().get(0).endTime());
-        Assertions.assertEquals("odxun", model.properties().restorableTimeRanges().get(0).objectType());
-        Assertions.assertEquals("nzbtbhj", model.properties().objectType());
+        Assertions.assertEquals("gktrmgucnapkte", model.properties().restorableTimeRanges().get(0).startTime());
+        Assertions.assertEquals("ellwptfdy", model.properties().restorableTimeRanges().get(0).endTime());
+        Assertions.assertEquals("fqbuaceopzf", model.properties().restorableTimeRanges().get(0).objectType());
+        Assertions.assertEquals("hhuao", model.properties().objectType());
     }
 }

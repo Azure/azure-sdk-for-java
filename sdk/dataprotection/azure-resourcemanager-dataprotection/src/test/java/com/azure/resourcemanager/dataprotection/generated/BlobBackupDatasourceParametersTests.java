@@ -6,23 +6,24 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dataprotection.models.BlobBackupDatasourceParameters;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
+
+import java.util.Arrays;
 
 public final class BlobBackupDatasourceParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BlobBackupDatasourceParameters model = BinaryData
-            .fromString("{\"objectType\":\"BlobBackupDatasourceParameters\",\"containersList\":[\"ovjzhpjbibgjmfx\"]}")
+        BlobBackupDatasourceParameters model = BinaryData.fromString(
+            "{\"objectType\":\"BlobBackupDatasourceParameters\",\"containersList\":[\"ejjoqkagfhsxtta\",\"gzxnfaazpxdtnk\"]}")
             .toObject(BlobBackupDatasourceParameters.class);
-        Assertions.assertEquals("ovjzhpjbibgjmfx", model.containersList().get(0));
+        Assertions.assertEquals("ejjoqkagfhsxtta", model.containersList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobBackupDatasourceParameters model
-            = new BlobBackupDatasourceParameters().withContainersList(Arrays.asList("ovjzhpjbibgjmfx"));
+        BlobBackupDatasourceParameters model = new BlobBackupDatasourceParameters()
+            .withContainersList(Arrays.asList("ejjoqkagfhsxtta", "gzxnfaazpxdtnk"));
         model = BinaryData.fromObject(model).toObject(BlobBackupDatasourceParameters.class);
-        Assertions.assertEquals("ovjzhpjbibgjmfx", model.containersList().get(0));
+        Assertions.assertEquals("ejjoqkagfhsxtta", model.containersList().get(0));
     }
 }

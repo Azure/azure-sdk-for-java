@@ -7,29 +7,40 @@ package com.azure.resourcemanager.dataprotection.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dataprotection.models.ClientDiscoveryForLogSpecification;
 import com.azure.resourcemanager.dataprotection.models.ClientDiscoveryForServiceSpecification;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
+
+import java.util.Arrays;
 
 public final class ClientDiscoveryForServiceSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientDiscoveryForServiceSpecification model = BinaryData
-            .fromString(
-                "{\"logSpecifications\":[{\"blobDuration\":\"mbsureximo\",\"displayName\":\"ocfs\",\"name\":\"s\"}]}")
+        ClientDiscoveryForServiceSpecification model = BinaryData.fromString(
+            "{\"logSpecifications\":[{\"blobDuration\":\"yip\",\"displayName\":\"sqwpgrjb\",\"name\":\"orcjxvsnby\"},{\"blobDuration\":\"abnmocpcyshu\",\"displayName\":\"afbljjgpbtoqcjmk\",\"name\":\"a\"},{\"blobDuration\":\"qidtqajzyu\",\"displayName\":\"kudjkrlkhb\",\"name\":\"fepgzgq\"},{\"blobDuration\":\"zloc\",\"displayName\":\"c\",\"name\":\"ierhhbcsglummaj\"}]}")
             .toObject(ClientDiscoveryForServiceSpecification.class);
-        Assertions.assertEquals("mbsureximo", model.logSpecifications().get(0).blobDuration());
-        Assertions.assertEquals("ocfs", model.logSpecifications().get(0).displayName());
-        Assertions.assertEquals("s", model.logSpecifications().get(0).name());
+        Assertions.assertEquals("yip", model.logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("sqwpgrjb", model.logSpecifications().get(0).displayName());
+        Assertions.assertEquals("orcjxvsnby", model.logSpecifications().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientDiscoveryForServiceSpecification model = new ClientDiscoveryForServiceSpecification()
-            .withLogSpecifications(Arrays.asList(new ClientDiscoveryForLogSpecification().withBlobDuration("mbsureximo")
-                .withDisplayName("ocfs").withName("s")));
+        ClientDiscoveryForServiceSpecification model
+            = new ClientDiscoveryForServiceSpecification().withLogSpecifications(Arrays.asList(
+                new ClientDiscoveryForLogSpecification().withBlobDuration("yip")
+                    .withDisplayName("sqwpgrjb")
+                    .withName("orcjxvsnby"),
+                new ClientDiscoveryForLogSpecification().withBlobDuration("abnmocpcyshu")
+                    .withDisplayName("afbljjgpbtoqcjmk")
+                    .withName("a"),
+                new ClientDiscoveryForLogSpecification().withBlobDuration("qidtqajzyu")
+                    .withDisplayName("kudjkrlkhb")
+                    .withName("fepgzgq"),
+                new ClientDiscoveryForLogSpecification().withBlobDuration("zloc")
+                    .withDisplayName("c")
+                    .withName("ierhhbcsglummaj")));
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryForServiceSpecification.class);
-        Assertions.assertEquals("mbsureximo", model.logSpecifications().get(0).blobDuration());
-        Assertions.assertEquals("ocfs", model.logSpecifications().get(0).displayName());
-        Assertions.assertEquals("s", model.logSpecifications().get(0).name());
+        Assertions.assertEquals("yip", model.logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("sqwpgrjb", model.logSpecifications().get(0).displayName());
+        Assertions.assertEquals("orcjxvsnby", model.logSpecifications().get(0).name());
     }
 }

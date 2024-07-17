@@ -7,23 +7,24 @@ package com.azure.resourcemanager.dataprotection.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dataprotection.fluent.models.BaseBackupPolicyResourceInner;
 import com.azure.resourcemanager.dataprotection.models.BaseBackupPolicy;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
+
+import java.util.Arrays;
 
 public final class BaseBackupPolicyResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BaseBackupPolicyResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"osvexcsonpclhoc\"]},\"id\":\"slkevle\",\"name\":\"gz\",\"type\":\"buhfmvfaxkffeiit\"}")
+            "{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"ojnxqbzvdd\",\"t\",\"ndei\"]},\"id\":\"twnpzaoqvuhrhcf\",\"name\":\"cyddglmjthjqk\",\"type\":\"pyeicxm\"}")
             .toObject(BaseBackupPolicyResourceInner.class);
-        Assertions.assertEquals("osvexcsonpclhoc", model.properties().datasourceTypes().get(0));
+        Assertions.assertEquals("ojnxqbzvdd", model.properties().datasourceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BaseBackupPolicyResourceInner model = new BaseBackupPolicyResourceInner()
-            .withProperties(new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("osvexcsonpclhoc")));
+            .withProperties(new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("ojnxqbzvdd", "t", "ndei")));
         model = BinaryData.fromObject(model).toObject(BaseBackupPolicyResourceInner.class);
-        Assertions.assertEquals("osvexcsonpclhoc", model.properties().datasourceTypes().get(0));
+        Assertions.assertEquals("ojnxqbzvdd", model.properties().datasourceTypes().get(0));
     }
 }

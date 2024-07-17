@@ -6,93 +6,84 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Backup Instance.
  */
 @Fluent
-public class BackupInstance {
+public class BackupInstance implements JsonSerializable<BackupInstance> {
     /*
      * Gets or sets the Backup Instance friendly name.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
-     * Datasource
-     * 
      * Gets or sets the data source information.
      */
-    @JsonProperty(value = "dataSourceInfo", required = true)
     private Datasource dataSourceInfo;
 
     /*
-     * DatasourceSet
-     * 
      * Gets or sets the data source set information.
      */
-    @JsonProperty(value = "dataSourceSetInfo")
     private DatasourceSet dataSourceSetInfo;
 
     /*
-     * PolicyInfo
-     * 
      * Gets or sets the policy information.
      */
-    @JsonProperty(value = "policyInfo", required = true)
     private PolicyInfo policyInfo;
 
     /*
-     * ProtectionStatusDetails
-     * 
+     * ResourceGuardOperationRequests on which LAC check will be performed
+     */
+    private List<String> resourceGuardOperationRequests;
+
+    /*
      * Specifies the protection status of the resource
      */
-    @JsonProperty(value = "protectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ProtectionStatusDetails protectionStatus;
 
     /*
      * Specifies the current protection state of the resource
      */
-    @JsonProperty(value = "currentProtectionState", access = JsonProperty.Access.WRITE_ONLY)
     private CurrentProtectionState currentProtectionState;
 
     /*
      * Specifies the protection error of the resource
      */
-    @JsonProperty(value = "protectionErrorDetails", access = JsonProperty.Access.WRITE_ONLY)
     private UserFacingError protectionErrorDetails;
 
     /*
      * Specifies the provisioning state of the resource i.e. provisioning/updating/Succeeded/Failed
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Credentials to use to authenticate with data source provider.
      */
-    @JsonProperty(value = "datasourceAuthCredentials")
     private AuthCredentials datasourceAuthCredentials;
 
     /*
-     * Specifies the type of validation. In case of DeepValidation, all validations from /validateForBackup API will
-     * run again.
+     * Specifies the type of validation. In case of DeepValidation, all validations from /validateForBackup API will run
+     * again.
      */
-    @JsonProperty(value = "validationType")
     private ValidationType validationType;
 
     /*
      * Contains information of the Identity Details for the BI.
      * If it is null, default will be considered as System Assigned.
      */
-    @JsonProperty(value = "identityDetails")
     private IdentityDetails identityDetails;
 
     /*
      * The objectType property.
      */
-    @JsonProperty(value = "objectType", required = true)
     private String objectType;
 
     /**
@@ -103,7 +94,7 @@ public class BackupInstance {
 
     /**
      * Get the friendlyName property: Gets or sets the Backup Instance friendly name.
-     * 
+     *
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -112,7 +103,7 @@ public class BackupInstance {
 
     /**
      * Set the friendlyName property: Gets or sets the Backup Instance friendly name.
-     * 
+     *
      * @param friendlyName the friendlyName value to set.
      * @return the BackupInstance object itself.
      */
@@ -122,10 +113,8 @@ public class BackupInstance {
     }
 
     /**
-     * Get the dataSourceInfo property: Datasource
-     * 
-     * Gets or sets the data source information.
-     * 
+     * Get the dataSourceInfo property: Gets or sets the data source information.
+     *
      * @return the dataSourceInfo value.
      */
     public Datasource dataSourceInfo() {
@@ -133,10 +122,8 @@ public class BackupInstance {
     }
 
     /**
-     * Set the dataSourceInfo property: Datasource
-     * 
-     * Gets or sets the data source information.
-     * 
+     * Set the dataSourceInfo property: Gets or sets the data source information.
+     *
      * @param dataSourceInfo the dataSourceInfo value to set.
      * @return the BackupInstance object itself.
      */
@@ -146,10 +133,8 @@ public class BackupInstance {
     }
 
     /**
-     * Get the dataSourceSetInfo property: DatasourceSet
-     * 
-     * Gets or sets the data source set information.
-     * 
+     * Get the dataSourceSetInfo property: Gets or sets the data source set information.
+     *
      * @return the dataSourceSetInfo value.
      */
     public DatasourceSet dataSourceSetInfo() {
@@ -157,10 +142,8 @@ public class BackupInstance {
     }
 
     /**
-     * Set the dataSourceSetInfo property: DatasourceSet
-     * 
-     * Gets or sets the data source set information.
-     * 
+     * Set the dataSourceSetInfo property: Gets or sets the data source set information.
+     *
      * @param dataSourceSetInfo the dataSourceSetInfo value to set.
      * @return the BackupInstance object itself.
      */
@@ -170,10 +153,8 @@ public class BackupInstance {
     }
 
     /**
-     * Get the policyInfo property: PolicyInfo
-     * 
-     * Gets or sets the policy information.
-     * 
+     * Get the policyInfo property: Gets or sets the policy information.
+     *
      * @return the policyInfo value.
      */
     public PolicyInfo policyInfo() {
@@ -181,10 +162,8 @@ public class BackupInstance {
     }
 
     /**
-     * Set the policyInfo property: PolicyInfo
-     * 
-     * Gets or sets the policy information.
-     * 
+     * Set the policyInfo property: Gets or sets the policy information.
+     *
      * @param policyInfo the policyInfo value to set.
      * @return the BackupInstance object itself.
      */
@@ -194,10 +173,30 @@ public class BackupInstance {
     }
 
     /**
-     * Get the protectionStatus property: ProtectionStatusDetails
-     * 
-     * Specifies the protection status of the resource.
-     * 
+     * Get the resourceGuardOperationRequests property: ResourceGuardOperationRequests on which LAC check will be
+     * performed.
+     *
+     * @return the resourceGuardOperationRequests value.
+     */
+    public List<String> resourceGuardOperationRequests() {
+        return this.resourceGuardOperationRequests;
+    }
+
+    /**
+     * Set the resourceGuardOperationRequests property: ResourceGuardOperationRequests on which LAC check will be
+     * performed.
+     *
+     * @param resourceGuardOperationRequests the resourceGuardOperationRequests value to set.
+     * @return the BackupInstance object itself.
+     */
+    public BackupInstance withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        this.resourceGuardOperationRequests = resourceGuardOperationRequests;
+        return this;
+    }
+
+    /**
+     * Get the protectionStatus property: Specifies the protection status of the resource.
+     *
      * @return the protectionStatus value.
      */
     public ProtectionStatusDetails protectionStatus() {
@@ -205,8 +204,19 @@ public class BackupInstance {
     }
 
     /**
+     * Set the protectionStatus property: Specifies the protection status of the resource.
+     *
+     * @param protectionStatus the protectionStatus value to set.
+     * @return the BackupInstance object itself.
+     */
+    BackupInstance withProtectionStatus(ProtectionStatusDetails protectionStatus) {
+        this.protectionStatus = protectionStatus;
+        return this;
+    }
+
+    /**
      * Get the currentProtectionState property: Specifies the current protection state of the resource.
-     * 
+     *
      * @return the currentProtectionState value.
      */
     public CurrentProtectionState currentProtectionState() {
@@ -214,8 +224,19 @@ public class BackupInstance {
     }
 
     /**
+     * Set the currentProtectionState property: Specifies the current protection state of the resource.
+     *
+     * @param currentProtectionState the currentProtectionState value to set.
+     * @return the BackupInstance object itself.
+     */
+    BackupInstance withCurrentProtectionState(CurrentProtectionState currentProtectionState) {
+        this.currentProtectionState = currentProtectionState;
+        return this;
+    }
+
+    /**
      * Get the protectionErrorDetails property: Specifies the protection error of the resource.
-     * 
+     *
      * @return the protectionErrorDetails value.
      */
     public UserFacingError protectionErrorDetails() {
@@ -223,9 +244,20 @@ public class BackupInstance {
     }
 
     /**
+     * Set the protectionErrorDetails property: Specifies the protection error of the resource.
+     *
+     * @param protectionErrorDetails the protectionErrorDetails value to set.
+     * @return the BackupInstance object itself.
+     */
+    BackupInstance withProtectionErrorDetails(UserFacingError protectionErrorDetails) {
+        this.protectionErrorDetails = protectionErrorDetails;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Specifies the provisioning state of the resource i.e.
      * provisioning/updating/Succeeded/Failed.
-     * 
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -233,8 +265,20 @@ public class BackupInstance {
     }
 
     /**
+     * Set the provisioningState property: Specifies the provisioning state of the resource i.e.
+     * provisioning/updating/Succeeded/Failed.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the BackupInstance object itself.
+     */
+    BackupInstance withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the datasourceAuthCredentials property: Credentials to use to authenticate with data source provider.
-     * 
+     *
      * @return the datasourceAuthCredentials value.
      */
     public AuthCredentials datasourceAuthCredentials() {
@@ -243,7 +287,7 @@ public class BackupInstance {
 
     /**
      * Set the datasourceAuthCredentials property: Credentials to use to authenticate with data source provider.
-     * 
+     *
      * @param datasourceAuthCredentials the datasourceAuthCredentials value to set.
      * @return the BackupInstance object itself.
      */
@@ -255,7 +299,7 @@ public class BackupInstance {
     /**
      * Get the validationType property: Specifies the type of validation. In case of DeepValidation, all validations
      * from /validateForBackup API will run again.
-     * 
+     *
      * @return the validationType value.
      */
     public ValidationType validationType() {
@@ -265,7 +309,7 @@ public class BackupInstance {
     /**
      * Set the validationType property: Specifies the type of validation. In case of DeepValidation, all validations
      * from /validateForBackup API will run again.
-     * 
+     *
      * @param validationType the validationType value to set.
      * @return the BackupInstance object itself.
      */
@@ -277,7 +321,7 @@ public class BackupInstance {
     /**
      * Get the identityDetails property: Contains information of the Identity Details for the BI.
      * If it is null, default will be considered as System Assigned.
-     * 
+     *
      * @return the identityDetails value.
      */
     public IdentityDetails identityDetails() {
@@ -287,7 +331,7 @@ public class BackupInstance {
     /**
      * Set the identityDetails property: Contains information of the Identity Details for the BI.
      * If it is null, default will be considered as System Assigned.
-     * 
+     *
      * @param identityDetails the identityDetails value to set.
      * @return the BackupInstance object itself.
      */
@@ -298,7 +342,7 @@ public class BackupInstance {
 
     /**
      * Get the objectType property: The objectType property.
-     * 
+     *
      * @return the objectType value.
      */
     public String objectType() {
@@ -307,7 +351,7 @@ public class BackupInstance {
 
     /**
      * Set the objectType property: The objectType property.
-     * 
+     *
      * @param objectType the objectType value to set.
      * @return the BackupInstance object itself.
      */
@@ -318,13 +362,13 @@ public class BackupInstance {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataSourceInfo() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dataSourceInfo in model BackupInstance"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dataSourceInfo in model BackupInstance"));
         } else {
             dataSourceInfo().validate();
         }
@@ -332,8 +376,8 @@ public class BackupInstance {
             dataSourceSetInfo().validate();
         }
         if (policyInfo() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property policyInfo in model BackupInstance"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property policyInfo in model BackupInstance"));
         } else {
             policyInfo().validate();
         }
@@ -350,10 +394,83 @@ public class BackupInstance {
             identityDetails().validate();
         }
         if (objectType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property objectType in model BackupInstance"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property objectType in model BackupInstance"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BackupInstance.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dataSourceInfo", this.dataSourceInfo);
+        jsonWriter.writeJsonField("policyInfo", this.policyInfo);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeJsonField("dataSourceSetInfo", this.dataSourceSetInfo);
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", this.resourceGuardOperationRequests,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("datasourceAuthCredentials", this.datasourceAuthCredentials);
+        jsonWriter.writeStringField("validationType",
+            this.validationType == null ? null : this.validationType.toString());
+        jsonWriter.writeJsonField("identityDetails", this.identityDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupInstance from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupInstance if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackupInstance.
+     */
+    public static BackupInstance fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupInstance deserializedBackupInstance = new BackupInstance();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataSourceInfo".equals(fieldName)) {
+                    deserializedBackupInstance.dataSourceInfo = Datasource.fromJson(reader);
+                } else if ("policyInfo".equals(fieldName)) {
+                    deserializedBackupInstance.policyInfo = PolicyInfo.fromJson(reader);
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedBackupInstance.objectType = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedBackupInstance.friendlyName = reader.getString();
+                } else if ("dataSourceSetInfo".equals(fieldName)) {
+                    deserializedBackupInstance.dataSourceSetInfo = DatasourceSet.fromJson(reader);
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBackupInstance.resourceGuardOperationRequests = resourceGuardOperationRequests;
+                } else if ("protectionStatus".equals(fieldName)) {
+                    deserializedBackupInstance.protectionStatus = ProtectionStatusDetails.fromJson(reader);
+                } else if ("currentProtectionState".equals(fieldName)) {
+                    deserializedBackupInstance.currentProtectionState
+                        = CurrentProtectionState.fromString(reader.getString());
+                } else if ("protectionErrorDetails".equals(fieldName)) {
+                    deserializedBackupInstance.protectionErrorDetails = UserFacingError.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedBackupInstance.provisioningState = reader.getString();
+                } else if ("datasourceAuthCredentials".equals(fieldName)) {
+                    deserializedBackupInstance.datasourceAuthCredentials = AuthCredentials.fromJson(reader);
+                } else if ("validationType".equals(fieldName)) {
+                    deserializedBackupInstance.validationType = ValidationType.fromString(reader.getString());
+                } else if ("identityDetails".equals(fieldName)) {
+                    deserializedBackupInstance.identityDetails = IdentityDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupInstance;
+        });
+    }
 }

@@ -5,21 +5,25 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * Parameters for Operational-Tier DataStore.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AzureOperationalStoreParameters")
 @Fluent
 public final class AzureOperationalStoreParameters extends DataStoreParameters {
     /*
+     * Type of the specific object - used for deserializing
+     */
+    private String objectType = "AzureOperationalStoreParameters";
+
+    /*
      * Gets or sets the Snapshot Resource Group Uri.
      */
-    @JsonProperty(value = "resourceGroupId")
     private String resourceGroupId;
 
     /**
@@ -29,8 +33,18 @@ public final class AzureOperationalStoreParameters extends DataStoreParameters {
     }
 
     /**
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     *
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the resourceGroupId property: Gets or sets the Snapshot Resource Group Uri.
-     * 
+     *
      * @return the resourceGroupId value.
      */
     public String resourceGroupId() {
@@ -39,7 +53,7 @@ public final class AzureOperationalStoreParameters extends DataStoreParameters {
 
     /**
      * Set the resourceGroupId property: Gets or sets the Snapshot Resource Group Uri.
-     * 
+     *
      * @param resourceGroupId the resourceGroupId value to set.
      * @return the AzureOperationalStoreParameters object itself.
      */
@@ -59,11 +73,56 @@ public final class AzureOperationalStoreParameters extends DataStoreParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataStoreType", dataStoreType() == null ? null : dataStoreType().toString());
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("resourceGroupId", this.resourceGroupId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureOperationalStoreParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureOperationalStoreParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureOperationalStoreParameters.
+     */
+    public static AzureOperationalStoreParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureOperationalStoreParameters deserializedAzureOperationalStoreParameters
+                = new AzureOperationalStoreParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataStoreType".equals(fieldName)) {
+                    deserializedAzureOperationalStoreParameters
+                        .withDataStoreType(DataStoreTypes.fromString(reader.getString()));
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureOperationalStoreParameters.objectType = reader.getString();
+                } else if ("resourceGroupId".equals(fieldName)) {
+                    deserializedAzureOperationalStoreParameters.resourceGroupId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureOperationalStoreParameters;
+        });
     }
 }

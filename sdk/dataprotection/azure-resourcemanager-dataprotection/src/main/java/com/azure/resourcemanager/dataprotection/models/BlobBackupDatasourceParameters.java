@@ -6,22 +6,26 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters to be used during configuration of backup of blobs.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("BlobBackupDatasourceParameters")
 @Fluent
 public final class BlobBackupDatasourceParameters extends BackupDatasourceParameters {
     /*
+     * Type of the specific object - used for deserializing
+     */
+    private String objectType = "BlobBackupDatasourceParameters";
+
+    /*
      * List of containers to be backed up during configuration of backup of blobs
      */
-    @JsonProperty(value = "containersList", required = true)
     private List<String> containersList;
 
     /**
@@ -31,8 +35,18 @@ public final class BlobBackupDatasourceParameters extends BackupDatasourceParame
     }
 
     /**
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     *
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the containersList property: List of containers to be backed up during configuration of backup of blobs.
-     * 
+     *
      * @return the containersList value.
      */
     public List<String> containersList() {
@@ -41,7 +55,7 @@ public final class BlobBackupDatasourceParameters extends BackupDatasourceParame
 
     /**
      * Set the containersList property: List of containers to be backed up during configuration of backup of blobs.
-     * 
+     *
      * @param containersList the containersList value to set.
      * @return the BlobBackupDatasourceParameters object itself.
      */
@@ -52,17 +66,61 @@ public final class BlobBackupDatasourceParameters extends BackupDatasourceParame
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (containersList() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property containersList in model BlobBackupDatasourceParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property containersList in model BlobBackupDatasourceParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobBackupDatasourceParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("containersList", this.containersList,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobBackupDatasourceParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobBackupDatasourceParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BlobBackupDatasourceParameters.
+     */
+    public static BlobBackupDatasourceParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobBackupDatasourceParameters deserializedBlobBackupDatasourceParameters
+                = new BlobBackupDatasourceParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("containersList".equals(fieldName)) {
+                    List<String> containersList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBlobBackupDatasourceParameters.containersList = containersList;
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedBlobBackupDatasourceParameters.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobBackupDatasourceParameters;
+        });
+    }
 }

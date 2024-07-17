@@ -5,27 +5,30 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dataprotection.fluent.models.ClientDiscoveryValueForSingleApiInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
  * ClientDiscoveryResponse
- * 
+ *
  * Operations List response which contains list of available APIs.
  */
 @Fluent
-public final class ClientDiscoveryResponse {
+public final class ClientDiscoveryResponse implements JsonSerializable<ClientDiscoveryResponse> {
     /*
      * Link to the next chunk of Response.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * List of available operations.
      */
-    @JsonProperty(value = "value")
     private List<ClientDiscoveryValueForSingleApiInner> value;
 
     /**
@@ -36,7 +39,7 @@ public final class ClientDiscoveryResponse {
 
     /**
      * Get the nextLink property: Link to the next chunk of Response.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -45,7 +48,7 @@ public final class ClientDiscoveryResponse {
 
     /**
      * Set the nextLink property: Link to the next chunk of Response.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the ClientDiscoveryResponse object itself.
      */
@@ -56,7 +59,7 @@ public final class ClientDiscoveryResponse {
 
     /**
      * Get the value property: List of available operations.
-     * 
+     *
      * @return the value value.
      */
     public List<ClientDiscoveryValueForSingleApiInner> value() {
@@ -65,7 +68,7 @@ public final class ClientDiscoveryResponse {
 
     /**
      * Set the value property: List of available operations.
-     * 
+     *
      * @param value the value value to set.
      * @return the ClientDiscoveryResponse object itself.
      */
@@ -76,12 +79,53 @@ public final class ClientDiscoveryResponse {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientDiscoveryResponse from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientDiscoveryResponse if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClientDiscoveryResponse.
+     */
+    public static ClientDiscoveryResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientDiscoveryResponse deserializedClientDiscoveryResponse = new ClientDiscoveryResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedClientDiscoveryResponse.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<ClientDiscoveryValueForSingleApiInner> value
+                        = reader.readArray(reader1 -> ClientDiscoveryValueForSingleApiInner.fromJson(reader1));
+                    deserializedClientDiscoveryResponse.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientDiscoveryResponse;
+        });
     }
 }
