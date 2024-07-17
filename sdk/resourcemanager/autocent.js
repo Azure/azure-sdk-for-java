@@ -251,7 +251,7 @@ async function sendRequest(url) {
 }
 
 function getSpecsMapping() {
-    const api_specs_file = path.join(__dirname, "../../eng/mgmt/automation/api-specs.yaml");
+    const api_specs_file = path.join(__dirname, "../../eng/automation/api-specs.yaml");
     const data = fs.readFileSync(api_specs_file, "utf-8");
     let specs = { managedapplications: "resources" };
     Object.entries(yaml.parse(data)).forEach(([rp, service]) => {

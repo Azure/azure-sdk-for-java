@@ -179,7 +179,8 @@ public final class EventGridReceiverClientImpl {
         Mono<Response<BinaryData>> acknowledge(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData acknowledgeRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:acknowledge")
         @ExpectedResponses({ 200 })
@@ -190,7 +191,8 @@ public final class EventGridReceiverClientImpl {
         Response<BinaryData> acknowledgeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData acknowledgeRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release")
         @ExpectedResponses({ 200 })
@@ -201,7 +203,7 @@ public final class EventGridReceiverClientImpl {
         Mono<Response<BinaryData>> release(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData releaseRequest, RequestOptions requestOptions, Context context);
 
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release")
         @ExpectedResponses({ 200 })
@@ -212,7 +214,7 @@ public final class EventGridReceiverClientImpl {
         Response<BinaryData> releaseSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData releaseRequest, RequestOptions requestOptions, Context context);
 
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:reject")
         @ExpectedResponses({ 200 })
@@ -223,7 +225,7 @@ public final class EventGridReceiverClientImpl {
         Mono<Response<BinaryData>> reject(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData rejectRequest, RequestOptions requestOptions, Context context);
 
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:reject")
         @ExpectedResponses({ 200 })
@@ -234,7 +236,7 @@ public final class EventGridReceiverClientImpl {
         Response<BinaryData> rejectSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData rejectRequest, RequestOptions requestOptions, Context context);
 
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:renewLock")
         @ExpectedResponses({ 200 })
@@ -245,7 +247,8 @@ public final class EventGridReceiverClientImpl {
         Mono<Response<BinaryData>> renewLocks(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData renewLocksRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:renewLock")
         @ExpectedResponses({ 200 })
@@ -256,7 +259,8 @@ public final class EventGridReceiverClientImpl {
         Response<BinaryData> renewLocksSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData renewLocksRequest, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -419,7 +423,7 @@ public final class EventGridReceiverClientImpl {
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param request The request parameter.
+     * @param acknowledgeRequest The acknowledgeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -430,11 +434,11 @@ public final class EventGridReceiverClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> acknowledgeWithResponseAsync(String topicName, String eventSubscriptionName,
-        BinaryData request, RequestOptions requestOptions) {
+        BinaryData acknowledgeRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.acknowledge(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                topicName, eventSubscriptionName, accept, request, requestOptions, context));
+                topicName, eventSubscriptionName, accept, acknowledgeRequest, requestOptions, context));
     }
 
     /**
@@ -480,7 +484,7 @@ public final class EventGridReceiverClientImpl {
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param request The request parameter.
+     * @param acknowledgeRequest The acknowledgeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -490,10 +494,10 @@ public final class EventGridReceiverClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> acknowledgeWithResponse(String topicName, String eventSubscriptionName,
-        BinaryData request, RequestOptions requestOptions) {
+        BinaryData acknowledgeRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.acknowledgeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
-            eventSubscriptionName, accept, request, requestOptions, Context.NONE);
+            eventSubscriptionName, accept, acknowledgeRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -547,7 +551,7 @@ public final class EventGridReceiverClientImpl {
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param request The request parameter.
+     * @param releaseRequest The releaseRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -557,11 +561,11 @@ public final class EventGridReceiverClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> releaseWithResponseAsync(String topicName, String eventSubscriptionName,
-        BinaryData request, RequestOptions requestOptions) {
+        BinaryData releaseRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.release(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                topicName, eventSubscriptionName, accept, request, requestOptions, context));
+                topicName, eventSubscriptionName, accept, releaseRequest, requestOptions, context));
     }
 
     /**
@@ -615,7 +619,7 @@ public final class EventGridReceiverClientImpl {
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param request The request parameter.
+     * @param releaseRequest The releaseRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -624,11 +628,11 @@ public final class EventGridReceiverClientImpl {
      * @return the result of the Release operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> releaseWithResponse(String topicName, String eventSubscriptionName, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> releaseWithResponse(String topicName, String eventSubscriptionName,
+        BinaryData releaseRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.releaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
-            eventSubscriptionName, accept, request, requestOptions, Context.NONE);
+            eventSubscriptionName, accept, releaseRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -674,7 +678,7 @@ public final class EventGridReceiverClientImpl {
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param request The request parameter.
+     * @param rejectRequest The rejectRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -684,10 +688,10 @@ public final class EventGridReceiverClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> rejectWithResponseAsync(String topicName, String eventSubscriptionName,
-        BinaryData request, RequestOptions requestOptions) {
+        BinaryData rejectRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.reject(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            topicName, eventSubscriptionName, accept, request, requestOptions, context));
+            topicName, eventSubscriptionName, accept, rejectRequest, requestOptions, context));
     }
 
     /**
@@ -733,7 +737,7 @@ public final class EventGridReceiverClientImpl {
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param request The request parameter.
+     * @param rejectRequest The rejectRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -742,11 +746,11 @@ public final class EventGridReceiverClientImpl {
      * @return the result of the Reject operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> rejectWithResponse(String topicName, String eventSubscriptionName, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> rejectWithResponse(String topicName, String eventSubscriptionName,
+        BinaryData rejectRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.rejectSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
-            eventSubscriptionName, accept, request, requestOptions, Context.NONE);
+            eventSubscriptionName, accept, rejectRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -792,7 +796,7 @@ public final class EventGridReceiverClientImpl {
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param request The request parameter.
+     * @param renewLocksRequest The renewLocksRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -803,11 +807,11 @@ public final class EventGridReceiverClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> renewLocksWithResponseAsync(String topicName, String eventSubscriptionName,
-        BinaryData request, RequestOptions requestOptions) {
+        BinaryData renewLocksRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.renewLocks(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                topicName, eventSubscriptionName, accept, request, requestOptions, context));
+                topicName, eventSubscriptionName, accept, renewLocksRequest, requestOptions, context));
     }
 
     /**
@@ -853,7 +857,7 @@ public final class EventGridReceiverClientImpl {
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param request The request parameter.
+     * @param renewLocksRequest The renewLocksRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -863,9 +867,9 @@ public final class EventGridReceiverClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> renewLocksWithResponse(String topicName, String eventSubscriptionName,
-        BinaryData request, RequestOptions requestOptions) {
+        BinaryData renewLocksRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.renewLocksSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
-            eventSubscriptionName, accept, request, requestOptions, Context.NONE);
+            eventSubscriptionName, accept, renewLocksRequest, requestOptions, Context.NONE);
     }
 }

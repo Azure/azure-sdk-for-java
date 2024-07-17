@@ -21,7 +21,10 @@ public final class VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpda
      */
     public static void virtualMachineScaleSetForceRecoveryServiceFabricPlatformUpdateDomainWalkMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
             .forceRecoveryServiceFabricPlatformUpdateDomainWalkWithResponse("rgcompute", "aaaaaaaaaaaa", 9, null, null,
                 com.azure.core.util.Context.NONE);
     }
@@ -39,7 +42,10 @@ public final class VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpda
      */
     public static void virtualMachineScaleSetForceRecoveryServiceFabricPlatformUpdateDomainWalkMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
             .forceRecoveryServiceFabricPlatformUpdateDomainWalkWithResponse("rgcompute", "aaaaaaaaaaaaaaaa", 30, null,
                 null, com.azure.core.util.Context.NONE);
     }

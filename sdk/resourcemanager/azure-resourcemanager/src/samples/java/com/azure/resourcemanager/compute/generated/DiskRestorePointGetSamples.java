@@ -19,9 +19,12 @@ public final class DiskRestorePointGetSamples {
      */
     public static void getAnIncrementalDiskRestorePointWhenSourceResourceIsFromADifferentRegion(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskRestorePoints().getWithResponse("myResourceGroup",
-            "rpc", "vmrp", "TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskRestorePoints()
+            .getWithResponse("myResourceGroup", "rpc", "vmrp",
+                "TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,8 +37,11 @@ public final class DiskRestorePointGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAnIncrementalDiskRestorePointResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskRestorePoints().getWithResponse("myResourceGroup",
-            "rpc", "vmrp", "TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskRestorePoints()
+            .getWithResponse("myResourceGroup", "rpc", "vmrp",
+                "TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745", com.azure.core.util.Context.NONE);
     }
 }

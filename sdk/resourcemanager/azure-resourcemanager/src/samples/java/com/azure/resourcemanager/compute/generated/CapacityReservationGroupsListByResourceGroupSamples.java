@@ -22,8 +22,11 @@ public final class CapacityReservationGroupsListByResourceGroupSamples {
      */
     public static void
         listCapacityReservationGroupsInResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservationGroups().listByResourceGroup(
-            "myResourceGroup", ExpandTypesForGetCapacityReservationGroups.VIRTUAL_MACHINES_REF,
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservationGroups()
+            .listByResourceGroup("myResourceGroup", ExpandTypesForGetCapacityReservationGroups.VIRTUAL_MACHINES_REF,
+                com.azure.core.util.Context.NONE);
     }
 }

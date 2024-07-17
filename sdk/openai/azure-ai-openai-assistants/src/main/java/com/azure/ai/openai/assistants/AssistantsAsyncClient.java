@@ -2272,9 +2272,10 @@ public final class AssistantsAsyncClient {
     public Mono<ThreadMessage> updateMessage(String threadId, String messageId, Map<String, String> metadata) {
         // Generated convenience method for updateMessageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateMessageRequest requestObj = new UpdateMessageRequest().setMetadata(metadata);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return updateMessageWithResponse(threadId, messageId, request, requestOptions).flatMap(FluxUtil::toMono)
+        UpdateMessageRequest updateMessageRequestObj = new UpdateMessageRequest().setMetadata(metadata);
+        BinaryData updateMessageRequest = BinaryData.fromObject(updateMessageRequestObj);
+        return updateMessageWithResponse(threadId, messageId, updateMessageRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadMessage.class));
     }
 
@@ -2296,9 +2297,10 @@ public final class AssistantsAsyncClient {
     public Mono<ThreadMessage> updateMessage(String threadId, String messageId) {
         // Generated convenience method for updateMessageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateMessageRequest requestObj = new UpdateMessageRequest();
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return updateMessageWithResponse(threadId, messageId, request, requestOptions).flatMap(FluxUtil::toMono)
+        UpdateMessageRequest updateMessageRequestObj = new UpdateMessageRequest();
+        BinaryData updateMessageRequest = BinaryData.fromObject(updateMessageRequestObj);
+        return updateMessageWithResponse(threadId, messageId, updateMessageRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadMessage.class));
     }
 
@@ -2418,9 +2420,9 @@ public final class AssistantsAsyncClient {
     public Mono<ThreadRun> updateRun(String threadId, String runId, Map<String, String> metadata) {
         // Generated convenience method for updateRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateRunRequest requestObj = new UpdateRunRequest().setMetadata(metadata);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return updateRunWithResponse(threadId, runId, request, requestOptions).flatMap(FluxUtil::toMono)
+        UpdateRunRequest updateRunRequestObj = new UpdateRunRequest().setMetadata(metadata);
+        BinaryData updateRunRequest = BinaryData.fromObject(updateRunRequestObj);
+        return updateRunWithResponse(threadId, runId, updateRunRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
     }
 
@@ -2443,9 +2445,9 @@ public final class AssistantsAsyncClient {
     public Mono<ThreadRun> updateRun(String threadId, String runId) {
         // Generated convenience method for updateRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateRunRequest requestObj = new UpdateRunRequest();
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return updateRunWithResponse(threadId, runId, request, requestOptions).flatMap(FluxUtil::toMono)
+        UpdateRunRequest updateRunRequestObj = new UpdateRunRequest();
+        BinaryData updateRunRequest = BinaryData.fromObject(updateRunRequestObj);
+        return updateRunWithResponse(threadId, runId, updateRunRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
     }
 
@@ -3416,7 +3418,7 @@ public final class AssistantsAsyncClient {
      * The ID of the vector store to modify.
      *
      * @param vectorStoreId The ID of the vector store to modify.
-     * @param vectorStoreUpdateOptions Request object for updating a vector store.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3428,12 +3430,11 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VectorStore> modifyVectorStore(String vectorStoreId,
-        VectorStoreUpdateOptions vectorStoreUpdateOptions) {
+    public Mono<VectorStore> modifyVectorStore(String vectorStoreId, VectorStoreUpdateOptions body) {
         // Generated convenience method for modifyVectorStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return modifyVectorStoreWithResponse(vectorStoreId, BinaryData.fromObject(vectorStoreUpdateOptions),
-            requestOptions).flatMap(FluxUtil::toMono)
+        return modifyVectorStoreWithResponse(vectorStoreId, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(VectorStore.class));
     }
 
@@ -3546,9 +3547,10 @@ public final class AssistantsAsyncClient {
     public Mono<VectorStoreFile> createVectorStoreFile(String vectorStoreId, String fileId) {
         // Generated convenience method for createVectorStoreFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateVectorStoreFileRequest requestObj = new CreateVectorStoreFileRequest(fileId);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return createVectorStoreFileWithResponse(vectorStoreId, request, requestOptions).flatMap(FluxUtil::toMono)
+        CreateVectorStoreFileRequest createVectorStoreFileRequestObj = new CreateVectorStoreFileRequest(fileId);
+        BinaryData createVectorStoreFileRequest = BinaryData.fromObject(createVectorStoreFileRequestObj);
+        return createVectorStoreFileWithResponse(vectorStoreId, createVectorStoreFileRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFile.class));
     }
 
@@ -3617,9 +3619,11 @@ public final class AssistantsAsyncClient {
     public Mono<VectorStoreFileBatch> createVectorStoreFileBatch(String vectorStoreId, List<String> fileIds) {
         // Generated convenience method for createVectorStoreFileBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateVectorStoreFileBatchRequest requestObj = new CreateVectorStoreFileBatchRequest(fileIds);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return createVectorStoreFileBatchWithResponse(vectorStoreId, request, requestOptions).flatMap(FluxUtil::toMono)
+        CreateVectorStoreFileBatchRequest createVectorStoreFileBatchRequestObj
+            = new CreateVectorStoreFileBatchRequest(fileIds);
+        BinaryData createVectorStoreFileBatchRequest = BinaryData.fromObject(createVectorStoreFileBatchRequestObj);
+        return createVectorStoreFileBatchWithResponse(vectorStoreId, createVectorStoreFileBatchRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFileBatch.class));
     }
 

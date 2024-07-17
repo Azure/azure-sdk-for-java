@@ -78,14 +78,16 @@ public final class KeyVaultAndSecretReference {
      */
     public void validate() {
         if (sourceVault() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceVault in model KeyVaultAndSecretReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceVault in model KeyVaultAndSecretReference"));
         } else {
             sourceVault().validate();
         }
         if (secretUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property secretUrl in model KeyVaultAndSecretReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secretUrl in model KeyVaultAndSecretReference"));
         }
     }
 
