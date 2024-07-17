@@ -412,6 +412,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void setAccessPolicy(PublicAccessType publicAccess) {
         Response<Void> response = cc.setAccessPolicyWithResponse(publicAccess, null, null, null, null);
 
