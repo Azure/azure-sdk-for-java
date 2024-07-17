@@ -254,7 +254,7 @@ public interface EventHubNamespace extends
          */
         interface WithZoneRedundant {
             /**
-             * Sets the zone redundant
+             * Enables the zone redundant
              *
              * @return next stage of the event hub namespace definition
              */
