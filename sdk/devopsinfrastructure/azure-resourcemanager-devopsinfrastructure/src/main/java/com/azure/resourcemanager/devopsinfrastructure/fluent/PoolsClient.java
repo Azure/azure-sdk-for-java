@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.models.PoolInner;
-import com.azure.resourcemanager.devopsinfrastructure.models.PoolUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in PoolsClient.
@@ -121,7 +120,7 @@ public interface PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PoolInner>, PoolInner> beginUpdate(String resourceGroupName, String poolName,
-        PoolUpdate properties);
+        PoolInner properties);
 
     /**
      * Update a Pool.
@@ -138,7 +137,7 @@ public interface PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PoolInner>, PoolInner> beginUpdate(String resourceGroupName, String poolName,
-        PoolUpdate properties, Context context);
+        PoolInner properties, Context context);
 
     /**
      * Update a Pool.
@@ -152,7 +151,7 @@ public interface PoolsClient {
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PoolInner update(String resourceGroupName, String poolName, PoolUpdate properties);
+    PoolInner update(String resourceGroupName, String poolName, PoolInner properties);
 
     /**
      * Update a Pool.
@@ -167,7 +166,7 @@ public interface PoolsClient {
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PoolInner update(String resourceGroupName, String poolName, PoolUpdate properties, Context context);
+    PoolInner update(String resourceGroupName, String poolName, PoolInner properties, Context context);
 
     /**
      * Delete a Pool.

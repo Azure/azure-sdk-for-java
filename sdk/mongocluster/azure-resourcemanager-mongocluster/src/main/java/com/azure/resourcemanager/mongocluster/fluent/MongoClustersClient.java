@@ -15,7 +15,6 @@ import com.azure.resourcemanager.mongocluster.fluent.models.CheckNameAvailabilit
 import com.azure.resourcemanager.mongocluster.fluent.models.ListConnectionStringsResultInner;
 import com.azure.resourcemanager.mongocluster.fluent.models.MongoClusterInner;
 import com.azure.resourcemanager.mongocluster.models.CheckNameAvailabilityRequest;
-import com.azure.resourcemanager.mongocluster.models.MongoClusterUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in MongoClustersClient.
@@ -128,7 +127,7 @@ public interface MongoClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MongoClusterInner>, MongoClusterInner> beginUpdate(String resourceGroupName,
-        String mongoClusterName, MongoClusterUpdate properties);
+        String mongoClusterName, MongoClusterInner properties);
 
     /**
      * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
@@ -145,7 +144,7 @@ public interface MongoClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MongoClusterInner>, MongoClusterInner> beginUpdate(String resourceGroupName,
-        String mongoClusterName, MongoClusterUpdate properties, Context context);
+        String mongoClusterName, MongoClusterInner properties, Context context);
 
     /**
      * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
@@ -160,7 +159,7 @@ public interface MongoClustersClient {
      * @return represents a mongo cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MongoClusterInner update(String resourceGroupName, String mongoClusterName, MongoClusterUpdate properties);
+    MongoClusterInner update(String resourceGroupName, String mongoClusterName, MongoClusterInner properties);
 
     /**
      * Updates an existing mongo cluster. The request body can contain one to many of the properties present in the
@@ -176,7 +175,7 @@ public interface MongoClustersClient {
      * @return represents a mongo cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MongoClusterInner update(String resourceGroupName, String mongoClusterName, MongoClusterUpdate properties,
+    MongoClusterInner update(String resourceGroupName, String mongoClusterName, MongoClusterInner properties,
         Context context);
 
     /**

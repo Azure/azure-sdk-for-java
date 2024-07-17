@@ -50,18 +50,18 @@ public final class StandbyVirtualMachinesImpl implements StandbyVirtualMachines 
         }
     }
 
-    public PagedIterable<StandbyVirtualMachineResource>
-        listByStandbyVirtualMachinePoolResource(String resourceGroupName, String standbyVirtualMachinePoolName) {
-        PagedIterable<StandbyVirtualMachineResourceInner> inner = this.serviceClient()
-            .listByStandbyVirtualMachinePoolResource(resourceGroupName, standbyVirtualMachinePoolName);
+    public PagedIterable<StandbyVirtualMachineResource> listByStandbyPool(String resourceGroupName,
+        String standbyVirtualMachinePoolName) {
+        PagedIterable<StandbyVirtualMachineResourceInner> inner
+            = this.serviceClient().listByStandbyPool(resourceGroupName, standbyVirtualMachinePoolName);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new StandbyVirtualMachineResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<StandbyVirtualMachineResource> listByStandbyVirtualMachinePoolResource(
-        String resourceGroupName, String standbyVirtualMachinePoolName, Context context) {
-        PagedIterable<StandbyVirtualMachineResourceInner> inner = this.serviceClient()
-            .listByStandbyVirtualMachinePoolResource(resourceGroupName, standbyVirtualMachinePoolName, context);
+    public PagedIterable<StandbyVirtualMachineResource> listByStandbyPool(String resourceGroupName,
+        String standbyVirtualMachinePoolName, Context context) {
+        PagedIterable<StandbyVirtualMachineResourceInner> inner
+            = this.serviceClient().listByStandbyPool(resourceGroupName, standbyVirtualMachinePoolName, context);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new StandbyVirtualMachineResourceImpl(inner1, this.manager()));
     }

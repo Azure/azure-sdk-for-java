@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.standbypool.fluent.models.StandbyVirtualMachinePoolResourceInner;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in StandbyVirtualMachinePoolsClient.
@@ -178,7 +177,7 @@ public interface StandbyVirtualMachinePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<StandbyVirtualMachinePoolResourceInner> updateWithResponse(String resourceGroupName,
-        String standbyVirtualMachinePoolName, StandbyVirtualMachinePoolResourceUpdate properties, Context context);
+        String standbyVirtualMachinePoolName, StandbyVirtualMachinePoolResourceInner properties, Context context);
 
     /**
      * Update a StandbyVirtualMachinePoolResource.
@@ -193,7 +192,7 @@ public interface StandbyVirtualMachinePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     StandbyVirtualMachinePoolResourceInner update(String resourceGroupName, String standbyVirtualMachinePoolName,
-        StandbyVirtualMachinePoolResourceUpdate properties);
+        StandbyVirtualMachinePoolResourceInner properties);
 
     /**
      * List StandbyVirtualMachinePoolResource resources by resource group.

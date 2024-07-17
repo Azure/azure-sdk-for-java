@@ -35,7 +35,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deviceregistry.fluent.AssetsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.models.AssetInner;
 import com.azure.resourcemanager.deviceregistry.implementation.models.AssetListResult;
-import com.azure.resourcemanager.deviceregistry.models.AssetUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -96,7 +95,7 @@ public final class AssetsClientImpl implements AssetsClient {
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("assetName") String assetName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") AssetUpdate properties,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") AssetInner properties,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -501,7 +500,7 @@ public final class AssetsClientImpl implements AssetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String assetName,
-        AssetUpdate properties) {
+        AssetInner properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -543,7 +542,7 @@ public final class AssetsClientImpl implements AssetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String assetName,
-        AssetUpdate properties, Context context) {
+        AssetInner properties, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -583,7 +582,7 @@ public final class AssetsClientImpl implements AssetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AssetInner>, AssetInner> beginUpdateAsync(String resourceGroupName, String assetName,
-        AssetUpdate properties) {
+        AssetInner properties) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, assetName, properties);
         return this.client.<AssetInner, AssetInner>getLroResult(mono, this.client.getHttpPipeline(), AssetInner.class,
             AssetInner.class, this.client.getContext());
@@ -603,7 +602,7 @@ public final class AssetsClientImpl implements AssetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AssetInner>, AssetInner> beginUpdateAsync(String resourceGroupName, String assetName,
-        AssetUpdate properties, Context context) {
+        AssetInner properties, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, assetName, properties, context);
@@ -624,7 +623,7 @@ public final class AssetsClientImpl implements AssetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetInner>, AssetInner> beginUpdate(String resourceGroupName, String assetName,
-        AssetUpdate properties) {
+        AssetInner properties) {
         return this.beginUpdateAsync(resourceGroupName, assetName, properties).getSyncPoller();
     }
 
@@ -642,7 +641,7 @@ public final class AssetsClientImpl implements AssetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetInner>, AssetInner> beginUpdate(String resourceGroupName, String assetName,
-        AssetUpdate properties, Context context) {
+        AssetInner properties, Context context) {
         return this.beginUpdateAsync(resourceGroupName, assetName, properties, context).getSyncPoller();
     }
 
@@ -658,7 +657,7 @@ public final class AssetsClientImpl implements AssetsClient {
      * @return asset definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssetInner> updateAsync(String resourceGroupName, String assetName, AssetUpdate properties) {
+    private Mono<AssetInner> updateAsync(String resourceGroupName, String assetName, AssetInner properties) {
         return beginUpdateAsync(resourceGroupName, assetName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -676,7 +675,7 @@ public final class AssetsClientImpl implements AssetsClient {
      * @return asset definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssetInner> updateAsync(String resourceGroupName, String assetName, AssetUpdate properties,
+    private Mono<AssetInner> updateAsync(String resourceGroupName, String assetName, AssetInner properties,
         Context context) {
         return beginUpdateAsync(resourceGroupName, assetName, properties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -694,7 +693,7 @@ public final class AssetsClientImpl implements AssetsClient {
      * @return asset definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetInner update(String resourceGroupName, String assetName, AssetUpdate properties) {
+    public AssetInner update(String resourceGroupName, String assetName, AssetInner properties) {
         return updateAsync(resourceGroupName, assetName, properties).block();
     }
 
@@ -711,7 +710,7 @@ public final class AssetsClientImpl implements AssetsClient {
      * @return asset definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetInner update(String resourceGroupName, String assetName, AssetUpdate properties, Context context) {
+    public AssetInner update(String resourceGroupName, String assetName, AssetInner properties, Context context) {
         return updateAsync(resourceGroupName, assetName, properties, context).block();
     }
 

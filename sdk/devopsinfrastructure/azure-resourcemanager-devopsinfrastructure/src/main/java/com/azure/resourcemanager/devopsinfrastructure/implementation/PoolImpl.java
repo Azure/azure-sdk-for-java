@@ -11,8 +11,6 @@ import com.azure.resourcemanager.devopsinfrastructure.fluent.models.PoolInner;
 import com.azure.resourcemanager.devopsinfrastructure.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devopsinfrastructure.models.Pool;
 import com.azure.resourcemanager.devopsinfrastructure.models.PoolProperties;
-import com.azure.resourcemanager.devopsinfrastructure.models.PoolUpdate;
-import com.azure.resourcemanager.devopsinfrastructure.models.PoolUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -82,8 +80,6 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
 
     private String poolName;
 
-    private PoolUpdate updateProperties;
-
     public PoolImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -110,20 +106,19 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public PoolImpl update() {
-        this.updateProperties = new PoolUpdate();
         return this;
     }
 
     public Pool apply() {
         this.innerObject = serviceManager.serviceClient()
             .getPools()
-            .update(resourceGroupName, poolName, updateProperties, Context.NONE);
+            .update(resourceGroupName, poolName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Pool apply(Context context) {
         this.innerObject
-            = serviceManager.serviceClient().getPools().update(resourceGroupName, poolName, updateProperties, context);
+            = serviceManager.serviceClient().getPools().update(resourceGroupName, poolName, this.innerModel(), context);
         return this;
     }
 
@@ -162,13 +157,8 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public PoolImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateProperties.withTags(tags);
-            return this;
-        }
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public PoolImpl withProperties(PoolProperties properties) {
@@ -177,21 +167,7 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public PoolImpl withIdentity(ManagedServiceIdentity identity) {
-        if (isInCreateMode()) {
-            this.innerModel().withIdentity(identity);
-            return this;
-        } else {
-            this.updateProperties.withIdentity(identity);
-            return this;
-        }
-    }
-
-    public PoolImpl withProperties(PoolUpdateProperties properties) {
-        this.updateProperties.withProperties(properties);
+        this.innerModel().withIdentity(identity);
         return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
     }
 }

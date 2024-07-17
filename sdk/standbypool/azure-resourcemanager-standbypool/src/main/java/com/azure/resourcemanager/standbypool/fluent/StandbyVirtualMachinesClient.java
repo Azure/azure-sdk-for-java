@@ -58,7 +58,7 @@ public interface StandbyVirtualMachinesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StandbyVirtualMachineResourceInner> listByStandbyVirtualMachinePoolResource(String resourceGroupName,
+    PagedIterable<StandbyVirtualMachineResourceInner> listByStandbyPool(String resourceGroupName,
         String standbyVirtualMachinePoolName);
 
     /**
@@ -74,6 +74,6 @@ public interface StandbyVirtualMachinesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StandbyVirtualMachineResourceInner> listByStandbyVirtualMachinePoolResource(String resourceGroupName,
+    PagedIterable<StandbyVirtualMachineResourceInner> listByStandbyPool(String resourceGroupName,
         String standbyVirtualMachinePoolName, Context context);
 }

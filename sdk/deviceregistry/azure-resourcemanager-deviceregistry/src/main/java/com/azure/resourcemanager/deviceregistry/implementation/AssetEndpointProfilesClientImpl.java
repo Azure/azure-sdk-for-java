@@ -35,7 +35,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deviceregistry.fluent.AssetEndpointProfilesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.models.AssetEndpointProfileInner;
 import com.azure.resourcemanager.deviceregistry.implementation.models.AssetEndpointProfileListResult;
-import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfileUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -101,7 +100,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("assetEndpointProfileName") String assetEndpointProfileName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") AssetEndpointProfileUpdate properties,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") AssetEndpointProfileInner properties,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -520,7 +519,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
-        String assetEndpointProfileName, AssetEndpointProfileUpdate properties) {
+        String assetEndpointProfileName, AssetEndpointProfileInner properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -562,7 +561,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
-        String assetEndpointProfileName, AssetEndpointProfileUpdate properties, Context context) {
+        String assetEndpointProfileName, AssetEndpointProfileInner properties, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -603,7 +602,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner> beginUpdateAsync(
-        String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileUpdate properties) {
+        String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileInner properties) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, assetEndpointProfileName, properties);
         return this.client.<AssetEndpointProfileInner, AssetEndpointProfileInner>getLroResult(mono,
@@ -625,7 +624,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner> beginUpdateAsync(
-        String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileUpdate properties,
+        String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileInner properties,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -647,7 +646,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner>
-        beginUpdate(String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileUpdate properties) {
+        beginUpdate(String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileInner properties) {
         return this.beginUpdateAsync(resourceGroupName, assetEndpointProfileName, properties).getSyncPoller();
     }
 
@@ -665,7 +664,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner> beginUpdate(
-        String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileUpdate properties,
+        String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileInner properties,
         Context context) {
         return this.beginUpdateAsync(resourceGroupName, assetEndpointProfileName, properties, context).getSyncPoller();
     }
@@ -683,7 +682,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AssetEndpointProfileInner> updateAsync(String resourceGroupName, String assetEndpointProfileName,
-        AssetEndpointProfileUpdate properties) {
+        AssetEndpointProfileInner properties) {
         return beginUpdateAsync(resourceGroupName, assetEndpointProfileName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -702,7 +701,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AssetEndpointProfileInner> updateAsync(String resourceGroupName, String assetEndpointProfileName,
-        AssetEndpointProfileUpdate properties, Context context) {
+        AssetEndpointProfileInner properties, Context context) {
         return beginUpdateAsync(resourceGroupName, assetEndpointProfileName, properties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -720,7 +719,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetEndpointProfileInner update(String resourceGroupName, String assetEndpointProfileName,
-        AssetEndpointProfileUpdate properties) {
+        AssetEndpointProfileInner properties) {
         return updateAsync(resourceGroupName, assetEndpointProfileName, properties).block();
     }
 
@@ -738,7 +737,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetEndpointProfileInner update(String resourceGroupName, String assetEndpointProfileName,
-        AssetEndpointProfileUpdate properties, Context context) {
+        AssetEndpointProfileInner properties, Context context) {
         return updateAsync(resourceGroupName, assetEndpointProfileName, properties, context).block();
     }
 

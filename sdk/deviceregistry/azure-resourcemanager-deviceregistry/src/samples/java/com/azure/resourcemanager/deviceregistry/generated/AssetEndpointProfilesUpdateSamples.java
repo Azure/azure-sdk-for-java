@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfile;
-import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfileUpdateProperties;
+import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfileProperties;
 
 /**
  * Samples for AssetEndpointProfiles Update.
@@ -29,7 +29,7 @@ public final class AssetEndpointProfilesUpdateSamples {
             .getValue();
         resource.update()
             .withProperties(
-                new AssetEndpointProfileUpdateProperties().withTargetAddress("https://www.example.com/myTargetAddress"))
+                new AssetEndpointProfileProperties().withTargetAddress("https://www.example.com/myTargetAddress"))
             .apply();
     }
 }

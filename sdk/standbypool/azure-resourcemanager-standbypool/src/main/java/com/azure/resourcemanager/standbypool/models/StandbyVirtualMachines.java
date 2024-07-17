@@ -52,7 +52,7 @@ public interface StandbyVirtualMachines {
      * @return the response of a StandbyVirtualMachineResource list operation as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<StandbyVirtualMachineResource> listByStandbyVirtualMachinePoolResource(String resourceGroupName,
+    PagedIterable<StandbyVirtualMachineResource> listByStandbyPool(String resourceGroupName,
         String standbyVirtualMachinePoolName);
 
     /**
@@ -67,6 +67,6 @@ public interface StandbyVirtualMachines {
      * @return the response of a StandbyVirtualMachineResource list operation as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<StandbyVirtualMachineResource> listByStandbyVirtualMachinePoolResource(String resourceGroupName,
+    PagedIterable<StandbyVirtualMachineResource> listByStandbyPool(String resourceGroupName,
         String standbyVirtualMachinePoolName, Context context);
 }

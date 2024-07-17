@@ -431,10 +431,10 @@ public final class BlocklistAsyncClient {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklistItems(name, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, TextBlocklistItem>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -465,10 +465,10 @@ public final class BlocklistAsyncClient {
         // Generated convenience method for listTextBlocklistItems
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklistItems(name, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, TextBlocklistItem>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -497,10 +497,10 @@ public final class BlocklistAsyncClient {
         // Generated convenience method for listTextBlocklists
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklists(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, TextBlocklist>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()

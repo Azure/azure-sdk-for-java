@@ -29,7 +29,7 @@ public interface PrivateEndpointConnectionsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionResourceInner> listByMongoCluster(String resourceGroupName,
+    PagedIterable<PrivateEndpointConnectionResourceInner> listConnections(String resourceGroupName,
         String mongoClusterName);
 
     /**
@@ -45,7 +45,7 @@ public interface PrivateEndpointConnectionsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionResourceInner> listByMongoCluster(String resourceGroupName,
+    PagedIterable<PrivateEndpointConnectionResourceInner> listConnections(String resourceGroupName,
         String mongoClusterName, Context context);
 
     /**

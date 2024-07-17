@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.resourcemanager.deviceregistry.models.Asset;
-import com.azure.resourcemanager.deviceregistry.models.AssetUpdateProperties;
+import com.azure.resourcemanager.deviceregistry.models.AssetProperties;
 
 /**
  * Samples for Assets Update.
@@ -25,7 +25,7 @@ public final class AssetsUpdateSamples {
             .getByResourceGroupWithResponse("myResourceGroup", "my-asset", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new AssetUpdateProperties().withEnabled(false).withDisplayName("NewAssetDisplayName"))
+            .withProperties(new AssetProperties().withEnabled(false).withDisplayName("NewAssetDisplayName"))
             .apply();
     }
 }

@@ -27,18 +27,18 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<PrivateEndpointConnectionResource> listByMongoCluster(String resourceGroupName,
+    public PagedIterable<PrivateEndpointConnectionResource> listConnections(String resourceGroupName,
         String mongoClusterName) {
         PagedIterable<PrivateEndpointConnectionResourceInner> inner
-            = this.serviceClient().listByMongoCluster(resourceGroupName, mongoClusterName);
+            = this.serviceClient().listConnections(resourceGroupName, mongoClusterName);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new PrivateEndpointConnectionResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PrivateEndpointConnectionResource> listByMongoCluster(String resourceGroupName,
+    public PagedIterable<PrivateEndpointConnectionResource> listConnections(String resourceGroupName,
         String mongoClusterName, Context context) {
         PagedIterable<PrivateEndpointConnectionResourceInner> inner
-            = this.serviceClient().listByMongoCluster(resourceGroupName, mongoClusterName, context);
+            = this.serviceClient().listConnections(resourceGroupName, mongoClusterName, context);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new PrivateEndpointConnectionResourceImpl(inner1, this.manager()));
     }

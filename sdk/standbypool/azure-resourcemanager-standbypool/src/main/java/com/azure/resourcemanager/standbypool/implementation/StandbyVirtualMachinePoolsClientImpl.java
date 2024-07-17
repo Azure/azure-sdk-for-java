@@ -35,7 +35,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.standbypool.fluent.StandbyVirtualMachinePoolsClient;
 import com.azure.resourcemanager.standbypool.fluent.models.StandbyVirtualMachinePoolResourceInner;
 import com.azure.resourcemanager.standbypool.implementation.models.StandbyVirtualMachinePoolResourceListResult;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -113,7 +112,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyVirtualMachinePoolName") String standbyVirtualMachinePoolName,
             @HeaderParam("accept") String accept,
-            @BodyParam("application/json") StandbyVirtualMachinePoolResourceUpdate properties, Context context);
+            @BodyParam("application/json") StandbyVirtualMachinePoolResourceInner properties, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools")
@@ -736,7 +735,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StandbyVirtualMachinePoolResourceInner>> updateWithResponseAsync(String resourceGroupName,
-        String standbyVirtualMachinePoolName, StandbyVirtualMachinePoolResourceUpdate properties) {
+        String standbyVirtualMachinePoolName, StandbyVirtualMachinePoolResourceInner properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -780,7 +779,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StandbyVirtualMachinePoolResourceInner>> updateWithResponseAsync(String resourceGroupName,
-        String standbyVirtualMachinePoolName, StandbyVirtualMachinePoolResourceUpdate properties, Context context) {
+        String standbyVirtualMachinePoolName, StandbyVirtualMachinePoolResourceInner properties, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -821,7 +820,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StandbyVirtualMachinePoolResourceInner> updateAsync(String resourceGroupName,
-        String standbyVirtualMachinePoolName, StandbyVirtualMachinePoolResourceUpdate properties) {
+        String standbyVirtualMachinePoolName, StandbyVirtualMachinePoolResourceInner properties) {
         return updateWithResponseAsync(resourceGroupName, standbyVirtualMachinePoolName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -840,7 +839,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandbyVirtualMachinePoolResourceInner> updateWithResponse(String resourceGroupName,
-        String standbyVirtualMachinePoolName, StandbyVirtualMachinePoolResourceUpdate properties, Context context) {
+        String standbyVirtualMachinePoolName, StandbyVirtualMachinePoolResourceInner properties, Context context) {
         return updateWithResponseAsync(resourceGroupName, standbyVirtualMachinePoolName, properties, context).block();
     }
 
@@ -857,7 +856,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandbyVirtualMachinePoolResourceInner update(String resourceGroupName, String standbyVirtualMachinePoolName,
-        StandbyVirtualMachinePoolResourceUpdate properties) {
+        StandbyVirtualMachinePoolResourceInner properties) {
         return updateWithResponse(resourceGroupName, standbyVirtualMachinePoolName, properties, Context.NONE)
             .getValue();
     }

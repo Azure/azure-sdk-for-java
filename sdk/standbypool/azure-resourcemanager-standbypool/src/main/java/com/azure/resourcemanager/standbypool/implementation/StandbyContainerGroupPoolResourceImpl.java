@@ -10,8 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.standbypool.fluent.models.StandbyContainerGroupPoolResourceInner;
 import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResource;
 import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceProperties;
-import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceUpdate;
-import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -78,8 +76,6 @@ public final class StandbyContainerGroupPoolResourceImpl implements StandbyConta
 
     private String standbyContainerGroupPoolName;
 
-    private StandbyContainerGroupPoolResourceUpdate updateProperties;
-
     public StandbyContainerGroupPoolResourceImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -107,14 +103,13 @@ public final class StandbyContainerGroupPoolResourceImpl implements StandbyConta
     }
 
     public StandbyContainerGroupPoolResourceImpl update() {
-        this.updateProperties = new StandbyContainerGroupPoolResourceUpdate();
         return this;
     }
 
     public StandbyContainerGroupPoolResource apply() {
         this.innerObject = serviceManager.serviceClient()
             .getStandbyContainerGroupPools()
-            .updateWithResponse(resourceGroupName, standbyContainerGroupPoolName, updateProperties, Context.NONE)
+            .updateWithResponse(resourceGroupName, standbyContainerGroupPoolName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
@@ -122,7 +117,7 @@ public final class StandbyContainerGroupPoolResourceImpl implements StandbyConta
     public StandbyContainerGroupPoolResource apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getStandbyContainerGroupPools()
-            .updateWithResponse(resourceGroupName, standbyContainerGroupPoolName, updateProperties, context)
+            .updateWithResponse(resourceGroupName, standbyContainerGroupPoolName, this.innerModel(), context)
             .getValue();
         return this;
     }
@@ -163,28 +158,13 @@ public final class StandbyContainerGroupPoolResourceImpl implements StandbyConta
     }
 
     public StandbyContainerGroupPoolResourceImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateProperties.withTags(tags);
-            return this;
-        }
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public StandbyContainerGroupPoolResourceImpl
         withProperties(StandbyContainerGroupPoolResourceProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
-    }
-
-    public StandbyContainerGroupPoolResourceImpl
-        withProperties(StandbyContainerGroupPoolResourceUpdateProperties properties) {
-        this.updateProperties.withProperties(properties);
-        return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
     }
 }

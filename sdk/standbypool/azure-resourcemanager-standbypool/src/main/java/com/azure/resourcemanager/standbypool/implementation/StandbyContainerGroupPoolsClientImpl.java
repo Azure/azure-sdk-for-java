@@ -35,7 +35,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.standbypool.fluent.StandbyContainerGroupPoolsClient;
 import com.azure.resourcemanager.standbypool.fluent.models.StandbyContainerGroupPoolResourceInner;
 import com.azure.resourcemanager.standbypool.implementation.models.StandbyContainerGroupPoolResourceListResult;
-import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -113,7 +112,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
             @HeaderParam("accept") String accept,
-            @BodyParam("application/json") StandbyContainerGroupPoolResourceUpdate properties, Context context);
+            @BodyParam("application/json") StandbyContainerGroupPoolResourceInner properties, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools")
@@ -736,7 +735,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StandbyContainerGroupPoolResourceInner>> updateWithResponseAsync(String resourceGroupName,
-        String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceUpdate properties) {
+        String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceInner properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -780,7 +779,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StandbyContainerGroupPoolResourceInner>> updateWithResponseAsync(String resourceGroupName,
-        String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceUpdate properties, Context context) {
+        String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceInner properties, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -821,7 +820,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StandbyContainerGroupPoolResourceInner> updateAsync(String resourceGroupName,
-        String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceUpdate properties) {
+        String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceInner properties) {
         return updateWithResponseAsync(resourceGroupName, standbyContainerGroupPoolName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -840,7 +839,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandbyContainerGroupPoolResourceInner> updateWithResponse(String resourceGroupName,
-        String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceUpdate properties, Context context) {
+        String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceInner properties, Context context) {
         return updateWithResponseAsync(resourceGroupName, standbyContainerGroupPoolName, properties, context).block();
     }
 
@@ -857,7 +856,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandbyContainerGroupPoolResourceInner update(String resourceGroupName, String standbyContainerGroupPoolName,
-        StandbyContainerGroupPoolResourceUpdate properties) {
+        StandbyContainerGroupPoolResourceInner properties) {
         return updateWithResponse(resourceGroupName, standbyContainerGroupPoolName, properties, Context.NONE)
             .getValue();
     }

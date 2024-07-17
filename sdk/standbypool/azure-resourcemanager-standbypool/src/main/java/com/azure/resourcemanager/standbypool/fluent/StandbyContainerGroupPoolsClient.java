@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.standbypool.fluent.models.StandbyContainerGroupPoolResourceInner;
-import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in StandbyContainerGroupPoolsClient.
@@ -178,7 +177,7 @@ public interface StandbyContainerGroupPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<StandbyContainerGroupPoolResourceInner> updateWithResponse(String resourceGroupName,
-        String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceUpdate properties, Context context);
+        String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceInner properties, Context context);
 
     /**
      * Update a StandbyContainerGroupPoolResource.
@@ -193,7 +192,7 @@ public interface StandbyContainerGroupPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     StandbyContainerGroupPoolResourceInner update(String resourceGroupName, String standbyContainerGroupPoolName,
-        StandbyContainerGroupPoolResourceUpdate properties);
+        StandbyContainerGroupPoolResourceInner properties);
 
     /**
      * List StandbyContainerGroupPoolResource resources by resource group.

@@ -66,7 +66,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/privateLinkResources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceListResult>> listByMongoCluster(@HostParam("endpoint") String endpoint,
+        Mono<Response<PrivateLinkResourceListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("accept") String accept,
@@ -76,7 +76,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceListResult>> listByMongoClusterNext(
+        Mono<Response<PrivateLinkResourceListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept, Context context);
     }
@@ -93,7 +93,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listByMongoClusterSinglePageAsync(String resourceGroupName,
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(String resourceGroupName,
         String mongoClusterName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -113,7 +113,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByMongoCluster(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, accept, context))
             .<PagedResponse<PrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -133,7 +133,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listByMongoClusterSinglePageAsync(String resourceGroupName,
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(String resourceGroupName,
         String mongoClusterName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -154,7 +154,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByMongoCluster(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
                 resourceGroupName, mongoClusterName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -171,10 +171,9 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      * @return the response of a PrivateLinkResource list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceInner> listByMongoClusterAsync(String resourceGroupName,
-        String mongoClusterName) {
-        return new PagedFlux<>(() -> listByMongoClusterSinglePageAsync(resourceGroupName, mongoClusterName),
-            nextLink -> listByMongoClusterNextSinglePageAsync(nextLink));
+    private PagedFlux<PrivateLinkResourceInner> listAsync(String resourceGroupName, String mongoClusterName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, mongoClusterName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -189,10 +188,10 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      * @return the response of a PrivateLinkResource list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceInner> listByMongoClusterAsync(String resourceGroupName,
-        String mongoClusterName, Context context) {
-        return new PagedFlux<>(() -> listByMongoClusterSinglePageAsync(resourceGroupName, mongoClusterName, context),
-            nextLink -> listByMongoClusterNextSinglePageAsync(nextLink, context));
+    private PagedFlux<PrivateLinkResourceInner> listAsync(String resourceGroupName, String mongoClusterName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, mongoClusterName, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -206,9 +205,8 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      * @return the response of a PrivateLinkResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateLinkResourceInner> listByMongoCluster(String resourceGroupName,
-        String mongoClusterName) {
-        return new PagedIterable<>(listByMongoClusterAsync(resourceGroupName, mongoClusterName));
+    public PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String mongoClusterName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, mongoClusterName));
     }
 
     /**
@@ -223,9 +221,9 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      * @return the response of a PrivateLinkResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateLinkResourceInner> listByMongoCluster(String resourceGroupName, String mongoClusterName,
+    public PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String mongoClusterName,
         Context context) {
-        return new PagedIterable<>(listByMongoClusterAsync(resourceGroupName, mongoClusterName, context));
+        return new PagedIterable<>(listAsync(resourceGroupName, mongoClusterName, context));
     }
 
     /**
@@ -239,7 +237,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listByMongoClusterNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -248,9 +246,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listByMongoClusterNext(nextLink, this.client.getEndpoint(), accept, context))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<PrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -268,8 +264,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listByMongoClusterNextSinglePageAsync(String nextLink,
-        Context context) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -279,7 +274,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByMongoClusterNext(nextLink, this.client.getEndpoint(), accept, context)
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

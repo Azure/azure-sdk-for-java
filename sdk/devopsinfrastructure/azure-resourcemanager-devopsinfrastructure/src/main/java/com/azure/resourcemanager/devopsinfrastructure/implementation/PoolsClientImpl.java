@@ -35,7 +35,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.PoolsClient;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.models.PoolInner;
 import com.azure.resourcemanager.devopsinfrastructure.implementation.models.PoolListResult;
-import com.azure.resourcemanager.devopsinfrastructure.models.PoolUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -96,8 +95,7 @@ public final class PoolsClientImpl implements PoolsClient {
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("poolName") String poolName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") PoolUpdate properties,
-            Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") PoolInner properties, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}")
@@ -508,7 +506,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String poolName,
-        PoolUpdate properties) {
+        PoolInner properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -551,7 +549,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String poolName,
-        PoolUpdate properties, Context context) {
+        PoolInner properties, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -592,7 +590,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PoolInner>, PoolInner> beginUpdateAsync(String resourceGroupName, String poolName,
-        PoolUpdate properties) {
+        PoolInner properties) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, poolName, properties);
         return this.client.<PoolInner, PoolInner>getLroResult(mono, this.client.getHttpPipeline(), PoolInner.class,
             PoolInner.class, this.client.getContext());
@@ -613,7 +611,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PoolInner>, PoolInner> beginUpdateAsync(String resourceGroupName, String poolName,
-        PoolUpdate properties, Context context) {
+        PoolInner properties, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, poolName, properties, context);
@@ -635,7 +633,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PoolInner>, PoolInner> beginUpdate(String resourceGroupName, String poolName,
-        PoolUpdate properties) {
+        PoolInner properties) {
         return this.beginUpdateAsync(resourceGroupName, poolName, properties).getSyncPoller();
     }
 
@@ -654,7 +652,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PoolInner>, PoolInner> beginUpdate(String resourceGroupName, String poolName,
-        PoolUpdate properties, Context context) {
+        PoolInner properties, Context context) {
         return this.beginUpdateAsync(resourceGroupName, poolName, properties, context).getSyncPoller();
     }
 
@@ -671,7 +669,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolInner> updateAsync(String resourceGroupName, String poolName, PoolUpdate properties) {
+    private Mono<PoolInner> updateAsync(String resourceGroupName, String poolName, PoolInner properties) {
         return beginUpdateAsync(resourceGroupName, poolName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -690,7 +688,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolInner> updateAsync(String resourceGroupName, String poolName, PoolUpdate properties,
+    private Mono<PoolInner> updateAsync(String resourceGroupName, String poolName, PoolInner properties,
         Context context) {
         return beginUpdateAsync(resourceGroupName, poolName, properties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -708,7 +706,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolInner update(String resourceGroupName, String poolName, PoolUpdate properties) {
+    public PoolInner update(String resourceGroupName, String poolName, PoolInner properties) {
         return updateAsync(resourceGroupName, poolName, properties).block();
     }
 
@@ -725,7 +723,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolInner update(String resourceGroupName, String poolName, PoolUpdate properties, Context context) {
+    public PoolInner update(String resourceGroupName, String poolName, PoolInner properties, Context context) {
         return updateAsync(resourceGroupName, poolName, properties, context).block();
     }
 

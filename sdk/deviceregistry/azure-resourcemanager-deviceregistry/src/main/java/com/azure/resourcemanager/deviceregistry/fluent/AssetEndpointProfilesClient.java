@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deviceregistry.fluent.models.AssetEndpointProfileInner;
-import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfileUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in AssetEndpointProfilesClient.
@@ -121,7 +120,7 @@ public interface AssetEndpointProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner> beginUpdate(String resourceGroupName,
-        String assetEndpointProfileName, AssetEndpointProfileUpdate properties);
+        String assetEndpointProfileName, AssetEndpointProfileInner properties);
 
     /**
      * Update a AssetEndpointProfile.
@@ -137,7 +136,7 @@ public interface AssetEndpointProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner> beginUpdate(String resourceGroupName,
-        String assetEndpointProfileName, AssetEndpointProfileUpdate properties, Context context);
+        String assetEndpointProfileName, AssetEndpointProfileInner properties, Context context);
 
     /**
      * Update a AssetEndpointProfile.
@@ -152,7 +151,7 @@ public interface AssetEndpointProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AssetEndpointProfileInner update(String resourceGroupName, String assetEndpointProfileName,
-        AssetEndpointProfileUpdate properties);
+        AssetEndpointProfileInner properties);
 
     /**
      * Update a AssetEndpointProfile.
@@ -168,7 +167,7 @@ public interface AssetEndpointProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AssetEndpointProfileInner update(String resourceGroupName, String assetEndpointProfileName,
-        AssetEndpointProfileUpdate properties, Context context);
+        AssetEndpointProfileInner properties, Context context);
 
     /**
      * Delete a AssetEndpointProfile.

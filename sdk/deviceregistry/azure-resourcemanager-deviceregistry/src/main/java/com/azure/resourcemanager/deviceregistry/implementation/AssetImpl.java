@@ -10,8 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceregistry.fluent.models.AssetInner;
 import com.azure.resourcemanager.deviceregistry.models.Asset;
 import com.azure.resourcemanager.deviceregistry.models.AssetProperties;
-import com.azure.resourcemanager.deviceregistry.models.AssetUpdate;
-import com.azure.resourcemanager.deviceregistry.models.AssetUpdateProperties;
 import com.azure.resourcemanager.deviceregistry.models.ExtendedLocation;
 import java.util.Collections;
 import java.util.Map;
@@ -82,8 +80,6 @@ public final class AssetImpl implements Asset, Asset.Definition, Asset.Update {
 
     private String assetName;
 
-    private AssetUpdate updateProperties;
-
     public AssetImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -110,21 +106,20 @@ public final class AssetImpl implements Asset, Asset.Definition, Asset.Update {
     }
 
     public AssetImpl update() {
-        this.updateProperties = new AssetUpdate();
         return this;
     }
 
     public Asset apply() {
         this.innerObject = serviceManager.serviceClient()
             .getAssets()
-            .update(resourceGroupName, assetName, updateProperties, Context.NONE);
+            .update(resourceGroupName, assetName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Asset apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getAssets()
-            .update(resourceGroupName, assetName, updateProperties, context);
+            .update(resourceGroupName, assetName, this.innerModel(), context);
         return this;
     }
 
@@ -167,26 +162,12 @@ public final class AssetImpl implements Asset, Asset.Definition, Asset.Update {
     }
 
     public AssetImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateProperties.withTags(tags);
-            return this;
-        }
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public AssetImpl withProperties(AssetProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
-    }
-
-    public AssetImpl withProperties(AssetUpdateProperties properties) {
-        this.updateProperties.withProperties(properties);
-        return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
     }
 }

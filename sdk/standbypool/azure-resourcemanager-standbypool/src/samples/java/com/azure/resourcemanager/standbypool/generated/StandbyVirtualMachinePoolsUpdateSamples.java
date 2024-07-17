@@ -6,7 +6,7 @@ package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfile;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResource;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceUpdateProperties;
+import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceProperties;
 import com.azure.resourcemanager.standbypool.models.VirtualMachineState;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,7 @@ public final class StandbyVirtualMachinePoolsUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf())
-            .withProperties(new StandbyVirtualMachinePoolResourceUpdateProperties()
+            .withProperties(new StandbyVirtualMachinePoolResourceProperties()
                 .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(304L))
                 .withVirtualMachineState(VirtualMachineState.RUNNING)
                 .withAttachedVirtualMachineScaleSetId(

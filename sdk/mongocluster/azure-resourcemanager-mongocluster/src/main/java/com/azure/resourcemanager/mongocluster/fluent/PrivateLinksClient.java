@@ -25,7 +25,7 @@ public interface PrivateLinksClient {
      * @return the response of a PrivateLinkResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateLinkResourceInner> listByMongoCluster(String resourceGroupName, String mongoClusterName);
+    PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String mongoClusterName);
 
     /**
      * list private links on the given resource.
@@ -39,6 +39,5 @@ public interface PrivateLinksClient {
      * @return the response of a PrivateLinkResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateLinkResourceInner> listByMongoCluster(String resourceGroupName, String mongoClusterName,
-        Context context);
+    PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String mongoClusterName, Context context);
 }

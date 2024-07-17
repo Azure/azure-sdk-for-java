@@ -75,7 +75,7 @@ public interface FirewallRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FirewallRule list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<FirewallRule> listByMongoCluster(String resourceGroupName, String mongoClusterName);
+    PagedIterable<FirewallRule> listByParent(String resourceGroupName, String mongoClusterName);
 
     /**
      * List all the firewall rules in a given mongo cluster.
@@ -88,7 +88,7 @@ public interface FirewallRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FirewallRule list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<FirewallRule> listByMongoCluster(String resourceGroupName, String mongoClusterName, Context context);
+    PagedIterable<FirewallRule> listByParent(String resourceGroupName, String mongoClusterName, Context context);
 
     /**
      * Gets information about a mongo cluster firewall rule.

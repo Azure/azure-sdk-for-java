@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deviceregistry.fluent.models.AssetInner;
-import com.azure.resourcemanager.deviceregistry.models.AssetUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in AssetsClient.
@@ -118,7 +117,7 @@ public interface AssetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AssetInner>, AssetInner> beginUpdate(String resourceGroupName, String assetName,
-        AssetUpdate properties);
+        AssetInner properties);
 
     /**
      * Update a Asset.
@@ -134,7 +133,7 @@ public interface AssetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AssetInner>, AssetInner> beginUpdate(String resourceGroupName, String assetName,
-        AssetUpdate properties, Context context);
+        AssetInner properties, Context context);
 
     /**
      * Update a Asset.
@@ -148,7 +147,7 @@ public interface AssetsClient {
      * @return asset definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetInner update(String resourceGroupName, String assetName, AssetUpdate properties);
+    AssetInner update(String resourceGroupName, String assetName, AssetInner properties);
 
     /**
      * Update a Asset.
@@ -163,7 +162,7 @@ public interface AssetsClient {
      * @return asset definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetInner update(String resourceGroupName, String assetName, AssetUpdate properties, Context context);
+    AssetInner update(String resourceGroupName, String assetName, AssetInner properties, Context context);
 
     /**
      * Delete a Asset.

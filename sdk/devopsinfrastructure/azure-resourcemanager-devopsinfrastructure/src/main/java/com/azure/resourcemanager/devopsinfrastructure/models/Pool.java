@@ -221,7 +221,7 @@ public interface Pool {
     /**
      * The template for Pool update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithIdentity {
         /**
          * Executes the update request.
          * 
@@ -256,6 +256,19 @@ public interface Pool {
         }
 
         /**
+         * The stage of the Pool update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            Update withProperties(PoolProperties properties);
+        }
+
+        /**
          * The stage of the Pool update allowing to specify identity.
          */
         interface WithIdentity {
@@ -266,19 +279,6 @@ public interface Pool {
              * @return the next definition stage.
              */
             Update withIdentity(ManagedServiceIdentity identity);
-        }
-
-        /**
-         * The stage of the Pool update allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The properties property..
-             * 
-             * @param properties The properties property.
-             * @return the next definition stage.
-             */
-            Update withProperties(PoolUpdateProperties properties);
         }
     }
 

@@ -259,12 +259,12 @@ public interface Asset {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: The properties property..
+             * Specifies the properties property: The resource-specific properties for this resource..
              * 
-             * @param properties The properties property.
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(AssetUpdateProperties properties);
+            Update withProperties(AssetProperties properties);
         }
     }
 

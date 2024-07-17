@@ -10,8 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceregistry.fluent.models.AssetEndpointProfileInner;
 import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfile;
 import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfileProperties;
-import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfileUpdate;
-import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfileUpdateProperties;
 import com.azure.resourcemanager.deviceregistry.models.ExtendedLocation;
 import java.util.Collections;
 import java.util.Map;
@@ -83,8 +81,6 @@ public final class AssetEndpointProfileImpl
 
     private String assetEndpointProfileName;
 
-    private AssetEndpointProfileUpdate updateProperties;
-
     public AssetEndpointProfileImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -112,21 +108,20 @@ public final class AssetEndpointProfileImpl
     }
 
     public AssetEndpointProfileImpl update() {
-        this.updateProperties = new AssetEndpointProfileUpdate();
         return this;
     }
 
     public AssetEndpointProfile apply() {
         this.innerObject = serviceManager.serviceClient()
             .getAssetEndpointProfiles()
-            .update(resourceGroupName, assetEndpointProfileName, updateProperties, Context.NONE);
+            .update(resourceGroupName, assetEndpointProfileName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AssetEndpointProfile apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getAssetEndpointProfiles()
-            .update(resourceGroupName, assetEndpointProfileName, updateProperties, context);
+            .update(resourceGroupName, assetEndpointProfileName, this.innerModel(), context);
         return this;
     }
 
@@ -171,26 +166,12 @@ public final class AssetEndpointProfileImpl
     }
 
     public AssetEndpointProfileImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateProperties.withTags(tags);
-            return this;
-        }
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public AssetEndpointProfileImpl withProperties(AssetEndpointProfileProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
-    }
-
-    public AssetEndpointProfileImpl withProperties(AssetEndpointProfileUpdateProperties properties) {
-        this.updateProperties.withProperties(properties);
-        return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
     }
 }

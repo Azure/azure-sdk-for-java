@@ -39,7 +39,6 @@ import com.azure.resourcemanager.mongocluster.fluent.models.ListConnectionString
 import com.azure.resourcemanager.mongocluster.fluent.models.MongoClusterInner;
 import com.azure.resourcemanager.mongocluster.implementation.models.MongoClusterListResult;
 import com.azure.resourcemanager.mongocluster.models.CheckNameAvailabilityRequest;
-import com.azure.resourcemanager.mongocluster.models.MongoClusterUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -104,7 +103,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") MongoClusterUpdate properties, Context context);
+            @BodyParam("application/json") MongoClusterInner properties, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}")
@@ -545,7 +544,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String mongoClusterName,
-        MongoClusterUpdate properties) {
+        MongoClusterInner properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -589,7 +588,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String mongoClusterName,
-        MongoClusterUpdate properties, Context context) {
+        MongoClusterInner properties, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -631,7 +630,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MongoClusterInner>, MongoClusterInner> beginUpdateAsync(String resourceGroupName,
-        String mongoClusterName, MongoClusterUpdate properties) {
+        String mongoClusterName, MongoClusterInner properties) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, mongoClusterName, properties);
         return this.client.<MongoClusterInner, MongoClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
@@ -653,7 +652,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MongoClusterInner>, MongoClusterInner> beginUpdateAsync(String resourceGroupName,
-        String mongoClusterName, MongoClusterUpdate properties, Context context) {
+        String mongoClusterName, MongoClusterInner properties, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, mongoClusterName, properties, context);
@@ -675,7 +674,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoClusterInner>, MongoClusterInner> beginUpdate(String resourceGroupName,
-        String mongoClusterName, MongoClusterUpdate properties) {
+        String mongoClusterName, MongoClusterInner properties) {
         return this.beginUpdateAsync(resourceGroupName, mongoClusterName, properties).getSyncPoller();
     }
 
@@ -694,7 +693,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoClusterInner>, MongoClusterInner> beginUpdate(String resourceGroupName,
-        String mongoClusterName, MongoClusterUpdate properties, Context context) {
+        String mongoClusterName, MongoClusterInner properties, Context context) {
         return this.beginUpdateAsync(resourceGroupName, mongoClusterName, properties, context).getSyncPoller();
     }
 
@@ -712,7 +711,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MongoClusterInner> updateAsync(String resourceGroupName, String mongoClusterName,
-        MongoClusterUpdate properties) {
+        MongoClusterInner properties) {
         return beginUpdateAsync(resourceGroupName, mongoClusterName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -732,7 +731,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MongoClusterInner> updateAsync(String resourceGroupName, String mongoClusterName,
-        MongoClusterUpdate properties, Context context) {
+        MongoClusterInner properties, Context context) {
         return beginUpdateAsync(resourceGroupName, mongoClusterName, properties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -750,7 +749,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
      * @return represents a mongo cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MongoClusterInner update(String resourceGroupName, String mongoClusterName, MongoClusterUpdate properties) {
+    public MongoClusterInner update(String resourceGroupName, String mongoClusterName, MongoClusterInner properties) {
         return updateAsync(resourceGroupName, mongoClusterName, properties).block();
     }
 
@@ -768,7 +767,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
      * @return represents a mongo cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MongoClusterInner update(String resourceGroupName, String mongoClusterName, MongoClusterUpdate properties,
+    public MongoClusterInner update(String resourceGroupName, String mongoClusterName, MongoClusterInner properties,
         Context context) {
         return updateAsync(resourceGroupName, mongoClusterName, properties, context).block();
     }

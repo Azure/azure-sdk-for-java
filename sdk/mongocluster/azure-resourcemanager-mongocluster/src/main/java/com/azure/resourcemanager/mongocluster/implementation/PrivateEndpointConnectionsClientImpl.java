@@ -74,7 +74,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/privateEndpointConnections")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionResourceListResult>> listByMongoCluster(
+        Mono<Response<PrivateEndpointConnectionResourceListResult>> listConnections(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -119,7 +119,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionResourceListResult>> listByMongoClusterNext(
+        Mono<Response<PrivateEndpointConnectionResourceListResult>> listConnectionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept, Context context);
     }
@@ -137,7 +137,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionResourceInner>>
-        listByMongoClusterSinglePageAsync(String resourceGroupName, String mongoClusterName) {
+        listConnectionsSinglePageAsync(String resourceGroupName, String mongoClusterName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -156,7 +156,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByMongoCluster(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.listConnections(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, accept, context))
             .<PagedResponse<PrivateEndpointConnectionResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -177,7 +177,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionResourceInner>>
-        listByMongoClusterSinglePageAsync(String resourceGroupName, String mongoClusterName, Context context) {
+        listConnectionsSinglePageAsync(String resourceGroupName, String mongoClusterName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -197,7 +197,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByMongoCluster(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            .listConnections(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
                 resourceGroupName, mongoClusterName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -215,10 +215,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateEndpointConnectionResourceInner> listByMongoClusterAsync(String resourceGroupName,
+    private PagedFlux<PrivateEndpointConnectionResourceInner> listConnectionsAsync(String resourceGroupName,
         String mongoClusterName) {
-        return new PagedFlux<>(() -> listByMongoClusterSinglePageAsync(resourceGroupName, mongoClusterName),
-            nextLink -> listByMongoClusterNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listConnectionsSinglePageAsync(resourceGroupName, mongoClusterName),
+            nextLink -> listConnectionsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -234,10 +234,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateEndpointConnectionResourceInner> listByMongoClusterAsync(String resourceGroupName,
+    private PagedFlux<PrivateEndpointConnectionResourceInner> listConnectionsAsync(String resourceGroupName,
         String mongoClusterName, Context context) {
-        return new PagedFlux<>(() -> listByMongoClusterSinglePageAsync(resourceGroupName, mongoClusterName, context),
-            nextLink -> listByMongoClusterNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listConnectionsSinglePageAsync(resourceGroupName, mongoClusterName, context),
+            nextLink -> listConnectionsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -252,9 +252,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateEndpointConnectionResourceInner> listByMongoCluster(String resourceGroupName,
+    public PagedIterable<PrivateEndpointConnectionResourceInner> listConnections(String resourceGroupName,
         String mongoClusterName) {
-        return new PagedIterable<>(listByMongoClusterAsync(resourceGroupName, mongoClusterName));
+        return new PagedIterable<>(listConnectionsAsync(resourceGroupName, mongoClusterName));
     }
 
     /**
@@ -270,9 +270,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateEndpointConnectionResourceInner> listByMongoCluster(String resourceGroupName,
+    public PagedIterable<PrivateEndpointConnectionResourceInner> listConnections(String resourceGroupName,
         String mongoClusterName, Context context) {
-        return new PagedIterable<>(listByMongoClusterAsync(resourceGroupName, mongoClusterName, context));
+        return new PagedIterable<>(listConnectionsAsync(resourceGroupName, mongoClusterName, context));
     }
 
     /**
@@ -944,7 +944,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionResourceInner>>
-        listByMongoClusterNextSinglePageAsync(String nextLink) {
+        listConnectionsNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -954,8 +954,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listByMongoClusterNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.listConnectionsNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<PrivateEndpointConnectionResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -974,7 +973,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionResourceInner>>
-        listByMongoClusterNextSinglePageAsync(String nextLink, Context context) {
+        listConnectionsNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -984,7 +983,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByMongoClusterNext(nextLink, this.client.getEndpoint(), accept, context)
+        return service.listConnectionsNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

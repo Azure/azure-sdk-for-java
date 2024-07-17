@@ -12,8 +12,6 @@ import com.azure.resourcemanager.mongocluster.fluent.models.MongoClusterInner;
 import com.azure.resourcemanager.mongocluster.models.ListConnectionStringsResult;
 import com.azure.resourcemanager.mongocluster.models.MongoCluster;
 import com.azure.resourcemanager.mongocluster.models.MongoClusterProperties;
-import com.azure.resourcemanager.mongocluster.models.MongoClusterUpdate;
-import com.azure.resourcemanager.mongocluster.models.MongoClusterUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -79,8 +77,6 @@ public final class MongoClusterImpl implements MongoCluster, MongoCluster.Defini
 
     private String mongoClusterName;
 
-    private MongoClusterUpdate updateProperties;
-
     public MongoClusterImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -107,21 +103,20 @@ public final class MongoClusterImpl implements MongoCluster, MongoCluster.Defini
     }
 
     public MongoClusterImpl update() {
-        this.updateProperties = new MongoClusterUpdate();
         return this;
     }
 
     public MongoCluster apply() {
         this.innerObject = serviceManager.serviceClient()
             .getMongoClusters()
-            .update(resourceGroupName, mongoClusterName, updateProperties, Context.NONE);
+            .update(resourceGroupName, mongoClusterName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public MongoCluster apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getMongoClusters()
-            .update(resourceGroupName, mongoClusterName, updateProperties, context);
+            .update(resourceGroupName, mongoClusterName, this.innerModel(), context);
         return this;
     }
 
@@ -169,26 +164,12 @@ public final class MongoClusterImpl implements MongoCluster, MongoCluster.Defini
     }
 
     public MongoClusterImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateProperties.withTags(tags);
-            return this;
-        }
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public MongoClusterImpl withProperties(MongoClusterProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
-    }
-
-    public MongoClusterImpl withProperties(MongoClusterUpdateProperties properties) {
-        this.updateProperties.withProperties(properties);
-        return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
     }
 }

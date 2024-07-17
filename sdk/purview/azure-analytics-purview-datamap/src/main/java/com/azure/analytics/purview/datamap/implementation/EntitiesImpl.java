@@ -622,7 +622,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> importBusinessMetadata(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
@@ -633,7 +633,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> importBusinessMetadataSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/entity/guid/{guid}/labels")

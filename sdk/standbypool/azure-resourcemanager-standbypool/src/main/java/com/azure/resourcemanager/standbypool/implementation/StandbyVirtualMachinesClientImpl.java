@@ -77,7 +77,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}/standbyVirtualMachines")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StandbyVirtualMachineResourceListResult>> listByStandbyVirtualMachinePoolResource(
+        Mono<Response<StandbyVirtualMachineResourceListResult>> listByStandbyPool(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -88,7 +88,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StandbyVirtualMachineResourceListResult>> listByStandbyVirtualMachinePoolResourceNext(
+        Mono<Response<StandbyVirtualMachineResourceListResult>> listByStandbyPoolNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept, Context context);
     }
@@ -244,8 +244,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StandbyVirtualMachineResourceInner>>
-        listByStandbyVirtualMachinePoolResourceSinglePageAsync(String resourceGroupName,
-            String standbyVirtualMachinePoolName) {
+        listByStandbyPoolSinglePageAsync(String resourceGroupName, String standbyVirtualMachinePoolName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -264,9 +263,8 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByStandbyVirtualMachinePoolResource(this.client.getEndpoint(),
-                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-                standbyVirtualMachinePoolName, accept, context))
+            .withContext(context -> service.listByStandbyPool(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, standbyVirtualMachinePoolName, accept, context))
             .<PagedResponse<StandbyVirtualMachineResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -285,9 +283,8 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StandbyVirtualMachineResourceInner>>
-        listByStandbyVirtualMachinePoolResourceSinglePageAsync(String resourceGroupName,
-            String standbyVirtualMachinePoolName, Context context) {
+    private Mono<PagedResponse<StandbyVirtualMachineResourceInner>> listByStandbyPoolSinglePageAsync(
+        String resourceGroupName, String standbyVirtualMachinePoolName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -307,8 +304,8 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByStandbyVirtualMachinePoolResource(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, standbyVirtualMachinePoolName, accept, context)
+            .listByStandbyPool(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, standbyVirtualMachinePoolName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -325,12 +322,10 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StandbyVirtualMachineResourceInner>
-        listByStandbyVirtualMachinePoolResourceAsync(String resourceGroupName, String standbyVirtualMachinePoolName) {
-        return new PagedFlux<>(
-            () -> listByStandbyVirtualMachinePoolResourceSinglePageAsync(resourceGroupName,
-                standbyVirtualMachinePoolName),
-            nextLink -> listByStandbyVirtualMachinePoolResourceNextSinglePageAsync(nextLink));
+    private PagedFlux<StandbyVirtualMachineResourceInner> listByStandbyPoolAsync(String resourceGroupName,
+        String standbyVirtualMachinePoolName) {
+        return new PagedFlux<>(() -> listByStandbyPoolSinglePageAsync(resourceGroupName, standbyVirtualMachinePoolName),
+            nextLink -> listByStandbyPoolNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -346,12 +341,11 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StandbyVirtualMachineResourceInner> listByStandbyVirtualMachinePoolResourceAsync(
-        String resourceGroupName, String standbyVirtualMachinePoolName, Context context) {
+    private PagedFlux<StandbyVirtualMachineResourceInner> listByStandbyPoolAsync(String resourceGroupName,
+        String standbyVirtualMachinePoolName, Context context) {
         return new PagedFlux<>(
-            () -> listByStandbyVirtualMachinePoolResourceSinglePageAsync(resourceGroupName,
-                standbyVirtualMachinePoolName, context),
-            nextLink -> listByStandbyVirtualMachinePoolResourceNextSinglePageAsync(nextLink, context));
+            () -> listByStandbyPoolSinglePageAsync(resourceGroupName, standbyVirtualMachinePoolName, context),
+            nextLink -> listByStandbyPoolNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -366,10 +360,9 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StandbyVirtualMachineResourceInner>
-        listByStandbyVirtualMachinePoolResource(String resourceGroupName, String standbyVirtualMachinePoolName) {
-        return new PagedIterable<>(
-            listByStandbyVirtualMachinePoolResourceAsync(resourceGroupName, standbyVirtualMachinePoolName));
+    public PagedIterable<StandbyVirtualMachineResourceInner> listByStandbyPool(String resourceGroupName,
+        String standbyVirtualMachinePoolName) {
+        return new PagedIterable<>(listByStandbyPoolAsync(resourceGroupName, standbyVirtualMachinePoolName));
     }
 
     /**
@@ -385,10 +378,9 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StandbyVirtualMachineResourceInner> listByStandbyVirtualMachinePoolResource(
-        String resourceGroupName, String standbyVirtualMachinePoolName, Context context) {
-        return new PagedIterable<>(
-            listByStandbyVirtualMachinePoolResourceAsync(resourceGroupName, standbyVirtualMachinePoolName, context));
+    public PagedIterable<StandbyVirtualMachineResourceInner> listByStandbyPool(String resourceGroupName,
+        String standbyVirtualMachinePoolName, Context context) {
+        return new PagedIterable<>(listByStandbyPoolAsync(resourceGroupName, standbyVirtualMachinePoolName, context));
     }
 
     /**
@@ -403,7 +395,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StandbyVirtualMachineResourceInner>>
-        listByStandbyVirtualMachinePoolResourceNextSinglePageAsync(String nextLink) {
+        listByStandbyPoolNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -413,8 +405,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByStandbyVirtualMachinePoolResourceNext(nextLink,
-                this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.listByStandbyPoolNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<StandbyVirtualMachineResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -433,7 +424,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StandbyVirtualMachineResourceInner>>
-        listByStandbyVirtualMachinePoolResourceNextSinglePageAsync(String nextLink, Context context) {
+        listByStandbyPoolNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -443,7 +434,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByStandbyVirtualMachinePoolResourceNext(nextLink, this.client.getEndpoint(), accept, context)
+        return service.listByStandbyPoolNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

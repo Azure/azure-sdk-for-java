@@ -23,8 +23,7 @@ public interface PrivateEndpointConnections {
      * @return the response of a PrivateEndpointConnectionResource list operation as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<PrivateEndpointConnectionResource> listByMongoCluster(String resourceGroupName,
-        String mongoClusterName);
+    PagedIterable<PrivateEndpointConnectionResource> listConnections(String resourceGroupName, String mongoClusterName);
 
     /**
      * List existing private connections.
@@ -38,8 +37,8 @@ public interface PrivateEndpointConnections {
      * @return the response of a PrivateEndpointConnectionResource list operation as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<PrivateEndpointConnectionResource> listByMongoCluster(String resourceGroupName,
-        String mongoClusterName, Context context);
+    PagedIterable<PrivateEndpointConnectionResource> listConnections(String resourceGroupName, String mongoClusterName,
+        Context context);
 
     /**
      * Get a specific private connection.

@@ -182,7 +182,7 @@ public interface FirewallRulesClient {
      * @return the response of a FirewallRule list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FirewallRuleInner> listByMongoCluster(String resourceGroupName, String mongoClusterName);
+    PagedIterable<FirewallRuleInner> listByParent(String resourceGroupName, String mongoClusterName);
 
     /**
      * List all the firewall rules in a given mongo cluster.
@@ -196,6 +196,5 @@ public interface FirewallRulesClient {
      * @return the response of a FirewallRule list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FirewallRuleInner> listByMongoCluster(String resourceGroupName, String mongoClusterName,
-        Context context);
+    PagedIterable<FirewallRuleInner> listByParent(String resourceGroupName, String mongoClusterName, Context context);
 }

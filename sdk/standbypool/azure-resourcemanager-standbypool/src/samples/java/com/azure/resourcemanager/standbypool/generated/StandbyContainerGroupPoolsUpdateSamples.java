@@ -9,7 +9,7 @@ import com.azure.resourcemanager.standbypool.models.ContainerGroupProperties;
 import com.azure.resourcemanager.standbypool.models.RefillPolicy;
 import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolElasticityProfile;
 import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResource;
-import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceUpdateProperties;
+import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceProperties;
 import com.azure.resourcemanager.standbypool.models.Subnet;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public final class StandbyContainerGroupPoolsUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf())
-            .withProperties(new StandbyContainerGroupPoolResourceUpdateProperties()
+            .withProperties(new StandbyContainerGroupPoolResourceProperties()
                 .withElasticityProfile(new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(1743L)
                     .withRefillPolicy(RefillPolicy.ALWAYS))
                 .withContainerGroupProperties(new ContainerGroupProperties()

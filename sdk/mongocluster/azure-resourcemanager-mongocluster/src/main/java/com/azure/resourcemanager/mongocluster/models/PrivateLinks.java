@@ -21,7 +21,7 @@ public interface PrivateLinks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a PrivateLinkResource list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PrivateLinkResource> listByMongoCluster(String resourceGroupName, String mongoClusterName);
+    PagedIterable<PrivateLinkResource> list(String resourceGroupName, String mongoClusterName);
 
     /**
      * list private links on the given resource.
@@ -34,6 +34,5 @@ public interface PrivateLinks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a PrivateLinkResource list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PrivateLinkResource> listByMongoCluster(String resourceGroupName, String mongoClusterName,
-        Context context);
+    PagedIterable<PrivateLinkResource> list(String resourceGroupName, String mongoClusterName, Context context);
 }

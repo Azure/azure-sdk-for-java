@@ -10,8 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.standbypool.fluent.models.StandbyVirtualMachinePoolResourceInner;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResource;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceProperties;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceUpdate;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -78,8 +76,6 @@ public final class StandbyVirtualMachinePoolResourceImpl implements StandbyVirtu
 
     private String standbyVirtualMachinePoolName;
 
-    private StandbyVirtualMachinePoolResourceUpdate updateProperties;
-
     public StandbyVirtualMachinePoolResourceImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -107,14 +103,13 @@ public final class StandbyVirtualMachinePoolResourceImpl implements StandbyVirtu
     }
 
     public StandbyVirtualMachinePoolResourceImpl update() {
-        this.updateProperties = new StandbyVirtualMachinePoolResourceUpdate();
         return this;
     }
 
     public StandbyVirtualMachinePoolResource apply() {
         this.innerObject = serviceManager.serviceClient()
             .getStandbyVirtualMachinePools()
-            .updateWithResponse(resourceGroupName, standbyVirtualMachinePoolName, updateProperties, Context.NONE)
+            .updateWithResponse(resourceGroupName, standbyVirtualMachinePoolName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
@@ -122,7 +117,7 @@ public final class StandbyVirtualMachinePoolResourceImpl implements StandbyVirtu
     public StandbyVirtualMachinePoolResource apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getStandbyVirtualMachinePools()
-            .updateWithResponse(resourceGroupName, standbyVirtualMachinePoolName, updateProperties, context)
+            .updateWithResponse(resourceGroupName, standbyVirtualMachinePoolName, this.innerModel(), context)
             .getValue();
         return this;
     }
@@ -163,28 +158,13 @@ public final class StandbyVirtualMachinePoolResourceImpl implements StandbyVirtu
     }
 
     public StandbyVirtualMachinePoolResourceImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateProperties.withTags(tags);
-            return this;
-        }
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public StandbyVirtualMachinePoolResourceImpl
         withProperties(StandbyVirtualMachinePoolResourceProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
-    }
-
-    public StandbyVirtualMachinePoolResourceImpl
-        withProperties(StandbyVirtualMachinePoolResourceUpdateProperties properties) {
-        this.updateProperties.withProperties(properties);
-        return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
     }
 }
