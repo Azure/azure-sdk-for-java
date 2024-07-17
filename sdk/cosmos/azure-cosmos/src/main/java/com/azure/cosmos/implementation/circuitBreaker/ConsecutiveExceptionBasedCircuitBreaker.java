@@ -64,6 +64,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
                     locationHealthStatus.getStringifiedLocationHealthStatus(),
                     partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive() + "-" + partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                     partitionKeyRangeWrapper.getCollectionResourceId());
+                return locationSpecificHealthContext;
             default:
                 throw new IllegalArgumentException("Unsupported health status : " + locationHealthStatus);
         }
@@ -147,6 +148,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
                     locationHealthStatus.getStringifiedLocationHealthStatus(),
                     partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive() + "-" + partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                     partitionKeyRangeWrapper.getCollectionResourceId());
+                return locationSpecificHealthContext;
             default:
                 throw new IllegalArgumentException("Unsupported health status : " + locationHealthStatus);
         }
