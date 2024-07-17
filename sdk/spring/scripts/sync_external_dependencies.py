@@ -6,8 +6,11 @@
 #  1. Get `SPRING_BOOT_VERSION` from https://github.com/spring-projects/spring-boot/tags.
 #  2. Make sure file(`.\sdk\spring\spring_boot_${SPRING_BOOT_VERSION}_managed_external_dependencies.txt`) exist. If it doesn't exist, please run
 #    `.\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py` to create that file.
-#  3. Run command: `python .\sdk\spring\scripts\sync_external_dependencies.py -b 2.7.0`.
-#     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring_boot_dependencies_version 2.7.0`.
+#  3. Sync the dependencies:
+#     3.1 Sync Spring Boot 2.x, run command: `python .\sdk\spring\scripts\sync_external_dependencies.py -b 2.7.18`.
+#     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring_boot_dependencies_version 2.7.18`.
+#     3.2 Sync Spring Boot 3.x, run command: `python .\sdk\spring\scripts\sync_external_dependencies.py -b 3.3.1 -sbmvn 3`.
+#     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring_boot_dependencies_version 3.3.1 --spring_boot_major_version_number 3`.
 #  4. Then `eng/versioning/external_dependencies.txt` will be updated.
 #
 # Please refer to ./README.md to get more information about this script.
@@ -48,9 +51,9 @@ def get_args():
         '--spring_boot_major_version_number',
         type=str,
         choices=[SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME],
-        required=True,
-        default=SPRING_BOOT_MAJOR_3_VERSION_NAME,
-        help='Update the dependencies of Spring Boot major version. The default is ' + SPRING_BOOT_MAJOR_3_VERSION_NAME + '.'
+        required=False,
+        default=SPRING_BOOT_MAJOR_2_VERSION_NAME,
+        help='Update the dependencies of Spring Boot major version. The default is ' + SPRING_BOOT_MAJOR_2_VERSION_NAME + '.'
     )
     args = parser.parse_args()
     log.set_log_level(args.log)
