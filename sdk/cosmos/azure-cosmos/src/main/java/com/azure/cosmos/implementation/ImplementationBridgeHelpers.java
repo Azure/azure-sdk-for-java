@@ -887,6 +887,8 @@ public class ImplementationBridgeHelpers {
             URI getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics);
 
             void mergeMetadataDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, MetadataDiagnosticsContext otherMetadataDiagnosticsContext);
+
+            void mergeSerializationDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, SerializationDiagnosticsContext otherSerializationDiagnosticsContext);
         }
     }
 

@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -497,6 +498,19 @@ public final class CosmosDiagnostics {
 
                     if (clientSideRequestStatistics != null) {
                         clientSideRequestStatistics.mergeMetadataDiagnosticsContext(otherMetadataDiagnosticsContext);
+                    }
+                }
+
+                @Override
+                public void mergeSerializationDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, SerializationDiagnosticsContext otherSerializationDiagnosticsContext) {
+                    if (cosmosDiagnostics == null) {
+                        return;
+                    }
+
+                    ClientSideRequestStatistics clientSideRequestStatistics = cosmosDiagnostics.clientSideRequestStatistics;
+
+                    if (clientSideRequestStatistics != null) {
+                        clientSideRequestStatistics.mergeSerializationDiagnosticsContext(otherSerializationDiagnosticsContext);
                     }
                 }
             });

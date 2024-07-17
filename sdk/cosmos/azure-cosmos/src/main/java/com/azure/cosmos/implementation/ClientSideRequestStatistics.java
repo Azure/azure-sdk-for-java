@@ -280,6 +280,16 @@ public class ClientSideRequestStatistics {
         }
     }
 
+    public void mergeSerializationDiagnosticsContext(SerializationDiagnosticsContext other) {
+        if (other == null || other.serializationDiagnosticsList == null || other.serializationDiagnosticsList.isEmpty()) {
+            return;
+        }
+
+        for (SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics : other.serializationDiagnosticsList) {
+            this.serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        }
+    }
+
     public String recordAddressResolutionStart(
         URI targetEndpoint,
         boolean forceRefresh,

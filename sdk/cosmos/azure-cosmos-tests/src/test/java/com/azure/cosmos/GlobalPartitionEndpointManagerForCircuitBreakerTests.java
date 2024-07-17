@@ -3,15 +3,14 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PointOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.circuitBreaker.LocationHealthStatus;
@@ -25,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.lang.reflect.Field;
 import java.net.URI;
@@ -917,7 +915,13 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange(partitionKeyRangeId, minInclusive, maxExclusive);
         request.requestContext.locationEndpointToRoute = locationEndpointToRoute;
         request.requestContext.setExcludeRegions(Collections.emptyList());
-        request.requestContext.setPointOperationContext(new PointOperationContextForCircuitBreaker(new AtomicBoolean(false), false, collectionLink, new MetadataDiagnosticsContext()));
+        request.requestContext.setPointOperationContext(
+            new PointOperationContextForCircuitBreaker(
+                new AtomicBoolean(false),
+                false,
+                collectionLink,
+                new MetadataDiagnosticsContext(),
+                new SerializationDiagnosticsContext()));
 
         return request;
     }

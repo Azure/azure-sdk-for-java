@@ -12,17 +12,20 @@ public class PointOperationContextForCircuitBreaker {
     private boolean isRequestHedged;
     private final String collectionLink;
     private final MetadataDiagnosticsContext metadataDiagnosticsContext;
+    private final SerializationDiagnosticsContext serializationDiagnosticsContext;
 
     public PointOperationContextForCircuitBreaker(
         AtomicBoolean hasOperationSeenSuccess,
         boolean isThresholdBasedAvailabilityStrategyEnabled,
         String collectionLink,
-        MetadataDiagnosticsContext metadataDiagnosticsContext) {
+        MetadataDiagnosticsContext metadataDiagnosticsContext,
+        SerializationDiagnosticsContext serializationDiagnosticsContext) {
 
         this.hasOperationSeenSuccess = hasOperationSeenSuccess;
         this.isThresholdBasedAvailabilityStrategyEnabled = isThresholdBasedAvailabilityStrategyEnabled;
         this.collectionLink = collectionLink;
         this.metadataDiagnosticsContext = metadataDiagnosticsContext;
+        this.serializationDiagnosticsContext = serializationDiagnosticsContext;
     }
 
     public void setIsRequestHedged(boolean isRequestHedged) {
@@ -51,5 +54,9 @@ public class PointOperationContextForCircuitBreaker {
 
     public MetadataDiagnosticsContext getMetadataDiagnosticsContext() {
         return this.metadataDiagnosticsContext;
+    }
+
+    public SerializationDiagnosticsContext getSerializationDiagnosticsContext() {
+        return serializationDiagnosticsContext;
     }
 }
