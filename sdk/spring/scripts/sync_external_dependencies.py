@@ -8,9 +8,9 @@
 #    `.\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py` to create that file.
 #  3. Sync the dependencies:
 #     3.1 Sync Spring Boot 2.x, run command: `python .\sdk\spring\scripts\sync_external_dependencies.py -b 2.7.18`.
-#     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring_boot_dependencies_version 2.7.18`.
+#     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring-boot-dependencies-version 2.7.18`.
 #     3.2 Sync Spring Boot 3.x, run command: `python .\sdk\spring\scripts\sync_external_dependencies.py -b 3.3.1 -sbmvn 3`.
-#     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring_boot_dependencies_version 3.3.1 --spring_boot_major_version_number 3`.
+#     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring-boot-dependencies-version 3.3.1 --spring-boot-major-version-number 3`.
 #  4. Then `eng/versioning/external_dependencies.txt` will be updated.
 #
 # Please refer to ./README.md to get more information about this script.
@@ -37,7 +37,7 @@ def get_spring_boot_managed_external_dependencies_file_name(spring_boot_version)
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-b', '--spring_boot_dependencies_version', type = str, required = True)
+    parser.add_argument('-b', '--spring-boot-dependencies-version', type=str, required=True)
     parser.add_argument(
         '--log',
         type = str,
@@ -48,7 +48,7 @@ def get_args():
     )
     parser.add_argument(
         '-sbmvn',
-        '--spring_boot_major_version_number',
+        '--spring-boot-major-version-number',
         type=str,
         choices=[SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME],
         required=False,

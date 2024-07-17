@@ -3,7 +3,7 @@
 # This script is used to update sdk\spring\pipeline\supported-version-matrix.json before compatibility check.
 # Sample:
 # 1. python .\sdk\spring\scripts\compatibility_update_supported_version_matrix_json.py
-# 2. python .\sdk\spring\scripts\compatibility_update_supported_version_matrix_json.py
+# 2. python .\sdk\spring\scripts\compatibility_update_supported_version_matrix_json.py --spring-boot-major-version-number 3 --matrix-config-path sdk/spring/pipeline/supported-version-matrix.json
 #
 # The script must be run at the root of azure-sdk-for-java.
 
@@ -16,11 +16,19 @@ import argparse
 import requests
 
 from compatibility_get_spring_cloud_version import get_spring_cloud_version
+from _constants import SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME
 
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-m', '--spring-boot-major-version', type=str, default='3')
+    parser.add_argument(
+        '-sbmvn',
+        '--spring-boot-major-version-number',
+        type=str,
+        choices=[SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME],
+        default=SPRING_BOOT_MAJOR_3_VERSION_NAME,
+        help='Which major version of Spring Boot to use. The default is ' + SPRING_BOOT_MAJOR_3_VERSION_NAME + '.'
+    )
     parser.add_argument('-mcp', '--matrix-config-path', type=str, default='sdk/spring/pipeline/supported-version-matrix.json')
     return parser.parse_args()
 
@@ -50,7 +58,7 @@ def get_supported_spring_boot_versions():
     for entry in data:
         for key in entry:
             if entry[key] == "SUPPORTED":
-                if entry["spring-boot-version"].startswith(get_args().spring_boot_major_version + "."):
+                if entry["spring-boot-version"].startswith(get_args().spring_boot_major_version_number + "."):
                     supported_version_list.append(entry["spring-boot-version"])
     return supported_version_list
 
