@@ -3,48 +3,28 @@
 
 package com.azure.health.deidentification.realtime;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestMode;
-import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.util.Configuration;
 import com.azure.health.deidentification.DeidServicesClient;
-import com.azure.health.deidentification.DeidServicesClientBuilder;
-import com.azure.health.deidentification.models.*;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.health.deidentification.batch.BatchOperationTestBase;
+import com.azure.health.deidentification.models.DeidentificationContent;
+import com.azure.health.deidentification.models.DeidentificationResult;
+import com.azure.health.deidentification.models.DocumentDataType;
+import com.azure.health.deidentification.models.OperationType;
+import com.azure.health.deidentification.models.PhiCategory;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class SyncRealtimeOperationsTest extends TestProxyTestBase {
-    protected DeidServicesClient deidentificationClient;
-
-    @Override
-    protected void beforeTest() {
-        DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            deidentificationClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            deidentificationClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            deidentificationClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-        deidentificationClient = deidentificationClientbuilder.buildClient();
-
-    }
+class SyncRealtimeOperationsTest extends BatchOperationTestBase {
+    private DeidServicesClient deidentificationClient;
 
     @Test
     void testSurrogateReturnsExpected() {
+        deidentificationClient = getDeidServicesClientBuilder().buildClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText, OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
         DeidentificationResult result = deidentificationClient.deidentify(content);
@@ -57,6 +37,7 @@ class SyncRealtimeOperationsTest extends TestProxyTestBase {
 
     @Test
     void testTagReturnsExpected() {
+        deidentificationClient = getDeidServicesClientBuilder().buildClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText, OperationType.TAG, DocumentDataType.PLAINTEXT);
         DeidentificationResult result = deidentificationClient.deidentify(content);
