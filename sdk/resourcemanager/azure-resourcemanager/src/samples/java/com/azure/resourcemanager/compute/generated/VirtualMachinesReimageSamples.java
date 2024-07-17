@@ -22,8 +22,12 @@ public final class VirtualMachinesReimageSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void reimageAVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().reimage("myResourceGroup", "myVMName",
-            new VirtualMachineReimageParameters().withTempDisk(true), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .reimage("myResourceGroup", "myVMName", new VirtualMachineReimageParameters().withTempDisk(true),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -37,10 +41,15 @@ public final class VirtualMachinesReimageSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void reimageANonEphemeralVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().reimage(
-            "myResourceGroup", "myVMName", new VirtualMachineReimageParameters().withTempDisk(true)
-                .withExactVersion("aaaaaa").withOsProfile(new OSProfileProvisioningData()
-                    .withAdminPassword("fakeTokenPlaceholder").withCustomData("{your-custom-data}")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .reimage("myResourceGroup", "myVMName",
+                new VirtualMachineReimageParameters().withTempDisk(true)
+                    .withExactVersion("aaaaaa")
+                    .withOsProfile(new OSProfileProvisioningData().withAdminPassword("fakeTokenPlaceholder")
+                        .withCustomData("{your-custom-data}")),
+                com.azure.core.util.Context.NONE);
     }
 }

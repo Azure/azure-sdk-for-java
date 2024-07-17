@@ -6,6 +6,7 @@ package com.azure.spring.cloud.stream.binder.servicebus.implementation;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProcessorFactoryCustomizer;
 import com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProducerFactoryCustomizer;
@@ -175,7 +176,7 @@ public class ServiceBusMessageChannelBinder extends
                                                     final ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
         return message -> {
             Assert.state(message instanceof ErrorMessage, "Expected an ErrorMessage, not a "
-                + message.getClass().toString() + " for: " + message);
+                + message.getClass() + " for: " + message);
 
             ErrorMessage errorMessage = (ErrorMessage) message;
             Message<?> amqpMessage = errorMessage.getOriginalMessage();
@@ -209,11 +210,15 @@ public class ServiceBusMessageChannelBinder extends
                                String deadLetterReason,
                                String deadLetterErrorDescription) {
         Assert.hasText(destination, "destination can't be null or empty");
-        final ServiceBusReceivedMessageContext messageContext = (ServiceBusReceivedMessageContext) message.getHeaders()
-                                                                                                          .get(
-                                                                                                              ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT);
+        final ServiceBusReceivedMessageContext messageContext = (ServiceBusReceivedMessageContext) message
+            .getHeaders()
+            .get(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT);
         if (messageContext != null) {
             messageContext.deadLetter();
+            DeadLetterOptions options = new DeadLetterOptions();
+            options.setDeadLetterReason(deadLetterReason);
+            options.setDeadLetterErrorDescription(deadLetterErrorDescription);
+            messageContext.deadLetter(options);
         }
     }
 
@@ -226,9 +231,9 @@ public class ServiceBusMessageChannelBinder extends
      */
     public <T> void abandon(String destination, Message<T> message) {
         Assert.hasText(destination, "destination can't be null or empty");
-        final ServiceBusReceivedMessageContext messageContext = (ServiceBusReceivedMessageContext) message.getHeaders()
-                                                                                                          .get(
-                                                                                                              ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT);
+        final ServiceBusReceivedMessageContext messageContext = (ServiceBusReceivedMessageContext) message
+            .getHeaders()
+            .get(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT);
         if (messageContext != null) {
             messageContext.abandon();
         }

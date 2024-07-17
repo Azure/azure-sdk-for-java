@@ -3,15 +3,18 @@
 package com.azure.spring.cloud.stream.binder.servicebus.implementation;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.cloud.stream.binder.servicebus.core.implementation.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.core.implementation.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
 import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.cloud.stream.binder.BinderHeaders;
@@ -29,14 +32,17 @@ import java.time.Duration;
 import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class ServiceBusMessageChannelBinderTest {
 
     @Mock
     private ConsumerDestination consumerDestination;
+    @Captor
+    private ArgumentCaptor<DeadLetterOptions> captor;
 
     private final ServiceBusExtendedBindingProperties extendedBindingProperties =
         new ServiceBusExtendedBindingProperties();
@@ -94,9 +100,12 @@ class ServiceBusMessageChannelBinderTest {
 
         Message<String> originalMessage = MessageBuilder.withPayload("test")
             .setHeader(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext).build();
-        ErrorMessage msg = new ErrorMessage(new RuntimeException(), originalMessage);
+        String description = "testDescription";
+        ErrorMessage msg = new ErrorMessage(new RuntimeException(description), originalMessage);
         handler.handleMessage(msg);
-        verify(messageContext).deadLetter();
+        verify(messageContext).deadLetter(captor.capture());
+        assertEquals("exception-message", captor.getValue().getDeadLetterReason());
+        assertEquals(description, captor.getValue().getDeadLetterErrorDescription());
     }
 
     @Test
