@@ -15,7 +15,11 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
         this.partitionLevelCircuitBreakerConfig = partitionLevelCircuitBreakerConfig;
     }
 
-    public LocationSpecificHealthContext handleException(LocationSpecificHealthContext locationSpecificHealthContext, boolean isReadOnlyRequest) {
+    public LocationSpecificHealthContext handleException(
+        LocationSpecificHealthContext locationSpecificHealthContext,
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+        String regionWithException,
+        boolean isReadOnlyRequest) {
 
         int exceptionCountAfterHandling
             = (isReadOnlyRequest) ? locationSpecificHealthContext.getExceptionCountForReadForCircuitBreaking() : locationSpecificHealthContext.getExceptionCountForWriteForCircuitBreaking();
@@ -55,13 +59,22 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
                         .build();
                 }
             case Unavailable:
-                throw new IllegalStateException();
+                logger.warn("Region {} should not be handling failures in {} health status for partition key range : {} and collection RID : {}",
+                    regionWithException,
+                    locationHealthStatus.getStringifiedLocationHealthStatus(),
+                    partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive() + "-" + partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
+                    partitionKeyRangeWrapper.getCollectionResourceId());
             default:
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Unsupported health status : " + locationHealthStatus);
         }
     }
 
-    public LocationSpecificHealthContext handleSuccess(LocationSpecificHealthContext locationSpecificHealthContext, boolean isReadOnlyRequest) {
+    public LocationSpecificHealthContext handleSuccess(
+        LocationSpecificHealthContext locationSpecificHealthContext,
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+        String regionWithSuccess,
+        boolean isReadOnlyRequest) {
+
         int exceptionCountAfterHandling
             = (isReadOnlyRequest) ? locationSpecificHealthContext.getExceptionCountForReadForCircuitBreaking() : locationSpecificHealthContext.getExceptionCountForWriteForCircuitBreaking();
 
@@ -129,9 +142,13 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
 
                 }
             case Unavailable:
-                throw new IllegalStateException();
+                logger.warn("Region {} should not be handling successes in {} health status for partition key range : {} and collection RID : {}",
+                    regionWithSuccess,
+                    locationHealthStatus.getStringifiedLocationHealthStatus(),
+                    partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive() + "-" + partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
+                    partitionKeyRangeWrapper.getCollectionResourceId());
             default:
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Unsupported health status : " + locationHealthStatus);
         }
     }
 
@@ -165,7 +182,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
                 case Unavailable:
                     return 0;
                 default:
-                    throw new IllegalStateException("Unsupported health status: " + status);
+                    throw new IllegalArgumentException("Unsupported health status: " + status);
             }
         } else {
             switch (status) {
@@ -177,7 +194,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
                 case Unavailable:
                     return 0;
                 default:
-                    throw new IllegalStateException("Unsupported health status: " + status);
+                    throw new IllegalArgumentException("Unsupported health status: " + status);
             }
         }
     }
@@ -192,7 +209,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
                 case Healthy:
                     return 0;
                 default:
-                    throw new IllegalStateException("Unsupported health status: " + status);
+                    throw new IllegalArgumentException("Unsupported health status: " + status);
             }
         } else {
             switch (status) {
@@ -203,7 +220,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
                 case Healthy:
                     return 0;
                 default:
-                    throw new IllegalStateException("Unsupported health status: " + status);
+                    throw new IllegalArgumentException("Unsupported health status: " + status);
             }
         }
     }

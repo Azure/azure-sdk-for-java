@@ -32,7 +32,7 @@ public class LocationSpecificHealthContextTransitionHandler {
     public LocationSpecificHealthContext handleSuccess(
         LocationSpecificHealthContext locationSpecificHealthContext,
         PartitionKeyRangeWrapper partitionKeyRangeWrapper,
-        URI locationWithSuccess,
+        String regionWithSuccess,
         boolean forceStatusChange,
         boolean isReadOnlyRequest) {
 
@@ -48,7 +48,11 @@ public class LocationSpecificHealthContextTransitionHandler {
                 if (!forceStatusChange) {
                     if (exceptionCountActual > 0) {
                         return this.consecutiveExceptionBasedCircuitBreaker
-                            .handleSuccess(locationSpecificHealthContext, isReadOnlyRequest);
+                            .handleSuccess(
+                                locationSpecificHealthContext,
+                                partitionKeyRangeWrapper,
+                                regionWithSuccess,
+                                isReadOnlyRequest);
                     }
                 }
                 break;
@@ -57,7 +61,12 @@ public class LocationSpecificHealthContextTransitionHandler {
                 if (!forceStatusChange) {
 
                     LocationSpecificHealthContext locationSpecificHealthContextInner
-                        = this.consecutiveExceptionBasedCircuitBreaker.handleSuccess(locationSpecificHealthContext, isReadOnlyRequest);
+                        = this.consecutiveExceptionBasedCircuitBreaker
+                        .handleSuccess(
+                            locationSpecificHealthContext,
+                            partitionKeyRangeWrapper,
+                            regionWithSuccess,
+                            isReadOnlyRequest);
 
                     if (this.consecutiveExceptionBasedCircuitBreaker.canHealthStatusBeUpgraded(locationSpecificHealthContextInner, isReadOnlyRequest)) {
 
@@ -66,8 +75,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                                 partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                                 partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                                 partitionKeyRangeWrapper.getCollectionResourceId(),
-                                this.globalEndpointManager
-                                    .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
+                                regionWithSuccess);
                         }
 
                         return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.Healthy);
@@ -86,8 +94,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                                 partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                                 partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                                 partitionKeyRangeWrapper.getCollectionResourceId(),
-                                this.globalEndpointManager
-                                    .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
+                                regionWithSuccess);
                         }
 
                         return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.HealthyTentative);
@@ -99,8 +106,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                             partitionKeyRangeWrapper.getCollectionResourceId(),
-                            this.globalEndpointManager
-                                .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
+                            regionWithSuccess);
                     }
 
                     return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.HealthyTentative);
@@ -117,7 +123,7 @@ public class LocationSpecificHealthContextTransitionHandler {
         LocationSpecificHealthContext locationSpecificHealthContext,
         PartitionKeyRangeWrapper partitionKeyRangeWrapper,
         ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionKeyRangeWrapper> partitionKeyRangesWithPossibleUnavailableRegions,
-        URI locationWithException,
+        String regionWithException,
         boolean isReadOnlyRequest) {
 
         LocationHealthStatus currentLocationHealthStatusSnapshot = locationSpecificHealthContext.getLocationHealthStatus();
@@ -130,8 +136,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                         partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                         partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                         partitionKeyRangeWrapper.getCollectionResourceId(),
-                        this.globalEndpointManager
-                            .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
+                        regionWithException);
                 }
 
                 return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.HealthyWithFailures);
@@ -139,7 +144,12 @@ public class LocationSpecificHealthContextTransitionHandler {
                 if (!this.consecutiveExceptionBasedCircuitBreaker.shouldHealthStatusBeDowngraded(locationSpecificHealthContext, isReadOnlyRequest)) {
 
                     LocationSpecificHealthContext locationSpecificHealthContextInner
-                        = this.consecutiveExceptionBasedCircuitBreaker.handleException(locationSpecificHealthContext, isReadOnlyRequest);
+                        = this.consecutiveExceptionBasedCircuitBreaker
+                        .handleException(
+                            locationSpecificHealthContext,
+                            partitionKeyRangeWrapper,
+                            regionWithException,
+                            isReadOnlyRequest);
 
                     if (logger.isDebugEnabled()) {
                         logger.debug("Partition {}-{} of collection : {} has exception count of {} for region : {}",
@@ -147,8 +157,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                             partitionKeyRangeWrapper.getCollectionResourceId(),
                             isReadOnlyRequest ? locationSpecificHealthContextInner.getExceptionCountForReadForCircuitBreaking() : locationSpecificHealthContextInner.getExceptionCountForWriteForCircuitBreaking(),
-                            this.globalEndpointManager
-                                .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
+                            regionWithException);
                     }
 
                     return locationSpecificHealthContextInner;
@@ -160,15 +169,19 @@ public class LocationSpecificHealthContextTransitionHandler {
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                             partitionKeyRangeWrapper.getPartitionKeyRange(),
-                            this.globalEndpointManager
-                                .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
+                            regionWithException);
                     }
 
                     return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.Unavailable);
                 }
             case HealthyTentative:
                 if (!this.consecutiveExceptionBasedCircuitBreaker.shouldHealthStatusBeDowngraded(locationSpecificHealthContext, isReadOnlyRequest)) {
-                    return this.consecutiveExceptionBasedCircuitBreaker.handleException(locationSpecificHealthContext, isReadOnlyRequest);
+                    return this.consecutiveExceptionBasedCircuitBreaker
+                        .handleException(
+                            locationSpecificHealthContext,
+                            partitionKeyRangeWrapper,
+                            regionWithException,
+                            isReadOnlyRequest);
                 } else {
 
                     if (logger.isDebugEnabled()) {
@@ -176,8 +189,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                             partitionKeyRangeWrapper.getCollectionResourceId(),
-                            this.globalEndpointManager
-                                .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
+                            regionWithException);
                     }
 
                     return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.Unavailable);

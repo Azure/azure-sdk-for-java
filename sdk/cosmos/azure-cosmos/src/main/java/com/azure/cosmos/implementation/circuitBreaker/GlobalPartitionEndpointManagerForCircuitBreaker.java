@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.PointOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
@@ -276,7 +277,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                                                 .this.locationSpecificHealthContextTransitionHandler.handleSuccess(
                                                 locationSpecificContextAsVal,
                                                 partitionKeyRangeWrapper,
-                                                locationWithStaleUnavailabilityInfoAsKey,
+                                                this.locationToRegion.getOrDefault(locationWithStaleUnavailabilityInfoAsKey, StringUtils.EMPTY),
                                                 false,
                                                 true);
                                         }
@@ -292,7 +293,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                                     .this.locationSpecificHealthContextTransitionHandler.handleSuccess(
                                     locationSpecificContextAsVal,
                                     partitionKeyRangeWrapper,
-                                    locationWithStaleUnavailabilityInfoAsKey,
+                                    GlobalPartitionEndpointManagerForCircuitBreaker.this.locationToRegion.getOrDefault(locationWithStaleUnavailabilityInfoAsKey, StringUtils.EMPTY),
                                     false,
                                     true);
                             }
@@ -385,7 +386,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     locationSpecificContextAsVal,
                     partitionKeyRangeWrapper,
                     GlobalPartitionEndpointManagerForCircuitBreaker.this.partitionKeyRangesWithPossibleUnavailableRegions,
-                    locationWithException,
+                    GlobalPartitionEndpointManagerForCircuitBreaker.this.locationToRegion.getOrDefault(locationWithException, StringUtils.EMPTY),
                     isReadOnlyRequest);
 
 
@@ -434,7 +435,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                 locationSpecificHealthContextAfterTransition = this.locationSpecificHealthContextTransitionHandler.handleSuccess(
                     locationSpecificContextAsVal,
                     partitionKeyRangeWrapper,
-                    succeededLocation,
+                    GlobalPartitionEndpointManagerForCircuitBreaker.this.locationToRegion.getOrDefault(succeededLocation, StringUtils.EMPTY),
                     false,
                     isReadOnlyRequest);
 
