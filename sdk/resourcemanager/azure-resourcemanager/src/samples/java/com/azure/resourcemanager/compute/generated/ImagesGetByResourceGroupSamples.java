@@ -19,7 +19,10 @@ public final class ImagesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getInformationAboutAVirtualMachineImage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().getByResourceGroupWithResponse("myResourceGroup",
-            "myImage", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getImages()
+            .getByResourceGroupWithResponse("myResourceGroup", "myImage", null, com.azure.core.util.Context.NONE);
     }
 }

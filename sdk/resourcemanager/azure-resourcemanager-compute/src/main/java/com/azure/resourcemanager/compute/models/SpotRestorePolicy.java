@@ -35,8 +35,8 @@ public final class SpotRestorePolicy {
     }
 
     /**
-     * Get the enabled property: Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried
-     * to be restored opportunistically based on capacity availability and pricing constraints.
+     * Get the enabled property: Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried to
+     * be restored opportunistically based on capacity availability and pricing constraints.
      * 
      * @return the enabled value.
      */
@@ -45,8 +45,8 @@ public final class SpotRestorePolicy {
     }
 
     /**
-     * Set the enabled property: Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried
-     * to be restored opportunistically based on capacity availability and pricing constraints.
+     * Set the enabled property: Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried to
+     * be restored opportunistically based on capacity availability and pricing constraints.
      * 
      * @param enabled the enabled value to set.
      * @return the SpotRestorePolicy object itself.

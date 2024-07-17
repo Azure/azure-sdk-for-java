@@ -19,7 +19,10 @@ public final class VirtualMachinesAssessPatchesSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void assessPatchStateOfAVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().assessPatches("myResourceGroupName",
-            "myVMName", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .assessPatches("myResourceGroupName", "myVMName", com.azure.core.util.Context.NONE);
     }
 }

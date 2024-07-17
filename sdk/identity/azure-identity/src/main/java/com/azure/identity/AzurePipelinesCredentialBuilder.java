@@ -35,6 +35,13 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
     private String systemAccessToken;
 
     /**
+     * Creates an instance of the {@link AzurePipelinesCredentialBuilder}.
+     */
+    public AzurePipelinesCredentialBuilder() {
+        super();
+    }
+
+    /**
      * Sets the service connection id for the Azure Pipelines service connection. The service connection ID is
      * retrieved from the Service Connection in the portal.
      *

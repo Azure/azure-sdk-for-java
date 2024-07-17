@@ -20,8 +20,11 @@ public final class VirtualMachineScaleSetVMsPowerOffSamples {
      */
     public static void
         virtualMachineScaleSetVMPowerOffMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs().powerOff("rgcompute", "aaaaaa",
-            "aaaaaaaaa", true, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .powerOff("rgcompute", "aaaaaa", "aaaaaaaaa", true, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +39,11 @@ public final class VirtualMachineScaleSetVMsPowerOffSamples {
      */
     public static void
         virtualMachineScaleSetVMPowerOffMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs().powerOff("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .powerOff("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaa", null,
+                com.azure.core.util.Context.NONE);
     }
 }
