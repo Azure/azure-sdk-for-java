@@ -1,4 +1,18 @@
 # Release History
+
+## 5.15.0 (Unreleased)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+ - Added a new dependency: `spring-cloud-azure-testcontainers`.
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Add `ConnectionDetails` for Cosmos, Storage Blob and Storage Queue. For more information about `ConnectionDetails`, please refer to [Spring Boot 3.1's ConnectionDetails abstraction](https://spring.io/blog/2023/06/19/spring-boot-31-connectiondetails-abstraction).
+
 ## 5.14.0 (2024-07-05)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.7, 3.3.0-3.3.1. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>7) and 3.3.m (m>1) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.2. (Note: 2022.0.x (x>5) and 2023.0.y (y>2) should be supported, but they aren't tested with this release.)
