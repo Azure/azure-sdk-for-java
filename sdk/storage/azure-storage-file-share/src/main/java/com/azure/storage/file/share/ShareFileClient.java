@@ -36,6 +36,7 @@ import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
+import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
@@ -53,12 +54,15 @@ import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
+import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.Range;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
+import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
+import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
@@ -80,14 +84,18 @@ import com.azure.storage.file.share.options.ShareFileSeekableByteChannelReadOpti
 import com.azure.storage.file.share.options.ShareFileSeekableByteChannelWriteOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1121,12 +1129,71 @@ public class ShareFileClient {
     public ShareFileDownloadResponse downloadWithResponse(OutputStream stream, ShareFileDownloadOptions options,
         Duration timeout, Context context) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
+        options = options == null ? new ShareFileDownloadOptions() : options;
+        ShareFileRange range = options.getRange() == null ? new ShareFileRange(0) : options.getRange();
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        DownloadRetryOptions retryOptions = options.getRetryOptions() == null ? new DownloadRetryOptions()
+            : options.getRetryOptions();
+        Boolean getRangeContentMd5 = options.isRangeContentMd5Requested();
 
-        Mono<ShareFileDownloadResponse> download = shareFileAsyncClient.downloadWithResponse(options, context)
-            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
-                .thenReturn(new ShareFileDownloadResponse(response)));
+        String initialETag = null;
+        //long initialEnd = range.getEnd();
 
-        return StorageImplUtils.blockWithOptionalTimeout(download, timeout);
+        int retryCount = 0;
+        while (retryCount <= retryOptions.getMaxRetryRequests()) {
+            try {
+                //ShareFileRange currentRange = new ShareFileRange(range.getStart(), initialEnd);
+                ResponseBase<FilesDownloadHeaders, InputStream> response = downloadRange(range,
+                    getRangeContentMd5, requestConditions, context);
+                String currentETag = ModelHelper.getETag(response.getHeaders());
+                if (initialETag != null && !initialETag.equals(currentETag)) {
+                    throw new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
+                        + initialETag + ", Received eTag: " + currentETag);
+                }
+                initialETag = currentETag; // Update eTag for subsequent retries
+
+                ShareFileDownloadHeaders headers = ModelHelper.transformFileDownloadHeaders(
+                    response.getDeserializedHeaders(), response.getHeaders());
+                long finalEnd;
+                if (range.getEnd() == null) {
+                    finalEnd = headers.getContentRange() != null
+                        ? Long.parseLong(headers.getContentRange().split("/")[1]) : headers.getContentLength();
+                }
+
+                try (InputStream responseStream = response.getValue()) {
+                    byte[] buffer = new byte[8192];
+                    int bytesRead;
+                    while ((bytesRead = responseStream.read(buffer)) != -1) {
+                        stream.write(buffer, 0, bytesRead);
+                    }
+                }
+                return new ShareFileDownloadResponse(new ShareFileDownloadAsyncResponse(response.getRequest(),
+                    response.getStatusCode(), response.getHeaders(), null, headers));
+            } catch (IOException | ConcurrentModificationException e) {
+                if (retryCount >= retryOptions.getMaxRetryRequests() || !(e instanceof IOException)) {
+                    throw new RuntimeException("Failed to download file after retries: " + e.getMessage(), e);
+                }
+                retryCount++;
+                LOGGER.info("Retrying download due to Exception. Attempt: " + retryCount);
+            }
+        }
+        throw new IllegalStateException("Failed to download file. Max retry attempts reached.");
+
+
+
+//        Mono<ShareFileDownloadResponse> download = shareFileAsyncClient.downloadWithResponse(options, context)
+//            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
+//                .thenReturn(new ShareFileDownloadResponse(response)));
+
+//        return StorageImplUtils.blockWithOptionalTimeout(download, timeout);
+    }
+
+    private ResponseBase<FilesDownloadHeaders, InputStream> downloadRange(ShareFileRange range,
+        Boolean rangeGetContentMD5, ShareRequestConditions requestConditions, Context context) {
+        String rangeString = range == null ? null : range.toHeaderValue();
+        return azureFileStorageClient.getFiles().downloadWithResponse(shareName, filePath, null,
+            rangeString, rangeGetContentMD5, requestConditions.getLeaseId(),  context);
     }
 
     /**
