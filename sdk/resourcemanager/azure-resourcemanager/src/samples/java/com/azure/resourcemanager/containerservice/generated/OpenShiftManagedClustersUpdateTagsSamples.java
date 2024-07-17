@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservice.generated;
 
 import com.azure.resourcemanager.containerservice.models.TagsObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,13 +20,16 @@ public final class OpenShiftManagedClustersUpdateTagsSamples {
      */
     /**
      * Sample code: Update OpenShift Managed Cluster Tags.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateOpenShiftManagedClusterTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getOpenShiftManagedClusters().updateTags("rg1",
-            "clustername1", new TagsObject().withTags(mapOf("archv3", "", "tier", "testing")),
-            com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getOpenShiftManagedClusters()
+            .updateTags("rg1", "clustername1", new TagsObject().withTags(mapOf("archv3", "", "tier", "testing")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

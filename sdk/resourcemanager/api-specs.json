@@ -70,7 +70,7 @@
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/Microsoft.ContainerService/aks/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--tag=package-2024-02 --modelerfour.lenient-model-deduplication --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku"
+    "args": "--tag=package-2024-05 --modelerfour.lenient-model-deduplication --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku"
   },
   "containerservice-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerservice",
