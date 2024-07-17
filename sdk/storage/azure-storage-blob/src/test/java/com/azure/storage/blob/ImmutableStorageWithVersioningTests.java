@@ -613,7 +613,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void syncCopy() {
-        vlwContainer.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        //vlwContainer.setAccessPolicy(PublicAccessType.CONTAINER, null);
         sleepIfRunningAgainstService(30000); // Give time for the policy to take effect
         BlockBlobClient destination = vlwContainer.getBlobClient(generateBlobName()).getBlockBlobClient();
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);

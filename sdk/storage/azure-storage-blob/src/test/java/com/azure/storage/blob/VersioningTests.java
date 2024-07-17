@@ -300,7 +300,7 @@ public class VersioningTests extends BlobTestBase {
 
     @Test
     public void copyFromUrlBlobsWithVersion() {
-        blobContainerClient.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        //blobContainerClient.setAccessPolicy(PublicAccessType.CONTAINER, null);
         BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
             DATA.getDefaultDataSize());
         BlobClient sourceBlob = blobContainerClient.getBlobClient(generateBlobName());
