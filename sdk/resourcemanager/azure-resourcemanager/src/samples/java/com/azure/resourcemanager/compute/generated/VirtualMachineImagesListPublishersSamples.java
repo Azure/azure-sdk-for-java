@@ -20,7 +20,10 @@ public final class VirtualMachineImagesListPublishersSamples {
      */
     public static void
         virtualMachineImageListPublishersMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImages()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImages()
             .listPublishersWithResponse("aaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
@@ -36,7 +39,10 @@ public final class VirtualMachineImagesListPublishersSamples {
      */
     public static void
         virtualMachineImageListPublishersMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImages().listPublishersWithResponse("aaaaa",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImages()
+            .listPublishersWithResponse("aaaaa", com.azure.core.util.Context.NONE);
     }
 }

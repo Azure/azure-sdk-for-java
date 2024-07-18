@@ -13,4 +13,6 @@ extends:
       Public:
         SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
         Location: 'eastus'
+        ServiceConnection: azure-sdk-tests
+        SubscriptionConfigurationFilePath: eng/common/TestResources/sub-config/AzurePublicMsft.json
     SupportedClouds: 'Public'

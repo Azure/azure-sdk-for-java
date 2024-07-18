@@ -23,9 +23,14 @@ public final class SnapshotsGrantAccessSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getASasOnASnapshot(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSnapshots().grantAccess("myResourceGroup", "mySnapshot",
-            new GrantAccessData().withAccess(AccessLevel.READ).withDurationInSeconds(300)
-                .withFileFormat(FileFormat.VHDX),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSnapshots()
+            .grantAccess("myResourceGroup", "mySnapshot",
+                new GrantAccessData().withAccess(AccessLevel.READ)
+                    .withDurationInSeconds(300)
+                    .withFileFormat(FileFormat.VHDX),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -24,9 +24,9 @@ public final class WinRMListener {
      * vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add). In this case, your certificate
      * needs to be the Base64 encoding of the following JSON Object which is encoded in UTF-8: <br><br> {<br>
      * "data":"<Base64-encoded-certificate>",<br> "dataType":"pfx",<br> "password":"<pfx-file-password>"<br>} <br> To
-     * install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine
-     * extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure
-     * Key Vault virtual machine extension for
+     * install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension
+     * for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault
+     * virtual machine extension for
      * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      */
     @JsonProperty(value = "certificateUrl")

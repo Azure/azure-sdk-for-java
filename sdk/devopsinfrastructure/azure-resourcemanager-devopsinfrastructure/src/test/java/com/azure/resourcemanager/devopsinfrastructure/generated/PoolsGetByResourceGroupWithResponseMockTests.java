@@ -23,7 +23,7 @@ public final class PoolsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Provisioning\",\"maximumConcurrency\":941314557,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":\"dataxozap\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"elxprglyatddck\"},\"identity\":{\"principalId\":\"uejrjxgc\",\"tenantId\":\"ibrhosxsdqr\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ibahwflus\":{\"principalId\":\"i\",\"clientId\":\"rq\"}}},\"location\":\"tmhrkwofyyvoqacp\",\"tags\":{\"wbwo\":\"pbtg\",\"kcnqxwbpo\":\"nwashrtd\",\"aasipqi\":\"ulpiuj\"},\"id\":\"obyu\",\"name\":\"erpqlpqwcciuqg\",\"type\":\"dbutauvfbtkuwhh\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"maximumConcurrency\":964392835,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":\"datazbtbhj\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"lkfg\"},\"identity\":{\"principalId\":\"neuelfphsdyhtoz\",\"tenantId\":\"kd\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"wdsjnkalju\":{\"principalId\":\"uvxzxclvi\",\"clientId\":\"hqzonosggbhcoh\"},\"ewkfvhqcrai\":{\"principalId\":\"iswac\",\"clientId\":\"gdkz\"},\"gafcnihgwqapnedg\":{\"principalId\":\"pnppfuf\",\"clientId\":\"wdmhdlxyjrxs\"}}},\"location\":\"cvkcvqvpkeqdcv\",\"tags\":{\"dsotbobzd\":\"vo\",\"hdldwmgxcxrsl\":\"pcjwv\",\"rpkhjwn\":\"mutwuoe\",\"dggkzzlvmbmpa\":\"yqsluic\"},\"id\":\"modfvuefywsbpfvm\",\"name\":\"yhrfouyftaakcpw\",\"type\":\"yzvqt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class PoolsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Pool response = manager.pools()
-            .getByResourceGroupWithResponse("xysmoc", "bq", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("pbttdum", "rp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tmhrkwofyyvoqacp", response.location());
-        Assertions.assertEquals("pbtg", response.tags().get("wbwo"));
-        Assertions.assertEquals(ProvisioningState.PROVISIONING, response.properties().provisioningState());
-        Assertions.assertEquals(941314557, response.properties().maximumConcurrency());
-        Assertions.assertEquals("elxprglyatddck", response.properties().devCenterProjectResourceId());
+        Assertions.assertEquals("cvkcvqvpkeqdcv", response.location());
+        Assertions.assertEquals("vo", response.tags().get("dsotbobzd"));
+        Assertions.assertEquals(ProvisioningState.CANCELED, response.properties().provisioningState());
+        Assertions.assertEquals(964392835, response.properties().maximumConcurrency());
+        Assertions.assertEquals("lkfg", response.properties().devCenterProjectResourceId());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 }

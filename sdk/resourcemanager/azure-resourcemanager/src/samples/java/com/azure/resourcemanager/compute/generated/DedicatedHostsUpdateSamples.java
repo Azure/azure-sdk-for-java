@@ -25,9 +25,12 @@ public final class DedicatedHostsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dedicatedHostUpdateResize(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().update("rgcompute", "aaaaaaaaa",
-            "aaaaaaaaaaaaaaaaaaaaa", new DedicatedHostUpdate().withSku(new Sku().withName("DSv3-Type1")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .update("rgcompute", "aaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaa",
+                new DedicatedHostUpdate().withSku(new Sku().withName("DSv3-Type1")), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -41,11 +44,16 @@ public final class DedicatedHostsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dedicatedHostUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().update("rgcompute", "aaaaaaaaa",
-            "aaaaaaaaaaaaaaaaaaaaa",
-            new DedicatedHostUpdate().withTags(mapOf("key8813", "fakeTokenPlaceholder")).withPlatformFaultDomain(1)
-                .withAutoReplaceOnFailure(true).withLicenseType(DedicatedHostLicenseTypes.WINDOWS_SERVER_HYBRID),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .update("rgcompute", "aaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaa",
+                new DedicatedHostUpdate().withTags(mapOf("key8813", "fakeTokenPlaceholder"))
+                    .withPlatformFaultDomain(1)
+                    .withAutoReplaceOnFailure(true)
+                    .withLicenseType(DedicatedHostLicenseTypes.WINDOWS_SERVER_HYBRID),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -59,8 +67,12 @@ public final class DedicatedHostsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dedicatedHostUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().update("rgcompute", "aa",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaa", new DedicatedHostUpdate(), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .update("rgcompute", "aa", "aaaaaaaaaaaaaaaaaaaaaaaaaa", new DedicatedHostUpdate(),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

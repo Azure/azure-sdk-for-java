@@ -2,13 +2,15 @@
 
 ## 2.41.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed non-functional API `getOsOptions` and related models `OSOptionProperty`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-05-01`.
 
 ## 2.40.0 (2024-06-24)
 
