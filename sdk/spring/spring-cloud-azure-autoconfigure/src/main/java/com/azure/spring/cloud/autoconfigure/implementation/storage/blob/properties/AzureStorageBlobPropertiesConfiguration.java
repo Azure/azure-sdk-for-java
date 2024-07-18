@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties;
 
-import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 
@@ -11,7 +10,7 @@ import org.springframework.context.annotation.Import;
     ConfigurationWithConnectionDetailsBean.class,
     ConfigurationWithoutConnectionDetailsBean.class,
 })
-@EnableConfigurationProperties({AzureStorageBlobProperties.class, AzureGlobalProperties.class})
+@EnableConfigurationProperties
 public class AzureStorageBlobPropertiesConfiguration {
 
 }
