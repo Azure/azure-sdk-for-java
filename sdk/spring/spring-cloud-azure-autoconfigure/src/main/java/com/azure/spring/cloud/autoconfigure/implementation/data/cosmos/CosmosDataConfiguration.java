@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 
 @ConditionalOnClass(CosmosTemplate.class)
 @ConditionalOnBean(AzureCosmosProperties.class)
+@ConditionalOnDatabaseConfigured
 public class CosmosDataConfiguration extends AbstractCosmosConfiguration {
 
     private final AzureCosmosProperties cosmosProperties;

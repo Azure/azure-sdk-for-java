@@ -60,10 +60,6 @@ class CosmosDataAutoConfigurationTests {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             this.contextRunner
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-                .withPropertyValues(
-                    "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
-                    "spring.cloud.azure.cosmos.database=property-database"
-                )
                 .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
                 .run(context -> {
                     assertThat(context).hasSingleBean(CosmosTemplate.class);

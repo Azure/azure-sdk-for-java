@@ -7,7 +7,6 @@ import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.Azu
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -19,7 +18,6 @@ import org.springframework.context.annotation.Import;
     CosmosDataDiagnosticsConfiguration.class,
     CosmosDataConfiguration.class})
 @ConditionalOnClass(AbstractCosmosConfiguration.class)
-@ConditionalOnProperty(prefix = "spring.cloud.azure.cosmos", name = "database")
 public class CosmosDataAutoConfiguration {
 
 }
