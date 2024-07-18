@@ -106,7 +106,7 @@ public final class BlobBatch {
 
         this.blobAsyncClient = new BlobClientBuilder()
             .endpoint(accountUrl)
-            .blobName("")
+            .blobName("dummyName") // setting a dummy name to avoid IllegalArgumentException in BlobClientBuilder
             .serviceVersion(serviceVersion)
             .pipeline(batchPipelineBuilder.build())
             .buildAsyncClient();
