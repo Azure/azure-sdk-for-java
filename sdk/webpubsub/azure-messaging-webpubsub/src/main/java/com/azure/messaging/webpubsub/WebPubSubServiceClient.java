@@ -19,7 +19,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.implementation.WebPubSubUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
 import com.azure.messaging.webpubsub.implementation.models.AddToGroupsRequest;
-import com.azure.messaging.webpubsub.models.ClientType;
+import com.azure.messaging.webpubsub.models.WebPubSubClientAccess;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
@@ -60,8 +60,8 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubClientAccessToken getClientAccessToken(GetClientAccessTokenOptions options) {
-        final ClientType clientType = options.getClientType();
-        final String path = clientType.equals(ClientType.MQTT)
+        final WebPubSubClientAccess webPubSubClientAccess = options.getWebPubSubClientAccess();
+        final String path = webPubSubClientAccess.equals(WebPubSubClientAccess.MQTT)
             ? "clients/mqtt/hubs/" : "client/hubs/";
         if (this.keyCredential == null) {
             Response<BinaryData> response = serviceClient.generateClientTokenWithResponse(hub,

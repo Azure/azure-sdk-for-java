@@ -20,13 +20,13 @@ public final class GetClientAccessTokenOptions {
     private String userId;
     private List<String> roles;
     private List<String> groups;
-    private ClientType clientType;
+    private WebPubSubClientAccess webPubSubClientAccess;
 
     /**
      * Creates an instance of GetClientAccessTokenOptions.
      */
     public GetClientAccessTokenOptions() {
-        this.clientType = ClientType.DEFAULT;
+        this.webPubSubClientAccess = WebPubSubClientAccess.DEFAULT;
     }
 
     /**
@@ -130,18 +130,18 @@ public final class GetClientAccessTokenOptions {
      *
      * @return The same instance of this type, modified based on the value provided in this set method.
      */
-    public ClientType getClientType() {
-        return clientType;
+    public WebPubSubClientAccess getWebPubSubClientAccess() {
+        return webPubSubClientAccess;
     }
 
     /**
      * Specifies the endpoint type of the client. Default type is <code>default</code>
      *
-     * @param clientType The endpoint type of client
+     * @param webPubSubClientAccess The endpoint type of client
      * @return The same instance of this type, modified based on the value provided in this set method.
      */
-    public GetClientAccessTokenOptions setClientType(final ClientType clientType) {
-        this.clientType = clientType;
+    public GetClientAccessTokenOptions setWebPubSubClientAccess(final WebPubSubClientAccess webPubSubClientAccess) {
+        this.webPubSubClientAccess = webPubSubClientAccess;
         return this;
     }
 

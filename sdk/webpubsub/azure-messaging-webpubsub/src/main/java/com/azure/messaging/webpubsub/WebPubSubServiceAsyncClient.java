@@ -21,7 +21,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
 import com.azure.messaging.webpubsub.implementation.models.AddToGroupsRequest;
-import com.azure.messaging.webpubsub.models.ClientType;
+import com.azure.messaging.webpubsub.models.WebPubSubClientAccess;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
@@ -59,8 +59,8 @@ public final class WebPubSubServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WebPubSubClientAccessToken> getClientAccessToken(GetClientAccessTokenOptions options) {
-        final ClientType clientType = options.getClientType();
-        final String path = clientType.equals(ClientType.MQTT)
+        final WebPubSubClientAccess webPubSubClientAccess = options.getWebPubSubClientAccess();
+        final String path = webPubSubClientAccess.equals(WebPubSubClientAccess.MQTT)
             ? "clients/mqtt/hubs/" : "client/hubs/";
         if (this.keyCredential == null) {
             return this.serviceClient.generateClientTokenWithResponseAsync(hub,
@@ -91,8 +91,8 @@ public final class WebPubSubServiceAsyncClient {
         if (!CoreUtils.isNullOrEmpty(options.getGroups())) {
             options.getGroups().stream().forEach(groupName -> requestOptions.addQueryParam("group", groupName));
         }
-        if (options.getClientType() != null) {
-            requestOptions.addQueryParam("clientType", options.getClientType().toString());
+        if (options.getWebPubSubClientAccess() != null) {
+            requestOptions.addQueryParam("clientType", options.getWebPubSubClientAccess().toString());
         }
         return requestOptions;
     }
