@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.autoconfigure.implementation.data.cosmos;
 
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
@@ -19,16 +22,16 @@ import java.lang.annotation.Target;
 
     class ConditionalDatabaseConfiguredCondition extends AnyNestedCondition {
 
-        public ConditionalDatabaseConfiguredCondition() {
+        ConditionalDatabaseConfiguredCondition() {
             super(ConfigurationPhase.REGISTER_BEAN);
         }
 
         @ConditionalOnProperty(prefix = "spring.cloud.azure.cosmos", name = "database")
-        public static class DataBasePropertyConfigured {
+        static class DataBasePropertyConfigured {
         }
 
         @ConditionalOnBean(type = "com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosConnectionDetails")
-        public static class ConnectionDetailBeanConfigured {
+        static class ConnectionDetailBeanConfigured {
         }
     }
 }
