@@ -6,6 +6,7 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareAudience;
@@ -874,7 +875,9 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
     }
 
+    // need to remove Playback only once default credential is enabled
     @Test
+    @PlaybackOnly
     public void audienceError() {
         String dirName = generatePathName();
         ShareDirectoryAsyncClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryAsyncClient();

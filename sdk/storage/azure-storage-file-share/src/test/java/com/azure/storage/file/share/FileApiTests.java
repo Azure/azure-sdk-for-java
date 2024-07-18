@@ -2877,7 +2877,9 @@ class FileApiTests extends FileShareTestBase {
         assertTrue(aadFileClient.exists());
     }
 
+    // need to remove Playback only once default credential is enabled
     @Test
+    @PlaybackOnly
     public void audienceError() {
         String fileName = generatePathName();
         ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();

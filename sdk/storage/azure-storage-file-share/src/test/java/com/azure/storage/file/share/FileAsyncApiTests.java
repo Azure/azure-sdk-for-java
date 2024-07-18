@@ -1581,7 +1581,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
     }
 
+    // need to remove Playback only once default credential is enabled
     @Test
+    @PlaybackOnly
     public void audienceError() {
         String fileName = generatePathName();
         ShareFileAsyncClient fileClient = fileBuilderHelper(shareName, fileName).buildFileAsyncClient();

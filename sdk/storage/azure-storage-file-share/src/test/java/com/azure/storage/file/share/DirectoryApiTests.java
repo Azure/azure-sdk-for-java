@@ -10,6 +10,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.HandleItem;
@@ -1680,7 +1681,9 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertTrue(aadDirClient.exists());
     }
 
+    // need to remove Playback only once default credential is enabled
     @Test
+    @PlaybackOnly
     public void audienceError() {
         String dirName = generatePathName();
         ShareDirectoryClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryClient();
