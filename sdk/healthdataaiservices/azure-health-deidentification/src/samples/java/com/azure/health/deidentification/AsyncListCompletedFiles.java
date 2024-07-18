@@ -23,21 +23,22 @@ public class AsyncListCompletedFiles {
         String outputFolder = "_output";
         String inputPrefix = "example_patient_1";
 
-        DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
+        DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        DeidServicesAsyncClient deidentificationClient = deidentificationClientbuilder.buildAsyncClient();
+        DeidentificationAsyncClient deidentificationClient = deidentificationClientbuilder.buildAsyncClient();
 
         String storageAccountSASUri = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        DeidentificationJob job = new DeidentificationJob(
-            new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions),
-            new TargetStorageLocation(storageAccountSASUri, outputFolder),
-            OperationType.SURROGATE,
-            DocumentDataType.PLAINTEXT);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageAccountSASUri, inputPrefix);
+        sourceStorageLocation.setExtensions(extensions);
+
+        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageAccountSASUri, outputFolder));
+        job.setOperation(OperationType.SURROGATE);
+        job.setDataType(DocumentDataType.PLAINTEXT);
 
         DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job)
             .getSyncPoller()

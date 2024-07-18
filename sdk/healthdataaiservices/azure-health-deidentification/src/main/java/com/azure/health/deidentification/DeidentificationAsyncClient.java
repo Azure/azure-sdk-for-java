@@ -20,7 +20,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.health.deidentification.implementation.DeidServicesClientImpl;
+import com.azure.health.deidentification.implementation.DeidentificationClientImpl;
 import com.azure.health.deidentification.models.DeidentificationContent;
 import com.azure.health.deidentification.models.DeidentificationJob;
 import com.azure.health.deidentification.models.DeidentificationResult;
@@ -30,20 +30,20 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous DeidServicesClient type.
+ * Initializes a new instance of the asynchronous DeidentificationClient type.
  */
-@ServiceClient(builder = DeidServicesClientBuilder.class, isAsync = true)
-public final class DeidServicesAsyncClient {
+@ServiceClient(builder = DeidentificationClientBuilder.class, isAsync = true)
+public final class DeidentificationAsyncClient {
     @Generated
-    private final DeidServicesClientImpl serviceClient;
+    private final DeidentificationClientImpl serviceClient;
 
     /**
-     * Initializes an instance of DeidServicesAsyncClient class.
+     * Initializes an instance of DeidentificationAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
     @Generated
-    DeidServicesAsyncClient(DeidServicesClientImpl serviceClient) {
+    DeidentificationAsyncClient(DeidentificationClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -59,16 +59,16 @@ public final class DeidServicesAsyncClient {
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
-     *         extensions (Required): [
-     *             String (Required)
+     *         extensions (Optional): [
+     *             String (Optional)
      *         ]
      *     }
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Required)
-     *     dataType: String(Plaintext) (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     dataType: String(Plaintext) (Optional)
      *     redactionFormat: String (Optional)
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -123,16 +123,16 @@ public final class DeidServicesAsyncClient {
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
-     *         extensions (Required): [
-     *             String (Required)
+     *         extensions (Optional): [
+     *             String (Optional)
      *         ]
      *     }
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Required)
-     *     dataType: String(Plaintext) (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     dataType: String(Plaintext) (Optional)
      *     redactionFormat: String (Optional)
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -168,16 +168,16 @@ public final class DeidServicesAsyncClient {
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
-     *         extensions (Required): [
-     *             String (Required)
+     *         extensions (Optional): [
+     *             String (Optional)
      *         ]
      *     }
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Required)
-     *     dataType: String(Plaintext) (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     dataType: String(Plaintext) (Optional)
      *     redactionFormat: String (Optional)
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -241,16 +241,16 @@ public final class DeidServicesAsyncClient {
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
-     *         extensions (Required): [
-     *             String (Required)
+     *         extensions (Optional): [
+     *             String (Optional)
      *         ]
      *     }
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Required)
-     *     dataType: String(Plaintext) (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     dataType: String(Plaintext) (Optional)
      *     redactionFormat: String (Optional)
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -360,16 +360,16 @@ public final class DeidServicesAsyncClient {
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
-     *         extensions (Required): [
-     *             String (Required)
+     *         extensions (Optional): [
+     *             String (Optional)
      *         ]
      *     }
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Required)
-     *     dataType: String(Plaintext) (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     dataType: String(Plaintext) (Optional)
      *     redactionFormat: String (Optional)
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -440,8 +440,8 @@ public final class DeidServicesAsyncClient {
      * <pre>{@code
      * {
      *     inputText: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Required)
-     *     dataType: String(Plaintext) (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     dataType: String(Plaintext) (Optional)
      *     redactionFormat: String (Optional)
      * }
      * }</pre>

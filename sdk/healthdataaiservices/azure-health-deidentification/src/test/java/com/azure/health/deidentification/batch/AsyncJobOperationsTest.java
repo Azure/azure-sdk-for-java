@@ -3,29 +3,17 @@
 
 package com.azure.health.deidentification.batch;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.health.deidentification.DeidServicesAsyncClient;
-import com.azure.health.deidentification.DeidServicesClientBuilder;
+import com.azure.health.deidentification.DeidentificationAsyncClient;
 import com.azure.health.deidentification.models.*;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,19 +21,25 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AsyncJobOperationsTest extends BatchOperationTestBase {
-    protected DeidServicesAsyncClient deidentificationAsyncClient;
+    protected DeidentificationAsyncClient deidentificationAsyncClient;
     private static final String OUTPUT_FOLDER = "_output";
 
     @Test
     void testCreateJobReturnsExpected() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getJobName();
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded006q";
+
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = getStorageAccountSASUri();
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        DeidentificationJob job = new DeidentificationJob(new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions), new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER), OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageAccountSASUri, inputPrefix);
+        sourceStorageLocation.setExtensions(extensions);
+
+        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER));
+        job.setOperation(OperationType.SURROGATE);
+        job.setDataType(DocumentDataType.PLAINTEXT);
 
         DeidentificationJob result = deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitUntil(LongRunningOperationStatus.NOT_STARTED).getValue();
 
@@ -67,13 +61,19 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testCreateThenListReturnsExpected() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getJobName();
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded007q";
+
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = getStorageAccountSASUri();
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        DeidentificationJob job = new DeidentificationJob(new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions), new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER), OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageAccountSASUri, inputPrefix);
+        sourceStorageLocation.setExtensions(extensions);
+
+        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER));
+        job.setOperation(OperationType.SURROGATE);
+        job.setDataType(DocumentDataType.PLAINTEXT);
 
         deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitUntil(LongRunningOperationStatus.NOT_STARTED);
 
@@ -99,13 +99,20 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2EWaitUntilSuccess() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getJobName();
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded008q";
+
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = getStorageAccountSASUri();
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        DeidentificationJob job = new DeidentificationJob(new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions), new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER), OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageAccountSASUri, inputPrefix);
+        sourceStorageLocation.setExtensions(extensions);
+
+        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER));
+        job.setOperation(OperationType.SURROGATE);
+        job.setDataType(DocumentDataType.PLAINTEXT);
+
         PollerFlux<DeidentificationJob, DeidentificationJob> poller = setPlaybackPollerFluxPollInterval(deidentificationAsyncClient.beginCreateJob(jobName, job));
         DeidentificationJob result = poller.getSyncPoller().waitForCompletion().getValue();
 
@@ -125,13 +132,19 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2ECancelJobThenDeleteJobDeletesJob() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getJobName();
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded009q";
+
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = getStorageAccountSASUri();
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        DeidentificationJob job = new DeidentificationJob(new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions), new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER), OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageAccountSASUri, inputPrefix);
+        sourceStorageLocation.setExtensions(extensions);
+
+        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER));
+        job.setOperation(OperationType.SURROGATE);
+        job.setDataType(DocumentDataType.PLAINTEXT);
 
         DeidentificationJob result = deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitUntil(LongRunningOperationStatus.NOT_STARTED).getValue();
 
@@ -150,13 +163,19 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2ECannotAccessStorageCreateJobFails() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getJobName();
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded0010q";
+
         String inputPrefix = "example_patient_1";
         String storageAccountSASUri = "FAKE_STORAGE_ACCOUNT";
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        DeidentificationJob job = new DeidentificationJob(new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions), new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER), OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageAccountSASUri, inputPrefix);
+        sourceStorageLocation.setExtensions(extensions);
+
+        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER));
+        job.setOperation(OperationType.SURROGATE);
+        job.setDataType(DocumentDataType.PLAINTEXT);
 
         assertThrows(HttpResponseException.class, () -> deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitUntil(LongRunningOperationStatus.NOT_STARTED));
     }

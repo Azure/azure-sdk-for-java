@@ -4,8 +4,8 @@
 
 package com.azure.health.deidentification.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Storage location.
  */
-@Immutable
+@Fluent
 public final class SourceStorageLocation implements JsonSerializable<SourceStorageLocation> {
     /*
      * URL to storage location.
@@ -34,20 +34,18 @@ public final class SourceStorageLocation implements JsonSerializable<SourceStora
      * List of extensions to filter path by.
      */
     @Generated
-    private final List<String> extensions;
+    private List<String> extensions;
 
     /**
      * Creates an instance of SourceStorageLocation class.
      * 
      * @param location the location value to set.
      * @param prefix the prefix value to set.
-     * @param extensions the extensions value to set.
      */
     @Generated
-    public SourceStorageLocation(String location, String prefix, List<String> extensions) {
+    public SourceStorageLocation(String location, String prefix) {
         this.location = location;
         this.prefix = prefix;
-        this.extensions = extensions;
     }
 
     /**
@@ -78,6 +76,18 @@ public final class SourceStorageLocation implements JsonSerializable<SourceStora
     @Generated
     public List<String> getExtensions() {
         return this.extensions;
+    }
+
+    /**
+     * Set the extensions property: List of extensions to filter path by.
+     * 
+     * @param extensions the extensions value to set.
+     * @return the SourceStorageLocation object itself.
+     */
+    @Generated
+    public SourceStorageLocation setExtensions(List<String> extensions) {
+        this.extensions = extensions;
+        return this;
     }
 
     /**
@@ -122,7 +132,10 @@ public final class SourceStorageLocation implements JsonSerializable<SourceStora
                     reader.skipChildren();
                 }
             }
-            return new SourceStorageLocation(location, prefix, extensions);
+            SourceStorageLocation deserializedSourceStorageLocation = new SourceStorageLocation(location, prefix);
+            deserializedSourceStorageLocation.extensions = extensions;
+
+            return deserializedSourceStorageLocation;
         });
     }
 }

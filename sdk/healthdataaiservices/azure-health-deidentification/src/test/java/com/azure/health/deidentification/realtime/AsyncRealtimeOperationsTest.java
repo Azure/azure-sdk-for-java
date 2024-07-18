@@ -3,7 +3,7 @@
 
 package com.azure.health.deidentification.realtime;
 
-import com.azure.health.deidentification.DeidServicesAsyncClient;
+import com.azure.health.deidentification.DeidentificationAsyncClient;
 import com.azure.health.deidentification.batch.BatchOperationTestBase;
 import com.azure.health.deidentification.models.DeidentificationContent;
 import com.azure.health.deidentification.models.DeidentificationResult;
@@ -21,13 +21,16 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AsyncRealtimeOperationsTest extends BatchOperationTestBase {
-    protected DeidServicesAsyncClient deidServicesAsyncClient;
+    protected DeidentificationAsyncClient deidServicesAsyncClient;
 
     @Test
     void testSurrogateReturnsExpected() {
         deidServicesAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
         String inputText = "Hello, my name is John Smith.";
-        DeidentificationContent content = new DeidentificationContent(inputText, OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
+        DeidentificationContent content = new DeidentificationContent(inputText);
+        content.setOperation(OperationType.SURROGATE);
+        content.setDataType(DocumentDataType.PLAINTEXT);
+
         Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentify(content);
         DeidentificationResult asyncResult = result.block();
 
@@ -42,7 +45,10 @@ class AsyncRealtimeOperationsTest extends BatchOperationTestBase {
     void testTagReturnsExpected() {
         deidServicesAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
         String inputText = "Hello, my name is John Smith.";
-        DeidentificationContent content = new DeidentificationContent(inputText, OperationType.TAG, DocumentDataType.PLAINTEXT);
+        DeidentificationContent content = new DeidentificationContent(inputText);
+        content.setOperation(OperationType.TAG);
+        content.setDataType(DocumentDataType.PLAINTEXT);
+
         Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentify(content);
         DeidentificationResult asyncResult = result.block();
 

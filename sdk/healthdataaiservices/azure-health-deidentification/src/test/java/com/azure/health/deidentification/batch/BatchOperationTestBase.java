@@ -9,16 +9,17 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.health.deidentification.DeidServicesClientBuilder;
+import com.azure.health.deidentification.DeidentificationClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
  * Base class for Deid Services client tests.
  */
 public class BatchOperationTestBase extends TestProxyTestBase {
+    private static final String FAKE_STORAGE_ACCOUNT_SAS_URI = "https://fake_storage_account_sas_uri.blob.core.windows.net/container-sdk-dev-fakeid";
 
-    protected DeidServicesClientBuilder getDeidServicesClientBuilder() {
-        DeidServicesClientBuilder deidentificationClientBuilder = new DeidServicesClientBuilder()
+    protected DeidentificationClientBuilder getDeidServicesClientBuilder() {
+        DeidentificationClientBuilder deidentificationClientBuilder = new DeidentificationClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
@@ -53,6 +54,6 @@ public class BatchOperationTestBase extends TestProxyTestBase {
      * @return the training data set Url
      */
     String getStorageAccountSASUri() {
-        return interceptorManager.isPlaybackMode() ? "https://isPlaybackmode" : Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
+        return interceptorManager.isPlaybackMode() ? FAKE_STORAGE_ACCOUNT_SAS_URI : Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
     }
 }

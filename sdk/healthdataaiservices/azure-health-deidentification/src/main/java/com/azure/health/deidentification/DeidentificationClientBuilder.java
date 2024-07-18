@@ -34,19 +34,19 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.health.deidentification.implementation.DeidServicesClientImpl;
+import com.azure.health.deidentification.implementation.DeidentificationClientImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * A builder for creating a new instance of the DeidServicesClient type.
+ * A builder for creating a new instance of the DeidentificationClient type.
  */
-@ServiceClientBuilder(serviceClients = { DeidServicesClient.class, DeidServicesAsyncClient.class })
-public final class DeidServicesClientBuilder
-    implements HttpTrait<DeidServicesClientBuilder>, ConfigurationTrait<DeidServicesClientBuilder>,
-    TokenCredentialTrait<DeidServicesClientBuilder>, EndpointTrait<DeidServicesClientBuilder> {
+@ServiceClientBuilder(serviceClients = { DeidentificationClient.class, DeidentificationAsyncClient.class })
+public final class DeidentificationClientBuilder
+    implements HttpTrait<DeidentificationClientBuilder>, ConfigurationTrait<DeidentificationClientBuilder>,
+    TokenCredentialTrait<DeidentificationClientBuilder>, EndpointTrait<DeidentificationClientBuilder> {
     @Generated
     private static final String SDK_NAME = "name";
 
@@ -64,10 +64,10 @@ public final class DeidServicesClientBuilder
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
-     * Create an instance of the DeidServicesClientBuilder.
+     * Create an instance of the DeidentificationClientBuilder.
      */
     @Generated
-    public DeidServicesClientBuilder() {
+    public DeidentificationClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -82,7 +82,7 @@ public final class DeidServicesClientBuilder
      */
     @Generated
     @Override
-    public DeidServicesClientBuilder pipeline(HttpPipeline pipeline) {
+    public DeidentificationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -101,7 +101,7 @@ public final class DeidServicesClientBuilder
      */
     @Generated
     @Override
-    public DeidServicesClientBuilder httpClient(HttpClient httpClient) {
+    public DeidentificationClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -117,7 +117,7 @@ public final class DeidServicesClientBuilder
      */
     @Generated
     @Override
-    public DeidServicesClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public DeidentificationClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -133,7 +133,7 @@ public final class DeidServicesClientBuilder
      */
     @Generated
     @Override
-    public DeidServicesClientBuilder clientOptions(ClientOptions clientOptions) {
+    public DeidentificationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -149,7 +149,7 @@ public final class DeidServicesClientBuilder
      */
     @Generated
     @Override
-    public DeidServicesClientBuilder retryOptions(RetryOptions retryOptions) {
+    public DeidentificationClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -159,7 +159,7 @@ public final class DeidServicesClientBuilder
      */
     @Generated
     @Override
-    public DeidServicesClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public DeidentificationClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
@@ -176,7 +176,7 @@ public final class DeidServicesClientBuilder
      */
     @Generated
     @Override
-    public DeidServicesClientBuilder configuration(Configuration configuration) {
+    public DeidentificationClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -192,7 +192,7 @@ public final class DeidServicesClientBuilder
      */
     @Generated
     @Override
-    public DeidServicesClientBuilder credential(TokenCredential tokenCredential) {
+    public DeidentificationClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -208,7 +208,7 @@ public final class DeidServicesClientBuilder
      */
     @Generated
     @Override
-    public DeidServicesClientBuilder endpoint(String endpoint) {
+    public DeidentificationClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -223,10 +223,10 @@ public final class DeidServicesClientBuilder
      * Sets Service version.
      * 
      * @param serviceVersion the serviceVersion value.
-     * @return the DeidServicesClientBuilder.
+     * @return the DeidentificationClientBuilder.
      */
     @Generated
-    public DeidServicesClientBuilder serviceVersion(DeidServicesServiceVersion serviceVersion) {
+    public DeidentificationClientBuilder serviceVersion(DeidServicesServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -241,26 +241,26 @@ public final class DeidServicesClientBuilder
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      * 
      * @param retryPolicy the retryPolicy value.
-     * @return the DeidServicesClientBuilder.
+     * @return the DeidentificationClientBuilder.
      */
     @Generated
-    public DeidServicesClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public DeidentificationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
 
     /**
-     * Builds an instance of DeidServicesClientImpl with the provided parameters.
+     * Builds an instance of DeidentificationClientImpl with the provided parameters.
      * 
-     * @return an instance of DeidServicesClientImpl.
+     * @return an instance of DeidentificationClientImpl.
      */
     @Generated
-    private DeidServicesClientImpl buildInnerClient() {
+    private DeidentificationClientImpl buildInnerClient() {
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         DeidServicesServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : DeidServicesServiceVersion.getLatest();
-        DeidServicesClientImpl client = new DeidServicesClientImpl(localPipeline,
+        DeidentificationClientImpl client = new DeidentificationClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
@@ -311,24 +311,24 @@ public final class DeidServicesClientBuilder
     }
 
     /**
-     * Builds an instance of DeidServicesAsyncClient class.
+     * Builds an instance of DeidentificationAsyncClient class.
      * 
-     * @return an instance of DeidServicesAsyncClient.
+     * @return an instance of DeidentificationAsyncClient.
      */
     @Generated
-    public DeidServicesAsyncClient buildAsyncClient() {
-        return new DeidServicesAsyncClient(buildInnerClient());
+    public DeidentificationAsyncClient buildAsyncClient() {
+        return new DeidentificationAsyncClient(buildInnerClient());
     }
 
     /**
-     * Builds an instance of DeidServicesClient class.
+     * Builds an instance of DeidentificationClient class.
      * 
-     * @return an instance of DeidServicesClient.
+     * @return an instance of DeidentificationClient.
      */
     @Generated
-    public DeidServicesClient buildClient() {
-        return new DeidServicesClient(buildInnerClient());
+    public DeidentificationClient buildClient() {
+        return new DeidentificationClient(buildInnerClient());
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(DeidServicesClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DeidentificationClientBuilder.class);
 }

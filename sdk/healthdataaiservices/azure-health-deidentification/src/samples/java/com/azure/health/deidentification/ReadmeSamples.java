@@ -16,16 +16,19 @@ import com.azure.health.deidentification.models.OperationType;
 public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.health.deidentification.readme
-        DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
+        DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
-        DeidServicesClient deidentificationClient = deidentificationClientbuilder.buildClient();
+        DeidentificationClient deidentificationClient = deidentificationClientbuilder.buildClient();
         // END: com.azure.health.deidentification.readme
 
         String inputText = "Hello, my name is John Smith.";
-        DeidentificationContent content = new DeidentificationContent(inputText, OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
+        DeidentificationContent content = new DeidentificationContent(inputText);
+        content.setOperation(OperationType.SURROGATE);
+        content.setDataType(DocumentDataType.PLAINTEXT);
+
         DeidentificationResult result = deidentificationClient.deidentify(content);
         System.out.println("Deidentified output: " + result.getOutputText());
     }

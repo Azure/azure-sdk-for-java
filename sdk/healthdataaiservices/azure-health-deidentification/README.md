@@ -59,12 +59,12 @@ The following sections provide several code snippets covering some of the most c
 Create a `DeidentificationClient` using the `DEID_SERVICE_ENDPOINT` environment variable.
 
 ```java com.azure.health.deidentification.readme
-DeidServicesClientBuilder deidentificationClientbuilder = new DeidServicesClientBuilder()
+DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
     .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
     .httpClient(HttpClient.createDefault())
     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
-DeidServicesClient deidentificationClient = deidentificationClientbuilder.buildClient();
+DeidentificationClient deidentificationClient = deidentificationClientbuilder.buildClient();
 ```
 
 ### Calling `Deidentification` endpoint
@@ -73,7 +73,11 @@ Calling the realtime endpoint with an input.
 
 ```java com.azure.health.deidentification.sync.helloworld
 String inputText = "Hello, my name is John Smith.";
-DeidentificationContent content = new DeidentificationContent(inputText, OperationType.SURROGATE, DocumentDataType.PLAINTEXT);
+
+DeidentificationContent content = new DeidentificationContent(inputText);
+content.setOperation(OperationType.SURROGATE);
+content.setDataType(DocumentDataType.PLAINTEXT);
+
 DeidentificationResult result = deidentificationClient.deidentify(content);
 System.out.println("Deidentified output: " + result.getOutputText());
 // Deidentified output: Hello, my name is Harley Billiard.
@@ -86,11 +90,13 @@ Creating a Deidentification Job using `STORAGE_ACCOUNT_SAS_URI` environment vari
 String jobName = "MyJob-" + Instant.now().toEpochMilli();
 String outputFolder = "_output";
 String inputPrefix = "example_patient_1";
-DeidentificationJob job = new DeidentificationJob(
-    new SourceStorageLocation(storageAccountSASUri, inputPrefix, extensions),
-    new TargetStorageLocation(storageAccountSASUri, outputFolder),
-    OperationType.SURROGATE,
-    DocumentDataType.PLAINTEXT);
+SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageAccountSASUri, inputPrefix);
+sourceStorageLocation.setExtensions(extensions);
+
+DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageAccountSASUri, outputFolder));
+job.setOperation(OperationType.SURROGATE);
+job.setDataType(DocumentDataType.PLAINTEXT);
+
 ```
 ### Process Deidentification Job
 

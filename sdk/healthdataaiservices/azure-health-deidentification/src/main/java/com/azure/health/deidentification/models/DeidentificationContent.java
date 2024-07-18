@@ -27,13 +27,13 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
      * Operation to perform on the input.
      */
     @Generated
-    private final OperationType operation;
+    private OperationType operation;
 
     /*
      * Data type of the input.
      */
     @Generated
-    private final DocumentDataType dataType;
+    private DocumentDataType dataType;
 
     /*
      * Format of the redacted output. Only valid when OperationType is "Redact".
@@ -45,14 +45,10 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
      * Creates an instance of DeidentificationContent class.
      * 
      * @param inputText the inputText value to set.
-     * @param operation the operation value to set.
-     * @param dataType the dataType value to set.
      */
     @Generated
-    public DeidentificationContent(String inputText, OperationType operation, DocumentDataType dataType) {
+    public DeidentificationContent(String inputText) {
         this.inputText = inputText;
-        this.operation = operation;
-        this.dataType = dataType;
     }
 
     /**
@@ -76,6 +72,18 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     }
 
     /**
+     * Set the operation property: Operation to perform on the input.
+     * 
+     * @param operation the operation value to set.
+     * @return the DeidentificationContent object itself.
+     */
+    @Generated
+    public DeidentificationContent setOperation(OperationType operation) {
+        this.operation = operation;
+        return this;
+    }
+
+    /**
      * Get the dataType property: Data type of the input.
      * 
      * @return the dataType value.
@@ -83,6 +91,18 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     @Generated
     public DocumentDataType getDataType() {
         return this.dataType;
+    }
+
+    /**
+     * Set the dataType property: Data type of the input.
+     * 
+     * @param dataType the dataType value to set.
+     * @return the DeidentificationContent object itself.
+     */
+    @Generated
+    public DeidentificationContent setDataType(DocumentDataType dataType) {
+        this.dataType = dataType;
+        return this;
     }
 
     /**
@@ -153,8 +173,9 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
                     reader.skipChildren();
                 }
             }
-            DeidentificationContent deserializedDeidentificationContent
-                = new DeidentificationContent(inputText, operation, dataType);
+            DeidentificationContent deserializedDeidentificationContent = new DeidentificationContent(inputText);
+            deserializedDeidentificationContent.operation = operation;
+            deserializedDeidentificationContent.dataType = dataType;
             deserializedDeidentificationContent.redactionFormat = redactionFormat;
 
             return deserializedDeidentificationContent;

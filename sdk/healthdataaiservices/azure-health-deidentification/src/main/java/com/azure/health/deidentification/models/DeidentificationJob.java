@@ -42,13 +42,13 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * Operation to perform on the input documents.
      */
     @Generated
-    private final OperationType operation;
+    private OperationType operation;
 
     /*
      * Data type of the input documents.
      */
     @Generated
-    private final DocumentDataType dataType;
+    private DocumentDataType dataType;
 
     /*
      * Format of the redacted output. Only valid when Operation is Redact.
@@ -101,16 +101,11 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * 
      * @param sourceLocation the sourceLocation value to set.
      * @param targetLocation the targetLocation value to set.
-     * @param operation the operation value to set.
-     * @param dataType the dataType value to set.
      */
     @Generated
-    public DeidentificationJob(SourceStorageLocation sourceLocation, TargetStorageLocation targetLocation,
-        OperationType operation, DocumentDataType dataType) {
+    public DeidentificationJob(SourceStorageLocation sourceLocation, TargetStorageLocation targetLocation) {
         this.sourceLocation = sourceLocation;
         this.targetLocation = targetLocation;
-        this.operation = operation;
-        this.dataType = dataType;
     }
 
     /**
@@ -154,6 +149,18 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     }
 
     /**
+     * Set the operation property: Operation to perform on the input documents.
+     * 
+     * @param operation the operation value to set.
+     * @return the DeidentificationJob object itself.
+     */
+    @Generated
+    public DeidentificationJob setOperation(OperationType operation) {
+        this.operation = operation;
+        return this;
+    }
+
+    /**
      * Get the dataType property: Data type of the input documents.
      * 
      * @return the dataType value.
@@ -161,6 +168,18 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     @Generated
     public DocumentDataType getDataType() {
         return this.dataType;
+    }
+
+    /**
+     * Set the dataType property: Data type of the input documents.
+     * 
+     * @param dataType the dataType value to set.
+     * @return the DeidentificationJob object itself.
+     */
+    @Generated
+    public DeidentificationJob setDataType(DocumentDataType dataType) {
+        this.dataType = dataType;
+        return this;
     }
 
     /**
@@ -279,11 +298,11 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
             String name = null;
             SourceStorageLocation sourceLocation = null;
             TargetStorageLocation targetLocation = null;
-            OperationType operation = null;
-            DocumentDataType dataType = null;
             JobStatus status = null;
             OffsetDateTime lastUpdatedAt = null;
             OffsetDateTime createdAt = null;
+            OperationType operation = null;
+            DocumentDataType dataType = null;
             String redactionFormat = null;
             ResponseError error = null;
             OffsetDateTime startedAt = null;
@@ -298,10 +317,6 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                     sourceLocation = SourceStorageLocation.fromJson(reader);
                 } else if ("targetLocation".equals(fieldName)) {
                     targetLocation = TargetStorageLocation.fromJson(reader);
-                } else if ("operation".equals(fieldName)) {
-                    operation = OperationType.fromString(reader.getString());
-                } else if ("dataType".equals(fieldName)) {
-                    dataType = DocumentDataType.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     status = JobStatus.fromString(reader.getString());
                 } else if ("lastUpdatedAt".equals(fieldName)) {
@@ -310,6 +325,10 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                 } else if ("createdAt".equals(fieldName)) {
                     createdAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("operation".equals(fieldName)) {
+                    operation = OperationType.fromString(reader.getString());
+                } else if ("dataType".equals(fieldName)) {
+                    dataType = DocumentDataType.fromString(reader.getString());
                 } else if ("redactionFormat".equals(fieldName)) {
                     redactionFormat = reader.getString();
                 } else if ("error".equals(fieldName)) {
@@ -324,11 +343,13 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                 }
             }
             DeidentificationJob deserializedDeidentificationJob
-                = new DeidentificationJob(sourceLocation, targetLocation, operation, dataType);
+                = new DeidentificationJob(sourceLocation, targetLocation);
             deserializedDeidentificationJob.name = name;
             deserializedDeidentificationJob.status = status;
             deserializedDeidentificationJob.lastUpdatedAt = lastUpdatedAt;
             deserializedDeidentificationJob.createdAt = createdAt;
+            deserializedDeidentificationJob.operation = operation;
+            deserializedDeidentificationJob.dataType = dataType;
             deserializedDeidentificationJob.redactionFormat = redactionFormat;
             deserializedDeidentificationJob.error = error;
             deserializedDeidentificationJob.startedAt = startedAt;
