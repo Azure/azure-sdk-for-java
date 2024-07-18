@@ -5,7 +5,6 @@
 ### Breaking Changes
 
 - Removed superclass `SubResource` from model class `FirewallPacketCaptureParameters`.
-- Removed method `withId(java.lang.String)` from model class `FirewallPacketCaptureParameters`. 
 
 ### Other Changes
 
