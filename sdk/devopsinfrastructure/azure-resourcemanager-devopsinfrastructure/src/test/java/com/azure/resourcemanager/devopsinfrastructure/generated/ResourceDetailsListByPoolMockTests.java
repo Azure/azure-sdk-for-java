@@ -23,7 +23,7 @@ public final class ResourceDetailsListByPoolMockTests {
     @Test
     public void testListByPool() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"status\":\"Ready\",\"image\":\"qztpp\",\"imageVersion\":\"iolxor\"},\"id\":\"lt\",\"name\":\"lmncw\",\"type\":\"obqwcsdbnwdcfh\"}]}";
+            = "{\"value\":[{\"properties\":{\"status\":\"PendingReturn\",\"image\":\"lyc\",\"imageVersion\":\"duhpk\"},\"id\":\"gymare\",\"name\":\"n\",\"type\":\"jxqugjhky\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class ResourceDetailsListByPoolMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ResourceDetailsObject> response
-            = manager.resourceDetails().listByPool("fz", "whxxbuyqax", com.azure.core.util.Context.NONE);
+            = manager.resourceDetails().listByPool("arm", "wdmjsjqbjhhyx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ResourceStatus.READY, response.iterator().next().properties().status());
-        Assertions.assertEquals("qztpp", response.iterator().next().properties().image());
-        Assertions.assertEquals("iolxor", response.iterator().next().properties().imageVersion());
+        Assertions.assertEquals(ResourceStatus.PENDING_RETURN, response.iterator().next().properties().status());
+        Assertions.assertEquals("lyc", response.iterator().next().properties().image());
+        Assertions.assertEquals("duhpk", response.iterator().next().properties().imageVersion());
     }
 }

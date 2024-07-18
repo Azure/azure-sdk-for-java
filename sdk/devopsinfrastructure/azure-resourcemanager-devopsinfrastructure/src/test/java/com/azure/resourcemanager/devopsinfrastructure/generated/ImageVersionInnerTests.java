@@ -11,9 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"version\":\"grpkhjwniyqs\"},\"id\":\"i\",\"name\":\"pdggkzzlvm\",\"type\":\"mpaxmodfvuefywsb\"}")
+        ImageVersionInner model = BinaryData
+            .fromString(
+                "{\"properties\":{\"version\":\"kqze\"},\"id\":\"kdltfzxmhhvhg\",\"name\":\"r\",\"type\":\"odkwobd\"}")
             .toObject(ImageVersionInner.class);
-        Assertions.assertEquals("grpkhjwniyqs", model.properties().version());
+        Assertions.assertEquals("kqze", model.properties().version());
     }
 }
