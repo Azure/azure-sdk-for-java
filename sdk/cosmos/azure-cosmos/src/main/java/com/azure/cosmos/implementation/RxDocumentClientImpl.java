@@ -2401,7 +2401,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             })
             .doOnError(throwable -> {
                 if (throwable instanceof OperationCancelledException) {
-                    handleErroneousCasesForPointOperationsForCircuitBreaker(requestReference);
+                    if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(requestReference.get())) {
+                        RxDocumentServiceRequest failedRequest = requestReference.get();
+                        checkNotNull(failedRequest.requestContext, "Argument 'failedRequest.requestContext' must not be null!");
+
+                        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker = failedRequest.requestContext.getPointOperationContextForCircuitBreaker();
+                        checkNotNull(pointOperationContextForCircuitBreaker, "Argument 'pointOperationContextForCircuitBreaker' must not be null!");
+
+                        if (pointOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()) {
+
+                            if (!pointOperationContextForCircuitBreaker.isRequestHedged() && pointOperationContextForCircuitBreaker.getHasOperationSeenSuccess()) {
+                                this.handleLocationCancellationExceptionForPartitionKeyRange(failedRequest);
+                            }
+                        } else {
+                            this.handleLocationCancellationExceptionForPartitionKeyRange(failedRequest);
+                        }
+                    }
                 }
             })
             .doFinally(signalType -> {
@@ -2409,7 +2424,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     return;
                 }
 
-                handleErroneousCasesForPointOperationsForCircuitBreaker(requestReference);
+                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(requestReference.get())) {
+                    RxDocumentServiceRequest failedRequest = requestReference.get();
+                    checkNotNull(failedRequest.requestContext, "Argument 'failedRequest.requestContext' must not be null!");
+
+                    PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker = failedRequest.requestContext.getPointOperationContextForCircuitBreaker();
+                    checkNotNull(pointOperationContextForCircuitBreaker, "Argument 'pointOperationContextForCircuitBreaker' must not be null!");
+
+                    if (pointOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()) {
+
+                        if (!pointOperationContextForCircuitBreaker.isRequestHedged() && pointOperationContextForCircuitBreaker.getHasOperationSeenSuccess()) {
+                            this.handleLocationCancellationExceptionForPartitionKeyRange(failedRequest);
+                        }
+                    }
+                }
             });
     }
 
@@ -6585,26 +6613,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 return exception;
             });
-    }
-
-    private void handleErroneousCasesForPointOperationsForCircuitBreaker(AtomicReference<RxDocumentServiceRequest> requestReference) {
-
-        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(requestReference.get())) {
-            RxDocumentServiceRequest failedRequest = requestReference.get();
-            checkNotNull(failedRequest.requestContext, "Argument 'failedRequest.requestContext' must not be null!");
-
-            PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker = failedRequest.requestContext.getPointOperationContextForCircuitBreaker();
-            checkNotNull(pointOperationContextForCircuitBreaker, "Argument 'pointOperationContextForCircuitBreaker' must not be null!");
-
-            if (pointOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()) {
-
-                if (!pointOperationContextForCircuitBreaker.isRequestHedged() && pointOperationContextForCircuitBreaker.getHasOperationSeenSuccess()) {
-                    this.handleLocationCancellationExceptionForPartitionKeyRange(failedRequest);
-                }
-            } else {
-                this.handleLocationCancellationExceptionForPartitionKeyRange(failedRequest);
-            }
-        }
     }
 
     private void handleLocationCancellationExceptionForPartitionKeyRange(RxDocumentServiceRequest failedRequest) {
