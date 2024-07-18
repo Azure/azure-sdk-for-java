@@ -117,6 +117,29 @@ public final class TelemetryItemSerialization {
         return resultBuffer.array();
     }
 
+    // TODO - add unit test
+    public static List<ByteBuffer> addNewLineAsLineDelimiter(List<ByteBuffer> byteBuffers) {
+        List<ByteBuffer> result = new ArrayList<>();
+        for (int i = 0; i < byteBuffers.size(); i++) {
+            ByteBuffer byteBuffer = byteBuffers.get(i);
+            ByteBuffer newByteBuffer;
+            if (i < byteBuffers.size() - 1) {
+                ByteBuffer newLine = ByteBuffer.wrap(new byte[]{'\n'});
+                newByteBuffer = ByteBuffer.allocate(byteBuffer.remaining() + newLine.remaining());
+                newByteBuffer.put(byteBuffer);
+                newByteBuffer.put(newLine);
+                newByteBuffer.flip();
+            } else {
+                newByteBuffer = ByteBuffer.allocate(byteBuffer.remaining());
+                newByteBuffer.put(byteBuffer);
+                newByteBuffer.flip();
+            }
+            result.add(newByteBuffer);
+        }
+        return result;
+    }
+
+
     private TelemetryItemSerialization() {
     }
 }

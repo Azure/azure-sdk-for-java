@@ -4,6 +4,8 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.localstorage;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.DiagnosticTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ResponseError;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
@@ -20,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.addNewLineAsLineDelimiter;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.convertByteBufferListToByteArray;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.splitBytesByNewline;
 
@@ -72,16 +75,16 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
         if (!errors.isEmpty()) {
             List<ByteBuffer> originalByteBuffers = request.getByteBuffers();
             byte[] originalBytes = convertByteBufferListToByteArray(originalByteBuffers);
-            List<byte[]> bytesSplittedByNewLine = splitBytesByNewline(originalBytes);
+            List<byte[]> bytesSplitByNewLine = splitBytesByNewline(originalBytes);
             List<ByteBuffer> toBePersisted = new ArrayList<>();
             for (ResponseError error : errors) {
                 if (StatusCode.isRetryable(error.getStatusCode())) {
-                    toBePersisted.add(ByteBuffer.wrap(bytesSplittedByNewLine.get(error.getIndex())));
+                    toBePersisted.add(ByteBuffer.wrap(bytesSplitByNewLine.get(error.getIndex())));
                 }
             }
             if (!toBePersisted.isEmpty()) {
                 localFileWriter.writeToDisk(
-                    request.getConnectionString(), toBePersisted, "Received partial response code 206");
+                    request.getConnectionString(), addNewLineAsLineDelimiter(toBePersisted), "Received partial response code 206");
             }
         }
     }
