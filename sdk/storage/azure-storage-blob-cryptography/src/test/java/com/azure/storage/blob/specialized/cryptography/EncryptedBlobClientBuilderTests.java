@@ -21,13 +21,17 @@ import com.azure.core.util.Header;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -41,6 +45,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -247,6 +252,32 @@ public class EncryptedBlobClientBuilderTests {
             .buildEncryptedBlobClient();
 
         sendAndValidateUserAgentHeader(cryptoClient.getHttpPipeline(), cryptoClient.getBlobUrl());
+    }
+
+    private static Stream<Arguments> getNonEncodedBlobNameSupplier() {
+        return Stream.of(
+            Arguments.of("test%test"),
+            Arguments.of("ab2a7d5f-b973-4222-83ba-d0581817a819 %Россия 한국 中国!?/file"),
+            Arguments.of("%E6%96%91%E9%BB%9E"),
+            Arguments.of("斑點"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getNonEncodedBlobNameSupplier")
+    public void getNonEncodedBlobName(String originalBlobName) {
+        EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder()
+            .endpoint(ENDPOINT)
+            .containerName("container")
+            .blobName(originalBlobName)
+            .credential(CREDENTIALS)
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .buildEncryptedBlobClient();
+
+        assertEquals(encryptedBlobClient.getBlobName(), originalBlobName);
+
+        // see if the blob name will be properly encoded in the url
+        String encodedName = Utility.urlEncode(originalBlobName);
+        assertTrue(encryptedBlobClient.getBlobUrl().contains(encodedName));
     }
 
     private static void sendAndValidateUserAgentHeader(HttpPipeline pipeline, String url) {
