@@ -56,3 +56,12 @@ directive:
     transform: >
       $["x-ms-enum"].name = "CommunicationTokenScope";
 ```
+
+### Directive changing GetTokenForTeamsUserOptions to required properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.GetTokenForTeamsUserOptions
+    transform: >
+     $.required = [ "token", "appId", "userId" ];
+```

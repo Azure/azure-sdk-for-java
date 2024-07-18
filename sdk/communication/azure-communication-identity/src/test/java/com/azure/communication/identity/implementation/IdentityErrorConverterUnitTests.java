@@ -10,9 +10,13 @@ import com.azure.communication.identity.models.IdentityError;
 import com.azure.communication.identity.models.IdentityErrorResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -98,9 +102,12 @@ public class IdentityErrorConverterUnitTests {
 
     private CommunicationErrorResponseException setUpCommunicationResponseExceptionWithAllProperties() {
         String value = "{\"code\":\"Error Code\",\"message\":\"Error Message\",\"target\":\"Error Target\",\"details\":[{\"code\":\"New Error Code\",\"message\":\"New Error Message\"}]}";
-        // Set up the response with all properties (no way to set Target?)
-        CommunicationError communicationError = new CommunicationError().setCode("Error Code").setMessage("Error Message");
-
+        CommunicationError communicationError;
+        try (JsonReader jsonReader = JsonProviders.createReader(value)) {
+            communicationError = CommunicationError.fromJson(jsonReader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         CommunicationErrorResponse errorResponse = new CommunicationErrorResponse().setError(communicationError);
         return new CommunicationErrorResponseException("Exception Message", httpResponse, errorResponse);
     }
