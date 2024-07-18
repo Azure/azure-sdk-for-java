@@ -3,10 +3,6 @@
 
 package com.azure.ai.anomalydetector;
 
-import com.azure.ai.anomalydetector.models.TimeGranularity;
-import com.azure.ai.anomalydetector.models.TimeSeriesPoint;
-import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionOptions;
-import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 

@@ -7,7 +7,6 @@ import com.azure.ai.anomalydetector.implementation.UnivariatesImpl;
 import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionOptions;
 import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionResult;
 import com.azure.ai.anomalydetector.models.UnivariateDetectionOptions;
-import com.azure.ai.anomalydetector.models.UnivariateEntireDetectionResult;
 import com.azure.ai.anomalydetector.models.UnivariateLastDetectionResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -20,6 +19,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.ai.anomalydetector.models.UnivariateEntireDetectionResult;
 
 /**
  * Initializes a new instance of the synchronous AnomalyDetectorClient type.
@@ -48,7 +48,7 @@ public final class UnivariateClient {
      * are used to determine whether it's an anomaly. The entire detection can give the
      * user an overall status of the time series.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     series (Required): [
@@ -66,9 +66,9 @@ public final class UnivariateClient {
      *     imputeFixedValue: Double (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     period: int (Required)
@@ -117,7 +117,7 @@ public final class UnivariateClient {
      * This operation generates a model by using the points that you sent in to the API
      * and based on all data to determine whether the last point is anomalous.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     series (Required): [
@@ -135,9 +135,9 @@ public final class UnivariateClient {
      *     imputeFixedValue: Double (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     period: int (Required)
@@ -172,7 +172,7 @@ public final class UnivariateClient {
      *
      * Evaluate the change point score of every series point.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     series (Required): [
@@ -188,9 +188,9 @@ public final class UnivariateClient {
      *     threshold: Double (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     period: Integer (Optional)
