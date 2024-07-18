@@ -18,11 +18,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class SubscriptionUsagesListByLocationMockTests {
+public final class SubscriptionUsagesUsagesMockTests {
     @Test
-    public void testListByLocation() throws Exception {
+    public void testUsages() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"unit\":\"jzrwrdgrtw\",\"currentValue\":1523837111721006893,\"limit\":560219894776191821,\"name\":{\"value\":\"kopbminrf\",\"localizedValue\":\"oyuhhziui\"}},\"id\":\"ozbhdmsmlmzq\",\"name\":\"oftrmaequia\",\"type\":\"xicslfao\"}]}";
+            = "{\"value\":[{\"id\":\"f\",\"unit\":\"beyvpnqicvinvkjj\",\"currentValue\":2624293456615314766,\"limit\":8464524771517647975}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,11 @@ public final class SubscriptionUsagesListByLocationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Quota> response
-            = manager.subscriptionUsages().listByLocation("ejdcngqqmoakuf", com.azure.core.util.Context.NONE);
+            = manager.subscriptionUsages().usages("iagxsdszuempsbz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jzrwrdgrtw", response.iterator().next().properties().unit());
-        Assertions.assertEquals(1523837111721006893L, response.iterator().next().properties().currentValue());
-        Assertions.assertEquals(560219894776191821L, response.iterator().next().properties().limit());
-        Assertions.assertEquals("kopbminrf", response.iterator().next().properties().name().value());
-        Assertions.assertEquals("oyuhhziui", response.iterator().next().properties().name().localizedValue());
+        Assertions.assertEquals("f", response.iterator().next().id());
+        Assertions.assertEquals("beyvpnqicvinvkjj", response.iterator().next().unit());
+        Assertions.assertEquals(2624293456615314766L, response.iterator().next().currentValue());
+        Assertions.assertEquals(8464524771517647975L, response.iterator().next().limit());
     }
 }

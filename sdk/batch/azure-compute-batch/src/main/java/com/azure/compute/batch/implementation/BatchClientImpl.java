@@ -226,7 +226,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createPoolInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
             RequestOptions requestOptions, Context context);
 
@@ -237,7 +237,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createPoolInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
             RequestOptions requestOptions, Context context);
 
@@ -326,7 +326,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> updatePoolInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
             Context context);
@@ -338,7 +338,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> updatePoolInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
             Context context);
@@ -371,7 +371,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> enablePoolAutoScaleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -383,7 +383,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> enablePoolAutoScaleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -394,7 +394,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> evaluatePoolAutoScaleInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
@@ -406,7 +406,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> evaluatePoolAutoScaleInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
@@ -419,7 +419,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resizePoolInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -431,7 +431,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resizePoolInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -462,7 +462,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> replacePoolPropertiesInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
             Context context);
@@ -474,7 +474,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> replacePoolPropertiesInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
             Context context);
@@ -487,7 +487,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeNodesInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -499,7 +499,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> removeNodesInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -590,7 +590,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> updateJobInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
             Context context);
@@ -602,7 +602,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> updateJobInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
             Context context);
@@ -614,7 +614,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> replaceJobInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
             Context context);
@@ -626,7 +626,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> replaceJobInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
             Context context);
@@ -638,7 +638,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> disableJobInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
@@ -650,7 +650,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> disableJobInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
@@ -682,7 +682,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> terminateJobInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -693,7 +693,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> terminateJobInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -704,7 +704,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createJobInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
             RequestOptions requestOptions, Context context);
 
@@ -715,7 +715,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createJobInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
             RequestOptions requestOptions, Context context);
 
@@ -865,7 +865,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> updateJobScheduleInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
@@ -877,7 +877,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> updateJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
@@ -889,7 +889,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> replaceJobScheduleInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
@@ -901,7 +901,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> replaceJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
@@ -973,7 +973,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createJobScheduleInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
@@ -985,7 +985,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
@@ -1017,7 +1017,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createTaskInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
             Context context);
@@ -1029,7 +1029,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createTaskInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
             Context context);
@@ -1061,7 +1061,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createTaskCollectionInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData taskCollection,
             RequestOptions requestOptions, Context context);
@@ -1073,7 +1073,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createTaskCollectionInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData taskCollection,
             RequestOptions requestOptions, Context context);
@@ -1129,7 +1129,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> replaceTaskInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @PathParam("taskId") String taskId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
             Context context);
@@ -1141,7 +1141,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> replaceTaskInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @PathParam("taskId") String taskId, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
             Context context);
@@ -1307,7 +1307,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createNodeUserInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData user,
             RequestOptions requestOptions, Context context);
@@ -1319,7 +1319,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createNodeUserInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData user,
             RequestOptions requestOptions, Context context);
@@ -1353,7 +1353,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> replaceNodeUserInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @PathParam("userName") String userName, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
@@ -1366,7 +1366,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> replaceNodeUserInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @PathParam("userName") String userName, @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
@@ -1401,7 +1401,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> rebootNodeInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -1412,7 +1412,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> rebootNodeInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -1423,7 +1423,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> disableNodeSchedulingInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -1434,7 +1434,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> disableNodeSchedulingInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -1489,7 +1489,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> uploadNodeLogsInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
@@ -1502,7 +1502,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> uploadNodeLogsInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,

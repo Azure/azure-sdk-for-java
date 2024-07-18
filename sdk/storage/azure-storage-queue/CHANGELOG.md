@@ -3,6 +3,7 @@
 ## 12.22.0-beta.2 (Unreleased)
 
 ### Features Added
+- Adding support for encoding messages with Base64, `QueueMessageEncoding.BASE64`.
 
 ### Breaking Changes
 
