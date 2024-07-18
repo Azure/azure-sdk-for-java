@@ -169,7 +169,7 @@ public class AttestationClientTestBase extends TestProxyTestBase {
     AttestationClientBuilder getAuthenticatedAttestationBuilder(HttpClient httpClient, String clientUri) {
         AttestationClientBuilder builder = getAttestationBuilder(httpClient, clientUri);
         if (!interceptorManager.isPlaybackMode()) {
-            builder.credential(TestUtil.getTestTokenCredential(interceptorManager, httpClient));
+            builder.credential(TestUtil.getIdentityTestCredential(interceptorManager, httpClient));
         } else {
             builder.credential(new MockTokenCredential());
         }
@@ -229,7 +229,7 @@ public class AttestationClientTestBase extends TestProxyTestBase {
             // Add a 10-second slack time to account for clock drift between the client and server.
             builder.tokenValidationOptions(new AttestationTokenValidationOptions()
                     .setValidationSlack(Duration.ofSeconds(10)))
-                .credential(TestUtil.getTestTokenCredential(interceptorManager, httpClient));
+                .credential(TestUtil.getIdentityTestCredential(interceptorManager, httpClient));
         } else {
             builder.tokenValidationOptions(new AttestationTokenValidationOptions()
                 .setValidateExpiresOn(false)
