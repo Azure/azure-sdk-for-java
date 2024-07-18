@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.data.cosmos;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosConnectionDetails;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
@@ -30,7 +30,8 @@ class CosmosDataAutoConfigurationTests {
 
     private static final String ENDPOINT = "https://test.documents.azure.com:443/";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(CosmosDataAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(CosmosDataAutoConfiguration.class,
+            AzureGlobalPropertiesAutoConfiguration.class));
 
     @Test
     void configureWithoutCosmosTemplate() {
@@ -58,7 +59,6 @@ class CosmosDataAutoConfigurationTests {
     void onlyConnectionDetailsBeanConfigured() {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             this.contextRunner
-                .withBean(AzureGlobalProperties.class, this::globalProperties)
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
@@ -77,7 +77,6 @@ class CosmosDataAutoConfigurationTests {
     void bothPropertyAndBeanConfiguredBeanHasHigherPriority() {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             this.contextRunner
-                .withBean(AzureGlobalProperties.class, this::globalProperties)
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
@@ -99,7 +98,6 @@ class CosmosDataAutoConfigurationTests {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             this.contextRunner
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-                .withBean(AzureGlobalProperties.class, this::globalProperties)
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
                     "spring.cloud.azure.cosmos.database=test"
@@ -117,7 +115,6 @@ class CosmosDataAutoConfigurationTests {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             this.contextRunner
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-                .withBean(AzureGlobalProperties.class, this::globalProperties)
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
                     "spring.cloud.azure.cosmos.database=test"
@@ -136,7 +133,6 @@ class CosmosDataAutoConfigurationTests {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             this.contextRunner
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-                .withBean(AzureGlobalProperties.class, this::globalProperties)
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
                     "spring.cloud.azure.cosmos.database=test",
@@ -160,7 +156,6 @@ class CosmosDataAutoConfigurationTests {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             this.contextRunner
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-                .withBean(AzureGlobalProperties.class, this::globalProperties)
                 .withUserConfiguration(UserAuditingConfiguration.class)
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
@@ -176,15 +171,6 @@ class CosmosDataAutoConfigurationTests {
     @EnableCosmosAuditing
     static class UserAuditingConfiguration {
 
-    }
-
-    private AzureGlobalProperties globalProperties() {
-        AzureGlobalProperties globalProperties = new AzureGlobalProperties();
-        globalProperties.getCredential().setClientId("azure-client-id");
-        globalProperties.getCredential().setClientSecret("azure-client-secret");
-        globalProperties.getProxy().setHostname("localhost");
-        globalProperties.getProxy().getHttp().setNonProxyHosts("localhost");
-        return globalProperties;
     }
 
     static class CustomAzureCosmosConnectionDetails implements AzureCosmosConnectionDetails {

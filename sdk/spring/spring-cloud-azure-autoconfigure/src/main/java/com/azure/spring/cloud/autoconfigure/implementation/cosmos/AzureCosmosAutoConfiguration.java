@@ -3,8 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.cosmos;
 
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.spring.cloud.autoconfigure.implementation.AzureServiceConfigurationBase;
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosPropertiesConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -16,6 +20,10 @@ import org.springframework.context.annotation.Import;
     AzureCosmosPropertiesConfiguration.class,
     CosmosClientConfiguration.class
 })
-public class AzureCosmosAutoConfiguration {
+@ConditionalOnClass(CosmosClientBuilder.class)
+public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase {
 
+    protected AzureCosmosAutoConfiguration(AzureGlobalProperties azureProperties) {
+        super(azureProperties);
+    }
 }
