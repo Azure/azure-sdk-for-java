@@ -1,6 +1,6 @@
 # Release History
 
-## 12.27.0 (2024-07-17)
+## 12.27.0 (2024-07-18)
 
 ### Features Added
 - Added support for getting account info on blob container clients and the blob base client.

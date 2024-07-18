@@ -1,6 +1,6 @@
 # Release History
 
-## 12.20.0 (2024-07-17)
+## 12.20.0 (2024-07-18)
 
 ### Features Added
 - Added support for bearer token challenges.
