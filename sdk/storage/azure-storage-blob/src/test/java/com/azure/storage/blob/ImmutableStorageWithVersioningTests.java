@@ -33,6 +33,7 @@ import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
@@ -616,7 +617,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     @Test
     @PlaybackOnly
     public void syncCopy() {
-        //vlwContainer.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        vlwContainer.setAccessPolicy(PublicAccessType.CONTAINER, null);
         sleepIfRunningAgainstService(30000); // Give time for the policy to take effect
         BlockBlobClient destination = vlwContainer.getBlobClient(generateBlobName()).getBlockBlobClient();
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);

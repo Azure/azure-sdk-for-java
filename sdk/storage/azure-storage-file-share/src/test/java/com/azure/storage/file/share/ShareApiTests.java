@@ -1220,9 +1220,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertNotNull(infoPermission);
     }
 
-    // need to remove Playback only once default credential is enabled
     @Test
-    @PlaybackOnly
     public void audienceError() {
         primaryShareClient.create();
         ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
