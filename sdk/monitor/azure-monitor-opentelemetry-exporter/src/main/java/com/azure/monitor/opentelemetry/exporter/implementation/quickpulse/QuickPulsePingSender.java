@@ -18,9 +18,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.util.annotation.Nullable;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -49,7 +47,7 @@ class QuickPulsePingSender {
 
     private final HttpPipeline httpPipeline;
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
-    private QuickPulseConfiguration quickPulseConfiguration = QuickPulseConfiguration.getInstance();
+    private QuickPulseConfiguration quickPulseConfiguration;
     private volatile QuickPulseEnvelope pingEnvelope; // cached for performance
 
     private final Supplier<URL> endpointUrl;
@@ -69,7 +67,8 @@ class QuickPulsePingSender {
         String instanceName,
         String machineName,
         String quickPulseId,
-        String sdkVersion) {
+        String sdkVersion,
+        QuickPulseConfiguration quickPulseConfiguration) {
         this.httpPipeline = httpPipeline;
         this.endpointUrl = endpointUrl;
         this.instrumentationKey = instrumentationKey;
@@ -78,14 +77,10 @@ class QuickPulsePingSender {
         this.machineName = machineName;
         this.quickPulseId = quickPulseId;
         this.sdkVersion = sdkVersion;
+        this.quickPulseConfiguration = quickPulseConfiguration;
     }
 
     QuickPulseHeaderInfo ping(String redirectedEndpoint) {
-        /* Debugging purposes
-        System.out.println("PING*********************");
-        System.out.println("ETAG: " + quickPulseConfiguration.getEtag());
-        System.out.println("METRICS: " + quickPulseConfiguration.getMetrics());
-        */
         String instrumentationKey = getInstrumentationKey();
         if (Strings.isNullOrEmpty(instrumentationKey)) {
             // Quick Pulse Ping uri will be null when the instrumentation key is null. When that happens,

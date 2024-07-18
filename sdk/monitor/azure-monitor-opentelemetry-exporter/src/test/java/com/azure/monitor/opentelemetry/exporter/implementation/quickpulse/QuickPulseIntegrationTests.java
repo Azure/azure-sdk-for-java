@@ -26,7 +26,8 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
         ConnectionString.parse("InstrumentationKey=ikey123");
     private static final String instrumentationKey = "ikey123";
 
-    private QuickPulsePingSender getQuickPulsePingSender() {
+
+    private QuickPulsePingSender getQuickPulsePingSender(QuickPulseConfiguration quickPulseConfiguration) {
         return new QuickPulsePingSender(
             getHttpPipeline(),
             connectionString::getLiveEndpoint,
@@ -35,10 +36,11 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
             "instance1",
             "machine1",
             "qpid123",
-            "testSdkVersion");
+            "testSdkVersion",
+            quickPulseConfiguration);
     }
 
-    private QuickPulsePingSender getQuickPulsePingSenderWithAuthentication() {
+    private QuickPulsePingSender getQuickPulsePingSenderWithAuthentication(QuickPulseConfiguration quickPulseConfiguration) {
         return new QuickPulsePingSender(
             getHttpPipelineWithAuthentication(),
             connectionString::getLiveEndpoint,
@@ -47,10 +49,11 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
             "instance1",
             "machine1",
             "qpid123",
-            "testSdkVersion");
+            "testSdkVersion",
+            quickPulseConfiguration);
     }
 
-    private QuickPulsePingSender getQuickPulsePingSenderWithValidator(HttpPipelinePolicy validator) {
+    private QuickPulsePingSender getQuickPulsePingSenderWithValidator(HttpPipelinePolicy validator, QuickPulseConfiguration quickPulseConfiguration) {
         return new QuickPulsePingSender(
             getHttpPipeline(validator),
             connectionString::getLiveEndpoint,
@@ -59,13 +62,14 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
             "instance1",
             "machine1",
             "qpid123",
-            "testSdkVersion");
+            "testSdkVersion",
+            quickPulseConfiguration);
     }
 
     @Disabled
     @Test
     public void testPing() {
-        QuickPulsePingSender quickPulsePingSender = getQuickPulsePingSender();
+        QuickPulsePingSender quickPulsePingSender = getQuickPulsePingSender(new QuickPulseConfiguration());
         QuickPulseHeaderInfo quickPulseHeaderInfo = quickPulsePingSender.ping(null);
         assertThat(quickPulseHeaderInfo.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_ON);
     }
@@ -73,7 +77,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
     @Disabled
     @Test
     public void testPingWithAuthentication() {
-        QuickPulsePingSender quickPulsePingSender = getQuickPulsePingSenderWithAuthentication();
+        QuickPulsePingSender quickPulsePingSender = getQuickPulsePingSenderWithAuthentication(new QuickPulseConfiguration());
         QuickPulseHeaderInfo quickPulseHeaderInfo = quickPulsePingSender.ping(null);
         assertThat(quickPulseHeaderInfo.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_ON);
     }
@@ -86,7 +90,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
             "\\{\"Documents\":null,\"InstrumentationKey\":null,\"Metrics\":null,\"InvariantVersion\":1,\"Timestamp\":\"\\\\/Date\\(\\d+\\)\\\\/\",\"Version\":\"testSdkVersion\",\"StreamId\":\"qpid123\",\"MachineName\":\"machine1\",\"Instance\":\"instance1\",\"RoleName\":null\\}";
         QuickPulsePingSender quickPulsePingSender =
             getQuickPulsePingSenderWithValidator(
-                new ValidationPolicy(pingCountDown, expectedRequestBody));
+                new ValidationPolicy(pingCountDown, expectedRequestBody), new QuickPulseConfiguration());
         QuickPulseHeaderInfo quickPulseHeaderInfo = quickPulsePingSender.ping(null);
         assertThat(quickPulseHeaderInfo.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_ON);
         assertTrue(pingCountDown.await(60, TimeUnit.SECONDS));
@@ -99,21 +103,24 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
         CountDownLatch pingCountDown = new CountDownLatch(1);
         CountDownLatch postCountDown = new CountDownLatch(1);
         Date currDate = new Date();
+        QuickPulseConfiguration quickPulseConfiguration = new QuickPulseConfiguration();
         String expectedPingRequestBody =
             "\\{\"Documents\":null,\"InstrumentationKey\":null,\"Metrics\":null,\"InvariantVersion\":1,\"Timestamp\":\"\\\\/Date\\(\\d+\\)\\\\/\",\"Version\":\"testSdkVersion\",\"StreamId\":\"qpid123\",\"MachineName\":\"machine1\",\"Instance\":\"instance1\",\"RoleName\":null\\}";
         String expectedPostRequestBody =
             "\\[\\{\"Documents\":\\[\\{\"__type\":\"RequestTelemetryDocument\",\"DocumentType\":\"Request\",\"Version\":\"1.0\",\"OperationId\":null,\"Properties\":\\{\"customProperty\":\"customValue\"\\},\"Name\":\"request-test\",\"Success\":true,\"Duration\":\"PT.*S\",\"ResponseCode\":\"200\",\"OperationName\":null,\"Url\":\"foo\"\\},\\{\"__type\":\"DependencyTelemetryDocument\",\"DocumentType\":\"RemoteDependency\",\"Version\":\"1.0\",\"OperationId\":null,\"Properties\":\\{\"customProperty\":\"customValue\"\\},\"Name\":\"dep-test\",\"Target\":null,\"Success\":true,\"Duration\":\"PT.*S\",\"ResultCode\":null,\"CommandName\":\"dep-test-cmd\",\"DependencyTypeName\":null,\"OperationName\":null\\},\\{\"__type\":\"ExceptionTelemetryDocument\",\"DocumentType\":\"Exception\",\"Version\":\"1.0\",\"OperationId\":null,\"Properties\":null,\"Exception\":\"\",\"ExceptionMessage\":\"test\",\"ExceptionType\":\"java.lang.Exception\"\\}\\],\"InstrumentationKey\":\""
                 + instrumentationKey
                 + "\",\"Metrics\":\\[\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Requests\\\\\\/Sec\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Request Duration\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Requests Failed\\\\\\/Sec\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Requests Succeeded\\\\\\/Sec\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Dependency Calls\\\\\\/Sec\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Dependency Call Duration\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Dependency Calls Failed\\\\\\/Sec\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Dependency Calls Succeeded\\\\\\/Sec\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Exceptions\\\\\\/Sec\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\Memory\\\\\\\\Committed Bytes\",\"Value\":[0-9.E]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\Processor\\(_Total\\)\\\\\\\\% Processor Time\",\"Value\":-?[0-9.]+,\"Weight\":\\d+\\}\\],\"InvariantVersion\":1,\"Timestamp\":\"\\\\\\/Date\\(\\d+\\)\\\\\\/\",\"Version\":\"[^\"]*\",\"StreamId\":null,\"MachineName\":\"machine1\",\"Instance\":\"instance1\",\"RoleName\":null\\}\\]";
-        QuickPulsePingSender pingSender =
-            getQuickPulsePingSenderWithValidator(
-                new ValidationPolicy(pingCountDown, expectedPingRequestBody));
+    QuickPulsePingSender pingSender =
+        getQuickPulsePingSenderWithValidator(
+            new ValidationPolicy(pingCountDown, expectedPingRequestBody),
+            new QuickPulseConfiguration());
         QuickPulseHeaderInfo quickPulseHeaderInfo = pingSender.ping(null);
         QuickPulseDataSender dataSender =
             new QuickPulseDataSender(
                 getHttpPipeline(new ValidationPolicy(postCountDown, expectedPostRequestBody)),
-                sendQueue);
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+                sendQueue,
+                quickPulseConfiguration);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, quickPulseConfiguration);
         QuickPulseDataFetcher dataFetcher =
             new QuickPulseDataFetcher(
                 collector,
@@ -123,7 +130,8 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
                 null,
                 "instance1",
                 "machine1",
-                null);
+                null,
+                quickPulseConfiguration);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(connectionString::getInstrumentationKey);

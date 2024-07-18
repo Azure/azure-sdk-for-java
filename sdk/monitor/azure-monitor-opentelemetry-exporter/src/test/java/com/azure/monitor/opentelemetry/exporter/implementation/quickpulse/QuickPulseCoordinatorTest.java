@@ -3,7 +3,6 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
-import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -20,7 +19,8 @@ class QuickPulseCoordinatorTest {
         QuickPulseDataFetcher mockFetcher = mock(QuickPulseDataFetcher.class);
         QuickPulseDataSender mockSender = mock(QuickPulseDataSender.class);
         QuickPulsePingSender mockPingSender = mock(QuickPulsePingSender.class);
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseConfiguration quickPulseConfiguration = new QuickPulseConfiguration();
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, quickPulseConfiguration);
         Mockito.doReturn(new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF))
             .when(mockPingSender)
             .ping(null);
@@ -55,7 +55,7 @@ class QuickPulseCoordinatorTest {
         // make sure QP_IS_OFF after ping
         assertThat(collector.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_OFF);
 
-        assertThat(QuickPulseConfiguration.getInstance().getEtag()).isNull();
+        assertThat(quickPulseConfiguration.getEtag()).isNull();
 
     }
 
@@ -73,7 +73,8 @@ class QuickPulseCoordinatorTest {
                 new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_ON),
                 new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF));
 
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseConfiguration quickPulseConfiguration = new QuickPulseConfiguration();
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, quickPulseConfiguration);
         QuickPulseCoordinatorInitData initData =
             new QuickPulseCoordinatorInitDataBuilder()
                 .withDataFetcher(mockFetcher)
@@ -104,7 +105,7 @@ class QuickPulseCoordinatorTest {
         // Make sure QP_IS_OFF after one post and ping
         assertThat(collector.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_OFF);
 
-        assertThat(QuickPulseConfiguration.getInstance().getEtag()).isNull();
+        assertThat(quickPulseConfiguration.getEtag()).isNull();
     }
 
     @Disabled("sporadically failing on CI")
@@ -113,6 +114,7 @@ class QuickPulseCoordinatorTest {
         QuickPulseDataFetcher mockFetcher = Mockito.mock(QuickPulseDataFetcher.class);
         QuickPulseDataSender mockSender = Mockito.mock(QuickPulseDataSender.class);
         QuickPulsePingSender mockPingSender = Mockito.mock(QuickPulsePingSender.class);
+        QuickPulseConfiguration quickPulseConfiguration = new QuickPulseConfiguration();
 
         Mockito.doNothing().when(mockFetcher).prepareQuickPulseDataForSend(notNull());
         Mockito.doReturn(
@@ -129,7 +131,7 @@ class QuickPulseCoordinatorTest {
                 .withDataFetcher(mockFetcher)
                 .withDataSender(mockSender)
                 .withPingSender(mockPingSender)
-                .withCollector(new QuickPulseDataCollector(true))
+                .withCollector(new QuickPulseDataCollector(true, quickPulseConfiguration))
                 .withWaitBetweenPingsInMillis(10L)
                 .withWaitBetweenPostsInMillis(10L)
                 .withWaitOnErrorInMillis(10L)
@@ -149,5 +151,6 @@ class QuickPulseCoordinatorTest {
             .prepareQuickPulseDataForSend("https://new.endpoint.com");
         Mockito.verify(mockPingSender, Mockito.atLeast(1)).ping(null);
         Mockito.verify(mockPingSender, Mockito.times(2)).ping("https://new.endpoint.com");
+        assertThat(quickPulseConfiguration.getEtag()).isNull();
     }
 }

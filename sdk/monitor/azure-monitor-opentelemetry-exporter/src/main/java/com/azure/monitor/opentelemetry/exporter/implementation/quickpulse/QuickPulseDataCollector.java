@@ -33,7 +33,8 @@ final class QuickPulseDataCollector {
 
     private final AtomicReference<Counters> counters = new AtomicReference<>(null);
 
-    private QuickPulseConfiguration quickPulseConfiguration = QuickPulseConfiguration.getInstance();
+//    private QuickPulseConfiguration quickPulseConfiguration = QuickPulseConfiguration.getInstance();
+    private QuickPulseConfiguration quickPulseConfiguration;
 
     private OpenTelMetricsStorage metricsStorage = new OpenTelMetricsStorage();
 
@@ -45,9 +46,10 @@ final class QuickPulseDataCollector {
 
     private volatile Supplier<String> instrumentationKeySupplier;
 
-    QuickPulseDataCollector(boolean useNormalizedValueForNonNormalizedCpuPercentage) {
+    QuickPulseDataCollector(boolean useNormalizedValueForNonNormalizedCpuPercentage, QuickPulseConfiguration quickPulseConfiguration) {
         this.useNormalizedValueForNonNormalizedCpuPercentage =
             useNormalizedValueForNonNormalizedCpuPercentage;
+        this.quickPulseConfiguration = quickPulseConfiguration;
     }
 
     private static CpuPerformanceCounterCalculator getCpuPerformanceCounterCalculator() {

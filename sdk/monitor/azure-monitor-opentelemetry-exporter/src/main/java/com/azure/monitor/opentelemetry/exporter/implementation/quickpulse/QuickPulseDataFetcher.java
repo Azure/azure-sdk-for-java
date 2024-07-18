@@ -39,7 +39,7 @@ class QuickPulseDataFetcher {
 
     private final ArrayBlockingQueue<HttpRequest> sendQueue;
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
-    private QuickPulseConfiguration quickPulseConfiguration = QuickPulseConfiguration.getInstance();
+    private QuickPulseConfiguration quickPulseConfiguration;
 
     private final Supplier<URL> endpointUrl;
     private final Supplier<String> instrumentationKey;
@@ -58,7 +58,8 @@ class QuickPulseDataFetcher {
         String roleName,
         String instanceName,
         String machineName,
-        String quickPulseId) {
+        String quickPulseId,
+        QuickPulseConfiguration quickPulseConfiguration) {
         this.collector = collector;
         this.sendQueue = sendQueue;
         this.endpointUrl = endpointUrl;
@@ -67,6 +68,7 @@ class QuickPulseDataFetcher {
         this.instanceName = instanceName;
         this.machineName = machineName;
         this.quickPulseId = quickPulseId;
+        this.quickPulseConfiguration = quickPulseConfiguration;
 
         sdkVersion = getCurrentSdkVersion();
     }

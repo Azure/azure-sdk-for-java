@@ -26,8 +26,8 @@ public class QuickPulseMetricReceiver implements Runnable {
         this.collector = collector;
         this.quickPulseConsumer =
             telemetryItem -> {
-                if (collector.isEnabled()) {
-                    collector.addOtelMetric(telemetryItem);
+                if (this.collector.isEnabled()) {
+                    this.collector.addOtelMetric(telemetryItem);
                 }
             };
     }

@@ -11,7 +11,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBas
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.OpenTelMetric;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseMetrics;
-import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.sdk.resources.Resource;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.QuickPulseTestBase.createRemoteDependencyTelemetry;
@@ -34,12 +32,12 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void initialStateIsDisabled() {
-        assertThat(new QuickPulseDataCollector(true).peek()).isNull();
+    assertThat(new QuickPulseDataCollector(true, new QuickPulseConfiguration()).peek()).isNull();
     }
 
     @Test
     void emptyCountsAndDurationsAfterEnable() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, new QuickPulseConfiguration());
 
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
         QuickPulseDataCollector.FinalCounters counters = collector.peek();
@@ -50,7 +48,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void nullCountersAfterDisable() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, new QuickPulseConfiguration());
 
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
         collector.disable();
@@ -60,7 +58,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void requestTelemetryIsCounted_DurationIsSum() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, new QuickPulseConfiguration());
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -103,7 +101,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void dependencyTelemetryIsCounted_DurationIsSum() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, new QuickPulseConfiguration());
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -146,7 +144,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void exceptionTelemetryIsCounted() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, new QuickPulseConfiguration());
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -168,7 +166,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void openTelemetryMetricsAreCounted() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, new QuickPulseConfiguration());
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -284,7 +282,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void checkDocumentsListSize() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, new QuickPulseConfiguration());
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);

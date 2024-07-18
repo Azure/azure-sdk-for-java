@@ -6,18 +6,13 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.HostName;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ThreadPoolUtils;
-import io.opentelemetry.api.common.AttributeKey;
 import reactor.util.annotation.Nullable;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -112,8 +107,9 @@ public class QuickPulse {
 
         String quickPulseId = UUID.randomUUID().toString().replace("-", "");
         ArrayBlockingQueue<HttpRequest> sendQueue = new ArrayBlockingQueue<>(256, true);
+        QuickPulseConfiguration quickPulseConfiguration = new QuickPulseConfiguration();
 
-        QuickPulseDataSender quickPulseDataSender = new QuickPulseDataSender(httpPipeline, sendQueue);
+        QuickPulseDataSender quickPulseDataSender = new QuickPulseDataSender(httpPipeline, sendQueue, quickPulseConfiguration);
 
         String instanceName = roleInstance;
         String machineName = HostName.get();
@@ -126,7 +122,7 @@ public class QuickPulse {
         }
 
         QuickPulseDataCollector collector =
-            new QuickPulseDataCollector(useNormalizedValueForNonNormalizedCpuPercentage);
+            new QuickPulseDataCollector(useNormalizedValueForNonNormalizedCpuPercentage, quickPulseConfiguration);
 
         QuickPulsePingSender quickPulsePingSender =
             new QuickPulsePingSender(
@@ -137,7 +133,8 @@ public class QuickPulse {
                 instanceName,
                 machineName,
                 quickPulseId,
-                sdkVersion);
+                sdkVersion,
+                quickPulseConfiguration);
         QuickPulseDataFetcher quickPulseDataFetcher =
             new QuickPulseDataFetcher(
                 collector,
@@ -147,7 +144,8 @@ public class QuickPulse {
                 roleName,
                 instanceName,
                 machineName,
-                quickPulseId);
+                quickPulseId,
+                quickPulseConfiguration);
 
         QuickPulseCoordinatorInitData coordinatorInitData =
             new QuickPulseCoordinatorInitDataBuilder()
