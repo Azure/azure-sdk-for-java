@@ -9,9 +9,15 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.exporter.implementation.configuration.StatsbeatConnectionString;
+import io.opentelemetry.sdk.resources.Resource;
+
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -58,6 +64,9 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      * Telemetry data item.
      */
     private MonitorBase data;
+
+    private String connectionString;
+    private Resource resource;
 
     /**
      * Creates an instance of TelemetryItem class.
@@ -241,16 +250,73 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
         return this;
     }
 
+    public String getConnectionString() {
+        return connectionString;
+    }
+
+    public TelemetryItem setConnectionString(String connectionString) {
+        this.connectionString = connectionString;
+        this.instrumentationKey = ConnectionString.parse(connectionString).getInstrumentationKey();
+        return this;
+    }
+
+    public TelemetryItem setConnectionString(ConnectionString connectionString) {
+        this.connectionString = connectionString.getOriginalString();
+        this.instrumentationKey = connectionString.getInstrumentationKey();
+        return this;
+    }
+
+    public TelemetryItem setConnectionString(StatsbeatConnectionString connectionString) {
+        instrumentationKey = connectionString.getInstrumentationKey();
+        // TODO (heya) turn StatsbeatConnectionString into a real connection string?
+        this.connectionString =
+            "InstrumentationKey="
+                + instrumentationKey
+                + ";IngestionEndpoint="
+                + connectionString.getIngestionEndpoint();
+        return this;
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
+    public Map<String, String> getResourceFromTags() {
+        if (tags == null) {
+            // Statsbeat doesn't have tags
+            return Collections.emptyMap();
+        }
+        Map<String, String> resourceFromTags = new HashMap<>();
+        populateFromTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), resourceFromTags);
+        populateFromTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), resourceFromTags);
+        populateFromTag(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), resourceFromTags);
+        return resourceFromTags;
+    }
+
+    private void populateFromTag(String contextTagKey, Map<String, String> resourceFromTags) {
+        if (tags == null) {
+            return;
+        }
+        String roleName = tags.get(contextTagKey);
+        if (roleName != null) {
+            resourceFromTags.put(contextTagKey, roleName);
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("ver", this.version);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("time",
             this.time == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.time));
-        jsonWriter.writeNumberField("ver", this.version);
         jsonWriter.writeNumberField("sampleRate", this.sampleRate);
         jsonWriter.writeStringField("seq", this.sequence);
         jsonWriter.writeStringField("iKey", this.instrumentationKey);
@@ -275,13 +341,13 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("name".equals(fieldName)) {
+                if ("ver".equals(fieldName)) {
+                    deserializedTelemetryItem.version = reader.getNullable(JsonReader::getInt);
+                } else if ("name".equals(fieldName)) {
                     deserializedTelemetryItem.name = reader.getString();
                 } else if ("time".equals(fieldName)) {
                     deserializedTelemetryItem.time
                         = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("ver".equals(fieldName)) {
-                    deserializedTelemetryItem.version = reader.getNullable(JsonReader::getInt);
                 } else if ("sampleRate".equals(fieldName)) {
                     deserializedTelemetryItem.sampleRate = reader.getNullable(JsonReader::getFloat);
                 } else if ("seq".equals(fieldName)) {

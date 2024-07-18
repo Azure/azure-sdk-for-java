@@ -21,14 +21,14 @@ import java.io.File;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.decode;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserialize;
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserializeAlreadyDecoded;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.splitBytesByNewline;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Handle206Test {
@@ -88,7 +88,7 @@ public class Handle206Test {
         executorService.shutdown();
         executorService.awaitTermination(10, TimeUnit.MINUTES);
 
-        Thread.sleep(1000);
+        Thread.sleep(5000);
 
         LocalFileCache localFileCache = new LocalFileCache(tempFolder);
         LocalFileLoader localFileLoader =
@@ -96,19 +96,39 @@ public class Handle206Test {
 
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(1);
 
+        // load expected telemetry items from the file and split bytes by newline
         String expected = Resources.readString("request_body_result_to_206_status_code.txt");
-        List<TelemetryItem> expectedTelemetryItems = deserializeAlreadyDecoded(expected.getBytes());
+        List<byte[]> expectedTelemetryItemsByteArray = splitBytesByNewline(expected.getBytes());
+
+        // deserialize back to List<TelemetryItem>
+        List<TelemetryItem> expectedTelemetryItems = new ArrayList<>();
+        for (byte[] bytes : expectedTelemetryItemsByteArray) {
+            TelemetryItem telemetryItem = deserialize(bytes);
+            expectedTelemetryItems.add(telemetryItem);
+        }
+
+        // load the actual telemetry raw bytes from disk
         LocalFileLoader.PersistedFile file = localFileLoader.loadTelemetriesFromDisk();
         assertThat(file.connectionString).isEqualTo(CONNECTION_STRING);
-        List<TelemetryItem> actualTelemetryItems = deserialize(file.rawBytes.array());
-        actualTelemetryItems.sort(Comparator.comparing( obj -> {
-            MetricsData metricsData = (MetricsData) obj.getData().getBaseData();
-            return metricsData.getMetrics().get(0).getName();
-        }));
+
+        // decode gzipped raw bytes back to original raw bytes
+        byte[] decodedRawBytes = decode(file.rawBytes.array());
+
+        // split the raw bytes by newline
+        List<byte[]> actualTelemetryItemsByteArray = splitBytesByNewline(decodedRawBytes);
+
+        // deserialize back to List<TelemetryItem>
+        List<TelemetryItem> actualTelemetryItems = new ArrayList<>();
+        for (byte[] bytes : actualTelemetryItemsByteArray) {
+            TelemetryItem telemetryItem = deserialize(bytes);
+            actualTelemetryItems.add(telemetryItem);
+        }
         assertThat(actualTelemetryItems.size()).isEqualTo(expectedTelemetryItems.size());
         for (int i = 0; i < actualTelemetryItems.size(); i++) {
-            MetricsData actualData = (MetricsData) actualTelemetryItems.get(i).getData().getBaseData();
-            MetricsData expectedData = (MetricsData) expectedTelemetryItems.get(i).getData().getBaseData();
+            TelemetryItem actualItem = actualTelemetryItems.get(i);
+            TelemetryItem expectedItem = expectedTelemetryItems.get(i);
+            MetricsData actualData = (MetricsData) actualItem.getData().getBaseData();
+            MetricsData expectedData = (MetricsData) expectedItem.getData().getBaseData();
             // verify metric name
             assertThat(expectedData.getMetrics().get(0).getName()).startsWith("to_be_persisted_offline_metric2" + i);
             assertThat(actualData.getMetrics().get(0).getName()).startsWith("to_be_persisted_offline_metric2" + i);

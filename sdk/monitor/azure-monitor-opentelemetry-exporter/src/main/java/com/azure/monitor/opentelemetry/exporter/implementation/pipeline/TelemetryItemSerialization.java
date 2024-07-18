@@ -3,53 +3,77 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.pipeline;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.io.SerializedString;
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public final class TelemetryItemSerialization {
 
-    private static final ObjectMapper mapper = createObjectMapper();
     private static final AppInsightsByteBufferPool byteBufferPool = new AppInsightsByteBufferPool();
-    private static final ClientLogger logger = new ClientLogger(TelemetryItemSerialization.class);
 
-    public static List<TelemetryItem> deserialize(byte[] data) {
-        return deserializeAlreadyDecoded(decode(data));
-    }
-
-    // visible for testing
-    // deserialize raw bytes to a list of TelemetryItem without decoding
-    public static List<TelemetryItem> deserializeAlreadyDecoded(byte[] data) {
+    public static List<ByteBuffer> serialize(List<TelemetryItem> telemetryItems) {
         try {
-            MappingIterator<TelemetryItem> iterator = mapper.readerFor(TelemetryItem.class).readValues(data);
-            return iterator.readAll();
-        } catch (Exception e) {
-            throw new IllegalStateException("Failed to deserialize byte[] to a list of TelemetryItems", e);
+            ByteBufferOutputStream out = writeTelemetryItemsAsByteBufferOutputStream(telemetryItems);
+            out.close(); // closing ByteBufferOutputStream is a no-op, but this line makes LGTM happy
+            List<ByteBuffer> byteBuffers = out.getByteBuffers();
+            for (ByteBuffer byteBuffer : byteBuffers) {
+                byteBuffer.flip();
+            }
+            return out.getByteBuffers();
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to serialize list of TelemetryItems to List<ByteBuffer>", e);
         }
     }
 
-    // decode gzipped request raw bytes back to original request raw bytes
-    private static byte[] decode(byte[] rawBytes) {
-        try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(rawBytes))) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    // visible for testing
+    public static TelemetryItem deserialize(byte[] rawBytes) {
+        try {
+            JsonReader reader = JsonProviders.createReader(rawBytes);
+            return TelemetryItem.fromJson(reader);
+        } catch (Throwable th) {
+            throw new IllegalStateException("failed to deserialize ", th);
+        }
+    }
+
+    private static ByteBufferOutputStream writeTelemetryItemsAsByteBufferOutputStream(List<TelemetryItem> telemetryItems) throws IOException {
+        try (ByteBufferOutputStream result = new ByteBufferOutputStream(byteBufferPool)) {
+            JsonWriter jsonWriter = null;
+            for (int i = 0; i < telemetryItems.size(); i++) {
+                GZIPOutputStream gzipOutputStream = new GZIPOutputStream(result);
+                jsonWriter = JsonProviders.createWriter(gzipOutputStream);
+                telemetryItems.get(i).toJson(jsonWriter);
+                jsonWriter.flush();
+                gzipOutputStream.finish(); // need to call this otherwise, gzip content would be corrupted.
+
+                if (i < telemetryItems.size() - 1) {
+                    result.write('\n');
+                }
+            }
+            if (jsonWriter != null) {
+                jsonWriter.close();
+            }
+            return result;
+        }
+    }
+
+    // visible for testing
+    // decode gzipped TelemetryItems raw bytes back to original TelemetryItems raw bytes
+    public static byte[] decode(byte[] rawBytes) {
+        try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(rawBytes));
+             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             byte[] data = new byte[1024];
             int read;
-            while ((read = in.read(data, 0, data.length)) != -1) {
+            while ((read = in.read(data)) != -1) {
                 baos.write(data, 0, read);
             }
             return baos.toByteArray();
@@ -58,54 +82,39 @@ public final class TelemetryItemSerialization {
         }
     }
 
-    public static List<ByteBuffer> serialize(List<TelemetryItem> telemetryItems) {
-        try {
-            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                StringWriter debug = new StringWriter();
-                try (JsonGenerator jg = mapper.createGenerator(debug)) {
-                    writeTelemetryItems(jg, telemetryItems, mapper);
-                }
-                logger.verbose("sending telemetry to ingestion service:{}{}", System.lineSeparator(), debug);
+    // split the byte array by newline character
+    public static List<byte[]> splitBytesByNewline(byte[] inputBytes) {
+        List<byte[]> lines = new ArrayList<>();
+        int start = 0;
+        for (int i = 0; i < inputBytes.length; i++) {
+            if (inputBytes[i] == '\n') {
+                byte[] line = new byte[i - start];
+                System.arraycopy(inputBytes, start, line, 0, i - start);
+                lines.add(line);
+                start = i + 1;
             }
-
-            ByteBufferOutputStream out = new ByteBufferOutputStream(byteBufferPool);
-
-            try (JsonGenerator jg = mapper.createGenerator(new GZIPOutputStream(out))) {
-                writeTelemetryItems(jg, telemetryItems, mapper);
-            } catch (IOException e) {
-                byteBufferPool.offer(out.getByteBuffers());
-                throw e;
-            }
-
-            out.close(); // closing ByteBufferOutputStream is a no-op, but this line makes LGTM happy
-
-            List<ByteBuffer> byteBuffers = out.getByteBuffers();
-            for (ByteBuffer byteBuffer : byteBuffers) {
-                byteBuffer.flip();
-            }
-            return byteBuffers;
-        } catch (IOException e) {
-            throw new IllegalStateException("Failed to encode list of TelemetryItems to byte[]", e);
         }
+        // Add the last line (if any)
+        if (start < inputBytes.length) {
+            byte[] lastLine = new byte[inputBytes.length - start];
+            System.arraycopy(inputBytes, start, lastLine, 0, inputBytes.length - start);
+            lines.add(lastLine);
+        }
+        return lines;
     }
 
-    private static ObjectMapper createObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        // it's important to pass in the "agent class loader" since TelemetryItemPipeline is initialized
-        // lazily and can be initialized via an application thread, in which case the thread context
-        // class loader is used to look up jsr305 module and its not found
-        mapper.registerModules(ObjectMapper.findModules(TelemetryItemExporter.class.getClassLoader()));
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return mapper;
-    }
+    // convert list of byte buffers to byte array
+    public static byte[] convertByteBufferListToByteArray(List<ByteBuffer> byteBuffers) {
+        int totalSize = byteBuffers.stream().mapToInt(ByteBuffer::remaining).sum();
+        ByteBuffer resultBuffer = ByteBuffer.allocate(totalSize);
 
-    private static void writeTelemetryItems(JsonGenerator jg, List<TelemetryItem> telemetryItems, ObjectMapper mapper)
-        throws IOException {
-        jg.setRootValueSeparator(new SerializedString("\n"));
-        for (TelemetryItem telemetryItem : telemetryItems) {
-            mapper.writeValue(jg, telemetryItem);
+        for (ByteBuffer buffer : byteBuffers) {
+            byte[] byteArray = new byte[buffer.remaining()];
+            buffer.get(byteArray);
+            resultBuffer.put(byteArray);
         }
+
+        return resultBuffer.array();
     }
 
     private TelemetryItemSerialization() {

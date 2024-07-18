@@ -68,7 +68,6 @@ public class TelemetryItemExporter {
     // visible for tests
     Map<TelemetryItemBatchKey, List<TelemetryItem>> splitIntoBatches(
         List<TelemetryItem> telemetryItems) {
-
         Map<TelemetryItemBatchKey, List<TelemetryItem>> groupings = new HashMap<>();
         for (TelemetryItem telemetryItem : telemetryItems) {
             TelemetryItemBatchKey telemetryItemBatchKey = new TelemetryItemBatchKey(

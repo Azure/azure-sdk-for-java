@@ -5,7 +5,6 @@ package com.azure.monitor.opentelemetry.exporter.implementation.localstorage;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.DiagnosticTelemetryPipelineListener;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ResponseError;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
@@ -21,8 +20,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserialize;
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.serialize;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.convertByteBufferListToByteArray;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.splitBytesByNewline;
 
 public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineListener {
 
@@ -71,19 +70,18 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
         Set<ResponseError> errors = response.getErrors();
         errors.forEach(error -> logger.verbose("Error in telemetry: {}", error));
         if (!errors.isEmpty()) {
-            List<TelemetryItem> originalTelemetryItems = new ArrayList<>();
-            for (ByteBuffer byteBuffer : request.getByteBuffers()) {
-                originalTelemetryItems.addAll(deserialize(byteBuffer.array()));
-            }
-            List<TelemetryItem> toBePersisted = new ArrayList<>();
+            List<ByteBuffer> originalByteBuffers = request.getByteBuffers();
+            byte[] originalBytes = convertByteBufferListToByteArray(originalByteBuffers);
+            List<byte[]> bytesSplittedByNewLine = splitBytesByNewline(originalBytes);
+            List<ByteBuffer> toBePersisted = new ArrayList<>();
             for (ResponseError error : errors) {
                 if (StatusCode.isRetryable(error.getStatusCode())) {
-                    toBePersisted.add(originalTelemetryItems.get(error.getIndex()));
+                    toBePersisted.add(ByteBuffer.wrap(bytesSplittedByNewLine.get(error.getIndex())));
                 }
             }
             if (!toBePersisted.isEmpty()) {
                 localFileWriter.writeToDisk(
-                    request.getConnectionString(), serialize(toBePersisted), "Received partial response code 206");
+                    request.getConnectionString(), toBePersisted, "Received partial response code 206");
             }
         }
     }
