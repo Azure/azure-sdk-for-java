@@ -138,7 +138,8 @@ MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
 
 #### Configure client for Azure sovereign cloud
 
-By default, `LogQueryClient` and `MetricQueryClient` are configured to connect to the Azure Public Cloud. To use a sovereign cloud instead, set the correct `endpoint` in the client builders. For example:
+By default, `LogsQueryClient`, `MetricsQueryClient` and `MetricsClient` are configured to connect to the Azure Public Cloud. To use a sovereign cloud instead, set the correct endpoint in the client builders.  
+Additionally, for creating a `MetricsClient` instance, the audience should also be set in `MetricsClientBuilder` as shown in the sample below.
 
 - Creating a `LogsQueryClient` for Azure China Cloud:
 
@@ -157,6 +158,16 @@ By default, `LogQueryClient` and `MetricQueryClient` are configured to connect t
         .endpoint("https://management.chinacloudapi.cn")
         .buildClient();
     ```
+
+- Creating a `MetricsClient` for Azure China Cloud:
+
+    ```java readme-sample-createMetricsClientWithSovereignCloud
+    MetricsClient metricsClient = new MetricsClientBuilder()
+        .endpoint("<endpoint>")
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .audience(MetricsAudience.AZURE_CHINA)
+        .buildClient();
+    ```  
 
 ### Execute the query
 

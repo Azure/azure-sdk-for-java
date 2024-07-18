@@ -55,9 +55,9 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     }
 
     /**
-     * Get the countIPv6 property: The desired number of IPv6 outbound IPs created/managed by Azure for the cluster
-     * load balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 0 for
-     * single-stack and 1 for dual-stack.
+     * Get the countIPv6 property: The desired number of IPv6 outbound IPs created/managed by Azure for the cluster load
+     * balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 0 for single-stack
+     * and 1 for dual-stack.
      * 
      * @return the countIPv6 value.
      */
@@ -66,9 +66,9 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     }
 
     /**
-     * Set the countIPv6 property: The desired number of IPv6 outbound IPs created/managed by Azure for the cluster
-     * load balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 0 for
-     * single-stack and 1 for dual-stack.
+     * Set the countIPv6 property: The desired number of IPv6 outbound IPs created/managed by Azure for the cluster load
+     * balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 0 for single-stack
+     * and 1 for dual-stack.
      * 
      * @param countIPv6 the countIPv6 value to set.
      * @return the ManagedClusterLoadBalancerProfileManagedOutboundIPs object itself.

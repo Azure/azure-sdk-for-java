@@ -3,10 +3,13 @@
 ### 4.63.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added optional id validation to prevent documents with invalid char '/' in id property to be created. - See [PR 41108](https://github.com/Azure/azure-sdk-for-java/pull/41108)
+* Added support for specifying a set of custom diagnostic correlation ids in the request options. - See [PR 40835](https://github.com/Azure/azure-sdk-for-java/pull/40835)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where `contactedRegions` shows the wrong region in a multi region account if no preferred regions are specified. - See [PR 41045](https://github.com/Azure/azure-sdk-for-java/pull/41045)
 
 #### Other Changes
 * Added metrics and tracing for ReadMany operations. - See [PR 41042](https://github.com/Azure/azure-sdk-for-java/pull/41042)

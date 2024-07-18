@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -57,7 +58,7 @@ public final class CommunityGalleryInfo {
 
     /**
      * Get the publisherUri property: The link to the publisher website. Visible to all users.
-     * 
+     *
      * @return the publisherUri value.
      */
     public String publisherUri() {
@@ -66,7 +67,7 @@ public final class CommunityGalleryInfo {
 
     /**
      * Set the publisherUri property: The link to the publisher website. Visible to all users.
-     * 
+     *
      * @param publisherUri the publisherUri value to set.
      * @return the CommunityGalleryInfo object itself.
      */
@@ -76,9 +77,9 @@ public final class CommunityGalleryInfo {
     }
 
     /**
-     * Get the publisherContact property: Community gallery publisher support email. The email address of the
-     * publisher. Visible to all users.
-     * 
+     * Get the publisherContact property: Community gallery publisher support email. The email address of the publisher.
+     * Visible to all users.
+     *
      * @return the publisherContact value.
      */
     public String publisherContact() {
@@ -86,9 +87,9 @@ public final class CommunityGalleryInfo {
     }
 
     /**
-     * Set the publisherContact property: Community gallery publisher support email. The email address of the
-     * publisher. Visible to all users.
-     * 
+     * Set the publisherContact property: Community gallery publisher support email. The email address of the publisher.
+     * Visible to all users.
+     *
      * @param publisherContact the publisherContact value to set.
      * @return the CommunityGalleryInfo object itself.
      */
@@ -99,7 +100,7 @@ public final class CommunityGalleryInfo {
 
     /**
      * Get the eula property: End-user license agreement for community gallery image.
-     * 
+     *
      * @return the eula value.
      */
     public String eula() {
@@ -108,7 +109,7 @@ public final class CommunityGalleryInfo {
 
     /**
      * Set the eula property: End-user license agreement for community gallery image.
-     * 
+     *
      * @param eula the eula value to set.
      * @return the CommunityGalleryInfo object itself.
      */
@@ -118,9 +119,9 @@ public final class CommunityGalleryInfo {
     }
 
     /**
-     * Get the publicNamePrefix property: The prefix of the gallery name that will be displayed publicly. Visible to
-     * all users.
-     * 
+     * Get the publicNamePrefix property: The prefix of the gallery name that will be displayed publicly. Visible to all
+     * users.
+     *
      * @return the publicNamePrefix value.
      */
     public String publicNamePrefix() {
@@ -128,9 +129,9 @@ public final class CommunityGalleryInfo {
     }
 
     /**
-     * Set the publicNamePrefix property: The prefix of the gallery name that will be displayed publicly. Visible to
-     * all users.
-     * 
+     * Set the publicNamePrefix property: The prefix of the gallery name that will be displayed publicly. Visible to all
+     * users.
+     *
      * @param publicNamePrefix the publicNamePrefix value to set.
      * @return the CommunityGalleryInfo object itself.
      */
@@ -141,7 +142,7 @@ public final class CommunityGalleryInfo {
 
     /**
      * Get the communityGalleryEnabled property: Contains info about whether community gallery sharing is enabled.
-     * 
+     *
      * @return the communityGalleryEnabled value.
      */
     public Boolean communityGalleryEnabled() {
@@ -150,7 +151,7 @@ public final class CommunityGalleryInfo {
 
     /**
      * Get the publicNames property: Community gallery public name list.
-     * 
+     *
      * @return the publicNames value.
      */
     public List<String> publicNames() {
@@ -159,7 +160,7 @@ public final class CommunityGalleryInfo {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

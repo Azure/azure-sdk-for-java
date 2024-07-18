@@ -816,6 +816,23 @@ public class QueueApiTests extends QueueTestBase {
     }
 
     @Test
+    public void updateMessageWithBase64Client() {
+        String updateMsg = "Updated test message";
+        QueueClient encodingQueueClient = getBase64Client();
+        encodingQueueClient.create();
+        encodingQueueClient.sendMessage("test message before update");
+
+        QueueMessageItem dequeueMsg = encodingQueueClient.receiveMessage();
+
+        assertEquals(204, encodingQueueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
+            dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1), null, null).getStatusCode());
+
+        sleepIfRunningAgainstService(2000);
+
+        assertEquals(updateMsg, encodingQueueClient.peekMessage().getMessageText());
+    }
+
+    @Test
     public void getQueueName() {
         assertEquals(queueName, queueClient.getQueueName());
     }

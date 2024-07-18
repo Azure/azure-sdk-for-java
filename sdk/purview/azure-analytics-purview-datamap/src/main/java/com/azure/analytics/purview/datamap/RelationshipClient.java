@@ -99,7 +99,7 @@ public final class RelationshipClient {
      * }
      * }</pre>
      * 
-     * @param atlasRelationship Atlas relationship instance.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -109,8 +109,8 @@ public final class RelationshipClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(BinaryData atlasRelationship, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponse(atlasRelationship, requestOptions);
+    public Response<BinaryData> createWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createWithResponse(body, requestOptions);
     }
 
     /**
@@ -175,7 +175,7 @@ public final class RelationshipClient {
      * }
      * }</pre>
      * 
-     * @param atlasRelationship Atlas relationship instance.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -185,8 +185,8 @@ public final class RelationshipClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(BinaryData atlasRelationship, RequestOptions requestOptions) {
-        return this.serviceClient.updateWithResponse(atlasRelationship, requestOptions);
+    public Response<BinaryData> updateWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.updateWithResponse(body, requestOptions);
     }
 
     /**
@@ -318,7 +318,7 @@ public final class RelationshipClient {
     /**
      * Create a new relationship between entities.
      * 
-     * @param atlasRelationship Atlas relationship instance.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -329,17 +329,17 @@ public final class RelationshipClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasRelationship create(AtlasRelationship atlasRelationship) {
+    public AtlasRelationship create(AtlasRelationship body) {
         // Generated convenience method for createWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(BinaryData.fromObject(atlasRelationship), requestOptions).getValue()
+        return createWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasRelationship.class);
     }
 
     /**
      * Update an existing relationship between entities.
      * 
-     * @param atlasRelationship Atlas relationship instance.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -350,10 +350,10 @@ public final class RelationshipClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasRelationship update(AtlasRelationship atlasRelationship) {
+    public AtlasRelationship update(AtlasRelationship body) {
         // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateWithResponse(BinaryData.fromObject(atlasRelationship), requestOptions).getValue()
+        return updateWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasRelationship.class);
     }
 

@@ -47,8 +47,8 @@ public final class SnapshotProperties {
     private OSType osType;
 
     /*
-     * Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is
-     * Windows2019 when Kubernetes <= 1.24 or Windows2022 when Kubernetes >= 1.25 if OSType is Windows.
+     * Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019
+     * when Kubernetes <= 1.24 or Windows2022 when Kubernetes >= 1.25 if OSType is Windows.
      */
     @JsonProperty(value = "osSku", access = JsonProperty.Access.WRITE_ONLY)
     private OSSku osSku;

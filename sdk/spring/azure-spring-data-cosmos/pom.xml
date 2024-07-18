@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-spring-data-cosmos</artifactId>
-  <version>3.47.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+  <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
   <packaging>jar</packaging>
   <name>Spring Data for Azure Cosmos DB SQL API</name>
   <description>Spring Data for Azure Cosmos DB SQL API</description>
@@ -45,13 +45,14 @@
     <skip.integration.tests>true</skip.integration.tests>
     <test.on.azure>false</test.on.azure>
     <test.on.emualator>false</test.on.emualator>
+    <compiler.failondeprecatedstatus/>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>5.3.32</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
+      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-core;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>commons-logging</groupId>
@@ -62,27 +63,27 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.3.32</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
-      <version>5.3.32</version> <!-- {x-version-update;org.springframework:spring-beans;external_dependency} -->
+      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-beans;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.32</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>5.3.32</version> <!-- {x-version-update;org.springframework:spring-tx;external_dependency} -->
+      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-tx;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.data:spring-data-commons;external_dependency} -->
+      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.data:spring-data-commons;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -93,7 +94,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-expression</artifactId>
-      <version>5.3.32</version> <!-- {x-version-update;org.springframework:spring-expression;external_dependency} -->
+      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-expression;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -103,34 +104,39 @@
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-parameter-names</artifactId>
-      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-parameter-names;external_dependency} -->
+      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.module:jackson-module-parameter-names;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jdk8</artifactId>
-      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
+      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.javatuples</groupId>
       <artifactId>javatuples</artifactId>
-      <version>1.2</version> <!-- {x-version-update;org.javatuples:javatuples;external_dependency} -->
+      <version>1.2</version> <!-- {x-version-update;springboot3_org.javatuples:javatuples;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>javax.annotation</groupId>
       <artifactId>javax.annotation-api</artifactId>
-      <version>1.3.2</version> <!-- {x-version-update;javax.annotation:javax.annotation-api;external_dependency} -->
+      <version>1.3.2</version> <!-- {x-version-update;springboot3_javax.annotation:javax.annotation-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.12.0</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
+      <version>3.14.0</version> <!-- {x-version-update;springboot3_org.apache.commons:commons-lang3;external_dependency} -->
     </dependency>
 
     <!-- Test -->
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>5.11.0</version> <!-- {x-version-update;springboot3_org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
@@ -138,25 +144,25 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.17</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.17</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13.2</version> <!-- {x-version-update;springboot3_junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -168,13 +174,13 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.38</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.6.7</version> <!-- {x-version-update;springboot3_io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <version>2.0.13</version> <!-- {x-version-update;springboot3_org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -186,19 +192,19 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
-      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
+      <version>3.0.2</version> <!-- {x-version-update;springboot3_com.google.code.findbugs:jsr305;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+      <version>2.0.13</version> <!-- {x-version-update;springboot3_org.slf4j:slf4j-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.vintage</groupId>
       <artifactId>junit-vintage-engine</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
+      <version>5.10.2</version> <!-- {x-version-update;springboot3_org.junit.vintage:junit-vintage-engine;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -212,26 +218,106 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.2.0</version> <!-- {x-version-update;springboot3_com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.30.0</version> <!-- {x-version-update;springboot3_com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.14.6</version> <!-- {x-version-update;springboot3_org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <executions>
+          <!-- disabled - the executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+          <execution>
+            <id>base-modules-compile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- disabled - compile without module-info for Java 8 -->
+          <execution>
+            <id>base-compile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- disabled - compile with Java 8 -->
+          <execution>
+            <id>base-testCompile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- Ensure we compile with Java 17 -->
+          <execution>
+            <id>compile-17</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <release>17</release>
+              <compilerArgs>
+                <arg>-parameters</arg> <!-- https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention -->
+              </compilerArgs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>testCompile-17</id>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+            <configuration>
+              <release>17</release>
+              <compilerArgs>
+                <arg>-parameters</arg> <!-- https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention -->
+              </compilerArgs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-beans:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-beans;external_dependency} -->
-                <include>org.springframework:spring-web:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
-                <include>org.springframework:spring-tx:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
-                <include>org.springframework:spring-expression:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-expression;external_dependency} -->
-                <include>org.springframework:spring-core:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-core;external_dependency} -->
-                <include>org.springframework:spring-context:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
-                <include>org.springframework.data:spring-data-commons:[2.7.18]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
-                <include>org.javatuples:javatuples:[1.2]</include> <!-- {x-include-update;org.javatuples:javatuples;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jdk8:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
-                <include>com.fasterxml.jackson.module:jackson-module-parameter-names:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-parameter-names;external_dependency} -->
-                <include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->
-                <include>org.apache.commons:commons-lang3:[3.12.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
-                <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
+                <include>org.springframework:spring-beans:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-beans;external_dependency} -->
+                <include>org.springframework:spring-web:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework:spring-tx:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
+                <include>org.springframework:spring-expression:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-expression;external_dependency} -->
+                <include>org.springframework:spring-core:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-core;external_dependency} -->
+                <include>org.springframework:spring-context:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>org.javatuples:javatuples:[1.2]</include> <!-- {x-include-update;springboot3_org.javatuples:javatuples;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jdk8:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-parameter-names:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.module:jackson-module-parameter-names;external_dependency} -->
+                <include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;springboot3_javax.annotation:javax.annotation-api;external_dependency} -->
+                <include>org.apache.commons:commons-lang3:[3.14.0]</include> <!-- {x-include-update;springboot3_org.apache.commons:commons-lang3;external_dependency} -->
+                <include>org.slf4j:slf4j-api:[2.0.13]</include> <!-- {x-include-update;springboot3_org.slf4j:slf4j-api;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -241,7 +327,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.6.3</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <configuration>
           <sourceFileExcludes>
             <sourceFileExclude>com/azure/spring/data/cosmos/core/mapping/BasicCosmosPersistentProperty.java</sourceFileExclude>
@@ -259,7 +345,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <version>3.2.5</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
         <configuration>
           <systemPropertiesFile>src/test/resources/application.properties</systemPropertiesFile>
           <skipITs>${skip.integration.tests}</skipITs>
@@ -293,7 +379,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
             </configuration>
           </plugin>
@@ -314,7 +400,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
             </configuration>
           </plugin>
@@ -334,7 +420,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <excludes>
                 <!--Excluding PageablePersonRepositoryIT test class, as it creates large documents which are not suitable for emulator-->

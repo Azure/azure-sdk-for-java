@@ -5,56 +5,91 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LivyStates. */
+/**
+ * The batch state.
+ */
 public final class LivyStates extends ExpandableStringEnum<LivyStates> {
-    /** Static value not_started for LivyStates. */
+    /**
+     * Static value not_started for LivyStates.
+     */
     public static final LivyStates NOT_STARTED = fromString("not_started");
 
-    /** Static value starting for LivyStates. */
+    /**
+     * Static value starting for LivyStates.
+     */
     public static final LivyStates STARTING = fromString("starting");
 
-    /** Static value idle for LivyStates. */
+    /**
+     * Static value idle for LivyStates.
+     */
     public static final LivyStates IDLE = fromString("idle");
 
-    /** Static value busy for LivyStates. */
+    /**
+     * Static value busy for LivyStates.
+     */
     public static final LivyStates BUSY = fromString("busy");
 
-    /** Static value shutting_down for LivyStates. */
+    /**
+     * Static value shutting_down for LivyStates.
+     */
     public static final LivyStates SHUTTING_DOWN = fromString("shutting_down");
 
-    /** Static value error for LivyStates. */
+    /**
+     * Static value error for LivyStates.
+     */
     public static final LivyStates ERROR = fromString("error");
 
-    /** Static value dead for LivyStates. */
+    /**
+     * Static value dead for LivyStates.
+     */
     public static final LivyStates DEAD = fromString("dead");
 
-    /** Static value killed for LivyStates. */
+    /**
+     * Static value killed for LivyStates.
+     */
     public static final LivyStates KILLED = fromString("killed");
 
-    /** Static value success for LivyStates. */
+    /**
+     * Static value success for LivyStates.
+     */
     public static final LivyStates SUCCESS = fromString("success");
 
-    /** Static value running for LivyStates. */
+    /**
+     * Static value running for LivyStates.
+     */
     public static final LivyStates RUNNING = fromString("running");
 
-    /** Static value recovering for LivyStates. */
+    /**
+     * Static value recovering for LivyStates.
+     */
     public static final LivyStates RECOVERING = fromString("recovering");
 
     /**
+     * Creates a new instance of LivyStates value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LivyStates() {
+    }
+
+    /**
      * Creates or finds a LivyStates from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LivyStates.
      */
-    @JsonCreator
     public static LivyStates fromString(String name) {
         return fromString(name, LivyStates.class);
     }
 
-    /** @return known LivyStates values. */
+    /**
+     * Gets known LivyStates values.
+     * 
+     * @return known LivyStates values.
+     */
     public static Collection<LivyStates> values() {
         return values(LivyStates.class);
     }

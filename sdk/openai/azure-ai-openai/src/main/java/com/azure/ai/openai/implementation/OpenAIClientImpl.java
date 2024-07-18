@@ -159,7 +159,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranscriptionAsPlainText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
@@ -171,7 +171,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranscriptionAsPlainTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
@@ -183,7 +183,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObject(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
@@ -195,7 +195,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranscriptionAsResponseObjectSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
@@ -207,7 +207,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranslationAsPlainText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
@@ -219,7 +219,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranslationAsPlainTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
@@ -231,7 +231,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranslationAsResponseObject(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
@@ -243,7 +243,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranslationAsResponseObjectSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/deployments/{deploymentId}/completions")
@@ -276,7 +276,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getChatCompletions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData chatCompletionsOptions,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/deployments/{deploymentId}/chat/completions")
@@ -287,7 +287,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getChatCompletionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData chatCompletionsOptions,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/deployments/{deploymentId}/images/generations")
@@ -320,7 +320,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> generateSpeechFromText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData speechGenerationOptions,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/deployments/{deploymentId}/audio/speech")
@@ -331,7 +331,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> generateSpeechFromTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData speechGenerationOptions,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/deployments/{deploymentId}/embeddings")
@@ -1214,9 +1214,7 @@ public final class OpenAIClientImpl {
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param chatCompletionsOptions The configuration information for a chat completions request.
-     * Completions support a wide variety of tasks and generate text that continues from or "completes"
-     * provided prompt data.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1227,12 +1225,11 @@ public final class OpenAIClientImpl {
      * provided prompt data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getChatCompletionsWithResponseAsync(String deploymentOrModelName,
-        BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getChatCompletionsWithResponseAsync(String deploymentOrModelName, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getChatCompletions(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, chatCompletionsOptions, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getChatCompletions(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), deploymentOrModelName, accept, body, requestOptions, context));
     }
 
     /**
@@ -1468,9 +1465,7 @@ public final class OpenAIClientImpl {
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param chatCompletionsOptions The configuration information for a chat completions request.
-     * Completions support a wide variety of tasks and generate text that continues from or "completes"
-     * provided prompt data.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1481,11 +1476,11 @@ public final class OpenAIClientImpl {
      * provided prompt data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getChatCompletionsWithResponse(String deploymentOrModelName,
-        BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+    public Response<BinaryData> getChatCompletionsWithResponse(String deploymentOrModelName, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getChatCompletionsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, chatCompletionsOptions, requestOptions, Context.NONE);
+            deploymentOrModelName, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -1669,8 +1664,7 @@ public final class OpenAIClientImpl {
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param speechGenerationOptions A representation of the request options that control the behavior of a
-     * text-to-speech operation.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1680,11 +1674,10 @@ public final class OpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> generateSpeechFromTextWithResponseAsync(String deploymentOrModelName,
-        BinaryData speechGenerationOptions, RequestOptions requestOptions) {
+        BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/octet-stream, application/json";
-        return FluxUtil.withContext(
-            context -> service.generateSpeechFromText(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, speechGenerationOptions, requestOptions, context));
+        return FluxUtil.withContext(context -> service.generateSpeechFromText(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), deploymentOrModelName, accept, body, requestOptions, context));
     }
 
     /**
@@ -1709,8 +1702,7 @@ public final class OpenAIClientImpl {
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param speechGenerationOptions A representation of the request options that control the behavior of a
-     * text-to-speech operation.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1719,11 +1711,11 @@ public final class OpenAIClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> generateSpeechFromTextWithResponse(String deploymentOrModelName,
-        BinaryData speechGenerationOptions, RequestOptions requestOptions) {
+    public Response<BinaryData> generateSpeechFromTextWithResponse(String deploymentOrModelName, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/octet-stream, application/json";
         return service.generateSpeechFromTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, speechGenerationOptions, requestOptions, Context.NONE);
+            deploymentOrModelName, accept, body, requestOptions, Context.NONE);
     }
 
     /**
