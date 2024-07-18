@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.devopsinfrastructure.generated;
 
 /**
- * Samples for ResourceDetails ListByPool.
+ * Samples for SubscriptionUsages Usages.
  */
-public final class ResourceDetailsListByPoolSamples {
+public final class SubscriptionUsagesUsagesSamples {
     /*
      * x-ms-original-file:
      * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
-     * ResourceDetails_ListByPool.json
+     * SubscriptionUsages_Usages.json
      */
     /**
-     * Sample code: ResourceDetails_ListByPool.
+     * Sample code: SubscriptionUsages_Usages.
      * 
      * @param manager Entry point to DevOpsInfrastructureManager.
      */
     public static void
-        resourceDetailsListByPool(com.azure.resourcemanager.devopsinfrastructure.DevOpsInfrastructureManager manager) {
-        manager.resourceDetails().listByPool("my-resource-group", "my-dev-ops-pool", com.azure.core.util.Context.NONE);
+        subscriptionUsagesUsages(com.azure.resourcemanager.devopsinfrastructure.DevOpsInfrastructureManager manager) {
+        manager.subscriptionUsages().usages("eastus", com.azure.core.util.Context.NONE);
     }
 }
