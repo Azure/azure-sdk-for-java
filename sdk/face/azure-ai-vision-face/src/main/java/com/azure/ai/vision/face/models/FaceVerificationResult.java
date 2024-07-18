@@ -5,20 +5,22 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Verify result.
  */
 @Immutable
-public final class FaceVerificationResult {
+public final class FaceVerificationResult implements JsonSerializable<FaceVerificationResult> {
 
     /*
      * True if the two faces belong to the same person or the face belongs to the person, otherwise false.
      */
     @Generated
-    @JsonProperty(value = "isIdentical")
     private final boolean isIdentical;
 
     /*
@@ -27,7 +29,6 @@ public final class FaceVerificationResult {
      * to 0.5. This is useful for advanced users to override 'isIdentical' and fine-tune the result on their own data.
      */
     @Generated
-    @JsonProperty(value = "confidence")
     private final double confidence;
 
     /**
@@ -37,9 +38,7 @@ public final class FaceVerificationResult {
      * @param confidence the confidence value to set.
      */
     @Generated
-    @JsonCreator
-    private FaceVerificationResult(@JsonProperty(value = "isIdentical") boolean isIdentical,
-        @JsonProperty(value = "confidence") double confidence) {
+    private FaceVerificationResult(boolean isIdentical, double confidence) {
         this.isIdentical = isIdentical;
         this.confidence = confidence;
     }
@@ -66,5 +65,46 @@ public final class FaceVerificationResult {
     @Generated
     public double getConfidence() {
         return this.confidence;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isIdentical", this.isIdentical);
+        jsonWriter.writeDoubleField("confidence", this.confidence);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FaceVerificationResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FaceVerificationResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FaceVerificationResult.
+     */
+    @Generated
+    public static FaceVerificationResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean isIdentical = false;
+            double confidence = 0.0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("isIdentical".equals(fieldName)) {
+                    isIdentical = reader.getBoolean();
+                } else if ("confidence".equals(fieldName)) {
+                    confidence = reader.getDouble();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new FaceVerificationResult(isIdentical, confidence);
+        });
     }
 }
