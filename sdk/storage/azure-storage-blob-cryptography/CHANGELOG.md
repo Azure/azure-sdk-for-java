@@ -5,6 +5,13 @@
 ### Features Added
 - Added support for service version 2024-08-04.
 
+### Breaking Changes
+- When creating a `EncryptedBlobClient` via EncryptedBlobClientBuilder, the blob name will be stored exactly as passed 
+  in and will not be URL-encoded. For example, if blob name is "test%25test" and is created by calling
+  `EncryptedBlobClientBuilder.blobName("test%25test")` along with other required parameters, 
+  `EncryptedBlobClient.getBlobName()` will return "test%25test" and the blob's url will result in 
+  “https://account.blob.core.windows.net/container/test%25%25test”.
+
 ### Other Changes
 
 #### Dependency Updates
