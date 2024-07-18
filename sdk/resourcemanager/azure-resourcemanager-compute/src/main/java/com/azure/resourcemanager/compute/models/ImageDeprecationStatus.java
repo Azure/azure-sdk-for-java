@@ -59,8 +59,8 @@ public final class ImageDeprecationStatus {
     }
 
     /**
-     * Get the scheduledDeprecationTime property: The time, in future, at which this image will be marked as
-     * deprecated. This scheduled time is chosen by the Publisher.
+     * Get the scheduledDeprecationTime property: The time, in future, at which this image will be marked as deprecated.
+     * This scheduled time is chosen by the Publisher.
      * 
      * @return the scheduledDeprecationTime value.
      */
@@ -69,8 +69,8 @@ public final class ImageDeprecationStatus {
     }
 
     /**
-     * Set the scheduledDeprecationTime property: The time, in future, at which this image will be marked as
-     * deprecated. This scheduled time is chosen by the Publisher.
+     * Set the scheduledDeprecationTime property: The time, in future, at which this image will be marked as deprecated.
+     * This scheduled time is chosen by the Publisher.
      * 
      * @param scheduledDeprecationTime the scheduledDeprecationTime value to set.
      * @return the ImageDeprecationStatus object itself.

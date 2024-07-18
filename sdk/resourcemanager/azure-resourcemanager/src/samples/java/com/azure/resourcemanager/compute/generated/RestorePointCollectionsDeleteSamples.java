@@ -19,8 +19,11 @@ public final class RestorePointCollectionsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void restorePointCollectionDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getRestorePointCollections().delete("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePointCollections()
+            .delete("rgcompute", "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +37,10 @@ public final class RestorePointCollectionsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void restorePointCollectionDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getRestorePointCollections().delete("rgcompute",
-            "aaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePointCollections()
+            .delete("rgcompute", "aaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

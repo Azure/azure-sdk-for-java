@@ -20,8 +20,8 @@ public class VirtualMachineReimageParameters {
     private Boolean tempDisk;
 
     /*
-     * Specifies in decimal number, the version the OS disk should be reimaged to. If exact version is not provided,
-     * the OS disk is reimaged to the existing version of OS Disk.
+     * Specifies in decimal number, the version the OS disk should be reimaged to. If exact version is not provided, the
+     * OS disk is reimaged to the existing version of OS Disk.
      */
     @JsonProperty(value = "exactVersion")
     private String exactVersion;

@@ -182,12 +182,14 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property name in model OpenShiftManagedClusterAgentPoolProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model OpenShiftManagedClusterAgentPoolProfile"));
         }
         if (vmSize() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property vmSize in model OpenShiftManagedClusterAgentPoolProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vmSize in model OpenShiftManagedClusterAgentPoolProfile"));
         }
     }
 

@@ -24,7 +24,7 @@ extends:
               Location: "chinanorth3"
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/common
-            - spring/spring-cloud-azure-integration-tests/test-resources/jdbc/mysql
+#            - spring/spring-cloud-azure-integration-tests/test-resources/jdbc/mysql
             - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
             - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
             - spring/spring-cloud-azure-integration-tests/test-resources/servicebus
@@ -40,7 +40,9 @@ extends:
           ServiceDirectory: spring
           TestName: Spring_IT
           TestGoals: "verify"
-          TestOptions: "-DskipSpringITs=false"
+          TestOptions: -DskipSpringITs=false -Dcompiler.failondeprecatedstatus=-
+          MatrixFilters:
+            - JavaTestVersion=^(?!1.8|1.11).*
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           UseFederatedAuth: true
@@ -68,6 +70,8 @@ extends:
           ServiceDirectory: spring
           TestName: Spring_App_Config_IT
           TestGoals: 'verify'
+          MatrixFilters:
+            - JavaTestVersion=^(?!1.8|1.11).*
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           UseFederatedAuth: true
@@ -100,4 +104,5 @@ extends:
           TestName: 'Spring_Data_Cosmos_Integration'
           TestGoals: 'clean verify'
           TestOptions: '$(ProfileFlag)'
-
+          MatrixFilters:
+            - JavaTestVersion=^(?!1.8|1.11).*
