@@ -1,8 +1,9 @@
 # Release History
 
-## 12.26.0-beta.2 (Unreleased)
+## 12.26.0 (2024-07-18)
 
 ### Features Added
+- Added support for service version 2024-08-04.
 
 ### Breaking Changes
 - When creating a `EncryptedBlobClient` via EncryptedBlobClientBuilder, the blob name will be stored exactly as passed 
@@ -11,9 +12,12 @@
   `EncryptedBlobClient.getBlobName()` will return "test%25test" and the blob's url will result in 
   “https://account.blob.core.windows.net/container/test%25%25test”.
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-storage-blob` from `12.26.1` to version `12.27.0`.
 
 ## 12.26.0-beta.1 (2024-06-11)
 
