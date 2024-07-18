@@ -71,6 +71,17 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
     public Mono<Boolean> refreshConfigurations() {
         return Mono.just(refreshStores());
     }
+    
+    /**
+     * Checks configurations to see if configurations should be reloaded. If the refresh interval has passed and a
+     * trigger has been updated configuration are reloaded.
+     *
+     * @return Mono with a boolean of if a RefreshEvent was published. If refreshConfigurations is currently being run
+     * elsewhere this method will return right away as <b>false</b>.
+     */
+    public void refreshAsync() {
+        new Thread(() -> refreshStores()).start();
+    }
 
     /**
      * Soft expires refresh interval. Sets amount of time to next refresh to be a random value between 0 and 15 seconds,
