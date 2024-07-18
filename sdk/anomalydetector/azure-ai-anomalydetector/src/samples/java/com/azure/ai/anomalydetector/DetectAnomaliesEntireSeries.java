@@ -3,12 +3,11 @@
 
 package com.azure.ai.anomalydetector;
 
+import com.azure.ai.anomalydetector.models.ImputeMode;
+import com.azure.ai.anomalydetector.models.TimeGranularity;
+import com.azure.ai.anomalydetector.models.TimeSeriesPoint;
 import com.azure.ai.anomalydetector.models.UnivariateDetectionOptions;
 import com.azure.ai.anomalydetector.models.UnivariateEntireDetectionResult;
-import com.azure.ai.anomalydetector.models.TimeGranularity;
-import com.azure.ai.anomalydetector.models.ImputeMode;
-import com.azure.ai.anomalydetector.models.TimeSeriesPoint;
-
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 
@@ -37,11 +36,11 @@ public class DetectAnomaliesEntireSeries {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_ENDPOINT");
         String key = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_API_KEY");
 
-        AnomalyDetectorClient anomalyDetectorClient =
+        UnivariateClient anomalyDetectorClient =
             new AnomalyDetectorClientBuilder()
                 .credential(new AzureKeyCredential(key))
                 .endpoint(endpoint)
-                .buildClient();
+                .buildUnivariateClient();
 
         // Read the time series from csv file and organize the time series into list of TimeSeriesPoint.
         // The sample csv file has no header, and it contains 2 columns, namely timestamp and value.
@@ -53,8 +52,8 @@ public class DetectAnomaliesEntireSeries {
         Path path = Paths.get("azure-ai-anomalydetector/src/samples/java/sample_data/request-data.csv");
         List<String> requestData = Files.readAllLines(path);
         List<TimeSeriesPoint> series = requestData.stream()
-            .map(line -> line.trim())
-            .filter(line -> line.length() > 0)
+            .map(String::trim)
+            .filter(line -> !line.isEmpty())
             .map(line -> line.split(",", 2))
             .filter(splits -> splits.length == 2)
             .map(splits -> {

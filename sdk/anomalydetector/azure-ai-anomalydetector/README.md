@@ -68,11 +68,15 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 String endpoint = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_ENDPOINT");
 String key = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_API_KEY");
 
-AnomalyDetectorClient anomalyDetectorClient =
-    new AnomalyDetectorClientBuilder()
-        .credential(new AzureKeyCredential(key))
-        .endpoint(endpoint)
-        .buildClient();
+MultivariateClient multivariateClient = new AnomalyDetectorClientBuilder()
+    .credential(new AzureKeyCredential(key))
+    .endpoint(endpoint)
+    .buildMultivariateClient();
+
+UnivariateClient univariateClient = new AnomalyDetectorClientBuilder()
+    .credential(new AzureKeyCredential(key))
+    .endpoint(endpoint)
+    .buildUnivariateClient();
 ```
 
 ## Key concepts
@@ -129,11 +133,15 @@ The following section provides several code snippets covering some of the most c
 String endpoint = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_ENDPOINT");
 String key = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_API_KEY");
 
-AnomalyDetectorClient anomalyDetectorClient =
-    new AnomalyDetectorClientBuilder()
-        .credential(new AzureKeyCredential(key))
-        .endpoint(endpoint)
-        .buildClient();
+MultivariateClient multivariateClient = new AnomalyDetectorClientBuilder()
+    .credential(new AzureKeyCredential(key))
+    .endpoint(endpoint)
+    .buildMultivariateClient();
+
+UnivariateClient univariateClient = new AnomalyDetectorClientBuilder()
+    .credential(new AzureKeyCredential(key))
+    .endpoint(endpoint)
+    .buildUnivariateClient();
 ```
 
 ### Batch detection
