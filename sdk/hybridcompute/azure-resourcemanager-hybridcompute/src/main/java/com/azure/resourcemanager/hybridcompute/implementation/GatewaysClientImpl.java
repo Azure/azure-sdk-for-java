@@ -34,11 +34,12 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.GatewaysClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.GatewayInner;
-import com.azure.resourcemanager.hybridcompute.models.GatewaysListResult;
 import com.azure.resourcemanager.hybridcompute.models.GatewayUpdate;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.hybridcompute.models.GatewaysListResult;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in GatewaysClient.
@@ -56,7 +57,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * Initializes an instance of GatewaysClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     GatewaysClientImpl(HybridComputeManagementClientImpl client) {
@@ -144,7 +145,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to create or update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Create gateway operation.
@@ -185,7 +186,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to create or update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Create gateway operation.
@@ -226,7 +227,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to create or update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Create gateway operation.
@@ -246,7 +247,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to create or update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Create gateway operation.
@@ -268,7 +269,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to create or update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Create gateway operation.
@@ -285,7 +286,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to create or update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Create gateway operation.
@@ -303,7 +304,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to create or update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Create gateway operation.
@@ -321,7 +322,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to create or update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Create gateway operation.
@@ -340,7 +341,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to create or update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Create gateway operation.
@@ -356,7 +357,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to create or update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Create gateway operation.
@@ -374,7 +375,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Update gateway operation.
@@ -415,7 +416,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Update gateway operation.
@@ -456,7 +457,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Update gateway operation.
@@ -473,7 +474,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Update gateway operation.
@@ -491,7 +492,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to update a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param parameters Parameters supplied to the Update gateway operation.
@@ -507,7 +508,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * Retrieves information about the view of a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -542,7 +543,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * Retrieves information about the view of a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param context The context to associate with this operation.
@@ -577,7 +578,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * Retrieves information about the view of a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -593,7 +594,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * Retrieves information about the view of a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param context The context to associate with this operation.
@@ -610,7 +611,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * Retrieves information about the view of a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -625,7 +626,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to delete a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -659,7 +660,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to delete a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param context The context to associate with this operation.
@@ -694,7 +695,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to delete a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -711,7 +712,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to delete a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param context The context to associate with this operation.
@@ -731,7 +732,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to delete a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -746,7 +747,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to delete a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param context The context to associate with this operation.
@@ -763,7 +764,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to delete a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -778,7 +779,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to delete a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param context The context to associate with this operation.
@@ -795,7 +796,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to delete a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -809,7 +810,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to delete a gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param gatewayName The name of the Gateway.
      * @param context The context to associate with this operation.
@@ -824,7 +825,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to get all gateways of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -857,7 +858,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to get all gateways of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -892,7 +893,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to get all gateways of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -907,7 +908,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to get all gateways of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -923,7 +924,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to get all gateways of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -937,7 +938,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to get all gateways of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -952,7 +953,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to get all gateways of a non-Azure machine.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List license operation response along with {@link PagedResponse} on successful completion of
@@ -979,7 +980,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to get all gateways of a non-Azure machine.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1008,7 +1009,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to get all gateways of a non-Azure machine.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List license operation response as paginated response with {@link PagedFlux}.
@@ -1021,7 +1022,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to get all gateways of a non-Azure machine.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1036,7 +1037,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to get all gateways of a non-Azure machine.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List license operation response as paginated response with {@link PagedIterable}.
@@ -1048,7 +1049,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * The operation to get all gateways of a non-Azure machine.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1062,10 +1063,8 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1092,10 +1091,8 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1121,10 +1118,8 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1151,10 +1146,8 @@ public final class GatewaysClientImpl implements GatewaysClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

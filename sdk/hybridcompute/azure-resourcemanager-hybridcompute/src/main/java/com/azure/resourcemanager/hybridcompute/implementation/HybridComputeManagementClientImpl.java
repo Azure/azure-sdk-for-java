@@ -13,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -38,14 +38,15 @@ import com.azure.resourcemanager.hybridcompute.fluent.PrivateLinkResourcesClient
 import com.azure.resourcemanager.hybridcompute.fluent.PrivateLinkScopesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.hybridcompute.fluent.SettingsOperationsClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * Initializes a new instance of the HybridComputeManagementClientImpl type.
@@ -59,7 +60,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets The ID of the target subscription.
-     * 
+     *
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
@@ -73,7 +74,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets server parameter.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -87,7 +88,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets Api Version.
-     * 
+     *
      * @return the apiVersion value.
      */
     public String getApiVersion() {
@@ -101,7 +102,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -115,7 +116,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
@@ -129,7 +130,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets The default poll interval for long-running operation.
-     * 
+     *
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
@@ -143,7 +144,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the LicensesClient object to access its operations.
-     * 
+     *
      * @return the LicensesClient object.
      */
     public LicensesClient getLicenses() {
@@ -157,7 +158,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the MachinesClient object to access its operations.
-     * 
+     *
      * @return the MachinesClient object.
      */
     public MachinesClient getMachines() {
@@ -171,7 +172,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the MachineExtensionsClient object to access its operations.
-     * 
+     *
      * @return the MachineExtensionsClient object.
      */
     public MachineExtensionsClient getMachineExtensions() {
@@ -185,7 +186,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     * 
+     *
      * @return the ResourceProvidersClient object.
      */
     public ResourceProvidersClient getResourceProviders() {
@@ -199,7 +200,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the ExtensionMetadatasClient object to access its operations.
-     * 
+     *
      * @return the ExtensionMetadatasClient object.
      */
     public ExtensionMetadatasClient getExtensionMetadatas() {
@@ -213,7 +214,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the OperationsClient object to access its operations.
-     * 
+     *
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
@@ -227,7 +228,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the NetworkProfilesClient object to access its operations.
-     * 
+     *
      * @return the NetworkProfilesClient object.
      */
     public NetworkProfilesClient getNetworkProfiles() {
@@ -241,7 +242,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the MachineRunCommandsClient object to access its operations.
-     * 
+     *
      * @return the MachineRunCommandsClient object.
      */
     public MachineRunCommandsClient getMachineRunCommands() {
@@ -255,7 +256,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the GatewaysClient object to access its operations.
-     * 
+     *
      * @return the GatewaysClient object.
      */
     public GatewaysClient getGateways() {
@@ -269,7 +270,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the SettingsOperationsClient object to access its operations.
-     * 
+     *
      * @return the SettingsOperationsClient object.
      */
     public SettingsOperationsClient getSettingsOperations() {
@@ -283,7 +284,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the PrivateLinkScopesClient object to access its operations.
-     * 
+     *
      * @return the PrivateLinkScopesClient object.
      */
     public PrivateLinkScopesClient getPrivateLinkScopes() {
@@ -297,7 +298,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     * 
+     *
      * @return the PrivateLinkResourcesClient object.
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
@@ -311,7 +312,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     * 
+     *
      * @return the PrivateEndpointConnectionsClient object.
      */
     public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
@@ -325,7 +326,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the NetworkSecurityPerimeterConfigurationsClient object.
      */
     public NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations() {
@@ -334,7 +335,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Initializes an instance of HybridComputeManagementClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -349,7 +350,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-03-31-preview";
+        this.apiVersion = "2024-05-20-preview";
         this.licenses = new LicensesClientImpl(this);
         this.machines = new MachinesClientImpl(this);
         this.machineExtensions = new MachineExtensionsClientImpl(this);
@@ -368,7 +369,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets default client context.
-     * 
+     *
      * @return the default client context.
      */
     public Context getContext() {
@@ -377,7 +378,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Merges default client context with provided context.
-     * 
+     *
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -387,7 +388,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets long running operation result.
-     * 
+     *
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -405,7 +406,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     * 
+     *
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.

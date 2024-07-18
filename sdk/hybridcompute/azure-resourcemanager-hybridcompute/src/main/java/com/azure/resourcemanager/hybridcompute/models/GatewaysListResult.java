@@ -6,25 +6,28 @@ package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.fluent.models.GatewayInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The List license operation response.
  */
 @Fluent
-public final class GatewaysListResult {
+public final class GatewaysListResult implements JsonSerializable<GatewaysListResult> {
     /*
      * The list of Gateways.
      */
-    @JsonProperty(value = "value", required = true)
     private List<GatewayInner> value;
 
     /*
      * The URI to fetch the next page of Gateways. Call ListNext() with this URI to fetch the next page of Gateways.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -35,7 +38,7 @@ public final class GatewaysListResult {
 
     /**
      * Get the value property: The list of Gateways.
-     * 
+     *
      * @return the value value.
      */
     public List<GatewayInner> value() {
@@ -44,7 +47,7 @@ public final class GatewaysListResult {
 
     /**
      * Set the value property: The list of Gateways.
-     * 
+     *
      * @param value the value value to set.
      * @return the GatewaysListResult object itself.
      */
@@ -56,7 +59,7 @@ public final class GatewaysListResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of Gateways. Call ListNext() with this URI to fetch the
      * next page of Gateways.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -66,7 +69,7 @@ public final class GatewaysListResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of Gateways. Call ListNext() with this URI to fetch the
      * next page of Gateways.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the GatewaysListResult object itself.
      */
@@ -77,7 +80,7 @@ public final class GatewaysListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -90,4 +93,45 @@ public final class GatewaysListResult {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GatewaysListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewaysListResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewaysListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GatewaysListResult.
+     */
+    public static GatewaysListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewaysListResult deserializedGatewaysListResult = new GatewaysListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<GatewayInner> value = reader.readArray(reader1 -> GatewayInner.fromJson(reader1));
+                    deserializedGatewaysListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedGatewaysListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewaysListResult;
+        });
+    }
 }

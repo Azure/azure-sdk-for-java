@@ -5,60 +5,57 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the properties of a License.
  */
 @Fluent
-public final class LicenseDetails {
+public final class LicenseDetails implements JsonSerializable<LicenseDetails> {
     /*
      * Describes the state of the license.
      */
-    @JsonProperty(value = "state")
     private LicenseState state;
 
     /*
      * Describes the license target server.
      */
-    @JsonProperty(value = "target")
     private LicenseTarget target;
 
     /*
      * Describes the edition of the license. The values are either Standard or Datacenter.
      */
-    @JsonProperty(value = "edition")
     private LicenseEdition edition;
 
     /*
      * Describes the license core type (pCore or vCore).
      */
-    @JsonProperty(value = "type")
     private LicenseCoreType type;
 
     /*
      * Describes the number of processors.
      */
-    @JsonProperty(value = "processors")
     private Integer processors;
 
     /*
      * Describes the number of assigned licenses.
      */
-    @JsonProperty(value = "assignedLicenses", access = JsonProperty.Access.WRITE_ONLY)
     private Integer assignedLicenses;
 
     /*
      * Describes the immutable id.
      */
-    @JsonProperty(value = "immutableId", access = JsonProperty.Access.WRITE_ONLY)
     private String immutableId;
 
     /*
      * A list of volume license details.
      */
-    @JsonProperty(value = "volumeLicenseDetails")
     private List<VolumeLicenseDetails> volumeLicenseDetails;
 
     /**
@@ -69,7 +66,7 @@ public final class LicenseDetails {
 
     /**
      * Get the state property: Describes the state of the license.
-     * 
+     *
      * @return the state value.
      */
     public LicenseState state() {
@@ -78,7 +75,7 @@ public final class LicenseDetails {
 
     /**
      * Set the state property: Describes the state of the license.
-     * 
+     *
      * @param state the state value to set.
      * @return the LicenseDetails object itself.
      */
@@ -89,7 +86,7 @@ public final class LicenseDetails {
 
     /**
      * Get the target property: Describes the license target server.
-     * 
+     *
      * @return the target value.
      */
     public LicenseTarget target() {
@@ -98,7 +95,7 @@ public final class LicenseDetails {
 
     /**
      * Set the target property: Describes the license target server.
-     * 
+     *
      * @param target the target value to set.
      * @return the LicenseDetails object itself.
      */
@@ -109,7 +106,7 @@ public final class LicenseDetails {
 
     /**
      * Get the edition property: Describes the edition of the license. The values are either Standard or Datacenter.
-     * 
+     *
      * @return the edition value.
      */
     public LicenseEdition edition() {
@@ -118,7 +115,7 @@ public final class LicenseDetails {
 
     /**
      * Set the edition property: Describes the edition of the license. The values are either Standard or Datacenter.
-     * 
+     *
      * @param edition the edition value to set.
      * @return the LicenseDetails object itself.
      */
@@ -129,7 +126,7 @@ public final class LicenseDetails {
 
     /**
      * Get the type property: Describes the license core type (pCore or vCore).
-     * 
+     *
      * @return the type value.
      */
     public LicenseCoreType type() {
@@ -138,7 +135,7 @@ public final class LicenseDetails {
 
     /**
      * Set the type property: Describes the license core type (pCore or vCore).
-     * 
+     *
      * @param type the type value to set.
      * @return the LicenseDetails object itself.
      */
@@ -149,7 +146,7 @@ public final class LicenseDetails {
 
     /**
      * Get the processors property: Describes the number of processors.
-     * 
+     *
      * @return the processors value.
      */
     public Integer processors() {
@@ -158,7 +155,7 @@ public final class LicenseDetails {
 
     /**
      * Set the processors property: Describes the number of processors.
-     * 
+     *
      * @param processors the processors value to set.
      * @return the LicenseDetails object itself.
      */
@@ -169,7 +166,7 @@ public final class LicenseDetails {
 
     /**
      * Get the assignedLicenses property: Describes the number of assigned licenses.
-     * 
+     *
      * @return the assignedLicenses value.
      */
     public Integer assignedLicenses() {
@@ -178,7 +175,7 @@ public final class LicenseDetails {
 
     /**
      * Get the immutableId property: Describes the immutable id.
-     * 
+     *
      * @return the immutableId value.
      */
     public String immutableId() {
@@ -187,7 +184,7 @@ public final class LicenseDetails {
 
     /**
      * Get the volumeLicenseDetails property: A list of volume license details.
-     * 
+     *
      * @return the volumeLicenseDetails value.
      */
     public List<VolumeLicenseDetails> volumeLicenseDetails() {
@@ -196,7 +193,7 @@ public final class LicenseDetails {
 
     /**
      * Set the volumeLicenseDetails property: A list of volume license details.
-     * 
+     *
      * @param volumeLicenseDetails the volumeLicenseDetails value to set.
      * @return the LicenseDetails object itself.
      */
@@ -207,12 +204,70 @@ public final class LicenseDetails {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (volumeLicenseDetails() != null) {
             volumeLicenseDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("target", this.target == null ? null : this.target.toString());
+        jsonWriter.writeStringField("edition", this.edition == null ? null : this.edition.toString());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeNumberField("processors", this.processors);
+        jsonWriter.writeArrayField("volumeLicenseDetails", this.volumeLicenseDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LicenseDetails.
+     */
+    public static LicenseDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseDetails deserializedLicenseDetails = new LicenseDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedLicenseDetails.state = LicenseState.fromString(reader.getString());
+                } else if ("target".equals(fieldName)) {
+                    deserializedLicenseDetails.target = LicenseTarget.fromString(reader.getString());
+                } else if ("edition".equals(fieldName)) {
+                    deserializedLicenseDetails.edition = LicenseEdition.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedLicenseDetails.type = LicenseCoreType.fromString(reader.getString());
+                } else if ("processors".equals(fieldName)) {
+                    deserializedLicenseDetails.processors = reader.getNullable(JsonReader::getInt);
+                } else if ("assignedLicenses".equals(fieldName)) {
+                    deserializedLicenseDetails.assignedLicenses = reader.getNullable(JsonReader::getInt);
+                } else if ("immutableId".equals(fieldName)) {
+                    deserializedLicenseDetails.immutableId = reader.getString();
+                } else if ("volumeLicenseDetails".equals(fieldName)) {
+                    List<VolumeLicenseDetails> volumeLicenseDetails
+                        = reader.readArray(reader1 -> VolumeLicenseDetails.fromJson(reader1));
+                    deserializedLicenseDetails.volumeLicenseDetails = volumeLicenseDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseDetails;
+        });
     }
 }

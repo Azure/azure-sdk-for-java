@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * Describes the Update properties of a ESU License Profile.
  */
 @Fluent
-public final class EsuProfileUpdateProperties {
+public final class EsuProfileUpdateProperties implements JsonSerializable<EsuProfileUpdateProperties> {
     /*
      * The resource id of the license.
      */
-    @JsonProperty(value = "assignedLicense")
     private String assignedLicense;
 
     /**
@@ -26,7 +30,7 @@ public final class EsuProfileUpdateProperties {
 
     /**
      * Get the assignedLicense property: The resource id of the license.
-     * 
+     *
      * @return the assignedLicense value.
      */
     public String assignedLicense() {
@@ -35,7 +39,7 @@ public final class EsuProfileUpdateProperties {
 
     /**
      * Set the assignedLicense property: The resource id of the license.
-     * 
+     *
      * @param assignedLicense the assignedLicense value to set.
      * @return the EsuProfileUpdateProperties object itself.
      */
@@ -46,9 +50,45 @@ public final class EsuProfileUpdateProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("assignedLicense", this.assignedLicense);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EsuProfileUpdateProperties from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EsuProfileUpdateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EsuProfileUpdateProperties.
+     */
+    public static EsuProfileUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EsuProfileUpdateProperties deserializedEsuProfileUpdateProperties = new EsuProfileUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("assignedLicense".equals(fieldName)) {
+                    deserializedEsuProfileUpdateProperties.assignedLicense = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEsuProfileUpdateProperties;
+        });
     }
 }

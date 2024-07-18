@@ -11,17 +11,18 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.NetworkProfile;
-import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 
 public final class NetworkProfilesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"networkInterfaces\":[{\"ipAddresses\":[{\"address\":\"fbcunezz\",\"ipAddressVersion\":\"zelfwyfwl\",\"subnet\":{}},{\"address\":\"wetnpsihc\",\"ipAddressVersion\":\"fzvaylptr\",\"subnet\":{}},{\"address\":\"wztcmwqkchc\",\"ipAddressVersion\":\"axfe\",\"subnet\":{}}]},{\"ipAddresses\":[{\"address\":\"exfdeqvhpsylk\",\"ipAddressVersion\":\"hkbffmbm\",\"subnet\":{}},{\"address\":\"rgywwp\",\"ipAddressVersion\":\"xs\",\"subnet\":{}},{\"address\":\"fujg\",\"ipAddressVersion\":\"gaao\",\"subnet\":{}}]},{\"ipAddresses\":[{\"address\":\"qutdewemxs\",\"ipAddressVersion\":\"ruunzzjgehkf\",\"subnet\":{}},{\"address\":\"rtixokff\",\"ipAddressVersion\":\"inljqepqwhixmo\",\"subnet\":{}},{\"address\":\"shiy\",\"ipAddressVersion\":\"velfcldu\",\"subnet\":{}}]}]}";
+            = "{\"networkInterfaces\":[{\"ipAddresses\":[{\"address\":\"uyilflqoiquvrehm\",\"ipAddressVersion\":\"jhvsujztczyt\",\"subnet\":{}},{\"address\":\"w\",\"ipAddressVersion\":\"uunfprnjletlxsm\",\"subnet\":{}},{\"address\":\"do\",\"ipAddressVersion\":\"fa\",\"subnet\":{}},{\"address\":\"aziynknlqwzdv\",\"ipAddressVersion\":\"w\",\"subnet\":{}}]},{\"ipAddresses\":[{\"address\":\"dtmaa\",\"ipAddressVersion\":\"uhuxylrjvmtyg\",\"subnet\":{}},{\"address\":\"zyos\",\"ipAddressVersion\":\"p\",\"subnet\":{}},{\"address\":\"kfkyjp\",\"ipAddressVersion\":\"pbpssdfpp\",\"subnet\":{}}]},{\"ipAddresses\":[{\"address\":\"eyujtvczkcnyxrx\",\"ipAddressVersion\":\"njdxvglnkvxl\",\"subnet\":{}},{\"address\":\"glqivbgkcv\",\"ipAddressVersion\":\"pzvuqdflvo\",\"subnet\":{}},{\"address\":\"pfpubcpzgpx\",\"ipAddressVersion\":\"vhjknidi\",\"subnet\":{}},{\"address\":\"jxgpnrhgovfg\",\"ipAddressVersion\":\"kqmhhaowjr\",\"subnet\":{}}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +32,11 @@ public final class NetworkProfilesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NetworkProfile response = manager.networkProfiles()
-            .getWithResponse("kiwbuqnyoph", "fy", com.azure.core.util.Context.NONE)
+            .getWithResponse("zqaclna", "xbiygnugjknfsmf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fbcunezz", response.networkInterfaces().get(0).ipAddresses().get(0).address());
-        Assertions.assertEquals("zelfwyfwl",
+        Assertions.assertEquals("uyilflqoiquvrehm", response.networkInterfaces().get(0).ipAddresses().get(0).address());
+        Assertions.assertEquals("jhvsujztczyt",
             response.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
     }
 }

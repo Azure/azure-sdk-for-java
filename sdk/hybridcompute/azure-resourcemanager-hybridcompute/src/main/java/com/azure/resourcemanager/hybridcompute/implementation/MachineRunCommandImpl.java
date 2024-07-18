@@ -11,9 +11,9 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.MachineRunCommandIn
 import com.azure.resourcemanager.hybridcompute.models.MachineRunCommand;
 import com.azure.resourcemanager.hybridcompute.models.MachineRunCommandInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.MachineRunCommandScriptSource;
-import com.azure.resourcemanager.hybridcompute.models.MachineRunCommandUpdate;
 import com.azure.resourcemanager.hybridcompute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.hybridcompute.models.RunCommandManagedIdentity;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -141,8 +141,6 @@ public final class MachineRunCommandImpl
 
     private String runCommandName;
 
-    private MachineRunCommandUpdate updateRunCommandProperties;
-
     public MachineRunCommandImpl withExistingMachine(String resourceGroupName, String machineName) {
         this.resourceGroupName = resourceGroupName;
         this.machineName = machineName;
@@ -170,21 +168,20 @@ public final class MachineRunCommandImpl
     }
 
     public MachineRunCommandImpl update() {
-        this.updateRunCommandProperties = new MachineRunCommandUpdate();
         return this;
     }
 
     public MachineRunCommand apply() {
         this.innerObject = serviceManager.serviceClient()
             .getMachineRunCommands()
-            .update(resourceGroupName, machineName, runCommandName, updateRunCommandProperties, Context.NONE);
+            .createOrUpdate(resourceGroupName, machineName, runCommandName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public MachineRunCommand apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getMachineRunCommands()
-            .update(resourceGroupName, machineName, runCommandName, updateRunCommandProperties, context);
+            .createOrUpdate(resourceGroupName, machineName, runCommandName, this.innerModel(), context);
         return this;
     }
 
@@ -224,13 +221,8 @@ public final class MachineRunCommandImpl
     }
 
     public MachineRunCommandImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateRunCommandProperties.withTags(tags);
-            return this;
-        }
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public MachineRunCommandImpl withSource(MachineRunCommandScriptSource source) {
@@ -286,9 +278,5 @@ public final class MachineRunCommandImpl
     public MachineRunCommandImpl withErrorBlobManagedIdentity(RunCommandManagedIdentity errorBlobManagedIdentity) {
         this.innerModel().withErrorBlobManagedIdentity(errorBlobManagedIdentity);
         return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
     }
 }

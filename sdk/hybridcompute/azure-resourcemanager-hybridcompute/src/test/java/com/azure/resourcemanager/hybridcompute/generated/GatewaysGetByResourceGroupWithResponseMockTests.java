@@ -12,17 +12,18 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.Gateway;
 import com.azure.resourcemanager.hybridcompute.models.GatewayType;
-import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 
 public final class GatewaysGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"gatewayId\":\"d\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"niypfpubcpzg\",\"allowedFeatures\":[\"ivhjknidi\",\"gqjxgpnrhgovfgp\",\"kqmhhaowjr\",\"zvuporqzdfuydz\"]},\"location\":\"fvxcnqmxqpswo\",\"tags\":{\"dhbemzqkzszu\":\"khlg\",\"icrmnzh\":\"iwtglxxhljfpg\",\"vpqcb\":\"gmqgjs\"},\"id\":\"rmbodt\",\"name\":\"s\",\"type\":\"qgvriibakcla\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"gatewayId\":\"quflqbctq\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"jrwdkqz\",\"allowedFeatures\":[\"jleziunjx\",\"fza\",\"tkw\"]},\"location\":\"gyamlbnseqacjjv\",\"tags\":{\"ueio\":\"guooqjagmdit\",\"tdtpdelqacslmo\":\"kjbsah\",\"xofvcjk\":\"oebn\"},\"id\":\"dirazf\",\"name\":\"xejw\",\"type\":\"bmdujtmvcopexc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +33,12 @@ public final class GatewaysGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Gateway response = manager.gateways()
-            .getByResourceGroupWithResponse("vxlx", "aglqivbgkcvkh", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("bnwgfmxj", "cgbjbgdlfgt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fvxcnqmxqpswo", response.location());
-        Assertions.assertEquals("khlg", response.tags().get("dhbemzqkzszu"));
+        Assertions.assertEquals("gyamlbnseqacjjv", response.location());
+        Assertions.assertEquals("guooqjagmdit", response.tags().get("ueio"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.gatewayType());
-        Assertions.assertEquals("ivhjknidi", response.allowedFeatures().get(0));
+        Assertions.assertEquals("jleziunjx", response.allowedFeatures().get(0));
     }
 }

@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -24,7 +24,7 @@ public final class AssessmentModeTypes extends ExpandableStringEnum<AssessmentMo
 
     /**
      * Creates a new instance of AssessmentModeTypes value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +33,17 @@ public final class AssessmentModeTypes extends ExpandableStringEnum<AssessmentMo
 
     /**
      * Creates or finds a AssessmentModeTypes from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding AssessmentModeTypes.
      */
-    @JsonCreator
     public static AssessmentModeTypes fromString(String name) {
         return fromString(name, AssessmentModeTypes.class);
     }
 
     /**
      * Gets known AssessmentModeTypes values.
-     * 
+     *
      * @return known AssessmentModeTypes values.
      */
     public static Collection<AssessmentModeTypes> values() {

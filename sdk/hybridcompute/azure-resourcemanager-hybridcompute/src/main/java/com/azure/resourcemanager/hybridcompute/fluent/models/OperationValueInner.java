@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.OperationValueDisplay;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /**
  * Describes the properties of a Compute Operation value.
  */
 @Fluent
-public final class OperationValueInner {
+public final class OperationValueInner implements JsonSerializable<OperationValueInner> {
     /*
      * The origin of the compute operation.
      */
-    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private String origin;
 
     /*
      * The name of the compute operation.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Display properties
      */
-    @JsonProperty(value = "display")
     private OperationValueDisplay display;
 
     /*
      * This property indicates if the operation is an action or a data action
      */
-    @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDataAction;
 
     /**
@@ -45,7 +46,7 @@ public final class OperationValueInner {
 
     /**
      * Get the origin property: The origin of the compute operation.
-     * 
+     *
      * @return the origin value.
      */
     public String origin() {
@@ -54,7 +55,7 @@ public final class OperationValueInner {
 
     /**
      * Get the name property: The name of the compute operation.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -63,7 +64,7 @@ public final class OperationValueInner {
 
     /**
      * Get the display property: Display properties.
-     * 
+     *
      * @return the display value.
      */
     public OperationValueDisplay display() {
@@ -72,7 +73,7 @@ public final class OperationValueInner {
 
     /**
      * Set the display property: Display properties.
-     * 
+     *
      * @param display the display value to set.
      * @return the OperationValueInner object itself.
      */
@@ -83,7 +84,7 @@ public final class OperationValueInner {
 
     /**
      * Get the isDataAction property: This property indicates if the operation is an action or a data action.
-     * 
+     *
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -92,12 +93,54 @@ public final class OperationValueInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (display() != null) {
             display().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("display", this.display);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationValueInner from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationValueInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationValueInner.
+     */
+    public static OperationValueInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationValueInner deserializedOperationValueInner = new OperationValueInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("origin".equals(fieldName)) {
+                    deserializedOperationValueInner.origin = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationValueInner.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationValueInner.display = OperationValueDisplay.fromJson(reader);
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedOperationValueInner.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationValueInner;
+        });
     }
 }

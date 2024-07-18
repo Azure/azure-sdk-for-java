@@ -14,17 +14,18 @@ import com.azure.resourcemanager.hybridcompute.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.hybridcompute.models.PrivateEndpointConnectionProperties;
 import com.azure.resourcemanager.hybridcompute.models.PrivateEndpointProperty;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkServiceConnectionStateProperty;
-import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 
 public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"nssxlgh\"},\"privateLinkServiceConnectionState\":{\"status\":\"egjlgvvpa\",\"description\":\"eksgbuxantuygd\",\"actionsRequired\":\"aq\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"x\",\"hcbjpibk\"]},\"id\":\"hu\",\"name\":\"uerct\",\"type\":\"toyint\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"homewjjstliu\"},\"privateLinkServiceConnectionState\":{\"status\":\"awmo\",\"description\":\"ia\",\"actionsRequired\":\"znvodrrslblxydk\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"wkgfbqljnqkh\",\"chocokulehur\",\"lrqff\"]},\"id\":\"eyu\",\"name\":\"kphyjdxrav\",\"type\":\"uqd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +35,17 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .define("grebwggahttzlsw")
-            .withExistingPrivateLinkScope("uatmzwcjjncqtj", "mizvgbgatzuuvbx")
+            .define("utgqztwh")
+            .withExistingPrivateLinkScope("v", "kxrerlniylylyfwx")
             .withProperties(new PrivateEndpointConnectionProperties()
-                .withPrivateEndpoint(new PrivateEndpointProperty().withId("fu"))
+                .withPrivateEndpoint(new PrivateEndpointProperty().withId("pgxyjtcdxabbu"))
                 .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionStateProperty().withStatus("x").withDescription("oqza")))
+                    new PrivateLinkServiceConnectionStateProperty().withStatus("tabenbbk")
+                        .withDescription("qpxzucafeddwwn")))
             .create();
 
-        Assertions.assertEquals("nssxlgh", response.properties().privateEndpoint().id());
-        Assertions.assertEquals("egjlgvvpa", response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("eksgbuxantuygd",
-            response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("homewjjstliu", response.properties().privateEndpoint().id());
+        Assertions.assertEquals("awmo", response.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("ia", response.properties().privateLinkServiceConnectionState().description());
     }
 }

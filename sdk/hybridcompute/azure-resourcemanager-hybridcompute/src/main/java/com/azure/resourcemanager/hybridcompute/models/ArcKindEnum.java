@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -49,7 +49,7 @@ public final class ArcKindEnum extends ExpandableStringEnum<ArcKindEnum> {
 
     /**
      * Creates a new instance of ArcKindEnum value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -58,18 +58,17 @@ public final class ArcKindEnum extends ExpandableStringEnum<ArcKindEnum> {
 
     /**
      * Creates or finds a ArcKindEnum from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ArcKindEnum.
      */
-    @JsonCreator
     public static ArcKindEnum fromString(String name) {
         return fromString(name, ArcKindEnum.class);
     }
 
     /**
      * Gets known ArcKindEnum values.
-     * 
+     *
      * @return known ArcKindEnum values.
      */
     public static Collection<ArcKindEnum> values() {

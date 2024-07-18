@@ -7,25 +7,26 @@ package com.azure.resourcemanager.hybridcompute.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcompute.fluent.models.GatewayProperties;
 import com.azure.resourcemanager.hybridcompute.models.GatewayType;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
+
+import java.util.Arrays;
 
 public final class GatewayPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Deleted\",\"gatewayId\":\"db\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"pxllrx\",\"allowedFeatures\":[\"moadsuvarmy\",\"dmjsjqb\"]}")
+            "{\"provisioningState\":\"Failed\",\"gatewayId\":\"fnjhfjxwmszkkfo\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"fkzikfj\",\"allowedFeatures\":[\"eaivxwczel\"]}")
             .toObject(GatewayProperties.class);
         Assertions.assertEquals(GatewayType.PUBLIC, model.gatewayType());
-        Assertions.assertEquals("moadsuvarmy", model.allowedFeatures().get(0));
+        Assertions.assertEquals("eaivxwczel", model.allowedFeatures().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GatewayProperties model = new GatewayProperties().withGatewayType(GatewayType.PUBLIC)
-            .withAllowedFeatures(Arrays.asList("moadsuvarmy", "dmjsjqb"));
+            .withAllowedFeatures(Arrays.asList("eaivxwczel"));
         model = BinaryData.fromObject(model).toObject(GatewayProperties.class);
         Assertions.assertEquals(GatewayType.PUBLIC, model.gatewayType());
-        Assertions.assertEquals("moadsuvarmy", model.allowedFeatures().get(0));
+        Assertions.assertEquals("eaivxwczel", model.allowedFeatures().get(0));
     }
 }

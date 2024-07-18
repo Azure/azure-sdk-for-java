@@ -5,20 +5,22 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Describes the Machine Extension Upgrade Properties.
  */
 @Fluent
-public final class MachineExtensionUpgrade {
+public final class MachineExtensionUpgrade implements JsonSerializable<MachineExtensionUpgrade> {
     /*
      * Describes the Extension Target Properties.
      */
-    @JsonProperty(value = "extensionTargets")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ExtensionTargetProperties> extensionTargets;
 
     /**
@@ -29,7 +31,7 @@ public final class MachineExtensionUpgrade {
 
     /**
      * Get the extensionTargets property: Describes the Extension Target Properties.
-     * 
+     *
      * @return the extensionTargets value.
      */
     public Map<String, ExtensionTargetProperties> extensionTargets() {
@@ -38,7 +40,7 @@ public final class MachineExtensionUpgrade {
 
     /**
      * Set the extensionTargets property: Describes the Extension Target Properties.
-     * 
+     *
      * @param extensionTargets the extensionTargets value to set.
      * @return the MachineExtensionUpgrade object itself.
      */
@@ -49,7 +51,7 @@ public final class MachineExtensionUpgrade {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -60,5 +62,44 @@ public final class MachineExtensionUpgrade {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("extensionTargets", this.extensionTargets,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachineExtensionUpgrade from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineExtensionUpgrade if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineExtensionUpgrade.
+     */
+    public static MachineExtensionUpgrade fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineExtensionUpgrade deserializedMachineExtensionUpgrade = new MachineExtensionUpgrade();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("extensionTargets".equals(fieldName)) {
+                    Map<String, ExtensionTargetProperties> extensionTargets
+                        = reader.readMap(reader1 -> ExtensionTargetProperties.fromJson(reader1));
+                    deserializedMachineExtensionUpgrade.extensionTargets = extensionTargets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachineExtensionUpgrade;
+        });
     }
 }

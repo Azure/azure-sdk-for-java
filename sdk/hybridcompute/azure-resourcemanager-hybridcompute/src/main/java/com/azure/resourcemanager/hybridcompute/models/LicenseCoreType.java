@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -24,7 +24,7 @@ public final class LicenseCoreType extends ExpandableStringEnum<LicenseCoreType>
 
     /**
      * Creates a new instance of LicenseCoreType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +33,17 @@ public final class LicenseCoreType extends ExpandableStringEnum<LicenseCoreType>
 
     /**
      * Creates or finds a LicenseCoreType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding LicenseCoreType.
      */
-    @JsonCreator
     public static LicenseCoreType fromString(String name) {
         return fromString(name, LicenseCoreType.class);
     }
 
     /**
      * Gets known LicenseCoreType values.
-     * 
+     *
      * @return known LicenseCoreType values.
      */
     public static Collection<LicenseCoreType> values() {

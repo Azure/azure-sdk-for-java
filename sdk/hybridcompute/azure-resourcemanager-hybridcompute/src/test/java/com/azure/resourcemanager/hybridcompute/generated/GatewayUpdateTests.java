@@ -6,29 +6,31 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcompute.models.GatewayUpdate;
+import org.junit.jupiter.api.Assertions;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
 
 public final class GatewayUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"allowedFeatures\":[\"x\",\"rw\",\"yc\"]},\"tags\":{\"xkgymareqnajxqu\":\"hp\",\"ddg\":\"jhkycub\",\"pxacqqudfn\":\"sofwqmzqalkrmnji\"}}")
+            "{\"properties\":{\"allowedFeatures\":[\"elsfeaen\"]},\"tags\":{\"xbjhwuaanozjosph\":\"fatkld\",\"ag\":\"oulpjrv\",\"cktqumiekkezzi\":\"rvimjwosytxitcsk\",\"bdunygaeqid\":\"hlyfjhdgqgg\"}}")
             .toObject(GatewayUpdate.class);
-        Assertions.assertEquals("hp", model.tags().get("xkgymareqnajxqu"));
-        Assertions.assertEquals("x", model.allowedFeatures().get(0));
+        Assertions.assertEquals("fatkld", model.tags().get("xbjhwuaanozjosph"));
+        Assertions.assertEquals("elsfeaen", model.allowedFeatures().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GatewayUpdate model = new GatewayUpdate()
-            .withTags(mapOf("xkgymareqnajxqu", "hp", "ddg", "jhkycub", "pxacqqudfn", "sofwqmzqalkrmnji"))
-            .withAllowedFeatures(Arrays.asList("x", "rw", "yc"));
+            .withTags(mapOf("xbjhwuaanozjosph", "fatkld", "ag", "oulpjrv", "cktqumiekkezzi", "rvimjwosytxitcsk",
+                "bdunygaeqid", "hlyfjhdgqgg"))
+            .withAllowedFeatures(Arrays.asList("elsfeaen"));
         model = BinaryData.fromObject(model).toObject(GatewayUpdate.class);
-        Assertions.assertEquals("hp", model.tags().get("xkgymareqnajxqu"));
-        Assertions.assertEquals("x", model.allowedFeatures().get(0));
+        Assertions.assertEquals("fatkld", model.tags().get("xbjhwuaanozjosph"));
+        Assertions.assertEquals("elsfeaen", model.allowedFeatures().get(0));
     }
 
     // Use "Map.of" if available

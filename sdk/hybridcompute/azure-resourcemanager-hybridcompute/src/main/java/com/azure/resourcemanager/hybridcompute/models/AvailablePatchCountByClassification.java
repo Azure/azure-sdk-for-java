@@ -5,65 +5,62 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * Summarization of patches available for installation on the machine by classification.
  */
 @Immutable
-public final class AvailablePatchCountByClassification {
+public final class AvailablePatchCountByClassification
+    implements JsonSerializable<AvailablePatchCountByClassification> {
     /*
      * Number of security patches available for installation.
      */
-    @JsonProperty(value = "security", access = JsonProperty.Access.WRITE_ONLY)
     private Integer security;
 
     /*
      * Number of critical patches available for installation.
      */
-    @JsonProperty(value = "critical", access = JsonProperty.Access.WRITE_ONLY)
     private Integer critical;
 
     /*
      * Number of definition patches available for installation.
      */
-    @JsonProperty(value = "definition", access = JsonProperty.Access.WRITE_ONLY)
     private Integer definition;
 
     /*
      * Number of update Rollup patches available for installation.
      */
-    @JsonProperty(value = "updateRollup", access = JsonProperty.Access.WRITE_ONLY)
     private Integer updateRollup;
 
     /*
      * Number of feature pack patches available for installation.
      */
-    @JsonProperty(value = "featurePack", access = JsonProperty.Access.WRITE_ONLY)
     private Integer featurePack;
 
     /*
      * Number of service pack patches available for installation.
      */
-    @JsonProperty(value = "servicePack", access = JsonProperty.Access.WRITE_ONLY)
     private Integer servicePack;
 
     /*
      * Number of tools patches available for installation.
      */
-    @JsonProperty(value = "tools", access = JsonProperty.Access.WRITE_ONLY)
     private Integer tools;
 
     /*
      * Number of updates category patches available for installation.
      */
-    @JsonProperty(value = "updates", access = JsonProperty.Access.WRITE_ONLY)
     private Integer updates;
 
     /*
      * Number of other patches available for installation.
      */
-    @JsonProperty(value = "other", access = JsonProperty.Access.WRITE_ONLY)
     private Integer other;
 
     /**
@@ -74,7 +71,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the security property: Number of security patches available for installation.
-     * 
+     *
      * @return the security value.
      */
     public Integer security() {
@@ -83,7 +80,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the critical property: Number of critical patches available for installation.
-     * 
+     *
      * @return the critical value.
      */
     public Integer critical() {
@@ -92,7 +89,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the definition property: Number of definition patches available for installation.
-     * 
+     *
      * @return the definition value.
      */
     public Integer definition() {
@@ -101,7 +98,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the updateRollup property: Number of update Rollup patches available for installation.
-     * 
+     *
      * @return the updateRollup value.
      */
     public Integer updateRollup() {
@@ -110,7 +107,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the featurePack property: Number of feature pack patches available for installation.
-     * 
+     *
      * @return the featurePack value.
      */
     public Integer featurePack() {
@@ -119,7 +116,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the servicePack property: Number of service pack patches available for installation.
-     * 
+     *
      * @return the servicePack value.
      */
     public Integer servicePack() {
@@ -128,7 +125,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the tools property: Number of tools patches available for installation.
-     * 
+     *
      * @return the tools value.
      */
     public Integer tools() {
@@ -137,7 +134,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the updates property: Number of updates category patches available for installation.
-     * 
+     *
      * @return the updates value.
      */
     public Integer updates() {
@@ -146,7 +143,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the other property: Number of other patches available for installation.
-     * 
+     *
      * @return the other value.
      */
     public Integer other() {
@@ -155,9 +152,64 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailablePatchCountByClassification from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailablePatchCountByClassification if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailablePatchCountByClassification.
+     */
+    public static AvailablePatchCountByClassification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailablePatchCountByClassification deserializedAvailablePatchCountByClassification
+                = new AvailablePatchCountByClassification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("security".equals(fieldName)) {
+                    deserializedAvailablePatchCountByClassification.security = reader.getNullable(JsonReader::getInt);
+                } else if ("critical".equals(fieldName)) {
+                    deserializedAvailablePatchCountByClassification.critical = reader.getNullable(JsonReader::getInt);
+                } else if ("definition".equals(fieldName)) {
+                    deserializedAvailablePatchCountByClassification.definition = reader.getNullable(JsonReader::getInt);
+                } else if ("updateRollup".equals(fieldName)) {
+                    deserializedAvailablePatchCountByClassification.updateRollup
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("featurePack".equals(fieldName)) {
+                    deserializedAvailablePatchCountByClassification.featurePack
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("servicePack".equals(fieldName)) {
+                    deserializedAvailablePatchCountByClassification.servicePack
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("tools".equals(fieldName)) {
+                    deserializedAvailablePatchCountByClassification.tools = reader.getNullable(JsonReader::getInt);
+                } else if ("updates".equals(fieldName)) {
+                    deserializedAvailablePatchCountByClassification.updates = reader.getNullable(JsonReader::getInt);
+                } else if ("other".equals(fieldName)) {
+                    deserializedAvailablePatchCountByClassification.other = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailablePatchCountByClassification;
+        });
     }
 }

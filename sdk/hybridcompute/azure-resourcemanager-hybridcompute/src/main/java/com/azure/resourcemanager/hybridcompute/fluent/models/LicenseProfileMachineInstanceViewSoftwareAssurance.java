@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * The LicenseProfileMachineInstanceViewSoftwareAssurance model.
  */
 @Fluent
-public final class LicenseProfileMachineInstanceViewSoftwareAssurance {
+public final class LicenseProfileMachineInstanceViewSoftwareAssurance
+    implements JsonSerializable<LicenseProfileMachineInstanceViewSoftwareAssurance> {
     /*
      * Specifies if this machine is licensed as part of a Software Assurance agreement.
      */
-    @JsonProperty(value = "softwareAssuranceCustomer")
     private Boolean softwareAssuranceCustomer;
 
     /**
@@ -27,7 +32,7 @@ public final class LicenseProfileMachineInstanceViewSoftwareAssurance {
     /**
      * Get the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software Assurance
      * agreement.
-     * 
+     *
      * @return the softwareAssuranceCustomer value.
      */
     public Boolean softwareAssuranceCustomer() {
@@ -37,7 +42,7 @@ public final class LicenseProfileMachineInstanceViewSoftwareAssurance {
     /**
      * Set the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software Assurance
      * agreement.
-     * 
+     *
      * @param softwareAssuranceCustomer the softwareAssuranceCustomer value to set.
      * @return the LicenseProfileMachineInstanceViewSoftwareAssurance object itself.
      */
@@ -49,9 +54,48 @@ public final class LicenseProfileMachineInstanceViewSoftwareAssurance {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("softwareAssuranceCustomer", this.softwareAssuranceCustomer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseProfileMachineInstanceViewSoftwareAssurance from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseProfileMachineInstanceViewSoftwareAssurance if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LicenseProfileMachineInstanceViewSoftwareAssurance.
+     */
+    public static LicenseProfileMachineInstanceViewSoftwareAssurance fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseProfileMachineInstanceViewSoftwareAssurance deserializedLicenseProfileMachineInstanceViewSoftwareAssurance
+                = new LicenseProfileMachineInstanceViewSoftwareAssurance();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("softwareAssuranceCustomer".equals(fieldName)) {
+                    deserializedLicenseProfileMachineInstanceViewSoftwareAssurance.softwareAssuranceCustomer
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseProfileMachineInstanceViewSoftwareAssurance;
+        });
     }
 }

@@ -11,16 +11,17 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.ExtensionValue;
-import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 
 public final class ExtensionMetadatasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"version\":\"tayx\",\"extensionType\":\"supe\",\"publisher\":\"lzqnhcvs\"},\"id\":\"tnzoibgsxgnxfy\",\"name\":\"onmpqoxwdof\",\"type\":\"bxiqxeiiqbimht\"}";
+            = "{\"properties\":{\"version\":\"bpdqmjxlyy\",\"extensionType\":\"lgouwtlmjj\",\"publisher\":\"ojqtobaxk\"},\"id\":\"ytunlbfjkwr\",\"name\":\"snkq\",\"type\":\"hsyrqunj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +31,7 @@ public final class ExtensionMetadatasGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ExtensionValue response = manager.extensionMetadatas()
-            .getWithResponse("hknsmjbl", "ljhlnymzotq", "ryuzcbmqqv", "mv", com.azure.core.util.Context.NONE)
+            .getWithResponse("katbhjm", "nnbsoqeqa", "arvlagunbt", "febwlnbmhyreeudz", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

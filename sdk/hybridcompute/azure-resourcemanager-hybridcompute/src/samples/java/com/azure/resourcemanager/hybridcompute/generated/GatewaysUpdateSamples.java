@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.resourcemanager.hybridcompute.models.Gateway;
+
 import java.util.Arrays;
 
 /**
@@ -12,11 +13,13 @@ import java.util.Arrays;
  */
 public final class GatewaysUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/gateway/Gateway_Update.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/gateway/
+     * Gateway_Update.json
      */
     /**
      * Sample code: Update a Gateway.
-     * 
+     *
      * @param manager Entry point to HybridComputeManager.
      */
     public static void updateAGateway(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {

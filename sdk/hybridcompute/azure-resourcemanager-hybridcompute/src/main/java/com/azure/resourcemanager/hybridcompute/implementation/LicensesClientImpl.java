@@ -34,11 +34,12 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.LicensesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseInner;
-import com.azure.resourcemanager.hybridcompute.models.LicensesListResult;
 import com.azure.resourcemanager.hybridcompute.models.LicenseUpdate;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.hybridcompute.models.LicensesListResult;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in LicensesClient.
@@ -56,7 +57,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * Initializes an instance of LicensesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     LicensesClientImpl(HybridComputeManagementClientImpl client) {
@@ -144,7 +145,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to create or update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -186,7 +187,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to create or update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -228,7 +229,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to create or update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -248,7 +249,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to create or update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -270,7 +271,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to create or update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -287,7 +288,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to create or update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -305,7 +306,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to create or update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -323,7 +324,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to create or update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -342,7 +343,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to create or update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -358,7 +359,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to create or update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -376,7 +377,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -418,7 +419,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -460,7 +461,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -479,7 +480,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -501,7 +502,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -518,7 +519,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -536,7 +537,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -553,7 +554,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -572,7 +573,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -588,7 +589,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to update a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -606,7 +607,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * Retrieves information about the view of a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -642,7 +643,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * Retrieves information about the view of a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -678,7 +679,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * Retrieves information about the view of a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -694,7 +695,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * Retrieves information about the view of a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -711,7 +712,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * Retrieves information about the view of a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -726,7 +727,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to delete a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -760,7 +761,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to delete a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -795,7 +796,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to delete a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -812,7 +813,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to delete a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -832,7 +833,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to delete a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -847,7 +848,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to delete a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -864,7 +865,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to delete a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -879,7 +880,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to delete a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -896,7 +897,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to delete a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -910,7 +911,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to delete a license.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -925,7 +926,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -958,7 +959,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -993,7 +994,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1008,7 +1009,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1024,7 +1025,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1038,7 +1039,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1053,7 +1054,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List license operation response along with {@link PagedResponse} on successful completion of
@@ -1080,7 +1081,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1109,7 +1110,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List license operation response as paginated response with {@link PagedFlux}.
@@ -1122,7 +1123,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1137,7 +1138,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List license operation response as paginated response with {@link PagedIterable}.
@@ -1149,7 +1150,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1163,10 +1164,8 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1193,10 +1192,8 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1222,10 +1219,8 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1252,10 +1247,8 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

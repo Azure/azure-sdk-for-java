@@ -5,45 +5,46 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.LicenseCoreType;
 import com.azure.resourcemanager.hybridcompute.models.LicenseEdition;
 import com.azure.resourcemanager.hybridcompute.models.LicenseState;
 import com.azure.resourcemanager.hybridcompute.models.LicenseTarget;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /**
  * The LicenseUpdatePropertiesLicenseDetails model.
  */
 @Fluent
-public final class LicenseUpdatePropertiesLicenseDetails {
+public final class LicenseUpdatePropertiesLicenseDetails
+    implements JsonSerializable<LicenseUpdatePropertiesLicenseDetails> {
     /*
      * Describes the state of the license.
      */
-    @JsonProperty(value = "state")
     private LicenseState state;
 
     /*
      * Describes the license target server.
      */
-    @JsonProperty(value = "target")
     private LicenseTarget target;
 
     /*
      * Describes the edition of the license. The values are either Standard or Datacenter.
      */
-    @JsonProperty(value = "edition")
     private LicenseEdition edition;
 
     /*
      * Describes the license core type (pCore or vCore).
      */
-    @JsonProperty(value = "type")
     private LicenseCoreType type;
 
     /*
      * Describes the number of processors.
      */
-    @JsonProperty(value = "processors")
     private Integer processors;
 
     /**
@@ -54,7 +55,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Get the state property: Describes the state of the license.
-     * 
+     *
      * @return the state value.
      */
     public LicenseState state() {
@@ -63,7 +64,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Set the state property: Describes the state of the license.
-     * 
+     *
      * @param state the state value to set.
      * @return the LicenseUpdatePropertiesLicenseDetails object itself.
      */
@@ -74,7 +75,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Get the target property: Describes the license target server.
-     * 
+     *
      * @return the target value.
      */
     public LicenseTarget target() {
@@ -83,7 +84,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Set the target property: Describes the license target server.
-     * 
+     *
      * @param target the target value to set.
      * @return the LicenseUpdatePropertiesLicenseDetails object itself.
      */
@@ -94,7 +95,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Get the edition property: Describes the edition of the license. The values are either Standard or Datacenter.
-     * 
+     *
      * @return the edition value.
      */
     public LicenseEdition edition() {
@@ -103,7 +104,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Set the edition property: Describes the edition of the license. The values are either Standard or Datacenter.
-     * 
+     *
      * @param edition the edition value to set.
      * @return the LicenseUpdatePropertiesLicenseDetails object itself.
      */
@@ -114,7 +115,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Get the type property: Describes the license core type (pCore or vCore).
-     * 
+     *
      * @return the type value.
      */
     public LicenseCoreType type() {
@@ -123,7 +124,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Set the type property: Describes the license core type (pCore or vCore).
-     * 
+     *
      * @param type the type value to set.
      * @return the LicenseUpdatePropertiesLicenseDetails object itself.
      */
@@ -134,7 +135,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Get the processors property: Describes the number of processors.
-     * 
+     *
      * @return the processors value.
      */
     public Integer processors() {
@@ -143,7 +144,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Set the processors property: Describes the number of processors.
-     * 
+     *
      * @param processors the processors value to set.
      * @return the LicenseUpdatePropertiesLicenseDetails object itself.
      */
@@ -154,9 +155,63 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("target", this.target == null ? null : this.target.toString());
+        jsonWriter.writeStringField("edition", this.edition == null ? null : this.edition.toString());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeNumberField("processors", this.processors);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseUpdatePropertiesLicenseDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseUpdatePropertiesLicenseDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LicenseUpdatePropertiesLicenseDetails.
+     */
+    public static LicenseUpdatePropertiesLicenseDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseUpdatePropertiesLicenseDetails deserializedLicenseUpdatePropertiesLicenseDetails
+                = new LicenseUpdatePropertiesLicenseDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedLicenseUpdatePropertiesLicenseDetails.state
+                        = LicenseState.fromString(reader.getString());
+                } else if ("target".equals(fieldName)) {
+                    deserializedLicenseUpdatePropertiesLicenseDetails.target
+                        = LicenseTarget.fromString(reader.getString());
+                } else if ("edition".equals(fieldName)) {
+                    deserializedLicenseUpdatePropertiesLicenseDetails.edition
+                        = LicenseEdition.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedLicenseUpdatePropertiesLicenseDetails.type
+                        = LicenseCoreType.fromString(reader.getString());
+                } else if ("processors".equals(fieldName)) {
+                    deserializedLicenseUpdatePropertiesLicenseDetails.processors
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseUpdatePropertiesLicenseDetails;
+        });
     }
 }

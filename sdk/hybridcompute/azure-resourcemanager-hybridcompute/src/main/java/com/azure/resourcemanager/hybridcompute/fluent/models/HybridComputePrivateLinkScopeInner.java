@@ -6,9 +6,13 @@ package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.HybridComputePrivateLinkScopeProperties;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopesResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -19,14 +23,27 @@ public final class HybridComputePrivateLinkScopeInner extends PrivateLinkScopesR
     /*
      * Properties that define a Azure Arc PrivateLinkScope resource.
      */
-    @JsonProperty(value = "properties")
     private HybridComputePrivateLinkScopeProperties properties;
 
     /*
      * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of HybridComputePrivateLinkScopeInner class.
@@ -36,7 +53,7 @@ public final class HybridComputePrivateLinkScopeInner extends PrivateLinkScopesR
 
     /**
      * Get the properties property: Properties that define a Azure Arc PrivateLinkScope resource.
-     * 
+     *
      * @return the properties value.
      */
     public HybridComputePrivateLinkScopeProperties properties() {
@@ -45,7 +62,7 @@ public final class HybridComputePrivateLinkScopeInner extends PrivateLinkScopesR
 
     /**
      * Set the properties property: Properties that define a Azure Arc PrivateLinkScope resource.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the HybridComputePrivateLinkScopeInner object itself.
      */
@@ -56,11 +73,41 @@ public final class HybridComputePrivateLinkScopeInner extends PrivateLinkScopesR
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -83,7 +130,7 @@ public final class HybridComputePrivateLinkScopeInner extends PrivateLinkScopesR
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -92,5 +139,59 @@ public final class HybridComputePrivateLinkScopeInner extends PrivateLinkScopesR
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HybridComputePrivateLinkScopeInner from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HybridComputePrivateLinkScopeInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HybridComputePrivateLinkScopeInner.
+     */
+    public static HybridComputePrivateLinkScopeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HybridComputePrivateLinkScopeInner deserializedHybridComputePrivateLinkScopeInner
+                = new HybridComputePrivateLinkScopeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedHybridComputePrivateLinkScopeInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedHybridComputePrivateLinkScopeInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedHybridComputePrivateLinkScopeInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedHybridComputePrivateLinkScopeInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedHybridComputePrivateLinkScopeInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHybridComputePrivateLinkScopeInner.properties
+                        = HybridComputePrivateLinkScopeProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedHybridComputePrivateLinkScopeInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHybridComputePrivateLinkScopeInner;
+        });
     }
 }

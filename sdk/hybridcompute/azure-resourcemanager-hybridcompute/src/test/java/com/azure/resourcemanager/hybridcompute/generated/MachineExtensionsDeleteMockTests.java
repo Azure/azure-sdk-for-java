@@ -10,10 +10,11 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
-import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 
 public final class MachineExtensionsDeleteMockTests {
     @Test
@@ -27,7 +28,7 @@ public final class MachineExtensionsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.machineExtensions().delete("r", "gh", "iypoqeyhlqhykprl", com.azure.core.util.Context.NONE);
+        manager.machineExtensions().delete("rvxcush", "phai", "mxyasflvgsgzw", com.azure.core.util.Context.NONE);
 
     }
 }

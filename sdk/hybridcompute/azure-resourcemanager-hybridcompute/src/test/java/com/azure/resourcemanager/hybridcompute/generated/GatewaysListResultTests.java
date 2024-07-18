@@ -6,49 +6,57 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcompute.fluent.models.GatewayInner;
-import com.azure.resourcemanager.hybridcompute.models.GatewaysListResult;
 import com.azure.resourcemanager.hybridcompute.models.GatewayType;
+import com.azure.resourcemanager.hybridcompute.models.GatewaysListResult;
+import org.junit.jupiter.api.Assertions;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
 
 public final class GatewaysListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewaysListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"gatewayId\":\"dnw\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"wzsyyceuzs\",\"allowedFeatures\":[\"judpfrxt\",\"thzvaytdwkqbrqu\",\"paxh\",\"xiilivpdtiirqt\"]},\"location\":\"oaxoruzfgsqu\",\"tags\":{\"tramxjez\":\"rxxle\",\"tdooaoj\":\"lwnwxuqlcvydyp\"},\"id\":\"niodkooeb\",\"name\":\"nuj\",\"type\":\"emmsbvdkc\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"gatewayId\":\"infwjlfltkacjve\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"foakgg\",\"allowedFeatures\":[\"agaowpulpqblylsy\",\"k\"]},\"location\":\"nsj\",\"tags\":{\"dszue\":\"tiagx\"},\"id\":\"psbzkfzbeyvpn\",\"name\":\"icvi\",\"type\":\"v\"},{\"properties\":{\"provisioningState\":\"Updating\",\"gatewayId\":\"xrbuukzclew\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"wp\",\"allowedFeatures\":[\"zpof\",\"cckwyfzqwhxxbu\",\"qa\",\"zfeqztppri\"]},\"location\":\"xorjaltolmncwsob\",\"tags\":{\"vglsbjjca\":\"sdbnwdcfhucqdpf\",\"t\":\"vxb\",\"mr\":\"udutnco\"},\"id\":\"xqtvcofu\",\"name\":\"f\",\"type\":\"vkg\"}],\"nextLink\":\"bgdknnqv\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"gatewayId\":\"areqna\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"gjhkycubeddg\",\"allowedFeatures\":[\"fwqmzqalkrmn\"]},\"location\":\"jpxac\",\"tags\":{\"yffimrzrtuzqogs\":\"dfnbyxbaaabjyv\",\"mewzsyyc\":\"xnevfdnwn\",\"judpfrxt\":\"uzsoi\"},\"id\":\"thzvaytdwkqbrqu\",\"name\":\"paxh\",\"type\":\"xiilivpdtiirqt\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"gatewayId\":\"oruzfgsquyfxrxx\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"ramxjezwlwnw\",\"allowedFeatures\":[\"lcvydy\",\"atdooaojkniod\"]},\"location\":\"oebwnujhemms\",\"tags\":{\"lfltka\":\"kcrodtjinfw\",\"gaowpulpqblylsyx\":\"jvefkdlfoakggkfp\"},\"id\":\"qjnsjervtia\",\"name\":\"xsdszuempsb\",\"type\":\"kfzbeyvpnqicvi\"},{\"properties\":{\"provisioningState\":\"Updating\",\"gatewayId\":\"xdxr\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"zclewyhmlw\",\"allowedFeatures\":[\"tzpofncckwyfzq\"]},\"location\":\"xxbuyq\",\"tags\":{\"or\":\"feqztppriol\",\"ncwsob\":\"altol\",\"pfuvglsbjjca\":\"wcsdbnwdcfhucq\"},\"id\":\"vxb\",\"name\":\"t\",\"type\":\"udutnco\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"gatewayId\":\"qtvcofudflvkgj\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"knnqvsaznq\",\"allowedFeatures\":[\"rudsg\",\"a\"]},\"location\":\"kycgrauwj\",\"tags\":{\"s\":\"aeburuvdmo\",\"tpuqujmq\":\"zlxwabmqoefkifr\",\"jcntuj\":\"gkfbtndoaong\"},\"id\":\"tcje\",\"name\":\"ftwwaezkojvdc\",\"type\":\"zfoqouicybxar\"}],\"nextLink\":\"szufoxciqopidoa\"}")
             .toObject(GatewaysListResult.class);
-        Assertions.assertEquals("oaxoruzfgsqu", model.value().get(0).location());
-        Assertions.assertEquals("rxxle", model.value().get(0).tags().get("tramxjez"));
+        Assertions.assertEquals("jpxac", model.value().get(0).location());
+        Assertions.assertEquals("dfnbyxbaaabjyv", model.value().get(0).tags().get("yffimrzrtuzqogs"));
         Assertions.assertEquals(GatewayType.PUBLIC, model.value().get(0).gatewayType());
-        Assertions.assertEquals("judpfrxt", model.value().get(0).allowedFeatures().get(0));
-        Assertions.assertEquals("bgdknnqv", model.nextLink());
+        Assertions.assertEquals("fwqmzqalkrmn", model.value().get(0).allowedFeatures().get(0));
+        Assertions.assertEquals("szufoxciqopidoa", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewaysListResult model = new GatewaysListResult()
-            .withValue(Arrays.asList(
-                new GatewayInner().withLocation("oaxoruzfgsqu")
-                    .withTags(mapOf("tramxjez", "rxxle", "tdooaoj", "lwnwxuqlcvydyp"))
-                    .withGatewayType(GatewayType.PUBLIC)
-                    .withAllowedFeatures(Arrays.asList("judpfrxt", "thzvaytdwkqbrqu", "paxh", "xiilivpdtiirqt")),
-                new GatewayInner().withLocation("nsj")
-                    .withTags(mapOf("dszue", "tiagx"))
-                    .withGatewayType(GatewayType.PUBLIC)
-                    .withAllowedFeatures(Arrays.asList("agaowpulpqblylsy", "k")),
-                new GatewayInner().withLocation("xorjaltolmncwsob")
-                    .withTags(mapOf("vglsbjjca", "sdbnwdcfhucqdpf", "t", "vxb", "mr", "udutnco"))
-                    .withGatewayType(GatewayType.PUBLIC)
-                    .withAllowedFeatures(Arrays.asList("zpof", "cckwyfzqwhxxbu", "qa", "zfeqztppri"))))
-            .withNextLink("bgdknnqv");
+        GatewaysListResult model
+            = new GatewaysListResult()
+                .withValue(
+                    Arrays.asList(
+                        new GatewayInner().withLocation("jpxac")
+                            .withTags(mapOf("yffimrzrtuzqogs", "dfnbyxbaaabjyv", "mewzsyyc", "xnevfdnwn", "judpfrxt",
+                                "uzsoi"))
+                            .withGatewayType(GatewayType.PUBLIC)
+                            .withAllowedFeatures(Arrays.asList("fwqmzqalkrmn")),
+                        new GatewayInner().withLocation("oebwnujhemms")
+                            .withTags(mapOf("lfltka", "kcrodtjinfw", "gaowpulpqblylsyx", "jvefkdlfoakggkfp"))
+                            .withGatewayType(GatewayType.PUBLIC)
+                            .withAllowedFeatures(Arrays.asList("lcvydy", "atdooaojkniod")),
+                        new GatewayInner().withLocation("xxbuyq")
+                            .withTags(mapOf("or", "feqztppriol", "ncwsob", "altol", "pfuvglsbjjca", "wcsdbnwdcfhucq"))
+                            .withGatewayType(GatewayType.PUBLIC)
+                            .withAllowedFeatures(Arrays.asList("tzpofncckwyfzq")),
+                        new GatewayInner().withLocation("kycgrauwj")
+                            .withTags(mapOf("s", "aeburuvdmo", "tpuqujmq", "zlxwabmqoefkifr", "jcntuj", "gkfbtndoaong"))
+                            .withGatewayType(GatewayType.PUBLIC)
+                            .withAllowedFeatures(Arrays.asList("rudsg", "a"))))
+                .withNextLink("szufoxciqopidoa");
         model = BinaryData.fromObject(model).toObject(GatewaysListResult.class);
-        Assertions.assertEquals("oaxoruzfgsqu", model.value().get(0).location());
-        Assertions.assertEquals("rxxle", model.value().get(0).tags().get("tramxjez"));
+        Assertions.assertEquals("jpxac", model.value().get(0).location());
+        Assertions.assertEquals("dfnbyxbaaabjyv", model.value().get(0).tags().get("yffimrzrtuzqogs"));
         Assertions.assertEquals(GatewayType.PUBLIC, model.value().get(0).gatewayType());
-        Assertions.assertEquals("judpfrxt", model.value().get(0).allowedFeatures().get(0));
-        Assertions.assertEquals("bgdknnqv", model.nextLink());
+        Assertions.assertEquals("fwqmzqalkrmn", model.value().get(0).allowedFeatures().get(0));
+        Assertions.assertEquals("szufoxciqopidoa", model.nextLink());
     }
 
     // Use "Map.of" if available

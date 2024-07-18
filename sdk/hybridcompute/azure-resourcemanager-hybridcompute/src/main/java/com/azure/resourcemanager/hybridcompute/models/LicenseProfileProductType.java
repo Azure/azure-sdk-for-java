@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -24,7 +24,7 @@ public final class LicenseProfileProductType extends ExpandableStringEnum<Licens
 
     /**
      * Creates a new instance of LicenseProfileProductType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +33,17 @@ public final class LicenseProfileProductType extends ExpandableStringEnum<Licens
 
     /**
      * Creates or finds a LicenseProfileProductType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding LicenseProfileProductType.
      */
-    @JsonCreator
     public static LicenseProfileProductType fromString(String name) {
         return fromString(name, LicenseProfileProductType.class);
     }
 
     /**
      * Gets known LicenseProfileProductType values.
-     * 
+     *
      * @return known LicenseProfileProductType values.
      */
     public static Collection<LicenseProfileProductType> values() {

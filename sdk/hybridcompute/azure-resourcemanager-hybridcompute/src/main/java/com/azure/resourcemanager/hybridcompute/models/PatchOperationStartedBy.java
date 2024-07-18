@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -24,7 +24,7 @@ public final class PatchOperationStartedBy extends ExpandableStringEnum<PatchOpe
 
     /**
      * Creates a new instance of PatchOperationStartedBy value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +33,17 @@ public final class PatchOperationStartedBy extends ExpandableStringEnum<PatchOpe
 
     /**
      * Creates or finds a PatchOperationStartedBy from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding PatchOperationStartedBy.
      */
-    @JsonCreator
     public static PatchOperationStartedBy fromString(String name) {
         return fromString(name, PatchOperationStartedBy.class);
     }
 
     /**
      * Gets known PatchOperationStartedBy values.
-     * 
+     *
      * @return known PatchOperationStartedBy values.
      */
     public static Collection<PatchOperationStartedBy> values() {

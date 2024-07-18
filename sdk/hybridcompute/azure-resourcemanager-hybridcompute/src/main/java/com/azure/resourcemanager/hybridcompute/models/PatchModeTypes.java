@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -34,7 +34,7 @@ public final class PatchModeTypes extends ExpandableStringEnum<PatchModeTypes> {
 
     /**
      * Creates a new instance of PatchModeTypes value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -43,18 +43,17 @@ public final class PatchModeTypes extends ExpandableStringEnum<PatchModeTypes> {
 
     /**
      * Creates or finds a PatchModeTypes from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding PatchModeTypes.
      */
-    @JsonCreator
     public static PatchModeTypes fromString(String name) {
         return fromString(name, PatchModeTypes.class);
     }
 
     /**
      * Gets known PatchModeTypes values.
-     * 
+     *
      * @return known PatchModeTypes values.
      */
     public static Collection<PatchModeTypes> values() {

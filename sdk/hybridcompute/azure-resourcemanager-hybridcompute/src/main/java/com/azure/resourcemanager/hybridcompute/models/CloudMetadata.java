@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
  */
 @Immutable
-public final class CloudMetadata {
+public final class CloudMetadata implements JsonSerializable<CloudMetadata> {
     /*
      * Specifies the cloud provider (Azure/AWS/GCP...).
      */
-    @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
     /**
@@ -26,7 +30,7 @@ public final class CloudMetadata {
 
     /**
      * Get the provider property: Specifies the cloud provider (Azure/AWS/GCP...).
-     * 
+     *
      * @return the provider value.
      */
     public String provider() {
@@ -35,9 +39,44 @@ public final class CloudMetadata {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudMetadata from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudMetadata.
+     */
+    public static CloudMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudMetadata deserializedCloudMetadata = new CloudMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedCloudMetadata.provider = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudMetadata;
+        });
     }
 }

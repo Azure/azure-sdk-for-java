@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -49,7 +49,7 @@ public final class LicenseStatus extends ExpandableStringEnum<LicenseStatus> {
 
     /**
      * Creates a new instance of LicenseStatus value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -58,18 +58,17 @@ public final class LicenseStatus extends ExpandableStringEnum<LicenseStatus> {
 
     /**
      * Creates or finds a LicenseStatus from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding LicenseStatus.
      */
-    @JsonCreator
     public static LicenseStatus fromString(String name) {
         return fromString(name, LicenseStatus.class);
     }
 
     /**
      * Gets known LicenseStatus values.
-     * 
+     *
      * @return known LicenseStatus values.
      */
     public static Collection<LicenseStatus> values() {

@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +22,6 @@ public final class LicenseProfileUpdate extends ResourceUpdate {
     /*
      * Describe the Update properties of a license profile.
      */
-    @JsonProperty(value = "properties")
     private LicenseProfileUpdateProperties innerProperties;
 
     /**
@@ -29,7 +32,7 @@ public final class LicenseProfileUpdate extends ResourceUpdate {
 
     /**
      * Get the innerProperties property: Describe the Update properties of a license profile.
-     * 
+     *
      * @return the innerProperties value.
      */
     private LicenseProfileUpdateProperties innerProperties() {
@@ -48,7 +51,7 @@ public final class LicenseProfileUpdate extends ResourceUpdate {
     /**
      * Get the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software Assurance
      * agreement.
-     * 
+     *
      * @return the softwareAssuranceCustomer value.
      */
     public Boolean softwareAssuranceCustomer() {
@@ -58,7 +61,7 @@ public final class LicenseProfileUpdate extends ResourceUpdate {
     /**
      * Set the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software Assurance
      * agreement.
-     * 
+     *
      * @param softwareAssuranceCustomer the softwareAssuranceCustomer value to set.
      * @return the LicenseProfileUpdate object itself.
      */
@@ -72,7 +75,7 @@ public final class LicenseProfileUpdate extends ResourceUpdate {
 
     /**
      * Get the assignedLicense property: The resource id of the license.
-     * 
+     *
      * @return the assignedLicense value.
      */
     public String assignedLicense() {
@@ -81,7 +84,7 @@ public final class LicenseProfileUpdate extends ResourceUpdate {
 
     /**
      * Set the assignedLicense property: The resource id of the license.
-     * 
+     *
      * @param assignedLicense the assignedLicense value to set.
      * @return the LicenseProfileUpdate object itself.
      */
@@ -95,7 +98,7 @@ public final class LicenseProfileUpdate extends ResourceUpdate {
 
     /**
      * Get the subscriptionStatus property: Indicates the subscription status of the product.
-     * 
+     *
      * @return the subscriptionStatus value.
      */
     public LicenseProfileSubscriptionStatusUpdate subscriptionStatus() {
@@ -104,7 +107,7 @@ public final class LicenseProfileUpdate extends ResourceUpdate {
 
     /**
      * Set the subscriptionStatus property: Indicates the subscription status of the product.
-     * 
+     *
      * @param subscriptionStatus the subscriptionStatus value to set.
      * @return the LicenseProfileUpdate object itself.
      */
@@ -118,7 +121,7 @@ public final class LicenseProfileUpdate extends ResourceUpdate {
 
     /**
      * Get the productType property: Indicates the product type of the license.
-     * 
+     *
      * @return the productType value.
      */
     public LicenseProfileProductType productType() {
@@ -127,7 +130,7 @@ public final class LicenseProfileUpdate extends ResourceUpdate {
 
     /**
      * Set the productType property: Indicates the product type of the license.
-     * 
+     *
      * @param productType the productType value to set.
      * @return the LicenseProfileUpdate object itself.
      */
@@ -141,7 +144,7 @@ public final class LicenseProfileUpdate extends ResourceUpdate {
 
     /**
      * Get the productFeatures property: The list of product feature updates.
-     * 
+     *
      * @return the productFeatures value.
      */
     public List<ProductFeatureUpdate> productFeatures() {
@@ -150,7 +153,7 @@ public final class LicenseProfileUpdate extends ResourceUpdate {
 
     /**
      * Set the productFeatures property: The list of product feature updates.
-     * 
+     *
      * @param productFeatures the productFeatures value to set.
      * @return the LicenseProfileUpdate object itself.
      */
@@ -164,7 +167,7 @@ public final class LicenseProfileUpdate extends ResourceUpdate {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -173,5 +176,45 @@ public final class LicenseProfileUpdate extends ResourceUpdate {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseProfileUpdate from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseProfileUpdate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LicenseProfileUpdate.
+     */
+    public static LicenseProfileUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseProfileUpdate deserializedLicenseProfileUpdate = new LicenseProfileUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLicenseProfileUpdate.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLicenseProfileUpdate.innerProperties = LicenseProfileUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseProfileUpdate;
+        });
     }
 }

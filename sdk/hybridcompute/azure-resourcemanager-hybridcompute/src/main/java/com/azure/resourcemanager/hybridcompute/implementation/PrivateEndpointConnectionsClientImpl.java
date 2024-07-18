@@ -34,9 +34,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.hybridcompute.models.PrivateEndpointConnectionListResult;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
@@ -54,7 +55,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Initializes an instance of PrivateEndpointConnectionsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     PrivateEndpointConnectionsClientImpl(HybridComputeManagementClientImpl client) {
@@ -124,7 +125,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -165,7 +166,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -205,7 +206,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -223,7 +224,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -241,7 +242,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -258,11 +259,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -305,11 +306,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -351,11 +352,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -374,11 +375,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -399,11 +400,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -419,11 +420,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -441,11 +442,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -460,11 +461,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -480,11 +481,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -498,11 +499,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -518,7 +519,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Deletes a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -559,7 +560,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Deletes a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -599,7 +600,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Deletes a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -619,7 +620,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Deletes a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -641,7 +642,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Deletes a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -658,7 +659,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Deletes a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -677,7 +678,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Deletes a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -694,7 +695,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Deletes a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -713,7 +714,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Deletes a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -728,7 +729,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Deletes a private endpoint connection with a given name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -745,7 +746,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets all private endpoint connections on a private link scope.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -784,7 +785,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets all private endpoint connections on a private link scope.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param context The context to associate with this operation.
@@ -823,7 +824,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets all private endpoint connections on a private link scope.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -840,7 +841,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets all private endpoint connections on a private link scope.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param context The context to associate with this operation.
@@ -858,7 +859,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets all private endpoint connections on a private link scope.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -875,7 +876,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets all private endpoint connections on a private link scope.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param context The context to associate with this operation.
@@ -893,10 +894,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -924,10 +923,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -5,41 +5,41 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * The ConnectionDetail model.
  */
 @Immutable
-public final class ConnectionDetail {
+public final class ConnectionDetail implements JsonSerializable<ConnectionDetail> {
     /*
      * Azure resource Id
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The private endpoint connection private ip address
      */
-    @JsonProperty(value = "privateIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String privateIpAddress;
 
     /*
      * The private endpoint connection link identifier
      */
-    @JsonProperty(value = "linkIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String linkIdentifier;
 
     /*
      * The private endpoint connection group id
      */
-    @JsonProperty(value = "groupId", access = JsonProperty.Access.WRITE_ONLY)
     private String groupId;
 
     /*
      * The private endpoint connection member name
      */
-    @JsonProperty(value = "memberName", access = JsonProperty.Access.WRITE_ONLY)
     private String memberName;
 
     /**
@@ -50,7 +50,7 @@ public final class ConnectionDetail {
 
     /**
      * Get the id property: Azure resource Id.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -59,7 +59,7 @@ public final class ConnectionDetail {
 
     /**
      * Get the privateIpAddress property: The private endpoint connection private ip address.
-     * 
+     *
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -68,7 +68,7 @@ public final class ConnectionDetail {
 
     /**
      * Get the linkIdentifier property: The private endpoint connection link identifier.
-     * 
+     *
      * @return the linkIdentifier value.
      */
     public String linkIdentifier() {
@@ -77,7 +77,7 @@ public final class ConnectionDetail {
 
     /**
      * Get the groupId property: The private endpoint connection group id.
-     * 
+     *
      * @return the groupId value.
      */
     public String groupId() {
@@ -86,7 +86,7 @@ public final class ConnectionDetail {
 
     /**
      * Get the memberName property: The private endpoint connection member name.
-     * 
+     *
      * @return the memberName value.
      */
     public String memberName() {
@@ -95,9 +95,52 @@ public final class ConnectionDetail {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionDetail from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionDetail if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionDetail.
+     */
+    public static ConnectionDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionDetail deserializedConnectionDetail = new ConnectionDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectionDetail.id = reader.getString();
+                } else if ("privateIpAddress".equals(fieldName)) {
+                    deserializedConnectionDetail.privateIpAddress = reader.getString();
+                } else if ("linkIdentifier".equals(fieldName)) {
+                    deserializedConnectionDetail.linkIdentifier = reader.getString();
+                } else if ("groupId".equals(fieldName)) {
+                    deserializedConnectionDetail.groupId = reader.getString();
+                } else if ("memberName".equals(fieldName)) {
+                    deserializedConnectionDetail.memberName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionDetail;
+        });
     }
 }

@@ -13,17 +13,18 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.Gateway;
 import com.azure.resourcemanager.hybridcompute.models.GatewayType;
-import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 
 public final class GatewaysListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"gatewayId\":\"hlfbcgwgc\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"ebqinjipnw\",\"allowedFeatures\":[\"jqlafcbahhpzp\",\"foiyjwpfilk\",\"kkholvdndvia\"]},\"location\":\"gphuartvtiu\",\"tags\":{\"nxhkxjqi\":\"fchnmnah\",\"ffifhx\":\"wrweoo\"},\"id\":\"rsnewmozqvbubqma\",\"name\":\"hsycxhxzgaz\",\"type\":\"taboidvmf\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"gatewayId\":\"r\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"hkpigqfusuckzmkw\",\"allowedFeatures\":[\"noxaxmqeqal\",\"hjnhgwydyynfsvk\",\"gbv\"]},\"location\":\"anarfdlpukhpyrne\",\"tags\":{\"ddbhf\":\"cpeogkhnmgbrou\",\"ontacnpq\":\"pfpazjzoywjxhpdu\",\"xh\":\"tehtuevrhrljyoog\"},\"id\":\"sd\",\"name\":\"ugwbsreurfqkf\",\"type\":\"arenlvhhtklnvnaf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,9 +35,9 @@ public final class GatewaysListMockTests {
 
         PagedIterable<Gateway> response = manager.gateways().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gphuartvtiu", response.iterator().next().location());
-        Assertions.assertEquals("fchnmnah", response.iterator().next().tags().get("nxhkxjqi"));
+        Assertions.assertEquals("anarfdlpukhpyrne", response.iterator().next().location());
+        Assertions.assertEquals("cpeogkhnmgbrou", response.iterator().next().tags().get("ddbhf"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.iterator().next().gatewayType());
-        Assertions.assertEquals("jqlafcbahhpzp", response.iterator().next().allowedFeatures().get(0));
+        Assertions.assertEquals("noxaxmqeqal", response.iterator().next().allowedFeatures().get(0));
     }
 }

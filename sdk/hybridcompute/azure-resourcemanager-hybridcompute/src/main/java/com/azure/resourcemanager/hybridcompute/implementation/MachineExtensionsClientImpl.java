@@ -34,11 +34,12 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.MachineExtensionsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineExtensionInner;
-import com.azure.resourcemanager.hybridcompute.models.MachineExtensionsListResult;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionUpdate;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.hybridcompute.models.MachineExtensionsListResult;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in MachineExtensionsClient.
@@ -56,7 +57,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * Initializes an instance of MachineExtensionsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     MachineExtensionsClientImpl(HybridComputeManagementClientImpl client) {
@@ -132,7 +133,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -179,7 +180,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -225,7 +226,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -247,7 +248,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -271,7 +272,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -290,7 +291,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -312,7 +313,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -331,7 +332,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -352,7 +353,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -370,7 +371,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -388,8 +389,8 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to create or update the extension.
-     * 
+     * The operation to update the extension.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -435,8 +436,8 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to create or update the extension.
-     * 
+     * The operation to update the extension.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -481,8 +482,8 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to create or update the extension.
-     * 
+     * The operation to update the extension.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -504,8 +505,8 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to create or update the extension.
-     * 
+     * The operation to update the extension.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -528,8 +529,8 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to create or update the extension.
-     * 
+     * The operation to update the extension.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -547,8 +548,8 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to create or update the extension.
-     * 
+     * The operation to update the extension.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -567,8 +568,8 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to create or update the extension.
-     * 
+     * The operation to update the extension.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -586,8 +587,8 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to create or update the extension.
-     * 
+     * The operation to update the extension.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -606,8 +607,8 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to create or update the extension.
-     * 
+     * The operation to update the extension.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -624,8 +625,8 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to create or update the extension.
-     * 
+     * The operation to update the extension.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
      * @param extensionName The name of the machine extension.
@@ -644,7 +645,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be deleted.
      * @param extensionName The name of the machine extension.
@@ -683,7 +684,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be deleted.
      * @param extensionName The name of the machine extension.
@@ -722,7 +723,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be deleted.
      * @param extensionName The name of the machine extension.
@@ -741,7 +742,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be deleted.
      * @param extensionName The name of the machine extension.
@@ -763,7 +764,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be deleted.
      * @param extensionName The name of the machine extension.
@@ -780,7 +781,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be deleted.
      * @param extensionName The name of the machine extension.
@@ -798,7 +799,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be deleted.
      * @param extensionName The name of the machine extension.
@@ -815,7 +816,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be deleted.
      * @param extensionName The name of the machine extension.
@@ -834,7 +835,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be deleted.
      * @param extensionName The name of the machine extension.
@@ -849,7 +850,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be deleted.
      * @param extensionName The name of the machine extension.
@@ -865,7 +866,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to get the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param extensionName The name of the machine extension.
@@ -904,7 +905,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to get the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param extensionName The name of the machine extension.
@@ -943,7 +944,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to get the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param extensionName The name of the machine extension.
@@ -960,7 +961,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to get the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param extensionName The name of the machine extension.
@@ -978,7 +979,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to get the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param extensionName The name of the machine extension.
@@ -994,7 +995,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to get all extensions of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param expand The expand expression to apply on the operation.
@@ -1033,7 +1034,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to get all extensions of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param expand The expand expression to apply on the operation.
@@ -1073,7 +1074,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to get all extensions of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param expand The expand expression to apply on the operation.
@@ -1090,7 +1091,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to get all extensions of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1107,7 +1108,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to get all extensions of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param expand The expand expression to apply on the operation.
@@ -1126,7 +1127,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to get all extensions of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1142,7 +1143,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * The operation to get all extensions of a non-Azure machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param expand The expand expression to apply on the operation.
@@ -1160,10 +1161,8 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1188,10 +1187,8 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

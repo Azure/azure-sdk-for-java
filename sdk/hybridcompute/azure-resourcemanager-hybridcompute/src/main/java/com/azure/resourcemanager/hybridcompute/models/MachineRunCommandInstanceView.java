@@ -5,61 +5,60 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The instance view of a machine run command.
  */
 @Fluent
-public final class MachineRunCommandInstanceView {
+public final class MachineRunCommandInstanceView implements JsonSerializable<MachineRunCommandInstanceView> {
     /*
      * Script execution status.
      */
-    @JsonProperty(value = "executionState")
     private ExecutionState executionState;
 
     /*
      * Communicate script configuration errors or execution messages.
      */
-    @JsonProperty(value = "executionMessage")
     private String executionMessage;
 
     /*
      * Exit code returned from script execution.
      */
-    @JsonProperty(value = "exitCode")
     private Integer exitCode;
 
     /*
      * Script output stream.
      */
-    @JsonProperty(value = "output")
     private String output;
 
     /*
      * Script error stream.
      */
-    @JsonProperty(value = "error")
     private String error;
 
     /*
      * Script start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Script end time.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
-     * The  status information.
+     * The status information.
      */
-    @JsonProperty(value = "statuses")
     private List<ExtensionsResourceStatus> statuses;
 
     /**
@@ -70,7 +69,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Get the executionState property: Script execution status.
-     * 
+     *
      * @return the executionState value.
      */
     public ExecutionState executionState() {
@@ -79,7 +78,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Set the executionState property: Script execution status.
-     * 
+     *
      * @param executionState the executionState value to set.
      * @return the MachineRunCommandInstanceView object itself.
      */
@@ -90,7 +89,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Get the executionMessage property: Communicate script configuration errors or execution messages.
-     * 
+     *
      * @return the executionMessage value.
      */
     public String executionMessage() {
@@ -99,7 +98,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Set the executionMessage property: Communicate script configuration errors or execution messages.
-     * 
+     *
      * @param executionMessage the executionMessage value to set.
      * @return the MachineRunCommandInstanceView object itself.
      */
@@ -110,7 +109,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Get the exitCode property: Exit code returned from script execution.
-     * 
+     *
      * @return the exitCode value.
      */
     public Integer exitCode() {
@@ -119,7 +118,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Set the exitCode property: Exit code returned from script execution.
-     * 
+     *
      * @param exitCode the exitCode value to set.
      * @return the MachineRunCommandInstanceView object itself.
      */
@@ -130,7 +129,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Get the output property: Script output stream.
-     * 
+     *
      * @return the output value.
      */
     public String output() {
@@ -139,7 +138,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Set the output property: Script output stream.
-     * 
+     *
      * @param output the output value to set.
      * @return the MachineRunCommandInstanceView object itself.
      */
@@ -150,7 +149,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Get the error property: Script error stream.
-     * 
+     *
      * @return the error value.
      */
     public String error() {
@@ -159,7 +158,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Set the error property: Script error stream.
-     * 
+     *
      * @param error the error value to set.
      * @return the MachineRunCommandInstanceView object itself.
      */
@@ -170,7 +169,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Get the startTime property: Script start time.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -179,7 +178,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Set the startTime property: Script start time.
-     * 
+     *
      * @param startTime the startTime value to set.
      * @return the MachineRunCommandInstanceView object itself.
      */
@@ -190,7 +189,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Get the endTime property: Script end time.
-     * 
+     *
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -199,7 +198,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Set the endTime property: Script end time.
-     * 
+     *
      * @param endTime the endTime value to set.
      * @return the MachineRunCommandInstanceView object itself.
      */
@@ -210,7 +209,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Get the statuses property: The status information.
-     * 
+     *
      * @return the statuses value.
      */
     public List<ExtensionsResourceStatus> statuses() {
@@ -219,7 +218,7 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Set the statuses property: The status information.
-     * 
+     *
      * @param statuses the statuses value to set.
      * @return the MachineRunCommandInstanceView object itself.
      */
@@ -230,12 +229,78 @@ public final class MachineRunCommandInstanceView {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("executionState",
+            this.executionState == null ? null : this.executionState.toString());
+        jsonWriter.writeStringField("executionMessage", this.executionMessage);
+        jsonWriter.writeNumberField("exitCode", this.exitCode);
+        jsonWriter.writeStringField("output", this.output);
+        jsonWriter.writeStringField("error", this.error);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeArrayField("statuses", this.statuses, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachineRunCommandInstanceView from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineRunCommandInstanceView if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineRunCommandInstanceView.
+     */
+    public static MachineRunCommandInstanceView fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineRunCommandInstanceView deserializedMachineRunCommandInstanceView
+                = new MachineRunCommandInstanceView();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("executionState".equals(fieldName)) {
+                    deserializedMachineRunCommandInstanceView.executionState
+                        = ExecutionState.fromString(reader.getString());
+                } else if ("executionMessage".equals(fieldName)) {
+                    deserializedMachineRunCommandInstanceView.executionMessage = reader.getString();
+                } else if ("exitCode".equals(fieldName)) {
+                    deserializedMachineRunCommandInstanceView.exitCode = reader.getNullable(JsonReader::getInt);
+                } else if ("output".equals(fieldName)) {
+                    deserializedMachineRunCommandInstanceView.output = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedMachineRunCommandInstanceView.error = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedMachineRunCommandInstanceView.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedMachineRunCommandInstanceView.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("statuses".equals(fieldName)) {
+                    List<ExtensionsResourceStatus> statuses
+                        = reader.readArray(reader1 -> ExtensionsResourceStatus.fromJson(reader1));
+                    deserializedMachineRunCommandInstanceView.statuses = statuses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachineRunCommandInstanceView;
+        });
     }
 }

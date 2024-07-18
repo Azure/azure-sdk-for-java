@@ -7,34 +7,35 @@ package com.azure.resourcemanager.hybridcompute.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcompute.fluent.models.GatewayInner;
 import com.azure.resourcemanager.hybridcompute.models.GatewayType;
+import org.junit.jupiter.api.Assertions;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
 
 public final class GatewayInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Creating\",\"gatewayId\":\"vxwc\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"c\",\"allowedFeatures\":[\"lsfeaenwabfatkld\",\"xbjhwuaanozjosph\"]},\"location\":\"ulpjr\",\"tags\":{\"cskfcktqumiekk\":\"glrvimjwosytxi\"},\"id\":\"zzikhlyfjhdg\",\"name\":\"gge\",\"type\":\"dunyg\"}")
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"gatewayId\":\"lla\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"wuipiccjzkzivg\",\"allowedFeatures\":[\"nayrhyrnxxmueedn\"]},\"location\":\"dvstkw\",\"tags\":{\"mfmtdaaygdvw\":\"chea\",\"xg\":\"gpiohgwxrtfudxe\"},\"id\":\"qagvrvm\",\"name\":\"pkukghi\",\"type\":\"dblx\"}")
             .toObject(GatewayInner.class);
-        Assertions.assertEquals("ulpjr", model.location());
-        Assertions.assertEquals("glrvimjwosytxi", model.tags().get("cskfcktqumiekk"));
+        Assertions.assertEquals("dvstkw", model.location());
+        Assertions.assertEquals("chea", model.tags().get("mfmtdaaygdvw"));
         Assertions.assertEquals(GatewayType.PUBLIC, model.gatewayType());
-        Assertions.assertEquals("lsfeaenwabfatkld", model.allowedFeatures().get(0));
+        Assertions.assertEquals("nayrhyrnxxmueedn", model.allowedFeatures().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayInner model = new GatewayInner().withLocation("ulpjr")
-            .withTags(mapOf("cskfcktqumiekk", "glrvimjwosytxi"))
+        GatewayInner model = new GatewayInner().withLocation("dvstkw")
+            .withTags(mapOf("mfmtdaaygdvw", "chea", "xg", "gpiohgwxrtfudxe"))
             .withGatewayType(GatewayType.PUBLIC)
-            .withAllowedFeatures(Arrays.asList("lsfeaenwabfatkld", "xbjhwuaanozjosph"));
+            .withAllowedFeatures(Arrays.asList("nayrhyrnxxmueedn"));
         model = BinaryData.fromObject(model).toObject(GatewayInner.class);
-        Assertions.assertEquals("ulpjr", model.location());
-        Assertions.assertEquals("glrvimjwosytxi", model.tags().get("cskfcktqumiekk"));
+        Assertions.assertEquals("dvstkw", model.location());
+        Assertions.assertEquals("chea", model.tags().get("mfmtdaaygdvw"));
         Assertions.assertEquals(GatewayType.PUBLIC, model.gatewayType());
-        Assertions.assertEquals("lsfeaenwabfatkld", model.allowedFeatures().get(0));
+        Assertions.assertEquals("nayrhyrnxxmueedn", model.allowedFeatures().get(0));
     }
 
     // Use "Map.of" if available

@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineRunCommandInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the Run Commands List Result.
  */
 @Fluent
-public final class MachineRunCommandsListResult {
+public final class MachineRunCommandsListResult implements JsonSerializable<MachineRunCommandsListResult> {
     /*
      * The list of run commands
      */
-    @JsonProperty(value = "value")
     private List<MachineRunCommandInner> value;
 
     /*
      * The uri to fetch the next page of run commands. Call ListNext() with this to fetch the next page of run commands.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -34,7 +37,7 @@ public final class MachineRunCommandsListResult {
 
     /**
      * Get the value property: The list of run commands.
-     * 
+     *
      * @return the value value.
      */
     public List<MachineRunCommandInner> value() {
@@ -43,7 +46,7 @@ public final class MachineRunCommandsListResult {
 
     /**
      * Set the value property: The list of run commands.
-     * 
+     *
      * @param value the value value to set.
      * @return the MachineRunCommandsListResult object itself.
      */
@@ -55,7 +58,7 @@ public final class MachineRunCommandsListResult {
     /**
      * Get the nextLink property: The uri to fetch the next page of run commands. Call ListNext() with this to fetch the
      * next page of run commands.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +68,7 @@ public final class MachineRunCommandsListResult {
     /**
      * Set the nextLink property: The uri to fetch the next page of run commands. Call ListNext() with this to fetch the
      * next page of run commands.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the MachineRunCommandsListResult object itself.
      */
@@ -76,12 +79,53 @@ public final class MachineRunCommandsListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachineRunCommandsListResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineRunCommandsListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineRunCommandsListResult.
+     */
+    public static MachineRunCommandsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineRunCommandsListResult deserializedMachineRunCommandsListResult = new MachineRunCommandsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<MachineRunCommandInner> value
+                        = reader.readArray(reader1 -> MachineRunCommandInner.fromJson(reader1));
+                    deserializedMachineRunCommandsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedMachineRunCommandsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachineRunCommandsListResult;
+        });
     }
 }

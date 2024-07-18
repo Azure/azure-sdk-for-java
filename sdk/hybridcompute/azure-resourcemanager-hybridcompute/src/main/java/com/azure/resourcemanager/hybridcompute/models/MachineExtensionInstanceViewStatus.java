@@ -5,42 +5,44 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Instance view status.
  */
 @Fluent
-public final class MachineExtensionInstanceViewStatus {
+public final class MachineExtensionInstanceViewStatus implements JsonSerializable<MachineExtensionInstanceViewStatus> {
     /*
      * The status code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * The level code.
      */
-    @JsonProperty(value = "level")
     private StatusLevelTypes level;
 
     /*
      * The short localizable label for the status.
      */
-    @JsonProperty(value = "displayStatus")
     private String displayStatus;
 
     /*
      * The detailed status message, including for alerts and error messages.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The time of the status.
      */
-    @JsonProperty(value = "time")
     private OffsetDateTime time;
 
     /**
@@ -51,7 +53,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Get the code property: The status code.
-     * 
+     *
      * @return the code value.
      */
     public String code() {
@@ -60,7 +62,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Set the code property: The status code.
-     * 
+     *
      * @param code the code value to set.
      * @return the MachineExtensionInstanceViewStatus object itself.
      */
@@ -71,7 +73,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Get the level property: The level code.
-     * 
+     *
      * @return the level value.
      */
     public StatusLevelTypes level() {
@@ -80,7 +82,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Set the level property: The level code.
-     * 
+     *
      * @param level the level value to set.
      * @return the MachineExtensionInstanceViewStatus object itself.
      */
@@ -91,7 +93,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Get the displayStatus property: The short localizable label for the status.
-     * 
+     *
      * @return the displayStatus value.
      */
     public String displayStatus() {
@@ -100,7 +102,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Set the displayStatus property: The short localizable label for the status.
-     * 
+     *
      * @param displayStatus the displayStatus value to set.
      * @return the MachineExtensionInstanceViewStatus object itself.
      */
@@ -111,7 +113,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Get the message property: The detailed status message, including for alerts and error messages.
-     * 
+     *
      * @return the message value.
      */
     public String message() {
@@ -120,7 +122,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Set the message property: The detailed status message, including for alerts and error messages.
-     * 
+     *
      * @param message the message value to set.
      * @return the MachineExtensionInstanceViewStatus object itself.
      */
@@ -131,7 +133,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Get the time property: The time of the status.
-     * 
+     *
      * @return the time value.
      */
     public OffsetDateTime time() {
@@ -140,7 +142,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Set the time property: The time of the status.
-     * 
+     *
      * @param time the time value to set.
      * @return the MachineExtensionInstanceViewStatus object itself.
      */
@@ -151,9 +153,61 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("level", this.level == null ? null : this.level.toString());
+        jsonWriter.writeStringField("displayStatus", this.displayStatus);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("time",
+            this.time == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.time));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachineExtensionInstanceViewStatus from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineExtensionInstanceViewStatus if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineExtensionInstanceViewStatus.
+     */
+    public static MachineExtensionInstanceViewStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineExtensionInstanceViewStatus deserializedMachineExtensionInstanceViewStatus
+                = new MachineExtensionInstanceViewStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedMachineExtensionInstanceViewStatus.code = reader.getString();
+                } else if ("level".equals(fieldName)) {
+                    deserializedMachineExtensionInstanceViewStatus.level
+                        = StatusLevelTypes.fromString(reader.getString());
+                } else if ("displayStatus".equals(fieldName)) {
+                    deserializedMachineExtensionInstanceViewStatus.displayStatus = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedMachineExtensionInstanceViewStatus.message = reader.getString();
+                } else if ("time".equals(fieldName)) {
+                    deserializedMachineExtensionInstanceViewStatus.time = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachineExtensionInstanceViewStatus;
+        });
     }
 }

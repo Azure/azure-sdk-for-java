@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -53,6 +53,7 @@ import com.azure.resourcemanager.hybridcompute.models.PrivateLinkResources;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopes;
 import com.azure.resourcemanager.hybridcompute.models.ResourceProviders;
 import com.azure.resourcemanager.hybridcompute.models.SettingsOperations;
+
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public final class HybridComputeManager {
 
     /**
      * Creates an instance of HybridCompute service API entry point.
-     * 
+     *
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the HybridCompute service API instance.
@@ -120,7 +121,7 @@ public final class HybridComputeManager {
 
     /**
      * Creates an instance of HybridCompute service API entry point.
-     * 
+     *
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the HybridCompute service API instance.
@@ -133,7 +134,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets a Configurable instance that can be used to create HybridComputeManager with optional configuration.
-     * 
+     *
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
@@ -257,7 +258,7 @@ public final class HybridComputeManager {
                 .append("-")
                 .append("com.azure.resourcemanager.hybridcompute")
                 .append("/")
-                .append("1.0.0-beta.5");
+                .append("1.0.0-beta.6");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -305,7 +306,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets the resource collection API of Licenses. It manages License.
-     * 
+     *
      * @return Resource collection API of Licenses.
      */
     public Licenses licenses() {
@@ -317,7 +318,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets the resource collection API of Machines.
-     * 
+     *
      * @return Resource collection API of Machines.
      */
     public Machines machines() {
@@ -329,7 +330,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets the resource collection API of MachineExtensions. It manages MachineExtension.
-     * 
+     *
      * @return Resource collection API of MachineExtensions.
      */
     public MachineExtensions machineExtensions() {
@@ -341,7 +342,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     * 
+     *
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -353,7 +354,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets the resource collection API of ExtensionMetadatas.
-     * 
+     *
      * @return Resource collection API of ExtensionMetadatas.
      */
     public ExtensionMetadatas extensionMetadatas() {
@@ -365,7 +366,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets the resource collection API of Operations.
-     * 
+     *
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -377,7 +378,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets the resource collection API of NetworkProfiles.
-     * 
+     *
      * @return Resource collection API of NetworkProfiles.
      */
     public NetworkProfiles networkProfiles() {
@@ -389,7 +390,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets the resource collection API of MachineRunCommands. It manages MachineRunCommand.
-     * 
+     *
      * @return Resource collection API of MachineRunCommands.
      */
     public MachineRunCommands machineRunCommands() {
@@ -401,7 +402,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets the resource collection API of Gateways. It manages Gateway.
-     * 
+     *
      * @return Resource collection API of Gateways.
      */
     public Gateways gateways() {
@@ -413,7 +414,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets the resource collection API of SettingsOperations.
-     * 
+     *
      * @return Resource collection API of SettingsOperations.
      */
     public SettingsOperations settingsOperations() {
@@ -425,7 +426,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets the resource collection API of PrivateLinkScopes. It manages HybridComputePrivateLinkScope.
-     * 
+     *
      * @return Resource collection API of PrivateLinkScopes.
      */
     public PrivateLinkScopes privateLinkScopes() {
@@ -437,7 +438,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets the resource collection API of PrivateLinkResources.
-     * 
+     *
      * @return Resource collection API of PrivateLinkResources.
      */
     public PrivateLinkResources privateLinkResources() {
@@ -449,7 +450,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
-     * 
+     *
      * @return Resource collection API of PrivateEndpointConnections.
      */
     public PrivateEndpointConnections privateEndpointConnections() {
@@ -462,7 +463,7 @@ public final class HybridComputeManager {
 
     /**
      * Gets the resource collection API of NetworkSecurityPerimeterConfigurations.
-     * 
+     *
      * @return Resource collection API of NetworkSecurityPerimeterConfigurations.
      */
     public NetworkSecurityPerimeterConfigurations networkSecurityPerimeterConfigurations() {
@@ -476,7 +477,7 @@ public final class HybridComputeManager {
     /**
      * Gets wrapped service client HybridComputeManagementClient providing direct access to the underlying
      * auto-generated API implementation, based on Azure REST API.
-     * 
+     *
      * @return Wrapped service client HybridComputeManagementClient.
      */
     public HybridComputeManagementClient serviceClient() {

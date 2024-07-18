@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -24,7 +24,7 @@ public final class EsuKeyState extends ExpandableStringEnum<EsuKeyState> {
 
     /**
      * Creates a new instance of EsuKeyState value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +33,17 @@ public final class EsuKeyState extends ExpandableStringEnum<EsuKeyState> {
 
     /**
      * Creates or finds a EsuKeyState from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding EsuKeyState.
      */
-    @JsonCreator
     public static EsuKeyState fromString(String name) {
         return fromString(name, EsuKeyState.class);
     }
 
     /**
      * Gets known EsuKeyState values.
-     * 
+     *
      * @return known EsuKeyState values.
      */
     public static Collection<EsuKeyState> values() {

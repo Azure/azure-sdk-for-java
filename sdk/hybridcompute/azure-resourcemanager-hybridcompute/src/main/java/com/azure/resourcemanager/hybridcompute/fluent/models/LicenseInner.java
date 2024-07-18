@@ -7,10 +7,14 @@ package com.azure.resourcemanager.hybridcompute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.LicenseDetails;
 import com.azure.resourcemanager.hybridcompute.models.LicenseType;
 import com.azure.resourcemanager.hybridcompute.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -21,14 +25,27 @@ public final class LicenseInner extends Resource {
     /*
      * Hybrid Compute License properties
      */
-    @JsonProperty(value = "properties")
     private LicenseProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of LicenseInner class.
@@ -38,7 +55,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Get the innerProperties property: Hybrid Compute License properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private LicenseProperties innerProperties() {
@@ -47,11 +64,41 @@ public final class LicenseInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -74,7 +121,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -83,7 +130,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Get the tenantId property: Describes the tenant id.
-     * 
+     *
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -92,7 +139,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Set the tenantId property: Describes the tenant id.
-     * 
+     *
      * @param tenantId the tenantId value to set.
      * @return the LicenseInner object itself.
      */
@@ -106,7 +153,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Get the licenseType property: The type of the license resource.
-     * 
+     *
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -115,7 +162,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Set the licenseType property: The type of the license resource.
-     * 
+     *
      * @param licenseType the licenseType value to set.
      * @return the LicenseInner object itself.
      */
@@ -129,7 +176,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Get the licenseDetails property: Describes the properties of a License.
-     * 
+     *
      * @return the licenseDetails value.
      */
     public LicenseDetails licenseDetails() {
@@ -138,7 +185,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Set the licenseDetails property: Describes the properties of a License.
-     * 
+     *
      * @param licenseDetails the licenseDetails value to set.
      * @return the LicenseInner object itself.
      */
@@ -152,12 +199,64 @@ public final class LicenseInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseInner from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LicenseInner.
+     */
+    public static LicenseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseInner deserializedLicenseInner = new LicenseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLicenseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLicenseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLicenseInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedLicenseInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLicenseInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLicenseInner.innerProperties = LicenseProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedLicenseInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseInner;
+        });
     }
 }

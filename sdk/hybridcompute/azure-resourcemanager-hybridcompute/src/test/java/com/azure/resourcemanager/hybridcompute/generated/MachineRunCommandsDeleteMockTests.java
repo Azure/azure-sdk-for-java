@@ -10,10 +10,11 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
-import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 
 public final class MachineRunCommandsDeleteMockTests {
     @Test
@@ -28,7 +29,7 @@ public final class MachineRunCommandsDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.machineRunCommands()
-            .delete("birdsvuwcobiegs", "mninwjizcilng", "gshejjtbxqmulux", com.azure.core.util.Context.NONE);
+            .delete("vuporqzdfuydzv", "fvxcnqmxqpswo", "mvkhlggd", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -24,7 +24,7 @@ public final class AccessRuleDirection extends ExpandableStringEnum<AccessRuleDi
 
     /**
      * Creates a new instance of AccessRuleDirection value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +33,17 @@ public final class AccessRuleDirection extends ExpandableStringEnum<AccessRuleDi
 
     /**
      * Creates or finds a AccessRuleDirection from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding AccessRuleDirection.
      */
-    @JsonCreator
     public static AccessRuleDirection fromString(String name) {
         return fromString(name, AccessRuleDirection.class);
     }
 
     /**
      * Gets known AccessRuleDirection values.
-     * 
+     *
      * @return known AccessRuleDirection values.
      */
     public static Collection<AccessRuleDirection> values() {

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.resourcemanager.hybridcompute.models.MachineRunCommandScriptSource;
 import com.azure.resourcemanager.hybridcompute.models.RunCommandInputParameter;
+
 import java.util.Arrays;
 
 /**
@@ -13,11 +14,13 @@ import java.util.Arrays;
  */
 public final class MachineRunCommandsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/runCommand/RunCommands_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/
+     * runCommand/RunCommands_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a Run Command.
-     * 
+     *
      * @param manager Entry point to HybridComputeManager.
      */
     public static void createOrUpdateARunCommand(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {

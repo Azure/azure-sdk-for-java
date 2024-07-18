@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -49,7 +49,7 @@ public final class ExecutionState extends ExpandableStringEnum<ExecutionState> {
 
     /**
      * Creates a new instance of ExecutionState value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -58,18 +58,17 @@ public final class ExecutionState extends ExpandableStringEnum<ExecutionState> {
 
     /**
      * Creates or finds a ExecutionState from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ExecutionState.
      */
-    @JsonCreator
     public static ExecutionState fromString(String name) {
         return fromString(name, ExecutionState.class);
     }
 
     /**
      * Gets known ExecutionState values.
-     * 
+     *
      * @return known ExecutionState values.
      */
     public static Collection<ExecutionState> values() {

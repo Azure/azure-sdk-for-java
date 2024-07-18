@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -29,7 +29,7 @@ public final class AccessMode extends ExpandableStringEnum<AccessMode> {
 
     /**
      * Creates a new instance of AccessMode value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -38,18 +38,17 @@ public final class AccessMode extends ExpandableStringEnum<AccessMode> {
 
     /**
      * Creates or finds a AccessMode from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding AccessMode.
      */
-    @JsonCreator
     public static AccessMode fromString(String name) {
         return fromString(name, AccessMode.class);
     }
 
     /**
      * Gets known AccessMode values.
-     * 
+     *
      * @return known AccessMode values.
      */
     public static Collection<AccessMode> values() {

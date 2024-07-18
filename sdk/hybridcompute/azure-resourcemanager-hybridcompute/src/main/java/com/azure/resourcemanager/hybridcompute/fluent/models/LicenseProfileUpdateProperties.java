@@ -5,33 +5,35 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileProductType;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileSubscriptionStatusUpdate;
 import com.azure.resourcemanager.hybridcompute.models.ProductFeatureUpdate;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describe the Update properties of a license profile.
  */
 @Fluent
-public final class LicenseProfileUpdateProperties {
+public final class LicenseProfileUpdateProperties implements JsonSerializable<LicenseProfileUpdateProperties> {
     /*
      * The softwareAssurance property.
      */
-    @JsonProperty(value = "softwareAssurance")
     private LicenseProfileUpdatePropertiesSoftwareAssurance innerSoftwareAssurance;
 
     /*
      * Hybrid Compute ESU Profile Update properties
      */
-    @JsonProperty(value = "esuProfile")
     private EsuProfileUpdateProperties innerEsuProfile;
 
     /*
      * Hybrid Compute Product Profile Update properties
      */
-    @JsonProperty(value = "productProfile")
     private ProductProfileUpdateProperties innerProductProfile;
 
     /**
@@ -42,7 +44,7 @@ public final class LicenseProfileUpdateProperties {
 
     /**
      * Get the innerSoftwareAssurance property: The softwareAssurance property.
-     * 
+     *
      * @return the innerSoftwareAssurance value.
      */
     private LicenseProfileUpdatePropertiesSoftwareAssurance innerSoftwareAssurance() {
@@ -51,7 +53,7 @@ public final class LicenseProfileUpdateProperties {
 
     /**
      * Get the innerEsuProfile property: Hybrid Compute ESU Profile Update properties.
-     * 
+     *
      * @return the innerEsuProfile value.
      */
     private EsuProfileUpdateProperties innerEsuProfile() {
@@ -60,7 +62,7 @@ public final class LicenseProfileUpdateProperties {
 
     /**
      * Get the innerProductProfile property: Hybrid Compute Product Profile Update properties.
-     * 
+     *
      * @return the innerProductProfile value.
      */
     private ProductProfileUpdateProperties innerProductProfile() {
@@ -70,7 +72,7 @@ public final class LicenseProfileUpdateProperties {
     /**
      * Get the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software Assurance
      * agreement.
-     * 
+     *
      * @return the softwareAssuranceCustomer value.
      */
     public Boolean softwareAssuranceCustomer() {
@@ -80,7 +82,7 @@ public final class LicenseProfileUpdateProperties {
     /**
      * Set the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software Assurance
      * agreement.
-     * 
+     *
      * @param softwareAssuranceCustomer the softwareAssuranceCustomer value to set.
      * @return the LicenseProfileUpdateProperties object itself.
      */
@@ -94,7 +96,7 @@ public final class LicenseProfileUpdateProperties {
 
     /**
      * Get the assignedLicense property: The resource id of the license.
-     * 
+     *
      * @return the assignedLicense value.
      */
     public String assignedLicense() {
@@ -103,7 +105,7 @@ public final class LicenseProfileUpdateProperties {
 
     /**
      * Set the assignedLicense property: The resource id of the license.
-     * 
+     *
      * @param assignedLicense the assignedLicense value to set.
      * @return the LicenseProfileUpdateProperties object itself.
      */
@@ -117,7 +119,7 @@ public final class LicenseProfileUpdateProperties {
 
     /**
      * Get the subscriptionStatus property: Indicates the subscription status of the product.
-     * 
+     *
      * @return the subscriptionStatus value.
      */
     public LicenseProfileSubscriptionStatusUpdate subscriptionStatus() {
@@ -126,7 +128,7 @@ public final class LicenseProfileUpdateProperties {
 
     /**
      * Set the subscriptionStatus property: Indicates the subscription status of the product.
-     * 
+     *
      * @param subscriptionStatus the subscriptionStatus value to set.
      * @return the LicenseProfileUpdateProperties object itself.
      */
@@ -141,7 +143,7 @@ public final class LicenseProfileUpdateProperties {
 
     /**
      * Get the productType property: Indicates the product type of the license.
-     * 
+     *
      * @return the productType value.
      */
     public LicenseProfileProductType productType() {
@@ -150,7 +152,7 @@ public final class LicenseProfileUpdateProperties {
 
     /**
      * Set the productType property: Indicates the product type of the license.
-     * 
+     *
      * @param productType the productType value to set.
      * @return the LicenseProfileUpdateProperties object itself.
      */
@@ -164,7 +166,7 @@ public final class LicenseProfileUpdateProperties {
 
     /**
      * Get the productFeatures property: The list of product feature updates.
-     * 
+     *
      * @return the productFeatures value.
      */
     public List<ProductFeatureUpdate> productFeatures() {
@@ -173,7 +175,7 @@ public final class LicenseProfileUpdateProperties {
 
     /**
      * Set the productFeatures property: The list of product feature updates.
-     * 
+     *
      * @param productFeatures the productFeatures value to set.
      * @return the LicenseProfileUpdateProperties object itself.
      */
@@ -187,7 +189,7 @@ public final class LicenseProfileUpdateProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -200,5 +202,51 @@ public final class LicenseProfileUpdateProperties {
         if (innerProductProfile() != null) {
             innerProductProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("softwareAssurance", this.innerSoftwareAssurance);
+        jsonWriter.writeJsonField("esuProfile", this.innerEsuProfile);
+        jsonWriter.writeJsonField("productProfile", this.innerProductProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseProfileUpdateProperties from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseProfileUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LicenseProfileUpdateProperties.
+     */
+    public static LicenseProfileUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseProfileUpdateProperties deserializedLicenseProfileUpdateProperties
+                = new LicenseProfileUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("softwareAssurance".equals(fieldName)) {
+                    deserializedLicenseProfileUpdateProperties.innerSoftwareAssurance
+                        = LicenseProfileUpdatePropertiesSoftwareAssurance.fromJson(reader);
+                } else if ("esuProfile".equals(fieldName)) {
+                    deserializedLicenseProfileUpdateProperties.innerEsuProfile
+                        = EsuProfileUpdateProperties.fromJson(reader);
+                } else if ("productProfile".equals(fieldName)) {
+                    deserializedLicenseProfileUpdateProperties.innerProductProfile
+                        = ProductProfileUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseProfileUpdateProperties;
+        });
     }
 }
