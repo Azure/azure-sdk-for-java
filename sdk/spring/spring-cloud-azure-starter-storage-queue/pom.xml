@@ -97,7 +97,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.21.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.22.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
     </dependency>
   </dependencies>
 
