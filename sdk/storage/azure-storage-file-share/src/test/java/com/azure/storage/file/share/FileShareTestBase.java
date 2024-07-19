@@ -17,9 +17,16 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestAccount;
@@ -452,9 +459,44 @@ public class FileShareTestBase extends TestProxyTestBase {
             // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
             return "recordingBearerToken";
         }
-        List<String> scopes = new ArrayList<>();
-        scopes.add("https://storage.azure.com/.default");
-        return new DefaultAzureCredentialBuilder().build().getToken(new TokenRequestContext().setScopes(scopes)).map(AccessToken::getToken).block();
+        else if (ENVIRONMENT.getTestMode() == TestMode.RECORD) {
+            List<String> scopes = new ArrayList<>();
+            scopes.add("https://storage.azure.com/.default");
+            return new DefaultAzureCredentialBuilder().build().getToken(new TokenRequestContext().setScopes(scopes)).map(AccessToken::getToken).block();
+        }
+        else {
+            Configuration config = Configuration.getGlobalConfiguration();
+
+            ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
+                .addLast(new EnvironmentCredentialBuilder().build())
+                .addLast(new AzureCliCredentialBuilder().build())
+                .addLast(new AzureDeveloperCliCredentialBuilder().build());
+
+            String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+            if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+                && !CoreUtils.isNullOrEmpty(clientId)
+                && !CoreUtils.isNullOrEmpty(tenantId)
+                && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+                builder.addLast(new AzurePipelinesCredentialBuilder()
+                    .systemAccessToken(systemAccessToken)
+                    .clientId(clientId)
+                    .tenantId(tenantId)
+                    .serviceConnectionId(serviceConnectionId)
+                    .build());
+            }
+
+            builder.addLast(new AzurePowerShellCredentialBuilder().build());
+
+            List<String> scopes = new ArrayList<>();
+            scopes.add("https://storage.azure.com/.default");
+
+            return builder.build().getToken(new TokenRequestContext().setScopes(scopes)).map(AccessToken::getToken).block();
+        }
     }
 
     protected HttpPipelinePolicy getPerCallVersionPolicy() {
