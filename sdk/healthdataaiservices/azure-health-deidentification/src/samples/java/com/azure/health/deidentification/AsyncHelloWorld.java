@@ -29,7 +29,7 @@ public class AsyncHelloWorld {
 
         DeidentificationResult result = deidentificationClient.deidentify(content).block();
         System.out.println("Deidentified output: " + (result != null ? result.getOutputText() : null));
-        // Deidentified output: Hello, my name is Krishna Hedemark.
+        // Deidentified output: Hello, my name is Krishna Doe.
 
         // END: com.azure.health.deidentification.async.helloworld
     }
