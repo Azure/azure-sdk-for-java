@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.FlowLogFormatParameters;
+import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
 import com.azure.resourcemanager.network.models.TrafficAnalyticsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,6 +34,12 @@ public final class FlowLogInformationInner {
      */
     @JsonProperty(value = "flowAnalyticsConfiguration")
     private TrafficAnalyticsProperties flowAnalyticsConfiguration;
+
+    /*
+     * FlowLog resource Managed Identity
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /**
      * Creates an instance of FlowLogInformationInner class.
@@ -89,6 +96,26 @@ public final class FlowLogInformationInner {
     public FlowLogInformationInner
         withFlowAnalyticsConfiguration(TrafficAnalyticsProperties flowAnalyticsConfiguration) {
         this.flowAnalyticsConfiguration = flowAnalyticsConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the identity property: FlowLog resource Managed Identity.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: FlowLog resource Managed Identity.
+     * 
+     * @param identity the identity value to set.
+     * @return the FlowLogInformationInner object itself.
+     */
+    public FlowLogInformationInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -204,6 +231,9 @@ public final class FlowLogInformationInner {
         }
         if (flowAnalyticsConfiguration() != null) {
             flowAnalyticsConfiguration().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 

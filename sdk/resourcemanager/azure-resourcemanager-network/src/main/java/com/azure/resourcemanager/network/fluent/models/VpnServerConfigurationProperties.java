@@ -95,7 +95,8 @@ public final class VpnServerConfigurationProperties {
     private AadAuthenticationParameters aadAuthenticationParameters;
 
     /*
-     * The provisioning state of the VpnServerConfiguration resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the VpnServerConfiguration resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;

@@ -14,7 +14,9 @@ import com.azure.resourcemanager.network.models.VirtualHubId;
  */
 public final class ExpressRouteGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ExpressRouteGatewayCreate.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRouteGatewayCreate.
+     * json
      */
     /**
      * Sample code: ExpressRouteGatewayCreate.
