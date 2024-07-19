@@ -88,7 +88,7 @@ public class Handle206Test {
         executorService.shutdown();
         executorService.awaitTermination(10, TimeUnit.MINUTES);
 
-        Thread.sleep(5000);
+        Thread.sleep(5000); // give it time for sending to complete
 
         LocalFileCache localFileCache = new LocalFileCache(tempFolder);
         LocalFileLoader localFileLoader =
@@ -116,6 +116,7 @@ public class Handle206Test {
 
         // split the raw bytes by newline
         List<byte[]> actualTelemetryItemsByteArray = splitBytesByNewline(decodedRawBytes);
+        assertThat(actualTelemetryItemsByteArray.size()).isEqualTo(expectedTelemetryItems.size());
 
         // deserialize back to List<TelemetryItem>
         List<TelemetryItem> actualTelemetryItems = new ArrayList<>();

@@ -36,18 +36,42 @@ public final class TelemetryItemSerialization {
     }
 
     // visible for testing
-    public static TelemetryItem deserialize(byte[] rawBytes) {
-        try {
-            JsonReader reader = JsonProviders.createReader(rawBytes);
-            return TelemetryItem.fromJson(reader);
-        } catch (Throwable th) {
-            throw new IllegalStateException("failed to deserialize ", th);
+    // deserialize byte array to list of TelemetryItems
+    public static List<TelemetryItem> deserialize(byte[] rawBytes) {
+        try (JsonReader jsonReader = JsonProviders.createReader(rawBytes)) {
+            return jsonReader.readArray(TelemetryItem::fromJson);
+        } catch (IOException e) {
+            throw new IllegalStateException("failed to deserialize ", e);
         }
+    }
+
+    private static String serialize(TelemetryItem telemetryItem) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            telemetryItem.toJson(writer);
+            writer.flush();
+            return outputStream.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String printJson(List<TelemetryItem> telemetryItems) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int index = 0;
+        for (TelemetryItem telemetryItem : telemetryItems) {
+            sb.append(serialize(telemetryItem));
+            if (index < telemetryItems.size() - 1) {
+                sb.append("\n");
+            }
+        }
+        return sb.toString();
     }
 
     private static ByteBufferOutputStream writeTelemetryItemsAsByteBufferOutputStream(List<TelemetryItem> telemetryItems) throws IOException {
         try (ByteBufferOutputStream result = new ByteBufferOutputStream(byteBufferPool)) {
             JsonWriter jsonWriter = null;
+            int countNewLinesAdded = 0;
             for (int i = 0; i < telemetryItems.size(); i++) {
                 GZIPOutputStream gzipOutputStream = new GZIPOutputStream(result);
                 jsonWriter = JsonProviders.createWriter(gzipOutputStream);
@@ -57,8 +81,10 @@ public final class TelemetryItemSerialization {
 
                 if (i < telemetryItems.size() - 1) {
                     result.write('\n');
+                    countNewLinesAdded++;
                 }
             }
+            System.out.println("Number of new lines added: " + countNewLinesAdded);
             if (jsonWriter != null) {
                 jsonWriter.close();
             }
@@ -101,6 +127,17 @@ public final class TelemetryItemSerialization {
             lines.add(lastLine);
         }
         return lines;
+    }
+
+    public static int countNewLines(byte[] inputBytes) {
+        return new String(inputBytes).split("\n", -1).length - 1;
+//        int count = 0;
+//        for (byte inputByte : inputBytes) {
+//            if (inputByte == '\n') {
+//                count++;
+//            }
+//        }
+//        return count;
     }
 
     // convert list of byte buffers to byte array

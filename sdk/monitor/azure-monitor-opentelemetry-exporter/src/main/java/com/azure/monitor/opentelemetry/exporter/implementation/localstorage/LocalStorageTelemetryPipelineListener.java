@@ -4,10 +4,9 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.localstorage;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.DiagnosticTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ResponseError;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineRequest;
@@ -16,14 +15,20 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.StatusCode;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.addNewLineAsLineDelimiter;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.convertByteBufferListToByteArray;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.countNewLines;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.decode;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserialize;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.printJson;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.splitBytesByNewline;
 
 public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineListener {
@@ -74,14 +79,56 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
         errors.forEach(error -> logger.verbose("Error in telemetry: {}", error));
         if (!errors.isEmpty()) {
             List<ByteBuffer> originalByteBuffers = request.getByteBuffers();
-            byte[] originalBytes = convertByteBufferListToByteArray(originalByteBuffers);
-            List<byte[]> bytesSplitByNewLine = splitBytesByNewline(originalBytes);
+            byte[] decodedBytes = decode(originalByteBuffers.get(0).array());
+            List<byte[]> decodedByteArrayList = splitBytesByNewline(decodedBytes);
+            System.out.println("decodedByteArrayList: " + decodedByteArrayList.size());
+
             List<ByteBuffer> toBePersisted = new ArrayList<>();
             for (ResponseError error : errors) {
                 if (StatusCode.isRetryable(error.getStatusCode())) {
-                    toBePersisted.add(ByteBuffer.wrap(bytesSplitByNewLine.get(error.getIndex())));
+                    toBePersisted.add(ByteBuffer.wrap(decodedByteArrayList.get(error.getIndex())));
                 }
             }
+
+
+
+            // convert toBePersisted to TelemetryItems
+            List<TelemetryItem> toBePersistedTelemetryItems = new ArrayList<>();
+            for (ByteBuffer byteBuffer : toBePersisted) {
+                TelemetryItem telemetryItem = deserialize(byteBuffer.array());
+                toBePersistedTelemetryItems.add(telemetryItem);
+            }
+            System.out.println("toBePersistedTelemetryItems: " + toBePersistedTelemetryItems.size());
+
+            System.out.println("==========================================================");
+            try {
+                System.out.println("toBePersistedTelemetryItems: \n" + printJson(toBePersistedTelemetryItems));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("==========================================================");
+
+
+            // test with newline in the byte array
+            List<ByteBuffer> byteBufferList = addNewLineAsLineDelimiter(toBePersisted);
+            byte[] newByteArray = convertByteBufferListToByteArray(byteBufferList);
+            List<byte[]> newByteArrayList = splitBytesByNewline(newByteArray);
+            assert newByteArrayList.size() == byteBufferList.size();
+
+            List<TelemetryItem> actualTelemetryItems = new ArrayList<>();
+            for (byte[] bytes : newByteArrayList) {
+                actualTelemetryItems.add(deserialize(bytes));
+            }
+
+            System.out.println("==========================================================");
+            try {
+                System.out.println("actualTelemetryItems: \n" + printJson(actualTelemetryItems));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("==========================================================");
+
+
             if (!toBePersisted.isEmpty()) {
                 localFileWriter.writeToDisk(
                     request.getConnectionString(), addNewLineAsLineDelimiter(toBePersisted), "Received partial response code 206");
