@@ -134,18 +134,18 @@
     <dependency>
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>mssql-jdbc</artifactId>
-      <version>12.6.2.jre11</version> <!-- {x-version-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
+      <version>12.6.3.jre11</version> <!-- {x-version-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.10.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.10.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.10.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.10.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -200,7 +200,7 @@
                 <include>org.slf4j:slf4j-simple:[2.0.13]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->
                 <include>com.google.guava:guava:[33.1.0-jre]</include> <!-- {x-include-update;com.google.guava:guava;external_dependency} -->
                 <include>com.github.docker-java:docker-java:[3.2.1]</include> <!-- {x-include-update;com.github.docker-java:docker-java;external_dependency} -->
-                <include>com.microsoft.sqlserver:mssql-jdbc:[12.6.2.jre11]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
+                <include>com.microsoft.sqlserver:mssql-jdbc:[12.6.3.jre11]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
                 <include>commons-net:commons-net:[3.9.0]</include> <!-- {x-include-update;commons-net:commons-net;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.8.3]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
               </includes>

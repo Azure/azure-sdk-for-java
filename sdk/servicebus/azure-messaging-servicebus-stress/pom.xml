@@ -39,7 +39,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>3.3.1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>3.3.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -82,7 +82,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>3.3.1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-maven-plugin;external_dependency} -->
+        <version>3.3.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <goals>
@@ -99,7 +99,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter:[3.3.1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[3.3.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[2.4.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
                 <include>io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:[2.4.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
               </includes>

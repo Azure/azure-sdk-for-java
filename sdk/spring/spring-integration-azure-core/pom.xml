@@ -46,7 +46,7 @@
     <dependency>
       <groupId>org.springframework.integration</groupId>
       <artifactId>spring-integration-core</artifactId>
-      <version>6.3.1</version> <!-- {x-version-update;org.springframework.integration:spring-integration-core;external_dependency} -->
+      <version>6.3.2</version> <!-- {x-version-update;org.springframework.integration:spring-integration-core;external_dependency} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -69,25 +69,25 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.17</version> <!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.18</version> <!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.17</version> <!-- {x-version-update;net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.18</version> <!-- {x-version-update;net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.1.10</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <version>6.1.11</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.10.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.10.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -171,7 +171,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.integration:spring-integration-core:[6.3.1]</include> <!-- {x-include-update;org.springframework.integration:spring-integration-core;external_dependency} -->
+                <include>org.springframework.integration:spring-integration-core:[6.3.2]</include> <!-- {x-include-update;org.springframework.integration:spring-integration-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
