@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.monitor.opentelemetry.exporter.implementation.MockHttpResponse;
 import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils;
 import io.opentelemetry.api.OpenTelemetry;

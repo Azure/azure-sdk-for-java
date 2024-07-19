@@ -6,7 +6,6 @@ package com.azure.monitor.opentelemetry.exporter;
 import com.azure.core.http.HttpPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils;
 import io.opentelemetry.api.OpenTelemetry;
@@ -23,6 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URL;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
@@ -194,6 +194,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             .emit();
     }
 
+    @SuppressWarnings("unchecked")
     private static void validateSpan(TelemetryItem telemetryItem) {
         assertThat(telemetryItem.getName()).isEqualTo("RemoteDependency");
         assertThat(telemetryItem.getInstrumentationKey()).isEqualTo(INSTRUMENTATION_KEY);
@@ -201,25 +202,26 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         assertThat(telemetryItem.getTags())
             .hasEntrySatisfying("ai.internal.sdkVersion", v -> assertThat(v).contains("otel"));
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("RemoteDependencyData");
-        RemoteDependencyData actualData = (RemoteDependencyData) telemetryItem.getData().getBaseData();
-        assertThat(actualData.getName()).isEqualTo("test");
-        assertThat(actualData.getProperties())
-            .containsExactly(entry("color", "red"), entry("name", "apple"));
+        Map<String, Object> actualData = telemetryItem.getData().getBaseData().getAdditionalProperties();
+        assertThat(actualData.get("name").toString()).isEqualTo("test");
+        assertThat((Map<String, String>) actualData.get("properties")).containsExactly(entry("color", "red"), entry("name", "apple"));
     }
 
+    @SuppressWarnings("unchecked")
     private static void validateMetric(TelemetryItem telemetryItem) {
         assertThat(telemetryItem.getInstrumentationKey()).isEqualTo(INSTRUMENTATION_KEY);
         assertThat(telemetryItem.getTags()).containsEntry("ai.cloud.role", "unknown_service:java");
         assertThat(telemetryItem.getTags())
             .hasEntrySatisfying("ai.internal.sdkVersion", v -> assertThat(v).contains("otel"));
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MetricData");
-        MetricsData actualMetricsData = (MetricsData) telemetryItem.getData().getBaseData();
-        assertThat(actualMetricsData.getMetrics().get(0).getValue()).isEqualTo(1);
-        assertThat(actualMetricsData.getMetrics().get(0).getName()).isEqualTo("test");
-        assertThat(actualMetricsData.getProperties())
+        Map<String, Object> metricData = ((List<Map<String, Object>>) telemetryItem.getData().getBaseData().getAdditionalProperties().get("metrics")).get(0);
+        assertThat((Double) metricData.get("value")).isEqualTo(1.0);
+        assertThat((String) metricData.get("name")).isEqualTo("test");
+        assertThat((Map<String, String>) telemetryItem.getData().getBaseData().getAdditionalProperties().get("properties"))
             .containsExactly(entry("color", "red"), entry("name", "apple"));
     }
 
+    @SuppressWarnings("unchecked")
     private static void validateLog(TelemetryItem telemetryItem) {
         assertThat(telemetryItem.getName()).isEqualTo("Message");
         assertThat(telemetryItem.getInstrumentationKey()).isEqualTo(INSTRUMENTATION_KEY);
@@ -227,9 +229,9 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         assertThat(telemetryItem.getTags())
             .hasEntrySatisfying("ai.internal.sdkVersion", v -> assertThat(v).contains("otel"));
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MessageData");
-        MessageData actualData = (MessageData) telemetryItem.getData().getBaseData();
-        assertThat(actualData.getMessage()).isEqualTo("test body");
-        assertThat(actualData.getProperties())
+        Map<String, Object> messageProperties = telemetryItem.getData().getBaseData().getAdditionalProperties();
+        assertThat(messageProperties.get("message")).isEqualTo("test body");
+        assertThat((Map<String, String>)messageProperties.get("properties"))
             .containsOnly(
                 entry("LoggerName", "Sample"),
                 entry("SourceType", "Logger"),
