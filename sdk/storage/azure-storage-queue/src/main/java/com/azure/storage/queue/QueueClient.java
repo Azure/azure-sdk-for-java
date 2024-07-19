@@ -1439,4 +1439,19 @@ public final class QueueClient {
         return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
+
+    /**
+     * For debugging purposes only.
+     * Returns the string to sign that will be used to generate the signature for the SAS URL.
+     *
+     * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return The string to sign that will be used to generate the signature for the SAS URL.
+     */
+    @Deprecated
+    public String generateSasStringToSign(QueueServiceSasSignatureValues queueServiceSasSignatureValues, Context context) {
+        return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
+            .generateSasStringToSign(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+    }
 }

@@ -2245,4 +2245,19 @@ public class ShareAsyncClient {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
+
+    /**
+     * For debugging purposes only.
+     * Returns the string to sign that will be used to generate the signature for the SAS URL.
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return The string to sign that will be used to generate the signature for the SAS URL.
+     */
+    @Deprecated
+    public String generateSasStringToSign(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
+        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
+            .generateSasStringToSign(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+    }
 }

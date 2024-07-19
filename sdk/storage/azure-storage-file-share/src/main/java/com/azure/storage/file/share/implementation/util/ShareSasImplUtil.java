@@ -129,6 +129,23 @@ public class ShareSasImplUtil {
     }
 
     /**
+     * For debugging purposes only.
+     * Returns the string to sign that will be used to generate the signature for the SAS URL.
+     *
+     * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     * @return The string to sign that will be used to generate the signature for the SAS URL.
+     */
+    @Deprecated
+    public String generateSasStringToSign(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
+        StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
+        ensureState();
+
+        final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
+        return stringToSign(canonicalName);
+    }
+
+    /**
      * Encodes a Sas from the values in this type.
      * @param signature The signature of the Sas.
      * @return A String representing the Sas.

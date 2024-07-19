@@ -185,6 +185,43 @@ public class BlobSasImplUtil {
         return encode(delegationKey, signature);
     }
 
+
+    /**
+     * For debugging purposes only.
+     * Returns the string to sign that will be used to generate the signature for the SAS URL.
+     *
+     * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     * @return The string to sign that will be used to generate the signature for the SAS URL.
+     */
+    @Deprecated
+    public String generateSasStringToSign(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
+        StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
+        ensureState();
+
+        final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
+        return stringToSign(canonicalName);
+    }
+
+    /**
+     * For debugging purposes only.
+     * Returns the string to sign that will be used to generate the signature for the SAS URL.
+     *
+     * @param delegationKey {@link UserDelegationKey}
+     * @param accountName The account name
+     * @param context Additional context that is passed through the code when generating a SAS.
+     * @return The string to sign that will be used to generate the signature for the SAS URL.
+     */
+    @Deprecated
+    public String generateUserDelegationSasStringToSign(UserDelegationKey delegationKey, String accountName, Context context) {
+        StorageImplUtils.assertNotNull("delegationKey", delegationKey);
+        StorageImplUtils.assertNotNull("accountName", accountName);
+        ensureState();
+
+        final String canonicalName = getCanonicalName(accountName);
+        return stringToSign(delegationKey, canonicalName);
+    }
+
     /**
      * Encodes a Sas from the values in this type.
      * @param userDelegationKey {@link UserDelegationKey}
