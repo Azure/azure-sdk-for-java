@@ -3,6 +3,7 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
+    UseFederatedAuth: true
     ServiceDirectory: attestation
     Location: westus
     Artifacts:
