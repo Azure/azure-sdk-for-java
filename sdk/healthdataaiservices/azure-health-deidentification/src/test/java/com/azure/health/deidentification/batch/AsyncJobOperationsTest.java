@@ -27,17 +27,17 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testCreateJobReturnsExpected() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded006q";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded006w";
 
         String inputPrefix = "example_patient_1";
-        String storageAccountSASUri = getStorageAccountSASUri();
+        String storageLocation = getStorageAccountLocation();
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageAccountSASUri, inputPrefix);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER));
+        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 
@@ -61,17 +61,17 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testCreateThenListReturnsExpected() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded007q";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded007w";
 
         String inputPrefix = "example_patient_1";
-        String storageAccountSASUri = getStorageAccountSASUri();
+        String storageLocation = getStorageAccountLocation();
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageAccountSASUri, inputPrefix);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER));
+        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 
@@ -99,17 +99,17 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2EWaitUntilSuccess() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded008q";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded008w";
 
         String inputPrefix = "example_patient_1";
-        String storageAccountSASUri = getStorageAccountSASUri();
+        String storageLocation = getStorageAccountLocation();
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageAccountSASUri, inputPrefix);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER));
+        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 
@@ -132,17 +132,17 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2ECancelJobThenDeleteJobDeletesJob() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded009q";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded009w";
 
         String inputPrefix = "example_patient_1";
-        String storageAccountSASUri = getStorageAccountSASUri();
+        String storageLocation = getStorageAccountLocation();
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageAccountSASUri, inputPrefix);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER));
+        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 
@@ -163,17 +163,17 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2ECannotAccessStorageCreateJobFails() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded0010q";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded0010w";
 
         String inputPrefix = "example_patient_1";
-        String storageAccountSASUri = "FAKE_STORAGE_ACCOUNT";
+        String storageLocation = "FAKE_STORAGE_ACCOUNT";
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageAccountSASUri, inputPrefix);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageAccountSASUri, OUTPUT_FOLDER));
+        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 

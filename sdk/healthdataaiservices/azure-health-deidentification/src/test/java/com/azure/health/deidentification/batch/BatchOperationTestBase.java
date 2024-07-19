@@ -22,17 +22,20 @@ public class BatchOperationTestBase extends TestProxyTestBase {
         DeidentificationClientBuilder deidentificationClientBuilder = new DeidentificationClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-
+        System.out.println(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"));
         if (interceptorManager.isPlaybackMode()) {
+            System.out.println("PlaybackMode");
             deidentificationClientBuilder
                 .httpClient(interceptorManager.getPlaybackClient())
                 .credential(new MockTokenCredential());
         } else if (interceptorManager.isRecordMode()) {
+            System.out.println("RecordMode");
             deidentificationClientBuilder
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .httpClient(HttpClient.createDefault());
         } else if (interceptorManager.isLiveMode()) {
+            System.out.println("LiveMode");
             deidentificationClientBuilder
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .httpClient(HttpClient.createDefault());
@@ -49,11 +52,16 @@ public class BatchOperationTestBase extends TestProxyTestBase {
     }
 
     /**
-     * Get the training data set SAS Url value based on the test running mode.
+     * Retrieves the storage account location URL based on the global configuration settings.
+     * <p>
+     * This method constructs the URL using the storage account name and storage container name
+     * from the global configuration. The URL is in the following format:
+     * {@code https://<STORAGE_ACCOUNT_NAME>.blob.core.windows.net/<STORAGE_CONTAINER_NAME>}
+     * </p>
      *
-     * @return the training data set Url
+     * @return The storage account location URL as a {@code String}.
      */
-    String getStorageAccountSASUri() {
-        return interceptorManager.isPlaybackMode() ? FAKE_STORAGE_ACCOUNT_SAS_URI : Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_SAS_URI");
+    String getStorageAccountLocation() {
+        return "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
     }
 }
