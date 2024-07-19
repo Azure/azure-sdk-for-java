@@ -572,6 +572,16 @@
           "code" : "java.class.removed",
           "old" : "class com.azure.resourcemanager.containerservice.models.OSOptionProperty",
           "justification": "Removed non-functional API `getOsOptions` and related models `OSOptionProperty`"
+        },
+        {
+          "code": "java.method.removed",
+          "old" : "method com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters::withId(java.lang.String)",
+          "justification": "service bug fix."
+        },
+        {
+          "code": "java.missing.oldSuperType",
+          "old": "class com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters",
+          "justification": "service bug fix."
         }
       ]
     }

@@ -2,6 +2,11 @@
 
 ## 2.41.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported enabling zone redundant in `EventHubNamespace` via `enableZoneRedundant()`.
+- Supported setting minimum Tls version in `EventHubNamespace` via `withMinimumTlsVersion(TlsVersion minimumTlsVersion)`.
+
 ### Other Changes
 
 #### Dependency Updates
