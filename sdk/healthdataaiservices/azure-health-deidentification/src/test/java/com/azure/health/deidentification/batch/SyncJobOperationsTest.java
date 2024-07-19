@@ -37,7 +37,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testCreateJobReturnsExpected() {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded001w";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded001r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -73,7 +73,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testCreateThenListReturnsExpected() {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded002w";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded002r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -121,7 +121,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2EWaitUntilSuccess() {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded003w";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded003r";
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
         List<String> extensions = new ArrayList<>();
@@ -156,7 +156,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2ECancelJobThenDeleteJobDeletesJob() {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded004w";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded004r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -188,7 +188,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2ECannotAccessStorageCreateJobFails() {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded005w";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded005r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = "FAKE_STORAGE_ACCOUNT";

@@ -7,10 +7,15 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.health.deidentification.DeidentificationClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base class for Deid Services client tests.
@@ -22,20 +27,19 @@ public class BatchOperationTestBase extends TestProxyTestBase {
         DeidentificationClientBuilder deidentificationClientBuilder = new DeidentificationClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        System.out.println(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"));
         if (interceptorManager.isPlaybackMode()) {
-            System.out.println("PlaybackMode");
             deidentificationClientBuilder
                 .httpClient(interceptorManager.getPlaybackClient())
                 .credential(new MockTokenCredential());
         } else if (interceptorManager.isRecordMode()) {
-            System.out.println("RecordMode");
+            List<TestProxySanitizer> customSanitizer = new ArrayList<>();
+            customSanitizer.add(new TestProxySanitizer("$..location", "^(?!.*FAKE_STORAGE_ACCOUNT).*", FAKE_STORAGE_ACCOUNT_SAS_URI, TestProxySanitizerType.BODY_KEY));
+            interceptorManager.addSanitizers(customSanitizer);
             deidentificationClientBuilder
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .httpClient(HttpClient.createDefault());
         } else if (interceptorManager.isLiveMode()) {
-            System.out.println("LiveMode");
             deidentificationClientBuilder
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .httpClient(HttpClient.createDefault());
@@ -62,6 +66,9 @@ public class BatchOperationTestBase extends TestProxyTestBase {
      * @return The storage account location URL as a {@code String}.
      */
     String getStorageAccountLocation() {
+        if (interceptorManager.isPlaybackMode()) {
+            return FAKE_STORAGE_ACCOUNT_SAS_URI;
+        }
         return "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
     }
 }
