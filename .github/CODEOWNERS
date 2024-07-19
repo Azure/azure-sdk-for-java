@@ -267,7 +267,7 @@
 /sdk/communication/azure-communication-chat/           @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Communication - Email
-/sdk/communication/azure-communication-email/          @kagbakpem @yogeshmo @matthohn-msft
+/sdk/communication/azure-communication-email/          @kagbakpem @yogeshmo @matthohn-msft @apattath
 
 # PRLabel: %Communication - Identity
 /sdk/communication/azure-communication-identity/       @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft
