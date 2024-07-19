@@ -74,12 +74,15 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
         }
     }
 
+//    private byte[]
+
     private void processStatusCode206(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
         Set<ResponseError> errors = response.getErrors();
         errors.forEach(error -> logger.verbose("Error in telemetry: {}", error));
         if (!errors.isEmpty()) {
             List<ByteBuffer> originalByteBuffers = request.getByteBuffers();
-            byte[] decodedBytes = decode(originalByteBuffers.get(0).array());
+            byte[] bytes1 = convertByteBufferListToByteArray(originalByteBuffers);
+            byte[] decodedBytes = decode(bytes1);
             List<byte[]> decodedByteArrayList = splitBytesByNewline(decodedBytes);
             System.out.println("decodedByteArrayList: " + decodedByteArrayList.size());
 

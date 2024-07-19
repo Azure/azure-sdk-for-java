@@ -123,9 +123,9 @@ public class TelemetryItemExporter {
         }
         try {
             byteBuffers = serialize(telemetryItems);
-            int numNewLines = countNewLines(byteBuffers.get(0).array());
-            int newNumNewLines = countNewLines(convertByteBufferListToByteArray(byteBuffers));
-            System.out.println("Number of new lines in the byte buffers: " + numNewLines + " newNumNewLines:" +newNumNewLines);
+//            int numNewLines = countNewLines(byteBuffers.get(0).array());
+//            int newNumNewLines = countNewLines(convertByteBufferListToByteArray(byteBuffers));
+//            System.out.println("Number of new lines in the byte buffers: " + numNewLines + " newNumNewLines:" +newNumNewLines);
             encodeBatchOperationLogger.recordSuccess();
         } catch (Throwable t) {
             encodeBatchOperationLogger.recordFailure(t.getMessage(), t);

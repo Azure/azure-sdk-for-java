@@ -6,6 +6,8 @@ package com.azure.monitor.opentelemetry.exporter.implementation.localstorage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
@@ -21,14 +23,17 @@ import java.io.File;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.convertByteBufferListToByteArray;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.decode;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserialize;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.splitBytesByNewline;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Handle206Test {
@@ -77,18 +82,10 @@ public class Handle206Test {
             telemetryItems.add(item);
         }
 
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-        executorService.execute(
-            () -> {
-                telemetryItemExporter.send(telemetryItems);
-            });
+        telemetryItemExporter.send(telemetryItems);
+        telemetryItemExporter.flush().join(30, SECONDS);
 
-        telemetryItemExporter.flush();
-
-        executorService.shutdown();
-        executorService.awaitTermination(10, TimeUnit.MINUTES);
-
-        Thread.sleep(5000); // give it time for sending to complete
+        Thread.sleep(10000);
 
         LocalFileCache localFileCache = new LocalFileCache(tempFolder);
         LocalFileLoader localFileLoader =
@@ -98,13 +95,14 @@ public class Handle206Test {
 
         // load expected telemetry items from the file and split bytes by newline
         String expected = Resources.readString("request_body_result_to_206_status_code.txt");
-        List<byte[]> expectedTelemetryItemsByteArray = splitBytesByNewline(expected.getBytes());
+//        String[] expectedTelemetryItemsStr = expected.split("\n");
+        //List<byte[]> expectedTelemetryItemsByteArray = splitBytesByNewline(expected.getBytes());
 
         // deserialize back to List<TelemetryItem>
         List<TelemetryItem> expectedTelemetryItems = new ArrayList<>();
-        for (byte[] bytes : expectedTelemetryItemsByteArray) {
-            TelemetryItem telemetryItem = deserialize(bytes);
-            expectedTelemetryItems.add(telemetryItem);
+        for (String str : expected.split("\n")) {
+            JsonReader reader = JsonProviders.createReader(str);
+            expectedTelemetryItems.add(TelemetryItem.fromJson(reader));
         }
 
         // load the actual telemetry raw bytes from disk
@@ -112,10 +110,16 @@ public class Handle206Test {
         assertThat(file.connectionString).isEqualTo(CONNECTION_STRING);
 
         // decode gzipped raw bytes back to original raw bytes
-        byte[] decodedRawBytes = decode(file.rawBytes.array());
+        file.rawBytes.flip();
+        byte[] decodedRawBytes = decode(convertByteBufferListToByteArray(Collections.singletonList(file.rawBytes)));
 
         // split the raw bytes by newline
         List<byte[]> actualTelemetryItemsByteArray = splitBytesByNewline(decodedRawBytes);
+        // testing
+        System.out.println("TESTING, expecting 7 lines");
+        for (byte[] line : actualTelemetryItemsByteArray) {
+            System.out.println(new String(line));
+        }
         assertThat(actualTelemetryItemsByteArray.size()).isEqualTo(expectedTelemetryItems.size());
 
         // deserialize back to List<TelemetryItem>

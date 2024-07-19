@@ -70,24 +70,20 @@ public final class TelemetryItemSerialization {
 
     private static ByteBufferOutputStream writeTelemetryItemsAsByteBufferOutputStream(List<TelemetryItem> telemetryItems) throws IOException {
         try (ByteBufferOutputStream result = new ByteBufferOutputStream(byteBufferPool)) {
-            JsonWriter jsonWriter = null;
             int countNewLinesAdded = 0;
+            GZIPOutputStream gzipOutputStream = new GZIPOutputStream(result);
             for (int i = 0; i < telemetryItems.size(); i++) {
-                GZIPOutputStream gzipOutputStream = new GZIPOutputStream(result);
-                jsonWriter = JsonProviders.createWriter(gzipOutputStream);
+                JsonWriter jsonWriter = JsonProviders.createWriter(gzipOutputStream);
                 telemetryItems.get(i).toJson(jsonWriter);
                 jsonWriter.flush();
-                gzipOutputStream.finish(); // need to call this otherwise, gzip content would be corrupted.
 
                 if (i < telemetryItems.size() - 1) {
-                    result.write('\n');
+                    gzipOutputStream.write('\n');
                     countNewLinesAdded++;
                 }
             }
+            gzipOutputStream.close();
             System.out.println("Number of new lines added: " + countNewLinesAdded);
-            if (jsonWriter != null) {
-                jsonWriter.close();
-            }
             return result;
         }
     }
@@ -142,16 +138,20 @@ public final class TelemetryItemSerialization {
 
     // convert list of byte buffers to byte array
     public static byte[] convertByteBufferListToByteArray(List<ByteBuffer> byteBuffers) {
-        int totalSize = byteBuffers.stream().mapToInt(ByteBuffer::remaining).sum();
-        ByteBuffer resultBuffer = ByteBuffer.allocate(totalSize);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         for (ByteBuffer buffer : byteBuffers) {
-            byte[] byteArray = new byte[buffer.remaining()];
-            buffer.get(byteArray);
-            resultBuffer.put(byteArray);
+            byte[] arr = new byte[buffer.remaining()];
+            buffer.get(arr);
+            try {
+                baos.write(arr);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        return resultBuffer.array();
+        return baos.toByteArray();
     }
 
     // TODO - add unit test
