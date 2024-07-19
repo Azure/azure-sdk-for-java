@@ -56,7 +56,7 @@ In order to interact with the Azure OpenAI Service you'll need to create an inst
 Azure OpenAI, provide a valid endpoint URI to an Azure OpenAI resource along with a corresponding key credential,
 token credential, or [Azure Identity][azure_identity] credential that's authorized to use the Azure OpenAI resource. 
 
-#### Create a Azure OpenAI client with key credential
+#### Create an Azure OpenAI client with key credential
 Get Azure OpenAI `key` credential from the Azure Portal.
 
 ```java readme-sample-createSyncClientKeyCredential

@@ -37,9 +37,9 @@ import com.azure.resourcemanager.compute.models.ManagedDiskParameters;
 import com.azure.resourcemanager.compute.models.NetworkApiVersion;
 import com.azure.resourcemanager.compute.models.NetworkInterfaceReference;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
+import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.OSDisk;
 import com.azure.resourcemanager.compute.models.OSProfile;
-import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PassNames;
 import com.azure.resourcemanager.compute.models.PatchSettings;
 import com.azure.resourcemanager.compute.models.Plan;
@@ -56,7 +56,6 @@ import com.azure.resourcemanager.compute.models.SshPublicKey;
 import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.UefiSettings;
-import com.azure.resourcemanager.compute.models.VMSizeProperties;
 import com.azure.resourcemanager.compute.models.VirtualHardDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineIpTag;
 import com.azure.resourcemanager.compute.models.VirtualMachineNetworkInterfaceConfiguration;
@@ -73,11 +72,12 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAd
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.compute.models.WinRMConfiguration;
-import com.azure.resourcemanager.compute.models.WinRMListener;
+import com.azure.resourcemanager.compute.models.VMSizeProperties;
 import com.azure.resourcemanager.compute.models.WindowsConfiguration;
 import com.azure.resourcemanager.compute.models.WindowsPatchAssessmentMode;
 import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchMode;
+import com.azure.resourcemanager.compute.models.WinRMConfiguration;
+import com.azure.resourcemanager.compute.models.WinRMListener;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -98,22 +98,31 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
      */
     public static void
         virtualMachineScaleSetVMUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs().update("rgcompute",
-            "aaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-            new VirtualMachineScaleSetVMInner().withLocation("westus").withTags(mapOf())
-                .withPlan(new Plan().withName("aaaaaaaaaa").withPublisher("aaaaaaaaaaaaaaaaaaaaaa")
-                    .withProduct("aaaaaaaaaaaaaaaaaaaa").withPromotionCode("fakeTokenPlaceholder"))
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .update("rgcompute", "aaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new VirtualMachineScaleSetVMInner()
+                .withLocation("westus")
+                .withTags(mapOf())
+                .withPlan(new Plan().withName("aaaaaaaaaa")
+                    .withPublisher("aaaaaaaaaaaaaaaaaaaaaa")
+                    .withProduct("aaaaaaaaaaaaaaaaaaaa")
+                    .withPromotionCode("fakeTokenPlaceholder"))
                 .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.BASIC_A0)
                     .withVmSizeProperties(new VMSizeProperties().withVCpusAvailable(9).withVCpusPerCore(12)))
                 .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withId("a").withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2012-R2-Datacenter").withVersion("4.127.20180315")
+                    .withImageReference(new ImageReference().withId("a")
+                        .withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer")
+                        .withSku("2012-R2-Datacenter")
+                        .withVersion("4.127.20180315")
                         .withSharedGalleryImageId("aaaaaaaaaaaaaaaaaaaa"))
-                    .withOsDisk(new OSDisk().withOsType(OperatingSystemTypes.WINDOWS).withEncryptionSettings(
-                        new DiskEncryptionSettings().withDiskEncryptionKey(new KeyVaultSecretReference()
-                            .withSecretUrl("fakeTokenPlaceholder")
-                            .withSourceVault(new SubResource().withId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")))
+                    .withOsDisk(new OSDisk().withOsType(OperatingSystemTypes.WINDOWS)
+                        .withEncryptionSettings(new DiskEncryptionSettings()
+                            .withDiskEncryptionKey(new KeyVaultSecretReference().withSecretUrl("fakeTokenPlaceholder")
+                                .withSourceVault(new SubResource().withId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")))
                             .withKeyEncryptionKey(new KeyVaultKeyReference().withKeyUrl("fakeTokenPlaceholder")
                                 .withSourceVault(new SubResource().withId(
                                     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")))
@@ -123,10 +132,12 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                             "https://{storageAccountName}.blob.core.windows.net/{containerName}/{vhdName}.vhd"))
                         .withImage(new VirtualHardDisk().withUri(
                             "https://{storageAccountName}.blob.core.windows.net/{containerName}/{vhdName}.vhd"))
-                        .withCaching(CachingTypes.NONE).withWriteAcceleratorEnabled(true)
+                        .withCaching(CachingTypes.NONE)
+                        .withWriteAcceleratorEnabled(true)
                         .withDiffDiskSettings(new DiffDiskSettings().withOption(DiffDiskOptions.LOCAL)
                             .withPlacement(DiffDiskPlacement.CACHE_DISK))
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withDiskSizeGB(127)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                        .withDiskSizeGB(127)
                         .withManagedDisk(new ManagedDiskParameters().withId(
                             "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vmss3176_vmss3176_0_OsDisk_1_6d72b805e50e4de6830303c5055077fc")
                             .withStorageAccountType(StorageAccountTypes.STANDARD_LRS)
@@ -138,47 +149,63 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                             "https://{storageAccountName}.blob.core.windows.net/{containerName}/{vhdName}.vhd"))
                         .withImage(new VirtualHardDisk().withUri(
                             "https://{storageAccountName}.blob.core.windows.net/{containerName}/{vhdName}.vhd"))
-                        .withCaching(CachingTypes.NONE).withWriteAcceleratorEnabled(true)
-                        .withCreateOption(DiskCreateOptionTypes.EMPTY).withDiskSizeGB(128)
+                        .withCaching(CachingTypes.NONE)
+                        .withWriteAcceleratorEnabled(true)
+                        .withCreateOption(DiskCreateOptionTypes.EMPTY)
+                        .withDiskSizeGB(128)
                         .withManagedDisk(new ManagedDiskParameters().withId(
                             "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vmss3176_vmss3176_0_disk2_6c4f554bdafa49baa780eb2d128ff39d")
                             .withStorageAccountType(StorageAccountTypes.STANDARD_LRS)
                             .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("aaaaaaaaaaaa")))
-                        .withToBeDetached(true).withDetachOption(DiskDetachOptionTypes.FORCE_DETACH)
+                        .withToBeDetached(true)
+                        .withDetachOption(DiskDetachOptionTypes.FORCE_DETACH)
                         .withDeleteOption(DiskDeleteOptionTypes.DELETE))))
                 .withAdditionalCapabilities(
                     new AdditionalCapabilities().withUltraSsdEnabled(true).withHibernationEnabled(true))
-                .withOsProfile(new OSProfile().withComputerName("test000000").withAdminUsername("Foo12")
-                    .withAdminPassword("fakeTokenPlaceholder").withCustomData("aaaa")
+                .withOsProfile(new OSProfile().withComputerName("test000000")
+                    .withAdminUsername("Foo12")
+                    .withAdminPassword("fakeTokenPlaceholder")
+                    .withCustomData("aaaa")
                     .withWindowsConfiguration(new WindowsConfiguration().withProvisionVMAgent(true)
-                        .withEnableAutomaticUpdates(true).withTimeZone("aaaaaaaaaaaaaaaaaaaaaaaaaaa")
+                        .withEnableAutomaticUpdates(true)
+                        .withTimeZone("aaaaaaaaaaaaaaaaaaaaaaaaaaa")
                         .withAdditionalUnattendContent(
                             Arrays.asList(new AdditionalUnattendContent().withPassName(PassNames.OOBE_SYSTEM)
                                 .withComponentName(ComponentNames.MICROSOFT_WINDOWS_SHELL_SETUP)
-                                .withSettingName(SettingNames.AUTO_LOGON).withContent("aaaaaaaaaaaaaaaaaaaa")))
+                                .withSettingName(SettingNames.AUTO_LOGON)
+                                .withContent("aaaaaaaaaaaaaaaaaaaa")))
                         .withPatchSettings(new PatchSettings().withPatchMode(WindowsVMGuestPatchMode.MANUAL)
-                            .withEnableHotpatching(true).withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT))
-                        .withWinRM(new WinRMConfiguration().withListeners(Arrays.asList(new WinRMListener()
-                            .withProtocol(ProtocolTypes.HTTP).withCertificateUrl("aaaaaaaaaaaaaaaaaaaaaa")))))
+                            .withEnableHotpatching(true)
+                            .withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT))
+                        .withWinRM(new WinRMConfiguration()
+                            .withListeners(Arrays.asList(new WinRMListener().withProtocol(ProtocolTypes.HTTP)
+                                .withCertificateUrl("aaaaaaaaaaaaaaaaaaaaaa")))))
                     .withLinuxConfiguration(new LinuxConfiguration().withDisablePasswordAuthentication(true)
                         .withSsh(new SshConfiguration().withPublicKeys(
                             Arrays.asList(new SshPublicKey().withPath("aaa").withKeyData("fakeTokenPlaceholder"))))
                         .withProvisionVMAgent(true)
                         .withPatchSettings(new LinuxPatchSettings().withPatchMode(LinuxVMGuestPatchMode.IMAGE_DEFAULT)
                             .withAssessmentMode(LinuxPatchAssessmentMode.IMAGE_DEFAULT)))
-                    .withSecrets(Arrays.asList()).withAllowExtensionOperations(true)
+                    .withSecrets(Arrays.asList())
+                    .withAllowExtensionOperations(true)
                     .withRequireGuestProvisionSignal(true))
                 .withSecurityProfile(new SecurityProfile()
                     .withUefiSettings(new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true))
-                    .withEncryptionAtHost(true).withSecurityType(SecurityTypes.TRUSTED_LAUNCH))
+                    .withEncryptionAtHost(true)
+                    .withSecurityType(SecurityTypes.TRUSTED_LAUNCH))
                 .withNetworkProfile(new NetworkProfile()
                     .withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
                         "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}/virtualMachines/0/networkInterfaces/vmsstestnetconfig5415")
-                        .withPrimary(true).withDeleteOption(DeleteOptions.DELETE)))
+                        .withPrimary(true)
+                        .withDeleteOption(DeleteOptions.DELETE)))
                     .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE)
                     .withNetworkInterfaceConfigurations(Arrays.asList(new VirtualMachineNetworkInterfaceConfiguration()
-                        .withName("aaaaaaaaaaa").withPrimary(true).withDeleteOption(DeleteOptions.DELETE)
-                        .withEnableAcceleratedNetworking(true).withEnableFpga(true).withEnableIpForwarding(true)
+                        .withName("aaaaaaaaaaa")
+                        .withPrimary(true)
+                        .withDeleteOption(DeleteOptions.DELETE)
+                        .withEnableAcceleratedNetworking(true)
+                        .withEnableFpga(true)
+                        .withEnableIpForwarding(true)
                         .withNetworkSecurityGroup(new SubResource().withId(
                             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"))
                         .withDnsSettings(new VirtualMachineNetworkInterfaceDnsSettingsConfiguration()
@@ -192,11 +219,13 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                                 .withName("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
                                 .withSku(new PublicIpAddressSku().withName(PublicIpAddressSkuName.BASIC)
                                     .withTier(PublicIpAddressSkuTier.REGIONAL))
-                                .withIdleTimeoutInMinutes(2).withDeleteOption(DeleteOptions.DELETE)
+                                .withIdleTimeoutInMinutes(2)
+                                .withDeleteOption(DeleteOptions.DELETE)
                                 .withDnsSettings(new VirtualMachinePublicIpAddressDnsSettingsConfiguration()
                                     .withDomainNameLabel("aaaaaaaaaaaaaaaaaaaaaaaaa"))
-                                .withIpTags(Arrays.asList(new VirtualMachineIpTag()
-                                    .withIpTagType("aaaaaaaaaaaaaaaaaaaaaaaaa").withTag("aaaaaaaaaaaaaaaaaaaa")))
+                                .withIpTags(
+                                    Arrays.asList(new VirtualMachineIpTag().withIpTagType("aaaaaaaaaaaaaaaaaaaaaaaaa")
+                                        .withTag("aaaaaaaaaaaaaaaaaaaa")))
                                 .withPublicIpPrefix(new SubResource().withId(
                                     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"))
                                 .withPublicIpAddressVersion(IpVersions.IPV4)
@@ -212,7 +241,9 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")))))
                 .withNetworkProfileConfiguration(new VirtualMachineScaleSetVMNetworkProfileConfiguration()
                     .withNetworkInterfaceConfigurations(Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration()
-                        .withName("vmsstestnetconfig5415").withPrimary(true).withEnableAcceleratedNetworking(true)
+                        .withName("vmsstestnetconfig5415")
+                        .withPrimary(true)
+                        .withEnableAcceleratedNetworking(true)
                         .withEnableFpga(true)
                         .withNetworkSecurityGroup(new SubResource().withId(
                             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"))
@@ -225,8 +256,8 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                             .withPrimary(true)
                             .withPublicIpAddressConfiguration(new VirtualMachineScaleSetPublicIpAddressConfiguration()
                                 .withName("aaaaaaaaaaaaaaaaaa")
-                                .withSku(new PublicIpAddressSku()
-                                    .withName(PublicIpAddressSkuName.BASIC).withTier(PublicIpAddressSkuTier.REGIONAL))
+                                .withSku(new PublicIpAddressSku().withName(PublicIpAddressSkuName.BASIC)
+                                    .withTier(PublicIpAddressSkuTier.REGIONAL))
                                 .withIdleTimeoutInMinutes(18)
                                 .withDnsSettings(new VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings()
                                     .withDomainNameLabel("aaaaaaaaaaaaaaaaaa"))
@@ -234,7 +265,8 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                                     .withTag("aaaaaaaaaaaaaaaaaaaaaaaaaaa")))
                                 .withPublicIpPrefix(new SubResource().withId(
                                     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"))
-                                .withPublicIpAddressVersion(IpVersion.IPV4).withDeleteOption(DeleteOptions.DELETE))
+                                .withPublicIpAddressVersion(IpVersion.IPV4)
+                                .withDeleteOption(DeleteOptions.DELETE))
                             .withPrivateIpAddressVersion(IpVersion.IPV4)
                             .withApplicationGatewayBackendAddressPools(Arrays.asList(new SubResource().withId(
                                 "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")))
@@ -244,7 +276,8 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                                 "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")))
                             .withLoadBalancerInboundNatPools(Arrays.asList(new SubResource().withId(
                                 "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")))))
-                        .withEnableIpForwarding(true).withDeleteOption(DeleteOptions.DELETE))))
+                        .withEnableIpForwarding(true)
+                        .withDeleteOption(DeleteOptions.DELETE))))
                 .withDiagnosticsProfile(new DiagnosticsProfile()
                     .withBootDiagnostics(new BootDiagnostics().withEnabled(true).withStorageUri("aaaaaaaaaaaaa")))
                 .withAvailabilitySet(new SubResource().withId(
@@ -252,8 +285,7 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                 .withLicenseType("aaaaaaaaaa")
                 .withProtectionPolicy(new VirtualMachineScaleSetVMProtectionPolicy().withProtectFromScaleIn(true)
                     .withProtectFromScaleSetActions(true))
-                .withUserData("RXhhbXBsZSBVc2VyRGF0YQ=="),
-            null, null, com.azure.core.util.Context.NONE);
+                .withUserData("RXhhbXBsZSBVc2VyRGF0YQ=="), null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -268,9 +300,13 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
      */
     public static void
         virtualMachineScaleSetVMUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs().update("rgcompute",
-            "aaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaa", new VirtualMachineScaleSetVMInner().withLocation("westus"),
-            null, null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .update("rgcompute", "aaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaa",
+                new VirtualMachineScaleSetVMInner().withLocation("westus"), null, null,
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

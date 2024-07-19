@@ -24,7 +24,7 @@ public final class PoolsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":1256948297,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":\"datahnvpamqgxq\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"ezikywggxkal\"},\"identity\":{\"principalId\":\"melwuipiccjz\",\"tenantId\":\"ivgvvcna\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"tdaaygdvwvg\":{\"principalId\":\"nxxmueedndrdv\",\"clientId\":\"kwqqtchealmf\"},\"himdbl\":{\"principalId\":\"ohgwxrtfudxepxg\",\"clientId\":\"agvrvmnpkuk\"},\"xw\":{\"principalId\":\"wi\",\"clientId\":\"njhf\"}}},\"location\":\"zk\",\"tags\":{\"fjawneaivxwczel\":\"qreyfkzi\",\"r\":\"c\",\"xbjhwuaanozjosph\":\"lsfeaenwabfatkld\",\"ag\":\"oulpjrv\"},\"id\":\"rvimjwosytxitcsk\",\"name\":\"cktqumiekkezzi\",\"type\":\"hlyfjhdgqgg\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"maximumConcurrency\":164113652,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":\"datauvfbtkuwh\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"hykojoxafnndlpic\"},\"identity\":{\"principalId\":\"ymkcdyhb\",\"tenantId\":\"kpw\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"dsytgadgvr\":{\"principalId\":\"ovvqfovljxywsu\",\"clientId\":\"yrs\"}}},\"location\":\"aeneqnzarrwl\",\"tags\":{\"bjibwwiftohq\":\"ijfqkacewiipfp\",\"plsaknynfsynljph\":\"vpuvks\"},\"id\":\"op\",\"name\":\"odlqiyntor\",\"type\":\"ihleos\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,12 +35,13 @@ public final class PoolsListMockTests {
 
         PagedIterable<Pool> response = manager.pools().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zk", response.iterator().next().location());
-        Assertions.assertEquals("qreyfkzi", response.iterator().next().tags().get("fjawneaivxwczel"));
-        Assertions.assertEquals(ProvisioningState.SUCCEEDED,
+        Assertions.assertEquals("aeneqnzarrwl", response.iterator().next().location());
+        Assertions.assertEquals("ijfqkacewiipfp", response.iterator().next().tags().get("bjibwwiftohq"));
+        Assertions.assertEquals(ProvisioningState.CANCELED,
             response.iterator().next().properties().provisioningState());
-        Assertions.assertEquals(1256948297, response.iterator().next().properties().maximumConcurrency());
-        Assertions.assertEquals("ezikywggxkal", response.iterator().next().properties().devCenterProjectResourceId());
+        Assertions.assertEquals(164113652, response.iterator().next().properties().maximumConcurrency());
+        Assertions.assertEquals("hykojoxafnndlpic",
+            response.iterator().next().properties().devCenterProjectResourceId());
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
     }
 }

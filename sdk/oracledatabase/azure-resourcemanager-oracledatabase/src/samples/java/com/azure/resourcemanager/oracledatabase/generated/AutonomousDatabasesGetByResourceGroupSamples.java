@@ -10,8 +10,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
 public final class AutonomousDatabasesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_get.
-     * json
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_get.json
      */
     /**
      * Sample code: Get Autonomous Database.
@@ -25,8 +24,7 @@ public final class AutonomousDatabasesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_get.
-     * json
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_get.json
      */
     /**
      * Sample code: AutonomousDatabases_Get.

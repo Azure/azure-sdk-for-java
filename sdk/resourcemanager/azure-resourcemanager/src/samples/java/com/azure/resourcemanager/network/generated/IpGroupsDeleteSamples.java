@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class IpGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/IpGroupsDelete.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/IpGroupsDelete.json
      */
     /**
      * Sample code: Delete_IpGroups.

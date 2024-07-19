@@ -5,29 +5,34 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Specifies the security posture to be used for all virtual machines in the scale set. Minimum api-version:
- * 2023-03-01.
+ * Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01.
  */
 @Fluent
 public final class SecurityPostureReference {
     /*
      * The security posture reference id in the form of
-     * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{
-     * major.*}|latest
+     * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|
+     * latest
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
-     * List of virtual machine extensions to exclude when applying the Security Posture.
+     * The list of virtual machine extension names to exclude when applying the security posture.
      */
     @JsonProperty(value = "excludeExtensions")
-    private List<VirtualMachineExtensionInner> excludeExtensions;
+    private List<String> excludeExtensions;
+
+    /*
+     * Whether the security posture can be overridden by the user.
+     */
+    @JsonProperty(value = "isOverridable")
+    private Boolean isOverridable;
 
     /**
      * Creates an instance of SecurityPostureReference class.
@@ -37,7 +42,7 @@ public final class SecurityPostureReference {
 
     /**
      * Get the id property: The security posture reference id in the form of
-     * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest.
+     * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|latest.
      * 
      * @return the id value.
      */
@@ -47,7 +52,7 @@ public final class SecurityPostureReference {
 
     /**
      * Set the id property: The security posture reference id in the form of
-     * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest.
+     * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|latest.
      * 
      * @param id the id value to set.
      * @return the SecurityPostureReference object itself.
@@ -58,24 +63,44 @@ public final class SecurityPostureReference {
     }
 
     /**
-     * Get the excludeExtensions property: List of virtual machine extensions to exclude when applying the Security
-     * Posture.
+     * Get the excludeExtensions property: The list of virtual machine extension names to exclude when applying the
+     * security posture.
      * 
      * @return the excludeExtensions value.
      */
-    public List<VirtualMachineExtensionInner> excludeExtensions() {
+    public List<String> excludeExtensions() {
         return this.excludeExtensions;
     }
 
     /**
-     * Set the excludeExtensions property: List of virtual machine extensions to exclude when applying the Security
-     * Posture.
+     * Set the excludeExtensions property: The list of virtual machine extension names to exclude when applying the
+     * security posture.
      * 
      * @param excludeExtensions the excludeExtensions value to set.
      * @return the SecurityPostureReference object itself.
      */
-    public SecurityPostureReference withExcludeExtensions(List<VirtualMachineExtensionInner> excludeExtensions) {
+    public SecurityPostureReference withExcludeExtensions(List<String> excludeExtensions) {
         this.excludeExtensions = excludeExtensions;
+        return this;
+    }
+
+    /**
+     * Get the isOverridable property: Whether the security posture can be overridden by the user.
+     * 
+     * @return the isOverridable value.
+     */
+    public Boolean isOverridable() {
+        return this.isOverridable;
+    }
+
+    /**
+     * Set the isOverridable property: Whether the security posture can be overridden by the user.
+     * 
+     * @param isOverridable the isOverridable value to set.
+     * @return the SecurityPostureReference object itself.
+     */
+    public SecurityPostureReference withIsOverridable(Boolean isOverridable) {
+        this.isOverridable = isOverridable;
         return this;
     }
 
@@ -85,8 +110,11 @@ public final class SecurityPostureReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (excludeExtensions() != null) {
-            excludeExtensions().forEach(e -> e.validate());
+        if (id() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model SecurityPostureReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityPostureReference.class);
 }

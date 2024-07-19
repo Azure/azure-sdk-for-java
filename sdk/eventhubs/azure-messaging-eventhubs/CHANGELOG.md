@@ -1,15 +1,27 @@
 # Release History
 
+## 5.19.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Copy connection string properties when cloning the EventHubClientBuilder in EventProcessorClientBuilder, fixes ([#40938](https://github.com/Azure/azure-sdk-for-java/issues/40938))
+
+### Other Changes
+
 ## 5.18.5 (2024-06-24)
 
 ### Features Added
 
-- Add support for local emulator.
+- Add support for local emulator - [Event Hubs emulator overview](https://learn.microsoft.com/azure/event-hubs/overview-emulator).
 
 ### Bugs Fixed
 
-- Use endpoint address's port when specified in connection string. (#40415)[https://github.com/Azure/azure-sdk-for-java/pull/40415]
-- Fix parsing of `customEndpointAddress` to match one used in connection string. (#40415)[https://github.com/Azure/azure-sdk-for-java/pull/40415]
+- Use endpoint address's port when specified in connection string. ([#40415](https://github.com/Azure/azure-sdk-for-java/pull/40415))
+- Fix parsing of `customEndpointAddress` to match one used in connection string. ([#40415](https://github.com/Azure/azure-sdk-for-java/pull/40415))
 - Fixed issue where creating EventProcessorClient instances using the same EventProcessorClientBuilder instance could result in incorrect properties. ([#29875](https://github.com/Azure/azure-sdk-for-java/issues/29875))
 
 ### Other Changes

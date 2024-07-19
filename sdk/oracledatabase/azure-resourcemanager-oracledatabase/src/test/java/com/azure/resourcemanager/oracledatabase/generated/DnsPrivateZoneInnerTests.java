@@ -12,7 +12,7 @@ public final class DnsPrivateZoneInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateZoneInner model = BinaryData.fromString(
-            "{\"properties\":{\"ocid\":\"johxcrsb\",\"isProtected\":true,\"lifecycleState\":\"Creating\",\"self\":\"srruvwbhsqfsubcg\",\"serial\":992710439,\"version\":\"irx\",\"viewId\":\"ybsrfbjfdtwss\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-06-01T18:34:35Z\",\"provisioningState\":\"Canceled\"},\"id\":\"jzbexilzznfq\",\"name\":\"nvwpmqtaruouj\",\"type\":\"kcjhwqytjrybnwj\"}")
+            "{\"properties\":{\"ocid\":\"u\",\"isProtected\":false,\"lifecycleState\":\"Updating\",\"self\":\"ttdumorppxebmnzb\",\"serial\":1717455223,\"version\":\"pglkf\",\"viewId\":\"hdneuelfph\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-11-22T01:42:51Z\",\"provisioningState\":\"Failed\"},\"id\":\"ikdowwquuvx\",\"name\":\"xclvit\",\"type\":\"hqzonosggbhcoh\"}")
             .toObject(DnsPrivateZoneInner.class);
     }
 

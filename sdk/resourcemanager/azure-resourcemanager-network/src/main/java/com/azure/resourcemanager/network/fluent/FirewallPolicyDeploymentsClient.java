@@ -11,10 +11,9 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in FirewallPolicyDeploymentsClient.
@@ -22,7 +21,7 @@ import java.nio.ByteBuffer;
 public interface FirewallPolicyDeploymentsClient {
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +34,7 @@ public interface FirewallPolicyDeploymentsClient {
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,7 +47,7 @@ public interface FirewallPolicyDeploymentsClient {
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -61,7 +60,7 @@ public interface FirewallPolicyDeploymentsClient {
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param context The context to associate with this operation.
@@ -76,7 +75,7 @@ public interface FirewallPolicyDeploymentsClient {
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,7 +88,7 @@ public interface FirewallPolicyDeploymentsClient {
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -101,7 +100,7 @@ public interface FirewallPolicyDeploymentsClient {
 
     /**
      * Deploys the firewall policy draft and child rule collection group drafts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param context The context to associate with this operation.

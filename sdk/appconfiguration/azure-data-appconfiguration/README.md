@@ -6,13 +6,14 @@ Modern programs, especially programs running in a cloud, generally have many com
 Use the client library for App Configuration to create and manage application configuration settings.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation]
-| [Product documentation][azconfig_docs] | [Samples][samples] | [Troubleshooting][troubleshooting]
+| [Product documentation][app_config_docs] | [Samples][samples] | [Troubleshooting][troubleshooting]
 
 ## Getting started
 
 ### Prerequisites
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
 - [App Configuration Store][app_config_store]
 
@@ -585,7 +586,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [api_documentation]: https://aka.ms/java-docs
 [app_config_store]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-dotnet-core-app#create-an-app-configuration-store
 [app_config_role]: https://docs.microsoft.com/azure/azure-app-configuration/rest-api-authorization-azure-ad#roles
-[azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
+[app_config_docs]: https://docs.microsoft.com/azure/azure-app-configuration
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [azure_subscription]: https://azure.microsoft.com/free

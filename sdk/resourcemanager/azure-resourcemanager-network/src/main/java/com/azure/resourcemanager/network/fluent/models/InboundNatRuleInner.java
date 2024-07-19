@@ -22,7 +22,8 @@ public final class InboundNatRuleInner extends SubResource {
     private InboundNatRulePropertiesFormatInner innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of inbound NAT rules used by the load balancer. This name can be used to access the resource.
+     * The name of the resource that is unique within the set of inbound NAT rules used by the load balancer. This name
+     * can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;

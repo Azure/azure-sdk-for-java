@@ -5,32 +5,41 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The RecordingStateResponseInternal model. */
+/**
+ * The RecordingStateResponseInternal model.
+ */
 @Fluent
-public final class RecordingStateResponseInternal {
+public final class RecordingStateResponseInternal implements JsonSerializable<RecordingStateResponseInternal> {
     /*
      * The recordingId property.
      */
-    @JsonProperty(value = "recordingId")
     private String recordingId;
 
     /*
      * The recordingState property.
      */
-    @JsonProperty(value = "recordingState")
     private RecordingStateInternal recordingState;
 
     /*
      * The recordingKind property.
      */
-    @JsonProperty(value = "recordingKind")
     private RecordingKind recordingKind;
 
     /**
+     * Creates an instance of RecordingStateResponseInternal class.
+     */
+    public RecordingStateResponseInternal() {
+    }
+
+    /**
      * Get the recordingId property: The recordingId property.
-     *
+     * 
      * @return the recordingId value.
      */
     public String getRecordingId() {
@@ -39,7 +48,7 @@ public final class RecordingStateResponseInternal {
 
     /**
      * Set the recordingId property: The recordingId property.
-     *
+     * 
      * @param recordingId the recordingId value to set.
      * @return the RecordingStateResponseInternal object itself.
      */
@@ -50,7 +59,7 @@ public final class RecordingStateResponseInternal {
 
     /**
      * Get the recordingState property: The recordingState property.
-     *
+     * 
      * @return the recordingState value.
      */
     public RecordingStateInternal getRecordingState() {
@@ -59,7 +68,7 @@ public final class RecordingStateResponseInternal {
 
     /**
      * Set the recordingState property: The recordingState property.
-     *
+     * 
      * @param recordingState the recordingState value to set.
      * @return the RecordingStateResponseInternal object itself.
      */
@@ -70,7 +79,7 @@ public final class RecordingStateResponseInternal {
 
     /**
      * Get the recordingKind property: The recordingKind property.
-     *
+     * 
      * @return the recordingKind value.
      */
     public RecordingKind getRecordingKind() {
@@ -79,12 +88,58 @@ public final class RecordingStateResponseInternal {
 
     /**
      * Set the recordingKind property: The recordingKind property.
-     *
+     * 
      * @param recordingKind the recordingKind value to set.
      * @return the RecordingStateResponseInternal object itself.
      */
     public RecordingStateResponseInternal setRecordingKind(RecordingKind recordingKind) {
         this.recordingKind = recordingKind;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recordingId", this.recordingId);
+        jsonWriter.writeStringField("recordingState",
+            this.recordingState == null ? null : this.recordingState.toString());
+        jsonWriter.writeStringField("recordingKind", this.recordingKind == null ? null : this.recordingKind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecordingStateResponseInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecordingStateResponseInternal if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecordingStateResponseInternal.
+     */
+    public static RecordingStateResponseInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecordingStateResponseInternal deserializedRecordingStateResponseInternal
+                = new RecordingStateResponseInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recordingId".equals(fieldName)) {
+                    deserializedRecordingStateResponseInternal.recordingId = reader.getString();
+                } else if ("recordingState".equals(fieldName)) {
+                    deserializedRecordingStateResponseInternal.recordingState
+                        = RecordingStateInternal.fromString(reader.getString());
+                } else if ("recordingKind".equals(fieldName)) {
+                    deserializedRecordingStateResponseInternal.recordingKind
+                        = RecordingKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecordingStateResponseInternal;
+        });
     }
 }

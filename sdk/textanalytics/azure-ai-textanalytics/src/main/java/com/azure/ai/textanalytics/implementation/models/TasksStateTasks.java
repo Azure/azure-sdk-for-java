@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The TasksStateTasks model. */
+/**
+ * The TasksStateTasks model.
+ */
 @Fluent
 public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> {
     /*
@@ -40,12 +42,15 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
      */
     private List<AnalyzeTextLROResult> items;
 
-    /** Creates an instance of TasksStateTasks class. */
-    public TasksStateTasks() {}
+    /**
+     * Creates an instance of TasksStateTasks class.
+     */
+    public TasksStateTasks() {
+    }
 
     /**
      * Get the completed property: The completed property.
-     *
+     * 
      * @return the completed value.
      */
     public int getCompleted() {
@@ -54,7 +59,7 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
 
     /**
      * Set the completed property: The completed property.
-     *
+     * 
      * @param completed the completed value to set.
      * @return the TasksStateTasks object itself.
      */
@@ -65,7 +70,7 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
 
     /**
      * Get the failed property: The failed property.
-     *
+     * 
      * @return the failed value.
      */
     public int getFailed() {
@@ -74,7 +79,7 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
 
     /**
      * Set the failed property: The failed property.
-     *
+     * 
      * @param failed the failed value to set.
      * @return the TasksStateTasks object itself.
      */
@@ -85,7 +90,7 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
 
     /**
      * Get the inProgress property: The inProgress property.
-     *
+     * 
      * @return the inProgress value.
      */
     public int getInProgress() {
@@ -94,7 +99,7 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
 
     /**
      * Set the inProgress property: The inProgress property.
-     *
+     * 
      * @param inProgress the inProgress value to set.
      * @return the TasksStateTasks object itself.
      */
@@ -105,7 +110,7 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
 
     /**
      * Get the total property: The total property.
-     *
+     * 
      * @return the total value.
      */
     public int getTotal() {
@@ -114,7 +119,7 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
 
     /**
      * Set the total property: The total property.
-     *
+     * 
      * @param total the total value to set.
      * @return the TasksStateTasks object itself.
      */
@@ -125,7 +130,7 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
 
     /**
      * Get the items property: The items property.
-     *
+     * 
      * @return the items value.
      */
     public List<AnalyzeTextLROResult> getItems() {
@@ -134,7 +139,7 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
 
     /**
      * Set the items property: The items property.
-     *
+     * 
      * @param items the items value to set.
      * @return the TasksStateTasks object itself.
      */
@@ -143,6 +148,9 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -156,39 +164,38 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
 
     /**
      * Reads an instance of TasksStateTasks from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of TasksStateTasks if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TasksStateTasks.
      */
     public static TasksStateTasks fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    TasksStateTasks deserializedTasksStateTasks = new TasksStateTasks();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            TasksStateTasks deserializedTasksStateTasks = new TasksStateTasks();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("completed".equals(fieldName)) {
-                            deserializedTasksStateTasks.completed = reader.getInt();
-                        } else if ("failed".equals(fieldName)) {
-                            deserializedTasksStateTasks.failed = reader.getInt();
-                        } else if ("inProgress".equals(fieldName)) {
-                            deserializedTasksStateTasks.inProgress = reader.getInt();
-                        } else if ("total".equals(fieldName)) {
-                            deserializedTasksStateTasks.total = reader.getInt();
-                        } else if ("items".equals(fieldName)) {
-                            List<AnalyzeTextLROResult> items =
-                                    reader.readArray(reader1 -> AnalyzeTextLROResult.fromJson(reader1));
-                            deserializedTasksStateTasks.items = items;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("completed".equals(fieldName)) {
+                    deserializedTasksStateTasks.completed = reader.getInt();
+                } else if ("failed".equals(fieldName)) {
+                    deserializedTasksStateTasks.failed = reader.getInt();
+                } else if ("inProgress".equals(fieldName)) {
+                    deserializedTasksStateTasks.inProgress = reader.getInt();
+                } else if ("total".equals(fieldName)) {
+                    deserializedTasksStateTasks.total = reader.getInt();
+                } else if ("items".equals(fieldName)) {
+                    List<AnalyzeTextLROResult> items
+                        = reader.readArray(reader1 -> AnalyzeTextLROResult.fromJson(reader1));
+                    deserializedTasksStateTasks.items = items;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedTasksStateTasks;
-                });
+            return deserializedTasksStateTasks;
+        });
     }
 }

@@ -58,6 +58,9 @@ parameters:
   - name: TimeoutInMinutes
     type: number
     default: 60
+  - name: EnvVars
+    type: object
+    default: {}
 
 jobs:
   - job: 'Build'
@@ -405,3 +408,4 @@ jobs:
         BuildParallelization: ${{ parameters.BuildParallelization }}
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
         TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+        EnvVars: ${{ parameters.EnvVars }}

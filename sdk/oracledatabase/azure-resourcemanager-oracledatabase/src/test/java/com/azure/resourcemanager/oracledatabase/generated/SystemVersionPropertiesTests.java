@@ -11,7 +11,7 @@ public final class SystemVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SystemVersionProperties model
-            = BinaryData.fromString("{\"systemVersion\":\"hdlxyjrxsagafcn\"}").toObject(SystemVersionProperties.class);
+            = BinaryData.fromString("{\"systemVersion\":\"dqrhzoymib\"}").toObject(SystemVersionProperties.class);
     }
 
     @org.junit.jupiter.api.Test

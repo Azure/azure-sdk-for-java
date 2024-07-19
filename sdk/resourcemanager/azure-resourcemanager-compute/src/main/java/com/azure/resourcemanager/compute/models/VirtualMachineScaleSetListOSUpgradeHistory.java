@@ -22,8 +22,8 @@ public final class VirtualMachineScaleSetListOSUpgradeHistory {
     private List<UpgradeOperationHistoricalStatusInfoInner> value;
 
     /*
-     * The uri to fetch the next page of OS Upgrade History. Call ListNext() with this to fetch the next page of
-     * history of upgrades.
+     * The uri to fetch the next page of OS Upgrade History. Call ListNext() with this to fetch the next page of history
+     * of upgrades.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +83,9 @@ public final class VirtualMachineScaleSetListOSUpgradeHistory {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model VirtualMachineScaleSetListOSUpgradeHistory"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model VirtualMachineScaleSetListOSUpgradeHistory"));
         } else {
             value().forEach(e -> e.validate());
         }

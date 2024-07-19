@@ -223,8 +223,9 @@ public final class GalleryApplicationProperties {
      */
     public void validate() {
         if (supportedOSType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property supportedOSType in model GalleryApplicationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property supportedOSType in model GalleryApplicationProperties"));
         }
         if (customActions() != null) {
             customActions().forEach(e -> e.validate());

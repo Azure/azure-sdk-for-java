@@ -11,22 +11,26 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The KeyPhrasesDocumentResult model. */
+/**
+ * The KeyPhrasesDocumentResult model.
+ */
 @Fluent
 public class KeyPhrasesDocumentResult extends DocumentResult {
     /*
-     * A list of representative words or phrases. The number of key phrases returned is proportional to the number of
-     * words in the input document.
+     * A list of representative words or phrases. The number of key phrases returned is proportional to the number of words in the input document.
      */
     private List<String> keyPhrases;
 
-    /** Creates an instance of KeyPhrasesDocumentResult class. */
-    public KeyPhrasesDocumentResult() {}
+    /**
+     * Creates an instance of KeyPhrasesDocumentResult class.
+     */
+    public KeyPhrasesDocumentResult() {
+    }
 
     /**
      * Get the keyPhrases property: A list of representative words or phrases. The number of key phrases returned is
      * proportional to the number of words in the input document.
-     *
+     * 
      * @return the keyPhrases value.
      */
     public List<String> getKeyPhrases() {
@@ -36,7 +40,7 @@ public class KeyPhrasesDocumentResult extends DocumentResult {
     /**
      * Set the keyPhrases property: A list of representative words or phrases. The number of key phrases returned is
      * proportional to the number of words in the input document.
-     *
+     * 
      * @param keyPhrases the keyPhrases value to set.
      * @return the KeyPhrasesDocumentResult object itself.
      */
@@ -45,27 +49,36 @@ public class KeyPhrasesDocumentResult extends DocumentResult {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyPhrasesDocumentResult setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyPhrasesDocumentResult setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyPhrasesDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -78,38 +91,36 @@ public class KeyPhrasesDocumentResult extends DocumentResult {
 
     /**
      * Reads an instance of KeyPhrasesDocumentResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyPhrasesDocumentResult if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyPhrasesDocumentResult.
      */
     public static KeyPhrasesDocumentResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyPhrasesDocumentResult deserializedKeyPhrasesDocumentResult = new KeyPhrasesDocumentResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyPhrasesDocumentResult deserializedKeyPhrasesDocumentResult = new KeyPhrasesDocumentResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedKeyPhrasesDocumentResult.setId(reader.getString());
-                        } else if ("warnings".equals(fieldName)) {
-                            List<DocumentWarning> warnings =
-                                    reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
-                            deserializedKeyPhrasesDocumentResult.setWarnings(warnings);
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedKeyPhrasesDocumentResult.setStatistics(DocumentStatistics.fromJson(reader));
-                        } else if ("keyPhrases".equals(fieldName)) {
-                            List<String> keyPhrases = reader.readArray(reader1 -> reader1.getString());
-                            deserializedKeyPhrasesDocumentResult.keyPhrases = keyPhrases;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedKeyPhrasesDocumentResult.setId(reader.getString());
+                } else if ("warnings".equals(fieldName)) {
+                    List<DocumentWarning> warnings = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
+                    deserializedKeyPhrasesDocumentResult.setWarnings(warnings);
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedKeyPhrasesDocumentResult.setStatistics(DocumentStatistics.fromJson(reader));
+                } else if ("keyPhrases".equals(fieldName)) {
+                    List<String> keyPhrases = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKeyPhrasesDocumentResult.keyPhrases = keyPhrases;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyPhrasesDocumentResult;
-                });
+            return deserializedKeyPhrasesDocumentResult;
+        });
     }
 }

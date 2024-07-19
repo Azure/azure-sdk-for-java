@@ -17,6 +17,10 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
@@ -24,11 +28,7 @@ import com.azure.messaging.servicebus.ServiceBusFailureReason;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -97,8 +97,10 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
                 fileInputStream.read(jsonData);
                 fileInputStream.close();
                 String jsonString = new String(jsonData, StandardCharsets.UTF_8);
-                ObjectMapper objectMapper = new ObjectMapper();
-                List<String> persistedEvents = objectMapper.readValue(jsonString, new TypeReference<List<String>>() {});
+                final List<String> persistedEvents = new ArrayList<>();
+                try (JsonReader reader = JsonProviders.createReader(jsonString)) {
+                    reader.readArray(r -> persistedEvents.add(r.getString()));
+                }
                 persistedEvents.forEach(this::messageBodyHandler);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -118,8 +120,15 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             try {
                 String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName() + ".json";
 
-                ObjectMapper objectMapper = new ObjectMapper();
-                String jsonString = objectMapper.writeValueAsString(eventsToPersist);
+                String jsonString;
+                try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                     JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+                    writer.writeArray(eventsToPersist, JsonWriter::writeString);
+                    writer.flush();
+                    jsonString = outputStream.toString();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 new FileOutputStream(fileName).close();
                 FileOutputStream fileOutputStream = new FileOutputStream(fileName, false);
                 fileOutputStream.write(jsonString.getBytes());
@@ -180,22 +189,36 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     private void messageBodyHandler(String body) {
         // parse the message
         assert !body.isEmpty();
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        JsonNode eventData;
-        try {
-            eventData = mapper.readTree(body);
-        } catch (Exception e) {
+
+        final AcsIncomingCallEventData eventGridEventData;
+        try (JsonReader jsonReader = JsonProviders.createReader(body)) {
+            eventGridEventData = jsonReader.readObject(reader -> {
+                AcsIncomingCallEventData event = new AcsIncomingCallEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("to".equals(fieldName)) {
+                        event.to = CommunicationIdentifierModel.fromJson(reader);
+                    } else if ("from".equals(fieldName)) {
+                        event.from = CommunicationIdentifierModel.fromJson(reader);
+                    } else if ("incomingCallContext".equals(fieldName)) {
+                        event.incomingCallContext = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return event;
+            });
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         // check if this is an incomingCallEvent(Event grid event) or normal callAutomation cloud events
-        if (eventData.get("incomingCallContext") != null) {
-            String incomingCallContext = mapper.convertValue(eventData.get("incomingCallContext"), String.class);
-            CommunicationIdentifierModel from = mapper.convertValue(eventData.get("from"), CommunicationIdentifierModel.class);
-            CommunicationIdentifierModel to = mapper.convertValue(eventData.get("to"), CommunicationIdentifierModel.class);
+        if (eventGridEventData.incomingCallContext != null) {
+            String incomingCallContext = eventGridEventData.incomingCallContext;
+            CommunicationIdentifierModel from = eventGridEventData.from;
+            CommunicationIdentifierModel to = eventGridEventData.to;
             String uniqueId = removeAllNonChar(from.getRawId() + to.getRawId());
-
             incomingCallContextStore.put(uniqueId, incomingCallContext);
         } else {
             CallAutomationEventBase event = CallAutomationEventParser.parseEvents(body).get(0);
@@ -290,5 +313,11 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             }
         }
         return content;
+    }
+
+    private static final class AcsIncomingCallEventData {
+        String incomingCallContext;
+        CommunicationIdentifierModel from;
+        CommunicationIdentifierModel to;
     }
 }

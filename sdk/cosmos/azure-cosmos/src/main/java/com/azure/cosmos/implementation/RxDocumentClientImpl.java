@@ -15,6 +15,7 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.CosmosOperationPolicy;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
@@ -70,6 +71,7 @@ import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosOperationDetails;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -164,6 +166,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor itemResponseAccessor =
         ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
 
+    private static final ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor changeFeedOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+
+    private static final ImplementationBridgeHelpers.CosmosOperationDetailsHelper.CosmosOperationDetailsAccessor operationDetailsAccessor =
+        ImplementationBridgeHelpers.CosmosOperationDetailsHelper.getCosmosOperationDetailsAccessor();
+
     private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
@@ -243,6 +251,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean sessionCapturingOverrideEnabled;
     private final boolean sessionCapturingDisabled;
     private final boolean isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig;
+    private List<CosmosOperationPolicy> operationPolicies;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -308,7 +317,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 SessionRetryOptions sessionRetryOptions,
                                 CosmosContainerProactiveInitConfig containerProactiveInitConfig,
                                 CosmosItemSerializer defaultCustomSerializer,
-                                boolean isRegionScopedSessionCapturingEnabled) {
+                                boolean isRegionScopedSessionCapturingEnabled,
+                                List<CosmosOperationPolicy> operationPolicies) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -331,6 +341,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 defaultCustomSerializer,
                 isRegionScopedSessionCapturingEnabled);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
+        this.operationPolicies = operationPolicies;
     }
 
     private RxDocumentClientImpl(URI serviceEndpoint,
@@ -896,7 +907,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Database, OperationType.Create);
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = database.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
+            ByteBuffer byteBuffer = database.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null, false);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1303,7 +1314,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Create);
 
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
+            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null, false);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1356,7 +1367,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String path = Utils.joinPath(collection.getSelfLink(), null);
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Replace);
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
+            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null, false);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1803,7 +1814,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null) {
             trackingId = options.getTrackingId();
         }
-        ByteBuffer content = InternalObjectNode.serializeJsonToByteBuffer(document, options.getEffectiveItemSerializer(), trackingId);
+        ByteBuffer content = InternalObjectNode.serializeJsonToByteBuffer(document, options.getEffectiveItemSerializer(), trackingId, true);
         Instant serializationEndTimeUTC = Instant.now();
 
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -1818,14 +1829,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEffectiveClientContext(clientContextOverride),
             operationType, ResourceType.Document, path, requestHeaders, options, content);
 
-        if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+        if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
         if( options != null) {
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         if (requestRetryPolicy != null) {
@@ -1874,7 +1886,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null) {
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         if (requestRetryPolicy != null) {
@@ -1887,7 +1900,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (options != null) {
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
@@ -2183,7 +2197,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 e2ecfg,
                 clientCtxOverride),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()
         );
     }
 
@@ -2331,7 +2345,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             (opt, e2ecfg, clientCtxOverride) -> upsertDocumentCore(
                 collectionLink, document, opt, disableAutomaticIdGeneration, e2ecfg, clientCtxOverride),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()
         );
     }
 
@@ -2413,7 +2427,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 e2ecfg,
                 clientCtxOverride),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()
         );
     }
 
@@ -2494,7 +2508,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 e2ecfg,
                 clientCtxOverride),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()
         );
     }
 
@@ -2572,7 +2586,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
-        ByteBuffer content = document.serializeJsonToByteBuffer(options.getEffectiveItemSerializer(), onAfterSerialization);
+        ByteBuffer content = document.serializeJsonToByteBuffer(options.getEffectiveItemSerializer(), onAfterSerialization, false);
         Instant serializationEndTime = Instant.now();
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics =
             new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -2584,14 +2598,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEffectiveClientContext(clientContextOverride),
             OperationType.Replace, ResourceType.Document, path, requestHeaders, options, content);
 
-        if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+        if (options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
         if (options != null) {
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         if (retryPolicyInstance != null) {
@@ -2659,7 +2674,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 e2ecfg,
                 clientCtxOverride),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()
         );
     }
 
@@ -2726,13 +2741,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             content);
 
-        if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+        if (options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
         if (options != null) {
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         if (retryPolicyInstance != null) {
@@ -2773,7 +2789,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 e2ecfg,
                 clientCtxOverride),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()
         );
     }
 
@@ -2789,7 +2805,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 e2ecfg,
                 clientCtxOverride),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()
         );
     }
 
@@ -2839,14 +2855,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 getEffectiveClientContext(clientContextOverride),
                 OperationType.Delete, ResourceType.Document, path, requestHeaders, options);
 
-            if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+            if (options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
                 request.setNonIdempotentWriteRetriesEnabled(true);
             }
 
             if (options != null) {
                 options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                     () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-                request.requestContext.setExcludeRegions(options.getExcludeRegions());
+                request.requestContext.setExcludeRegions(options.getExcludedRegions());
+                request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
             }
 
             if (retryPolicyInstance != null) {
@@ -2972,7 +2989,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
 
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
@@ -3579,10 +3597,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public <T> Flux<FeedResponse<T>> queryDocumentChangeFeed(
         final DocumentCollection collection,
-        final CosmosChangeFeedRequestOptions changeFeedOptions,
+        final CosmosChangeFeedRequestOptions requestOptions,
         Class<T> classOfT) {
 
         checkNotNull(collection, "Argument 'collection' must not be null.");
+
 
         ChangeFeedQueryImpl<T> changeFeedQueryImpl = new ChangeFeedQueryImpl<>(
             this,
@@ -3590,14 +3609,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             classOfT,
             collection.getAltLink(),
             collection.getResourceId(),
-            changeFeedOptions);
+            requestOptions);
 
         return changeFeedQueryImpl.executeAsync();
     }
 
     @Override
     public <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFlux(DocumentCollection collection, ChangeFeedOperationState state, Class<T> classOfT) {
-        return queryDocumentChangeFeed(collection, state.getChangeFeedOptions(), classOfT);
+
+        CosmosChangeFeedRequestOptions clonedOptions = changeFeedOptionsAccessor.clone(state.getChangeFeedOptions());
+
+        CosmosChangeFeedRequestOptionsImpl optionsImpl = changeFeedOptionsAccessor.getImpl(clonedOptions);
+
+        CosmosOperationDetails operationDetails = operationDetailsAccessor.create(optionsImpl, state.getDiagnosticsContextSnapshot());
+        this.operationPolicies.forEach(policy -> {
+            try {
+                policy.process(operationDetails);
+            } catch (RuntimeException exception) {
+                logger.info("The following exception was thrown by a custom policy on changeFeed operation" + exception.getMessage());
+                throw(exception);
+            }
+        });
+        ctxAccessor.setRequestOptions(state.getDiagnosticsContextSnapshot(), optionsImpl);
+        return queryDocumentChangeFeed(collection, clonedOptions, classOfT);
     }
 
     @Override
@@ -4000,7 +4034,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     requestHeaders, options);
 
             if (options != null) {
-                request.requestContext.setExcludeRegions(options.getExcludeRegions());
+                request.requestContext.setExcludeRegions(options.getExcludedRegions());
+                request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
             }
 
             if (retryPolicy != null) {
@@ -5507,9 +5542,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             monoList.add(initialMonoAcrossAllRegions);
                         }
                 } else {
-                    clonedOptions.setExcludeRegions(
+                    clonedOptions.setExcludedRegions(
                         getEffectiveExcludedRegionsForHedging(
-                            nonNullRequestOptions.getExcludeRegions(),
+                            nonNullRequestOptions.getExcludedRegions(),
                             orderedApplicableRegionsForSpeculation,
                             region)
                     );
@@ -5728,7 +5763,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             resourceType,
             operationType,
             isIdempotentWriteRetriesEnabled,
-            options.getExcludeRegions());
+            options.getExcludedRegions());
     }
 
     private List<String> getApplicableRegionsForSpeculation(
@@ -5843,6 +5878,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             orderedApplicableRegionsForSpeculation,
                             region)
                     );
+
+                    clonedRequest.requestContext.setKeywordIdentifiers(req.requestContext.getKeywordIdentifiers());
 
                     // Non-Transient errors are mapped to a value - this ensures the firstWithValue
                     // operator below will complete the composite Mono for both successful values

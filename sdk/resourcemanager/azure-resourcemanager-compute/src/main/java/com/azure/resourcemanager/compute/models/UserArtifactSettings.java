@@ -59,8 +59,8 @@ public final class UserArtifactSettings {
 
     /**
      * Get the configFileName property: Optional. The name to assign the downloaded config file on the VM. This is
-     * limited to 4096 characters. If not specified, the config file will be named the Gallery Application name
-     * appended with "_config".
+     * limited to 4096 characters. If not specified, the config file will be named the Gallery Application name appended
+     * with "_config".
      * 
      * @return the configFileName value.
      */
@@ -70,8 +70,8 @@ public final class UserArtifactSettings {
 
     /**
      * Set the configFileName property: Optional. The name to assign the downloaded config file on the VM. This is
-     * limited to 4096 characters. If not specified, the config file will be named the Gallery Application name
-     * appended with "_config".
+     * limited to 4096 characters. If not specified, the config file will be named the Gallery Application name appended
+     * with "_config".
      * 
      * @param configFileName the configFileName value to set.
      * @return the UserArtifactSettings object itself.

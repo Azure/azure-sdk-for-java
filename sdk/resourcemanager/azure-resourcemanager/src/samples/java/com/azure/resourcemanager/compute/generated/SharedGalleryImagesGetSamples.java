@@ -19,7 +19,10 @@ public final class SharedGalleryImagesGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getASharedGalleryImage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSharedGalleryImages().getWithResponse("myLocation",
-            "galleryUniqueName", "myGalleryImageName", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSharedGalleryImages()
+            .getWithResponse("myLocation", "galleryUniqueName", "myGalleryImageName", com.azure.core.util.Context.NONE);
     }
 }

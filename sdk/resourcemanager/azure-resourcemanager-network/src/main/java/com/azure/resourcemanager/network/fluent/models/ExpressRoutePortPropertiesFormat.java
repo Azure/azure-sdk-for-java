@@ -62,8 +62,6 @@ public final class ExpressRoutePortPropertiesFormat {
     private String allocationDate;
 
     /*
-     * ExpressRouteLink Sub-Resources
-     * 
      * The set of physical links of the ExpressRoutePort resource.
      */
     @JsonProperty(value = "links")
@@ -198,9 +196,7 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Get the links property: ExpressRouteLink Sub-Resources
-     * 
-     * The set of physical links of the ExpressRoutePort resource.
+     * Get the links property: The set of physical links of the ExpressRoutePort resource.
      * 
      * @return the links value.
      */
@@ -209,9 +205,7 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Set the links property: ExpressRouteLink Sub-Resources
-     * 
-     * The set of physical links of the ExpressRoutePort resource.
+     * Set the links property: The set of physical links of the ExpressRoutePort resource.
      * 
      * @param links the links value to set.
      * @return the ExpressRoutePortPropertiesFormat object itself.

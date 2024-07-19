@@ -9,7 +9,9 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SecurityRulesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkSecurityGroupRuleList.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkSecurityGroupRuleList.
+     * json
      */
     /**
      * Sample code: List network security rules in network security group.

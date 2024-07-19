@@ -12,8 +12,8 @@ public final class AutonomousDbVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDbVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"version\":\"rts\",\"dbWorkload\":\"DW\",\"isDefaultForFree\":true,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":true,\"isPaidEnabled\":true},\"id\":\"mx\",\"name\":\"gkvtmelmqkrhah\",\"type\":\"ljuahaquhcdh\"}],\"nextLink\":\"ualaexqpvfadmw\"}")
+            "{\"value\":[{\"properties\":{\"version\":\"txnrjaw\",\"dbWorkload\":\"DW\",\"isDefaultForFree\":true,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":false,\"isPaidEnabled\":false},\"id\":\"bkpyc\",\"name\":\"klwndnhjdauwhv\",\"type\":\"l\"}],\"nextLink\":\"btdhxujznbm\"}")
             .toObject(AutonomousDbVersionListResult.class);
-        Assertions.assertEquals("ualaexqpvfadmw", model.nextLink());
+        Assertions.assertEquals("btdhxujznbm", model.nextLink());
     }
 }

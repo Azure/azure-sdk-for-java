@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class RouteFilterRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/RouteFilterRuleDelete.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteFilterRuleDelete.json
      */
     /**
      * Sample code: RouteFilterRuleDelete.

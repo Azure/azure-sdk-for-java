@@ -16,14 +16,17 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.guava25.base.Splitter;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ShowQueryMode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,6 +44,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -54,8 +58,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.RequestTimeline.EventName.CREATED;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -97,6 +104,8 @@ public final class DiagnosticsProvider {
     private final CosmosClientTelemetryConfig telemetryConfig;
     private final boolean shouldSystemExitOnError;
 
+    final Supplier<Double> samplingRateSnapshotSupplier;
+
 
     public DiagnosticsProvider(
         CosmosClientTelemetryConfig clientTelemetryConfig,
@@ -110,6 +119,11 @@ public final class DiagnosticsProvider {
         checkNotNull(connectionMode, "Argument 'connectionMode' must not be null.");
 
         this.telemetryConfig = clientTelemetryConfig;
+
+        this.samplingRateSnapshotSupplier =  () -> isEnabled()
+            ? clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig)
+            : 0;
+
         this.diagnosticHandlers = new ArrayList<>(
             clientTelemetryConfigAccessor.getDiagnosticHandlers(clientTelemetryConfig));
         Tracer tracerCandidate = clientTelemetryConfigAccessor.getOrCreateTracer(clientTelemetryConfig);
@@ -541,7 +555,8 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
-            requestOptions);
+            requestOptions,
+            null);
     }
 
     public <T extends CosmosBatchResponse> Mono<T> traceEnabledBatchResponsePublisher(
@@ -585,7 +600,8 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
-            requestOptions);
+            requestOptions,
+            null);
     }
 
     public <T> Mono<CosmosItemResponse<T>> traceEnabledCosmosItemResponsePublisher(
@@ -630,7 +646,133 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
-            requestOptions);
+            requestOptions,
+            null);
+    }
+
+    private <T> Mono<FeedResponse<T>>  wrapReadManyFeedResponseWithTracingIfEnabled(
+        CosmosAsyncClient client,
+        List<CosmosItemIdentity> itemIdentityList,
+        FeedOperationState state,
+        Mono<FeedResponse<T>> publisher,
+        RequestOptions requestOptions,
+        Context context) {
+
+        final double samplingRateSnapshot = this.samplingRateSnapshotSupplier.get();
+        final boolean isSampledOut = this.shouldSampleOutOperation(samplingRateSnapshot);
+        final CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
+        ctxAccessor.setSamplingRateSnapshot(ctx, samplingRateSnapshot, isSampledOut);
+
+        if (ctx == null || isSampledOut) {
+            return publisher.map(r -> {
+                CosmosDiagnostics diagnostics = r.getCosmosDiagnostics();
+                if (diagnostics != null) {
+                    diagnosticsAccessor.setSamplingRateSnapshot(diagnostics, samplingRateSnapshot);
+                }
+                return r;
+            });
+        }
+
+        return publisherWithDiagnostics(
+            publisher,
+            context,
+            state.getSpanName(),
+            ctx.getContainerName(),
+            ctx.getDatabaseName(),
+            ctx.getAccountName(),
+            client,
+            ctx.getEffectiveConsistencyLevel(),
+            ctxAccessor.getOperationType(ctx),
+            ctxAccessor.getResourceType(ctx),
+            null,
+            itemIdentityList.size(),
+            (r) -> HttpConstants.StatusCodes.OK, // FeedResponse would only ever be created in success case
+            (r) -> r.getResults().size(),
+            (r) -> r.getRequestCharge(),
+            (r, samplingRate) -> {
+                CosmosDiagnostics diagnostics = r.getCosmosDiagnostics();
+                if (diagnostics != null) {
+                    diagnosticsAccessor.setSamplingRateSnapshot(diagnostics, samplingRate);
+                }
+
+                return diagnostics;
+            },
+            requestOptions,
+            ctx
+        );
+    }
+
+    private static boolean isTracerEnabled(DiagnosticsProvider tracerProvider) {
+        return tracerProvider != null;
+    }
+
+    public static <T> void  recordFeedResponse(
+        Consumer<FeedResponse<T>> feedResponseConsumer,
+        FeedOperationState state,
+        Supplier<Double> samplingRateSnapshotSupplier,
+        DiagnosticsProvider tracerProvider,
+        FeedResponse<T> response,
+        AtomicLong feedResponseConsumerLatencyInNanos) {
+
+        CosmosDiagnostics diagnostics = response != null ? response.getCosmosDiagnostics() : null;
+
+        Integer actualItemCount = response != null && response.getResults() != null ?
+            response.getResults().size() : null;
+
+        if (diagnostics != null &&
+            diagnosticsAccessor
+                .isDiagnosticsCapturedInPagedFlux(diagnostics)
+                .compareAndSet(false, true)) {
+
+            Double samplingRateSnapshot = samplingRateSnapshotSupplier.get();
+            if (samplingRateSnapshot != null && samplingRateSnapshot < 1) {
+                diagnosticsAccessor
+                    .setSamplingRateSnapshot(diagnostics, samplingRateSnapshot);
+            }
+
+            if (isTracerEnabled(tracerProvider)) {
+                tracerProvider.recordPage(
+                    state.getDiagnosticsContextSnapshot(),
+                    diagnostics,
+                    actualItemCount,
+                    response.getRequestCharge());
+            }
+
+            //  If the user has passed feedResponseConsumer, then call it with each feedResponse
+            if (feedResponseConsumer != null) {
+                // NOTE this call is happening in a span counted against client telemetry / metric latency
+                // So, the latency of the user's callback is accumulated here to correct the latency
+                // reported to client telemetry and client metrics
+                Instant feedResponseConsumerStart = Instant.now();
+                feedResponseConsumer.accept(response);
+                feedResponseConsumerLatencyInNanos.addAndGet(
+                    Duration.between(Instant.now(), feedResponseConsumerStart).toNanos());
+            }
+        }
+    }
+
+    public <T> Mono<FeedResponse<T>> traceEnabledReadManyResponsePublisher(
+        List<CosmosItemIdentity> identities,
+        FeedOperationState state,
+        Mono<FeedResponse<T>> resultPublisher,
+        CosmosAsyncClient client,
+        RequestOptions requestOptions,
+        Context context) {
+
+        checkNotNull(resultPublisher, "Argument 'resultPublisher' must not be null.");
+        checkNotNull(state, "Argument 'state' must not be null.");
+        checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
+        checkNotNull(client, "Argument 'client' must not be null.");
+
+        String accountName = clientAccessor.getAccountTagValue(client);
+
+        return wrapReadManyFeedResponseWithTracingIfEnabled(
+            client,
+            identities,
+            state,
+            resultPublisher,
+            requestOptions,
+            context);
     }
 
     /**
@@ -740,29 +882,33 @@ public final class DiagnosticsProvider {
                                                  Function<T, Integer> actualItemCountFunc,
                                                  Function<T, Double> requestChargeFunc,
                                                  BiFunction<T, Double, CosmosDiagnostics> diagnosticFunc,
-                                                 RequestOptions requestOptions) {
+                                                 RequestOptions requestOptions,
+                                                 CosmosDiagnosticsContext cosmosCtxFromUpstream) {
 
         CosmosDiagnosticsThresholds thresholds = requestOptions != null
             ? clientAccessor.getEffectiveDiagnosticsThresholds(client, requestOptions.getDiagnosticsThresholds())
             : clientAccessor.getEffectiveDiagnosticsThresholds(client, null);
 
-        CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
-            spanName,
-            accountName,
-            BridgeInternal.getServiceEndpoint(client),
-            databaseId,
-            containerId,
-            resourceType,
-            operationType,
-            null,
-            clientAccessor.getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
-            maxItemCount,
-            thresholds,
-            trackingId,
-            clientAccessor.getConnectionMode(client),
-            clientAccessor.getUserAgent(client),
-            null, 
-            null);
+        CosmosDiagnosticsContext cosmosCtx = cosmosCtxFromUpstream != null
+            ? cosmosCtxFromUpstream
+            : ctxAccessor.create(
+                spanName,
+                accountName,
+                BridgeInternal.getServiceEndpoint(client),
+                databaseId,
+                containerId,
+                resourceType,
+                operationType,
+                null,
+                clientAccessor.getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
+                maxItemCount,
+                thresholds,
+                trackingId,
+                clientAccessor.getConnectionMode(client),
+                clientAccessor.getUserAgent(client),
+                null,
+                null,
+                requestOptions);
 
         if (requestOptions != null) {
             requestOptions.setDiagnosticsContextSupplier(() -> cosmosCtx);
@@ -1165,7 +1311,7 @@ public final class DiagnosticsProvider {
         private boolean isTransportLevelTracingEnabled() {
             return clientTelemetryConfigAccessor.isTransportLevelTracingEnabled(this.config);
         }
-        
+
         private boolean showQueryStatement() {
             if(ShowQueryMode.ALL.equals(clientTelemetryConfigAccessor.showQueryMode(this.config))
                    || ShowQueryMode.PARAMETERIZED_ONLY.equals(clientTelemetryConfigAccessor.showQueryMode(this.config))) {
@@ -1212,7 +1358,7 @@ public final class DiagnosticsProvider {
                     !cosmosCtx.getOperationId().equals(ctxAccessor.getSpanName(cosmosCtx))) {
                     spanOptions.setAttribute("db.cosmosdb.operation_id", cosmosCtx.getOperationId());
                 }
-                
+
                 if (showQueryStatement() && null != cosmosCtx.getQueryStatement() ) {
                     spanOptions.setAttribute("db.statement", cosmosCtx.getQueryStatement());
                 }

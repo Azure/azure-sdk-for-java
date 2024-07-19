@@ -10,11 +10,18 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.iotcentral.models.*;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.iotcentral.models.App;
+import com.azure.resourcemanager.iotcentral.models.AppSku;
+import com.azure.resourcemanager.iotcentral.models.AppSkuInfo;
+import com.azure.resourcemanager.iotcentral.models.NetworkAction;
+import com.azure.resourcemanager.iotcentral.models.NetworkRuleSets;
+import com.azure.resourcemanager.iotcentral.models.PublicNetworkAccess;
+import com.azure.resourcemanager.iotcentral.models.SystemAssignedServiceIdentity;
+import com.azure.resourcemanager.iotcentral.models.SystemAssignedServiceIdentityType;
 import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,7 +39,7 @@ public class IotCentralManagerTests extends TestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         iotCentralManager = IotCentralManager
@@ -67,7 +74,7 @@ public class IotCentralManagerTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testIotCentralApp() {
         App app = null;
         try {

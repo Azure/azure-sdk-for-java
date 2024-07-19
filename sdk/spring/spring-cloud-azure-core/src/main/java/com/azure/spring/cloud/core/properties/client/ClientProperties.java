@@ -11,6 +11,12 @@ import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 public class ClientProperties implements ClientOptionsProvider.ClientOptions {
 
     /**
+     * Creates an instance of {@link ClientProperties}.
+     */
+    public ClientProperties() {
+    }
+
+    /**
      * Represents current application and is used for telemetry/monitoring purposes.
      */
     private String applicationId;

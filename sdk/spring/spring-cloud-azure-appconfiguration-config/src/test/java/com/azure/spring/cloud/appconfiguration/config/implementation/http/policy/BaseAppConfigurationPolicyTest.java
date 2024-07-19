@@ -55,6 +55,7 @@ public class BaseAppConfigurationPolicyTest {
         MockitoAnnotations.openMocks(this).close();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void startupThenWatchUpdateTest() throws MalformedURLException {
         URL url = new URL("https://www.test.url/kv");
@@ -98,6 +99,7 @@ public class BaseAppConfigurationPolicyTest {
             contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void devIsConfigured() throws MalformedURLException {
         BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(
@@ -113,6 +115,7 @@ public class BaseAppConfigurationPolicyTest {
             contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void keyVaultIsConfigured() throws MalformedURLException {
         BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(
@@ -128,6 +131,7 @@ public class BaseAppConfigurationPolicyTest {
             contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void devAndKeyVaultAreConfigured() throws MalformedURLException {
         BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(

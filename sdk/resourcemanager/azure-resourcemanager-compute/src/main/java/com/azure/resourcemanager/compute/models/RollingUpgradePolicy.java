@@ -15,8 +15,8 @@ public final class RollingUpgradePolicy {
     /*
      * The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling
      * upgrade in one batch. As this is a maximum, unhealthy instances in previous or future batches can cause the
-     * percentage of instances in a batch to decrease to ensure higher reliability. The default value for this
-     * parameter is 20%.
+     * percentage of instances in a batch to decrease to ensure higher reliability. The default value for this parameter
+     * is 20%.
      */
     @JsonProperty(value = "maxBatchInstancePercent")
     private Integer maxBatchInstancePercent;
@@ -24,8 +24,8 @@ public final class RollingUpgradePolicy {
     /*
      * The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously
      * unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine
-     * health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch.
-     * The default value for this parameter is 20%.
+     * health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch. The
+     * default value for this parameter is 20%.
      */
     @JsonProperty(value = "maxUnhealthyInstancePercent")
     private Integer maxUnhealthyInstancePercent;
@@ -105,9 +105,9 @@ public final class RollingUpgradePolicy {
 
     /**
      * Get the maxUnhealthyInstancePercent property: The maximum percentage of the total virtual machine instances in
-     * the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in
-     * an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will
-     * be checked prior to starting any batch. The default value for this parameter is 20%.
+     * the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an
+     * unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be
+     * checked prior to starting any batch. The default value for this parameter is 20%.
      * 
      * @return the maxUnhealthyInstancePercent value.
      */
@@ -117,9 +117,9 @@ public final class RollingUpgradePolicy {
 
     /**
      * Set the maxUnhealthyInstancePercent property: The maximum percentage of the total virtual machine instances in
-     * the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in
-     * an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will
-     * be checked prior to starting any batch. The default value for this parameter is 20%.
+     * the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an
+     * unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be
+     * checked prior to starting any batch. The default value for this parameter is 20%.
      * 
      * @param maxUnhealthyInstancePercent the maxUnhealthyInstancePercent value to set.
      * @return the RollingUpgradePolicy object itself.
@@ -154,8 +154,8 @@ public final class RollingUpgradePolicy {
     }
 
     /**
-     * Get the pauseTimeBetweenBatches property: The wait time between completing the update for all virtual machines
-     * in one batch and starting the next batch. The time duration should be specified in ISO 8601 format. The default
+     * Get the pauseTimeBetweenBatches property: The wait time between completing the update for all virtual machines in
+     * one batch and starting the next batch. The time duration should be specified in ISO 8601 format. The default
      * value is 0 seconds (PT0S).
      * 
      * @return the pauseTimeBetweenBatches value.
@@ -165,8 +165,8 @@ public final class RollingUpgradePolicy {
     }
 
     /**
-     * Set the pauseTimeBetweenBatches property: The wait time between completing the update for all virtual machines
-     * in one batch and starting the next batch. The time duration should be specified in ISO 8601 format. The default
+     * Set the pauseTimeBetweenBatches property: The wait time between completing the update for all virtual machines in
+     * one batch and starting the next batch. The time duration should be specified in ISO 8601 format. The default
      * value is 0 seconds (PT0S).
      * 
      * @param pauseTimeBetweenBatches the pauseTimeBetweenBatches value to set.

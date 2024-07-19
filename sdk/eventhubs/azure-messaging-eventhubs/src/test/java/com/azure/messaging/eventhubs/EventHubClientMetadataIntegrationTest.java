@@ -43,7 +43,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         client = createBuilder().buildAsyncClient();
-        eventHubName = getConnectionStringProperties().getEntityPath();
+        eventHubName = TestUtils.getConnectionStringProperties().getEntityPath();
     }
 
     @Override
@@ -124,7 +124,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     @Test
     public void getPartitionPropertiesInvalidToken() {
         // Arrange
-        final ConnectionStringProperties original = getConnectionStringProperties();
+        final ConnectionStringProperties original = TestUtils.getConnectionStringProperties();
         final TokenCredential invalidTokenCredential = new EventHubSharedKeyCredential(
             original.getSharedAccessKeyName(), "invalid-sas-key-value", TIMEOUT);
 
@@ -151,7 +151,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     @Test
     public void getPartitionPropertiesNonExistentHub() {
         // Arrange
-        final ConnectionStringProperties original = getConnectionStringProperties();
+        final ConnectionStringProperties original = TestUtils.getConnectionStringProperties();
         final TokenCredential validCredentials = new EventHubSharedKeyCredential(
             original.getSharedAccessKeyName(), original.getSharedAccessKey(), TIMEOUT);
 

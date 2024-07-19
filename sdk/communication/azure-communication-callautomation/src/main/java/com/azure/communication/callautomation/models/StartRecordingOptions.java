@@ -139,14 +139,14 @@ public final class StartRecordingOptions {
      *
      * @return pause on start.
      */
-    public Boolean getPauseOnStart() {
+    public Boolean isPauseOnStart() {
         return pauseOnStart;
     }
 
     /**
      * Set the pause on start property.
      *
-     * @param pauseOnStart the {@link pauseOnStart}.
+     * @param pauseOnStart indicate if the recording should be paused on start.
      * @return the {@link StartRecordingOptions}
      */
     public StartRecordingOptions setPauseOnStart(Boolean pauseOnStart) {

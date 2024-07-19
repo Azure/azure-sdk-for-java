@@ -88,7 +88,8 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
             if (exception instanceof GoneException && isWriteOnly(itemOperation) &&
                 BridgeInternal.hasSendingRequestStarted(exception) &&
                 !((GoneException) exception).isBasedOn410ResponseFromService() &&
-                !itemOperation.getRequestOptions().getNonIdempotentWriteRetriesEnabled()) {
+                itemOperation.getRequestOptions().getNonIdempotentWriteRetriesEnabled() != null
+                && !itemOperation.getRequestOptions().getNonIdempotentWriteRetriesEnabled()) {
                 return Mono.just(false);
             }
 
