@@ -217,35 +217,38 @@ public class DeploymentsTests extends ResourceManagementTest {
     @Test
     public void canUpdateVirtualNetworkDeployment() throws Exception {
         final String dp = "dpC" + testId;
-
-        // Begin create
-        Accepted<Deployment> acceptedDeployment = resourceClient.deployments()
-            .define(dp)
-            .withExistingResourceGroup(rgName)
-            .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
-            .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
-            .withMode(DeploymentMode.COMPLETE)
-            .beginCreate();
-        Deployment createdDeployment = acceptedDeployment.getActivationResponse().getValue();
-        Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
-        Assertions.assertEquals(createdDeployment.correlationId(), deployment.correlationId());
-        Assertions.assertEquals(dp, deployment.name());
-        // Cancel
-        deployment.cancel();
-        deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
-        Assertions.assertEquals("Canceled", deployment.provisioningState());
-        // Update
-        deployment.update()
-            .withTemplate(UPDATE_TEMPLATE)
-            .withParameters(UPDATE_PARAMETERS)
-            .withMode(DeploymentMode.INCREMENTAL)
-            .apply();
-        deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
-        Assertions.assertEquals(DeploymentMode.INCREMENTAL, deployment.mode());
-        Assertions.assertEquals("Succeeded", deployment.provisioningState());
-        GenericResource genericVnet = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", NETWORK_API_VERSION);
-        Assertions.assertNotNull(genericVnet);
-        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", NETWORK_API_VERSION);
+        try {
+            // Begin create
+            Accepted<Deployment> acceptedDeployment = resourceClient.deployments()
+                .define(dp)
+                .withExistingResourceGroup(rgName)
+                .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+                .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
+                .withMode(DeploymentMode.COMPLETE)
+                .beginCreate();
+            Deployment createdDeployment = acceptedDeployment.getActivationResponse().getValue();
+            Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
+            Assertions.assertEquals(createdDeployment.correlationId(), deployment.correlationId());
+            Assertions.assertEquals(dp, deployment.name());
+            // Cancel
+            deployment.cancel();
+            deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
+            Assertions.assertEquals("Canceled", deployment.provisioningState());
+            // Update
+            deployment.update()
+                .withTemplate(UPDATE_TEMPLATE)
+                .withParameters(UPDATE_PARAMETERS)
+                .withMode(DeploymentMode.INCREMENTAL)
+                .apply();
+            deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
+            Assertions.assertEquals(DeploymentMode.INCREMENTAL, deployment.mode());
+            Assertions.assertEquals("Succeeded", deployment.provisioningState());
+            GenericResource genericVnet = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", NETWORK_API_VERSION);
+            Assertions.assertNotNull(genericVnet);
+            resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
+        } finally {
+            resourceClient.deployments().deleteByResourceGroup(rgName, dp);
+        }
     }
 
     @Test

@@ -4,32 +4,33 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
-import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import java.util.Iterator;
-import java.util.Set;
-
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-@LiveOnly
+import java.util.Iterator;
+import java.util.Set;
+
 public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManagementTest {
     // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
     private String rgName = "";
-    private Region region = Region.US_WEST_CENTRAL;
+    private Region region = Region.US_WEST2;
     private final String vmssName = "javavmss";
+    private final VirtualMachineScaleSetSkuTypes virtualMachineScaleSetSkuTypes =
+        VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2s_v3", "Standard");
 
     @Override
     protected void cleanUpResources() {
@@ -103,7 +104,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withSku(virtualMachineScaleSetSkuTypes)
                 .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -350,7 +351,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withSku(virtualMachineScaleSetSkuTypes)
                 .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -443,6 +444,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
     }
 
     @Test
+    @LiveOnly
     public void canUpdateVirtualMachineScaleSetWithEMSIAndLMSI() throws Exception {
         rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id-1", 15);
@@ -476,7 +478,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withSku(virtualMachineScaleSetSkuTypes)
                 .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -504,6 +506,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
 
         // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine
         //
+        virtualMachineScaleSet.refresh();
         Set<String> emsiIds = virtualMachineScaleSet.userAssignedManagedServiceIdentityIds();
         Assertions.assertNotNull(emsiIds);
         Assertions.assertEquals(1, emsiIds.size());
