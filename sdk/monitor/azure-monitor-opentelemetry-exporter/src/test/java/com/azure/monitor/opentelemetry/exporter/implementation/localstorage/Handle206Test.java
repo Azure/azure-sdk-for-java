@@ -23,13 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.convertByteBufferListToByteArray;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.decode;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserialize;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.splitBytesByNewline;
@@ -95,14 +90,14 @@ public class Handle206Test {
 
         // load expected telemetry items from the file and split bytes by newline
         String expected = Resources.readString("request_body_result_to_206_status_code.txt");
-//        String[] expectedTelemetryItemsStr = expected.split("\n");
-        //List<byte[]> expectedTelemetryItemsByteArray = splitBytesByNewline(expected.getBytes());
+
+        // split the raw bytes by newline
+        List<byte[]> expectedRawBytes = splitBytesByNewline(expected.getBytes());
 
         // deserialize back to List<TelemetryItem>
         List<TelemetryItem> expectedTelemetryItems = new ArrayList<>();
-        for (String str : expected.split("\n")) {
-            JsonReader reader = JsonProviders.createReader(str);
-            expectedTelemetryItems.add(TelemetryItem.fromJson(reader));
+        for (byte[] bytes : expectedRawBytes) {
+            expectedTelemetryItems.add(deserialize(bytes));
         }
 
         // load the actual telemetry raw bytes from disk
@@ -110,17 +105,10 @@ public class Handle206Test {
         assertThat(file.connectionString).isEqualTo(CONNECTION_STRING);
 
         // decode gzipped raw bytes back to original raw bytes
-        file.rawBytes.flip();
-        byte[] decodedRawBytes = decode(convertByteBufferListToByteArray(Collections.singletonList(file.rawBytes)));
+        byte[] decodedRawBytes = decode(file.rawBytes.array());
 
         // split the raw bytes by newline
         List<byte[]> actualTelemetryItemsByteArray = splitBytesByNewline(decodedRawBytes);
-        // testing
-        System.out.println("TESTING, expecting 7 lines");
-        for (byte[] line : actualTelemetryItemsByteArray) {
-            System.out.println(new String(line));
-        }
-        assertThat(actualTelemetryItemsByteArray.size()).isEqualTo(expectedTelemetryItems.size());
 
         // deserialize back to List<TelemetryItem>
         List<TelemetryItem> actualTelemetryItems = new ArrayList<>();
@@ -129,6 +117,7 @@ public class Handle206Test {
             actualTelemetryItems.add(telemetryItem);
         }
         assertThat(actualTelemetryItems.size()).isEqualTo(expectedTelemetryItems.size());
+
         for (int i = 0; i < actualTelemetryItems.size(); i++) {
             TelemetryItem actualItem = actualTelemetryItems.get(i);
             TelemetryItem expectedItem = expectedTelemetryItems.get(i);
