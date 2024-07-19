@@ -364,7 +364,7 @@ public final class ClientTelemetryMetrics {
         if (metricTagNames.contains(TagName.OperationSubStatusCode)) {
             effectiveTags.add(Tag.of(TagName.OperationSubStatusCode.toString(), String.valueOf(subStatusCode)));
         }
-        // will probably need to fix this
+
         if (metricTagNames.contains(TagName.ConsistencyLevel)) {
             assert consistencyLevel != null : "ConsistencyLevel must never be null here.";
             effectiveTags.add(Tag.of(
@@ -1055,7 +1055,6 @@ public final class ClientTelemetryMetrics {
             metricTagNamesForGateway.remove(TagName.ReplicaId);
 
             for (ClientSideRequestStatistics.GatewayStatistics gatewayStats : gatewayStatisticsList) {
-                //has to be similar for queryPlan
                 Tags requestTags = operationTags.and(
                     createRequestTags(
                         metricTagNamesForGateway,
