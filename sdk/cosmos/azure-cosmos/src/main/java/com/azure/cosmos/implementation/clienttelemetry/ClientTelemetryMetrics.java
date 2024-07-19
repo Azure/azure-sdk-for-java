@@ -364,7 +364,7 @@ public final class ClientTelemetryMetrics {
         if (metricTagNames.contains(TagName.OperationSubStatusCode)) {
             effectiveTags.add(Tag.of(TagName.OperationSubStatusCode.toString(), String.valueOf(subStatusCode)));
         }
-
+        // will probably need to fix this
         if (metricTagNames.contains(TagName.ConsistencyLevel)) {
             assert consistencyLevel != null : "ConsistencyLevel must never be null here.";
             effectiveTags.add(Tag.of(
@@ -373,13 +373,11 @@ public final class ClientTelemetryMetrics {
             ));
         }
 
-        if (contactedRegions != null &&
-            contactedRegions.size() > 0 &&
-            metricTagNames.contains(TagName.RegionName)) {
-
+        if (metricTagNames.contains(TagName.RegionName)) {
             effectiveTags.add(Tag.of(
                 TagName.RegionName.toString(),
-                String.join(", ", contactedRegions)
+                contactedRegions != null && contactedRegions.size() > 0
+                    ? String.join(", ", contactedRegions) : "NONE"
             ));
         }
 
@@ -762,6 +760,12 @@ public final class ClientTelemetryMetrics {
             if (metricTagNames.contains(TagName.RequestOperationType)) {
                 effectiveTags.add(QUERYPLAN_TAG);
             }
+            if (metricTagNames.contains(TagName.RequestStatusCode)) {
+                effectiveTags.add(Tag.of(TagName.RequestStatusCode.toString(),"NONE"));
+            }
+            if (metricTagNames.contains(TagName.PartitionKeyRangeId)) {
+                effectiveTags.add(Tag.of(TagName.PartitionKeyRangeId.toString(),"NONE"));
+            }
 
             return Tags.of(effectiveTags);
         }
@@ -1051,6 +1055,7 @@ public final class ClientTelemetryMetrics {
             metricTagNamesForGateway.remove(TagName.ReplicaId);
 
             for (ClientSideRequestStatistics.GatewayStatistics gatewayStats : gatewayStatisticsList) {
+                //has to be similar for queryPlan
                 Tags requestTags = operationTags.and(
                     createRequestTags(
                         metricTagNamesForGateway,

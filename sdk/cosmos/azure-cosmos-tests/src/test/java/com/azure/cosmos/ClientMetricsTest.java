@@ -66,8 +66,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -1571,6 +1573,8 @@ public class ClientMetricsTest extends BatchTestBase {
 
         if (expectedToFind) {
             assertThat(meters.size()).isGreaterThan(0);
+            // Makes sure that we stay compatible with prometheus which expects that all the same tags are present for a meter
+            assertTagInAllMeters(meters, prefix);
         }
 
         List<Meter> meterPrefixMatches = meters
@@ -1649,6 +1653,33 @@ public class ClientMetricsTest extends BatchTestBase {
             assertThat(meterMatches.size()).isEqualTo(0);
 
             return null;
+        }
+    }
+
+    private void assertTagInAllMeters(List<Meter> meters,String prefix) {
+        List<Meter> meterMatches = meters
+            .stream()
+            .filter(meter -> meter.getId().getName().equals(prefix))
+            .collect(Collectors.toList());
+        if (meterMatches.size() >  0) {
+            Set<String> possibleTags = new HashSet<>();
+            for (Tag tag : meterMatches.get(0).getId().getTags()) {
+                possibleTags.add(tag.getKey());
+            }
+            List<Meter> metersTagPresent = meterMatches
+                .stream()
+                .filter(meter -> {
+                    int numTags = 0;
+                    for (Tag tag : meter.getId().getTags()) {
+                        if (!possibleTags.contains(tag.getKey())) {
+                            return false;
+                        }
+                        numTags++;
+                    }
+                    return numTags == possibleTags.size();
+                } )
+                .collect(Collectors.toList());
+            assertThat(metersTagPresent.size()).isEqualTo(meterMatches.size());
         }
     }
 
