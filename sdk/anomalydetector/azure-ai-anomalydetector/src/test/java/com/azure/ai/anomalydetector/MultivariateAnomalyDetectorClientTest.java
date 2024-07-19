@@ -3,6 +3,7 @@
 
 package com.azure.ai.anomalydetector;
 
+import com.azure.ai.anomalydetector.models.AnomalyDetectionModel;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
