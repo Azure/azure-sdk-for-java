@@ -7,6 +7,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
+
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -63,7 +65,7 @@ class QuickPulseDataSender implements Runnable {
                             this.quickPulseHeaderInfo = quickPulseHeaderInfo;
                             String etagValue = networkHelper.getEtagHeaderValue(response);
                             if (!Objects.equals(etagValue, quickPulseConfiguration.getEtag())) {
-                                ConcurrentHashMap<String, QuickPulseConfiguration.OpenTelMetricInfo> otelMetrics = quickPulseConfiguration.parseMetrics(response);
+                                ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.OpenTelMetricInfo>> otelMetrics = quickPulseConfiguration.parseMetrics(response);
                                 quickPulseConfiguration.updateConfig(etagValue, otelMetrics);
                             }
                             break;
@@ -73,15 +75,9 @@ class QuickPulseDataSender implements Runnable {
                             break;
                     }
                 }
-
             } catch (Throwable t) {
                 logger.error("QuickPulseDataSender failed to send a request", t);
             }
-            /* Debugging purposes
-            System.out.println("POST*********************");
-            System.out.println("ETAG: " + quickPulseConfiguration.getEtag());
-            System.out.println("METRICS: " + quickPulseConfiguration.getMetrics());
-            */
         }
     }
 

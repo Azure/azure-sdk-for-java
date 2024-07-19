@@ -45,7 +45,6 @@ public class QuickPulseMetricReceiver implements Runnable {
         while (true) {
 
             Collection<MetricData> metrics = quickPulseMetricReader.collectAllMetrics();
-
             QuickPulseHeaderInfo headerInfo = getQuickPulseHeaderInfo();
 
             if (headerInfo == null || headerInfo.getQuickPulseStatus() != QuickPulseStatus.QP_IS_ON) {
@@ -59,9 +58,7 @@ public class QuickPulseMetricReceiver implements Runnable {
                 } catch (Throwable t) {
                     metricReceiverLogger.recordFailure(t.getMessage(), t, EXPORTER_MAPPING_ERROR);
                 }
-
             }
-
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

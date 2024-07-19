@@ -18,8 +18,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.util.annotation.Nullable;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
@@ -118,8 +118,8 @@ class QuickPulsePingSender {
                     case QP_IS_ON:
                         lastValidTransmission = sendTime;
                         String etagValue = networkHelper.getEtagHeaderValue(response);
-                        if (!Objects.equals(etagValue, quickPulseConfiguration.getEtag())) {
-                            ConcurrentHashMap<String, QuickPulseConfiguration.OpenTelMetricInfo> otelMetrics = quickPulseConfiguration.parseMetrics(response);
+                        if (etagValue != null) {
+                            ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.OpenTelMetricInfo>> otelMetrics = quickPulseConfiguration.parseMetrics(response);
                             quickPulseConfiguration.updateConfig(etagValue, otelMetrics);
                         }
                         operationLogger.recordSuccess();
@@ -137,8 +137,6 @@ class QuickPulsePingSender {
             }
         } finally {
             if (response != null) {
-
-
                 // need to consume the body or close the response, otherwise get netty ByteBuf leak
                 // warnings:
                 // io.netty.util.ResourceLeakDetector - LEAK: ByteBuf.release() was not called before

@@ -33,7 +33,6 @@ final class QuickPulseDataCollector {
 
     private final AtomicReference<Counters> counters = new AtomicReference<>(null);
 
-//    private QuickPulseConfiguration quickPulseConfiguration = QuickPulseConfiguration.getInstance();
     private QuickPulseConfiguration quickPulseConfiguration;
 
     private OpenTelMetricsStorage metricsStorage = new OpenTelMetricsStorage();
@@ -344,12 +343,10 @@ final class QuickPulseDataCollector {
         return metricsStorage.processMetrics();
     }
 
-    // for testing purposes
     public ConcurrentHashMap<String, OpenTelMetric> getOpenTelMetrics() {
         return metricsStorage.getMetrics();
     }
 
-    //for testing purposes
     public void flushOpenTelMetrics() {
         metricsStorage.clearMetrics();
     }
@@ -457,20 +454,28 @@ final class QuickPulseDataCollector {
 
     class OpenTelMetricsStorage {
         private volatile ConcurrentHashMap<String, OpenTelMetric> metrics = new ConcurrentHashMap<>();
+        // setting most amount of openTel metrics a user can stream to this. will review if users surpass threshold.
+        private final int maxMetricsLimit = 50;
+        // setting buffer time for receiving data for a metric before declaring it inactive. (in minutes)
+        private final double metricBufferTime = 5;
 
         public void addMetric(String metricName, double value) {
             OpenTelMetric metric = metrics.get(metricName);
             if (metric == null) {
-                metric = new OpenTelMetric(metricName);
-                metric.addDataPoint(value);
-                metrics.putIfAbsent(metricName, metric);
+                if (metrics.size() <= maxMetricsLimit) {
+                    // create new metric and add to metrics map
+                    // (if we have reached the limit, we will not create a new metric and add it to the map
+                    metric = new OpenTelMetric(metricName);
+                    metric.addDataPoint(value);
+                    metrics.putIfAbsent(metricName, metric);
+                }
             } else {
                 metric.addDataPoint(value);
             }
         }
 
         public ArrayList<QuickPulseMetrics> processMetrics() {
-            ConcurrentHashMap<String, QuickPulseConfiguration.OpenTelMetricInfo> requestedMetrics = quickPulseConfiguration.getMetrics();
+            ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.OpenTelMetricInfo>> requestedMetrics = quickPulseConfiguration.getMetrics();
             ArrayList<QuickPulseMetrics> processedMetrics = new ArrayList<>();
 
             Iterator<Map.Entry<String, OpenTelMetric>> iterator = this.metrics.entrySet().iterator();
@@ -480,11 +485,14 @@ final class QuickPulseDataCollector {
                 OpenTelMetric value = entry.getValue();
 
                 if (requestedMetrics.containsKey(key)) {
-                    QuickPulseMetrics processedMetric = processMetric(value, requestedMetrics.get(key));
-                    processedMetrics.add(processedMetric);
+                    for (QuickPulseConfiguration.OpenTelMetricInfo metricInfo : requestedMetrics.get(key)) {
+                        QuickPulseMetrics processedMetric = processMetric(value, metricInfo);
+                        processedMetrics.add(processedMetric);
+                    }
+
                 }
 
-                if (ChronoUnit.SECONDS.between(value.getLastTimestamp(), LocalDateTime.now()) > 5) {
+                if (ChronoUnit.MINUTES.between(value.getLastTimestamp(), LocalDateTime.now()) > metricBufferTime) {
                     iterator.remove();
 
                 }
@@ -522,7 +530,6 @@ final class QuickPulseDataCollector {
                 default:
                     throw new IllegalArgumentException("Aggregation type not supported: " + aggregation);
             }
-
         }
 
         public void clearMetrics() {

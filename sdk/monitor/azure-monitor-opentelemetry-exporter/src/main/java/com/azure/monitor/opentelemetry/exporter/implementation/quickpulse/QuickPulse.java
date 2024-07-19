@@ -21,8 +21,9 @@ import java.util.function.Supplier;
 
 public class QuickPulse {
 
-    //change this back to 1
-    static final int QP_INVARIANT_VERSION = 5;
+    //supports Open Tel metrics but not live filtering
+    // change to 7 once live filtering is also supported
+    static final int QP_INVARIANT_VERSION = 6;
 
     private volatile QuickPulseDataCollector collector;
 
@@ -83,17 +84,6 @@ public class QuickPulse {
         }
     }
 
-    public void add(TelemetryItem telemetryItem, Boolean isOtelMetric) {
-        if (collector != null){
-            if(isOtelMetric){
-                collector.addOtelMetric(telemetryItem);
-
-            }else{
-                collector.add(telemetryItem);
-            }
-        }
-    }
-
     private void initialize(
         HttpPipeline httpPipeline,
         Supplier<URL> endpointUrl,
@@ -135,6 +125,7 @@ public class QuickPulse {
                 quickPulseId,
                 sdkVersion,
                 quickPulseConfiguration);
+
         QuickPulseDataFetcher quickPulseDataFetcher =
             new QuickPulseDataFetcher(
                 collector,

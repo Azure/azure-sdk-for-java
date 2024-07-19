@@ -209,15 +209,15 @@ class QuickPulsePingSenderTests {
             .isEqualTo(quickPulseHeaderInfo.getQpsServiceEndpointRedirect());
         assertThat(quickPulseConfiguration.getEtag()).isEqualTo("3::randometag::4::");
         assertThat(quickPulseConfiguration.getMetrics().size()).isEqualTo(2);
-        assertThat(quickPulseConfiguration.getMetrics().get("my_gauge").getAggregation())
+        assertThat(quickPulseConfiguration.getMetrics().get("my_gauge").get(0).getAggregation())
             .isEqualTo("Avg");
-        assertThat(quickPulseConfiguration.getMetrics().get("my_gauge").getTelemetryType())
+        assertThat(quickPulseConfiguration.getMetrics().get("my_gauge").get(0).getTelemetryType())
             .isEqualTo("Metric");
-        assertThat(quickPulseConfiguration.getMetrics().get("my_gauge").getProjection()).isEqualTo("my_gauge");
-        assertThat(quickPulseConfiguration.getMetrics().get("my_gauge").getId()).isEqualTo("my_gauge");
-        assertThat(quickPulseConfiguration.getMetrics().get("MyFruitCounter").getAggregation()).isEqualTo("Sum");
-        assertThat(quickPulseConfiguration.getMetrics().get("MyFruitCounter").getTelemetryType()).isEqualTo("Metric");
-        assertThat(quickPulseConfiguration.getMetrics().get("MyFruitCounter").getProjection()).isEqualTo("MyFruitCounter");
-        assertThat(quickPulseConfiguration.getMetrics().get("MyFruitCounter").getId()).isEqualTo("MyFruitCounter");
+        assertThat(quickPulseConfiguration.getMetrics().get("my_gauge").get(0).getProjection()).isEqualTo("my_gauge");
+        assertThat(quickPulseConfiguration.getMetrics().get("my_gauge").get(0).getId()).isEqualTo("my_gauge");
+        assertThat(quickPulseConfiguration.getMetrics().get("MyFruitCounter").get(0).getAggregation()).isEqualTo("Sum");
+        assertThat(quickPulseConfiguration.getMetrics().get("MyFruitCounter").get(0).getTelemetryType()).isEqualTo("Metric");
+        assertThat(quickPulseConfiguration.getMetrics().get("MyFruitCounter").get(0).getProjection()).isEqualTo("MyFruitCounter");
+        assertThat(quickPulseConfiguration.getMetrics().get("MyFruitCounter").get(0).getId()).isEqualTo("MyFruitCounter");
     }
 }
