@@ -203,6 +203,9 @@ public class ModelHelper {
         properties.setMetadata(sharePropertiesInternal.getMetadata());
         properties.setProvisionedBandwidthMiBps(sharePropertiesInternal.getProvisionedBandwidthMiBps());
         properties.setSnapshotVirtualDirectoryAccessEnabled(sharePropertiesInternal.isEnableSnapshotVirtualDirectoryAccess());
+        properties.setEnablePaidBursting(sharePropertiesInternal.isPaidBurstingEnabled());
+        properties.setPaidBurstingMaxIops(sharePropertiesInternal.getPaidBurstingMaxIops());
+        properties.setPaidBurstingMaxBandwidthMibps(sharePropertiesInternal.getPaidBurstingMaxBandwidthMibps());
 
         return properties;
     }
