@@ -5,18 +5,18 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ProtonSessionWrapper;
 import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
-import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -24,7 +24,6 @@ import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
-import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
@@ -72,7 +71,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
-            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, true);
+            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, false, false);
         this.connectionId = connectionId;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
@@ -163,9 +162,9 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     }
 
     @Override
-    protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new EventHubReactorSession(this, session, handler, sessionName, reactorProvider,
-            handlerProvider, linkProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions, messageSerializer);
+    protected ReactorSession createSession(ProtonSessionWrapper session) {
+        return new EventHubReactorSession(this, session, handlerProvider, linkProvider,
+            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions, messageSerializer);
     }
 
     private synchronized ManagementChannel getOrCreateManagementChannel() {
