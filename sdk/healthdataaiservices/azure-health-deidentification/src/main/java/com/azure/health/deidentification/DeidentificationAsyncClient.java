@@ -39,7 +39,7 @@ public final class DeidentificationAsyncClient {
 
     /**
      * Initializes an instance of DeidentificationAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -49,10 +49,10 @@ public final class DeidentificationAsyncClient {
 
     /**
      * Get a de-identification job.
-     *
+     * 
      * Resource read operation template.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -95,7 +95,7 @@ public final class DeidentificationAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -113,10 +113,10 @@ public final class DeidentificationAsyncClient {
 
     /**
      * Create a de-identification job.
-     *
+     * 
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -159,9 +159,9 @@ public final class DeidentificationAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -204,7 +204,7 @@ public final class DeidentificationAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param name The name of a job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -223,7 +223,7 @@ public final class DeidentificationAsyncClient {
 
     /**
      * List de-identification jobs.
-     *
+     * 
      * Resource list operation template.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -234,7 +234,7 @@ public final class DeidentificationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -277,7 +277,7 @@ public final class DeidentificationAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -293,7 +293,7 @@ public final class DeidentificationAsyncClient {
 
     /**
      * List processed documents within a job.
-     *
+     * 
      * Resource list operation template.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -304,7 +304,7 @@ public final class DeidentificationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -328,7 +328,7 @@ public final class DeidentificationAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -345,15 +345,15 @@ public final class DeidentificationAsyncClient {
 
     /**
      * Cancel a de-identification job.
-     *
+     * 
      * Cancels a job that is in progress.
-     *
+     * 
      * The job will be marked as canceled and the service will stop processing the job. The service will not delete any
      * documents that have already been processed.
-     *
+     * 
      * If the job is already complete, this will have no effect.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -396,7 +396,7 @@ public final class DeidentificationAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -414,9 +414,9 @@ public final class DeidentificationAsyncClient {
 
     /**
      * Delete a de-identification job.
-     *
+     * 
      * Removes the record of the job from the service. Does not delete any documents.
-     *
+     * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -433,10 +433,10 @@ public final class DeidentificationAsyncClient {
 
     /**
      * De-identify text.
-     *
+     * 
      * A remote procedure call (RPC) operation.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     inputText: String (Required)
@@ -445,9 +445,9 @@ public final class DeidentificationAsyncClient {
      *     redactionFormat: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     outputText: String (Optional)
@@ -470,7 +470,7 @@ public final class DeidentificationAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param body Request body for de-identification operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -488,9 +488,9 @@ public final class DeidentificationAsyncClient {
 
     /**
      * Get a de-identification job.
-     *
+     * 
      * Resource read operation template.
-     *
+     * 
      * @param name The name of a job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -511,9 +511,9 @@ public final class DeidentificationAsyncClient {
 
     /**
      * Create a de-identification job.
-     *
+     * 
      * Long-running resource create or replace operation template.
-     *
+     * 
      * @param name The name of a job.
      * @param resource The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -535,10 +535,10 @@ public final class DeidentificationAsyncClient {
 
     /**
      * List de-identification jobs.
-     *
+     * 
      * Resource list operation template.
-     *
-     * @param continuationTokenParam Token to continue a previous query.
+     * 
+     * @param continuationToken Token to continue a previous query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -549,17 +549,17 @@ public final class DeidentificationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeidentificationJob> listJobs(String continuationTokenParam) {
+    public PagedFlux<DeidentificationJob> listJobs(String continuationToken) {
         // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
-        if (continuationTokenParam != null) {
-            requestOptions.addQueryParam("continuationToken", continuationTokenParam, false);
+        if (continuationToken != null) {
+            requestOptions.addQueryParam("continuationToken", continuationToken, false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, DeidentificationJob>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -573,9 +573,9 @@ public final class DeidentificationAsyncClient {
 
     /**
      * List de-identification jobs.
-     *
+     * 
      * Resource list operation template.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -589,10 +589,10 @@ public final class DeidentificationAsyncClient {
         // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, DeidentificationJob>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -606,11 +606,11 @@ public final class DeidentificationAsyncClient {
 
     /**
      * List processed documents within a job.
-     *
+     * 
      * Resource list operation template.
-     *
+     * 
      * @param name The name of a job.
-     * @param continuationTokenParam Token to continue a previous query.
+     * @param continuationToken Token to continue a previous query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -621,17 +621,17 @@ public final class DeidentificationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DocumentDetails> listJobDocuments(String name, String continuationTokenParam) {
+    public PagedFlux<DocumentDetails> listJobDocuments(String name, String continuationToken) {
         // Generated convenience method for listJobDocuments
         RequestOptions requestOptions = new RequestOptions();
-        if (continuationTokenParam != null) {
-            requestOptions.addQueryParam("continuationToken", continuationTokenParam, false);
+        if (continuationToken != null) {
+            requestOptions.addQueryParam("continuationToken", continuationToken, false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listJobDocuments(name, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DocumentDetails>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -644,9 +644,9 @@ public final class DeidentificationAsyncClient {
 
     /**
      * List processed documents within a job.
-     *
+     * 
      * Resource list operation template.
-     *
+     * 
      * @param name The name of a job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -662,10 +662,10 @@ public final class DeidentificationAsyncClient {
         // Generated convenience method for listJobDocuments
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobDocuments(name, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DocumentDetails>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -678,14 +678,14 @@ public final class DeidentificationAsyncClient {
 
     /**
      * Cancel a de-identification job.
-     *
+     * 
      * Cancels a job that is in progress.
-     *
+     * 
      * The job will be marked as canceled and the service will stop processing the job. The service will not delete any
      * documents that have already been processed.
-     *
+     * 
      * If the job is already complete, this will have no effect.
-     *
+     * 
      * @param name The name of a job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -706,9 +706,9 @@ public final class DeidentificationAsyncClient {
 
     /**
      * Delete a de-identification job.
-     *
+     * 
      * Removes the record of the job from the service. Does not delete any documents.
-     *
+     * 
      * @param name The name of a job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -728,9 +728,9 @@ public final class DeidentificationAsyncClient {
 
     /**
      * De-identify text.
-     *
+     * 
      * A remote procedure call (RPC) operation.
-     *
+     * 
      * @param body Request body for de-identification operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
