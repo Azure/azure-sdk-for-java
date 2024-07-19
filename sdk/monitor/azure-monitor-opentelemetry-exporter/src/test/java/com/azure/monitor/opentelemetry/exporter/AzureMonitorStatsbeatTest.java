@@ -31,6 +31,7 @@ import reactor.util.annotation.Nullable;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -141,8 +142,7 @@ public class AzureMonitorStatsbeatTest {
             customValidationPolicy.getActualTelemetryItems().stream()
                 .filter(item -> item.getName().equals("Statsbeat"))
                 .filter(item -> {
-                    MetricsData metricsData = (MetricsData) item.getData().getBaseData();
-                    return metricsData.getMetrics().stream().allMatch(metricDataPoint -> metricDataPoint.getName().equals("Attach"));
+                    return getMetricName(item).equals("Attach");
                 })
                 .findFirst()
                 .get();
@@ -152,8 +152,7 @@ public class AzureMonitorStatsbeatTest {
             customValidationPolicy.getActualTelemetryItems().stream()
                 .filter(item -> item.getName().equals("Statsbeat"))
                 .filter(item -> {
-                    MetricsData metricsData = (MetricsData) item.getData().getBaseData();
-                    return metricsData.getMetrics().stream().allMatch(metricDataPoint -> metricDataPoint.getName().equals("Feature"));
+                    return getMetricName(item).equals("Feature");
                 })
                 .findFirst()
                 .get();
@@ -170,18 +169,28 @@ public class AzureMonitorStatsbeatTest {
 
     private static void validateAttachStatsbeat(TelemetryItem telemetryItem) {
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MetricData");
-        MetricsData actualMetricsData = (MetricsData) telemetryItem.getData().getBaseData();
-        assertThat(actualMetricsData.getMetrics().get(0).getName()).isEqualTo("Attach");
-        assertThat(actualMetricsData.getProperties()).contains(entry("rp", "unknown"), entry("attach", "Manual"), entry("language", "java"));
-        assertThat(actualMetricsData.getProperties()).containsKeys("attach", "cikey", "language", "os", "rp", "runtimeVersion", "version");
+        assertThat(getMetricName(telemetryItem)).isEqualTo("Attach");
+        Map<String, String> properties = getMetricProperties(telemetryItem);
+        assertThat(properties).contains(entry("rp", "unknown"), entry("attach", "Manual"), entry("language", "java"));
+        assertThat(properties).containsKeys("attach", "cikey", "language", "os", "rp", "runtimeVersion", "version");
     }
 
     private static void validateFeatureStatsbeat(TelemetryItem telemetryItem) {
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MetricData");
-        MetricsData actualMetricsData = (MetricsData) telemetryItem.getData().getBaseData();
-        assertThat(actualMetricsData.getMetrics().get(0).getName()).isEqualTo("Feature");
-        assertThat(actualMetricsData.getProperties()).contains(entry("type", "0"), entry("language", "java"));
-        assertThat(actualMetricsData.getProperties()).containsKeys("feature", "cikey", "language", "os", "rp", "runtimeVersion", "version");
+        assertThat(getMetricName(telemetryItem)).isEqualTo("Feature");
+        Map<String, String> properties = getMetricProperties(telemetryItem);
+        assertThat(properties).contains(entry("type", "0"), entry("language", "java"));
+        assertThat(properties).containsKeys("feature", "cikey", "language", "os", "rp", "runtimeVersion", "version");
+    }
+
+    @SuppressWarnings("unchecked")
+    private static String getMetricName(TelemetryItem telemetryItem) {
+        return (String) (((List<Map<String, Object>>) telemetryItem.getData().getBaseData().getAdditionalProperties().get("metrics")).get(0)).get("name");
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map<String, String> getMetricProperties(TelemetryItem telemetryItem) {
+        return (Map<String, String>) telemetryItem.getData().getBaseData().getAdditionalProperties().get("properties");
     }
 
     private static class MockedHttpClient implements HttpClient {
