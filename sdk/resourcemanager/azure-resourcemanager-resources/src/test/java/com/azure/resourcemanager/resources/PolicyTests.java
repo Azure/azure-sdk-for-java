@@ -114,7 +114,7 @@ public class PolicyTests extends ResourceManagementTest {
             Assertions.assertNotNull(assignment1);
             Assertions.assertEquals("My Assignment", assignment1.displayName());
 
-            Assertions.assertEquals(group.id(), assignment1.scope());
+            assertResourceIdEquals(group.id(), assignment1.scope());
             Assertions.assertEquals(0, assignment1.excludedScopes().size());
             Assertions.assertEquals(EnforcementMode.DEFAULT, assignment1.enforcementMode());
             Assertions.assertEquals(0, assignment1.parameters().size());
