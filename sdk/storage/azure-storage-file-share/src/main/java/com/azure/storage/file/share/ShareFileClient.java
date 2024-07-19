@@ -90,10 +90,15 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -962,9 +967,53 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileProperties> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        Mono<Response<ShareFileProperties>> response = shareFileAsyncClient.downloadToFileWithResponse(downloadFilePath,
-            range, requestConditions, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Objects.requireNonNull(downloadFilePath, "'downloadFilePath' cannot be null");
+        ShareRequestConditions finalRequestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+
+        Callable<Response<ShareFileProperties>> operation = () -> {
+            try (FileChannel fileChannel = FileChannel.open(Paths.get(downloadFilePath), StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW)) {
+                // Get properties first to find out the total file size
+                Response<ShareFileProperties> propertiesResponse = getPropertiesWithResponse(null, context);
+                ShareFileProperties fileProperties = propertiesResponse.getValue();
+                long fileSize = fileProperties.getContentLength();
+
+                ShareFileRange currentRange = range == null ? new ShareFileRange(0, fileSize) : range;
+
+                List<ShareFileRange> chunks = new ArrayList<>();
+                for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += ModelHelper.FILE_DEFAULT_BLOCK_SIZE) {
+                    long count = ModelHelper.FILE_DEFAULT_BLOCK_SIZE;
+                    if (pos + count > currentRange.getEnd()) {
+                        count = currentRange.getEnd() - pos;
+                    }
+                    chunks.add(new ShareFileRange(pos, pos + count - 1));
+                }
+
+                for (ShareFileRange chunkRange : chunks) {
+                    // Download the chunk
+                    ResponseBase<FilesDownloadHeaders, InputStream> downloadResponse = downloadRange(chunkRange, false,
+                        finalRequestConditions, context);
+
+                    // Write the chunk to the file
+                    try (InputStream stream = downloadResponse.getValue()) {
+                        // Adjust buffer size based on the size of the current chunk
+                        int bufferSize = (int) (chunkRange.getEnd() - chunkRange.getStart() + 1);
+                        byte[] buffer = new byte[bufferSize];
+                        int bytesRead;
+                        while ((bytesRead = stream.read(buffer)) != -1) {
+                            fileChannel.write(ByteBuffer.wrap(buffer, 0, bytesRead));
+                        }
+                    }
+                }
+
+                return propertiesResponse;
+
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            }
+        };
+
+        return sendRequest(operation, timeout, ShareStorageException.class);
+
     }
 
     /**
@@ -1137,56 +1186,46 @@ public class ShareFileClient {
             : options.getRetryOptions();
         Boolean getRangeContentMd5 = options.isRangeContentMd5Requested();
 
-        String initialETag = null;
-        //long initialEnd = range.getEnd();
-
-        int retryCount = 0;
-        while (retryCount <= retryOptions.getMaxRetryRequests()) {
-            try {
-                //ShareFileRange currentRange = new ShareFileRange(range.getStart(), initialEnd);
-                ResponseBase<FilesDownloadHeaders, InputStream> response = downloadRange(range,
-                    getRangeContentMd5, requestConditions, context);
-                String currentETag = ModelHelper.getETag(response.getHeaders());
-                if (initialETag != null && !initialETag.equals(currentETag)) {
-                    throw new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
-                        + initialETag + ", Received eTag: " + currentETag);
-                }
-                initialETag = currentETag; // Update eTag for subsequent retries
-
-                ShareFileDownloadHeaders headers = ModelHelper.transformFileDownloadHeaders(
-                    response.getDeserializedHeaders(), response.getHeaders());
-                long finalEnd;
-                if (range.getEnd() == null) {
-                    finalEnd = headers.getContentRange() != null
-                        ? Long.parseLong(headers.getContentRange().split("/")[1]) : headers.getContentLength();
-                }
-
-                try (InputStream responseStream = response.getValue()) {
-                    byte[] buffer = new byte[8192];
-                    int bytesRead;
-                    while ((bytesRead = responseStream.read(buffer)) != -1) {
-                        stream.write(buffer, 0, bytesRead);
+        Callable<ShareFileDownloadResponse> operation = () -> {
+            String initialETag = null;
+            int retryCount = 0;
+            while (retryCount <= retryOptions.getMaxRetryRequests()) {
+                try {
+                    ResponseBase<FilesDownloadHeaders, InputStream> response = downloadRange(range,
+                        getRangeContentMd5, requestConditions, context);
+                    String currentETag = ModelHelper.getETag(response.getHeaders());
+                    if (initialETag != null && !initialETag.equals(currentETag)) {
+                        throw new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
+                            + initialETag + ", Received eTag: " + currentETag);
                     }
+                    initialETag = currentETag; // Update eTag for subsequent retries
+
+                    ShareFileDownloadHeaders headers = ModelHelper.transformFileDownloadHeaders(
+                        response.getDeserializedHeaders(), response.getHeaders());
+
+                    try (InputStream responseStream = response.getValue()) {
+                        if (responseStream != null) {
+                            byte[] buffer = new byte[8192];
+                            int bytesRead;
+                            while ((bytesRead = responseStream.read(buffer)) != -1) {
+                                stream.write(buffer, 0, bytesRead);
+                            }
+                        }
+                    }
+                    return new ShareFileDownloadResponse(new ShareFileDownloadAsyncResponse(response.getRequest(),
+                        response.getStatusCode(), response.getHeaders(), null, headers));
+                } catch (IOException | ConcurrentModificationException e) {
+                    if (retryCount >= retryOptions.getMaxRetryRequests() || !(e instanceof IOException)) {
+                        throw new RuntimeException("Failed to download file after retries: " + e.getMessage(), e);
+                    }
+                    retryCount++;
+                    LOGGER.info("Retrying download due to Exception. Attempt: " + retryCount);
                 }
-                return new ShareFileDownloadResponse(new ShareFileDownloadAsyncResponse(response.getRequest(),
-                    response.getStatusCode(), response.getHeaders(), null, headers));
-            } catch (IOException | ConcurrentModificationException e) {
-                if (retryCount >= retryOptions.getMaxRetryRequests() || !(e instanceof IOException)) {
-                    throw new RuntimeException("Failed to download file after retries: " + e.getMessage(), e);
-                }
-                retryCount++;
-                LOGGER.info("Retrying download due to Exception. Attempt: " + retryCount);
             }
-        }
-        throw new IllegalStateException("Failed to download file. Max retry attempts reached.");
+            throw new IllegalStateException("Failed to download file. Max retry attempts reached.");
+        };
 
-
-
-//        Mono<ShareFileDownloadResponse> download = shareFileAsyncClient.downloadWithResponse(options, context)
-//            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
-//                .thenReturn(new ShareFileDownloadResponse(response)));
-
-//        return StorageImplUtils.blockWithOptionalTimeout(download, timeout);
+        return sendRequest(operation, timeout, ShareStorageException.class);
     }
 
     private ResponseBase<FilesDownloadHeaders, InputStream> downloadRange(ShareFileRange range,
