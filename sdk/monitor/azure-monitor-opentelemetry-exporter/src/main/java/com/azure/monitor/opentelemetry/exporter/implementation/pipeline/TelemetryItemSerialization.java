@@ -36,12 +36,12 @@ public final class TelemetryItemSerialization {
     }
 
     // visible for testing
-    // deserialize byte array to list of TelemetryItems
-    public static List<TelemetryItem> deserialize(byte[] rawBytes) {
-        try (JsonReader jsonReader = JsonProviders.createReader(rawBytes)) {
-            return jsonReader.readArray(TelemetryItem::fromJson);
-        } catch (IOException e) {
-            throw new IllegalStateException("failed to deserialize ", e);
+    public static TelemetryItem deserialize(byte[] rawBytes) {
+        try {
+            JsonReader reader = JsonProviders.createReader(rawBytes);
+            return TelemetryItem.fromJson(reader);
+        } catch (Throwable th) {
+            throw new IllegalStateException("failed to deserialize ", th);
         }
     }
 
