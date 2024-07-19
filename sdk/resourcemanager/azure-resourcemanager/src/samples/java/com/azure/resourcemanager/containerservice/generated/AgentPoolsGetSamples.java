@@ -10,7 +10,7 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class AgentPoolsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
      * AgentPoolsGet.json
      */
     /**
@@ -19,7 +19,10 @@ public final class AgentPoolsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAgentPool(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getAgentPools().getWithResponse("rg1", "clustername1",
-            "agentpool1", com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getAgentPools()
+            .getWithResponse("rg1", "clustername1", "agentpool1", com.azure.core.util.Context.NONE);
     }
 }

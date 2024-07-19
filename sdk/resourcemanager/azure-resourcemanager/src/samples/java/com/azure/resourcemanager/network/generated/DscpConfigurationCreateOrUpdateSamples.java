@@ -9,7 +9,6 @@ import com.azure.resourcemanager.network.models.ProtocolType;
 import com.azure.resourcemanager.network.models.QosDefinition;
 import com.azure.resourcemanager.network.models.QosIpRange;
 import com.azure.resourcemanager.network.models.QosPortRange;
-
 import java.util.Arrays;
 
 /**
@@ -17,11 +16,12 @@ import java.util.Arrays;
  */
 public final class DscpConfigurationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/DscpConfigurationCreate.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/DscpConfigurationCreate.json
      */
     /**
      * Sample code: Create DSCP Configuration.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createDSCPConfiguration(com.azure.resourcemanager.AzureResourceManager azure) {

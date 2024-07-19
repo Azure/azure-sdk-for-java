@@ -19,7 +19,10 @@ public final class DiskEncryptionSetsListAssociatedResourcesSamples {
      */
     public static void listAllResourcesThatAreEncryptedWithThisDiskEncryptionSet(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskEncryptionSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskEncryptionSets()
             .listAssociatedResources("myResourceGroup", "myDiskEncryptionSet", com.azure.core.util.Context.NONE);
     }
 }

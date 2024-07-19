@@ -12,7 +12,6 @@ import com.azure.resourcemanager.network.models.GroupConnectivity;
 import com.azure.resourcemanager.network.models.Hub;
 import com.azure.resourcemanager.network.models.IsGlobal;
 import com.azure.resourcemanager.network.models.UseHubGateway;
-
 import java.util.Arrays;
 
 /**
@@ -20,11 +19,12 @@ import java.util.Arrays;
  */
 public final class ConnectivityConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerConnectivityConfigurationPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * NetworkManagerConnectivityConfigurationPut.json
      */
     /**
      * Sample code: ConnectivityConfigurationsPut.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void connectivityConfigurationsPut(com.azure.resourcemanager.AzureResourceManager azure) {

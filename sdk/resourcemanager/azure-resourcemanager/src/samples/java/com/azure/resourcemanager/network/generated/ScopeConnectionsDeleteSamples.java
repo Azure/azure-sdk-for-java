@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ScopeConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerScopeConnectionDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * NetworkManagerScopeConnectionDelete.json
      */
     /**
      * Sample code: Delete Network Manager Scope Connection.

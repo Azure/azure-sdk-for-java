@@ -67,7 +67,7 @@ com.azure:azure-aot-graalvm-support-netty;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-aot-graalvm-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-aot-graalvm-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-code-customization-parent;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-communication-callautomation;1.2.2;1.2.0-beta.1
+com.azure:azure-communication-callautomation;1.2.2;1.3.0-beta.1
 com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-chat;1.5.2;1.6.0-beta.1
 com.azure:azure-communication-common;1.3.4;1.4.0-beta.1
@@ -130,9 +130,9 @@ com.azure:azure-health-deidentification;1.0.0;1.0.0-beta.1
 com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-radiologyinsights;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-identity;1.13.0;1.14.0-beta.1
+com.azure:azure-identity;1.13.1;1.14.0-beta.1
 com.azure:azure-identity-extensions;1.1.17;1.2.0-beta.2
-com.azure:azure-identity-broker;1.1.2;1.2.0-beta.1
+com.azure:azure-identity-broker;1.1.3;1.2.0-beta.1
 com.azure:azure-identity-broker-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.19;1.1.0-beta.1
@@ -172,7 +172,7 @@ com.azure:azure-monitor-query;1.4.0;1.5.0-beta.1
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-search-documents;11.6.6;11.7.0
+com.azure:azure-search-documents;11.7.0;11.8.0-beta.1
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.1.25;1.2.0-beta.1
 com.azure:azure-security-confidentialledger;1.0.21;1.1.0-beta.1
@@ -186,17 +186,17 @@ com.azure:azure-security-keyvault-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template;1.1.1234;1.2.2-beta.1
 com.azure:azure-sdk-template-two;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template-three;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-blob;12.26.1;12.27.0-beta.2
-com.azure:azure-storage-blob-batch;12.22.1;12.23.0-beta.2
+com.azure:azure-storage-blob;12.26.1;12.27.0
+com.azure:azure-storage-blob-batch;12.22.1;12.23.0
 com.azure:azure-storage-blob-changefeed;12.0.0-beta.22;12.0.0-beta.23
-com.azure:azure-storage-blob-cryptography;12.25.1;12.26.0-beta.2
+com.azure:azure-storage-blob-cryptography;12.25.1;12.26.0
 com.azure:azure-storage-blob-nio;12.0.0-beta.23;12.0.0-beta.24
-com.azure:azure-storage-common;12.25.1;12.26.0-beta.2
-com.azure:azure-storage-file-share;12.22.1;12.23.0-beta.2
-com.azure:azure-storage-file-datalake;12.19.1;12.20.0-beta.2
-com.azure:azure-storage-internal-avro;12.11.1;12.12.0-beta.2
+com.azure:azure-storage-common;12.25.1;12.26.0
+com.azure:azure-storage-file-share;12.22.1;12.23.0
+com.azure:azure-storage-file-datalake;12.19.1;12.20.0
+com.azure:azure-storage-internal-avro;12.11.1;12.12.0
 com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-queue;12.21.1;12.22.0-beta.2
+com.azure:azure-storage-queue;12.21.1;12.22.0
 com.azure:azure-template-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-template-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-verticals-agrifood-farming;1.0.0-beta.3;1.0.0-beta.4
@@ -480,7 +480,6 @@ io.clientcore:http-stress;1.0.0-beta.1;1.0.0-beta.1
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
-unreleased_com.azure:azure-core;1.50.0
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
@@ -489,4 +488,3 @@ unreleased_com.azure:azure-core;1.50.0
 # Format;
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
-beta_com.azure:azure-identity;1.13.0-beta.2
