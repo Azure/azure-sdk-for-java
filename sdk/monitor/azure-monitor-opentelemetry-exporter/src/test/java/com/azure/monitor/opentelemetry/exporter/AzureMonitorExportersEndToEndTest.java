@@ -4,8 +4,6 @@
 package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils;
 import io.opentelemetry.api.OpenTelemetry;
@@ -231,7 +229,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MessageData");
         Map<String, Object> messageProperties = telemetryItem.getData().getBaseData().getAdditionalProperties();
         assertThat(messageProperties.get("message")).isEqualTo("test body");
-        assertThat((Map<String, String>)messageProperties.get("properties"))
+        assertThat((Map<String, String>) messageProperties.get("properties"))
             .containsOnly(
                 entry("LoggerName", "Sample"),
                 entry("SourceType", "Logger"),

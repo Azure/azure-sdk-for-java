@@ -6,10 +6,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.localstorage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
 import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
@@ -23,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -129,9 +125,9 @@ public class Handle206Test {
             TelemetryItem actualItem = actualTelemetryItems.get(i);
             TelemetryItem expectedItem = expectedTelemetryItems.get(i);
             Map<String, Object> actualProperties = actualItem.getData().getBaseData().getAdditionalProperties();
-            ArrayList<Map<String, Object>> actualMetricsData = (ArrayList<Map<String, Object>>)actualProperties.get("metrics");
+            ArrayList<Map<String, Object>> actualMetricsData = (ArrayList<Map<String, Object>>) actualProperties.get("metrics");
             Map<String, Object> expectedProperties = expectedItem.getData().getBaseData().getAdditionalProperties();
-            ArrayList<Map<String, Object>> expectedMetricsData = (ArrayList<Map<String, Object>>)expectedProperties.get("metrics");
+            ArrayList<Map<String, Object>> expectedMetricsData = (ArrayList<Map<String, Object>>) expectedProperties.get("metrics");
 
             // verify metric name
             String expectedMetricName = expectedMetricsData.get(0).get("name").toString();
@@ -151,8 +147,8 @@ public class Handle206Test {
             assertThat(expectedMetricCount).isEqualTo(actualMetricCount);
 
             // verify metric properties
-            Map<String, Object> actualMetricProperties = (Map<String, Object>)actualProperties.get("properties");
-            Map<String, Object> expectedMetricProperties = (Map<String, Object>)expectedProperties.get("properties");
+            Map<String, Object> actualMetricProperties = (Map<String, Object>) actualProperties.get("properties");
+            Map<String, Object> expectedMetricProperties = (Map<String, Object>) expectedProperties.get("properties");
             assertThat(expectedMetricProperties.get("state")).isEqualTo(actualMetricProperties.get("state")).isEqualTo("to_be_persisted_offline");
         }
 
@@ -164,8 +160,8 @@ public class Handle206Test {
         telemetryItems.sort(new Comparator<TelemetryItem>() {
             @Override
             public int compare(TelemetryItem o1, TelemetryItem o2) {
-                String name1 = (String) ((Map<String, Object>) ((List<Map<String, Object>>) o1.getData().getBaseData().getAdditionalProperties().get("metrics")).get(0)).get("name");
-                String name2 = (String) ((Map<String, Object>) ((List<Map<String, Object>>) o2.getData().getBaseData().getAdditionalProperties().get("metrics")).get(0)).get("name");
+                String name1 = (String) ((List<Map<String, Object>>) o1.getData().getBaseData().getAdditionalProperties().get("metrics")).get(0).get("name");
+                String name2 = (String) ((List<Map<String, Object>>) o2.getData().getBaseData().getAdditionalProperties().get("metrics")).get(0).get("name");
                 return name1.compareTo(name2);
             }
         });

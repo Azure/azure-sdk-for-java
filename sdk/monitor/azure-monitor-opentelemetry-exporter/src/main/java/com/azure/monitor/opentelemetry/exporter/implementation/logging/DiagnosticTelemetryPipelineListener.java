@@ -17,6 +17,7 @@ import io.opentelemetry.sdk.common.CompletableResultCode;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.INGESTION_ERROR;
 
@@ -119,7 +120,7 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
         try (JsonReader jsonReader = JsonProviders.createReader(responseBody)) {
             Response response = Response.fromJson(jsonReader);
             List<ResponseError> responseErrorList = response.getErrors().stream()
-                .filter(error -> error.getStatusCode() == responseCode).toList();
+                .filter(error -> error.getStatusCode() == responseCode).collect(Collectors.toList());
             message = responseErrorList.get(0).getMessage();
         } catch (Exception e) {
             return "Ingestion service returned "
