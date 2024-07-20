@@ -3,17 +3,12 @@
 
 package com.azure.data.schemaregistry;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.data.schemaregistry.models.SchemaFormat;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
-
-import java.time.OffsetDateTime;
 
 import static com.azure.data.schemaregistry.Constants.PLAYBACK_ENDPOINT;
 import static com.azure.data.schemaregistry.Constants.PLAYBACK_TEST_GROUP;
@@ -41,13 +36,12 @@ public class SchemaRegistryAsyncClientJsonTests extends TestProxyTestBase {
         TokenCredential tokenCredential;
         String endpoint;
         String schemaGroup;
+        tokenCredential = TestUtil.getTestTokenCredential(interceptorManager);
+
         if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = tokenRequestContext ->
-                Mono.fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
             schemaGroup = PLAYBACK_TEST_GROUP;
             endpoint = PLAYBACK_ENDPOINT;
         } else {
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
             endpoint = System.getenv(SCHEMA_REGISTRY_JSON_FULLY_QUALIFIED_NAMESPACE);
             schemaGroup = System.getenv(SCHEMA_REGISTRY_GROUP);
 
