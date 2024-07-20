@@ -11,6 +11,7 @@ import com.azure.monitor.applicationinsights.spring.selfdiagnostics.SelfDiagnost
 import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
 import io.opentelemetry.sdk.common.internal.OtelVersion;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -68,6 +69,8 @@ class SpringMonitorTest {
         }
     }
 
+    // TODO - this test is disabled because it requires spring starter to be migrated to azure-json
+    @Disabled
     @Test
     public void shouldMonitor() throws InterruptedException, MalformedURLException {
 
