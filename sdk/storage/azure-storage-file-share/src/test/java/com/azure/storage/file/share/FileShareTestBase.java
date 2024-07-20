@@ -458,13 +458,11 @@ public class FileShareTestBase extends TestProxyTestBase {
         if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
             // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
             return "recordingBearerToken";
-        }
-        else if (ENVIRONMENT.getTestMode() == TestMode.RECORD) {
+        } else if (ENVIRONMENT.getTestMode() == TestMode.RECORD) {
             List<String> scopes = new ArrayList<>();
             scopes.add("https://storage.azure.com/.default");
             return new DefaultAzureCredentialBuilder().build().getToken(new TokenRequestContext().setScopes(scopes)).map(AccessToken::getToken).block();
-        }
-        else {
+        } else {
             Configuration config = Configuration.getGlobalConfiguration();
 
             ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
