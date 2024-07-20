@@ -545,6 +545,13 @@
           "justification": "Migration to azure-json"
         },
         {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.communication\\.email\\.models.*",
+          "new" : ".*? com\\.azure\\.communication\\.email\\.models.*",
+          "justification": "Migration to azure-json"
+        },
+        {
           "code": "java.class.nowFinal",
           "old" : "class com.azure.resourcemanager.eventhubs.models.Identity",
           "new" : "class com.azure.resourcemanager.eventhubs.models.Identity",
