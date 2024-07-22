@@ -126,6 +126,7 @@ com.azure:azure-developer-devcenter;1.0.1;1.1.0-beta.1
 com.azure:azure-developer-loadtesting;1.0.14;1.1.0-beta.1
 com.azure:azure-digitaltwins-core;1.3.21;1.4.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-health-deidentification;1.0.0;1.0.0-beta.1
 com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-radiologyinsights;1.0.0-beta.1;1.0.0-beta.2
