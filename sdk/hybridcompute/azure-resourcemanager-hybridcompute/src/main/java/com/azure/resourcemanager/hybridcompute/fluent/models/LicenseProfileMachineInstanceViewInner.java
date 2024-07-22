@@ -5,11 +5,16 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileProductType;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileSubscriptionStatus;
 import com.azure.resourcemanager.hybridcompute.models.LicenseStatus;
 import com.azure.resourcemanager.hybridcompute.models.ProductFeature;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -17,35 +22,31 @@ import java.util.List;
  * License Profile Instance View in Machine Properties.
  */
 @Fluent
-public final class LicenseProfileMachineInstanceViewInner {
+public final class LicenseProfileMachineInstanceViewInner
+    implements JsonSerializable<LicenseProfileMachineInstanceViewInner> {
     /*
      * Indicates the license status of the OS.
      */
-    @JsonProperty(value = "licenseStatus", access = JsonProperty.Access.WRITE_ONLY)
     private LicenseStatus licenseStatus;
 
     /*
      * Indicates the license channel.
      */
-    @JsonProperty(value = "licenseChannel", access = JsonProperty.Access.WRITE_ONLY)
     private String licenseChannel;
 
     /*
      * The softwareAssurance property.
      */
-    @JsonProperty(value = "softwareAssurance", access = JsonProperty.Access.WRITE_ONLY)
     private LicenseProfileMachineInstanceViewSoftwareAssurance innerSoftwareAssurance;
 
     /*
      * Properties for the Machine ESU profile.
      */
-    @JsonProperty(value = "esuProfile")
     private LicenseProfileMachineInstanceViewEsuPropertiesInner esuProfile;
 
     /*
      * Hybrid Compute Product Profile properties
      */
-    @JsonProperty(value = "productProfile", access = JsonProperty.Access.WRITE_ONLY)
     private LicenseProfileArmProductProfileProperties innerProductProfile;
 
     /**
@@ -184,15 +185,6 @@ public final class LicenseProfileMachineInstanceViewInner {
     }
 
     /**
-     * Get the billingStartDate property: The timestamp in UTC when the billing starts.
-     * 
-     * @return the billingStartDate value.
-     */
-    public OffsetDateTime billingStartDate() {
-        return this.innerProductProfile() == null ? null : this.innerProductProfile().billingStartDate();
-    }
-
-    /**
      * Get the enrollmentDate property: The timestamp in UTC when the user enrolls the feature.
      * 
      * @return the enrollmentDate value.
@@ -202,12 +194,39 @@ public final class LicenseProfileMachineInstanceViewInner {
     }
 
     /**
+     * Get the billingStartDate property: The timestamp in UTC when the billing starts.
+     * 
+     * @return the billingStartDate value.
+     */
+    public OffsetDateTime billingStartDate() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().billingStartDate();
+    }
+
+    /**
      * Get the disenrollmentDate property: The timestamp in UTC when the user disenrolled the feature.
      * 
      * @return the disenrollmentDate value.
      */
     public OffsetDateTime disenrollmentDate() {
         return this.innerProductProfile() == null ? null : this.innerProductProfile().disenrollmentDate();
+    }
+
+    /**
+     * Get the billingEndDate property: The timestamp in UTC when the billing ends.
+     * 
+     * @return the billingEndDate value.
+     */
+    public OffsetDateTime billingEndDate() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().billingEndDate();
+    }
+
+    /**
+     * Get the error property: The errors that were encountered during the feature enrollment or disenrollment.
+     * 
+     * @return the error value.
+     */
+    public ManagementError error() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().error();
     }
 
     /**
@@ -248,5 +267,54 @@ public final class LicenseProfileMachineInstanceViewInner {
         if (innerProductProfile() != null) {
             innerProductProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("esuProfile", this.esuProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseProfileMachineInstanceViewInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseProfileMachineInstanceViewInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LicenseProfileMachineInstanceViewInner.
+     */
+    public static LicenseProfileMachineInstanceViewInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseProfileMachineInstanceViewInner deserializedLicenseProfileMachineInstanceViewInner
+                = new LicenseProfileMachineInstanceViewInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("licenseStatus".equals(fieldName)) {
+                    deserializedLicenseProfileMachineInstanceViewInner.licenseStatus
+                        = LicenseStatus.fromString(reader.getString());
+                } else if ("licenseChannel".equals(fieldName)) {
+                    deserializedLicenseProfileMachineInstanceViewInner.licenseChannel = reader.getString();
+                } else if ("softwareAssurance".equals(fieldName)) {
+                    deserializedLicenseProfileMachineInstanceViewInner.innerSoftwareAssurance
+                        = LicenseProfileMachineInstanceViewSoftwareAssurance.fromJson(reader);
+                } else if ("esuProfile".equals(fieldName)) {
+                    deserializedLicenseProfileMachineInstanceViewInner.esuProfile
+                        = LicenseProfileMachineInstanceViewEsuPropertiesInner.fromJson(reader);
+                } else if ("productProfile".equals(fieldName)) {
+                    deserializedLicenseProfileMachineInstanceViewInner.innerProductProfile
+                        = LicenseProfileArmProductProfileProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseProfileMachineInstanceViewInner;
+        });
     }
 }

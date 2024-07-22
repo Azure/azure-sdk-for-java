@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridcompute.implementation;
 
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewEsuPropertiesInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewInner;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileMachineInstanceView;
@@ -56,16 +57,24 @@ public final class LicenseProfileMachineInstanceViewImpl implements LicenseProfi
         return this.innerModel().productType();
     }
 
-    public OffsetDateTime billingStartDate() {
-        return this.innerModel().billingStartDate();
-    }
-
     public OffsetDateTime enrollmentDate() {
         return this.innerModel().enrollmentDate();
     }
 
+    public OffsetDateTime billingStartDate() {
+        return this.innerModel().billingStartDate();
+    }
+
     public OffsetDateTime disenrollmentDate() {
         return this.innerModel().disenrollmentDate();
+    }
+
+    public OffsetDateTime billingEndDate() {
+        return this.innerModel().billingEndDate();
+    }
+
+    public ManagementError error() {
+        return this.innerModel().error();
     }
 
     public List<ProductFeature> productFeatures() {
