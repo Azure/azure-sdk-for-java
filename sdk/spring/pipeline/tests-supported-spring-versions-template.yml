@@ -22,9 +22,12 @@ parameters:
     default:
   - name: MatrixConfigs
     type: object
+    default: []
+  - name: AdditionalMatrixConfigs
+    type: object
     default:
       - Name: Spring_Boot_Supported_Version_Tests
-        Path: sdk/spring/pipeline/supported-version-matrix.json
+        Path: sdk/spring/pipeline/tests-supported-version-matrix.json
         Selection: sparse
         GenerateVMJobs: true
         NonSparseParameters:
@@ -70,7 +73,7 @@ stages:
             python -m pip install termcolor
           displayName: 'Install python module'
         - script: |
-            python ./sdk/spring/scripts/compatibility_update_supported_version_matrix_json.py -mcp ${{ parameters.MatrixConfigs[0].Path }}
+            python ./sdk/spring/scripts/compatibility_update_supported_version_matrix_json.py -mcp ${{ parameters.AdditionalMatrixConfigs[0].Path }}
           displayName: 'Update supported Spring versions'
       MatrixFilters:
         - JavaTestVersion=^(?!1.8|1.11).*
