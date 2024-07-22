@@ -33,6 +33,8 @@ import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsModel
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;

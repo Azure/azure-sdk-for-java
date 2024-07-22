@@ -46,6 +46,8 @@ import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatie
 import com.azure.health.insights.radiologyinsights.models.SexMismatchInference;
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
  * The SampleCriticalResultInferenceAsync class processes a sample radiology document

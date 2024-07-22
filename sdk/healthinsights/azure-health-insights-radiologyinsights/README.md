@@ -61,8 +61,9 @@ Build a **synchronous** client:
 String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
-RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint).credential(credential);
-RadiologyInsightsClient radiologyInsightsClient = clientBuilder.buildClient();
+RadiologyInsightsClient radiologyInsightsClient = new RadiologyInsightsClientBuilder()
+        .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
+        .credential(credential).buildClient();
 ```
 
 Build an **asynchronous** client:
@@ -72,6 +73,7 @@ String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIG
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
 RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint).credential(credential);
+
 RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 ```
 
@@ -94,19 +96,21 @@ Infer radiology insights from a patient's radiology report using an **asynchrono
 - [SampleCriticalResultInferenceAsync.java][ri_async_sample]
 
 ```java com.azure.health.insights.radiologyinsights.inferradiologyinsights
-PollerFlux<RadiologyInsightsResult, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
-        .beginInferRadiologyInsights(createRadiologyInsightsRequest());
+PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
+        .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
 ```
 
 Create the request.
 
 ```java com.azure.health.insights.radiologyinsights.createrequest
-private static RadiologyInsightsData createRadiologyInsightsRequest() {
+private static RadiologyInsightsJob createRadiologyInsightsJob() {
     List<PatientRecord> patientRecords = createPatientRecords();
     RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
     RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
     radiologyInsightsData.setConfiguration(modelConfiguration);
-    return radiologyInsightsData;
+    RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
+    radiologyInsightsJob.setJobData(radiologyInsightsData);
+    return radiologyInsightsJob;
 }
 
 /**
@@ -125,9 +129,9 @@ private static List<PatientRecord> createPatientRecords() {
     // Use LocalDate to set Date
     patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
 
-    patientRecord.setInfo(patientDetails);
+    patientRecord.setDetails(patientDetails);
 
-    Encounter encounter = new Encounter("encounterid1");
+    PatientEncounter encounter = new PatientEncounter("encounterid1");
 
     TimePeriod period = new TimePeriod();
 
@@ -175,7 +179,7 @@ private static List<PatientRecord> createPatientRecords() {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
     OffsetDateTime createdDateTime = OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", formatter);
-    patientDocument.setCreatedDateTime(createdDateTime);
+    patientDocument.setCreatedAt(createdDateTime);
 
     patientRecord.setPatientDocuments(Arrays.asList(patientDocument));
     patientRecords.add(patientRecord);
@@ -301,7 +305,7 @@ private static String extractEvidenceToken(List<FhirR4Extension> subExtensions) 
     if (offset > 0 && length > 0) {
         evidence = DOC_CONTENT.substring(offset, Math.min(offset + length, DOC_CONTENT.length()));
     }
-    return evidence; 
+    return evidence;
 }
 ```
 
@@ -465,7 +469,7 @@ private static void displayFollowUpRecommendations(RadiologyInsightsInferenceRes
     for (RadiologyInsightsPatientResult patientResult : patientResults) {
         List<RadiologyInsightsInference> inferences = patientResult.getInferences();
         for (RadiologyInsightsInference inference : inferences) {
-            
+
             if (inference instanceof FollowupRecommendationInference) {
                 FollowupRecommendationInference followupRecommendationInference = (FollowupRecommendationInference) inference;
                 System.out.println("Follow Up Recommendation Inference found: ");
@@ -475,7 +479,7 @@ private static void displayFollowUpRecommendations(RadiologyInsightsInferenceRes
                 System.out.println("   Is guideline: " + followupRecommendationInference.isGuideline());
                 System.out.println("   Is hedging: " + followupRecommendationInference.isHedging());
                 System.out.println("   Is option: " + followupRecommendationInference.isOption());
-                
+
                 ProcedureRecommendation recommendedProcedure = followupRecommendationInference.getRecommendedProcedure();
                 if (recommendedProcedure instanceof GenericProcedureRecommendation) {
                     System.out.println("   Generic procedure recommendation:");
@@ -491,10 +495,10 @@ private static void displayFollowUpRecommendations(RadiologyInsightsInferenceRes
                     List<FhirR4CodeableConcept> procedureCodes = imagingProcedureRecommendation.getProcedureCodes();
                     if (procedureCodes != null) {
                         for (FhirR4CodeableConcept codeableConcept : procedureCodes) {
-                            displayCodes(codeableConcept, 3);    
+                            displayCodes(codeableConcept, 3);
                         }
                     }
-                    
+
                     System.out.println("      Imaging procedure: ");
                     List<ImagingProcedure> imagingProcedures = imagingProcedureRecommendation.getImagingProcedures();
                     for (ImagingProcedure imagingProcedure : imagingProcedures) {
@@ -502,13 +506,13 @@ private static void displayFollowUpRecommendations(RadiologyInsightsInferenceRes
                         FhirR4CodeableConcept modality = imagingProcedure.getModality();
                         displayCodes(modality, 4);
                         System.out.println("            Evidence: " + extractEvidence(modality.getExtension()));
-                        
+
                         System.out.println("         Anatomy");
                         FhirR4CodeableConcept anatomy = imagingProcedure.getAnatomy();
                         displayCodes(anatomy, 4);
                         System.out.println("            Evidence: " + extractEvidence(anatomy.getExtension()));
                     }
-                } 
+                }
             }
         }
     }
@@ -558,7 +562,7 @@ private static String extractEvidenceToken(List<FhirR4Extension> subExtensions) 
         //System.out.println("Offset: " + offset + ", length: " + length);
         evidence = DOC_CONTENT.substring(offset, Math.min(offset + length, DOC_CONTENT.length()));
     }
-    return evidence; 
+    return evidence;
 }
 ```
 
@@ -653,7 +657,7 @@ private static void displayRadiologyProcedures(RadiologyInsightsInferenceResult 
                 }
                 System.out.println("   Imaging procedures:");
                 List<ImagingProcedure> imagingProcedures = radiologyProcedureInference.getImagingProcedures();
-                
+
                 for (ImagingProcedure imagingProcedure : imagingProcedures) {
                     System.out.println("      Modality: ");
                     FhirR4CodeableConcept modality = imagingProcedure.getModality();
