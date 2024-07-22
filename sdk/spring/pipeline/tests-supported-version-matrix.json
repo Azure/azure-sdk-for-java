@@ -4,5 +4,8 @@
     "SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION": [
 
     ]
+  },
+  "displayNames": {
+    "true": "TestFromSource"
   }
 }

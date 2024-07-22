@@ -45,8 +45,7 @@ def update_supported_version_matrix_json_file(filepath, suppoerted_spring_boot_v
         names[boot_version] = "SpringBoot" + boot_version.replace(".", "_") + "_Cloud" + cloud_version.replace(".", "_")
     with open(filepath, 'r') as file:
         data = json.load(file)
-        if "tests-" not in filepath:
-            data['displayNames'] = names
+        data['displayNames'].update(names)
         data['matrix']['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'] = suppoerted_spring_boot_version
     with open(filepath, 'w') as file:
         json.dump(data, file, indent=2)
