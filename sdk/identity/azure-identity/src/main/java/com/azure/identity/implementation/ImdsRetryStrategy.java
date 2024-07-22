@@ -11,7 +11,6 @@ import com.azure.core.util.logging.ClientLogger;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.function.Predicate;
-import java.util.function.Function;
 
 public class ImdsRetryStrategy implements RetryStrategy {
     private static final ClientLogger LOGGER = new ClientLogger(ImdsRetryStrategy.class);
