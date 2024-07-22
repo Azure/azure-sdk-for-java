@@ -11,7 +11,7 @@ public final class AgentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentConfiguration model = BinaryData.fromString(
-            "{\"proxyUrl\":\"t\",\"incomingConnectionsPorts\":[\"kw\",\"yeicxmqciwqvhk\",\"ixuigdtopbobj\"],\"extensionsAllowList\":[{\"publisher\":\"e\",\"type\":\"a\"}],\"extensionsBlockList\":[{\"publisher\":\"rzayv\",\"type\":\"pgvdf\"},{\"publisher\":\"otkftutqxlngx\",\"type\":\"fgugnxkrxdqmid\"},{\"publisher\":\"hzrvqd\",\"type\":\"bhj\"}],\"proxyBypass\":[\"gehoqfbowskany\",\"tzlcuiywgqywgn\"],\"extensionsEnabled\":\"vynhzgpphrcg\",\"guestConfigurationEnabled\":\"cocpecfvmmcoofsx\",\"configMode\":\"full\"}")
+            "{\"proxyUrl\":\"yd\",\"incomingConnectionsPorts\":[\"mjthjqkwp\",\"eicxmqciwqvhkhi\"],\"extensionsAllowList\":[{\"publisher\":\"dtopbob\",\"type\":\"ghmewuam\"},{\"publisher\":\"hrzayvvtpgvdf\",\"type\":\"otkftutqxlngx\"},{\"publisher\":\"fgugnxkrxdqmid\",\"type\":\"hzrvqd\"}],\"extensionsBlockList\":[{\"publisher\":\"jybige\",\"type\":\"qfbow\"}],\"proxyBypass\":[\"nyktzlcuiy\",\"gqywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\"],\"extensionsEnabled\":\"sxlzevgbmqj\",\"guestConfigurationEnabled\":\"bcypmi\",\"configMode\":\"full\"}")
             .toObject(AgentConfiguration.class);
     }
 

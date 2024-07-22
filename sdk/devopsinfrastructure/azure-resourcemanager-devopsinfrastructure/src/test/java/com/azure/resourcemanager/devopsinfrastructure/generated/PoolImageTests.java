@@ -13,24 +13,24 @@ public final class PoolImageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolImage model = BinaryData.fromString(
-            "{\"resourceId\":\"gakeqsr\",\"wellKnownImageName\":\"bzqqedqytbciq\",\"aliases\":[\"flmmnk\",\"smodmgloug\"],\"buffer\":\"kwtmutduqktapspw\"}")
+            "{\"resourceId\":\"tumkdosvqwhbm\",\"wellKnownImageName\":\"bbjfddgmbmbexp\",\"aliases\":[\"tq\",\"rolfpfp\",\"algbquxigjyjg\"],\"buffer\":\"aoyfhrtxilnerkuj\"}")
             .toObject(PoolImage.class);
-        Assertions.assertEquals("gakeqsr", model.resourceId());
-        Assertions.assertEquals("bzqqedqytbciq", model.wellKnownImageName());
-        Assertions.assertEquals("flmmnk", model.aliases().get(0));
-        Assertions.assertEquals("kwtmutduqktapspw", model.buffer());
+        Assertions.assertEquals("tumkdosvqwhbm", model.resourceId());
+        Assertions.assertEquals("bbjfddgmbmbexp", model.wellKnownImageName());
+        Assertions.assertEquals("tq", model.aliases().get(0));
+        Assertions.assertEquals("aoyfhrtxilnerkuj", model.buffer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolImage model = new PoolImage().withResourceId("gakeqsr")
-            .withWellKnownImageName("bzqqedqytbciq")
-            .withAliases(Arrays.asList("flmmnk", "smodmgloug"))
-            .withBuffer("kwtmutduqktapspw");
+        PoolImage model = new PoolImage().withResourceId("tumkdosvqwhbm")
+            .withWellKnownImageName("bbjfddgmbmbexp")
+            .withAliases(Arrays.asList("tq", "rolfpfp", "algbquxigjyjg"))
+            .withBuffer("aoyfhrtxilnerkuj");
         model = BinaryData.fromObject(model).toObject(PoolImage.class);
-        Assertions.assertEquals("gakeqsr", model.resourceId());
-        Assertions.assertEquals("bzqqedqytbciq", model.wellKnownImageName());
-        Assertions.assertEquals("flmmnk", model.aliases().get(0));
-        Assertions.assertEquals("kwtmutduqktapspw", model.buffer());
+        Assertions.assertEquals("tumkdosvqwhbm", model.resourceId());
+        Assertions.assertEquals("bbjfddgmbmbexp", model.wellKnownImageName());
+        Assertions.assertEquals("tq", model.aliases().get(0));
+        Assertions.assertEquals("aoyfhrtxilnerkuj", model.buffer());
     }
 }
