@@ -67,8 +67,6 @@ public final class ExpressRouteLinkPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * Definition of ExpressRouteLink Mac Security configuration.
-     * 
      * MacSec configuration.
      */
     @JsonProperty(value = "macSecConfig")
@@ -164,9 +162,7 @@ public final class ExpressRouteLinkPropertiesFormat {
     }
 
     /**
-     * Get the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration.
-     * 
-     * MacSec configuration.
+     * Get the macSecConfig property: MacSec configuration.
      * 
      * @return the macSecConfig value.
      */
@@ -175,9 +171,7 @@ public final class ExpressRouteLinkPropertiesFormat {
     }
 
     /**
-     * Set the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration.
-     * 
-     * MacSec configuration.
+     * Set the macSecConfig property: MacSec configuration.
      * 
      * @param macSecConfig the macSecConfig value to set.
      * @return the ExpressRouteLinkPropertiesFormat object itself.

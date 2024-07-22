@@ -27,7 +27,7 @@ public class FirewallPolicyRule {
      */
     @JsonTypeId
     @JsonProperty(value = "ruleType", required = true)
-    private FirewallPolicyRuleType ruleType;
+    private FirewallPolicyRuleType ruleType = FirewallPolicyRuleType.fromString("FirewallPolicyRule");
 
     /*
      * Name of the rule.
@@ -45,7 +45,6 @@ public class FirewallPolicyRule {
      * Creates an instance of FirewallPolicyRule class.
      */
     public FirewallPolicyRule() {
-        this.ruleType = FirewallPolicyRuleType.fromString("FirewallPolicyRule");
     }
 
     /**

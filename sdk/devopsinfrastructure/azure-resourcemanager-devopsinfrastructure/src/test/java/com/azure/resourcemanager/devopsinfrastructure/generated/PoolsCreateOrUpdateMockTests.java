@@ -18,6 +18,7 @@ import com.azure.resourcemanager.devopsinfrastructure.models.OrganizationProfile
 import com.azure.resourcemanager.devopsinfrastructure.models.Pool;
 import com.azure.resourcemanager.devopsinfrastructure.models.PoolProperties;
 import com.azure.resourcemanager.devopsinfrastructure.models.ProvisioningState;
+import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictions;
 import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictionsProfile;
 import com.azure.resourcemanager.devopsinfrastructure.models.UserAssignedIdentity;
 import java.nio.charset.StandardCharsets;
@@ -32,7 +33,7 @@ public final class PoolsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":467483193,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":\"dataqtc\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"alm\"},\"identity\":{\"principalId\":\"d\",\"tenantId\":\"ygdvwv\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"qagvrvm\":{\"principalId\":\"g\",\"clientId\":\"rtfudxepxg\"},\"wi\":{\"principalId\":\"k\",\"clientId\":\"ghimdblx\"},\"oqreyfkzikfjawn\":{\"principalId\":\"njhf\",\"clientId\":\"wmszkk\"},\"c\":{\"principalId\":\"ivx\",\"clientId\":\"zel\"}}},\"location\":\"elsfeaen\",\"tags\":{\"xbjhwuaanozjosph\":\"fatkld\",\"ag\":\"oulpjrv\",\"cktqumiekkezzi\":\"rvimjwosytxitcsk\",\"bdunygaeqid\":\"hlyfjhdgqgg\"},\"id\":\"qfatpxllrxcyjm\",\"name\":\"a\",\"type\":\"su\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":1068546777,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"eddgssofw\"},\"identity\":{\"principalId\":\"qal\",\"tenantId\":\"mnjijpxacqqudf\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"evfdnwnwm\":{\"principalId\":\"aaabjyvayff\",\"clientId\":\"rzrtuzqogsex\"},\"thzvaytdwkqbrqu\":{\"principalId\":\"zsyyceuzso\",\"clientId\":\"judpfrxt\"},\"oaxoruzfgsqu\":{\"principalId\":\"axhexiilivp\",\"clientId\":\"iirqtd\"}}},\"location\":\"xrxxlep\",\"tags\":{\"wxuqlcvydypatdoo\":\"mxjezwlw\",\"kooebwnu\":\"ojknio\",\"vdkcrodtj\":\"hemms\"},\"id\":\"nfwjlfltkacjvefk\",\"name\":\"lfoakg\",\"type\":\"kfpagao\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -41,28 +42,30 @@ public final class PoolsCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Pool response = manager.pools()
-            .define("yzrpzbchckqqzq")
-            .withRegion("vcikhnvpamqgx")
-            .withExistingResourceGroup("swsrms")
-            .withTags(mapOf("atmelwui", "ezikywggxkal"))
-            .withProperties(new PoolProperties().withProvisioningState(ProvisioningState.CANCELED)
-                .withMaximumConcurrency(1223269261)
-                .withOrganizationProfile(new OrganizationProfile())
-                .withAgentProfile(new AgentProfile().withResourcePredictions("datauiizynke")
-                    .withResourcePredictionsProfile(new ResourcePredictionsProfile()))
-                .withFabricProfile(new FabricProfile())
-                .withDevCenterProjectResourceId("atrwyhqmibzyh"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf("kotl", new UserAssignedIdentity(), "tdtbnnhadooc", new UserAssignedIdentity())))
-            .create();
+        Pool response
+            = manager.pools()
+                .define("dxbjhwuaanozj")
+                .withRegion("varmywdmj")
+                .withExistingResourceGroup("abfatkl")
+                .withTags(mapOf("rw", "bjhhyx"))
+                .withProperties(new PoolProperties().withProvisioningState(ProvisioningState.DELETING)
+                    .withMaximumConcurrency(1082355314)
+                    .withOrganizationProfile(new OrganizationProfile())
+                    .withAgentProfile(new AgentProfile().withResourcePredictions(new ResourcePredictions())
+                        .withResourcePredictionsProfile(new ResourcePredictionsProfile()))
+                    .withFabricProfile(new FabricProfile())
+                    .withDevCenterProjectResourceId("l"))
+                .withIdentity(
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("jhdgqggebdunyga", new UserAssignedIdentity(), "rxcyjmoad",
+                            new UserAssignedIdentity())))
+                .create();
 
-        Assertions.assertEquals("elsfeaen", response.location());
-        Assertions.assertEquals("fatkld", response.tags().get("xbjhwuaanozjosph"));
+        Assertions.assertEquals("xrxxlep", response.location());
+        Assertions.assertEquals("mxjezwlw", response.tags().get("wxuqlcvydypatdoo"));
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, response.properties().provisioningState());
-        Assertions.assertEquals(467483193, response.properties().maximumConcurrency());
-        Assertions.assertEquals("alm", response.properties().devCenterProjectResourceId());
+        Assertions.assertEquals(1068546777, response.properties().maximumConcurrency());
+        Assertions.assertEquals("eddgssofw", response.properties().devCenterProjectResourceId());
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
     }
 
