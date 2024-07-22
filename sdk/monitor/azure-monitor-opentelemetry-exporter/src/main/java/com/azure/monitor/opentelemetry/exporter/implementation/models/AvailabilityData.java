@@ -247,7 +247,11 @@ public final class AvailabilityData extends MonitorDomain {
         jsonWriter.writeBooleanField("success", this.success);
         jsonWriter.writeStringField("runLocation", this.runLocation);
         jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> {
+            if (element != null) {
+                writer.writeString(element);
+            }
+        });
         jsonWriter.writeMapField("measurements", this.measurements, (writer, element) -> writer.writeDouble(element));
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
