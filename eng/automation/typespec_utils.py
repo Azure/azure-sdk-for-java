@@ -29,7 +29,7 @@ def validate_tspconfig(tsp_dir: str) -> bool:
     service_dir: str = yaml_json["parameters"]["service-dir"]["default"]
     package_dir: str = yaml_json["options"]["@azure-tools/typespec-java"]["package-dir"]
     if "namespace" not in yaml_json["options"]["@azure-tools/typespec-java"]:
-        log_and_print_error(
+        logging.error(
             "[VALIDATE][tspconfig.yaml] "
             "options.@azure-tools/typespec-java.namespace is REQUIRED for Java SDK. "
             'E.g. "com.azure.ai.openai".'
@@ -41,7 +41,7 @@ def validate_tspconfig(tsp_dir: str) -> bool:
     service_dir_segments = service_dir.split("/")
     if not re.fullmatch(service_dir_pattern, service_dir):
         valid = False
-        log_and_print_error(
+        logging.error(
             "[VALIDATE][tspconfig.yaml] "
             'parameters.service-dir.default SHOULD be "sdk/<service>". '
             "See https://azure.github.io/azure-sdk/policies_repostructure.html. "
@@ -51,7 +51,7 @@ def validate_tspconfig(tsp_dir: str) -> bool:
     # validate package_dir
     if not re.fullmatch(package_dir_pattern, package_dir):
         valid = False
-        log_and_print_error(
+        logging.error(
             "[VALIDATE][tspconfig.yaml] "
             'options.@azure-tools/typespec-java.package-dir SHOULD start with "azure-". '
             'E.g. "azure-ai-openai". '
@@ -61,7 +61,7 @@ def validate_tspconfig(tsp_dir: str) -> bool:
     # validate namespace
     if not re.fullmatch(namespace_pattern, namespace):
         valid = False
-        log_and_print_error(
+        logging.error(
             "[VALIDATE][tspconfig.yaml] "
             'options.@azure-tools/typespec-java.namespace SHOULD start with "com.azure.". '
             'E.g. "com.azure.ai.openai". '
@@ -73,14 +73,9 @@ def validate_tspconfig(tsp_dir: str) -> bool:
         expected_package_dir = namespace[4:].replace(".", "-")
         if expected_package_dir != package_dir:
             valid = False
-            log_and_print_error(
+            logging.error(
                 "[VALIDATE][tspconfig.yaml] package_dir does not match namespace. "
                 f'Expected package_dir from namespace "{namespace}" is: {expected_package_dir}'
             )
 
     return valid
-
-
-def log_and_print_error(error_message: str):
-    logging.error(error_message)
-    print(error_message, file=sys.stderr)
