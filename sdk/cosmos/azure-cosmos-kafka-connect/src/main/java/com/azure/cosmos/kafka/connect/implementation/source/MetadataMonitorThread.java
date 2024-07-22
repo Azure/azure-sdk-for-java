@@ -72,8 +72,8 @@ public class MetadataMonitorThread extends Thread {
         this.cosmosClient = cosmosClient;
         this.containersQuerySpec = this.getContainersQuerySpec();
         int numContainers = Objects.requireNonNull(this.getAllContainers().block()).size();
-        if (numContainers == 0 || numContainers != sourceContainersConfig.getIncludedContainers().size()) {
-            throw new IllegalStateException("Some of the containers specified in the config were not found in the database.");
+        if ((numContainers == 0 || numContainers != sourceContainersConfig.getIncludedContainers().size()) && !sourceContainersConfig.isIncludeAllContainers()) {
+            throw new IllegalStateException("Cosmos container config is invalid. Either includeAllContainers should be true or containers should be provided.");
         }
         this.containersMetadataTopicPartition = new ContainersMetadataTopicPartition(containersConfig.getDatabaseName(), connectorName);
     }

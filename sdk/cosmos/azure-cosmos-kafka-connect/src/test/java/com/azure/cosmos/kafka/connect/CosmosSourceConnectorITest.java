@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.errors.InvalidRequestException;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.connect.json.JsonDeserializer;
 import org.rnorth.ducttape.unreliables.Unreliables;
@@ -276,9 +277,8 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             ConnectorStatus connectorStatus = kafkaCosmosConnectContainer.getConnectorStatus(connectorName);
             assertThat(connectorStatus.getConnector().get("state").equals("FAILED")).isTrue();
             assertThat(connectorStatus.getConnector().get("trace")
-                .contains("java.lang.IllegalStateException: Some of the containers specified in the config were not found in the database.")).isTrue();
-
-        } catch (InterruptedException e) {
+                .contains("java.lang.IllegalStateException: Cosmos container config is invalid. Either includeAllContainers should be true or containers should be provided.")).isTrue();
+        }  catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
             if (client != null) {

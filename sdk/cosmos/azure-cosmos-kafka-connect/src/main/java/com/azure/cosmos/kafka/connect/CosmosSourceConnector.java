@@ -14,6 +14,7 @@ import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceContainersConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTaskConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuationTopicOffset;
@@ -246,7 +247,10 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
     }
 
     private Pair<MetadataTaskUnit, List<FeedRangeTaskUnit>> getAllTaskUnits() {
-        List<CosmosContainerProperties> allContainers = this.monitorThread.getAllContainers().block();
+        List<CosmosContainerProperties> allContainers = monitorThread.getAllContainers().block();
+        if (allContainers.isEmpty()) {
+            throw new ConnectException("Some of the containers specified in the config were not found in the database.");
+        }
         Map<String, String> containerTopicMap = this.getContainersTopicMap(allContainers);
         List<FeedRangeTaskUnit> allFeedRangeTaskUnits = new ArrayList<>();
         Map<String, List<FeedRange>> updatedContainerToFeedRangesMap = new ConcurrentHashMap<>();
