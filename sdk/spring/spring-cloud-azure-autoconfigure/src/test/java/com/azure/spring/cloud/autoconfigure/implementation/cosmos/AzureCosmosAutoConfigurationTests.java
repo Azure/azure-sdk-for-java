@@ -11,7 +11,8 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
-import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.service.implementation.cosmos.CosmosClientBuilderFactory;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,8 @@ class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfiguratio
 
     static final String TEST_ENDPOINT_HTTPS = "https://test.https.documents.azure.com:443/";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureCosmosAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureCosmosAutoConfiguration.class,
+            AzureGlobalPropertiesAutoConfiguration.class));
 
     @Override
     protected ApplicationContextRunner getMinimalContextRunner() {
@@ -91,7 +93,6 @@ class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfiguratio
 
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS)
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(CosmosClientBuilder.class, () -> mockCosmosClientBuilder)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureCosmosProperties.class);
@@ -104,16 +105,13 @@ class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfiguratio
 
     @Test
     void configureAzureCosmosPropertiesWithGlobalDefaults() {
-        AzureGlobalProperties azureProperties = new AzureGlobalProperties();
-        azureProperties.getCredential().setClientId("azure-client-id");
-        azureProperties.getCredential().setClientSecret("azure-client-secret");
-        azureProperties.getProxy().setHostname("localhost");
-        azureProperties.getProxy().getHttp().setNonProxyHosts("localhost");
-
         this.contextRunner
-            .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
             .withPropertyValues(
+                "spring.cloud.azure.credential.client-id=azure-client-id",
+                "spring.cloud.azure.credential.client-secret=azure-client-secret",
+                "spring.cloud.azure.proxy.hostname=localhost",
+                "spring.cloud.azure.proxy.nonProxyHosts=localhost",
                 "spring.cloud.azure.cosmos.credential.client-id=cosmos-client-id",
                 "spring.cloud.azure.cosmos.proxy.nonProxyHosts=127.0.0.1",
                 "spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS,
@@ -128,8 +126,6 @@ class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfiguratio
                 assertThat(properties.getProxy().getNonProxyHosts()).isEqualTo("127.0.0.1");
                 assertThat(properties.getEndpoint()).isEqualTo(TEST_ENDPOINT_HTTPS);
                 assertThat(properties.getKey()).isEqualTo("cosmos-key");
-
-                assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
             });
     }
 
@@ -141,7 +137,6 @@ class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfiguratio
                 "spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS,
                 "spring.cloud.azure.cosmos.key=cosmos-key"
             )
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", CosmosBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", CosmosBuilderCustomizer.class, () -> customizer)
             .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
@@ -156,7 +151,6 @@ class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfiguratio
                 "spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS,
                 "spring.cloud.azure.cosmos.key=cosmos-key"
             )
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", CosmosBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", CosmosBuilderCustomizer.class, () -> customizer)
             .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
@@ -198,9 +192,7 @@ class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfiguratio
                 "spring.cloud.azure.cosmos.direct-connection.max-connections-per-endpoint=9",
                 "spring.cloud.azure.cosmos.direct-connection.max-requests-per-connection=10",
                 "spring.cloud.azure.cosmos.populate-query-metrics=true"
-
             )
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureCosmosProperties.class);
@@ -233,6 +225,29 @@ class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfiguratio
                 assertEquals(9, properties.getDirectConnection().getMaxConnectionsPerEndpoint());
                 assertEquals(10, properties.getDirectConnection().getMaxRequestsPerConnection());
                 assertTrue(properties.isPopulateQueryMetrics());
+            });
+    }
+
+    @Test
+    void connectionDetailsShouldHasHigherPriorityThanProperties() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.cosmos.endpoint=test-endpoint",
+                "spring.cloud.azure.cosmos.key=cosmos-key",
+                "spring.cloud.azure.cosmos.database=test-database",
+                "spring.cloud.azure.cosmos.endpoint-discovery-enabled=false",
+                "spring.cloud.azure.cosmos.connection-mode=direct"
+            )
+            .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
+            .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureCosmosProperties.class);
+                AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
+                assertEquals("test-endpoint-by-connection-detail", properties.getEndpoint());
+                assertEquals("cosmos-key-by-connection-detail", properties.getKey());
+                assertEquals("test-database-by-connection-detail", properties.getDatabase());
+                assertTrue(properties.getEndpointDiscoveryEnabled());
+                assertEquals(ConnectionMode.GATEWAY, properties.getConnectionMode());
             });
     }
 

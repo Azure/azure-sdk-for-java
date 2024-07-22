@@ -5,33 +5,34 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileProductType;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileSubscriptionStatusUpdate;
 import com.azure.resourcemanager.hybridcompute.models.ProductFeatureUpdate;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the Update properties of a Product Profile.
  */
 @Fluent
-public final class ProductProfileUpdateProperties {
+public final class ProductProfileUpdateProperties implements JsonSerializable<ProductProfileUpdateProperties> {
     /*
      * Indicates the subscription status of the product.
      */
-    @JsonProperty(value = "subscriptionStatus")
     private LicenseProfileSubscriptionStatusUpdate subscriptionStatus;
 
     /*
      * Indicates the product type of the license.
      */
-    @JsonProperty(value = "productType")
     private LicenseProfileProductType productType;
 
     /*
      * The list of product feature updates.
      */
-    @JsonProperty(value = "productFeatures")
     private List<ProductFeatureUpdate> productFeatures;
 
     /**
@@ -110,5 +111,54 @@ public final class ProductProfileUpdateProperties {
         if (productFeatures() != null) {
             productFeatures().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subscriptionStatus",
+            this.subscriptionStatus == null ? null : this.subscriptionStatus.toString());
+        jsonWriter.writeStringField("productType", this.productType == null ? null : this.productType.toString());
+        jsonWriter.writeArrayField("productFeatures", this.productFeatures,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductProfileUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductProfileUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProductProfileUpdateProperties.
+     */
+    public static ProductProfileUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductProfileUpdateProperties deserializedProductProfileUpdateProperties
+                = new ProductProfileUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionStatus".equals(fieldName)) {
+                    deserializedProductProfileUpdateProperties.subscriptionStatus
+                        = LicenseProfileSubscriptionStatusUpdate.fromString(reader.getString());
+                } else if ("productType".equals(fieldName)) {
+                    deserializedProductProfileUpdateProperties.productType
+                        = LicenseProfileProductType.fromString(reader.getString());
+                } else if ("productFeatures".equals(fieldName)) {
+                    List<ProductFeatureUpdate> productFeatures
+                        = reader.readArray(reader1 -> ProductFeatureUpdate.fromJson(reader1));
+                    deserializedProductProfileUpdateProperties.productFeatures = productFeatures;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductProfileUpdateProperties;
+        });
     }
 }

@@ -136,7 +136,12 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      */
     @Override
     public FeatureFlagConfigurationSetting setKey(String key) {
-        super.setKey(key);
+        if (key != null && !key.startsWith(KEY_PREFIX)) {
+            super.setKey(KEY_PREFIX + key);
+        } else {
+            super.setKey(key);
+        }
+
         return this;
     }
 

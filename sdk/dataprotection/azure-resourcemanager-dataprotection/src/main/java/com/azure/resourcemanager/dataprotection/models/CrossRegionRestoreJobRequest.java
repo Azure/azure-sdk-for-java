@@ -6,29 +6,30 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Details of CRR Job to be fetched.
  */
 @Fluent
-public final class CrossRegionRestoreJobRequest {
+public final class CrossRegionRestoreJobRequest implements JsonSerializable<CrossRegionRestoreJobRequest> {
     /*
      * The sourceRegion property.
      */
-    @JsonProperty(value = "sourceRegion", required = true)
     private String sourceRegion;
 
     /*
      * The sourceBackupVaultId property.
      */
-    @JsonProperty(value = "sourceBackupVaultId", required = true)
     private String sourceBackupVaultId;
 
     /*
      * The jobId property.
      */
-    @JsonProperty(value = "jobId", required = true)
     private String jobId;
 
     /**
@@ -104,18 +105,64 @@ public final class CrossRegionRestoreJobRequest {
      */
     public void validate() {
         if (sourceRegion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceRegion in model CrossRegionRestoreJobRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceRegion in model CrossRegionRestoreJobRequest"));
         }
         if (sourceBackupVaultId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceBackupVaultId in model CrossRegionRestoreJobRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceBackupVaultId in model CrossRegionRestoreJobRequest"));
         }
         if (jobId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property jobId in model CrossRegionRestoreJobRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property jobId in model CrossRegionRestoreJobRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CrossRegionRestoreJobRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceRegion", this.sourceRegion);
+        jsonWriter.writeStringField("sourceBackupVaultId", this.sourceBackupVaultId);
+        jsonWriter.writeStringField("jobId", this.jobId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CrossRegionRestoreJobRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CrossRegionRestoreJobRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CrossRegionRestoreJobRequest.
+     */
+    public static CrossRegionRestoreJobRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CrossRegionRestoreJobRequest deserializedCrossRegionRestoreJobRequest = new CrossRegionRestoreJobRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRegion".equals(fieldName)) {
+                    deserializedCrossRegionRestoreJobRequest.sourceRegion = reader.getString();
+                } else if ("sourceBackupVaultId".equals(fieldName)) {
+                    deserializedCrossRegionRestoreJobRequest.sourceBackupVaultId = reader.getString();
+                } else if ("jobId".equals(fieldName)) {
+                    deserializedCrossRegionRestoreJobRequest.jobId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCrossRegionRestoreJobRequest;
+        });
+    }
 }
