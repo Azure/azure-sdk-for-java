@@ -92,7 +92,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     public void blobNameNull() {
-        assertThrows(IllegalArgumentException.class, () -> cc.getBlobClient(null));
+        assertThrows(NullPointerException.class, () -> cc.getBlobClient(null));
     }
 
     @Test
