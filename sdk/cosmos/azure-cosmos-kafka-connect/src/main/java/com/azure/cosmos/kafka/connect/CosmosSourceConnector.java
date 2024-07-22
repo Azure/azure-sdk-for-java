@@ -246,7 +246,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
     }
 
     private Pair<MetadataTaskUnit, List<FeedRangeTaskUnit>> getAllTaskUnits() {
-        List<CosmosContainerProperties> allContainers = monitorThread.getAllContainers().block();
+        List<CosmosContainerProperties> allContainers = this.monitorThread.getAllContainers().block();
         if (allContainers.isEmpty()) {
             throw new ConnectException("Some of the containers specified in the config were not found in the database.");
         }
