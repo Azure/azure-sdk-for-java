@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-health-insights-radiologyinsights</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-health-insights-radiologyinsights;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-health-insights-radiologyinsights;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure client library for Health Insights - Radiology Insights</name>
