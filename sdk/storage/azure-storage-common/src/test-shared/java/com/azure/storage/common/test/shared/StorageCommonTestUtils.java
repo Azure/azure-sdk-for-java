@@ -328,12 +328,14 @@ public final class StorageCommonTestUtils {
                 && !CoreUtils.isNullOrEmpty(tenantId)
                 && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
 
-                builder.addLast(new AzurePipelinesCredentialBuilder()
-                    .systemAccessToken(systemAccessToken)
-                    .clientId(clientId)
-                    .tenantId(tenantId)
-                    .serviceConnectionId(serviceConnectionId)
-                    .build());
+                AzurePipelinesCredential pipelinesCredential = new AzurePipelinesCredentialBuilder()
+                .systemAccessToken(systemAccessToken)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .serviceConnectionId(serviceConnectionId)
+                .build();
+                
+                builder.addLast(request -> pipelinesCredential.getToken(request).subscribeOn(Schedulers.boundedElastic()));
             }
 
             builder.addLast(new AzurePowerShellCredentialBuilder().build());
