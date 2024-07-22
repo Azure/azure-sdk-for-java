@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
 import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategyType;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;

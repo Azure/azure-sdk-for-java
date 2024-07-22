@@ -14,7 +14,6 @@ import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceContainersConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTaskConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuationTopicOffset;
