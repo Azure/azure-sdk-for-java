@@ -7,12 +7,14 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.AzureDeveloperCliCredentialBuilder;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import reactor.core.scheduler.Schedulers;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 import static org.springframework.util.StringUtils.hasText;
@@ -45,12 +47,14 @@ public class ApplicationConfiguration {
             && hasText(tenantId)
             && hasText(systemAccessToken)) {
 
-            builder.addLast(new AzurePipelinesCredentialBuilder()
+            AzurePipelinesCredential pipelinesCredential = new AzurePipelinesCredentialBuilder()
                 .systemAccessToken(systemAccessToken)
                 .clientId(clientId)
                 .tenantId(tenantId)
                 .serviceConnectionId(serviceConnectionId)
-                .build());
+                .build();
+
+            builder.addLast(trc -> pipelinesCredential.getToken(trc).subscribeOn(Schedulers.boundedElastic()));
         }
 
         builder.addLast(new AzurePowerShellCredentialBuilder().build());
