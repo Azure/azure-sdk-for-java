@@ -12,12 +12,12 @@ public final class PagedQuotaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PagedQuota model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"sl\",\"unit\":\"nayqi\",\"currentValue\":6807110880939555009,\"limit\":1427620858530935166},{\"id\":\"havhqlkthumaqolb\",\"unit\":\"ycduier\",\"currentValue\":5585985291342731505,\"limit\":2689162209131114224},{\"id\":\"mvaolps\",\"unit\":\"lqlfm\",\"currentValue\":940610692718193227,\"limit\":4932042661721464474},{\"id\":\"glzpswiydm\",\"unit\":\"wyhzdx\",\"currentValue\":5631675707409598549,\"limit\":3757407147735065714}],\"nextLink\":\"mnvdfzn\"}")
+            "{\"value\":[{\"id\":\"gx\",\"unit\":\"xrslpm\",\"currentValue\":6715322214265854823,\"limit\":7040134278923407185},{\"id\":\"egrpkhj\",\"unit\":\"niyqslui\",\"currentValue\":1509856375818766415,\"limit\":4481689603688625357},{\"id\":\"kzzlvmbmpaxmodf\",\"unit\":\"uefywsbpfvmwy\",\"currentValue\":4618118068298322402,\"limit\":98342047801553484}],\"nextLink\":\"ft\"}")
             .toObject(PagedQuota.class);
-        Assertions.assertEquals("sl", model.value().get(0).id());
-        Assertions.assertEquals("nayqi", model.value().get(0).unit());
-        Assertions.assertEquals(6807110880939555009L, model.value().get(0).currentValue());
-        Assertions.assertEquals(1427620858530935166L, model.value().get(0).limit());
-        Assertions.assertEquals("mnvdfzn", model.nextLink());
+        Assertions.assertEquals("gx", model.value().get(0).id());
+        Assertions.assertEquals("xrslpm", model.value().get(0).unit());
+        Assertions.assertEquals(6715322214265854823L, model.value().get(0).currentValue());
+        Assertions.assertEquals(7040134278923407185L, model.value().get(0).limit());
+        Assertions.assertEquals("ft", model.nextLink());
     }
 }
