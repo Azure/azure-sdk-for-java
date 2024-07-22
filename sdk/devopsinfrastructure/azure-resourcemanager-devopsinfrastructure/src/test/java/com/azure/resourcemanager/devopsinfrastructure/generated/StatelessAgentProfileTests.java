@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictions;
 import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictionsProfile;
 import com.azure.resourcemanager.devopsinfrastructure.models.StatelessAgentProfile;
 
@@ -12,13 +13,13 @@ public final class StatelessAgentProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StatelessAgentProfile model = BinaryData.fromString(
-            "{\"kind\":\"Stateless\",\"resourcePredictions\":\"databvmgxsabkyqduuji\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}}")
+            "{\"kind\":\"Stateless\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}}")
             .toObject(StatelessAgentProfile.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StatelessAgentProfile model = new StatelessAgentProfile().withResourcePredictions("databvmgxsabkyqduuji")
+        StatelessAgentProfile model = new StatelessAgentProfile().withResourcePredictions(new ResourcePredictions())
             .withResourcePredictionsProfile(new ResourcePredictionsProfile());
         model = BinaryData.fromObject(model).toObject(StatelessAgentProfile.class);
     }
