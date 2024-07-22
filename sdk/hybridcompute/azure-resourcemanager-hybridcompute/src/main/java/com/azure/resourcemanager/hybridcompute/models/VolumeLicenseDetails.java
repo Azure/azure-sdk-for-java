@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The VolumeLicenseDetails model.
  */
 @Fluent
-public final class VolumeLicenseDetails {
+public final class VolumeLicenseDetails implements JsonSerializable<VolumeLicenseDetails> {
     /*
      * Describes the program year the volume license is for.
      */
-    @JsonProperty(value = "programYear")
     private ProgramYear programYear;
 
     /*
      * The invoice id for the volume license.
      */
-    @JsonProperty(value = "invoiceId")
     private String invoiceId;
 
     /**
@@ -76,5 +78,44 @@ public final class VolumeLicenseDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("programYear", this.programYear == null ? null : this.programYear.toString());
+        jsonWriter.writeStringField("invoiceId", this.invoiceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeLicenseDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeLicenseDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumeLicenseDetails.
+     */
+    public static VolumeLicenseDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeLicenseDetails deserializedVolumeLicenseDetails = new VolumeLicenseDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("programYear".equals(fieldName)) {
+                    deserializedVolumeLicenseDetails.programYear = ProgramYear.fromString(reader.getString());
+                } else if ("invoiceId".equals(fieldName)) {
+                    deserializedVolumeLicenseDetails.invoiceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeLicenseDetails;
+        });
     }
 }

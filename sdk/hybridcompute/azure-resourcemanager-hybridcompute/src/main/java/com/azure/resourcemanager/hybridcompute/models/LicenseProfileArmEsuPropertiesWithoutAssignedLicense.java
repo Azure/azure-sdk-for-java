@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Describes the properties of a License Profile ARM model.
@@ -15,20 +19,27 @@ public class LicenseProfileArmEsuPropertiesWithoutAssignedLicense extends Licens
     /*
      * The type of the Esu servers.
      */
-    @JsonProperty(value = "serverType", access = JsonProperty.Access.WRITE_ONLY)
     private EsuServerType serverType;
 
     /*
      * Indicates the eligibility state of Esu.
      */
-    @JsonProperty(value = "esuEligibility", access = JsonProperty.Access.WRITE_ONLY)
     private EsuEligibility esuEligibility;
 
     /*
      * Indicates whether there is an ESU Key currently active for the machine.
      */
-    @JsonProperty(value = "esuKeyState", access = JsonProperty.Access.WRITE_ONLY)
     private EsuKeyState esuKeyState;
+
+    /*
+     * The guid id of the license.
+     */
+    private String assignedLicenseImmutableId;
+
+    /*
+     * The list of ESU keys.
+     */
+    private List<EsuKey> esuKeys;
 
     /**
      * Creates an instance of LicenseProfileArmEsuPropertiesWithoutAssignedLicense class.
@@ -46,12 +57,34 @@ public class LicenseProfileArmEsuPropertiesWithoutAssignedLicense extends Licens
     }
 
     /**
+     * Set the serverType property: The type of the Esu servers.
+     * 
+     * @param serverType the serverType value to set.
+     * @return the LicenseProfileArmEsuPropertiesWithoutAssignedLicense object itself.
+     */
+    LicenseProfileArmEsuPropertiesWithoutAssignedLicense withServerType(EsuServerType serverType) {
+        this.serverType = serverType;
+        return this;
+    }
+
+    /**
      * Get the esuEligibility property: Indicates the eligibility state of Esu.
      * 
      * @return the esuEligibility value.
      */
     public EsuEligibility esuEligibility() {
         return this.esuEligibility;
+    }
+
+    /**
+     * Set the esuEligibility property: Indicates the eligibility state of Esu.
+     * 
+     * @param esuEligibility the esuEligibility value to set.
+     * @return the LicenseProfileArmEsuPropertiesWithoutAssignedLicense object itself.
+     */
+    LicenseProfileArmEsuPropertiesWithoutAssignedLicense withEsuEligibility(EsuEligibility esuEligibility) {
+        this.esuEligibility = esuEligibility;
+        return this;
     }
 
     /**
@@ -64,6 +97,37 @@ public class LicenseProfileArmEsuPropertiesWithoutAssignedLicense extends Licens
     }
 
     /**
+     * Set the esuKeyState property: Indicates whether there is an ESU Key currently active for the machine.
+     * 
+     * @param esuKeyState the esuKeyState value to set.
+     * @return the LicenseProfileArmEsuPropertiesWithoutAssignedLicense object itself.
+     */
+    LicenseProfileArmEsuPropertiesWithoutAssignedLicense withEsuKeyState(EsuKeyState esuKeyState) {
+        this.esuKeyState = esuKeyState;
+        return this;
+    }
+
+    /**
+     * Get the assignedLicenseImmutableId property: The guid id of the license.
+     * 
+     * @return the assignedLicenseImmutableId value.
+     */
+    @Override
+    public String assignedLicenseImmutableId() {
+        return this.assignedLicenseImmutableId;
+    }
+
+    /**
+     * Get the esuKeys property: The list of ESU keys.
+     * 
+     * @return the esuKeys value.
+     */
+    @Override
+    public List<EsuKey> esuKeys() {
+        return this.esuKeys;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -71,5 +135,55 @@ public class LicenseProfileArmEsuPropertiesWithoutAssignedLicense extends Licens
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseProfileArmEsuPropertiesWithoutAssignedLicense from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseProfileArmEsuPropertiesWithoutAssignedLicense if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LicenseProfileArmEsuPropertiesWithoutAssignedLicense.
+     */
+    public static LicenseProfileArmEsuPropertiesWithoutAssignedLicense fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseProfileArmEsuPropertiesWithoutAssignedLicense deserializedLicenseProfileArmEsuPropertiesWithoutAssignedLicense
+                = new LicenseProfileArmEsuPropertiesWithoutAssignedLicense();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("assignedLicenseImmutableId".equals(fieldName)) {
+                    deserializedLicenseProfileArmEsuPropertiesWithoutAssignedLicense.assignedLicenseImmutableId
+                        = reader.getString();
+                } else if ("esuKeys".equals(fieldName)) {
+                    List<EsuKey> esuKeys = reader.readArray(reader1 -> EsuKey.fromJson(reader1));
+                    deserializedLicenseProfileArmEsuPropertiesWithoutAssignedLicense.esuKeys = esuKeys;
+                } else if ("serverType".equals(fieldName)) {
+                    deserializedLicenseProfileArmEsuPropertiesWithoutAssignedLicense.serverType
+                        = EsuServerType.fromString(reader.getString());
+                } else if ("esuEligibility".equals(fieldName)) {
+                    deserializedLicenseProfileArmEsuPropertiesWithoutAssignedLicense.esuEligibility
+                        = EsuEligibility.fromString(reader.getString());
+                } else if ("esuKeyState".equals(fieldName)) {
+                    deserializedLicenseProfileArmEsuPropertiesWithoutAssignedLicense.esuKeyState
+                        = EsuKeyState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseProfileArmEsuPropertiesWithoutAssignedLicense;
+        });
     }
 }

@@ -77,7 +77,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
                     tsp_project, sdk_root, spec_root, head_sha, repo_url
                 )
-                stable_version, _= set_or_default_version(sdk_root, GROUP_ID, module)
+                stable_version, _ = set_or_default_version(sdk_root, GROUP_ID, module)
                 current_version = DEFAULT_VERSION
                 if require_sdk_integration:
                     update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
@@ -339,7 +339,7 @@ def generate(
         try:
             subprocess.run(command, shell=True, check=True)
         except subprocess.CalledProcessError:
-            logging.error("[GENERATE] Autorest fail")
+            logging.error("[GENERATE] Code generation failed. Autorest fails.")
             return False
 
         if require_sdk_integration:
@@ -380,7 +380,7 @@ def generate(
         )
         logging.info(command)
         if os.system(command) != 0:
-            logging.error("[GENERATE] Autorest fail")
+            logging.error("[GENERATE] Code generation failed. Autorest fails.")
             return False
 
         set_or_default_version(sdk_root, GROUP_ID, module)
@@ -397,13 +397,10 @@ def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
     )
     logging.info(command)
     if os.system(command) != 0:
-        error_message = (
-            "[COMPILE] Maven build fail.\n"
-            "One reason of the compilation failure is that the existing code customization in SDK repository being incompatible with the class generated from updated TypeSpec source. In such case, you can ignore the failure, and fix the customization in SDK repository.\n"
-            'You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.'
+        logging.error("[COMPILE] Maven build fail.")
+        logging.error(
+            'One reason of the compilation failure is that the existing code customization in SDK repository being incompatible with the class generated from updated TypeSpec source. In such case, you can ignore the failure, and fix the customization in SDK repository. You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.'
         )
-        logging.error(error_message)
-        print(error_message, file=sys.stderr)
         return False
     return True
 
@@ -589,7 +586,7 @@ if __name__ == "__main__":
     logging.basicConfig(
         stream=sys.stdout,
         level=logging.INFO,
-        format="%(asctime)s %(levelname)s %(message)s",
+        format="%(asctime)s [%(levelname)s] %(message)s",
         datefmt="%Y-%m-%d %X",
     )
     main()

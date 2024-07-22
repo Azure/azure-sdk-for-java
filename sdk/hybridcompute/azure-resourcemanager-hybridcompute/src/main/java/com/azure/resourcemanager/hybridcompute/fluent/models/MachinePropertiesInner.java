@@ -6,6 +6,11 @@ package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.AgentConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.AgentUpgrade;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
@@ -14,203 +19,171 @@ import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceVi
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
 import com.azure.resourcemanager.hybridcompute.models.StatusTypes;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * Describes the properties of a hybrid machine.
  */
 @Fluent
-public final class MachinePropertiesInner {
+public final class MachinePropertiesInner implements JsonSerializable<MachinePropertiesInner> {
     /*
      * Metadata pertaining to the geographic location of the resource.
      */
-    @JsonProperty(value = "locationData")
     private LocationData locationData;
 
     /*
      * Configurable properties that the user can set locally via the azcmagent config command, or remotely via ARM.
      */
-    @JsonProperty(value = "agentConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private AgentConfiguration agentConfiguration;
 
     /*
      * Statuses of dependent services that are reported back to ARM.
      */
-    @JsonProperty(value = "serviceStatuses")
     private ServiceStatuses serviceStatuses;
 
     /*
      * The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
      */
-    @JsonProperty(value = "cloudMetadata")
     private CloudMetadata cloudMetadata;
 
     /*
      * The info of the machine w.r.t Agent Upgrade
      */
-    @JsonProperty(value = "agentUpgrade")
     private AgentUpgrade agentUpgrade;
 
     /*
      * Specifies the operating system settings for the hybrid machine.
      */
-    @JsonProperty(value = "osProfile")
     private OSProfile osProfile;
 
     /*
      * Specifies the License related properties for a machine.
      */
-    @JsonProperty(value = "licenseProfile")
     private LicenseProfileMachineInstanceViewInner licenseProfile;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The status of the hybrid machine agent.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private StatusTypes status;
 
     /*
      * The time of the last status change.
      */
-    @JsonProperty(value = "lastStatusChange", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastStatusChange;
 
     /*
      * Details about the error state.
      */
-    @JsonProperty(value = "errorDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagementError> errorDetails;
 
     /*
      * The hybrid machine agent full version.
      */
-    @JsonProperty(value = "agentVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String agentVersion;
 
     /*
      * Specifies the hybrid machine unique ID.
      */
-    @JsonProperty(value = "vmId")
     private UUID vmId;
 
     /*
      * Specifies the hybrid machine display name.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Specifies the hybrid machine FQDN.
      */
-    @JsonProperty(value = "machineFqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String machineFqdn;
 
     /*
      * Public Key that the client provides to be used during initial resource onboarding
      */
-    @JsonProperty(value = "clientPublicKey")
     private String clientPublicKey;
 
     /*
      * The Operating System running on the hybrid machine.
      */
-    @JsonProperty(value = "osName", access = JsonProperty.Access.WRITE_ONLY)
     private String osName;
 
     /*
      * The version of Operating System running on the hybrid machine.
      */
-    @JsonProperty(value = "osVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String osVersion;
 
     /*
      * The type of Operating System (windows/linux).
      */
-    @JsonProperty(value = "osType")
     private String osType;
 
     /*
      * Specifies the Arc Machine's unique SMBIOS ID
      */
-    @JsonProperty(value = "vmUuid", access = JsonProperty.Access.WRITE_ONLY)
     private UUID vmUuid;
 
     /*
      * Machine Extensions information (deprecated field)
      */
-    @JsonProperty(value = "extensions")
     private List<MachineExtensionInstanceView> extensions;
 
     /*
      * Specifies the Operating System product SKU.
      */
-    @JsonProperty(value = "osSku", access = JsonProperty.Access.WRITE_ONLY)
     private String osSku;
 
     /*
      * The edition of the Operating System.
      */
-    @JsonProperty(value = "osEdition", access = JsonProperty.Access.WRITE_ONLY)
     private String osEdition;
 
     /*
      * Specifies the Windows domain name.
      */
-    @JsonProperty(value = "domainName", access = JsonProperty.Access.WRITE_ONLY)
     private String domainName;
 
     /*
      * Specifies the AD fully qualified display name.
      */
-    @JsonProperty(value = "adFqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String adFqdn;
 
     /*
      * Specifies the DNS fully qualified display name.
      */
-    @JsonProperty(value = "dnsFqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String dnsFqdn;
 
     /*
      * The resource id of the private link scope this machine is assigned to, if any.
      */
-    @JsonProperty(value = "privateLinkScopeResourceId")
     private String privateLinkScopeResourceId;
 
     /*
      * The resource id of the parent cluster (Azure HCI) this machine is assigned to, if any.
      */
-    @JsonProperty(value = "parentClusterResourceId")
     private String parentClusterResourceId;
 
     /*
      * Specifies whether any MS SQL instance is discovered on the machine.
      */
-    @JsonProperty(value = "mssqlDiscovered")
     private String mssqlDiscovered;
 
     /*
      * Detected properties from the machine.
      */
-    @JsonProperty(value = "detectedProperties", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> detectedProperties;
 
     /*
      * Information about the network the machine is on.
      */
-    @JsonProperty(value = "networkProfile", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkProfileInner networkProfile;
 
     /**
@@ -681,5 +654,121 @@ public final class MachinePropertiesInner {
         if (networkProfile() != null) {
             networkProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("locationData", this.locationData);
+        jsonWriter.writeJsonField("serviceStatuses", this.serviceStatuses);
+        jsonWriter.writeJsonField("cloudMetadata", this.cloudMetadata);
+        jsonWriter.writeJsonField("agentUpgrade", this.agentUpgrade);
+        jsonWriter.writeJsonField("osProfile", this.osProfile);
+        jsonWriter.writeJsonField("licenseProfile", this.licenseProfile);
+        jsonWriter.writeStringField("vmId", Objects.toString(this.vmId, null));
+        jsonWriter.writeStringField("clientPublicKey", this.clientPublicKey);
+        jsonWriter.writeStringField("osType", this.osType);
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("privateLinkScopeResourceId", this.privateLinkScopeResourceId);
+        jsonWriter.writeStringField("parentClusterResourceId", this.parentClusterResourceId);
+        jsonWriter.writeStringField("mssqlDiscovered", this.mssqlDiscovered);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachinePropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachinePropertiesInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachinePropertiesInner.
+     */
+    public static MachinePropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachinePropertiesInner deserializedMachinePropertiesInner = new MachinePropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("locationData".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.locationData = LocationData.fromJson(reader);
+                } else if ("agentConfiguration".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.agentConfiguration = AgentConfiguration.fromJson(reader);
+                } else if ("serviceStatuses".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.serviceStatuses = ServiceStatuses.fromJson(reader);
+                } else if ("cloudMetadata".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.cloudMetadata = CloudMetadata.fromJson(reader);
+                } else if ("agentUpgrade".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.agentUpgrade = AgentUpgrade.fromJson(reader);
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.osProfile = OSProfile.fromJson(reader);
+                } else if ("licenseProfile".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.licenseProfile
+                        = LicenseProfileMachineInstanceViewInner.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.provisioningState = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.status = StatusTypes.fromString(reader.getString());
+                } else if ("lastStatusChange".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.lastStatusChange = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("errorDetails".equals(fieldName)) {
+                    List<ManagementError> errorDetails = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
+                    deserializedMachinePropertiesInner.errorDetails = errorDetails;
+                } else if ("agentVersion".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.agentVersion = reader.getString();
+                } else if ("vmId".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.vmId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.displayName = reader.getString();
+                } else if ("machineFqdn".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.machineFqdn = reader.getString();
+                } else if ("clientPublicKey".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.clientPublicKey = reader.getString();
+                } else if ("osName".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.osName = reader.getString();
+                } else if ("osVersion".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.osVersion = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.osType = reader.getString();
+                } else if ("vmUuid".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.vmUuid
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("extensions".equals(fieldName)) {
+                    List<MachineExtensionInstanceView> extensions
+                        = reader.readArray(reader1 -> MachineExtensionInstanceView.fromJson(reader1));
+                    deserializedMachinePropertiesInner.extensions = extensions;
+                } else if ("osSku".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.osSku = reader.getString();
+                } else if ("osEdition".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.osEdition = reader.getString();
+                } else if ("domainName".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.domainName = reader.getString();
+                } else if ("adFqdn".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.adFqdn = reader.getString();
+                } else if ("dnsFqdn".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.dnsFqdn = reader.getString();
+                } else if ("privateLinkScopeResourceId".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.privateLinkScopeResourceId = reader.getString();
+                } else if ("parentClusterResourceId".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.parentClusterResourceId = reader.getString();
+                } else if ("mssqlDiscovered".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.mssqlDiscovered = reader.getString();
+                } else if ("detectedProperties".equals(fieldName)) {
+                    Map<String, String> detectedProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMachinePropertiesInner.detectedProperties = detectedProperties;
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.networkProfile = NetworkProfileInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachinePropertiesInner;
+        });
     }
 }

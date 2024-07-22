@@ -13,7 +13,7 @@ public final class IdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Identity model
-            = BinaryData.fromString("{\"principalId\":\"dwzbaiue\",\"tenantId\":\"a\",\"type\":\"SystemAssigned\"}")
+            = BinaryData.fromString("{\"principalId\":\"pgn\",\"tenantId\":\"txhp\",\"type\":\"SystemAssigned\"}")
                 .toObject(Identity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }

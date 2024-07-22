@@ -24,7 +24,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     private LoadBalancingRulePropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of load balancing rules used by the load balancer. This name can be used to access the resource.
+     * The name of the resource that is unique within the set of load balancing rules used by the load balancer. This
+     * name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
