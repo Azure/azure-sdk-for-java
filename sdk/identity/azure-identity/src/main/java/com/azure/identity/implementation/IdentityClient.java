@@ -598,7 +598,8 @@ public class IdentityClient extends IdentityClientBase {
     public Mono<AccessToken> authenticateWithManagedIdentityMsalClient(TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes()) + "/";
 
-        return Mono.fromSupplier(() -> options.isChained() && options.getManagedIdentityType().equals(ManagedIdentityType.VM))
+        String  managedIdnetitySourceType = String.valueOf(ManagedIdentityApplication.getManagedIdentitySource());
+        return Mono.fromSupplier(() -> options.isChained() && managedIdnetitySourceType.equals("DEFAULT_TO_IMDS"))
             .flatMap(shouldProbe -> shouldProbe ? checkIMDSAvailable(getImdsEndpoint()) : Mono.just(true))
             .flatMap(ignored ->  getTokenFromMsalMIClient(resource));
     }
