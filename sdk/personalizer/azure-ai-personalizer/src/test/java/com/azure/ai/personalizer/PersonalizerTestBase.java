@@ -25,6 +25,7 @@ import static com.azure.ai.personalizer.TestUtils.PERSONALIZER_ENDPOINT_SINGLE_S
 import static com.azure.ai.personalizer.TestUtils.PERSONALIZER_ENDPOINT_STATIC;
 
 public abstract class PersonalizerTestBase extends TestProxyTestBase {
+    private boolean sanitizersRemoved = false;
     private PersonalizerAdministrationClientBuilder setBuilderProperties(HttpClient httpClient,
         PersonalizerServiceVersion serviceVersion, boolean isSingleSlot, boolean isStatic) {
         PersonalizerAdministrationClientBuilder builder = new PersonalizerAdministrationClientBuilder();
@@ -41,9 +42,10 @@ public abstract class PersonalizerTestBase extends TestProxyTestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        if (!interceptorManager.isLiveMode()) {
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
             // Removes `Location` and `id` sanitizer from the list of common sanitizers.
-            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK3430");
+            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK3430", "AZSDK3493");
+            sanitizersRemoved = true;
         }
 
         return setCredential(builder, getTestMode(), isSingleSlot, isStatic);
@@ -62,6 +64,12 @@ public abstract class PersonalizerTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            // Removes `Location` and `id` sanitizer from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK3430", "AZSDK3493");
+            sanitizersRemoved = true;
         }
 
         return setCredential(builder, getTestMode(), isSingleSlot, false);

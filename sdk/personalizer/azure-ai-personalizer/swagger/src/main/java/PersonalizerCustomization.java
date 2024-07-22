@@ -47,7 +47,6 @@ public class PersonalizerCustomization extends Customization {
         hideMethods(libraryCustomization, logger);
         renameOfflineExperimentationProperties(libraryCustomization, logger);
         returnBaseClassTypesForMethodReturnValues(libraryCustomization, logger);
-        hideClasses(libraryCustomization, logger);
     }
 
     private void useBinaryDataForRankApis(LibraryCustomization libraryCustomization, Logger logger) {
@@ -150,15 +149,5 @@ public class PersonalizerCustomization extends Customization {
             .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerLogProperties")
             .getMethod("getDateRange")
             .setReturnType("PersonalizerDateRange", "returnValue");
-    }
-
-    private void hideClasses(LibraryCustomization libraryCustomization, Logger logger) {
-        libraryCustomization
-            .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerPolicyResultTotalSummary")
-            .setModifier(0);
-
-        libraryCustomization
-            .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerLogPropertiesDateRange")
-            .setModifier(0);
     }
 }

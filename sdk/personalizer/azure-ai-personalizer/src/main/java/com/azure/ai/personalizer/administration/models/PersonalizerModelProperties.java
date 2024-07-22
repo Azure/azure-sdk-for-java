@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -76,11 +77,11 @@ public final class PersonalizerModelProperties implements JsonSerializable<Perso
                 reader.nextToken();
 
                 if ("creationTime".equals(fieldName)) {
-                    deserializedPersonalizerModelProperties.creationTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPersonalizerModelProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastModifiedTime".equals(fieldName)) {
-                    deserializedPersonalizerModelProperties.lastModifiedTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPersonalizerModelProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

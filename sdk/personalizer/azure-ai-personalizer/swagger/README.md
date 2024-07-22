@@ -19,7 +19,7 @@ autorest
 ```yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/Personalizer/preview/v1.1-preview.3/Personalizer.json
 java: true
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.34'
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.ai.personalizer

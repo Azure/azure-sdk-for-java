@@ -7,6 +7,7 @@ package com.azure.ai.personalizer.administration.models;
 import com.azure.ai.personalizer.models.EvaluationJobStatus;
 import com.azure.ai.personalizer.models.EvaluationType;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -273,11 +274,11 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
                 } else if ("name".equals(fieldName)) {
                     deserializedPersonalizerEvaluation.name = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
-                    deserializedPersonalizerEvaluation.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPersonalizerEvaluation.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedPersonalizerEvaluation.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPersonalizerEvaluation.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("jobId".equals(fieldName)) {
                     deserializedPersonalizerEvaluation.jobId = reader.getString();
                 } else if ("status".equals(fieldName)) {
@@ -295,8 +296,8 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
                 } else if ("optimalPolicy".equals(fieldName)) {
                     deserializedPersonalizerEvaluation.optimalPolicy = reader.getString();
                 } else if ("creationTime".equals(fieldName)) {
-                    deserializedPersonalizerEvaluation.creationTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPersonalizerEvaluation.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

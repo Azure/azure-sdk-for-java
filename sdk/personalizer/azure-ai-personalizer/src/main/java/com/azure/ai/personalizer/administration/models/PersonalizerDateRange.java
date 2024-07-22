@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -98,11 +99,11 @@ public class PersonalizerDateRange implements JsonSerializable<PersonalizerDateR
                 reader.nextToken();
 
                 if ("from".equals(fieldName)) {
-                    deserializedPersonalizerDateRange.from
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPersonalizerDateRange.from = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("to".equals(fieldName)) {
-                    deserializedPersonalizerDateRange.to
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPersonalizerDateRange.to = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

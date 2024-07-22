@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -282,8 +283,8 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
                 reader.nextToken();
 
                 if ("timeStamp".equals(fieldName)) {
-                    deserializedPersonalizerPolicyResultSummary.timeStamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPersonalizerPolicyResultSummary.timeStamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("ipsEstimatorNumerator".equals(fieldName)) {
                     deserializedPersonalizerPolicyResultSummary.ipsEstimatorNumerator
                         = reader.getNullable(JsonReader::getFloat);

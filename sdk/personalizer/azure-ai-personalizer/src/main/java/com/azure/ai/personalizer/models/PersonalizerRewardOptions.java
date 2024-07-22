@@ -17,7 +17,8 @@ import java.io.IOException;
 @Fluent
 public final class PersonalizerRewardOptions implements JsonSerializable<PersonalizerRewardOptions> {
     /*
-     * Reward to be assigned to an action. Value is a float calculated by your application, typically between 0 and 1, and must be between -1 and 1.
+     * Reward to be assigned to an action. Value is a float calculated by your application, typically between 0 and 1,
+     * and must be between -1 and 1.
      */
     private float value;
 
