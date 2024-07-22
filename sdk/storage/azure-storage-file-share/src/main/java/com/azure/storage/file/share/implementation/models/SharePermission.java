@@ -21,6 +21,11 @@ public final class SharePermission implements JsonSerializable<SharePermission> 
      */
     private String permission;
 
+    /*
+     * The format property.
+     */
+    private FilePermissionFormat format;
+
     /**
      * Creates an instance of SharePermission class.
      */
@@ -48,12 +53,33 @@ public final class SharePermission implements JsonSerializable<SharePermission> 
     }
 
     /**
+     * Get the format property: The format property.
+     * 
+     * @return the format value.
+     */
+    public FilePermissionFormat getFormat() {
+        return this.format;
+    }
+
+    /**
+     * Set the format property: The format property.
+     * 
+     * @param format the format value to set.
+     * @return the SharePermission object itself.
+     */
+    public SharePermission setFormat(FilePermissionFormat format) {
+        this.format = format;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("permission", this.permission);
+        jsonWriter.writeStringField("format", this.format == null ? null : this.format.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -75,6 +101,8 @@ public final class SharePermission implements JsonSerializable<SharePermission> 
 
                 if ("permission".equals(fieldName)) {
                     deserializedSharePermission.permission = reader.getString();
+                } else if ("format".equals(fieldName)) {
+                    deserializedSharePermission.format = FilePermissionFormat.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

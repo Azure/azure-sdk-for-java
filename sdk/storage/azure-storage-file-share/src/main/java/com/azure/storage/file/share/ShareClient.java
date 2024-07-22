@@ -22,6 +22,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.models.FilePermissionFormat;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
 import com.azure.storage.file.share.implementation.models.ShareStats;
@@ -359,7 +360,8 @@ public class ShareClient {
         Callable<Response<Void>> operation = () -> azureFileStorageClient.getShares()
             .createNoCustomHeadersWithResponse(shareName, null, finalOptions.getMetadata(), finalOptions.getQuotaInGb(),
                 finalOptions.getAccessTier(), finalEnabledProtocol, finalOptions.getRootSquash(),
-                finalOptions.isSnapshotVirtualDirectoryAccessEnabled(), finalContext);
+                finalOptions.isSnapshotVirtualDirectoryAccessEnabled(), null,
+                null, null, finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -877,7 +879,8 @@ public class ShareClient {
         Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getShares()
             .setPropertiesNoCustomHeadersWithResponse(shareName, null, options.getQuotaInGb(), options.getAccessTier(),
                 requestConditions.getLeaseId(), options.getRootSquash(),
-                options.isSnapshotVirtualDirectoryAccessEnabled(), finalContext);
+                options.isSnapshotVirtualDirectoryAccessEnabled(), null, null,
+                null, finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1961,6 +1964,26 @@ public class ShareClient {
     }
 
     /**
+     * Gets a permission for a given key
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareClient.getPermission#string-FilePermissionFormat -->
+     * <!-- end com.azure.storage.file.share.ShareClient.getPermission#string-FilePermissionFormat -->
+     *
+     * @param filePermissionKey The file permission key.
+     * @param filePermissionFormat Optional. Available for version 2024-11-04 and later. Specifies the format in which
+     * the permission is returned. If filePermissionFormat is unspecified or explicitly set to SDDL, the permission will
+     * be returned in SSDL format. If filePermissionFormat is explicity set to binary, the permission is returned as a
+     * base64 string representing the binary encoding of the permission in self-relative format.
+     * @return The file permission associated with the file permission key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String getPermission(String filePermissionKey, FilePermissionFormat filePermissionFormat) {
+        return getPermissionWithResponse(filePermissionKey, filePermissionFormat,  Context.NONE).getValue();
+    }
+
+    /**
      * Gets a permission for a given key.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1980,7 +2003,28 @@ public class ShareClient {
     public Response<String> getPermissionWithResponse(String filePermissionKey, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         ResponseBase<SharesGetPermissionHeaders, SharePermission> response = this.azureFileStorageClient.getShares()
-            .getPermissionWithResponse(shareName, filePermissionKey, null, finalContext);
+            .getPermissionWithResponse(shareName, filePermissionKey, null, null, finalContext);
+
+        return new SimpleResponse<>(response, response.getValue().getPermission());
+    }
+
+    /**
+     * Gets a permission for a given key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareClient.getPermissionWithResponse#string-FilePermissionFormat-context -->
+     * <!-- end com.azure.storage.file.share.ShareClient.getPermissionWithResponse#string-FilePermissionFormat-context -->
+     *
+     * @param filePermissionKey The file permission key.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response that contains th file permission associated with the file permission key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<String> getPermissionWithResponse(String filePermissionKey, FilePermissionFormat filePermissionFormat, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        ResponseBase<SharesGetPermissionHeaders, SharePermission> response = this.azureFileStorageClient.getShares()
+            .getPermissionWithResponse(shareName, filePermissionKey, filePermissionFormat, null, finalContext);
 
         return new SimpleResponse<>(response, response.getValue().getPermission());
     }
